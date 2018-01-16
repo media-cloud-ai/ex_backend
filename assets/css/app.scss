@@ -1,0 +1,87 @@
+/* This file is for your main application css. */
+$fa-font-path: "../fonts";
+@import "font-awesome";
+
+.fa.fa-trash {
+  color: #ff9595;
+  cursor: pointer;
+}
+
+body {
+  background-color: #405887 !important;
+  color: #fff !important;
+}
+
+input[type=text] {
+  border: 1px solid #888;
+  border-radius: 5px;
+  color: #444;
+  outline: none;
+}
+
+input[type=number] {
+  border: 1px solid #888;
+  border-radius: 5px;
+  color: #444;
+  outline: none;
+}
+
+button {
+  background-color: #768bb4;
+  border: 1px solid #000;
+  border-radius: 5px;
+  outline: none;
+}
+
+button:hover {
+  background-color: #90a9db;
+}
+
+button.delete {
+  background-color: #ff9595;
+  color: #000;
+}
+
+button.delete i.fa.fa-trash {
+  color: #000;
+  padding-right: 5px;
+}
+
+button.delete:hover {
+  background-color: #fb7a7a;
+  color: #000;
+}
+
+.job {
+  min-height: 33px;
+  vertical-align: middle;
+  margin: 10px;
+  .title {
+    width: 300px;
+    display: inline-block;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+  }
+}
+
+.status {
+  border: 1px solid #666;
+  background-color: #999;
+  padding: 5px;
+  border-radius: 5px;
+  text-transform: capitalize;
+  display: inline-block;
+  width: 100px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.status.completed {
+  background-color: #6cc86c;
+}
+
+.status.error {
+  background-color: #c86c6c;
+}

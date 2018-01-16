@@ -1,0 +1,37 @@
+<h1>Job</h1>
+<div ng-controller="JobController as vm">
+  <div>
+    <form novalidate>
+      <input type="text" ng-model=vm.job.name>
+      <input type="number" name=dude ng-model=vm.iterations min=1>
+      <button type="submit" ng-click="vm.start()">Start</button>
+    </form>
+  </div>
+
+  <button ng-click="vm.deleteAllJobs()" class=delete>
+    <i class="fa fa-trash"></i>Delete all jobs
+  </button>
+
+  <h1>
+    {{vm.completed}} / {{vm.total}}
+  </h1>
+
+  {{vm.jobs_in_db}} job in database
+
+  <%# <div ng-repeat="job in vm.jobs" class="jobs">
+    <div class="job">
+      <span>
+        <i class="fa fa-trash"
+          ng-click="vm.deleteJob(job.id)"></i>
+      </span>
+      <span class="title">
+        {{job.name}}
+      </span>
+      <span ng-repeat="status in job.status"
+        class="status"
+        ng-class="status.state">
+        {{status.state}}
+      </span>
+    </div>
+  </div> %>
+</div>
