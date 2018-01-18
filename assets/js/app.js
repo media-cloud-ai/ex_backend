@@ -24,6 +24,10 @@ import JobController from "./job/job.controller"
 import JobFactory from "./job/job.factory"
 import JobService from "./job/job.service"
 
+import VideosController from "./videos/videos.controller"
+import VideosFactory from "./videos/videos.factory"
+import VideosService from "./videos/videos.service"
+
 module = angular.module('ExSubtilBackend', [
   'ngResource',
 ]);
@@ -31,7 +35,10 @@ module = angular.module('ExSubtilBackend', [
 module
   .factory('JobFactory', JobFactory)
   .factory('JobService', JobService)
-  .controller('JobController', JobController);
+  .controller('JobController', JobController)
+  .factory('VideosFactory', VideosFactory)
+  .factory('VideosService', VideosService)
+  .controller('VideosController', VideosController);
 
 
 JobService.$inject = [
@@ -44,6 +51,10 @@ JobController.$inject = [
   '$rootScope',
   'JobService',
 ];
+
+VideosService.$inject = ['$http', 'VideosFactory']
+VideosFactory.$inject = ['$resource'];
+VideosController.$inject = ['$rootScope','VideosService'];
 
 module.run(run);
 
