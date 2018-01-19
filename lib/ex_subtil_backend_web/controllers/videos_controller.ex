@@ -5,7 +5,7 @@ defmodule ExSubtilBackendWeb.VideosController do
 
   def index(conn, params) do
     videos = ExVideoFactory.videos(params)
-    render(conn, "index.json", videos: videos.videos)
+    render(conn, "index.json", videos: videos)
   end
 
 end
