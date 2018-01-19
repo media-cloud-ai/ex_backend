@@ -1,5 +1,5 @@
-<h1>Job</h1>
 <div ng-controller="JobController as vm">
+  <h1>Jobs</h1>
   <div>
     <form novalidate>
       <input type="text" ng-model=vm.job.name>
@@ -34,4 +34,15 @@
       </span>
     </div>
   </div> %>
+</div>
+<div ng-controller="VideosController as vc">
+  <h1>Videos</h1>
+  <ul>
+  <li ng-repeat="video in vc.videos">
+    <ul>
+      <li>ID: {{video.id}}</li>
+      <li>Title: {{video.title}}</li>
+    </ul>
+  </li>
+  </ul>
 </div>
