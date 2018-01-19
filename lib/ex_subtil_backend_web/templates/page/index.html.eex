@@ -37,11 +37,13 @@
 </div>
 <div ng-controller="VideosController as vc">
   <h1>Videos</h1>
+  <span>Page size: </span>
+  <select ng-model="vc.perPage" ng-options="option for option in vc.perPageOptions" convert-to-number ng-change="reloadVideos()"></select>
   <ul>
   <li ng-repeat="video in vc.videos">
     <ul>
-      <li>ID: {{video.id}}</li>
-      <li>Title: {{video.title}}</li>
+      <li><span>ID: </span><span>{{video.id}}</span></li>
+      <li><span>Title: </span><span>{{video.title}}</span></li>
     </ul>
   </li>
   </ul>
