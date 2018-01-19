@@ -71,6 +71,30 @@
         <span>Title: </span>
         <span>{{video.title}}</span>
       </li>
+      <li>
+        <span>Channel: </span>
+        <span>{{video.channel}}</span>
+      </li>
+      <li>
+        <span>Region: </span>
+        <span>{{video.region}}</span>
+      </li>
+      <li>
+        <span>Licensing: </span>
+        <span>{{video.licensing}}</span>
+      </li>
+      <li>
+        <span>Legacy ID: </span>
+        <span>{{video.legacy_id}}</span>
+      </li>
+      <li>
+        <span>Creation: </span>
+        <span>{{video.creation}}</span>
+      </li>
+      <li>
+        <span>Available: </span>
+        <span>{{video.available}}</span>
+      </li>
     </ul>
   </li>
   </ul>

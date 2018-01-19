@@ -13,7 +13,13 @@ defmodule ExSubtilBackendWeb.VideosView do
   def render("video.json", %{videos: video}) do
     %{
       id: video["id"],
-      title: video["title"]
+      title: video["title"],
+      available: video["platforms"]["ftv"]["status"] == "available",
+      licensing: video["licensing"],
+      legacy_id: video["legacy_id"],
+      channel: video["channel"]["id"],
+      region: video["channel"]["region"],
+      creation: video["created_at"],
     }
   end
 
