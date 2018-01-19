@@ -38,12 +38,39 @@
 <div ng-controller="VideosController as vc">
   <h1>Videos</h1>
   <span>Page size: </span>
-  <select ng-model="vc.perPage" ng-options="option for option in vc.perPageOptions" convert-to-number ng-change="reloadVideos()"></select>
+  <select
+    ng-model="vc.perPage"
+    ng-options="option for option in vc.perPageOptions"
+    ng-change="reloadVideos()"
+    convert-to-number>
+  </select>
+  <button
+    ng-disabled="vc.page == 1"
+    ng-click="previousPage()">
+    Previous
+  </button>
+  <button
+    ng-click="nextPage()">
+    Next
+  </button>
+
+  <span>From: </span>
+  <span>{{(vc.page - 1) * vc.size}}</span>
+  <span>To: </span>
+  <span>{{vc.page * vc.size}}</span>
+  <span>Total: {{vc.total}}</span>
+
   <ul>
   <li ng-repeat="video in vc.videos">
     <ul>
-      <li><span>ID: </span><span>{{video.id}}</span></li>
-      <li><span>Title: </span><span>{{video.title}}</span></li>
+      <li>
+        <span>ID: </span>
+        <span>{{video.id}}</span>
+      </li>
+      <li>
+        <span>Title: </span>
+        <span>{{video.title}}</span>
+      </li>
     </ul>
   </li>
   </ul>

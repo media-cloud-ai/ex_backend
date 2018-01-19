@@ -3,7 +3,11 @@ defmodule ExSubtilBackendWeb.VideosView do
   alias ExSubtilBackendWeb.VideosView
 
   def render("index.json", %{videos: videos}) do
-    %{data: render_many(videos, VideosView, "video.json")}
+    %{
+      size: videos.size,
+      total: videos.total,
+      data: render_many(videos.videos, VideosView, "video.json")
+    }
   end
 
   def render("video.json", %{videos: video}) do
