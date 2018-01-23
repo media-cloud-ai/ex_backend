@@ -11,19 +11,26 @@ defmodule ExSubtilBackendWeb.JobView do
   end
 
   def render("job.json", %{job: job}) do
-    status =
-      if is_list(job.status) do
-        render_many(job.status, ExSubtilBackendWeb.StatusView, "state.json")
-      else
-        []
+    if is_tuple(job) do
+      case job do
+        {:error, changeset} -> %{errors: changeset |> ExSubtilBackendWeb.ChangesetView.translate_errors}
+        _ -> %{errors: ["unknown error"]}
       end
+    else
+      status =
+        if is_list(job.status) do
+          render_many(job.status, ExSubtilBackendWeb.StatusView, "state.json")
+        else
+          []
+        end
 
-    %{
-      id: job.id,
-      name: job.name,
-      params: job.params,
-      status: status,
-      inserted_at: job.inserted_at
-    }
+      %{
+        id: job.id,
+        name: job.name,
+        params: job.params,
+        status: status,
+        inserted_at: job.inserted_at
+      }
+    end
   end
 end

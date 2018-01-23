@@ -2,6 +2,7 @@ defmodule ExSubtilBackend.JobsTest do
   use ExSubtilBackend.DataCase
 
   alias ExSubtilBackend.Jobs
+  alias ExSubtilBackend.Repo
 
   describe "jobs" do
     alias ExSubtilBackend.Jobs.Job
@@ -21,6 +22,7 @@ defmodule ExSubtilBackend.JobsTest do
 
     test "list_jobs/0 returns all jobs" do
       job = job_fixture()
+        |> Repo.preload(:status)
       assert Jobs.list_jobs() == [job]
     end
 
