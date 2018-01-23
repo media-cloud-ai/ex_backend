@@ -54,11 +54,9 @@
     Next
   </button>
 
-  <span>From: </span>
-  <span>{{(vc.page - 1) * vc.size}}</span>
-  <span>To: </span>
-  <span>{{vc.page * vc.size}}</span>
-  <span>Total: {{vc.total}}</span>
+  <span>
+    {{vc.offset}} - {{(vc.size == 0)? 0 : vc.offset + vc.size - 1}} / {{vc.total}}
+  </span>
 
   <ul>
   <li ng-repeat="video in vc.videos">

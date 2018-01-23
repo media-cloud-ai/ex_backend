@@ -6,6 +6,7 @@ function VideosController(
   var vm = this;
   vm.videos = {};
   vm.size = 0;
+  vm.offset = 0;
   vm.total = 0;
   vm.perPageOptions = [10, 20, 50, 100];
   vm.perPage = vm.perPageOptions[1];
@@ -32,6 +33,7 @@ function VideosController(
     function(response) {
       vm.videos = response.data;
       vm.size = response.size;
+      vm.offset = response.offset;
       vm.total = response.total;
     },
     function(message) {
