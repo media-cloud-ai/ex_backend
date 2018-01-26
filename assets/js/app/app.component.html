@@ -1,0 +1,36 @@
+<mat-toolbar class="mat-toolbar mat-primary mat-toolbar-multiple-rows">
+  <mat-toolbar-row class="mat-toolbar-row">
+    <span>
+      <a class=title routerLink='/'>
+        Subtil Backend
+      </a>
+    </span>
+    <span class=spacer>
+    </span>
+    <span class=logo>
+      <img src="/bundles/images/france_televisions_logo.png">
+    </span>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-sidenav-container class="docs-component-viewer-sidenav-container mat-drawer-container mat-sidenav-container">
+  <mat-sidenav mode="side" opened="true"
+    class="docs-component-viewer-sidenav mat-drawer mat-sidenav ng-tns-c13-1 ng-trigger ng-trigger-transform mat-drawer-side ng-star-inserted">
+    <ul>
+      <li class="ng-star-inserted">
+        <a routerLink='/videos'>
+          Vidéos
+        </a>
+      </li>
+      <li class="ng-star-inserted">
+        <a routerLink='/jobs'>
+          Jobs
+        </a>
+      </li>
+    </ul>
+  </mat-sidenav>
+  <mat-sidenav-content
+    class="mat-drawer-content mat-sidenav-content ng-star-inserted" style="margin-left: 240px; margin-right: 0px;">
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

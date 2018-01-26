@@ -7,17 +7,17 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Hello ExSubtilBackendWeb!</title>
-    <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+    <title>Subtil Backend</title>
+    <script src="<%= static_path(@conn, "/bundles/style.js") %>"></script>
+    <script src="<%= static_path(@conn, "/bundles/common.js") %>"></script>
   </head>
 
   <body>
-    <div class="container" ng-app="ExSubtilBackend">
+    <div class="container">
       <main role="main">
         <%= render @view_module, @view_template, assigns %>
       </main>
     </div>
-    <script src="<%= static_path(@conn, "/js/vendor.js") %>"></script>
-    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+    <script src="<%= static_path(@conn, "/bundles/main.js") %>"></script>
   </body>
 </html>

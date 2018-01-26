@@ -1,0 +1,17 @@
+
+<h1>
+  Vidéos
+</h1>
+
+<ul *ngIf="videos" class="videos">
+  <li *ngFor="let video of videos.data">
+    <!-- <span class="badge">{{video.id}}</span> -->
+    {{video.title}}
+  </li>
+</ul>
+
+<mat-paginator
+  [length]="length"
+  [pageSize]="pageSize"
+  (page)="pageEvent = eventGetVideos($event)">
+</mat-paginator>
