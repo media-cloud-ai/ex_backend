@@ -18,22 +18,31 @@ defmodule ExSubtilBackendWeb.JobController do
       |> Map.get("params")
       |> Map.get("iterations", 1)
 
-    jobs =
-      for _index <- 1..iterations do
-        with {:ok, %Job{} = job} <- Jobs.create_job(job_params) do
-
-          params = %{
-            job_id: job.id,
-            params: job.params
-          }
-          JobEmitter.publish_json(params)
-          job
+    try do
+      jobs =
+        for _index <- 1..iterations do
+          case Jobs.create_job(job_params) do
+            {:ok, %Job{} = job} ->
+              params = %{
+                job_id: job.id,
+                params: job.params
+              }
+              JobEmitter.publish_json(params)
+              job
+            {:error, message} ->
+              raise [ %{"errors": %{"name": ["can't be blank"] } } ] |> Poison.encode!
+          end
         end
-      end
 
-    conn
-    |> put_status(:created)
-    |> render("index.json", jobs: jobs)
+      conn
+      |> put_status(:created)
+      |> render("index.json", jobs: jobs)
+    rescue
+      e in RuntimeError ->
+        conn
+        |> put_status(422)
+        |> json(%{status: "error", message: e.message |> Poison.decode!})
+    end
   end
 
   def show(conn, %{"id" => id}) do
