@@ -37,11 +37,62 @@
 </div>
 <div ng-controller="VideosController as vc">
   <h1>Videos</h1>
+  <span>Page size: </span>
+  <select
+    ng-model="vc.perPage"
+    ng-options="option for option in vc.perPageOptions"
+    ng-change="reloadVideos()"
+    convert-to-number>
+  </select>
+  <button
+    ng-disabled="vc.page == 1"
+    ng-click="previousPage()">
+    Previous
+  </button>
+  <button
+    ng-click="nextPage()">
+    Next
+  </button>
+
+  <span>
+    {{vc.offset}} - {{(vc.size == 0)? 0 : vc.offset + vc.size - 1}} / {{vc.total}}
+  </span>
+
   <ul>
   <li ng-repeat="video in vc.videos">
     <ul>
-      <li>ID: {{video.id}}</li>
-      <li>Title: {{video.title}}</li>
+      <li>
+        <span>ID: </span>
+        <span>{{video.id}}</span>
+      </li>
+      <li>
+        <span>Title: </span>
+        <span>{{video.title}}</span>
+      </li>
+      <li>
+        <span>Channel: </span>
+        <span>{{video.channel}}</span>
+      </li>
+      <li>
+        <span>Region: </span>
+        <span>{{video.region}}</span>
+      </li>
+      <li>
+        <span>Licensing: </span>
+        <span>{{video.licensing}}</span>
+      </li>
+      <li>
+        <span>Legacy ID: </span>
+        <span>{{video.legacy_id}}</span>
+      </li>
+      <li>
+        <span>Creation: </span>
+        <span>{{video.creation}}</span>
+      </li>
+      <li>
+        <span>Available: </span>
+        <span>{{video.available}}</span>
+      </li>
     </ul>
   </li>
   </ul>
