@@ -14,7 +14,7 @@ import {Video} from '../services/video';
 
 export class VideosComponent {
   length = 1000;
-  pageSize = 20;
+  pageSize = 10;
   page = 0;
   sub = undefined;
 
@@ -32,22 +32,24 @@ export class VideosComponent {
       .queryParams
       .subscribe(params => {
         this.page = +params['page'] || 0;
+        this.getVideos(this.page);
       });
-    this.getVideos();
   }
 
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
 
-  getVideos(): void {
-    this.videoService.getVideos(this.page)
+  getVideos(index): void {
+    this.videoService.getVideos(index)
     .subscribe(videos => this.videos = videos);
   }
 
   eventGetVideos(event): void {
+    // console.log(event);
+    // console.log(this.page);
     this.router.navigate(['/videos'], { queryParams: { page: event.pageIndex } });
-    this.getVideos();
+    this.getVideos(event.pageIndex);
   }
 }
 
