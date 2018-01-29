@@ -18,7 +18,10 @@ RUN mix phx.digest
 FROM alpine:3.6
 
 WORKDIR /app
+
+RUN apk update
+RUN apk bash openssl
+
 COPY --from=builder /app/_build/prod/rel/ex_subtil_backend .
 
 CMD ["./bin/ex_subtil_backend", "foreground"]
-
