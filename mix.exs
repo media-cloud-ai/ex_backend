@@ -37,17 +37,17 @@ defmodule ExSubtilBackend.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:amqp, "~> 0.3.0"},
-      {:cowboy, "~> 1.0"},
+      {:amqp, "~> 0.3.1"},
+      {:cowboy, "~> 1.1.2"},
       {:distillery, "~> 1.5"},
-      {:gettext, "~> 0.11"},
+      {:gettext, "~> 0.14"},
       {:phoenix, "~> 1.3.0"},
       {:phoenix_ecto, "~> 3.2"},
       {:phoenix_html, "~> 2.10"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:phoenix_pubsub, "~> 1.0"},
       {:postgrex, ">= 0.0.0"},
-      {:ex_video_factory, github: "FTV-Subtil/ex_video_factory", branch: "develop"}
+      {:ex_video_factory, "0.2.0"}
     ]
   end
 

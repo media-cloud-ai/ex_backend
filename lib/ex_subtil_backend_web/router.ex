@@ -13,16 +13,16 @@ defmodule ExSubtilBackendWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", ExSubtilBackendWeb do
-    pipe_through :browser # Use the default browser stack
-
-    get "/", PageController, :index
-  end
-
   # Other scopes may use custom stacks.
   scope "/api", ExSubtilBackendWeb do
     pipe_through :api
     resources "/jobs", JobController, except: [:new, :edit]
     resources "/videos", VideosController, except: [:new, :edit]
+  end
+
+  scope "/", ExSubtilBackendWeb do
+    pipe_through :browser
+
+    get "/*path", PageController, :index
   end
 end
