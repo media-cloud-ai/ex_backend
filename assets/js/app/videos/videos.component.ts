@@ -17,6 +17,14 @@ export class VideosComponent {
   pageSize = 10;
   page = 0;
   sub = undefined;
+  channels = [
+    {id: "france-2", label: "France 2"},
+    {id: "france-3", label: "France 3"},
+    {id: "france-4", label: "France 4"},
+    {id: "france-5", label: "France 5"},
+    {id: "france-o", label: "France Ô"}
+  ];
+  selectedChannels = [];
 
   pageEvent: PageEvent;
   videos: VideoPage;

@@ -3,6 +3,21 @@
   Vidéos
 </h1>
 
+    <mat-form-field>
+      <mat-select
+        class="channels-select"
+        placeholder="Chaîne"
+        multiple
+        >
+        <mat-option
+          *ngFor="let channel of channels"
+          [value]="channel.id"
+          [ngClass]="channel.id"
+          >
+          {{ channel.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 <ul *ngIf="videos" class="videos">
   <li
     *ngFor="let video of videos.data"

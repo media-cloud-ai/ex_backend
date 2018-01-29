@@ -9,6 +9,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatSelectModule} from '@angular/material/select';
 
 import {RouterModule, Routes} from '@angular/router';
 
@@ -34,6 +35,7 @@ const routes: Routes = [
     MatSidenavModule,
     MatToolbarModule,
     MatPaginatorModule,
+    MatSelectModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(routes)
   ],
