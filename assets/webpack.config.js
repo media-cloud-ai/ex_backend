@@ -5,13 +5,13 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const config = {
   entry: {
     "common": [
-      "./js/common.ts"
+      "./src/common.ts"
     ],
     "main": [
-      "./js/app.ts",
+      "./src/app.ts",
     ],
     "style": [
-      "./css/app.less",
+      "./src/style.css",
     ]
   },
   output: {
@@ -34,7 +34,7 @@ const config = {
       },
       {
         test: /\.less(\?v=\d+\.\d+\.\d+)?$/,
-        loaders: ["style-loader", "css-loader", "less-loader"]
+        loaders: ["to-string-loader", "css-loader", "less-loader"]
       },
       {
         test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
@@ -47,7 +47,6 @@ const config = {
     ]
   },
   plugins: [
-    new ExtractTextPlugin("css/style.css"),
     new CopyWebpackPlugin([{ from: "./static" }])
   ]
 };

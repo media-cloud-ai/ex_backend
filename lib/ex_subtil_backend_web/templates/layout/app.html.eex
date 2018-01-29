@@ -13,11 +13,7 @@
   </head>
 
   <body>
-    <div class="container">
-      <main role="main">
-        <%= render @view_module, @view_template, assigns %>
-      </main>
-    </div>
+    <%= render @view_module, @view_template, assigns %>
     <script src="<%= static_path(@conn, "/bundles/main.js") %>"></script>
   </body>
 </html>
