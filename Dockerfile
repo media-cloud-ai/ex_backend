@@ -20,7 +20,7 @@ FROM alpine:3.6
 WORKDIR /app
 
 RUN apk update
-RUN apk bash openssl
+RUN apk add bash openssl
 
 COPY --from=builder /app/_build/prod/rel/ex_subtil_backend .
 
