@@ -29,7 +29,7 @@ defmodule ExSubtilBackendWeb.JobController do
               }
               JobEmitter.publish_json(params)
               job
-            {:error, message} ->
+            {:error, _message} ->
               raise [ %{"errors": %{"name": ["can't be blank"] } } ] |> Poison.encode!
           end
         end
