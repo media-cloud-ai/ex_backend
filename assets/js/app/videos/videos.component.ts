@@ -42,7 +42,10 @@ export class VideosComponent {
 
   getVideos(index): void {
     this.videoService.getVideos(index)
-    .subscribe(videos => this.videos = videos);
+    .subscribe(videoPage => {
+      this.videos = videoPage;
+      this.length = videoPage.total;
+    });
   }
 
   eventGetVideos(event): void {
