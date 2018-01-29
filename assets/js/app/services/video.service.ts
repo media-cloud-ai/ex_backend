@@ -12,15 +12,11 @@ export class VideoService {
 
   constructor(private http: HttpClient) { }
 
-  getVideos(page): Observable<VideoPage> {
+  getVideos(page, channels): Observable<VideoPage> {
     let params = new HttpParams();
     params = params.append("per_page", "10");
     params = params.append("type.id", "integrale");
-    params = params.append("channels[]", "france-2");
-    params = params.append("channels[]", "france-3");
-    params = params.append("channels[]", "france-4");
-    params = params.append("channels[]", "france-5");
-    params = params.append("channels[]", "france-o");
+    params = params.append("channels[]", channels);
     if(page > 0) {
       params = params.append('page', page + 1);
     }

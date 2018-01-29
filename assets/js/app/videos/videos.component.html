@@ -3,10 +3,13 @@
   Vidéos
 </h1>
 
+<div class="search-bar">
+  <span>
     <mat-form-field>
       <mat-select
         class="channels-select"
         placeholder="Chaîne"
+        [(value)]="selectedChannels"
         multiple
         >
         <mat-option
@@ -18,6 +21,10 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+  </span>
+  <button mat-button (click)="filterVideos(selectedChannels)">Rechercher</button>
+</div>
+
 <ul *ngIf="videos" class="videos">
   <li
     *ngFor="let video of videos.data"

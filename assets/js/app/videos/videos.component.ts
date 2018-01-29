@@ -40,6 +40,7 @@ export class VideosComponent {
       .queryParams
       .subscribe(params => {
         this.page = +params['page'] || 0;
+        this.selectedChannels = params['channels'] || this.getChannelIDsList();
         this.getVideos(this.page);
       });
   }
@@ -48,8 +49,16 @@ export class VideosComponent {
     this.sub.unsubscribe();
   }
 
+  getChannelIDsList(): Array<string> {
+    var channelIds = []
+    this.channels.forEach(function(channel) {
+      channelIds.push(channel.id);
+    });
+    return channelIds;
+  }
+
   getVideos(index): void {
-    this.videoService.getVideos(index)
+    this.videoService.getVideos(index, this.selectedChannels)
     .subscribe(videoPage => {
       this.videos = videoPage;
       this.length = videoPage.total;
@@ -61,6 +70,11 @@ export class VideosComponent {
     // console.log(this.page);
     this.router.navigate(['/videos'], { queryParams: { page: event.pageIndex } });
     this.getVideos(event.pageIndex);
+  }
+
+  filterVideos(selectedChannels): void {
+    this.router.navigate(['/videos'], { queryParams: { page: 0, channels: selectedChannels } });
+    this.getVideos(0);
   }
 }
 
