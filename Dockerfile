@@ -18,7 +18,7 @@ RUN mix phx.digest
 FROM alpine:3.6
 
 WORKDIR /app
-COPY --from=builder /app/_build/prod/rel/ex_subtil_worker .
+COPY --from=builder /app/_build/prod/rel/ex_subtil_backend .
 
-CMD ["./bin/ex_subtil_worker", "foreground"]
+CMD ["./bin/ex_subtil_backend", "foreground"]
 
