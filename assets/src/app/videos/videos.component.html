@@ -16,6 +16,7 @@
           *ngFor="let channel of channels"
           [value]="channel.id"
           [ngClass]="channel.id"
+          class="channels-option"
           >
           {{ channel.label }}
         </mat-option>
