@@ -10,6 +10,7 @@ import {Video} from '../services/video';
 @Component({
   selector: 'videos-component',
   templateUrl: 'videos.component.html',
+  styleUrls: ['./videos.component.less'],
 })
 
 export class VideosComponent {
