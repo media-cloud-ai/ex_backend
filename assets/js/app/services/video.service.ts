@@ -18,6 +18,7 @@ export class VideoService {
     params = params.append("type.id", "integrale");
     params = params.append("channels[]", "france-2");
     params = params.append("channels[]", "france-3");
+    params = params.append("channels[]", "france-4");
     params = params.append("channels[]", "france-5");
     params = params.append("channels[]", "france-o");
     if(page > 0) {
