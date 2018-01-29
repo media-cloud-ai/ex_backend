@@ -1,0 +1,54 @@
+
+ul.videos {
+  list-style: none;
+  padding: 0px;
+
+  li.video {
+    padding: 10px;
+    background-color: #FFF;
+
+    .legacy_id {
+      font-size: 0.6em;
+      display: inline-block;
+      width: 50px;
+    }
+    .title {
+      display: inline-block;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      height: 15px;
+      width: 300px;
+      white-space: nowrap;
+      vertical-align: middle;
+    }
+  }
+
+  li.video.not-available {
+    color: #bbb;
+  }
+
+  li.video:before {
+    background-image: url("/bundles/images/logo_chaines.jpg");
+    content: "";
+    width: 13px;
+    height: 20px;
+    display: inline-block;
+    background-size: cover;
+    vertical-align: middle;
+  }
+
+  li.video.france-2:before {
+  }
+  li.video.france-3:before {
+    background-position-x: 60px;
+  }
+  li.video.france-4:before {
+    background-position-x: 44px;
+  }
+  li.video.france-5:before {
+    background-position-x: 28px;
+  }
+  li.video.france-o:before {
+    background-position-x: 13px;
+  }
+}
