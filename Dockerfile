@@ -1,4 +1,4 @@
-FROM elixir:1.5.2-alpine AS builder
+FROM elixir:1.6.0-alpine AS builder
 
 RUN apk update
 RUN apk add gawk git make curl python
