@@ -24,7 +24,9 @@
     </mat-form-field>
   </span>
   <span>
-    <mat-slide-toggle (change)="toggleDates($event)">Filtrer par date</mat-slide-toggle>
+    <mat-slide-toggle [checked]="enableDatePickers" (change)="toggleDates($event)">
+      Filtrer par date
+    </mat-slide-toggle>
   </span>
   <span>
     <mat-form-field>
@@ -54,7 +56,7 @@
       <mat-datepicker #picker_before></mat-datepicker>
     </mat-form-field>
   </span>
-  <button mat-button (click)="filterVideos(selectedChannels)">Rechercher</button>
+  <button mat-button (click)="filterVideos()">Rechercher</button>
 </div>
 
 <ul *ngIf="videos" class="videos">

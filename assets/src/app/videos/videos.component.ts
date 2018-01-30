@@ -9,6 +9,8 @@ import {VideoPage} from '../services/video_page';
 import {Video} from '../services/video';
 import {DateRange} from '../services/date_range';
 
+import * as moment from 'moment';
+
 @Component({
   selector: 'videos-component',
   templateUrl: 'videos.component.html',
@@ -47,6 +49,11 @@ export class VideosComponent {
       .subscribe(params => {
         this.page = +params['page'] || 0;
         this.selectedChannels = params['channels'] || this.getChannelIDsList();
+        if(params['broadcasted_after'] && params['broadcasted_before']) {
+          this.enableDatePickers = true;
+          this.dateRange.setStartDate(moment(params['broadcasted_after']));
+          this.dateRange.setEndDate(moment(params['broadcasted_before']));
+        }
         this.getVideos(this.page);
       });
   }
@@ -72,15 +79,25 @@ export class VideosComponent {
   }
 
   eventGetVideos(event): void {
-    // console.log(event);
-    // console.log(this.page);
-    this.router.navigate(['/videos'], { queryParams: { page: event.pageIndex } });
+    this.router.navigate(['/videos'], { queryParams: this.getQueryParamsForPage(event.pageIndex) });
     this.getVideos(event.pageIndex);
   }
 
-  filterVideos(selectedChannels): void {
-    this.router.navigate(['/videos'], { queryParams: { page: 0, channels: selectedChannels } });
+  filterVideos(): void {
+    this.router.navigate(['/videos'], { queryParams: this.getQueryParamsForPage(0) });
     this.getVideos(0);
+  }
+
+  getQueryParamsForPage(pageIndex: number): Object {
+    var params = {
+      page: pageIndex,
+      channels: this.selectedChannels
+    }
+    if(this.enableDatePickers) {
+      params["broadcasted_after"] = this.dateRange.getStart().format();
+      params["broadcasted_before"] = this.dateRange.getEnd().format();
+    }
+    return params;
   }
 
   toggleDates(event): void {
