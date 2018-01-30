@@ -4,7 +4,7 @@
 </h1>
 
 <div class="search-bar">
-  <span>
+  <div>
     <mat-form-field>
       <mat-select
         class="channels-select"
@@ -22,13 +22,11 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-  </span>
-  <span>
+  </div>
+  <div>
     <mat-slide-toggle [checked]="enableDatePickers" (change)="toggleDates($event)">
       Filtrer par date
     </mat-slide-toggle>
-  </span>
-  <span>
     <mat-form-field>
       <input matInput
         [max]="dateRange.getEnd()"
@@ -41,8 +39,6 @@
       <mat-datepicker-toggle matSuffix [for]="picker_after"></mat-datepicker-toggle>
       <mat-datepicker #picker_after></mat-datepicker>
     </mat-form-field>
-  </span>
-  <span>
     <mat-form-field>
       <input matInput
         [min]="dateRange.getStart()"
@@ -55,7 +51,7 @@
       <mat-datepicker-toggle matSuffix [for]="picker_before"></mat-datepicker-toggle>
       <mat-datepicker #picker_before></mat-datepicker>
     </mat-form-field>
-  </span>
+  </div>
   <button mat-button (click)="filterVideos()">Rechercher</button>
 </div>
 
