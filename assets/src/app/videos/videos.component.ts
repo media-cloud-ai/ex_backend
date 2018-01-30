@@ -2,10 +2,12 @@
 import {Component, ViewChild} from '@angular/core';
 import {PageEvent} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
+import {FormControl} from '@angular/forms';
 
 import {VideoService} from '../services/video.service';
 import {VideoPage} from '../services/video_page';
 import {Video} from '../services/video';
+import {DateRange} from '../services/date_range';
 
 @Component({
   selector: 'videos-component',
@@ -26,6 +28,9 @@ export class VideosComponent {
     {id: "france-o", label: "France Ô"}
   ];
   selectedChannels = [];
+
+  enableDatePickers = false;
+  dateRange = new DateRange();
 
   pageEvent: PageEvent;
   videos: VideoPage;
@@ -59,7 +64,7 @@ export class VideosComponent {
   }
 
   getVideos(index): void {
-    this.videoService.getVideos(index, this.selectedChannels)
+    this.videoService.getVideos(index, this.selectedChannels, (this.enableDatePickers? this.dateRange : undefined))
     .subscribe(videoPage => {
       this.videos = videoPage;
       this.length = videoPage.total;
@@ -76,6 +81,18 @@ export class VideosComponent {
   filterVideos(selectedChannels): void {
     this.router.navigate(['/videos'], { queryParams: { page: 0, channels: selectedChannels } });
     this.getVideos(0);
+  }
+
+  toggleDates(event): void {
+    this.enableDatePickers = event.checked;
+  }
+
+  setStartDate(event): void {
+    this.dateRange.setStartDate(event.value);
+  }
+
+  setEndDate(event): void {
+    this.dateRange.setEndDate(event.value);
   }
 }
 

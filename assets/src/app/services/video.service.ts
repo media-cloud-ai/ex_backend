@@ -5,6 +5,7 @@ import { of } from 'rxjs/observable/of';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import {VideoPage} from './video_page';
+import {DateRange} from './date_range';
 
 @Injectable()
 export class VideoService {
@@ -12,13 +13,17 @@ export class VideoService {
 
   constructor(private http: HttpClient) { }
 
-  getVideos(page, channels): Observable<VideoPage> {
+  getVideos(page: number, channels: Array<string>, dateRange?: DateRange): Observable<VideoPage> {
     let params = new HttpParams();
     params = params.append("per_page", "10");
     params = params.append("type.id", "integrale");
-    params = params.append("channels[]", channels);
+    params = params.append("channels[]", channels.toString());
     if(page > 0) {
-      params = params.append('page', page + 1);
+      params = params.append('page', String(page + 1));
+    }
+    if(dateRange) {
+      params = params.append("broadcasted_after", dateRange.getStart().format());
+      params = params.append("broadcasted_before", dateRange.getEnd().format());
     }
 
     return this.http.get<VideoPage>(this.videosUrl, {params: params})

@@ -23,6 +23,37 @@
       </mat-select>
     </mat-form-field>
   </span>
+  <span>
+    <mat-slide-toggle (change)="toggleDates($event)">Filtrer par date</mat-slide-toggle>
+  </span>
+  <span>
+    <mat-form-field>
+      <input matInput
+        [max]="dateRange.getEnd()"
+        [matDatepicker]="picker_after"
+        placeholder="Diffusion après le..."
+        [value]="dateRange.getStart()"
+        [disabled]="!enableDatePickers"
+        (dateChange)="setStartDate($event)"
+        >
+      <mat-datepicker-toggle matSuffix [for]="picker_after"></mat-datepicker-toggle>
+      <mat-datepicker #picker_after></mat-datepicker>
+    </mat-form-field>
+  </span>
+  <span>
+    <mat-form-field>
+      <input matInput
+        [min]="dateRange.getStart()"
+        [matDatepicker]="picker_before"
+        placeholder="Diffusion avant le..."
+        [value]="dateRange.getEnd()"
+        [disabled]="!enableDatePickers"
+        (dateChange)="setEndDate($event)"
+        >
+      <mat-datepicker-toggle matSuffix [for]="picker_before"></mat-datepicker-toggle>
+      <mat-datepicker #picker_before></mat-datepicker>
+    </mat-form-field>
+  </span>
   <button mat-button (click)="filterVideos(selectedChannels)">Rechercher</button>
 </div>
 
