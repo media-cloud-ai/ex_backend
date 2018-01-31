@@ -107,10 +107,6 @@ export class VideosComponent {
     return params;
   }
 
-  toggleDates(event): void {
-    this.enableDatePickers = event.checked;
-  }
-
   setStartDate(event): void {
     this.dateRange.setStartDate(event.value);
   }
