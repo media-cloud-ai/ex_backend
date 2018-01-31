@@ -22,6 +22,8 @@ export class VideosComponent {
   pageSize = 10;
   page = 0;
   sub = undefined;
+
+  searchInput = '';
   channels = [
     {id: "france-2", label: "France 2"},
     {id: "france-3", label: "France 3"},
@@ -49,6 +51,7 @@ export class VideosComponent {
       .subscribe(params => {
         this.page = +params['page'] || 0;
         this.selectedChannels = params['channels'] || this.getChannelIDsList();
+        this.searchInput = params['search'] || '';
         if(params['broadcasted_after'] && params['broadcasted_before']) {
           this.enableDatePickers = true;
           this.dateRange.setStartDate(moment(params['broadcasted_after']));
@@ -71,7 +74,10 @@ export class VideosComponent {
   }
 
   getVideos(index): void {
-    this.videoService.getVideos(index, this.selectedChannels, (this.enableDatePickers? this.dateRange : undefined))
+    this.videoService.getVideos(index,
+      this.selectedChannels,
+      this.searchInput,
+      (this.enableDatePickers? this.dateRange : undefined))
     .subscribe(videoPage => {
       this.videos = videoPage;
       this.length = videoPage.total;
@@ -91,7 +97,8 @@ export class VideosComponent {
   getQueryParamsForPage(pageIndex: number): Object {
     var params = {
       page: pageIndex,
-      channels: this.selectedChannels
+      channels: this.selectedChannels,
+      search: this.searchInput
     }
     if(this.enableDatePickers) {
       params["broadcasted_after"] = this.dateRange.getStart().format();

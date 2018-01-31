@@ -2,6 +2,7 @@
 import {APP_BASE_HREF} from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
 import {NgModule}      from '@angular/core';
+import {FormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
 import {AppComponent}  from './app.component';
 import {MatMenuModule} from '@angular/material';
@@ -13,6 +14,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSelectModule} from '@angular/material/select';
 import {MatButtonModule} from '@angular/material/button';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatIconModule} from '@angular/material/icon';
 
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MomentDateAdapter, MatMomentDateModule, MAT_MOMENT_DATE_FORMATS} from '@angular/material-moment-adapter';
@@ -53,6 +55,7 @@ const SUBTIL_DATE_FORMATS = {
   imports: [
     BrowserModule,
     HttpClientModule,
+    FormsModule,
     MatMenuModule,
     MatInputModule,
     MatSidenavModule,
@@ -61,6 +64,7 @@ const SUBTIL_DATE_FORMATS = {
     MatSelectModule,
     MatButtonModule,
     MatSlideToggleModule,
+    MatIconModule,
     MatDatepickerModule,
     MatMomentDateModule,
     BrowserAnimationsModule,
