@@ -97,8 +97,10 @@ export class VideosComponent {
   getQueryParamsForPage(pageIndex: number): Object {
     var params = {
       page: pageIndex,
-      channels: this.selectedChannels,
-      search: this.searchInput
+      channels: this.selectedChannels
+    }
+    if(this.searchInput) {
+      params['search'] = this.searchInput;
     }
     if(this.enableDatePickers) {
       params['broadcasted_after'] = this.dateRange.getStart().format();

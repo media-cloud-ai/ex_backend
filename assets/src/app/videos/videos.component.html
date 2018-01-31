@@ -39,10 +39,10 @@
       <input matInput
         [max]="dateRange.getEnd()"
         [matDatepicker]="picker_after"
-        placeholder="Diffusion après le..."
-        [value]="dateRange.getStart()"
         [disabled]="!enableDatePickers"
+        [value]="dateRange.getStart()"
         (dateChange)="setStartDate($event)"
+        placeholder="Diffusion après le..."
         >
       <mat-datepicker-toggle matSuffix [for]="picker_after"></mat-datepicker-toggle>
       <mat-datepicker #picker_after></mat-datepicker>
@@ -51,10 +51,10 @@
       <input matInput
         [min]="dateRange.getStart()"
         [matDatepicker]="picker_before"
-        placeholder="Diffusion avant le..."
-        [value]="dateRange.getEnd()"
         [disabled]="!enableDatePickers"
+        [value]="dateRange.getEnd()"
         (dateChange)="setEndDate($event)"
+        placeholder="Diffusion avant le..."
         >
       <mat-datepicker-toggle matSuffix [for]="picker_before"></mat-datepicker-toggle>
       <mat-datepicker #picker_before></mat-datepicker>
