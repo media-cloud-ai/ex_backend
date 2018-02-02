@@ -55,8 +55,6 @@ export class VideosComponent {
           this.dateRange.setStartDate(moment(params['broadcasted_after']));
         }
         if(params['broadcasted_before']) {
-          console.log(params['broadcasted_before']);
-          console.log(moment(params['broadcasted_before']));
           this.dateRange.setEndDate(moment(params['broadcasted_before']));
         }
         this.getVideos(this.page);
@@ -81,7 +79,6 @@ export class VideosComponent {
       this.searchInput,
       this.dateRange)
     .subscribe(videoPage => {
-      console.log(videoPage);
       this.videos = videoPage;
       this.length = videoPage.total;
     });
@@ -113,7 +110,6 @@ export class VideosComponent {
       params['broadcasted_after'] = this.dateRange.getStart().format();
     }
     if(this.dateRange.getEnd() != undefined) {
-      console.log(this.dateRange.getEnd().format());
       params['broadcasted_before'] = this.dateRange.getEnd().format();
     }
     return params;
