@@ -13,10 +13,12 @@ export class DateRange {
 
   setStartDate(date: Moment): void {
     this.start = date;
-    this.start.hours(0);
-    this.start.minutes(0);
-    this.start.seconds(0);
-    this.start.milliseconds(0);
+    if(this.start){
+      this.start.hours(0);
+      this.start.minutes(0);
+      this.start.seconds(0);
+      this.start.milliseconds(0);
+    }
   }
 
   setEndDate(date: Moment): void {
@@ -31,4 +33,11 @@ export class DateRange {
     return this.end;
   }
 
+  clearStart(): void {
+    this.start = undefined;
+  }
+
+  clearEnd(): void {
+    this.end = undefined;
+  }
 }

@@ -45,7 +45,7 @@
         [max]="dateRange.getEnd()"
         [matDatepicker]="picker_after"
         (dateChange)="setStartDate($event)"
-        (ngModelChange)="updateVideos()"
+        (ngModelChange)="updateStart()"
         placeholder="Diffusion après le..."
         >
       <mat-datepicker-toggle matSuffix [for]="picker_after"></mat-datepicker-toggle>
@@ -56,7 +56,7 @@
         [min]="dateRange.getStart()"
         [matDatepicker]="picker_before"
         (dateChange)="setEndDate($event)"
-        (ngModelChange)="updateVideos()"
+        (ngModelChange)="updateEnd()"
         placeholder="Diffusion avant le..."
         >
       <mat-datepicker-toggle matSuffix [for]="picker_before"></mat-datepicker-toggle>

@@ -126,5 +126,15 @@ export class VideosComponent {
     this.getQueryParamsForPage(0);
     this.updateVideos();
   }
+
+  updateStart(): void {
+    this.getQueryParamsForPage(0);
+    this.updateVideos();
+  }
+
+  updateEnd(): void {
+    this.getQueryParamsForPage(0);
+    this.updateVideos();
+  }
 }
 
