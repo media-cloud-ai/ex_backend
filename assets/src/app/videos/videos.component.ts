@@ -33,7 +33,6 @@ export class VideosComponent {
   ];
   selectedChannels = [];
 
-  enableDatePickers = false;
   dateRange = new DateRange();
 
   pageEvent: PageEvent;
@@ -52,9 +51,12 @@ export class VideosComponent {
         this.page = +params['page'] || 0;
         this.selectedChannels = params['channels'] || this.getChannelIDsList();
         this.searchInput = params['search'] || '';
-        if(params['broadcasted_after'] && params['broadcasted_before']) {
-          this.enableDatePickers = true;
+        if(params['broadcasted_after']) {
           this.dateRange.setStartDate(moment(params['broadcasted_after']));
+        }
+        if(params['broadcasted_before']) {
+          console.log(params['broadcasted_before']);
+          console.log(moment(params['broadcasted_before']));
           this.dateRange.setEndDate(moment(params['broadcasted_before']));
         }
         this.getVideos(this.page);
@@ -77,8 +79,9 @@ export class VideosComponent {
     this.videoService.getVideos(index,
       this.selectedChannels,
       this.searchInput,
-      (this.enableDatePickers? this.dateRange : undefined))
+      this.dateRange)
     .subscribe(videoPage => {
+      console.log(videoPage);
       this.videos = videoPage;
       this.length = videoPage.total;
     });
@@ -89,21 +92,28 @@ export class VideosComponent {
     this.getVideos(event.pageIndex);
   }
 
-  filterVideos(): void {
+  updateVideos(): void {
     this.router.navigate(['/videos'], { queryParams: this.getQueryParamsForPage(0) });
     this.getVideos(0);
   }
 
   getQueryParamsForPage(pageIndex: number): Object {
     var params = {
-      page: pageIndex,
-      channels: this.selectedChannels
+      "channels": this.selectedChannels
     }
-    if(this.searchInput) {
+    if(pageIndex != 0) {
+      params['page'] = pageIndex;
+    }
+
+    if(this.searchInput != "") {
       params['search'] = this.searchInput;
     }
-    if(this.enableDatePickers) {
+
+    if(this.dateRange.getStart() != undefined) {
       params['broadcasted_after'] = this.dateRange.getStart().format();
+    }
+    if(this.dateRange.getEnd() != undefined) {
+      console.log(this.dateRange.getEnd().format());
       params['broadcasted_before'] = this.dateRange.getEnd().format();
     }
     return params;
@@ -111,10 +121,14 @@ export class VideosComponent {
 
   setStartDate(event): void {
     this.dateRange.setStartDate(event.value);
+    this.getQueryParamsForPage(0);
+    this.updateVideos();
   }
 
   setEndDate(event): void {
     this.dateRange.setEndDate(event.value);
+    this.getQueryParamsForPage(0);
+    this.updateVideos();
   }
 }
 

@@ -13,17 +13,24 @@ export class VideoService {
 
   constructor(private http: HttpClient) { }
 
-  getVideos(page: number, channels: Array<string>, searchInput: string, dateRange?: DateRange): Observable<VideoPage> {
+  getVideos(page: number, channels: Array<string>, searchInput: string, dateRange: DateRange): Observable<VideoPage> {
     let params = new HttpParams();
     params = params.append('per_page', '10');
     params = params.append('type.id', 'integrale');
-    params = params.append('channels[]', channels.toString());
-    params = params.append('q', searchInput);
+    for (let entry of channels) {
+      params = params.append('channels[]', entry);
+    }
+
+    if(searchInput != ''){
+      params = params.append('q', searchInput);
+    }
     if(page > 0) {
       params = params.append('page', String(page + 1));
     }
-    if(dateRange) {
+    if(dateRange.getStart() != undefined){
       params = params.append('broadcasted_after', dateRange.getStart().format());
+    }
+    if(dateRange.getEnd() != undefined){
       params = params.append('broadcasted_before', dateRange.getEnd().format());
     }
 

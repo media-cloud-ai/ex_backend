@@ -7,29 +7,28 @@ export class DateRange {
   private end: Moment;
 
   constructor() {
-
-  	this.setStartDate(moment());
-  	this.setEndDate(moment());
+    this.start = undefined;
+    this.end = undefined;
   }
 
   setStartDate(date: Moment): void {
-  	this.start = date;
-  	this.start.hours(0);
-  	this.start.minutes(0);
-  	this.start.seconds(0);
-  	this.start.milliseconds(0);
+    this.start = date;
+    this.start.hours(0);
+    this.start.minutes(0);
+    this.start.seconds(0);
+    this.start.milliseconds(0);
   }
 
   setEndDate(date: Moment): void {
-  	this.end = date;
+    this.end = date;
   }
 
   getStart(): Moment {
-  	return this.start;
+    return this.start;
   }
 
   getEnd(): Moment {
-  	return this.end;
+    return this.end;
   }
 
 }

@@ -10,7 +10,9 @@
         matInput
         type="text"
         placeholder="Titre"
-        [(ngModel)]="searchInput">
+        [(ngModel)]="searchInput"
+        (keydown)="updateVideos()"
+        >
         <mat-icon matSuffix
           *ngIf="searchInput != ''"
           (click)="searchInput = ''" >clear</mat-icon>
@@ -22,6 +24,7 @@
         class="channels-select"
         placeholder="Chaîne"
         [(ngModel)]="selectedChannels"
+        (selectionChange)="updateVideos()"
         multiple
         >
         <mat-option
@@ -36,15 +39,10 @@
     </mat-form-field>
   </div>
   <div>
-    <mat-slide-toggle [(ngModel)]="enableDatePickers">
-      Filtrer par date
-    </mat-slide-toggle>
     <mat-form-field>
       <input matInput
         [max]="dateRange.getEnd()"
         [matDatepicker]="picker_after"
-        [disabled]="!enableDatePickers"
-        [value]="dateRange.getStart()"
         (dateChange)="setStartDate($event)"
         placeholder="Diffusion après le..."
         >
@@ -55,8 +53,6 @@
       <input matInput
         [min]="dateRange.getStart()"
         [matDatepicker]="picker_before"
-        [disabled]="!enableDatePickers"
-        [value]="dateRange.getEnd()"
         (dateChange)="setEndDate($event)"
         placeholder="Diffusion avant le..."
         >
@@ -64,7 +60,6 @@
       <mat-datepicker #picker_before></mat-datepicker>
     </mat-form-field>
   </div>
-  <button mat-button (click)="filterVideos()">Rechercher</button>
 </div>
 
 <ul *ngIf="videos" class="videos">
@@ -79,6 +74,12 @@
     </span>
     <span class="title">
       {{video.title}}
+    </span>
+    <span class="date">
+      {{video.creation | date: 'd LLL yy'}}
+    </span>
+    <span class="hour">
+      {{video.creation | date: 'H:mm:ss'}}
     </span>
   </li>
 </ul>

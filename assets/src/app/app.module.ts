@@ -20,8 +20,16 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatButtonModule} from '@angular/material/button';
 
 import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MomentDateAdapter, MatMomentDateModule, MAT_MOMENT_DATE_FORMATS} from '@angular/material-moment-adapter';
-import {DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS} from '@angular/material/core';
+import {
+  MomentDateAdapter,
+  MatMomentDateModule,
+  MAT_MOMENT_DATE_FORMATS
+} from '@angular/material-moment-adapter';
+import {
+  DateAdapter,
+  MAT_DATE_LOCALE,
+  MAT_DATE_FORMATS
+} from '@angular/material/core';
 
 import {RouterModule, Routes} from '@angular/router';
 
