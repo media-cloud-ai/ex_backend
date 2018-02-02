@@ -6,10 +6,14 @@
 <div class="search-bar">
   <div>
     <mat-form-field class="search-text-input">
-      <input matInput type="text" placeholder="Filtrer par titre, sous-titre..." [(ngModel)]="searchInput"/>
-      <button mat-button *ngIf="searchInput" matSuffix mat-icon-button aria-label="Effacer" (click)="searchInput=''">
-        <mat-icon>X</mat-icon>
-      </button>
+      <input
+        matInput
+        type="text"
+        placeholder="Titre"
+        [(ngModel)]="searchInput">
+        <mat-icon matSuffix
+          *ngIf="searchInput != ''"
+          (click)="searchInput = ''" >clear</mat-icon>
     </mat-form-field>
   </div>
   <div>
