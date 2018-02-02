@@ -14,6 +14,7 @@
         (keydown)="updateVideos()"
         >
         <mat-icon matSuffix
+          class=title_button
           *ngIf="searchInput != ''"
           (click)="searchInput = ''" >clear</mat-icon>
     </mat-form-field>
