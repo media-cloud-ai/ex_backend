@@ -52,3 +52,50 @@ ul.videos {
     background-position-x: 13px;
   }
 }
+
+.search-bar {
+  div {
+    margin: 0 10px;
+    display: inline-block;
+  }
+
+  mat-slide-toggle {
+    margin: 0 10px;
+  }
+
+  .search-text-input {
+    width: 300px;
+  }
+}
+
+.channels_selector mat-form-field {
+  min-width: 300px;
+}
+
+.channels-option:after {
+  background-image: url("/bundles/images/logo_chaines.jpg");
+  content: "";
+  width: 13px;
+  height: 20px;
+  display: inline-block;
+  background-size: cover;
+  vertical-align: middle;
+}
+
+.channels-option.france-3:after {
+  background-position-x: 60px;
+}
+
+.channels-option.france-4:after {
+  background-position-x: 44px;
+}
+.channels-option.france-5:after {
+  background-position-x: 28px;
+}
+.channels-option.france-o:after {
+  background-position-x: 13px;
+}
+
+.title_button:hover {
+  cursor: pointer !important;
+}

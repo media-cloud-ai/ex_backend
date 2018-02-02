@@ -5,6 +5,7 @@ import { of } from 'rxjs/observable/of';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import {VideoPage} from './video_page';
+import {DateRange} from './date_range';
 
 @Injectable()
 export class VideoService {
@@ -12,22 +13,30 @@ export class VideoService {
 
   constructor(private http: HttpClient) { }
 
-  getVideos(page): Observable<VideoPage> {
+  getVideos(page: number, channels: Array<string>, searchInput: string, dateRange: DateRange): Observable<VideoPage> {
     let params = new HttpParams();
-    params = params.append("per_page", "10");
-    params = params.append("type.id", "integrale");
-    params = params.append("channels[]", "france-2");
-    params = params.append("channels[]", "france-3");
-    params = params.append("channels[]", "france-4");
-    params = params.append("channels[]", "france-5");
-    params = params.append("channels[]", "france-o");
+    params = params.append('per_page', '10');
+    params = params.append('type.id', 'integrale');
+    for (let entry of channels) {
+      params = params.append('channels[]', entry);
+    }
+
+    if(searchInput != ''){
+      params = params.append('q', searchInput);
+    }
     if(page > 0) {
-      params = params.append('page', page + 1);
+      params = params.append('page', String(page + 1));
+    }
+    if(dateRange.getStart() != undefined){
+      params = params.append('broadcasted_after', dateRange.getStart().format());
+    }
+    if(dateRange.getEnd() != undefined){
+      params = params.append('broadcasted_before', dateRange.getEnd().format());
     }
 
     return this.http.get<VideoPage>(this.videosUrl, {params: params})
       .pipe(
-        tap(videopage => this.log("fetched VideoPage")),
+        tap(videopage => this.log('fetched VideoPage')),
         catchError(this.handleError('getVideos', undefined))
       );
   }
