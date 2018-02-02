@@ -8,16 +8,13 @@
     <meta name="author" content="">
 
     <title>Subtil Backend</title>
+    <link href=https://fonts.googleapis.com/icon?family=Material+Icons rel="stylesheet">
     <script src="<%= static_path(@conn, "/bundles/style.js") %>"></script>
     <script src="<%= static_path(@conn, "/bundles/common.js") %>"></script>
   </head>
 
   <body>
-    <div class="container">
-      <main role="main">
-        <%= render @view_module, @view_template, assigns %>
-      </main>
-    </div>
+    <%= render @view_module, @view_template, assigns %>
     <script src="<%= static_path(@conn, "/bundles/main.js") %>"></script>
   </body>
 </html>

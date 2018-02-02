@@ -1,0 +1,95 @@
+
+<h1>
+  Vidéos
+</h1>
+
+<div class="search-bar">
+  <div>
+    <mat-form-field class="search-text-input">
+      <input
+        matInput
+        type="text"
+        placeholder="Titre"
+        [(ngModel)]="searchInput"
+        (keydown)="updateVideos()"
+        >
+        <mat-icon matSuffix
+          class=title_button
+          *ngIf="searchInput != ''"
+          (click)="searchInput = ''" >clear</mat-icon>
+    </mat-form-field>
+  </div>
+  <div class=channels_selector>
+    <mat-form-field>
+      <mat-select
+        class="channels-select"
+        placeholder="Chaîne"
+        [(ngModel)]="selectedChannels"
+        (selectionChange)="updateVideos()"
+        multiple
+        >
+        <mat-option
+          *ngFor="let channel of channels"
+          [value]="channel.id"
+          [ngClass]="channel.id"
+          class="channels-option"
+          >
+          {{ channel.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <input matInput
+        [max]="dateRange.getEnd()"
+        [matDatepicker]="picker_after"
+        (dateChange)="setStartDate($event)"
+        (ngModelChange)="updateStart()"
+        placeholder="Diffusion après le..."
+        >
+      <mat-datepicker-toggle matSuffix [for]="picker_after"></mat-datepicker-toggle>
+      <mat-datepicker #picker_after></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput
+        [min]="dateRange.getStart()"
+        [matDatepicker]="picker_before"
+        (dateChange)="setEndDate($event)"
+        (ngModelChange)="updateEnd()"
+        placeholder="Diffusion avant le..."
+        >
+      <mat-datepicker-toggle matSuffix [for]="picker_before"></mat-datepicker-toggle>
+      <mat-datepicker #picker_before></mat-datepicker>
+    </mat-form-field>
+  </div>
+</div>
+
+<ul *ngIf="videos" class="videos">
+  <li *ngIf="(!videos || videos.total == 0)">Aucun résultat trouvé</li>
+  <li
+    *ngFor="let video of videos.data"
+    class="video {{video.channel}}"
+    [ngClass]="{'available': video.available, 'not-available': !video.available}"
+    >
+    <span class="legacy_id">
+      {{video.legacy_id}}
+    </span>
+    <span class="title">
+      {{video.title}}
+    </span>
+    <span class="date">
+      {{video.creation | date: 'd LLL yy'}}
+    </span>
+    <span class="hour">
+      {{video.creation | date: 'H:mm:ss'}}
+    </span>
+  </li>
+</ul>
+
+<mat-paginator
+  [length]="length"
+  [pageSize]="pageSize"
+  [pageIndex]="page"
+  (page)="pageEvent = eventGetVideos($event)">
+</mat-paginator>
