@@ -34,9 +34,14 @@ import {
 import {RouterModule, Routes} from '@angular/router';
 
 import {VideosComponent}      from './videos/videos.component';
-import {DashboardComponent}      from './dashboard/dashboard.component';
+import {JobsComponent}        from './jobs/jobs.component';
+import {DashboardComponent}   from './dashboard/dashboard.component';
 
-import {VideoService}          from './services/video.service';
+import {VideoService}         from './services/video.service';
+import {JobService}           from './services/job.service';
+import {JobTypePipe}          from './pipes/job_type.pipe';
+import {JobStatusPipe}        from './pipes/job_status.pipe';
+import {BasenamePipe}         from './pipes/basename.pipe';
 
 import 'hammerjs/hammer'; // for MatSlideToggleModule
 import * as moment from 'moment';
@@ -44,7 +49,8 @@ import * as moment from 'moment';
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
-  { path: 'videos', component: VideosComponent }
+  { path: 'videos', component: VideosComponent },
+  { path: 'jobs', component: JobsComponent }
 ];
 
 const SUBTIL_DATE_FORMATS = {
@@ -84,7 +90,11 @@ const SUBTIL_DATE_FORMATS = {
   declarations: [
     AppComponent,
     DashboardComponent,
-    VideosComponent
+    VideosComponent,
+    JobsComponent,
+    JobTypePipe,
+    JobStatusPipe,
+    BasenamePipe,
   ],
   providers: [
     {
@@ -104,7 +114,8 @@ const SUBTIL_DATE_FORMATS = {
       provide: MAT_DATE_FORMATS,
       useValue: SUBTIL_DATE_FORMATS
     },
-    VideoService
+    VideoService,
+    JobService,
   ],
   bootstrap: [
     AppComponent

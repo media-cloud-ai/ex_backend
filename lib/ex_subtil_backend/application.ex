@@ -14,8 +14,8 @@ defmodule ExSubtilBackend.Application do
       supervisor(ExSubtilBackendWeb.Endpoint, []),
       # Start your own worker by calling: ExSubtilBackend.Worker.start_link(arg1, arg2, arg3)
       # worker(ExSubtilBackend.Worker, [arg1, arg2, arg3]),
-      worker(ExSubtilBackend.JobEmitter, []),
-      worker(ExSubtilBackend.JobConsumer, []),
+      worker(ExSubtilBackend.Amqp.JobFtpEmitter, []),
+      worker(ExSubtilBackend.Amqp.JobFtpCompletedConsumer, []),
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

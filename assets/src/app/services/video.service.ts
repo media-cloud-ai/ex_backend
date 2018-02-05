@@ -6,6 +6,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 
 import {VideoPage} from './video_page';
 import {DateRange} from './date_range';
+import {IngestResponse} from './ingest_response';
 
 @Injectable()
 export class VideoService {
@@ -38,6 +39,16 @@ export class VideoService {
       .pipe(
         tap(videopage => this.log('fetched VideoPage')),
         catchError(this.handleError('getVideos', undefined))
+      );
+  }
+
+  ingest(video_id: number): Observable<IngestResponse> {
+    const url = `${this.videosUrl}/${video_id}`;
+
+    return this.http.put<IngestResponse>(url, {})
+      .pipe(
+        tap(response => this.log('update Video')),
+        catchError(this.handleError('putVideos', undefined))
       );
   }
 

@@ -1,0 +1,38 @@
+<h1>
+  Jobs
+</h1>
+
+<ul *ngIf="jobs" class="jobs">
+  <li *ngIf="jobs.total == 0">Aucun résultat trouvé</li>
+  <li
+    *ngFor="let job of jobs.data"
+    class="job {{job.channel}} {{job.status | jobStatus}}"
+    >
+    <span *ngIf="job.name == 'ftp_order'" class="icon">
+      <mat-icon>compare_arrows</mat-icon>
+    </span>
+    <span class="title">
+      {{job.name | jobType}}
+    </span>
+    <span class="status">
+      {{job.status | jobStatus}}
+    </span>
+    <span class="date">
+      {{job.inserted_at | date: 'd LLL yy'}}
+    </span>
+    <span class="hour">
+      {{job.inserted_at | date: 'H:mm:ss'}}
+    </span>
+    <span class="source path">
+      {{job.params.source.path | basename}}
+    </span>
+  </li>
+</ul>
+
+<mat-paginator
+  [length]="length"
+  [pageSize]="pageSize"
+  [pageIndex]="page"
+  (page)="pageEvent = eventGetJobs($event)">
+</mat-paginator>
+

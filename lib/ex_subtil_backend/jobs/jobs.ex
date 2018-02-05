@@ -8,6 +8,15 @@ defmodule ExSubtilBackend.Jobs do
 
   alias ExSubtilBackend.Jobs.Job
 
+  defp force_integer(param) when is_bitstring(param) do
+    param
+    |> String.to_integer
+  end
+
+  defp force_integer(param) do
+    param
+  end
+
   @doc """
   Returns the list of jobs.
 
@@ -17,9 +26,39 @@ defmodule ExSubtilBackend.Jobs do
       [%Job{}, ...]
 
   """
-  def list_jobs do
-    Repo.all(Job)
-    |> Repo.preload(:status)
+  def list_jobs(params) do
+
+    page =
+      Map.get(params, "page", 0)
+      |> force_integer
+    size =
+      Map.get(params, "size", 10)
+      |> force_integer
+
+    offset = page * size
+
+    total_query = from item in Job,
+      select: count(item.id)
+
+    total =
+      Repo.all(total_query)
+      |> List.first
+
+    query = from job in Job,
+      order_by: [desc: :inserted_at],
+      offset: ^offset,
+      limit: ^size
+
+    jobs =
+      Repo.all(query)
+      |> Repo.preload(:status)
+
+    %{
+      data: jobs,
+      total: total,
+      page: page,
+      size: size
+    }
   end
 
   @doc """

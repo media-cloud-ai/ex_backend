@@ -1,0 +1,46 @@
+
+ul {
+  list-style: none;
+  padding: 0px;
+
+  li {
+    padding: 10px;
+    background-color: #FFF;
+    display: flex;
+
+    span.title {
+      min-width: 150px;
+      text-align: center;
+    }
+    span.status {
+      min-width: 80px;
+      line-height: 20px;
+      border-radius: 4px;
+      text-align: center;
+    }
+    span.date {
+      min-width: 80px;
+      text-align: center;
+    }
+    span.hour {
+      min-width: 80px;
+      flex: 1;
+    }
+    span.source.path {
+      justify-content: flex-end;
+    }
+  }
+
+  li.completed span.status {
+
+    background-color: #71bd2c;
+  }
+  li.processing span.status {
+    background-color: #3965ac;
+    color: #fff;
+  }
+  li.error span.status {
+    background-color: #db280f;
+    color: #fff;
+  }
+}
