@@ -1,11 +1,16 @@
 
+@white: #fff;
+@green: #71bd2c;
+@blue: #3965ac;
+@red: #db280f;
+
 ul {
   list-style: none;
   padding: 0px;
 
   li {
     padding: 10px;
-    background-color: #FFF;
+    background-color: @white;
     display: flex;
 
     span.title {
@@ -32,15 +37,14 @@ ul {
   }
 
   li.completed span.status {
-
-    background-color: #71bd2c;
+    background-color: @green;
   }
   li.processing span.status {
-    background-color: #3965ac;
-    color: #fff;
+    background-color: @blue;
+    color: @white;
   }
   li.error span.status {
-    background-color: #db280f;
-    color: #fff;
+    background-color: @red;
+    color: @white;
   }
 }
