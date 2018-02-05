@@ -16,8 +16,12 @@ defmodule ExSubtilBackendWeb.Router do
   # Other scopes may use custom stacks.
   scope "/api", ExSubtilBackendWeb do
     pipe_through :api
-    resources "/jobs", JobController, except: [:new, :edit]
-    resources "/videos", VideosController, except: [:new, :edit]
+
+    get "/jobs", JobController, :index
+
+    resources "/videos", VideosController, except: [:new, :edit] do
+      post "/jobs", JobController, :create
+    end
   end
 
   scope "/", ExSubtilBackendWeb do

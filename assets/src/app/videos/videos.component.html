@@ -78,11 +78,25 @@
     <span class="title">
       {{video.title}}
     </span>
+    <span class="additional_title">
+      {{video.additional_title}}
+    </span>
     <span class="date">
       {{video.creation | date: 'd LLL yy'}}
     </span>
     <span class="hour">
       {{video.creation | date: 'H:mm:ss'}}
+    </span>
+    <span class="starter">
+      <button
+        mat-raised-button
+        color="primary"
+        disabled={{!video.available}}
+        (click)="start_process(video)"
+        >
+        <mat-icon>play_arrow</mat-icon>
+        Start
+      </button>
     </span>
   </li>
 </ul>

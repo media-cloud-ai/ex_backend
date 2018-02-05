@@ -15,6 +15,7 @@ defmodule ExSubtilBackendWeb.VideosView do
     %{
       id: video["id"],
       title: video["title"],
+      additional_title: video["additional_title"],
       available: video["platforms"]["ftv"]["status"] == "available",
       licensing: video["licensing"],
       legacy_id: video["legacy_id"],

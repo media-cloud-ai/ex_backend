@@ -3,45 +3,31 @@ defmodule ExSubtilBackendWeb.JobController do
 
   alias ExSubtilBackend.Jobs
   alias ExSubtilBackend.Jobs.Job
-  alias ExSubtilBackend.JobEmitter
+  alias ExSubtilBackend.Amqp.JobFtpEmitter
 
   action_fallback ExSubtilBackendWeb.FallbackController
 
-  def index(conn, _params) do
-    jobs = Jobs.list_jobs()
+  def index(conn, params) do
+    jobs = Jobs.list_jobs(params)
     render(conn, "index.json", jobs: jobs)
   end
 
   def create(conn, %{"job" => job_params}) do
-    iterations =
-      job_params
-      |> Map.get("params")
-      |> Map.get("iterations", 1)
+    case Jobs.create_job(job_params) do
+      {:ok, %Job{} = job} ->
+        params = %{
+          job_id: job.id,
+          parameters: job.params
+        }
+        JobFtpEmitter.publish_json(params)
 
-    try do
-      jobs =
-        for _index <- 1..iterations do
-          case Jobs.create_job(job_params) do
-            {:ok, %Job{} = job} ->
-              params = %{
-                job_id: job.id,
-                params: job.params
-              }
-              JobEmitter.publish_json(params)
-              job
-            {:error, _message} ->
-              raise [ %{"errors": %{"name": ["can't be blank"] } } ] |> Poison.encode!
-          end
-        end
-
-      conn
-      |> put_status(:created)
-      |> render("index.json", jobs: jobs)
-    rescue
-      e in RuntimeError ->
         conn
-        |> put_status(422)
-        |> json(%{status: "error", message: e.message |> Poison.decode!})
+        |> put_status(:created)
+        |> render("show.json", job: job)
+      {:error, changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(ExSubtilBackendWeb.ChangesetView, "error.json", changeset: changeset)
     end
   end
 
@@ -58,15 +44,10 @@ defmodule ExSubtilBackendWeb.JobController do
     end
   end
 
-  def delete(conn, %{"id" => _id}) do
-    # job = Jobs.get_job!(id)
-    # with {:ok, %Job{}} <- Jobs.delete_job(job) do
-    #   send_resp(conn, :no_content, "")
-    # end
-
-    for job <- Jobs.list_jobs() do
-      Jobs.delete_job(job)
+  def delete(conn, %{"id" => id}) do
+    job = Jobs.get_job!(id)
+    with {:ok, %Job{}} <- Jobs.delete_job(job) do
+      send_resp(conn, :no_content, "")
     end
-    send_resp(conn, :no_content, "")
   end
 end

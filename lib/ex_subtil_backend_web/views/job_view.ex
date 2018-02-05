@@ -2,8 +2,11 @@ defmodule ExSubtilBackendWeb.JobView do
   use ExSubtilBackendWeb, :view
   alias ExSubtilBackendWeb.JobView
 
-  def render("index.json", %{jobs: jobs}) do
-    %{data: render_many(jobs, JobView, "job.json")}
+  def render("index.json", %{jobs: %{data: jobs, total: total}}) do
+    %{
+      data: render_many(jobs, JobView, "job.json"),
+      total: total
+    }
   end
 
   def render("show.json", %{job: job}) do
@@ -29,7 +32,8 @@ defmodule ExSubtilBackendWeb.JobView do
         name: job.name,
         params: job.params,
         status: status,
-        inserted_at: job.inserted_at
+        inserted_at: job.inserted_at,
+        updated_at: job.updated_at
       }
     end
   end

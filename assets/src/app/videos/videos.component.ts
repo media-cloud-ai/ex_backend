@@ -136,5 +136,12 @@ export class VideosComponent {
     this.getQueryParamsForPage(0);
     this.updateVideos();
   }
+
+  start_process(video): void {
+    this.videoService.ingest(video.legacy_id)
+    .subscribe(response => {
+      // console.log(response);
+    });
+  }
 }
 

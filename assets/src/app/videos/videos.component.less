@@ -6,13 +6,15 @@ ul.videos {
   li.video {
     padding: 10px;
     background-color: #FFF;
+    display: flex;
 
     .legacy_id {
       font-size: 0.6em;
       display: inline-block;
       width: 50px;
     }
-    .title {
+    .title,
+    .additional_title {
       display: inline-block;
       text-overflow: ellipsis;
       overflow: hidden;
@@ -20,6 +22,17 @@ ul.videos {
       width: 300px;
       white-space: nowrap;
       vertical-align: middle;
+    }
+
+    span.date {
+      min-width: 80px;
+    }
+    span.hour {
+      min-width: 80px;
+      flex: 1;
+    }
+    span.starter {
+      justify-content: flex-end;
     }
   }
 
