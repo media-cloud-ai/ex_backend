@@ -1,27 +1,45 @@
-FROM elixir:1.6.0-alpine AS builder
+FROM elixir:1.6.0-alpine AS ex_builder
 
-RUN apk update
-RUN apk add gawk git make curl python
-
-RUN mix local.hex --force && \
+RUN apk update && \
+    apk add --no-cache \
+    ca-certificates \
+    curl \
+    gawk \
+    git \
+    make \
+    nodejs \
+    python \
+    tar \
+    wget \
+    && \
+    mix local.hex --force && \
     mix local.rebar --force && \
-    mix hex.info
+    mix hex.info && \
+    cd /usr/local/bin && \
+    wget https://yarnpkg.com/latest.tar.gz && \
+    tar zvxf latest.tar.gz && \
+    ln -s /usr/local/bin/dist/bin/yarn.js /usr/local/bin/yarn.js
 
 WORKDIR /app
 ENV MIX_ENV prod
 ADD . .
-RUN mix deps.get
-RUN mix release.init
-RUN mix release --env=$MIX_ENV
-RUN mix phx.digest
+RUN mix deps.get && \
+    mix release.init && \
+    mix release --env=$MIX_ENV && \
+    mix phx.digest \
+    && \
+    cd assets && \
+    /usr/local/bin/yarn-v1.3.2/bin/yarn && \
+    /usr/local/bin/yarn-v1.3.2/bin/yarn run release
 
 FROM alpine:3.6
 
 WORKDIR /app
 
-RUN apk update
-RUN apk add bash openssl
+RUN apk update && \
+    apk add bash openssl
 
-COPY --from=builder /app/_build/prod/rel/ex_subtil_backend .
+COPY --from=ex_builder /app/_build/prod/rel/ex_subtil_backend .
+COPY --from=ex_builder /app/priv/static .
 
 CMD ["./bin/ex_subtil_backend", "foreground"]

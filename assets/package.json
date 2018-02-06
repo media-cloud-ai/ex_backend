@@ -55,5 +55,8 @@
     "url-loader": "^0.6.2",
     "val-loader": "^1.1.0",
     "webpack": "^3.10.0"
+  },
+  "scripts": {
+    "release": "webpack"
   }
 }

@@ -12,6 +12,7 @@ config :ex_subtil_backend,
 # Configures the endpoint
 config :ex_subtil_backend, ExSubtilBackendWeb.Endpoint,
   url: [host: "localhost"],
+  server: true,
   secret_key_base: "VQyOE7QLAMr0qyhIR+4/NtEK9G8DU+mdESssX4ZO0j05mchaW1VzebD2dZ+r9xCS",
   render_errors: [view: ExSubtilBackendWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: ExSubtilBackend.PubSub,

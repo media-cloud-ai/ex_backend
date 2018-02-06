@@ -67,14 +67,20 @@ config :ex_subtil_backend, ExSubtilBackend.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "postgres",
-  database: "ex_subtil_backend_prod",
-  hostname: "postgres",
-  pool_size: 15
+  database: "ex_subtil_backend_dev",
+  hostname: "database",
+  pool_size: 10
+
+config :ex_subtil_backend,
+  akamai_hostname: "akamai.com",
+  akamai_username: "akamai_username",
+  akamai_password: "akamai_password"
 
 config :amqp,
-  hostname: "rabbitmq",
+  hostname: "amqp_hostname",
   username: "guest",
-  password: "guest"
+  password: "guest",
+  virtual_host: ""
 
 # Finally import the config/prod.secret.exs
 # which should be versioned separately.
