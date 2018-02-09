@@ -26,11 +26,11 @@ ADD . .
 RUN mix deps.get && \
     mix release.init && \
     mix release --env=$MIX_ENV && \
-    mix phx.digest \
-    && \
     cd assets && \
     /usr/local/bin/yarn-v1.3.2/bin/yarn && \
-    /usr/local/bin/yarn-v1.3.2/bin/yarn run release
+    /usr/local/bin/yarn-v1.3.2/bin/yarn run release && \
+    cd .. && \
+    mix phx.digest
 
 FROM alpine:3.6
 
