@@ -40,6 +40,6 @@ RUN apk update && \
     apk add bash openssl
 
 COPY --from=ex_builder /app/_build/prod/rel/ex_subtil_backend .
-COPY --from=ex_builder /app/priv/static .
+COPY --from=ex_builder /app/priv/static lib/$(ls -1 lib/ | grep ex_subtil_backend-)/priv/static/
 
 CMD ["./bin/ex_subtil_backend", "foreground"]
