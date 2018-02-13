@@ -1,0 +1,73 @@
+
+import {Component, ViewChild} from '@angular/core';
+import {PageEvent} from '@angular/material';
+import {ActivatedRoute, Router} from '@angular/router';
+
+import {WorkflowService} from '../services/workflow.service';
+import {WorkflowPage} from '../services/workflow_page';
+import {Workflow} from '../services/workflow';
+
+import * as moment from 'moment';
+
+@Component({
+  selector: 'workflows-component',
+  templateUrl: 'workflows.component.html',
+  styleUrls: ['./workflows.component.less'],
+})
+
+export class WorkflowsComponent {
+  length = 1000;
+  pageSize = 10;
+  page = 0;
+  sub = undefined;
+
+  pageEvent: PageEvent;
+  workflows: WorkflowPage;
+
+  constructor(
+    private workflowService: WorkflowService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
+
+  ngOnInit() {
+    this.sub = this.route
+      .queryParams
+      .subscribe(params => {
+        this.page = +params['page'] || 0;
+        this.getWorkflows(this.page);
+      });
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+  }
+
+  getWorkflows(index): void {
+    this.workflowService.getWorkflows(index)
+    .subscribe(workflowPage => {
+      this.workflows = workflowPage;
+      this.length = workflowPage.total;
+    });
+  }
+
+  eventGetWorkflows(event): void {
+    this.router.navigate(['/workflows'], { queryParams: this.getQueryParamsForPage(event.pageIndex) });
+    this.getWorkflows(event.pageIndex);
+  }
+
+  updateWorkflows(): void {
+    this.router.navigate(['/workflows'], { queryParams: this.getQueryParamsForPage(0) });
+    this.getWorkflows(0);
+  }
+
+  getQueryParamsForPage(pageIndex: number): Object {
+    var params = {};
+    if(pageIndex != 0) {
+      params['page'] = pageIndex;
+    }
+    return params;
+  }
+
+}
+

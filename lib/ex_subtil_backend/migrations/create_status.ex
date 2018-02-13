@@ -1,4 +1,4 @@
-defmodule ExSubtilBackend.Repo.Migrations.CreateStatus do
+defmodule ExSubtilBackend.Migration.CreateStatus do
   use Ecto.Migration
 
   def change do

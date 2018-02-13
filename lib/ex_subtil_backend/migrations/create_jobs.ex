@@ -1,4 +1,4 @@
-defmodule ExSubtilBackend.Repo.Migrations.CreateJobs do
+defmodule ExSubtilBackend.Migration.CreateJobs do
   use Ecto.Migration
 
   def change do
@@ -8,6 +8,5 @@ defmodule ExSubtilBackend.Repo.Migrations.CreateJobs do
 
       timestamps()
     end
-
   end
 end

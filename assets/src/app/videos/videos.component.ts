@@ -1,13 +1,16 @@
 
 import {Component, ViewChild} from '@angular/core';
-import {PageEvent} from '@angular/material';
+import {MatDialog, PageEvent} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormControl} from '@angular/forms';
 
 import {VideoService} from '../services/video.service';
+import {WorkflowService} from '../services/workflow.service';
 import {VideoPage} from '../services/video_page';
 import {Video} from '../services/video';
 import {DateRange} from '../services/date_range';
+
+import {WorkflowDialogComponent} from './workflow/workflow_dialog.component';
 
 import * as moment from 'moment';
 
@@ -40,8 +43,10 @@ export class VideosComponent {
 
   constructor(
     private videoService: VideoService,
+    private workflowService: WorkflowService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -138,10 +143,22 @@ export class VideosComponent {
   }
 
   start_process(video): void {
-    this.videoService.ingest(video.legacy_id)
-    .subscribe(response => {
-      // console.log(response);
+    let dialogRef = this.dialog.open(WorkflowDialogComponent, {
+      data: {}
     });
+
+    dialogRef.afterClosed().subscribe(steps => {
+      console.log('The dialog was closed', steps);
+      this.workflowService.createWorkflow({reference: video.legacy_id, flow: {steps: steps}})
+      .subscribe(response => {
+        console.log(response);
+      });
+    });
+
+    // this.videoService.ingest(video.legacy_id)
+    // .subscribe(response => {
+    //   // console.log(response);
+    // });
   }
 }
 

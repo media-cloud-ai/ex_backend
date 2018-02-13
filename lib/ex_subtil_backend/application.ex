@@ -16,12 +16,26 @@ defmodule ExSubtilBackend.Application do
       # worker(ExSubtilBackend.Worker, [arg1, arg2, arg3]),
       worker(ExSubtilBackend.Amqp.JobFtpEmitter, []),
       worker(ExSubtilBackend.Amqp.JobFtpCompletedConsumer, []),
+      worker(ExSubtilBackend.Amqp.JobFtpErrorConsumer, []),
+
+      worker(ExSubtilBackend.Amqp.JobGpacEmitter, []),
+      worker(ExSubtilBackend.Amqp.JobGpacCompletedConsumer, []),
+      worker(ExSubtilBackend.Amqp.JobGpacErrorConsumer, []),
+
+      worker(ExSubtilBackend.WorkflowStepManager, []),
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: ExSubtilBackend.Supervisor]
-    Supervisor.start_link(children, opts)
+    main_supervisor = Supervisor.start_link(children, opts)
+
+    Ecto.Migrator.up(ExSubtilBackend.Repo, 20171116223034, ExSubtilBackend.Migration.CreateJobs)
+    Ecto.Migrator.up(ExSubtilBackend.Repo, 20171121233956, ExSubtilBackend.Migration.CreateStatus)
+    Ecto.Migrator.up(ExSubtilBackend.Repo, 20180213135100, ExSubtilBackend.Migration.CreateWorkflow)
+    Ecto.Migrator.up(ExSubtilBackend.Repo, 20180213171900, ExSubtilBackend.Migration.AddLinkBetweenJobAndWorkflow)
+
+    main_supervisor
   end
 
   # Tell Phoenix to update the endpoint configuration

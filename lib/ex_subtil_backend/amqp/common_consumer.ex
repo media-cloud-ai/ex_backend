@@ -32,7 +32,6 @@ defmodule ExSubtilBackend.Amqp.CommonConsumer do
 
       def handle_info({:basic_deliver, payload, %{delivery_tag: tag, redelivered: redelivered}}, channel) do
         queue = unquote(opts).queue
-        Logger.warn "new message on queue #{}"
         data =
           payload
           |> Poison.Parser.parse!
