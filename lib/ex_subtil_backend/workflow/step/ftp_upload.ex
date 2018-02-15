@@ -28,9 +28,9 @@ defmodule ExSubtilBackend.Workflow.Step.FtpUpload do
 
   defp start_upload([], workflow_id), do: {:ok, "started"}
   defp start_upload([file | files], workflow_id) do
-    hostname = System.get_env("AKAMAI_HOSTNAME") || Application.get_env(:ex_subtil_backend, :akamai_hostname)
-    username = System.get_env("AKAMAI_USERNAME") || Application.get_env(:ex_subtil_backend, :akamai_username)
-    password = System.get_env("AKAMAI_PASSWORD") || Application.get_env(:ex_subtil_backend, :akamai_password)
+    hostname = System.get_env("AKAMAI_VIDEO_HOSTNAME") || Application.get_env(:ex_subtil_backend, :akamai_video_hostname)
+    username = System.get_env("AKAMAI_VIDEO_USERNAME") || Application.get_env(:ex_subtil_backend, :akamai_video_username)
+    password = System.get_env("AKAMAI_VIDEO_PASSWORD") || Application.get_env(:ex_subtil_backend, :akamai_video_password)
 
     job_params = %{
       name: "upload_ftp",
@@ -40,7 +40,7 @@ defmodule ExSubtilBackend.Workflow.Step.FtpUpload do
           path: file
         },
         destination: %{
-          path: "/tmp/ftp_ftv" <> "file",
+          path: "/421959/prod/innovation/SubTil/" <> (file |> Path.basename),
           hostname: hostname,
           username: username,
           password: password,
