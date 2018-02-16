@@ -10,9 +10,6 @@ defmodule ExSubtilBackend.WorkflowStep do
   alias ExSubtilBackend.Amqp.{JobFtpEmitter, JobGpacEmitter}
 
   def start_next_step(%Workflow{id: workflow_id} = workflow) do
-    reference =
-      workflow.reference
-      |> String.to_integer
 
     workflow = ExSubtilBackend.Repo.preload(workflow, :jobs)
 
@@ -29,22 +26,22 @@ defmodule ExSubtilBackend.WorkflowStep do
 
     step = Enum.at(steps, step_index)
 
-    launch_step(workflow, reference, step, step_index)
+    launch_step(workflow, step, step_index)
   end
 
-  defp launch_step(workflow, reference, %{"id"=> "download_ftp"} = _step, _step_index) do
-    ExSubtilBackend.Workflow.Step.FtpDownload.launch(workflow, reference)
+  defp launch_step(workflow, %{"id"=> "download_ftp"} = _step, _step_index) do
+    ExSubtilBackend.Workflow.Step.FtpDownload.launch(workflow)
   end
 
-  defp launch_step(workflow, _reference, %{"id"=> "generate_dash"} = step, _step_index) do
+  defp launch_step(workflow, %{"id"=> "generate_dash"} = step, _step_index) do
     ExSubtilBackend.Workflow.Step.GenerateDash.launch(workflow, step)
   end
 
-  defp launch_step(workflow, reference, %{"id"=> "upload_ftp"} = step, _step_index) do
+  defp launch_step(workflow, %{"id"=> "upload_ftp"} = step, _step_index) do
     ExSubtilBackend.Workflow.Step.FtpUpload.launch(workflow, step)
   end
 
-  defp launch_step(workflow, _reference, step, _step_index) do
+  defp launch_step(workflow, step, _step_index) do
     Logger.error "unable to match with the step #{inspect step} for workflow #{workflow.id}"
     {:error, "unable to match with the step #{inspect step}"}
   end

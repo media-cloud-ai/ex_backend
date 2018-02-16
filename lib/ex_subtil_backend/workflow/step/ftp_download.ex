@@ -3,8 +3,8 @@ defmodule ExSubtilBackend.Workflow.Step.FtpDownload do
   alias ExSubtilBackend.Jobs
   alias ExSubtilBackend.Amqp.JobFtpEmitter
 
-  def launch(workflow, reference) do
-    ExVideoFactory.get_files_for_id_diffusion(reference)
+  def launch(workflow) do
+    ExVideoFactory.get_files_for_id_diffusion(workflow.reference)
     |> get_hls_files([])
     |> start_download_via_ftp(workflow.id)
   end
