@@ -1,47 +1,57 @@
 
-import {APP_BASE_HREF} from '@angular/common';
+import {APP_BASE_HREF}    from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
-import {NgModule}      from '@angular/core';
-import {FormsModule} from '@angular/forms';
-import {BrowserModule} from '@angular/platform-browser';
-import {AppComponent}  from './app.component';
+import {NgModule}         from '@angular/core';
+import {FormsModule}      from '@angular/forms';
+import {BrowserModule}    from '@angular/platform-browser';
+import {AppComponent}     from './app.component';
 import {
+  MatButtonModule,
+  MatDatepickerModule,
+  MatDialogModule,
   MatIconModule,
   MatInputModule,
+  MatListModule,
   MatMenuModule,
   MatPaginatorModule,
+  MatSelectModule,
   MatSidenavModule,
   MatSlideToggleModule,
   MatToolbarModule
   } from '@angular/material';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatSelectModule} from '@angular/material/select';
-import {MatButtonModule} from '@angular/material/button';
 
-import {MatDatepickerModule} from '@angular/material/datepicker';
 import {
   MomentDateAdapter,
   MatMomentDateModule,
   MAT_MOMENT_DATE_FORMATS
 } from '@angular/material-moment-adapter';
+
 import {
   DateAdapter,
   MAT_DATE_LOCALE,
   MAT_DATE_FORMATS
 } from '@angular/material/core';
 
-import {RouterModule, Routes} from '@angular/router';
+import {RouterModule, Routes}    from '@angular/router';
 
-import {VideosComponent}      from './videos/videos.component';
-import {JobsComponent}        from './jobs/jobs.component';
-import {DashboardComponent}   from './dashboard/dashboard.component';
+import {DashboardComponent}      from './dashboard/dashboard.component';
+import {JobsComponent}           from './jobs/jobs.component';
+import {VideosComponent}         from './videos/videos.component';
+import {WorkflowsComponent}      from './workflows/workflows.component';
 
-import {VideoService}         from './services/video.service';
-import {JobService}           from './services/job.service';
-import {JobTypePipe}          from './pipes/job_type.pipe';
-import {JobStatusPipe}        from './pipes/job_status.pipe';
-import {BasenamePipe}         from './pipes/basename.pipe';
+import {WorkflowDialogComponent} from './videos/workflow/workflow_dialog.component';
+
+import {JobService}              from './services/job.service';
+import {VideoService}            from './services/video.service';
+import {WorkflowService}         from './services/workflow.service';
+
+import {BasenamePipe}            from './pipes/basename.pipe';
+import {IconForJobPipe}          from './pipes/icon_for_job.pipe';
+import {JobTypePipe}             from './pipes/job_type.pipe';
+import {JobStatusPipe}           from './pipes/job_status.pipe';
+import {ParameterLabelPipe}      from './pipes/parameter_label.pipe';
 
 import 'hammerjs/hammer'; // for MatSlideToggleModule
 import * as moment from 'moment';
@@ -50,7 +60,8 @@ const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'videos', component: VideosComponent },
-  { path: 'jobs', component: JobsComponent }
+  { path: 'jobs', component: JobsComponent },
+  { path: 'workflows', component: WorkflowsComponent }
 ];
 
 const SUBTIL_DATE_FORMATS = {
@@ -70,31 +81,41 @@ const SUBTIL_DATE_FORMATS = {
     RouterModule
   ],
   imports: [
+    BrowserAnimationsModule,
     BrowserModule,
-    HttpClientModule,
     FormsModule,
-    MatMenuModule,
+    HttpClientModule,
+    MatButtonModule,
+    MatDatepickerModule,
+    MatDialogModule,
+    MatIconModule,
     MatInputModule,
-    MatSidenavModule,
-    MatToolbarModule,
+    MatListModule,
+    MatMenuModule,
+    MatMomentDateModule,
     MatPaginatorModule,
     MatSelectModule,
-    MatButtonModule,
-    MatIconModule,
+    MatSidenavModule,
     MatSlideToggleModule,
-    MatDatepickerModule,
-    MatMomentDateModule,
-    BrowserAnimationsModule,
+    MatToolbarModule,
     RouterModule.forRoot(routes)
   ],
   declarations: [
     AppComponent,
     DashboardComponent,
-    VideosComponent,
     JobsComponent,
+    VideosComponent,
+    WorkflowDialogComponent,
+    WorkflowsComponent,
+
+    IconForJobPipe,
+    BasenamePipe,
     JobTypePipe,
     JobStatusPipe,
-    BasenamePipe,
+    ParameterLabelPipe,
+  ],
+  entryComponents: [
+    WorkflowDialogComponent,
   ],
   providers: [
     {
@@ -114,8 +135,9 @@ const SUBTIL_DATE_FORMATS = {
       provide: MAT_DATE_FORMATS,
       useValue: SUBTIL_DATE_FORMATS
     },
-    VideoService,
     JobService,
+    VideoService,
+    WorkflowService,
   ],
   bootstrap: [
     AppComponent

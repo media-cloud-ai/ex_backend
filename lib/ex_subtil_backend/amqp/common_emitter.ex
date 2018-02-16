@@ -56,7 +56,7 @@ defmodule ExSubtilBackend.Amqp.CommonEmitter do
 
         virtual_host =
           case virtual_host do
-            "" -> "/"
+            "" -> ""
             _ -> "/" <> virtual_host
           end
 

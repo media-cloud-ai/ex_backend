@@ -1,0 +1,48 @@
+<h1>
+  Workflows
+</h1>
+
+<ul *ngIf="workflows" class="workflows">
+  <li *ngIf="workflows.total == 0">Aucun résultat trouvé</li>
+  <li
+    *ngFor="let workflow of workflows.data"
+    class="workflow"
+    >
+    <span class="reference">
+      {{workflow.reference}}
+    </span>
+
+    <mat-list dense class=steps>
+      <mat-list-item
+        *ngFor="let step of workflow.flow.steps"
+        class="step {{step.id}}">
+        <div>
+          <mat-icon matListIcon>{{step.id | iconForJob}}</mat-icon>
+          {{step.id | jobType}}
+          <div class=parameters>
+            <mat-list dense>
+              <mat-list-item
+                *ngFor="let parameter of step.parameters">
+                <mat-form-field class="parameter">
+                  <input matInput
+                    type={{parameter.type}}
+                    placeholder="{{parameter.id | parameterLabel}}"
+                    value={{parameter.default}}
+                    disabled="true"
+                    [(ngModel)]="parameter.default">
+                </mat-form-field>
+              </mat-list-item>
+            </mat-list>
+          </div>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </li>
+</ul>
+
+<mat-paginator
+  [length]="length"
+  [pageSize]="pageSize"
+  [pageIndex]="page"
+  (page)="pageEvent = eventGetWorkflows($event)">
+</mat-paginator>
