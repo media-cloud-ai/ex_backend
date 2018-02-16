@@ -148,11 +148,12 @@ export class VideosComponent {
     });
 
     dialogRef.afterClosed().subscribe(steps => {
-      console.log('The dialog was closed', steps);
-      this.workflowService.createWorkflow({reference: video.legacy_id, flow: {steps: steps}})
-      .subscribe(response => {
-        console.log(response);
-      });
+      if(steps != undefined) {
+        this.workflowService.createWorkflow({reference: video.legacy_id, flow: {steps: steps}})
+        .subscribe(response => {
+          console.log(response);
+        });
+      }
     });
 
     // this.videoService.ingest(video.legacy_id)
