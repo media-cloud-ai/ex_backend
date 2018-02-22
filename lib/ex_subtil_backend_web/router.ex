@@ -17,12 +17,16 @@ defmodule ExSubtilBackendWeb.Router do
   scope "/api", ExSubtilBackendWeb do
     pipe_through :api
 
-    get "/test", TextController, :index
     get "/jobs", JobController, :index
     resources "/workflows", WorkflowController, except: [:new, :edit]
 
     resources "/videos", VideosController, except: [:new, :edit] do
       post "/jobs", JobController, :create
+    end
+
+    scope "/amqp", Amqp do
+      get "/queues", AmqpController, :queues
+      get "/connections", AmqpController, :connections
     end
   end
 
