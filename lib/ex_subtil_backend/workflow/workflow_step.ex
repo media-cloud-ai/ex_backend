@@ -6,8 +6,6 @@ defmodule ExSubtilBackend.WorkflowStep do
   require Logger
 
   alias ExSubtilBackend.Workflows.Workflow
-  alias ExSubtilBackend.Jobs
-  alias ExSubtilBackend.Amqp.{JobFtpEmitter, JobGpacEmitter}
 
   def start_next_step(%Workflow{id: workflow_id} = workflow) do
 
