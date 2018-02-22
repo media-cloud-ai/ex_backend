@@ -24,13 +24,13 @@ export class WorkflowDialogComponent {
           {
             "id": "segment_duration",
             "type": "number",
-            "default": 30000,
-            "value": 30000,
+            "default": 2000,
+            "value": 2000,
           },{
             "id": "fragment_duration",
             "type": "number",
-            "default": 10000,
-            "value": 10000,
+            "default": 2000,
+            "value": 2000,
           }
         ]
       },{
