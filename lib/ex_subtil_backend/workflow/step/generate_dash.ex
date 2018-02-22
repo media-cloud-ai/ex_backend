@@ -7,7 +7,10 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
     paths = get_ftp_downloaded_path(workflow.jobs, [])
 
     options = %{
-      "-out": "/tmp/ftp_ftv/dash/" <> workflow.reference
+      "-out": "/tmp/ftp_ftv/dash/" <> workflow.reference <> "/manifest.mpd",
+      "-profile": "onDemand",
+      "-rap": true,
+      "-url-template": true,
     }
 
     options =
@@ -43,7 +46,17 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
             |> Map.get("destination")
             |> Map.get("path")
 
-          List.insert_at(result, -1, path)
+          case get_quality(path) do
+            1 ->
+              audio_path = path <> "#trackID=2#audio:id=a1"
+              video_path = path <> "#trackID=1#video:id=v" <> Integer.to_string(5)
+
+              List.insert_at(result, -1, audio_path)
+              |> List.insert_at(-1, video_path)
+            quality ->
+              video_path = path <> "#video:id=v" <> Integer.to_string(6 - quality)
+              List.insert_at(result, -1, video_path)
+          end
         _ -> result
       end
 
@@ -65,4 +78,11 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
   defp convert_gpac_key("segment_duration"), do: "-dash"
   defp convert_gpac_key("fragment_duration"), do: "-frag"
   defp convert_gpac_key(_), do: nil
+
+  defp get_quality(path) do
+    String.trim_trailing(path, ".mp4")
+    |> String.split("-standard")
+    |> List.last
+    |> String.to_integer
+  end
 end
