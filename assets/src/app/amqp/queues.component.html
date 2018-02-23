@@ -1,0 +1,34 @@
+
+<span class=queues>
+  <h3>
+    AMQP Queues
+  </h3>
+  <div
+    *ngIf="queues">
+    <div class=header>
+      <span class="name">
+        Name
+      </span>
+      <span class="messages">
+        Messages
+      </span>
+      <span class="consumers">
+        Consumers
+      </span>
+    </div>
+    <div
+      *ngFor="let queue of queues">
+      <span class=name>
+        {{queue.name}}
+      </span>
+      <span class=messages
+        [ngClass]="{'empty': queue.messages == 0 }">
+        {{queue.messages}}
+      </span>
+      <span class=consumers
+        [ngClass]="{'none': queue.consumers == 0 }">
+        {{queue.consumers}}
+      </span>
+    </div>
+  </div>
+</span>
