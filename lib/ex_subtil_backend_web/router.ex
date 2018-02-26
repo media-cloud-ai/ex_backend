@@ -22,6 +22,7 @@ defmodule ExSubtilBackendWeb.Router do
 
     scope "/docker", Docker do
       get "/hosts", HostsController, :index
+      get "/containers", ContainersController, :index
     end
 
     resources "/videos", VideosController, except: [:new, :edit] do
