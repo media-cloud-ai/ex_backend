@@ -20,6 +20,10 @@ defmodule ExSubtilBackendWeb.Router do
     get "/jobs", JobController, :index
     resources "/workflows", WorkflowController, except: [:new, :edit]
 
+    scope "/docker", Docker do
+      get "/hosts", HostsController, :index
+    end
+
     resources "/videos", VideosController, except: [:new, :edit] do
       post "/jobs", JobController, :create
     end
