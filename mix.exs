@@ -23,7 +23,9 @@ defmodule ExSubtilBackend.Mixfile do
       extra_applications: [
         :amqp,
         :logger,
-        :runtime_tools
+        :httpotion,
+        :poison,
+        :runtime_tools,
       ]
     ]
   end
@@ -47,7 +49,9 @@ defmodule ExSubtilBackend.Mixfile do
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:phoenix_pubsub, "~> 1.0"},
       {:postgrex, ">= 0.0.0"},
-      {:ex_video_factory, "0.2.4"}
+      {:ex_video_factory, "0.2.4"},
+      {:httpotion, "~> 3.0.2"},
+      {:poison, "~> 3.1"},
     ]
   end
 

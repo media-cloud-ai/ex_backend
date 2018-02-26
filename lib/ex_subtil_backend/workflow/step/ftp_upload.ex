@@ -3,7 +3,7 @@ defmodule ExSubtilBackend.Workflow.Step.FtpUpload do
   alias ExSubtilBackend.Jobs
   alias ExSubtilBackend.Amqp.JobFtpEmitter
 
-  def launch(workflow, step) do
+  def launch(workflow, _step) do
     get_paths(workflow.jobs, [])
     |> start_upload(workflow.id)
   end
@@ -26,7 +26,7 @@ defmodule ExSubtilBackend.Workflow.Step.FtpUpload do
   end
 
 
-  defp start_upload([], workflow_id), do: {:ok, "started"}
+  defp start_upload([], _workflow_id), do: {:ok, "started"}
   defp start_upload([file | files], workflow_id) do
     hostname = System.get_env("AKAMAI_VIDEO_HOSTNAME") || Application.get_env(:ex_subtil_backend, :akamai_video_hostname)
     username = System.get_env("AKAMAI_VIDEO_USERNAME") || Application.get_env(:ex_subtil_backend, :akamai_video_username)

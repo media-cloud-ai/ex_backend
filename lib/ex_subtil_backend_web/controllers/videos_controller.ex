@@ -1,9 +1,6 @@
 defmodule ExSubtilBackendWeb.VideosController do
   use ExSubtilBackendWeb, :controller
 
-  alias ExSubtilBackend.Jobs
-  alias ExSubtilBackend.Amqp.{JobFtpEmitter, JobGpacEmitter}
-
   action_fallback ExSubtilBackendWeb.FallbackController
 
   def index(conn, params) do

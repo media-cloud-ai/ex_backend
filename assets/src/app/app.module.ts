@@ -38,11 +38,13 @@ import {RouterModule, Routes}    from '@angular/router';
 
 import {DashboardComponent}      from './dashboard/dashboard.component';
 import {JobsComponent}           from './jobs/jobs.component';
+import {QueuesComponent}         from './amqp/queues.component';
 import {VideosComponent}         from './videos/videos.component';
 import {WorkflowsComponent}      from './workflows/workflows.component';
 
 import {WorkflowDialogComponent} from './videos/workflow/workflow_dialog.component';
 
+import {AmqpService}             from './services/amqp.service';
 import {JobService}              from './services/job.service';
 import {VideoService}            from './services/video.service';
 import {WorkflowService}         from './services/workflow.service';
@@ -104,6 +106,7 @@ const SUBTIL_DATE_FORMATS = {
     AppComponent,
     DashboardComponent,
     JobsComponent,
+    QueuesComponent,
     VideosComponent,
     WorkflowDialogComponent,
     WorkflowsComponent,
@@ -135,6 +138,7 @@ const SUBTIL_DATE_FORMATS = {
       provide: MAT_DATE_FORMATS,
       useValue: SUBTIL_DATE_FORMATS
     },
+    AmqpService,
     JobService,
     VideoService,
     WorkflowService,

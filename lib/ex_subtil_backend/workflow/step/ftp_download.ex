@@ -21,7 +21,7 @@ defmodule ExSubtilBackend.Workflow.Step.FtpDownload do
     get_hls_files(formats, result)
   end
 
-  defp start_download_via_ftp([], workflow_id), do: {:ok, "started"}
+  defp start_download_via_ftp([], _workflow_id), do: {:ok, "started"}
   defp start_download_via_ftp([file | files], workflow_id) do
     hostname = System.get_env("AKAMAI_HOSTNAME") || Application.get_env(:ex_subtil_backend, :akamai_hostname)
     username = System.get_env("AKAMAI_USERNAME") || Application.get_env(:ex_subtil_backend, :akamai_username)
