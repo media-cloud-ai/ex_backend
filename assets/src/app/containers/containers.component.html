@@ -1,0 +1,42 @@
+<h1>
+  Containers
+</h1>
+
+<mat-card *ngFor="let containersPage of containersPages" class="hosts">
+  <mat-card-header *ngIf="containersPage.host" class="hostname">
+    <mat-card-title>
+      <h4>{{ containersPage.host.protocol }}://{{ containersPage.host.name }}:{{ containersPage.host.port }}</h4>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-table #table [dataSource]="containersPage.data">
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+        <mat-cell *matCellDef="let container"> {{container.id}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="names">
+        <mat-header-cell *matHeaderCellDef> Noms </mat-header-cell>
+        <mat-cell *matCellDef="let container"> {{container.names}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="image">
+        <mat-header-cell *matHeaderCellDef> Image </mat-header-cell>
+        <mat-cell *matCellDef="let container"> {{container.image}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="state">
+        <mat-header-cell *matHeaderCellDef> Etat </mat-header-cell>
+        <mat-cell *matCellDef="let container"> {{container.state}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef> Statut </mat-header-cell>
+        <mat-cell *matCellDef="let container"> {{container.status}} </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  </mat-card-content>
+</mat-card>
