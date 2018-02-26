@@ -49,8 +49,8 @@ defmodule ExSubtilBackend.Mixfile do
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:phoenix_pubsub, "~> 1.0"},
       {:postgrex, ">= 0.0.0"},
-      {:ex_video_factory, "0.2.4"},
-      {:httpotion, "~> 3.0.2"},
+      {:ex_video_factory, "0.3.1"},
+      {:httpotion, "~> 3.1.0"},
       {:poison, "~> 3.1"},
     ]
   end

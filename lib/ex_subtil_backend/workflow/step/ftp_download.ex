@@ -4,21 +4,8 @@ defmodule ExSubtilBackend.Workflow.Step.FtpDownload do
   alias ExSubtilBackend.Amqp.JobFtpEmitter
 
   def launch(workflow) do
-    ExVideoFactory.get_files_for_id_diffusion(workflow.reference)
-    |> get_hls_files([])
+    ExVideoFactory.get_ftp_paths_for_video_id(workflow.reference)
     |> start_download_via_ftp(workflow.id)
-  end
-
-  defp get_hls_files([], result), do: result
-  defp get_hls_files([format | formats], result) do
-    result =
-      if format.format == "hls_v5_os" do
-        result ++ format.urls
-      else
-        result
-      end
-
-    get_hls_files(formats, result)
   end
 
   defp start_download_via_ftp([], _workflow_id), do: {:ok, "started"}

@@ -149,7 +149,7 @@ export class VideosComponent {
 
     dialogRef.afterClosed().subscribe(steps => {
       if(steps != undefined) {
-        this.workflowService.createWorkflow({reference: video.legacy_id, flow: {steps: steps}})
+        this.workflowService.createWorkflow({reference: video.id, flow: {steps: steps}})
         .subscribe(response => {
           console.log(response);
         });
