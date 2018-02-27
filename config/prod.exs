@@ -75,7 +75,11 @@ config :ex_subtil_backend, ExSubtilBackend.Repo,
 config :ex_subtil_backend,
   akamai_hostname: "akamai.com",
   akamai_username: "akamai_username",
-  akamai_password: "akamai_password"
+  akamai_password: "akamai_password",
+  docker_hosts: [
+    [host: "192.168.101.108", port: 2357],
+    [host: "192.168.101.109", port: 2357]
+  ]
 
 config :amqp,
   hostname: "amqp_hostname",
