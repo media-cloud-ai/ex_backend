@@ -13,9 +13,9 @@ export class IconForJobPipe implements PipeTransform {
     var allJobIcons = [
       { id: 'download_ftp', name: 'file_download' },
       { id: 'download_http', name: 'file_download' },
+      { id: 'generate_dash', name: 'tv' },
       { id: 'upload_ftp', name: 'file_upload' },
       { id: 'ttml_to_mp4', name: 'closed_caption' },
-      { id: 'generate_dash', name: 'tv' },
     ];
 
     for (var i = allJobIcons.length - 1; i >= 0; i--) {

@@ -13,11 +13,11 @@ export class JobTypePipe implements PipeTransform {
     var allJobType = [
       { id: 'download_ftp', name: 'FTP download' },
       { id: 'download_http', name: 'HTTP download' },
-      { id: 'upload_ftp', name: 'FTP upload' },
-      { id: 'ttml_to_mp4', name: 'TTML to MP4' },
-      { id: 'generate_dash', name: 'Generate DASH' },
       { id: 'ftp_order', name: 'FTP transfer' },
+      { id: 'generate_dash', name: 'Generate DASH' },
       { id: 'gpac_dash', name: 'DASH generation' },
+      { id: 'ttml_to_mp4', name: 'TTML to MP4' },
+      { id: 'upload_ftp', name: 'FTP upload' },
     ];
 
     for (var i = allJobType.length - 1; i >= 0; i--) {
