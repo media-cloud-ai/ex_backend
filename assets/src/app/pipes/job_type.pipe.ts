@@ -12,7 +12,9 @@ export class JobTypePipe implements PipeTransform {
   transform(jobType: string): string {
     var allJobType = [
       { id: 'download_ftp', name: 'FTP download' },
+      { id: 'download_http', name: 'HTTP download' },
       { id: 'upload_ftp', name: 'FTP upload' },
+      { id: 'ttml_to_mp4', name: 'TTML to MP4' },
       { id: 'generate_dash', name: 'Generate DASH' },
       { id: 'ftp_order', name: 'FTP transfer' },
       { id: 'gpac_dash', name: 'DASH generation' },
