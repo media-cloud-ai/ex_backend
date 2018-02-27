@@ -75,4 +75,6 @@ config :amqp,
   password: "guest",
   virtual_host: ""
 
+# Finally import the config/prod.secret.exs
+# with the private section for passwords
 import_config "dev.secret.exs"
