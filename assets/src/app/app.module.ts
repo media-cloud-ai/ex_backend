@@ -58,7 +58,6 @@ import {IconForJobPipe}          from './pipes/icon_for_job.pipe';
 import {JobTypePipe}             from './pipes/job_type.pipe';
 import {JobStatusPipe}           from './pipes/job_status.pipe';
 import {ParameterLabelPipe}      from './pipes/parameter_label.pipe';
-import {ShortIdPipe}             from './pipes/short_id.pipe';
 
 import 'hammerjs/hammer'; // for MatSlideToggleModule
 import * as moment from 'moment';
@@ -125,7 +124,6 @@ const SUBTIL_DATE_FORMATS = {
     JobTypePipe,
     JobStatusPipe,
     ParameterLabelPipe,
-    ShortIdPipe,
   ],
   entryComponents: [
     WorkflowDialogComponent,
