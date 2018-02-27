@@ -19,7 +19,7 @@
     <div
       *ngFor="let queue of queues">
       <span class=name>
-        {{queue.name}}
+        {{queue.name | queue}}
       </span>
       <span class=messages
         [ngClass]="{'empty': queue.messages == 0 }">

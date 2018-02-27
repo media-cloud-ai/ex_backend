@@ -19,6 +19,12 @@ export class WorkflowDialogComponent {
         "id": "download_ftp",
         "parameters": []
       },{
+        "id": "download_http",
+        "parameters": []
+      },{
+        "id": "ttml_to_mp4",
+        "parameters": []
+      },{
         "id": "generate_dash",
         "parameters" : [
           {
