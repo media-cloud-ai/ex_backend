@@ -65,7 +65,7 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
             |> Map.get("paths")
 
           if caption_path != nil do
-            List.insert_at(result, -1, caption_path)
+            List.insert_at(result, -1, caption_path <> "#subtitle")
           else
             result
           end
