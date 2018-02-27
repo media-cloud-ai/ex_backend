@@ -20,7 +20,7 @@ defmodule ExSubtilBackendWeb.Docker.ContainersController do
   end
 
   def list_containers(%HostConfig{} = host) do
-    Containers.list(host).body
+    Containers.list_all(host).body
   end
 
 end
