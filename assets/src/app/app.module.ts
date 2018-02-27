@@ -7,6 +7,7 @@ import {BrowserModule}    from '@angular/platform-browser';
 import {AppComponent}     from './app.component';
 import {
   MatButtonModule,
+  MatCardModule,
   MatDatepickerModule,
   MatDialogModule,
   MatIconModule,
@@ -17,6 +18,7 @@ import {
   MatSelectModule,
   MatSidenavModule,
   MatSlideToggleModule,
+  MatTableModule,
   MatToolbarModule
   } from '@angular/material';
 
@@ -41,6 +43,7 @@ import {JobsComponent}           from './jobs/jobs.component';
 import {QueuesComponent}         from './amqp/queues.component';
 import {VideosComponent}         from './videos/videos.component';
 import {WorkflowsComponent}      from './workflows/workflows.component';
+import {ContainersComponent}     from './containers/containers.component';
 
 import {WorkflowDialogComponent} from './videos/workflow/workflow_dialog.component';
 
@@ -48,6 +51,7 @@ import {AmqpService}             from './services/amqp.service';
 import {JobService}              from './services/job.service';
 import {VideoService}            from './services/video.service';
 import {WorkflowService}         from './services/workflow.service';
+import {ContainersService}       from './services/containers.service';
 
 import {BasenamePipe}            from './pipes/basename.pipe';
 import {IconForJobPipe}          from './pipes/icon_for_job.pipe';
@@ -64,7 +68,8 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'videos', component: VideosComponent },
   { path: 'jobs', component: JobsComponent },
-  { path: 'workflows', component: WorkflowsComponent }
+  { path: 'workflows', component: WorkflowsComponent },
+  { path: 'containers', component: ContainersComponent }
 ];
 
 const SUBTIL_DATE_FORMATS = {
@@ -89,6 +94,7 @@ const SUBTIL_DATE_FORMATS = {
     FormsModule,
     HttpClientModule,
     MatButtonModule,
+    MatCardModule,
     MatDatepickerModule,
     MatDialogModule,
     MatIconModule,
@@ -100,6 +106,7 @@ const SUBTIL_DATE_FORMATS = {
     MatSelectModule,
     MatSidenavModule,
     MatSlideToggleModule,
+    MatTableModule,
     MatToolbarModule,
     RouterModule.forRoot(routes)
   ],
@@ -111,6 +118,7 @@ const SUBTIL_DATE_FORMATS = {
     VideosComponent,
     WorkflowDialogComponent,
     WorkflowsComponent,
+    ContainersComponent,
 
     IconForJobPipe,
     BasenamePipe,
@@ -144,6 +152,7 @@ const SUBTIL_DATE_FORMATS = {
     JobService,
     VideoService,
     WorkflowService,
+    ContainersService,
   ],
   bootstrap: [
     AppComponent
