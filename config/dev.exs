@@ -50,7 +50,7 @@ config :ex_subtil_backend, ExSubtilBackendWeb.Endpoint,
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
-config :logger, level: :debug
+config :logger, level: :warn
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20
@@ -73,4 +73,6 @@ config :amqp,
   hostname: "192.168.99.100",
   username: "guest",
   password: "guest",
-  virtual_host: "qception"
+  virtual_host: ""
+
+import_config "dev.secret.exs"
