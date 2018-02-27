@@ -1,19 +1,26 @@
 defmodule ExSubtilBackendWeb.Docker.ContainersController do
   use ExSubtilBackendWeb, :controller
 
-  defp get_config(params) do
-    %ExRemoteDockers.HostConfig{
-      host: params["host"],
-      port: params["port"],
-      ssl: params["ssl"]
-    }
+  alias ExSubtilBackendWeb.Docker.HostsController
+  alias ExRemoteDockers.Containers
+  alias ExRemoteDockers.HostConfig
+
+  def index(conn, _params) do
+    containers =
+      HostsController.list_hosts()
+      |> Enum.map(fn(host) ->
+          list_containers(host)
+          |> Enum.map(fn(container) ->
+              container
+              |> Map.put("Host", host)
+            end)
+        end)
+      |> Enum.concat
+    render(conn, "index.json", containers: containers)
   end
 
-  def index(conn, params) do
-    response =
-      get_config(params)
-      |> ExRemoteDockers.Containers.list()
-    render(conn, "index.json", containers: response.body)
+  def list_containers(%HostConfig{} = host) do
+    Containers.list(host).body
   end
 
 end

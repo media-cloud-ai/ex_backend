@@ -1,7 +1,7 @@
 defmodule ExSubtilBackendWeb.Docker.HostsController do
   use ExSubtilBackendWeb, :controller
 
-  defp list_hosts() do
+  def list_hosts() do
     config_hosts = Application.get_env(:ex_subtil_backend, :docker_hosts)
     Enum.map config_hosts, fn host ->
       %ExRemoteDockers.HostConfig{host: host[:host], port: host[:port]}

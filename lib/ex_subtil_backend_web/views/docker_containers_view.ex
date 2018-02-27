@@ -15,7 +15,8 @@ defmodule ExSubtilBackendWeb.Docker.ContainersView do
       names: container["Names"],
       image: container["Image"],
       state: container["State"],
-      status: container["Status"]
+      status: container["Status"],
+      host: container["Host"]
     }
   end
 end
