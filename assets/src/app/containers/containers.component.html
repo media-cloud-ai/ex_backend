@@ -5,7 +5,7 @@
 <mat-table #table *ngIf="containersPage" [dataSource]="containersPage.data">
   <ng-container matColumnDef="id">
     <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
-    <mat-cell *matCellDef="let container">{{container.id}}</mat-cell>
+    <mat-cell *matCellDef="let container">{{container.id | short_id}}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="names">
