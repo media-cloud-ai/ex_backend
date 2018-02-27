@@ -4,7 +4,7 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
   alias ExSubtilBackend.Amqp.JobGpacEmitter
 
   def launch(workflow, step) do
-    paths = get_ftp_downloaded_path(workflow.jobs, [])
+    paths = get_source_files(workflow.jobs, [])
 
     options = %{
       "-out": "/tmp/ftp_ftv/dash/" <> workflow.reference <> "/manifest.mpd",
@@ -21,6 +21,7 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
       name: "generate_dash",
       workflow_id: workflow.id,
       params: %{
+        kind: "generate_dash",
         source: %{
           paths: paths
         },
@@ -36,8 +37,8 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
     JobGpacEmitter.publish_json(params)
   end
 
-  defp get_ftp_downloaded_path([], result), do: result
-  defp get_ftp_downloaded_path([job | jobs], result) do
+  defp get_source_files([], result), do: result
+  defp get_source_files([job | jobs], result) do
     result =
       case job.name do
         "download_ftp" ->
@@ -57,10 +58,22 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
               video_path = path <> "#video:id=v" <> Integer.to_string(6 - quality)
               List.insert_at(result, -1, video_path)
           end
+        "ttml_to_mp4" ->
+          caption_path =
+            job.params
+            |> Map.get("destination")
+            |> Map.get("paths")
+
+          if caption_path != nil do
+            List.insert_at(result, -1, caption_path)
+          else
+            result
+          end
+          
         _ -> result
       end
 
-    get_ftp_downloaded_path(jobs, result)
+    get_source_files(jobs, result)
   end
 
   defp build_gpac_parameters([], result), do: result
