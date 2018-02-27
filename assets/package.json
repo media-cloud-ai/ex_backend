@@ -1,9 +1,5 @@
 {
   "license": "MIT",
-  "scripts": {
-    "deploy": "webpack -p",
-    "watch": "webpack --watch-stdin --progress --color"
-  },
   "dependencies": {
     "@angular/animations": "^5.2.2",
     "@angular/cdk": "^5.1.0",
