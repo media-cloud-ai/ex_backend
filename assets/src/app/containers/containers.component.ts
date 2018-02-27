@@ -13,13 +13,15 @@ import {ContainersPage, HostConfig, Host} from '../services/containers_page';
 })
 
 export class ContainersComponent {
+  sub = undefined;
 
-  containersPages: ContainersPage[];
+  containersPage: ContainersPage;
   displayedColumns = [
     'names',
     'image',
     'state',
     'status',
+    'host',
     'id'
   ];
 
@@ -30,33 +32,47 @@ export class ContainersComponent {
     private route: ActivatedRoute,
     private router: Router
   ) {
-    this.containersPages = new Array<ContainersPage>();
-    this.getHosts();
+  }
+
+  ngOnInit() {
+    this.sub = this.route
+      .queryParams
+      .subscribe(params => {
+        this.getContainers();
+      });
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
   getHosts(): void {
     this.containersService.getHosts()
     .subscribe(hostsPage => {
       this.hosts = this.containersService.getHostsFromConfigs(hostsPage.data);
-      this.updateContainers();
     });
   }
 
-  getContainers(host: Host): void {
+  getContainersForHost(host: Host): void {
     let config = this.containersService.getConfigFromHost(host);
-    this.containersService.getContainers(config)
+    this.containersService.getContainersForHost(config)
     .subscribe(containersPage => {
-      containersPage.host = host;
-      this.containersPages.push(containersPage);
+      this.containersPage = containersPage;
+    });
+  }
+
+  getContainers(): void {
+    this.containersService.getContainers()
+    .subscribe(containersPage => {
+      this.containersPage = containersPage;
     });
   }
 
   updateContainers(): void {
     for (let host of this.hosts) {
-      this.getContainers(host);
+      this.getContainersForHost(host);
     }
   }
-
 
 }
 

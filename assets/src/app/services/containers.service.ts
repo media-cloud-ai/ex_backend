@@ -47,11 +47,20 @@ export class ContainersService {
       );
   }
 
-  getContainers(hostConfig: HostConfig): Observable<ContainersPage> {
+  getContainersForHost(hostConfig: HostConfig): Observable<ContainersPage> {
     let params = new HttpParams();
     params = params.append('host', hostConfig.host);
     params = params.append('port', hostConfig.port.toString());
     params = params.append('ssl', hostConfig.ssl.toString());
+    return this.http.get<ContainersPage>(this.containersUrl, {params: params})
+      .pipe(
+        tap(containerspage => this.log('fetched ContainersPage')),
+        catchError(this.handleError('getContainersForHost', undefined))
+      );
+  }
+
+  getContainers(): Observable<ContainersPage> {
+    let params = new HttpParams();
     return this.http.get<ContainersPage>(this.containersUrl, {params: params})
       .pipe(
         tap(containerspage => this.log('fetched ContainersPage')),

@@ -5,10 +5,10 @@ export class Container {
   state: string;
   status: string;
   image: string;
+  host: Host;
 }
 
 export class ContainersPage {
-  host: Host;
   data: Container[];
   total: number;
 }
