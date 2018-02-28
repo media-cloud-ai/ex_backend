@@ -2,6 +2,43 @@
   Workers
 </h1>
 
+<div class="containers-creation-bar">
+  <div class=hosts_selector>
+    <mat-form-field>
+      <mat-select
+        class="hosts-select"
+        placeholder="Hôte"
+        [(ngModel)]="selectedHost"
+        >
+        <mat-option
+          *ngFor="let host of hosts"
+          [value]="host">
+          {{ host.protocol }}://{{ host.name }}:{{ host.port }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class=workers_selector>
+    <mat-form-field>
+      <mat-select
+        class="workers-select"
+        placeholder="Worker"
+        [(ngModel)]="selectedWorker"
+        >
+        <mat-option
+          *ngFor="let worker of workerContainers"
+          [value]="worker">
+          {{ worker.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <button mat-raised-button
+    (click)="addContainer()"
+    [disabled]="!selectedWorker || !selectedHost">
+      + Ajouter un worker
+  </button>
+</div>
 
 <ul *ngIf="containersPage" class="containers">
    <li class="container header">

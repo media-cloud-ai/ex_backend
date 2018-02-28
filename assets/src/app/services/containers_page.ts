@@ -28,3 +28,9 @@ export class HostConfig {
 export class HostsPage {
   data: HostConfig[];
 }
+
+export class WorkerContainer {
+  name: string;
+  label: string;
+  params: {};
+}

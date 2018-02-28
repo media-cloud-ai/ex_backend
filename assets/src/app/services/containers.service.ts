@@ -68,6 +68,15 @@ export class ContainersService {
       );
   }
 
+  createContainer(host: Host, name: string, params: Object): Observable<ContainersPage> {
+    let hostConfig = this.getConfigFromHost(host);
+    return this.http.post<ContainersPage>(this.containersUrl, {host: hostConfig, name: name, params: params})
+      .pipe(
+        tap(containerspage => this.log('create Container')),
+        catchError(this.handleError('createContainer', undefined))
+      );
+  }
+
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);
