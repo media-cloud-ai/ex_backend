@@ -100,4 +100,29 @@ export class ContainersComponent {
     });
   }
 
+  private startContainer(id: string, host: HostConfig): void {
+    this.containersService.updateContainer(host, id, "start")
+    .subscribe(response => {
+      this.getContainers()
+    });
+  }
+
+  private stopContainer(id: string, host: HostConfig): void {
+    this.containersService.updateContainer(host, id, "stop")
+    .subscribe(response => {
+      var that =  this;
+      setTimeout(function() {
+        that.getContainers()
+      }, 500); // wait a bit until the container is really stopped
+    });
+  }
+
+  updateContainer(id: string, host: HostConfig, state: string): void {
+    if(state == 'running') {
+      this.stopContainer(id, host);
+    } else {
+      this.startContainer(id, host);
+    }
+  }
+
 }

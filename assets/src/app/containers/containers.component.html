@@ -88,6 +88,10 @@
     </span>
     <span class="action">
       <button mat-raised-button
+        (click)="updateContainer(container.id, container.host, container.state)">
+          {{ container.state == 'running' ? "Stop" : "Start" }}
+      </button>
+      <button mat-raised-button
         (click)="removeContainer(container.id, container.host)"
         [disabled]="(container.state == 'running')">
           Supprimer

@@ -26,6 +26,23 @@ defmodule ExSubtilBackendWeb.Docker.ContainersController do
     render(conn, "creation.json", response: response.body)
   end
 
+  def update(conn, %{"host" => host, "id" => container_id, "action" => action}) do
+    hostConfig = %HostConfig{host: host["host"], port: host["port"], ssl: host["ssl"]}
+    response =
+      case action do
+        "start" ->
+          Containers.start(hostConfig, container_id)
+        "stop" ->
+          Containers.start(hostConfig, container_id)
+        _ -> nil
+      end
+
+    case response do
+      nil -> send_resp(conn, :notfound, "")
+      _ -> send_resp(conn, :ok, response.body)
+    end
+  end
+
   def delete(conn, %{"host" => host, "port" => port, "ssl" => ssl, "id" => container_id}) do
     response =
       %HostConfig{host: host, port: port, ssl: ssl}

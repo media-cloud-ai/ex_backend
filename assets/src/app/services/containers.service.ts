@@ -95,6 +95,14 @@ export class ContainersService {
       );
   }
 
+  updateContainer(hostConfig: HostConfig, id: string, action: string): Observable<Object> {
+    return this.http.put<Object>(this.containersUrl + "/" + id, {host: hostConfig, action: action})
+      .pipe(
+        tap(containerspage => this.log('update Container')),
+        catchError(this.handleError('updateContainer', undefined))
+      );
+  }
+
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);
