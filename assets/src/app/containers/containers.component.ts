@@ -16,14 +16,6 @@ export class ContainersComponent {
   sub = undefined;
 
   containersPage: ContainersPage;
-  displayedColumns = [
-    'names',
-    'image',
-    'state',
-    'status',
-    'host',
-    'id'
-  ];
 
   hosts: Host[];
 

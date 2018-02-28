@@ -2,37 +2,49 @@
   Workers
 </h1>
 
-<mat-table #table *ngIf="containersPage" [dataSource]="containersPage.data">
-  <ng-container matColumnDef="id">
-    <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
-    <mat-cell *matCellDef="let container">{{container.id | slice:0:12}}</mat-cell>
-  </ng-container>
 
-  <ng-container matColumnDef="names">
-    <mat-header-cell *matHeaderCellDef>Noms</mat-header-cell>
-    <mat-cell *matCellDef="let container">{{container.names}}</mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="image">
-    <mat-header-cell *matHeaderCellDef>Image</mat-header-cell>
-    <mat-cell *matCellDef="let container">{{container.image}}</mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="state">
-    <mat-header-cell *matHeaderCellDef>Etat</mat-header-cell>
-    <mat-cell *matCellDef="let container">{{container.state}}</mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="status">
-    <mat-header-cell *matHeaderCellDef>Statut</mat-header-cell>
-    <mat-cell *matCellDef="let container">{{container.status}}</mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="host">
-    <mat-header-cell *matHeaderCellDef>Hôte</mat-header-cell>
-    <mat-cell *matCellDef="let container">{{container.host.host}} (port: {{container.host.port}})</mat-cell>
-  </ng-container>
-
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-</mat-table>
+<ul *ngIf="containersPage" class="containers">
+   <li class="container header">
+    <span class="names">
+      Noms
+    </span>
+    <span class="image">
+      Image
+    </span>
+    <span class="state">
+      Etat
+    </span>
+    <span class="status">
+      Statut
+    </span>
+    <span class="id">
+      ID
+    </span>
+    <span class="host">
+      Hôte
+    </span>
+  </li>
+  <li
+    *ngFor="let container of containersPage.data"
+    class="container"
+    >
+    <span class="names">
+      {{container.names}}
+    </span>
+    <span class="image">
+      {{container.image}}
+    </span>
+    <span class="state">
+      {{container.state}}
+    </span>
+    <span class="status">
+      {{container.status}}
+    </span>
+    <span class="id">
+      {{container.id | slice:0:12}}
+    </span>
+    <span class="host">
+      {{container.host.host}} [{{container.host.port}}]
+    </span>
+  </li>
+</ul>
