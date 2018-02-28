@@ -60,6 +60,9 @@
     <span class="host">
       Hôte
     </span>
+    <span class="host">
+      Actions
+    </span>
   </li>
   <li
     *ngFor="let container of containersPage.data"
@@ -82,6 +85,13 @@
     </span>
     <span class="host">
       {{container.host.host}} [{{container.host.port}}]
+    </span>
+    <span class="action">
+      <button mat-raised-button
+        (click)="removeContainer(container.id, container.host)"
+        [disabled]="(container.state == 'running')">
+          Supprimer
+      </button>
     </span>
   </li>
 </ul>

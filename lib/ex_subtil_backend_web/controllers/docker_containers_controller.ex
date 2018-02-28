@@ -26,6 +26,13 @@ defmodule ExSubtilBackendWeb.Docker.ContainersController do
     render(conn, "creation.json", response: response.body)
   end
 
+  def delete(conn, %{"host" => host, "port" => port, "ssl" => ssl, "id" => container_id}) do
+    response =
+      %HostConfig{host: host, port: port, ssl: ssl}
+      |> Containers.remove(container_id)
+    send_resp(conn, :ok, response.body)
+  end
+
   defp list_containers(%HostConfig{} = host) do
     Containers.list_all(host).body
   end

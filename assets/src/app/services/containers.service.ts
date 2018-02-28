@@ -83,6 +83,18 @@ export class ContainersService {
       );
   }
 
+  removeContainer(hostConfig: HostConfig, id: string): Observable<Object> {
+    let params = new HttpParams();
+    params = params.append("host", hostConfig.host);
+    params = params.append("port", hostConfig.port.toString());
+    params = params.append("ssl", hostConfig.ssl.toString());
+    return this.http.delete<Object>(this.containersUrl + "/" + id, {params: params})
+      .pipe(
+        tap(containerspage => this.log('remove Container')),
+        catchError(this.handleError('removeContainer', undefined))
+      );
+  }
+
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);

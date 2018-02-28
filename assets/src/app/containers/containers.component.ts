@@ -93,4 +93,11 @@ export class ContainersComponent {
     });
   }
 
+  removeContainer(id: string, host: HostConfig): void {
+    this.containersService.removeContainer(host, id)
+    .subscribe(response => {
+      this.getContainers();
+    });
+  }
+
 }
