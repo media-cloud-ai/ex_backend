@@ -19,4 +19,12 @@ defmodule ExSubtilBackendWeb.Docker.ContainersView do
       host: container["Host"]
     }
   end
+
+  def render("creation.json", %{response: response}) do
+    %{
+      id: response["Id"],
+      message: response["message"],
+      warning: response["Warnings"]
+    }
+  end
 end

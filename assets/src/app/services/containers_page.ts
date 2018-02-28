@@ -34,3 +34,9 @@ export class WorkerContainer {
   label: string;
   params: {};
 }
+
+export class ContainerResponse {
+  id: string;
+  message: string;
+  warning: string;
+}

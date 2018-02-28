@@ -20,9 +20,10 @@ defmodule ExSubtilBackendWeb.Docker.ContainersController do
   end
 
   def create(conn, %{"host" => host, "name" => name, "params" => params}) do
-    %HostConfig{host: host["host"], port: host["port"], ssl: host["ssl"]}
-    |> Containers.create(name, params)
-    index(conn, params)
+    response =
+      %HostConfig{host: host["host"], port: host["port"], ssl: host["ssl"]}
+      |> Containers.create(name, params)
+    render(conn, "creation.json", response: response.body)
   end
 
   defp list_containers(%HostConfig{} = host) do

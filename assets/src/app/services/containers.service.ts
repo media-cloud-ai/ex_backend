@@ -5,7 +5,13 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import { ContainersPage, HostsPage, HostConfig, Host } from './containers_page';
+import {
+  ContainersPage,
+  HostsPage,
+  HostConfig,
+  Host,
+  ContainerResponse
+} from './containers_page';
 
 @Injectable()
 export class ContainersService {
@@ -68,9 +74,9 @@ export class ContainersService {
       );
   }
 
-  createContainer(host: Host, name: string, params: Object): Observable<ContainersPage> {
+  createContainer(host: Host, name: string, params: Object): Observable<ContainerResponse> {
     let hostConfig = this.getConfigFromHost(host);
-    return this.http.post<ContainersPage>(this.containersUrl, {host: hostConfig, name: name, params: params})
+    return this.http.post<ContainerResponse>(this.containersUrl, {host: hostConfig, name: name, params: params})
       .pipe(
         tap(containerspage => this.log('create Container')),
         catchError(this.handleError('createContainer', undefined))

@@ -17,9 +17,9 @@ export class ContainersComponent {
   containersPage: ContainersPage;
 
   hosts: Host[];
-  selectedHost: Host;
-
   workerContainers: WorkerContainer[];
+
+  selectedHost: Host;
   selectedWorker: WorkerContainer;
 
   constructor(
@@ -78,10 +78,18 @@ export class ContainersComponent {
   addContainer(): void {
     this.containersService.createContainer(
       this.selectedHost,
-      this.selectedWorker.name,
+      this.selectedWorker.name + "-" + Date.now(),
       this.selectedWorker.params)
-    .subscribe(containersPage => {
-      this.containersPage = containersPage;
+    .subscribe(response => {
+      if(response.message) {
+        alert(response.message)
+      }
+      if(response.warning) {
+        alert(response.warning)
+      }
+      this.selectedHost = undefined;
+      this.selectedWorker = undefined;
+      this.getContainers();
     });
   }
 
