@@ -161,5 +161,10 @@ export class VideosComponent {
     //   // console.log(response);
     // });
   }
+
+  redirect_to_workflow_view(video): void {
+    console.log(video)
+    this.router.navigate(['/workflows'], { queryParams: {video_id: video.id} });
+  }
 }
 
