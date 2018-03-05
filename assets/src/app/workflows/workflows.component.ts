@@ -18,6 +18,7 @@ import * as moment from 'moment';
 export class WorkflowsComponent {
   length = 1000;
   pageSize = 10;
+  video_id: string;
   page = 0;
   sub = undefined;
 
@@ -35,6 +36,7 @@ export class WorkflowsComponent {
       .queryParams
       .subscribe(params => {
         this.page = +params['page'] || 0;
+        this.video_id = params['video_id'];
         this.getWorkflows(this.page);
       });
   }
@@ -44,7 +46,8 @@ export class WorkflowsComponent {
   }
 
   getWorkflows(index): void {
-    this.workflowService.getWorkflows(index)
+    this.workflowService.getWorkflows(index,
+      this.video_id)
     .subscribe(workflowPage => {
       this.workflows = workflowPage;
       this.length = workflowPage.total;
@@ -65,6 +68,10 @@ export class WorkflowsComponent {
     var params = {};
     if(pageIndex != 0) {
       params['page'] = pageIndex;
+    }
+    
+    if(this.video_id != "") {
+      params['video_id'] = this.video_id;
     }
     return params;
   }

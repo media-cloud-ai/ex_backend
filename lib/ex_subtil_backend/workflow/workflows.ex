@@ -27,7 +27,6 @@ defmodule ExSubtilBackend.Workflows do
 
   """
   def list_workflows(params) do
-
     page =
       Map.get(params, "page", 0)
       |> force_integer
@@ -37,14 +36,23 @@ defmodule ExSubtilBackend.Workflows do
 
     offset = page * size
 
-    total_query = from item in Workflow,
+    query =
+      case Map.get(params, :video_id, nil) || Map.get(params, "video_id", nil) do
+        nil ->
+          from workflow in Workflow
+        video_id ->
+          from workflow in Workflow,
+            where: workflow.reference == ^video_id
+      end
+
+    total_query = from item in query,
       select: count(item.id)
 
     total =
       Repo.all(total_query)
       |> List.first
 
-    query = from workflow in Workflow,
+    query = from workflow in query,
       order_by: [desc: :inserted_at],
       offset: ^offset,
       limit: ^size

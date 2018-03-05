@@ -87,6 +87,13 @@
     <span class="hour">
       {{video.creation | date: 'H:mm:ss'}}
     </span>
+    <span
+      class="workflows_count"
+      [ngClass]="{found: video.workflows_count > 0}"
+      (click)="redirect_to_workflow_view(video)"
+      >
+      {{video.workflows_count}}
+    </span>
     <span class="starter">
       <button
         mat-raised-button

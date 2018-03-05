@@ -22,6 +22,7 @@ defmodule ExSubtilBackendWeb.VideosView do
       channel: video["channel"]["id"],
       region: video["channel"]["region"],
       creation: video["created_at"],
+      workflows_count: video["workflows_count"],
     }
   end
 
