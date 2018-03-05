@@ -53,6 +53,7 @@ import {VideoService}            from './services/video.service';
 import {WorkflowService}         from './services/workflow.service';
 import {ContainersService}       from './services/containers.service';
 
+import {AudioTypePipe}           from './pipes/audio_type.pipe';
 import {BasenamePipe}            from './pipes/basename.pipe';
 import {IconForJobPipe}          from './pipes/icon_for_job.pipe';
 import {JobTypePipe}             from './pipes/job_type.pipe';
@@ -60,6 +61,7 @@ import {JobStatusPipe}           from './pipes/job_status.pipe';
 import {JobStatusIconPipe}       from './pipes/job_status_icon.pipe';
 import {ParameterLabelPipe}      from './pipes/parameter_label.pipe';
 import {QueuePipe}               from './pipes/queue.pipe';
+import {TextTypePipe}            from './pipes/text_type.pipe';
 
 import 'hammerjs/hammer'; // for MatSlideToggleModule
 import * as moment from 'moment';
@@ -121,13 +123,15 @@ const SUBTIL_DATE_FORMATS = {
     WorkflowsComponent,
     ContainersComponent,
 
-    IconForJobPipe,
+    AudioTypePipe,
     BasenamePipe,
+    IconForJobPipe,
     JobTypePipe,
     JobStatusPipe,
     JobStatusIconPipe,
     ParameterLabelPipe,
     QueuePipe,
+    TextTypePipe,
   ],
   entryComponents: [
     WorkflowDialogComponent,
