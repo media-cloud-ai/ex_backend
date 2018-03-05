@@ -15,10 +15,13 @@
     <mat-list dense class=steps>
       <mat-list-item
         *ngFor="let step of workflow.flow.steps"
-        class="step {{step.id}}">
+        class="step {{step.id}} {{step.status}}">
         <div>
           <mat-icon matListIcon>{{step.id | iconForJob}}</mat-icon>
           {{step.id | jobType}}
+          <i class="material-icons status">
+            {{step.status | jobStatusIcon}}
+          </i>
           <div class=parameters>
             <mat-list dense>
               <mat-list-item

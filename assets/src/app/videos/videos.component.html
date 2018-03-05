@@ -87,6 +87,20 @@
     <span class="hour">
       {{video.creation | date: 'H:mm:ss'}}
     </span>
+    <span class="tracks audio"
+      *ngFor="let track of video.audio_tracks">
+      <i class="material-icons">volume_down</i>
+      <span>
+        {{track.id | audioType}}
+      </span>
+    </span>
+    <span class="tracks text"
+      *ngFor="let track of video.text_tracks">
+      <i class="material-icons">closed_caption</i>
+      <span>
+        {{track.id | textType}}
+      </span>
+    </span>
     <span
       class="workflows_count"
       [ngClass]="{found: video.workflows_count > 0}"
