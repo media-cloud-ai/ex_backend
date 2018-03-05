@@ -7,6 +7,7 @@ defmodule ExSubtilBackend.Workflows do
   alias ExSubtilBackend.Repo
 
   alias ExSubtilBackend.Workflows.Workflow
+  alias ExSubtilBackend.Jobs.Job
 
   defp force_integer(param) when is_bitstring(param) do
     param
@@ -51,6 +52,8 @@ defmodule ExSubtilBackend.Workflows do
 
     workflows =
       Repo.all(query)
+      |> preload_workflows
+      |> Repo.preload(:jobs)
 
     %{
       data: workflows,
@@ -74,7 +77,66 @@ defmodule ExSubtilBackend.Workflows do
       ** (Ecto.NoResultsError)
 
   """
-  def get_workflow!(id), do: Repo.get!(Workflow, id)
+  def get_workflow!(id) do
+    Repo.get!(Workflow, id)
+    |> preload_workflow
+  end
+
+  defp preload_workflow(workflow) do
+    steps =
+      workflow
+      |> Map.get(:flow)
+      |> Map.get("steps")
+      |> get_step_status(workflow.id)
+
+    Map.put(workflow, :flow, %{steps: steps})
+  end
+
+  defp preload_workflows(workflows, result \\ [])
+  defp preload_workflows([], result), do: result
+  defp preload_workflows([workflow | workflows], result) do
+
+    result = List.insert_at(result, -1, workflow |> preload_workflow)
+    preload_workflows(workflows, result)
+  end
+
+  defp get_step_status(steps, workflow_id, result \\[])
+  defp get_step_status([], _workflow_id, result), do: result
+  defp get_step_status([step | steps], workflow_id, result) do
+
+    id = Map.get(step, "id")
+
+    query = from item in Job,
+      join: w in assoc(item, :workflow), where: w.id == ^workflow_id,
+      where: item.name == ^id
+
+    jobs = Repo.all(query)
+
+    status =
+      jobs
+      |> Repo.preload(:status)
+      |> get_current_status
+
+    status =
+      case length(jobs) do
+        0 -> "queued"
+        _ -> status
+      end
+
+    step = Map.put(step, :status, status)
+
+    result = List.insert_at(result, -1, step)
+    get_step_status(steps, workflow_id, result)
+  end
+
+  defp get_current_status([]), do: "processing"
+  defp get_current_status([job | jobs]) do
+    if Enum.count(job.status, fn(x) -> x.state == "completed" end) > 0 do
+      "completed"
+    else
+      get_current_status(jobs)
+    end
+  end
 
   @doc """
   Creates a workflow.

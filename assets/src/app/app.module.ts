@@ -57,6 +57,7 @@ import {BasenamePipe}            from './pipes/basename.pipe';
 import {IconForJobPipe}          from './pipes/icon_for_job.pipe';
 import {JobTypePipe}             from './pipes/job_type.pipe';
 import {JobStatusPipe}           from './pipes/job_status.pipe';
+import {JobStatusIconPipe}       from './pipes/job_status_icon.pipe';
 import {ParameterLabelPipe}      from './pipes/parameter_label.pipe';
 import {QueuePipe}               from './pipes/queue.pipe';
 
@@ -124,6 +125,7 @@ const SUBTIL_DATE_FORMATS = {
     BasenamePipe,
     JobTypePipe,
     JobStatusPipe,
+    JobStatusIconPipe,
     ParameterLabelPipe,
     QueuePipe,
   ],
