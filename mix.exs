@@ -26,6 +26,7 @@ defmodule ExSubtilBackend.Mixfile do
         :httpotion,
         :poison,
         :runtime_tools,
+        :timex,
       ]
     ]
   end
@@ -42,17 +43,18 @@ defmodule ExSubtilBackend.Mixfile do
       {:amqp, "~> 0.3.1"},
       {:cowboy, "~> 1.1.2"},
       {:distillery, "~> 1.5"},
+      {:ex_remote_dockers, "0.1.1"},
+      {:ex_video_factory, "0.3.3"},
       {:gettext, "~> 0.14"},
+      {:httpotion, "~> 3.1.0"},
       {:phoenix, "~> 1.3.0"},
       {:phoenix_ecto, "~> 3.2"},
       {:phoenix_html, "~> 2.10"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:phoenix_pubsub, "~> 1.0"},
       {:postgrex, ">= 0.0.0"},
-      {:ex_video_factory, "0.3.3"},
-      {:httpotion, "~> 3.1.0"},
       {:poison, "~> 3.1"},
-      {:ex_remote_dockers, "0.1.1"},
+      {:timex, "~> 3.2"},
     ]
   end
 

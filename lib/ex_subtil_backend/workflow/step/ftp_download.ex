@@ -13,6 +13,7 @@ defmodule ExSubtilBackend.Workflow.Step.FtpDownload do
     hostname = System.get_env("AKAMAI_HOSTNAME") || Application.get_env(:ex_subtil_backend, :akamai_hostname)
     username = System.get_env("AKAMAI_USERNAME") || Application.get_env(:ex_subtil_backend, :akamai_username)
     password = System.get_env("AKAMAI_PASSWORD") || Application.get_env(:ex_subtil_backend, :akamai_password)
+    work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_subtil_backend, :work_dir) || "/tmp/ftp_francetv"
 
     filename = Path.basename(file)
 
@@ -27,7 +28,7 @@ defmodule ExSubtilBackend.Workflow.Step.FtpDownload do
           password: password,
         },
         destination: %{
-          path: "/tmp/ftp_ftv/" <> workflow.reference <> "/" <> filename
+          path: work_dir <> "/" <> workflow.reference <> "/" <> filename
         }
       }
     }

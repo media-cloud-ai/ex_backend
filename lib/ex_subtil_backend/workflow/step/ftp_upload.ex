@@ -5,7 +5,7 @@ defmodule ExSubtilBackend.Workflow.Step.FtpUpload do
 
   def launch(workflow, _step) do
     get_paths(workflow.jobs, [])
-    |> start_upload(workflow.id)
+    |> start_upload(workflow)
   end
 
   defp get_paths([], result), do: result
@@ -26,21 +26,26 @@ defmodule ExSubtilBackend.Workflow.Step.FtpUpload do
   end
 
 
-  defp start_upload([], _workflow_id), do: {:ok, "started"}
-  defp start_upload([file | files], workflow_id) do
+  defp start_upload([], _workflow), do: {:ok, "started"}
+  defp start_upload([file | files], workflow) do
     hostname = System.get_env("AKAMAI_VIDEO_HOSTNAME") || Application.get_env(:ex_subtil_backend, :akamai_video_hostname)
     username = System.get_env("AKAMAI_VIDEO_USERNAME") || Application.get_env(:ex_subtil_backend, :akamai_video_username)
     password = System.get_env("AKAMAI_VIDEO_PASSWORD") || Application.get_env(:ex_subtil_backend, :akamai_video_password)
+    prefix = System.get_env("AKAMAI_VIDEO_PREFIX") || Application.get_env(:ex_subtil_backend, :akamai_video_prefix) || "/421959/prod/innovation/SubTil"
+
+    current_date =
+      Timex.local
+      |> Timex.format!("%Y_%m_%d__%H_%M", :strftime)
 
     job_params = %{
       name: "upload_ftp",
-      workflow_id: workflow_id,
+      workflow_id: workflow.id,
       params: %{
         source: %{
           path: file
         },
         destination: %{
-          path: "/421959/prod/innovation/SubTil/" <> (file |> Path.basename),
+          path: prefix <> "/" <> workflow.reference <> "/" <> current_date <> "/" <> (file |> Path.basename),
           hostname: hostname,
           username: username,
           password: password,
@@ -55,7 +60,7 @@ defmodule ExSubtilBackend.Workflow.Step.FtpUpload do
     }
     JobFtpEmitter.publish_json(params)
 
-    start_upload(files, workflow_id)
+    start_upload(files, workflow)
   end
 
 end
