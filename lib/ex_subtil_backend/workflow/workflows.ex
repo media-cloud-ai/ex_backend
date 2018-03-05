@@ -95,7 +95,6 @@ defmodule ExSubtilBackend.Workflows do
   defp preload_workflows(workflows, result \\ [])
   defp preload_workflows([], result), do: result
   defp preload_workflows([workflow | workflows], result) do
-
     result = List.insert_at(result, -1, workflow |> preload_workflow)
     preload_workflows(workflows, result)
   end
@@ -103,7 +102,6 @@ defmodule ExSubtilBackend.Workflows do
   defp get_step_status(steps, workflow_id, result \\[])
   defp get_step_status([], _workflow_id, result), do: result
   defp get_step_status([step | steps], workflow_id, result) do
-
     id = Map.get(step, "id")
 
     query = from item in Job,
