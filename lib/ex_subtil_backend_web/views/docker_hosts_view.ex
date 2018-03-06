@@ -9,11 +9,10 @@ defmodule ExSubtilBackendWeb.Docker.HostsView do
     }
   end
 
-  def render("host.json", %{hosts: host}) do
+  def render("host.json", %{hosts: host_config}) do
     %{
-      host: host.host,
-      port: host.port,
-      ssl: host.ssl
+      hostname: host_config.hostname,
+      port: host_config.port
     }
   end
 end

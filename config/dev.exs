@@ -66,7 +66,7 @@ config :ex_subtil_backend, ExSubtilBackend.Repo,
 
 config :ex_subtil_backend,
   docker_hosts: [
-    [host: "localhost", port: 2357]
+    [hostname: "http://localhost", port: 2357]
   ]
 
 config :amqp,

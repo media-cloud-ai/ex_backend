@@ -4,13 +4,18 @@ defmodule ExSubtilBackendWeb.Docker.HostsController do
   def list_hosts() do
     config_hosts = Application.get_env(:ex_subtil_backend, :docker_hosts)
     Enum.map config_hosts, fn host ->
-      %ExRemoteDockers.HostConfig{host: host[:host], port: host[:port]}
+      RemoteDockers.DockerHostConfig.new(
+        host[:hostname],
+        host[:port],
+        host[:certfile],
+        host[:keyfile]
+      )
     end
   end
 
   def index(conn, _) do
     hosts = list_hosts()
-    render(conn, "index.json", hosts: hosts)
+    render(conn, "index.json", %{hosts: hosts})
   end
 
 end

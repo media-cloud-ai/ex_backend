@@ -11,12 +11,12 @@ defmodule ExSubtilBackendWeb.Docker.ContainersView do
 
   def render("container.json", %{containers: container}) do
     %{
-      id: container["Id"],
-      names: container["Names"],
-      image: container["Image"],
-      state: container["State"],
-      status: container["Status"],
-      host: container["Host"]
+      id: container.id,
+      names: container.names,
+      image: container.image,
+      state: container.state,
+      status: container.status,
+      docker_host_config: container.docker_host_config
     }
   end
 
