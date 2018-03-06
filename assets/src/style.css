@@ -1,2 +1,6 @@
 
 @import "../node_modules/@angular/material/prebuilt-themes/indigo-pink.css";
+
+.mat-fab.mat-accent, .mat-mini-fab.mat-accent, .mat-raised-button.mat-accent {
+  background-color: #770029;
+}

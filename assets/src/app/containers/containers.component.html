@@ -34,6 +34,7 @@
     </mat-form-field>
   </div>
   <button mat-raised-button
+    color="primary"
     (click)="addContainer()"
     [disabled]="!selectedWorker || !selectedHost">
       + Ajouter un worker
@@ -87,13 +88,20 @@
     </span>
     <span class="action">
       <button mat-raised-button
-        (click)="actionContainer(container.id, container.state)">
-          {{ container.state == 'running' ? "Stop" : "Start" }}
+        color="primary"
+        (click)="actionContainer(container.id, container.state)" *ngIf="container.state == 'running'">
+          <i class="material-icons">play_circle_outline</i> Start
       </button>
       <button mat-raised-button
+        color="accent"
+        (click)="actionContainer(container.id, container.state)" *ngIf="container.state != 'running'">
+          <i class="material-icons">pause_circle_outline</i> Stop
+      </button>
+      <button mat-raised-button
+        color="warn"
         (click)="removeContainer(container.id)"
         [disabled]="(container.state == 'running')">
-          Supprimer
+          <i class="material-icons">delete</i> Supprimer
       </button>
     </span>
   </li>
