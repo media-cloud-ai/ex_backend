@@ -11,8 +11,6 @@ import { Status } from '../services/job';
 export class JobStatusPipe implements PipeTransform {
 
   transform(jobStatus: Status[]): string {
-    console.log(jobStatus)
-
     for (var i = jobStatus.length - 1; i >= 0; i--) {
       if(jobStatus[i].state == "completed"){
         return "completed";

@@ -1,7 +1,7 @@
 defmodule ExSubtilBackendWeb.VideosController do
   use ExSubtilBackendWeb, :controller
 
-  alias ExSubtilBackend.Workflows
+  alias ExSubtilBackend.{Videos, Workflows}
 
   action_fallback ExSubtilBackendWeb.FallbackController
 
@@ -27,6 +27,10 @@ defmodule ExSubtilBackendWeb.VideosController do
       |> Map.get(:total)
 
     video = Map.put(video, "workflows_count", total)
+
+    url = Videos.get_manifest_url(video_id)
+    video = Map.put(video, "workflows_count", total)
+    video = Map.put(video, "manifest_url", url)
 
     result = List.insert_at(result, -1, video)
     search_workflow(videos, result)

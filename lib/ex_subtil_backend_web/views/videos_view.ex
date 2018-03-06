@@ -25,6 +25,7 @@ defmodule ExSubtilBackendWeb.VideosView do
       workflows_count: video["workflows_count"],
       audio_tracks: video["audio_tracks"],
       text_tracks: video["text_tracks"],
+      manifest_url: video["manifest_url"],
     }
   end
 
