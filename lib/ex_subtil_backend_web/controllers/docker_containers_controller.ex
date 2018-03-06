@@ -26,14 +26,16 @@ defmodule ExSubtilBackendWeb.Docker.ContainersController do
   end
 
   def create(conn, %DockerHostConfig{} = docker_host_config, container_name, %ContainerConfig{} = container_config) do
-    try do
-      container = Container.create!(docker_host_config, container_name, container_config)
-      render(conn, "container.json", containers: container)
-    rescue
-      error ->
-        send_resp(conn, :internal_server_error, Exception.message(error))
-        raise error
-    end
+    container =
+      try do
+        Container.create!(docker_host_config, container_name, container_config)
+      rescue
+        error ->
+          conn
+          |> send_resp(:internal_server_error, Exception.message(error))
+          |> halt
+      end
+    render(conn, "container.json", containers: container)
   end
 
 
