@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { catchError, tap } from 'rxjs/operators';
 
-import {QueuePage} from './queue_page';
+import {QueuePage} from '../models/page/queue_page';
 
 @Injectable()
 export class AmqpService {

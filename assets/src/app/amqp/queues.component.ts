@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 
-import {Queue} from '../services/queue';
 import {AmqpService} from '../services/amqp.service';
+import {Queue} from '../models/queue';
 
 @Component({
   selector: 'amqp-queues',

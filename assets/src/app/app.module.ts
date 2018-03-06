@@ -39,19 +39,21 @@ import {
 import {RouterModule, Routes}    from '@angular/router';
 
 import {DashboardComponent}      from './dashboard/dashboard.component';
+import {ContainersComponent}     from './containers/containers.component';
 import {JobsComponent}           from './jobs/jobs.component';
 import {QueuesComponent}         from './amqp/queues.component';
 import {VideosComponent}         from './videos/videos.component';
 import {WorkflowsComponent}      from './workflows/workflows.component';
-import {ContainersComponent}     from './containers/containers.component';
 
 import {WorkflowDialogComponent} from './videos/workflow/workflow_dialog.component';
 
 import {AmqpService}             from './services/amqp.service';
+import {ContainerService}        from './services/container.service';
+import {HostService}             from './services/host.service';
+import {ImageService}            from './services/image.service';
 import {JobService}              from './services/job.service';
 import {VideoService}            from './services/video.service';
 import {WorkflowService}         from './services/workflow.service';
-import {ContainersService}       from './services/containers.service';
 
 import {AudioTypePipe}           from './pipes/audio_type.pipe';
 import {BasenamePipe}            from './pipes/basename.pipe';
@@ -155,10 +157,12 @@ const SUBTIL_DATE_FORMATS = {
       useValue: SUBTIL_DATE_FORMATS
     },
     AmqpService,
+    ContainerService,
+    HostService,
+    ImageService,
     JobService,
     VideoService,
     WorkflowService,
-    ContainersService,
   ],
   bootstrap: [
     AppComponent

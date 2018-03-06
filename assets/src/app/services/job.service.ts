@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import {JobPage} from './job_page';
+import {JobPage} from '../models/page/job_page';
 
 @Injectable()
 export class JobService {
@@ -21,7 +21,7 @@ export class JobService {
 
     return this.http.get<JobPage>(this.jobsUrl, {params: params})
       .pipe(
-        tap(jobpage => this.log('fetched JobPage')),
+        tap(jobPage => this.log('fetched JobPage')),
         catchError(this.handleError('getJobs', undefined))
       );
   }

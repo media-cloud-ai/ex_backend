@@ -4,9 +4,9 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import {VideoPage} from './video_page';
-import {DateRange} from './date_range';
-import {IngestResponse} from './ingest_response';
+import {VideoPage} from '../models/page/video_page';
+import {DateRange} from '../models/date_range';
+import {IngestResponse} from '../models/ingest_response';
 
 @Injectable()
 export class VideoService {
@@ -37,7 +37,7 @@ export class VideoService {
 
     return this.http.get<VideoPage>(this.videosUrl, {params: params})
       .pipe(
-        tap(videopage => this.log('fetched VideoPage')),
+        tap(videoPage => this.log('fetched VideoPage')),
         catchError(this.handleError('getVideos', undefined))
       );
   }

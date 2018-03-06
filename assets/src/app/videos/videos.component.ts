@@ -6,9 +6,9 @@ import {FormControl} from '@angular/forms';
 
 import {VideoService} from '../services/video.service';
 import {WorkflowService} from '../services/workflow.service';
-import {VideoPage} from '../services/video_page';
-import {Video} from '../services/video';
-import {DateRange} from '../services/date_range';
+import {VideoPage} from '../models/page/video_page';
+import {Video} from '../models/video';
+import {DateRange} from '../models/date_range';
 
 import {WorkflowDialogComponent} from './workflow/workflow_dialog.component';
 

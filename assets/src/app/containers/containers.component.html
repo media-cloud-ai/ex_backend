@@ -26,9 +26,9 @@
         [(ngModel)]="selectedWorker"
         >
         <mat-option
-          *ngFor="let worker of workerContainers"
-          [value]="worker">
-          {{ worker.label }}
+          *ngFor="let image of images"
+          [value]="image">
+          {{ image.label }}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -41,7 +41,7 @@
   </button>
 </div>
 
-<ul *ngIf="containersPage" class="containers">
+<ul class="containers">
    <li class="container header">
     <span class="names">
       Nom
@@ -65,7 +65,7 @@
     </span>
   </li>
   <li
-    *ngFor="let container of containersPage.data"
+    *ngFor="let container of containers"
     class="container"
     >
     <span class="names">
@@ -89,12 +89,12 @@
     <span class="action">
       <button mat-raised-button
         color="primary"
-        (click)="actionContainer(container.id, container.state)" *ngIf="container.state == 'running'">
+        (click)="actionContainer(container.id, container.state)" *ngIf="container.state != 'running'">
           <i class="material-icons">play_circle_outline</i> Start
       </button>
       <button mat-raised-button
         color="accent"
-        (click)="actionContainer(container.id, container.state)" *ngIf="container.state != 'running'">
+        (click)="actionContainer(container.id, container.state)" *ngIf="container.state == 'running'">
           <i class="material-icons">pause_circle_outline</i> Stop
       </button>
       <button mat-raised-button
