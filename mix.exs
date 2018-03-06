@@ -43,7 +43,6 @@ defmodule ExSubtilBackend.Mixfile do
       {:amqp, "~> 0.3.1"},
       {:cowboy, "~> 1.1.2"},
       {:distillery, "~> 1.5"},
-      {:ex_remote_dockers, "0.1.1"},
       {:ex_video_factory, "0.3.3"},
       {:gettext, "~> 0.14"},
       {:httpotion, "~> 3.1.0"},
@@ -54,6 +53,7 @@ defmodule ExSubtilBackend.Mixfile do
       {:phoenix_pubsub, "~> 1.0"},
       {:postgrex, ">= 0.0.0"},
       {:poison, "~> 3.1"},
+      {:remote_dockers, "1.1.0"},
       {:timex, "~> 3.2"},
     ]
   end

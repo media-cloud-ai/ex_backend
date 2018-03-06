@@ -2,37 +2,99 @@
   Workers
 </h1>
 
-<mat-table #table *ngIf="containersPage" [dataSource]="containersPage.data">
-  <ng-container matColumnDef="id">
-    <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
-    <mat-cell *matCellDef="let container">{{container.id | slice:0:12}}</mat-cell>
-  </ng-container>
+<div class="containers-creation-bar">
+  <div class=hosts_selector>
+    <mat-form-field>
+      <mat-select
+        class="hosts-select"
+        placeholder="Hôte"
+        [(ngModel)]="selectedHost"
+        >
+        <mat-option
+          *ngFor="let host of hosts"
+          [value]="host">
+          {{ host.hostname }}:{{ host.port }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class=workers_selector>
+    <mat-form-field>
+      <mat-select
+        class="workers-select"
+        placeholder="Worker"
+        [(ngModel)]="selectedWorker"
+        >
+        <mat-option
+          *ngFor="let worker of workerContainers"
+          [value]="worker">
+          {{ worker.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <button mat-raised-button
+    (click)="addContainer()"
+    [disabled]="!selectedWorker || !selectedHost">
+      + Ajouter un worker
+  </button>
+</div>
 
-  <ng-container matColumnDef="names">
-    <mat-header-cell *matHeaderCellDef>Noms</mat-header-cell>
-    <mat-cell *matCellDef="let container">{{container.names}}</mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="image">
-    <mat-header-cell *matHeaderCellDef>Image</mat-header-cell>
-    <mat-cell *matCellDef="let container">{{container.image}}</mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="state">
-    <mat-header-cell *matHeaderCellDef>Etat</mat-header-cell>
-    <mat-cell *matCellDef="let container">{{container.state}}</mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="status">
-    <mat-header-cell *matHeaderCellDef>Statut</mat-header-cell>
-    <mat-cell *matCellDef="let container">{{container.status}}</mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="host">
-    <mat-header-cell *matHeaderCellDef>Hôte</mat-header-cell>
-    <mat-cell *matCellDef="let container">{{container.host.host}} (port: {{container.host.port}})</mat-cell>
-  </ng-container>
-
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-</mat-table>
+<ul *ngIf="containersPage" class="containers">
+   <li class="container header">
+    <span class="names">
+      Nom
+    </span>
+    <span class="image">
+      Image
+    </span>
+    <span class="state">
+      Etat
+    </span>
+    <span class="status">
+      Statut
+    </span>
+    <span class="id">
+      ID
+    </span>
+    <span class="host">
+      Hôte
+    </span>
+    <span class="action">
+    </span>
+  </li>
+  <li
+    *ngFor="let container of containersPage.data"
+    class="container"
+    >
+    <span class="names">
+      {{container.names}}
+    </span>
+    <span class="image">
+      {{container.image}}
+    </span>
+    <span class="state">
+      {{container.state}}
+    </span>
+    <span class="status">
+      {{container.status}}
+    </span>
+    <span class="id">
+      {{container.id | slice:0:12}}
+    </span>
+    <span class="host">
+      {{container.docker_host_config.hostname}}:{{container.docker_host_config.port}}
+    </span>
+    <span class="action">
+      <button mat-raised-button
+        (click)="actionContainer(container.id, container.state)">
+          {{ container.state == 'running' ? "Stop" : "Start" }}
+      </button>
+      <button mat-raised-button
+        (click)="removeContainer(container.id)"
+        [disabled]="(container.state == 'running')">
+          Supprimer
+      </button>
+    </span>
+  </li>
+</ul>

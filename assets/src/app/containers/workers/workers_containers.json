@@ -1,0 +1,25 @@
+{
+  "workers": [
+    {
+      "name": "gpac-worker",
+      "label": "GPAC Worker",
+      "params": {
+        "Image": "ftvsubtil/gpac_worker"
+      }
+    },
+    {
+      "name": "ftp-worker",
+      "label": "FTP Worker",
+      "params": {
+        "Image": "ftvsubtil/ftp_worker"
+      }
+    },
+    {
+      "name": "http-worker",
+      "label": "HTTP Worker",
+      "params": {
+        "Image": "ftvsubtil/http_worker"
+      }
+    }
+  ]
+}

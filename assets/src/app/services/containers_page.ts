@@ -1,11 +1,25 @@
 
+/* DOCKER HOSTS */
+
+export class HostConfig {
+  hostname: string;
+  port: number;
+}
+
+export class HostsPage {
+  data: HostConfig[];
+}
+
+
+/* DOCKER CONTAINERS */
+
 export class Container {
   id: string;
   name: string[];
   state: string;
   status: string;
   image: string;
-  host: Host;
+  docker_host_config: HostConfig;
 }
 
 export class ContainersPage {
@@ -13,18 +27,14 @@ export class ContainersPage {
   total: number;
 }
 
-export class Host {
+export class ContainerConfig {
+  Image: string;
+  Env: string[];
+  HostConfig: Object;
+}
+
+export class WorkerContainer {
   name: string;
-  port: number;
-  protocol: string;
-}
-
-export class HostConfig {
-  host: string;
-  port: number;
-  ssl: boolean;
-}
-
-export class HostsPage {
-  data: HostConfig[];
+  label: string;
+  params: ContainerConfig;
 }
