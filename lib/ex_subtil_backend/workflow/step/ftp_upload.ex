@@ -4,8 +4,12 @@ defmodule ExSubtilBackend.Workflow.Step.FtpUpload do
   alias ExSubtilBackend.Amqp.JobFtpEmitter
 
   def launch(workflow, _step) do
+    current_date =
+      Timex.local
+      |> Timex.format!("%Y_%m_%d__%H_%M", :strftime)
+
     get_paths(workflow.jobs, [])
-    |> start_upload(workflow)
+    |> start_upload(workflow, current_date)
   end
 
   defp get_paths([], result), do: result
@@ -26,16 +30,12 @@ defmodule ExSubtilBackend.Workflow.Step.FtpUpload do
   end
 
 
-  defp start_upload([], _workflow), do: {:ok, "started"}
-  defp start_upload([file | files], workflow) do
+  defp start_upload([], _current_date, _workflow), do: {:ok, "started"}
+  defp start_upload([file | files], current_date, workflow) do
     hostname = System.get_env("AKAMAI_VIDEO_HOSTNAME") || Application.get_env(:ex_subtil_backend, :akamai_video_hostname)
     username = System.get_env("AKAMAI_VIDEO_USERNAME") || Application.get_env(:ex_subtil_backend, :akamai_video_username)
     password = System.get_env("AKAMAI_VIDEO_PASSWORD") || Application.get_env(:ex_subtil_backend, :akamai_video_password)
     prefix = System.get_env("AKAMAI_VIDEO_PREFIX") || Application.get_env(:ex_subtil_backend, :akamai_video_prefix) || "/421959/prod/innovation/SubTil"
-
-    current_date =
-      Timex.local
-      |> Timex.format!("%Y_%m_%d__%H_%M", :strftime)
 
     job_params = %{
       name: "upload_ftp",
@@ -60,7 +60,7 @@ defmodule ExSubtilBackend.Workflow.Step.FtpUpload do
     }
     JobFtpEmitter.publish_json(params)
 
-    start_upload(files, workflow)
+    start_upload(files, current_date, workflow)
   end
 
 end
