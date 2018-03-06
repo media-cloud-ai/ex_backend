@@ -52,7 +52,7 @@ defmodule ExSubtilBackend.Mixfile do
       {:ex_video_factory, "0.3.3"},
       {:httpotion, "~> 3.1.0"},
       {:poison, "~> 3.1"},
-      {:ex_remote_dockers, "0.1.1"},
+      {:remote_dockers, "1.1.0"},
     ]
   end
 
