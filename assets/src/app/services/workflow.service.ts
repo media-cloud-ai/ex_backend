@@ -19,7 +19,7 @@ export class WorkflowService {
     if(page > 0) {
       params = params.append('page', String(page + 1));
     }
-    if(video_id != "") {
+    if(video_id != "" && video_id != undefined) {
       params = params.append('video_id', video_id);
     }
 

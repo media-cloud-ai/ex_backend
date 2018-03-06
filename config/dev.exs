@@ -65,6 +65,7 @@ config :ex_subtil_backend, ExSubtilBackend.Repo,
   pool_size: 10
 
 config :ex_subtil_backend,
+  workdir: "/tmp/ftp_francetv",
   docker_hosts: [
     [host: "localhost", port: 2357]
   ]
