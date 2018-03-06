@@ -6,11 +6,11 @@ import { of } from 'rxjs/observable/of';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import {
+  ContainerConfig,
+  Container,
   ContainersPage,
   HostsPage,
-  HostConfig,
-  Host,
-  ContainerResponse
+  HostConfig
 } from './containers_page';
 
 @Injectable()
@@ -20,48 +20,12 @@ export class ContainersService {
 
   constructor(private http: HttpClient) { }
 
-  getConfigFromHost(host: Host): HostConfig {
-    let hostConfig = new HostConfig();
-    hostConfig["host"] = host.name;
-    hostConfig["port"] = host.port;
-    hostConfig["ssl"] = (host.protocol ==  "https");
-    return hostConfig;
-  }
-
-  getHostFromConfig(hostConfig: HostConfig): Host {
-    let host = new Host();
-    host["name"] = hostConfig.host;
-    host["port"] = hostConfig.port;
-    host["protocol"] = hostConfig.ssl ? "https": "http";
-    return host;
-  }
-
-  getHostsFromConfigs(hostConfigs: HostConfig[]): Host[] {
-    let hosts = [];
-    for (let hostConfig of hostConfigs) {
-      hosts.push(this.getHostFromConfig(hostConfig));
-    }
-    return hosts;
-  }
-
   getHosts(): Observable<HostsPage> {
     let params = new HttpParams();
     return this.http.get<HostsPage>(this.hostsUrl, {params: params})
       .pipe(
         tap(containerspage => this.log('fetched HostsPage')),
         catchError(this.handleError('getHosts', undefined))
-      );
-  }
-
-  getContainersForHost(hostConfig: HostConfig): Observable<ContainersPage> {
-    let params = new HttpParams();
-    params = params.append('host', hostConfig.host);
-    params = params.append('port', hostConfig.port.toString());
-    params = params.append('ssl', hostConfig.ssl.toString());
-    return this.http.get<ContainersPage>(this.containersUrl, {params: params})
-      .pipe(
-        tap(containerspage => this.log('fetched ContainersPage')),
-        catchError(this.handleError('getContainersForHost', undefined))
       );
   }
 
@@ -74,29 +38,29 @@ export class ContainersService {
       );
   }
 
-  createContainer(host: Host, name: string, params: Object): Observable<ContainerResponse> {
-    let hostConfig = this.getConfigFromHost(host);
-    return this.http.post<ContainerResponse>(this.containersUrl, {host: hostConfig, name: name, params: params})
+  createContainer(docker_host_config: HostConfig, container_name: string, container_config: ContainerConfig): Observable<Container> {
+    let params = {
+      docker_host_config: docker_host_config,
+      container_name: container_name,
+      container_config: container_config
+    };
+    return this.http.post<Container>(this.containersUrl, params)
       .pipe(
         tap(containerspage => this.log('create Container')),
         catchError(this.handleError('createContainer', undefined))
       );
   }
 
-  removeContainer(hostConfig: HostConfig, id: string): Observable<Object> {
-    let params = new HttpParams();
-    params = params.append("host", hostConfig.host);
-    params = params.append("port", hostConfig.port.toString());
-    params = params.append("ssl", hostConfig.ssl.toString());
-    return this.http.delete<Object>(this.containersUrl + "/" + id, {params: params})
+  removeContainer(id: string): Observable<Container> {
+    return this.http.delete<Container>(this.containersUrl + "/" + id)
       .pipe(
         tap(containerspage => this.log('remove Container')),
         catchError(this.handleError('removeContainer', undefined))
       );
   }
 
-  updateContainer(hostConfig: HostConfig, id: string, action: string): Observable<Object> {
-    return this.http.put<Object>(this.containersUrl + "/" + id, {host: hostConfig, action: action})
+  updateContainer(id: string, action: string): Observable<Container> {
+    return this.http.post<Container>(this.containersUrl + "/" + id + "/" + action, {})
       .pipe(
         tap(containerspage => this.log('update Container')),
         catchError(this.handleError('updateContainer', undefined))

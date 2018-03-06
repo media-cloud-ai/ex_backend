@@ -3,7 +3,7 @@ import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {ContainersService} from '../services/containers.service';
-import {ContainersPage, HostConfig, Host, WorkerContainer} from '../services/containers_page';
+import {ContainersPage, HostConfig, WorkerContainer} from '../services/containers_page';
 
 @Component({
   selector: 'containers-component',
@@ -16,10 +16,10 @@ export class ContainersComponent {
 
   containersPage: ContainersPage;
 
-  hosts: Host[];
+  hosts: HostConfig[];
   workerContainers: WorkerContainer[];
 
-  selectedHost: Host;
+  selectedHost: HostConfig;
   selectedWorker: WorkerContainer;
 
   constructor(
@@ -50,15 +50,7 @@ export class ContainersComponent {
   getHosts(): void {
     this.containersService.getHosts()
     .subscribe(hostsPage => {
-      this.hosts = this.containersService.getHostsFromConfigs(hostsPage.data);
-    });
-  }
-
-  getContainersForHost(host: Host): void {
-    let config = this.containersService.getConfigFromHost(host);
-    this.containersService.getContainersForHost(config)
-    .subscribe(containersPage => {
-      this.containersPage = containersPage;
+      this.hosts = hostsPage.data;
     });
   }
 
@@ -69,47 +61,35 @@ export class ContainersComponent {
     });
   }
 
-  updateContainers(): void {
-    for (let host of this.hosts) {
-      this.getContainersForHost(host);
-    }
-  }
-
   addContainer(): void {
     this.containersService.createContainer(
       this.selectedHost,
       this.selectedWorker.name + "-" + Date.now(),
       this.selectedWorker.params)
-    .subscribe(response => {
-      if(response.message) {
-        alert(response.message)
-      }
-      if(response.warning) {
-        alert(response.warning)
-      }
+    .subscribe(container => {
       this.selectedHost = undefined;
       this.selectedWorker = undefined;
       this.getContainers();
     });
   }
 
-  removeContainer(id: string, host: HostConfig): void {
-    this.containersService.removeContainer(host, id)
-    .subscribe(response => {
+  removeContainer(id: string): void {
+    this.containersService.removeContainer(id)
+    .subscribe(container => {
       this.getContainers();
     });
   }
 
-  private startContainer(id: string, host: HostConfig): void {
-    this.containersService.updateContainer(host, id, "start")
-    .subscribe(response => {
+  private startContainer(id: string): void {
+    this.containersService.updateContainer(id, "start")
+    .subscribe(container => {
       this.getContainers()
     });
   }
 
-  private stopContainer(id: string, host: HostConfig): void {
-    this.containersService.updateContainer(host, id, "stop")
-    .subscribe(response => {
+  private stopContainer(id: string): void {
+    this.containersService.updateContainer(id, "stop")
+    .subscribe(container => {
       var that =  this;
       setTimeout(function() {
         that.getContainers()
@@ -117,11 +97,11 @@ export class ContainersComponent {
     });
   }
 
-  updateContainer(id: string, host: HostConfig, state: string): void {
+  actionContainer(id: string, state: string): void {
     if(state == 'running') {
-      this.stopContainer(id, host);
+      this.stopContainer(id);
     } else {
-      this.startContainer(id, host);
+      this.startContainer(id);
     }
   }
 
