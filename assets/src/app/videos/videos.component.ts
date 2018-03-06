@@ -166,5 +166,9 @@ export class VideosComponent {
     console.log(video)
     this.router.navigate(['/workflows'], { queryParams: {video_id: video.id} });
   }
+
+  get_encoded_uri(uri): string {
+    return encodeURI("[\"" + uri + "\"]");
+  }
 }
 

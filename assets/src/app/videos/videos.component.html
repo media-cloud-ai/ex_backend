@@ -87,6 +87,11 @@
     <span class="hour">
       {{video.creation | date: 'H:mm:ss'}}
     </span>
+    <span class="jarvis" [ngClass]="{disabled: video.manifest_url == undefined}">
+      <a target="_blank" href="http://master.player.build.ftven.net/jarvis/?streams={{get_encoded_uri(video.manifest_url)}}">
+        <i class="material-icons">live_tv</i>
+      </a>
+    </span>
     <span class="tracks audio"
       *ngFor="let track of video.audio_tracks">
       <i class="material-icons">volume_down</i>
