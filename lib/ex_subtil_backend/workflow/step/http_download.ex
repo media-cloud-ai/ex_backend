@@ -11,6 +11,7 @@ defmodule ExSubtilBackend.Workflow.Step.HttpDownload do
 
   defp start_download_via_http([], _workflow), do: {:ok, "started"}
   defp start_download_via_http([url | urls], workflow) do
+    work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_subtil_backend, :work_dir) || "/tmp/ftp_francetv"
     filename = Path.basename(url)
 
     job_params = %{
@@ -21,7 +22,7 @@ defmodule ExSubtilBackend.Workflow.Step.HttpDownload do
           path: url
         },
         destination: %{
-          path: "/tmp/ftp_ftv/" <> workflow.reference <> "/" <> filename
+          path: work_dir <> "/" <> workflow.reference <> "/" <> filename
         }
       }
     }

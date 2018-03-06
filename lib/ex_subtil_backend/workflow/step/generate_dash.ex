@@ -6,8 +6,10 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
   def launch(workflow, step) do
     paths = get_source_files(workflow.jobs, [])
 
+    work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_subtil_backend, :work_dir) || "/tmp/ftp_francetv"
+
     options = %{
-      "-out": "/tmp/ftp_ftv/dash/" <> workflow.reference <> "/manifest.mpd",
+      "-out": work_dir <> "/dash/" <> workflow.reference <> "/manifest.mpd",
       "-profile": "onDemand",
       "-rap": true,
       "-url-template": true,

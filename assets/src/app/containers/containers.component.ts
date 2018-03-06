@@ -90,10 +90,8 @@ export class ContainersComponent {
   private stopContainer(id: string): void {
     this.containersService.updateContainer(id, "stop")
     .subscribe(container => {
-      var that =  this;
-      setTimeout(function() {
-        that.getContainers()
-      }, 500); // wait a bit until the container is really stopped
+      var that = this;
+      that.getContainers()
     });
   }
 

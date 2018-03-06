@@ -87,6 +87,32 @@
     <span class="hour">
       {{video.creation | date: 'H:mm:ss'}}
     </span>
+    <span class="jarvis" [ngClass]="{disabled: video.manifest_url == undefined}">
+      <a target="_blank" href="http://master.player.build.ftven.net/jarvis/?streams={{get_encoded_uri(video.manifest_url)}}">
+        <i class="material-icons">live_tv</i>
+      </a>
+    </span>
+    <span class="tracks audio"
+      *ngFor="let track of video.audio_tracks">
+      <i class="material-icons">volume_down</i>
+      <span>
+        {{track.id | audioType}}
+      </span>
+    </span>
+    <span class="tracks text"
+      *ngFor="let track of video.text_tracks">
+      <i class="material-icons">closed_caption</i>
+      <span>
+        {{track.id | textType}}
+      </span>
+    </span>
+    <span
+      class="workflows_count"
+      [ngClass]="{found: video.workflows_count > 0}"
+      (click)="redirect_to_workflow_view(video)"
+      >
+      {{video.workflows_count}}
+    </span>
     <span class="starter">
       <button
         mat-raised-button
