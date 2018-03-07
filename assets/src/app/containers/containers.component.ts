@@ -3,11 +3,11 @@ import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {ContainerService} from '../services/container.service';
-import {HostService} from '../services/host.service';
+import {NodeService} from '../services/node.service';
 import {ImageService} from '../services/image.service';
 
 import {Container} from '../models/container';
-import {HostConfig} from '../models/host_config';
+import {NodeConfig} from '../models/node_config';
 import {Image} from '../models/image';
 
 @Component({
@@ -21,15 +21,15 @@ export class ContainersComponent {
 
   containers: Container[];
 
-  hosts: HostConfig[];
+  nodes: NodeConfig[];
   images: Image[];
 
-  selectedHost: HostConfig;
+  selectedNode: NodeConfig;
   selectedWorker: Image;
 
   constructor(
     private containerService: ContainerService,
-    private hostService: HostService,
+    private nodeService: NodeService,
     private imageService: ImageService,
     private route: ActivatedRoute,
     private router: Router
@@ -45,7 +45,7 @@ export class ContainersComponent {
     this.sub = this.route
       .queryParams
       .subscribe(params => {
-        this.getHosts();
+        this.getNodes();
         this.getContainers();
       });
   }
@@ -54,10 +54,10 @@ export class ContainersComponent {
     this.sub.unsubscribe();
   }
 
-  getHosts(): void {
-    this.hostService.getHosts()
-    .subscribe(hostConfigPage => {
-      this.hosts = hostConfigPage.data;
+  getNodes(): void {
+    this.nodeService.getNodes()
+    .subscribe(nodeConfigPage => {
+      this.hosts = nodeConfigPage.data;
     });
   }
 
@@ -70,11 +70,11 @@ export class ContainersComponent {
 
   addContainer(): void {
     this.containerService.createContainer(
-      this.selectedHost,
-      this.selectedWorker.name + "-" + Date.now(),
+      this.selectedNode,
+      this.selectedWorker.id + "-" + Date.now(),
       this.selectedWorker.params)
     .subscribe(container => {
-      this.selectedHost = undefined;
+      this.selectedNode = undefined;
       this.selectedWorker = undefined;
       this.getContainers();
     });

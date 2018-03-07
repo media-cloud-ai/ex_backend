@@ -6,7 +6,7 @@ export class ImageParameters {
 }
 
 export class Image {
-  name: string;
+  id: string;
   label: string;
   params: ImageParameters
 }

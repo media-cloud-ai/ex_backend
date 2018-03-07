@@ -7,7 +7,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 
 import { Container } from '../models/container';
 import { ContainerPage } from '../models/page/container_page';
-import { HostConfig } from '../models/host_config';
+import { NodeConfig } from '../models/node_config';
 import { ImageParameters } from '../models/image';
 
 @Injectable()
@@ -25,9 +25,9 @@ export class ContainerService {
       );
   }
 
-  createContainer(docker_host_config: HostConfig, container_name: string, image_parameters: ImageParameters): Observable<Container> {
+  createContainer(node_config: NodeConfig, container_name: string, image_parameters: ImageParameters): Observable<Container> {
     let params = {
-      docker_host_config: docker_host_config,
+      node_config: node_config,
       container_name: container_name,
       image_parameters: image_parameters
     };

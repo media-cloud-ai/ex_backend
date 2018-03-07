@@ -13,7 +13,7 @@
         <mat-option
           *ngFor="let host of hosts"
           [value]="host">
-          {{ host.hostname }}:{{ host.port }}
+          {{ host.label }}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -84,7 +84,7 @@
       {{container.id | slice:0:12}}
     </span>
     <span class="host">
-      {{container.docker_host_config.hostname}}:{{container.docker_host_config.port}}
+      {{container.node_config.label}}
     </span>
     <span class="action">
       <button mat-raised-button

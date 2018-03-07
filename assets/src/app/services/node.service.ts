@@ -5,19 +5,19 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { catchError, tap } from 'rxjs/operators';
 
-import { HostConfigPage } from '../models/page/host_config_page';
+import { NodeConfigPage } from '../models/page/node_config_page';
 
 @Injectable()
-export class HostService {
-  private hostsUrl = 'api/docker/hosts';
+export class NodeService {
+  private nodesUrl = 'api/docker/nodes';
 
   constructor(private http: HttpClient) { }
 
-  getHosts(): Observable<HostConfigPage> {
-    return this.http.get<HostConfigPage>(this.hostsUrl)
+  getNodes(): Observable<NodeConfigPage> {
+    return this.http.get<NodeConfigPage>(this.nodesUrl)
       .pipe(
-        tap(hostConfigPage => this.log('fetched HostConfigPage')),
-        catchError(this.handleError('getHosts', undefined))
+        tap(nodeConfigPage => this.log('fetched NodeConfigPage')),
+        catchError(this.handleError('getNodes', undefined))
       );
   }
 
@@ -30,6 +30,6 @@ export class HostService {
   }
 
   private log(message: string) {
-    console.log('HostService: ' + message);
+    console.log('NodeService: ' + message);
   }
 }

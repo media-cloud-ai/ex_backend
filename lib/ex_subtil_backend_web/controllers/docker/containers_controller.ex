@@ -1,11 +1,11 @@
 defmodule ExSubtilBackendWeb.Docker.ContainersController do
   use ExSubtilBackendWeb, :controller
 
-  alias ExSubtilBackendWeb.Docker.HostsController
+  alias ExSubtilBackendWeb.Docker.NodesController
   alias RemoteDockers.{
     Container,
     ContainerConfig,
-    DockerHostConfig
+    NodeConfig
   }
 
   def index(conn, _params) do
@@ -13,22 +13,21 @@ defmodule ExSubtilBackendWeb.Docker.ContainersController do
     render(conn, "index.json", containers: containers)
   end
 
+  def create(conn, params) do
+    node_config =
+      Map.get(params, "node_config")
+      |> to_struct(NodeConfig)
 
-  def create(conn, %{"docker_host_config" => docker_host_config, "container_name" => container_name, "image_parameters" => container_config}) do
-    docker_host_config =
-      docker_host_config
-      |> to_struct(DockerHostConfig)
     container_config =
-      container_config
+      Map.get(params, "image_parameters")
       |> to_struct(ContainerConfig)
 
-    create(conn, docker_host_config, container_name, container_config)
-  end
+    container_name =
+      Map.get(params, "container_name")
 
-  def create(conn, %DockerHostConfig{} = docker_host_config, container_name, %ContainerConfig{} = container_config) do
     container =
       try do
-        Container.create!(docker_host_config, container_name, container_config)
+        Container.create!(node_config, container_name, container_config)
       rescue
         error ->
           conn
@@ -37,7 +36,6 @@ defmodule ExSubtilBackendWeb.Docker.ContainersController do
       end
     render(conn, "container.json", containers: container)
   end
-
 
   def delete(conn, %{"id" => container_id}) do
     get_container(container_id)
@@ -48,7 +46,6 @@ defmodule ExSubtilBackendWeb.Docker.ContainersController do
         send_resp(conn, :ok, container_id)
     end
   end
-
 
   def start(conn, %{"containers_id" => container_id}) do
     get_container(container_id)
@@ -94,14 +91,14 @@ defmodule ExSubtilBackendWeb.Docker.ContainersController do
     end)
   end
 
-  defp list_containers(%DockerHostConfig{} = host) do
-    Container.list_all!(host)
+  defp list_containers(%NodeConfig{} = node_config) do
+    Container.list_all!(node_config)
   end
 
   defp list_all() do
-    HostsController.list_hosts()
-    |> Enum.map(fn(docker_host) ->
-        list_containers(docker_host)
+    NodesController.list_nodes()
+    |> Enum.map(fn(node_config) ->
+        list_containers(node_config)
       end)
     |> Enum.concat
   end

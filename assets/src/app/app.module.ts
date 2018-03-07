@@ -49,9 +49,9 @@ import {WorkflowDialogComponent} from './videos/workflow/workflow_dialog.compone
 
 import {AmqpService}             from './services/amqp.service';
 import {ContainerService}        from './services/container.service';
-import {HostService}             from './services/host.service';
 import {ImageService}            from './services/image.service';
 import {JobService}              from './services/job.service';
+import {NodeService}             from './services/node.service';
 import {VideoService}            from './services/video.service';
 import {WorkflowService}         from './services/workflow.service';
 
@@ -158,9 +158,9 @@ const SUBTIL_DATE_FORMATS = {
     },
     AmqpService,
     ContainerService,
-    HostService,
     ImageService,
     JobService,
+    NodeService,
     VideoService,
     WorkflowService,
   ],

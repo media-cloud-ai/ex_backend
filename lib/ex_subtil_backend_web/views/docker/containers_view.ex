@@ -10,20 +10,27 @@ defmodule ExSubtilBackendWeb.Docker.ContainersView do
   end
 
   def render("container.json", %{containers: container}) do
-    docker_host_config = %{
-      hostname: container.docker_host_config.hostname,
-      port: container.docker_host_config.port,
+    node_config = %{
+      hostname: container.node_config.hostname,
+      port: container.node_config.port,
     }
-    docker_host_config =
-      case container.docker_host_config.ssl do
-        nil -> docker_host_config
+
+    node_config =
+      case container.node_config.label do
+        nil -> node_config
+        label -> Map.put(node_config, :label, label)
+      end
+
+    node_config =
+      case container.node_config.ssl do
+        nil -> node_config
         ssl ->
           ssl = %{
             certfile: Keyword.get(ssl, :certfile),
             keyfile: Keyword.get(ssl, :keyfile),
           }
 
-        Map.put(docker_host_config, :ssl, ssl)
+        Map.put(node_config, :ssl, ssl)
       end
 
     %{
@@ -32,7 +39,7 @@ defmodule ExSubtilBackendWeb.Docker.ContainersView do
       image: container.image,
       state: container.state,
       status: container.status,
-      docker_host_config: docker_host_config
+      node_config: node_config
     }
   end
 

@@ -1,5 +1,5 @@
 
-import { HostConfig } from './host_config';
+import { NodeConfig } from './node_config';
 
 export class Container {
   id: string;
@@ -7,5 +7,5 @@ export class Container {
   state: string;
   status: string;
   image: string;
-  docker_host_config: HostConfig;
+  node_config: NodeConfig;
 }
