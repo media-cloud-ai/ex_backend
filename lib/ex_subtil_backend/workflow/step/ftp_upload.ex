@@ -9,7 +9,7 @@ defmodule ExSubtilBackend.Workflow.Step.FtpUpload do
       |> Timex.format!("%Y_%m_%d__%H_%M_%S", :strftime)
 
     get_paths(workflow.jobs, [])
-    |> start_upload(workflow, current_date)
+    |> start_upload(current_date, workflow)
   end
 
   defp get_paths([], result), do: result
