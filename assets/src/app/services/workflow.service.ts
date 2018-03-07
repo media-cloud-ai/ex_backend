@@ -5,8 +5,8 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import {WorkflowPage} from './workflow_page';
-import {Step, Workflow} from './workflow';
+import {WorkflowPage} from '../models/page/workflow_page';
+import {Step, Workflow} from '../models/workflow';
 
 @Injectable()
 export class WorkflowService {
@@ -25,7 +25,7 @@ export class WorkflowService {
 
     return this.http.get<WorkflowPage>(this.workflowsUrl, {params: params})
       .pipe(
-        tap(workflowpage => this.log('fetched WorkflowPage')),
+        tap(workflowPage => this.log('fetched WorkflowPage')),
         catchError(this.handleError('getWorkflows', undefined))
       );
   }
@@ -33,7 +33,7 @@ export class WorkflowService {
   createWorkflow(workflow: Workflow): Observable<Workflow> {
     return this.http.post<Workflow>(this.workflowsUrl, {workflow: workflow})
       .pipe(
-        tap(workflowpage => this.log('fetched Workflow')),
+        tap(workflowPage => this.log('fetched Workflow')),
         catchError(this.handleError('createWorkflow', undefined))
       );
   }

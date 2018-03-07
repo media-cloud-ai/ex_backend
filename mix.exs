@@ -53,7 +53,7 @@ defmodule ExSubtilBackend.Mixfile do
       {:phoenix_pubsub, "~> 1.0"},
       {:postgrex, ">= 0.0.0"},
       {:poison, "~> 3.1"},
-      {:remote_dockers, "1.1.0"},
+      {:remote_dockers, "1.3.0"},
       {:timex, "~> 3.2"},
     ]
   end

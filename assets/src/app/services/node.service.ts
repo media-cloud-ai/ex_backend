@@ -1,22 +1,23 @@
+
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { catchError, tap } from 'rxjs/operators';
 
-import {QueuePage} from '../models/page/queue_page';
+import { NodeConfigPage } from '../models/page/node_config_page';
 
 @Injectable()
-export class AmqpService {
-  private queuesUrl = 'api/amqp/queues';
+export class NodeService {
+  private nodesUrl = 'api/docker/nodes';
 
   constructor(private http: HttpClient) { }
 
-  getQueues(): Observable<QueuePage> {
-    return this.http.get<QueuePage>(this.queuesUrl)
+  getNodes(): Observable<NodeConfigPage> {
+    return this.http.get<NodeConfigPage>(this.nodesUrl)
       .pipe(
-        tap(queuepage => this.log('fetched QueuePage')),
-        catchError(this.handleError('getQueues', undefined))
+        tap(nodeConfigPage => this.log('fetched NodeConfigPage')),
+        catchError(this.handleError('getNodes', undefined))
       );
   }
 
@@ -29,6 +30,6 @@ export class AmqpService {
   }
 
   private log(message: string) {
-    console.log('AmqpService: ' + message);
+    console.log('NodeService: ' + message);
   }
 }

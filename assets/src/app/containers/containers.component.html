@@ -11,9 +11,9 @@
         [(ngModel)]="selectedHost"
         >
         <mat-option
-          *ngFor="let host of hosts"
-          [value]="host">
-          {{ host.hostname }}:{{ host.port }}
+          *ngFor="let node of nodes"
+          [value]="node">
+          {{ node.label }}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -26,21 +26,22 @@
         [(ngModel)]="selectedWorker"
         >
         <mat-option
-          *ngFor="let worker of workerContainers"
-          [value]="worker">
-          {{ worker.label }}
+          *ngFor="let image of images"
+          [value]="image">
+          {{ image.label }}
         </mat-option>
       </mat-select>
     </mat-form-field>
   </div>
   <button mat-raised-button
+    color="primary"
     (click)="addContainer()"
     [disabled]="!selectedWorker || !selectedHost">
       + Ajouter un worker
   </button>
 </div>
 
-<ul *ngIf="containersPage" class="containers">
+<ul class="containers">
    <li class="container header">
     <span class="names">
       Nom
@@ -64,7 +65,7 @@
     </span>
   </li>
   <li
-    *ngFor="let container of containersPage.data"
+    *ngFor="let container of containers"
     class="container"
     >
     <span class="names">
@@ -83,17 +84,24 @@
       {{container.id | slice:0:12}}
     </span>
     <span class="host">
-      {{container.docker_host_config.hostname}}:{{container.docker_host_config.port}}
+      {{container.node_config.label}}
     </span>
     <span class="action">
       <button mat-raised-button
-        (click)="actionContainer(container.id, container.state)">
-          {{ container.state == 'running' ? "Stop" : "Start" }}
+        color="primary"
+        (click)="actionContainer(container.id, container.state)" *ngIf="container.state != 'running'">
+          <i class="material-icons">play_circle_outline</i> Start
       </button>
       <button mat-raised-button
+        color="accent"
+        (click)="actionContainer(container.id, container.state)" *ngIf="container.state == 'running'">
+          <i class="material-icons">pause_circle_outline</i> Stop
+      </button>
+      <button mat-raised-button
+        color="warn"
         (click)="removeContainer(container.id)"
         [disabled]="(container.state == 'running')">
-          Supprimer
+          <i class="material-icons">delete</i> Supprimer
       </button>
     </span>
   </li>

@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Status } from '../services/job';
+import { Status } from '../models/job';
 /*
  * Usage:
  *   value | jobStatus

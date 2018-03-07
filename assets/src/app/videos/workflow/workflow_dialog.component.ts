@@ -1,6 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import {Step} from '../../services/workflow';
+import {Step} from '../../models/workflow';
 
 @Component({
   selector: 'workflow_dialog',

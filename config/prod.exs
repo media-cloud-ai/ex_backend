@@ -77,8 +77,14 @@ config :ex_subtil_backend,
   akamai_username: "akamai_username",
   akamai_password: "akamai_password",
   docker_hosts: [
-    [hostname: "http://192.168.101.108", port: 2357],
-    [hostname: "http://192.168.101.109", port: 2357]
+    [
+      label: "Worker 1"
+      hostname: "http://192.168.101.108"
+    ],
+    [
+      label: "Worker 2"
+      hostname: "http://192.168.101.109"
+    ]
   ]
 
 config :amqp,

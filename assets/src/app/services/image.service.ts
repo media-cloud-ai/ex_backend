@@ -1,22 +1,23 @@
+
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { catchError, tap } from 'rxjs/operators';
 
-import {QueuePage} from '../models/page/queue_page';
+import { ImagePage } from '../models/page/image_page';
 
 @Injectable()
-export class AmqpService {
-  private queuesUrl = 'api/amqp/queues';
+export class ImageService {
+  private imagesUrl = 'api/docker/images';
 
   constructor(private http: HttpClient) { }
 
-  getQueues(): Observable<QueuePage> {
-    return this.http.get<QueuePage>(this.queuesUrl)
+  getImages(): Observable<ImagePage> {
+    return this.http.get<ImagePage>(this.imagesUrl)
       .pipe(
-        tap(queuepage => this.log('fetched QueuePage')),
-        catchError(this.handleError('getQueues', undefined))
+        tap(imagePage => this.log('fetched ImagePage')),
+        catchError(this.handleError('getImages', undefined))
       );
   }
 
@@ -29,6 +30,6 @@ export class AmqpService {
   }
 
   private log(message: string) {
-    console.log('AmqpService: ' + message);
+    console.log('ImageService: ' + message);
   }
 }

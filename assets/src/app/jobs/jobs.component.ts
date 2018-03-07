@@ -4,8 +4,8 @@ import {PageEvent} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {JobService} from '../services/job.service';
-import {JobPage} from '../services/job_page';
-import {Job} from '../services/job';
+import {JobPage} from '../models/page/job_page';
+import {Job} from '../models/job';
 
 import * as moment from 'moment';
 

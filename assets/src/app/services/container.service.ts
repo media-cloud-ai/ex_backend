@@ -5,48 +5,35 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import {
-  ContainerConfig,
-  Container,
-  ContainersPage,
-  HostsPage,
-  HostConfig
-} from './containers_page';
+import { Container } from '../models/container';
+import { ContainerPage } from '../models/page/container_page';
+import { NodeConfig } from '../models/node_config';
+import { ImageParameters } from '../models/image';
 
 @Injectable()
-export class ContainersService {
+export class ContainerService {
   private containersUrl = 'api/docker/containers';
-  private hostsUrl = 'api/docker/hosts';
 
   constructor(private http: HttpClient) { }
 
-  getHosts(): Observable<HostsPage> {
+  getContainers(): Observable<ContainerPage> {
     let params = new HttpParams();
-    return this.http.get<HostsPage>(this.hostsUrl, {params: params})
+    return this.http.get<ContainerPage>(this.containersUrl, {params: params})
       .pipe(
-        tap(containerspage => this.log('fetched HostsPage')),
-        catchError(this.handleError('getHosts', undefined))
-      );
-  }
-
-  getContainers(): Observable<ContainersPage> {
-    let params = new HttpParams();
-    return this.http.get<ContainersPage>(this.containersUrl, {params: params})
-      .pipe(
-        tap(containerspage => this.log('fetched ContainersPage')),
+        tap(containerPage => this.log('fetched ContainerPage')),
         catchError(this.handleError('getContainers', undefined))
       );
   }
 
-  createContainer(docker_host_config: HostConfig, container_name: string, container_config: ContainerConfig): Observable<Container> {
+  createContainer(node_config: NodeConfig, container_name: string, image_parameters: ImageParameters): Observable<Container> {
     let params = {
-      docker_host_config: docker_host_config,
+      node_config: node_config,
       container_name: container_name,
-      container_config: container_config
+      image_parameters: image_parameters
     };
     return this.http.post<Container>(this.containersUrl, params)
       .pipe(
-        tap(containerspage => this.log('create Container')),
+        tap(containerPage => this.log('create Container')),
         catchError(this.handleError('createContainer', undefined))
       );
   }
@@ -54,7 +41,7 @@ export class ContainersService {
   removeContainer(id: string): Observable<Container> {
     return this.http.delete<Container>(this.containersUrl + "/" + id)
       .pipe(
-        tap(containerspage => this.log('remove Container')),
+        tap(containerPage => this.log('remove Container')),
         catchError(this.handleError('removeContainer', undefined))
       );
   }
@@ -62,7 +49,7 @@ export class ContainersService {
   updateContainer(id: string, action: string): Observable<Container> {
     return this.http.post<Container>(this.containersUrl + "/" + id + "/" + action, {})
       .pipe(
-        tap(containerspage => this.log('update Container')),
+        tap(containerPage => this.log('update Container')),
         catchError(this.handleError('updateContainer', undefined))
       );
   }

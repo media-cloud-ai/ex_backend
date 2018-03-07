@@ -1,5 +1,5 @@
 
-import {Queue} from './queue';
+import {Queue} from '../queue';
 
 export class QueuePage {
   queues: Queue[];

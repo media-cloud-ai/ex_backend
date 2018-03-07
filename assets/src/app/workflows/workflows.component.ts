@@ -4,8 +4,8 @@ import {PageEvent} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {WorkflowService} from '../services/workflow.service';
-import {WorkflowPage} from '../services/workflow_page';
-import {Workflow} from '../services/workflow';
+import {WorkflowPage} from '../models/page/workflow_page';
+import {Workflow} from '../models/workflow';
 
 import * as moment from 'moment';
 

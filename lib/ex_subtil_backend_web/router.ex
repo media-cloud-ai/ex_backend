@@ -21,7 +21,8 @@ defmodule ExSubtilBackendWeb.Router do
     resources "/workflows", WorkflowController, except: [:new, :edit]
 
     scope "/docker", Docker do
-      get "/hosts", HostsController, :index
+      get "/nodes", NodesController, :index
+      get "/images", ImagesController, :index
       resources "/containers", ContainersController, except: [:new, :edit] do
         post "/start", ContainersController, :start
         post "/stop", ContainersController, :stop

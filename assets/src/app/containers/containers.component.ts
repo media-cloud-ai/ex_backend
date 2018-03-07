@@ -2,8 +2,13 @@
 import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
-import {ContainersService} from '../services/containers.service';
-import {ContainersPage, HostConfig, WorkerContainer} from '../services/containers_page';
+import {ContainerService} from '../services/container.service';
+import {NodeService} from '../services/node.service';
+import {ImageService} from '../services/image.service';
+
+import {Container} from '../models/container';
+import {NodeConfig} from '../models/node_config';
+import {Image} from '../models/image';
 
 @Component({
   selector: 'containers-component',
@@ -14,31 +19,33 @@ import {ContainersPage, HostConfig, WorkerContainer} from '../services/container
 export class ContainersComponent {
   sub = undefined;
 
-  containersPage: ContainersPage;
+  containers: Container[];
 
-  hosts: HostConfig[];
-  workerContainers: WorkerContainer[];
+  nodes: NodeConfig[];
+  images: Image[];
 
-  selectedHost: HostConfig;
-  selectedWorker: WorkerContainer;
+  selectedNode: NodeConfig;
+  selectedWorker: Image;
 
   constructor(
-    private containersService: ContainersService,
+    private containerService: ContainerService,
+    private nodeService: NodeService,
+    private imageService: ImageService,
     private route: ActivatedRoute,
     private router: Router
   ) {
-    this.workerContainers = new Array<WorkerContainer>();
   }
 
   ngOnInit() {
-    let workers_containers = require('./workers/workers_containers.json');
-    for(let worker_container of workers_containers.workers) {
-      this.workerContainers.push(worker_container);
-    }
+
+    this.imageService.getImages()
+    .subscribe(imagePage => {
+      this.images = imagePage.data;
+    });
     this.sub = this.route
       .queryParams
       .subscribe(params => {
-        this.getHosts();
+        this.getNodes();
         this.getContainers();
       });
   }
@@ -47,48 +54,48 @@ export class ContainersComponent {
     this.sub.unsubscribe();
   }
 
-  getHosts(): void {
-    this.containersService.getHosts()
-    .subscribe(hostsPage => {
-      this.hosts = hostsPage.data;
+  getNodes(): void {
+    this.nodeService.getNodes()
+    .subscribe(nodeConfigPage => {
+      this.hosts = nodeConfigPage.data;
     });
   }
 
   getContainers(): void {
-    this.containersService.getContainers()
-    .subscribe(containersPage => {
-      this.containersPage = containersPage;
+    this.containerService.getContainers()
+    .subscribe(containerPage => {
+      this.containers = containerPage.data;
     });
   }
 
   addContainer(): void {
-    this.containersService.createContainer(
-      this.selectedHost,
-      this.selectedWorker.name + "-" + Date.now(),
+    this.containerService.createContainer(
+      this.selectedNode,
+      this.selectedWorker.id + "-" + Date.now(),
       this.selectedWorker.params)
     .subscribe(container => {
-      this.selectedHost = undefined;
+      this.selectedNode = undefined;
       this.selectedWorker = undefined;
       this.getContainers();
     });
   }
 
   removeContainer(id: string): void {
-    this.containersService.removeContainer(id)
+    this.containerService.removeContainer(id)
     .subscribe(container => {
       this.getContainers();
     });
   }
 
   private startContainer(id: string): void {
-    this.containersService.updateContainer(id, "start")
+    this.containerService.updateContainer(id, "start")
     .subscribe(container => {
       this.getContainers()
     });
   }
 
   private stopContainer(id: string): void {
-    this.containersService.updateContainer(id, "stop")
+    this.containerService.updateContainer(id, "stop")
     .subscribe(container => {
       var that = this;
       that.getContainers()
