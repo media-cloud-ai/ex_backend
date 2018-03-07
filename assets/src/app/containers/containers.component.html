@@ -11,9 +11,9 @@
         [(ngModel)]="selectedHost"
         >
         <mat-option
-          *ngFor="let host of hosts"
-          [value]="host">
-          {{ host.label }}
+          *ngFor="let node of nodes"
+          [value]="node">
+          {{ node.label }}
         </mat-option>
       </mat-select>
     </mat-form-field>
