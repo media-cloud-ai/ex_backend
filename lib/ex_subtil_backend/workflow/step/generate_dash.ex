@@ -94,7 +94,7 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
   defp convert_gpac_key("fragment_duration"), do: "-frag"
   defp convert_gpac_key(_), do: nil
 
-  defp get_quality(path) do
+  def get_quality(path) do
     String.trim_trailing(path, ".mp4")
     |> String.split("-standard")
     |> List.last

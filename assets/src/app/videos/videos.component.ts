@@ -143,8 +143,36 @@ export class VideosComponent {
   }
 
   start_process(video): void {
+    let languages_params = []
+
+    for (var index = 0; index < video.audio_tracks.length; index++) {
+      let audio_track = video.audio_tracks[index];
+      let params = {};
+      params["id"] = "audio_track";
+      params["index"] = index + 1;
+      params["type"] = "text";
+      params["default"] = audio_track.code;
+      params["value"] = audio_track.code;
+      params["read_only"] = true;
+      languages_params.push(params);
+    }
+
+    for (var index = 0; index < video.text_tracks.length; index++) {
+      let text_track = video.text_tracks[index];
+      let params = {};
+      params["id"] = "text_track";
+      params["index"] = index + 1;
+      params["type"] = "text";
+      params["default"] = text_track.code;
+      params["value"] = text_track.code;
+      params["read_only"] = true;
+      languages_params.push(params);
+    }
+
     let dialogRef = this.dialog.open(WorkflowDialogComponent, {
-      data: {}
+      data: {
+        languages: languages_params
+      }
     });
 
     dialogRef.afterClosed().subscribe(steps => {
@@ -163,7 +191,6 @@ export class VideosComponent {
   }
 
   redirect_to_workflow_view(video): void {
-    console.log(video)
     this.router.navigate(['/workflows'], { queryParams: {video_id: video.id} });
   }
 

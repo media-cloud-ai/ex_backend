@@ -39,6 +39,10 @@ defmodule ExSubtilBackend.WorkflowStep do
     ExSubtilBackend.Workflow.Step.TtmlToMp4.launch(workflow)
   end
 
+  defp launch_step(workflow, %{"id"=> "set_language"} = step, _step_index) do
+    ExSubtilBackend.Workflow.Step.SetLanguage.launch(workflow, step)
+  end
+
   defp launch_step(workflow, %{"id"=> "generate_dash"} = step, _step_index) do
     ExSubtilBackend.Workflow.Step.GenerateDash.launch(workflow, step)
   end
