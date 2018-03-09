@@ -3,12 +3,12 @@
 </h1>
 
 <div class="containers-creation-bar">
-  <div class=hosts_selector>
+  <div class=nodes-selector>
     <mat-form-field>
       <mat-select
-        class="hosts-select"
+        class="nodes-select"
         placeholder="Hôte"
-        [(ngModel)]="selectedHost"
+        [(ngModel)]="selectedNode"
         >
         <mat-option
           *ngFor="let node of nodes"
@@ -36,7 +36,7 @@
   <button mat-raised-button
     color="primary"
     (click)="addContainer()"
-    [disabled]="!selectedWorker || !selectedHost">
+    [disabled]="!selectedWorker || !selectedNode">
       + Ajouter un worker
   </button>
 </div>

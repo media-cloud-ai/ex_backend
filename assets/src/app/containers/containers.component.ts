@@ -57,7 +57,7 @@ export class ContainersComponent {
   getNodes(): void {
     this.nodeService.getNodes()
     .subscribe(nodeConfigPage => {
-      this.hosts = nodeConfigPage.data;
+      this.nodes = nodeConfigPage.data;
     });
   }
 
