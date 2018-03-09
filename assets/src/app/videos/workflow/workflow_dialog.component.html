@@ -14,7 +14,7 @@
               <mat-form-field class="parameter">
                 <input matInput
                   type={{parameter.type}}
-                  placeholder="{{parameter.id | parameterLabel}}"
+                  placeholder="{{parameter.id | parameterLabel}} {{parameter.index}}"
                   value={{parameter.default}}
                   [readonly]="(parameter.read_only == true)"
                   [(ngModel)]="parameter.default">
