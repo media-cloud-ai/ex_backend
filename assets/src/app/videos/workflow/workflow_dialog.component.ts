@@ -26,7 +26,7 @@ export class WorkflowDialogComponent {
         "parameters": []
       },{
         "id": "set_language",
-        "parameters" : data.languages
+        "parameters" : []
       },{
         "id": "generate_dash",
         "parameters" : [
