@@ -147,25 +147,27 @@ export class VideosComponent {
 
     for (var index = 0; index < video.audio_tracks.length; index++) {
       let audio_track = video.audio_tracks[index];
-      let params = {};
-      params["id"] = "audio_track";
-      params["index"] = index + 1;
-      params["type"] = "text";
-      params["default"] = audio_track.code;
-      params["value"] = audio_track.code;
-      params["read_only"] = true;
+      let params = {
+        "id": "audio_track",
+        "index": index + 1,
+        "type": "text",
+        "default": audio_track.code,
+        "value": audio_track.code,
+        "read_only": true
+      };
       languages_params.push(params);
     }
 
     for (var index = 0; index < video.text_tracks.length; index++) {
       let text_track = video.text_tracks[index];
-      let params = {};
-      params["id"] = "text_track";
-      params["index"] = index + 1;
-      params["type"] = "text";
-      params["default"] = text_track.code;
-      params["value"] = text_track.code;
-      params["read_only"] = true;
+      let params = {
+        "id": "text_track",
+        "index": index + 1,
+        "type": "text",
+        "default": text_track.code,
+        "value": text_track.code,
+        "read_only": true
+      };
       languages_params.push(params);
     }
 
