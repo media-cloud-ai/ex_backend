@@ -1,7 +1,8 @@
 defmodule ExSubtilBackendWeb.Docker.ContainersController do
   use ExSubtilBackendWeb, :controller
+  require Logger
 
-  alias ExSubtilBackendWeb.Docker.NodesController
+  alias ExSubtilBackend.Docker.Node
   alias RemoteDockers.{
     Container,
     ContainerConfig,
@@ -14,27 +15,27 @@ defmodule ExSubtilBackendWeb.Docker.ContainersController do
   end
 
   def create(conn, params) do
-    node_config =
-      Map.get(params, "node_config")
-      |> to_struct(NodeConfig)
+    %{
+      "container_name" => container_name,
+      "node_config" => %{
+        "label" => label
+      },
+      "image_parameters" => parameters
+    } = params
 
-    container_config =
-      Map.get(params, "image_parameters")
-      |> to_struct(ContainerConfig)
+    node_config = ExSubtilBackend.Docker.Node.get_by_label(label)
+    container_config = ExSubtilBackend.Docker.Container.build_config(parameters)
 
-    container_name =
-      Map.get(params, "container_name")
-
-    container =
-      try do
-        Container.create!(node_config, container_name, container_config)
-      rescue
-        error ->
-          conn
-          |> send_resp(:internal_server_error, Exception.message(error))
-          |> halt
-      end
-    render(conn, "container.json", containers: container)
+    try do
+      container = Container.create!(node_config, container_name, container_config)
+      render(conn, "container.json", containers: container)
+    rescue
+      error ->
+        IO.inspect container_config
+        Logger.error "#{__MODULE__}: #{inspect error}"
+        conn
+        |> send_resp(:internal_server_error, Exception.message(error))
+    end
   end
 
   def delete(conn, %{"id" => container_id}) do
@@ -73,17 +74,6 @@ defmodule ExSubtilBackendWeb.Docker.ContainersController do
     end
   end
 
-  defp to_struct(map, type) do
-    struct = struct(type)
-    Map.to_list(struct)
-    |> Enum.reduce(struct, fn {key, _}, acc ->
-      case Map.fetch(map, Atom.to_string(key)) do
-        {:ok, value} -> %{acc | key => value}
-        :error -> acc
-      end
-    end)
-  end
-
   defp get_container(container_id) do
     list_all()
     |> Enum.find(fn(container) ->
@@ -96,7 +86,7 @@ defmodule ExSubtilBackendWeb.Docker.ContainersController do
   end
 
   defp list_all() do
-    NodesController.list_nodes()
+    Node.list()
     |> Enum.map(fn(node_config) ->
         list_containers(node_config)
       end)
