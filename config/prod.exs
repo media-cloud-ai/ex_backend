@@ -78,11 +78,11 @@ config :ex_subtil_backend,
   akamai_password: "akamai_password",
   docker_hosts: [
     [
-      label: "Worker 1"
+      label: "Worker 1",
       hostname: "http://192.168.101.108"
     ],
     [
-      label: "Worker 2"
+      label: "Worker 2",
       hostname: "http://192.168.101.109"
     ]
   ]
