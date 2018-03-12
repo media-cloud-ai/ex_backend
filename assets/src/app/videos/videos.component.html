@@ -123,13 +123,14 @@
         {{track.id | textType}}
       </span>
     </span>
-    <span
-      class="workflows_count"
-      [ngClass]="{found: video.workflows_count > 0}"
-      (click)="redirect_to_workflow_view(video)"
-      >
-      {{video.workflows_count}}
-    </span>
+    <a href="/workflows?video_id={{video.id}}">
+      <span
+        class="workflows_count"
+        [ngClass]="{found: video.workflows_count > 0}"
+        >
+        {{video.workflows_count}}
+      </span>
+    </a>
     <span class="starter">
       <button
         mat-raised-button

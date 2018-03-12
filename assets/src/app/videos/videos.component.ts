@@ -179,10 +179,6 @@ export class VideosComponent {
     });
   }
 
-  redirect_to_workflow_view(video): void {
-    this.router.navigate(['/workflows'], { queryParams: {video_id: video.id} });
-  }
-
   get_encoded_uri(uri): string {
     return encodeURI("[\"" + uri + "\"]");
   }

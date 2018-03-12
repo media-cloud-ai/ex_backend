@@ -14,6 +14,7 @@ export class JobStatusIconPipe implements PipeTransform {
       { id: 'completed', name: 'done' },
       { id: 'processing', name: 'refresh'},
       { id: 'error', name: 'clear'},
+      { id: 'queued', name: ''},
     ];
 
     for (var i = allJobStatusIcons.length - 1; i >= 0; i--) {
