@@ -25,6 +25,7 @@ export class VideosComponent {
   pageSize = 10;
   page = 0;
   sub = undefined;
+  loading = true;
 
   searchInput = '';
   channels = [
@@ -83,6 +84,7 @@ export class VideosComponent {
   }
 
   getVideos(index): void {
+    this.loading = true;
     this.videoService.getVideos(index,
       this.selectedChannels,
       this.searchInput,
@@ -90,6 +92,7 @@ export class VideosComponent {
     .subscribe(videoPage => {
       this.videos = videoPage;
       this.length = videoPage.total;
+      this.loading = false;
     });
   }
 
@@ -147,9 +150,6 @@ export class VideosComponent {
   }
 
   start_process(video): void {
-
-
-
     let dialogRef = this.dialog.open(WorkflowDialogComponent, {
       data: {
       }
@@ -163,11 +163,6 @@ export class VideosComponent {
         });
       }
     });
-
-    // this.videoService.ingest(video.legacy_id)
-    // .subscribe(response => {
-    //   // console.log(response);
-    // });
   }
 
   redirect_to_workflow_view(video): void {

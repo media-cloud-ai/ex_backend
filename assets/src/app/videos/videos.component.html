@@ -65,7 +65,7 @@
   </div>
 </div>
 
-<ul *ngIf="videos" class="videos">
+<ul class="videos" [ngClass]="{loading: loading}">
   <li *ngIf="(!videos || videos.total == 0)">Aucun résultat trouvé</li>
   <li
     *ngFor="let video of videos.data"
