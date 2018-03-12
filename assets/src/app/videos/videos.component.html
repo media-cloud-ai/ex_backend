@@ -16,7 +16,7 @@
         <mat-icon matSuffix
           class=title_button
           *ngIf="searchInput != ''"
-          (click)="searchInput = ''" >clear</mat-icon>
+          (click)="searchInput = ''; updateVideos()" >clear</mat-icon>
     </mat-form-field>
   </div>
   <div class=channels_selector>
@@ -63,6 +63,21 @@
         >
       <mat-datepicker-toggle matSuffix [for]="picker_before"></mat-datepicker-toggle>
       <mat-datepicker #picker_before></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="search-video-id">
+      <input
+        matInput
+        type="text"
+        placeholder="Video ID"
+        [(ngModel)]="videoid"
+        (keydown)="updateSearchByVideoId()"
+        >
+        <mat-icon matSuffix
+          class=videoid_button
+          *ngIf="videoid != ''"
+          (click)="videoid = ''; updateVideos()" >clear</mat-icon>
     </mat-form-field>
   </div>
 </div>

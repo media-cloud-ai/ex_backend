@@ -28,6 +28,7 @@ export class VideosComponent {
   loading = true;
 
   searchInput = '';
+  videoid = '';
   channels = [
     {id: 'france-2', label: 'France 2'},
     {id: 'france-3', label: 'France 3'},
@@ -67,6 +68,9 @@ export class VideosComponent {
         if(params['broadcasted_before']) {
           this.dateRange.setEndDate(moment(params['broadcasted_before'], "YYYY-MM-DD"));
         }
+        if(params['video_id'] && params['video_id'].length == 36) {
+          this.videoid = params['video_id'];
+        }
         this.getVideos(this.page);
       });
   }
@@ -88,7 +92,8 @@ export class VideosComponent {
     this.videoService.getVideos(index,
       this.selectedChannels,
       this.searchInput,
-      this.dateRange)
+      this.dateRange,
+      this.videoid)
     .subscribe(videoPage => {
       this.videos = videoPage;
       this.length = videoPage.total;
@@ -106,26 +111,32 @@ export class VideosComponent {
     this.getVideos(0);
   }
 
+  updateSearchByVideoId(): void {
+    if(this.videoid.length == 36) {
+      this.getVideos(0);
+    }
+  }
+
   getQueryParamsForPage(pageIndex: number): Object {
     var params = {}
 
     if(this.selectedChannels.length != this.channels.length) {
       params['channels'] = this.selectedChannels;
     }
-
     if(pageIndex != 0) {
       params['page'] = pageIndex;
     }
-
     if(this.searchInput != "") {
       params['search'] = this.searchInput;
     }
-
     if(this.dateRange.getStart() != undefined) {
       params['broadcasted_after'] = this.dateRange.getStart().format('YYYY-MM-DD');
     }
     if(this.dateRange.getEnd() != undefined) {
       params['broadcasted_before'] = this.dateRange.getEnd().format('YYYY-MM-DD');
+    }
+    if(this.videoid && this.videoid.length == 36) {
+      params['video_id'] = this.videoid;
     }
     return params;
   }
