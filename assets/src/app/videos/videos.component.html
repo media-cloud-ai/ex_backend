@@ -42,7 +42,8 @@
   <div>
     <mat-form-field>
       <input matInput
-        [max]="dateRange.getEnd()"
+        [max]="dateRange.end"
+        [(ngModel)]="dateRange.start"
         [matDatepicker]="picker_after"
         (dateChange)="setStartDate($event)"
         (ngModelChange)="updateStart()"
@@ -53,7 +54,8 @@
     </mat-form-field>
     <mat-form-field>
       <input matInput
-        [min]="dateRange.getStart()"
+        [min]="dateRange.start"
+        [(ngModel)]="dateRange.end"
         [matDatepicker]="picker_before"
         (dateChange)="setEndDate($event)"
         (ngModelChange)="updateEnd()"
@@ -65,7 +67,7 @@
   </div>
 </div>
 
-<ul class="videos" [ngClass]="{loading: loading}">
+<ul *ngIf="videos" class="videos" [ngClass]="{loading: loading}">
   <li *ngIf="(!videos || videos.total == 0)">Aucun résultat trouvé</li>
   <li
     *ngFor="let video of videos.data"

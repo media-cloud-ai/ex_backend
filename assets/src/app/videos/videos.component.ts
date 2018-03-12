@@ -62,10 +62,10 @@ export class VideosComponent {
         this.selectedChannels = channels || this.getChannelIDsList();
         this.searchInput = params['search'] || '';
         if(params['broadcasted_after']) {
-          this.dateRange.setStartDate(moment(params['broadcasted_after']));
+          this.dateRange.setStartDate(moment(params['broadcasted_after'], "YYYY-MM-DD"));
         }
         if(params['broadcasted_before']) {
-          this.dateRange.setEndDate(moment(params['broadcasted_before']));
+          this.dateRange.setEndDate(moment(params['broadcasted_before'], "YYYY-MM-DD"));
         }
         this.getVideos(this.page);
       });
@@ -107,9 +107,12 @@ export class VideosComponent {
   }
 
   getQueryParamsForPage(pageIndex: number): Object {
-    var params = {
-      "channels": this.selectedChannels
+    var params = {}
+
+    if(this.selectedChannels.length != this.channels.length) {
+      params['channels'] = this.selectedChannels;
     }
+
     if(pageIndex != 0) {
       params['page'] = pageIndex;
     }
@@ -119,10 +122,10 @@ export class VideosComponent {
     }
 
     if(this.dateRange.getStart() != undefined) {
-      params['broadcasted_after'] = this.dateRange.getStart().format();
+      params['broadcasted_after'] = this.dateRange.getStart().format('YYYY-MM-DD');
     }
     if(this.dateRange.getEnd() != undefined) {
-      params['broadcasted_before'] = this.dateRange.getEnd().format();
+      params['broadcasted_before'] = this.dateRange.getEnd().format('YYYY-MM-DD');
     }
     return params;
   }
