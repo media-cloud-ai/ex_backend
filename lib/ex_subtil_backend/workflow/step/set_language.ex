@@ -5,7 +5,7 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
 
   def launch(workflow, _step) do
     # Get file paths
-    paths = get_source_files(workflow.jobs, %{})
+    paths = get_source_files(workflow.jobs)
 
     # Get track languages
     languages =
@@ -97,6 +97,7 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
     }
   end
 
+  defp get_source_files(_jobs, result \\ %{audio_tracks: [], audio_description_tracks: [], text_tracks: []})
   defp get_source_files([], result), do: result
   defp get_source_files([job | jobs], result) do
     result =
