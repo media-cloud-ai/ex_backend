@@ -13,6 +13,8 @@ export class ParameterLabelPipe implements PipeTransform {
     var allLabels = [
       { id: 'segment_duration', name: 'Segment Duration' },
       { id: 'fragment_duration', name: 'Fragment Duration' },
+      { id: 'audio_track', name: 'Audio track' },
+      { id: 'text_track', name: 'Text track' },
     ];
 
     for (var i = allLabels.length - 1; i >= 0; i--) {

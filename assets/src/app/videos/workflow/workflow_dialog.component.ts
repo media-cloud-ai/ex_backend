@@ -25,6 +25,9 @@ export class WorkflowDialogComponent {
         "id": "ttml_to_mp4",
         "parameters": []
       },{
+        "id": "set_language",
+        "parameters" : []
+      },{
         "id": "generate_dash",
         "parameters" : [
           {

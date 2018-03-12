@@ -143,8 +143,12 @@ export class VideosComponent {
   }
 
   start_process(video): void {
+
+
+
     let dialogRef = this.dialog.open(WorkflowDialogComponent, {
-      data: {}
+      data: {
+      }
     });
 
     dialogRef.afterClosed().subscribe(steps => {
@@ -163,7 +167,6 @@ export class VideosComponent {
   }
 
   redirect_to_workflow_view(video): void {
-    console.log(video)
     this.router.navigate(['/workflows'], { queryParams: {video_id: video.id} });
   }
 
