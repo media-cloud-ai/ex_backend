@@ -16,19 +16,19 @@ RUN apk update && \
     mix local.rebar --force && \
     mix hex.info && \
     cd /usr/local/bin && \
-    wget https://yarnpkg.com/latest.tar.gz && \
-    tar zvxf latest.tar.gz && \
-    ln -s /usr/local/bin/dist/bin/yarn.js /usr/local/bin/yarn
+    curl -o- -L https://yarnpkg.com/install.sh | sh -s -- --version 1.5.1
 
 WORKDIR /app
 ENV MIX_ENV prod
+ENV PATH /root/.yarn/bin:/root/.config/yarn/global/node_modules/.bin:$PATH
 ADD . .
+
 RUN mix deps.get && \
     mix release.init && \
     mix release --env=$MIX_ENV && \
     cd assets && \
-    /usr/local/bin/yarn && \
-    /usr/local/bin/yarn run release && \
+    yarn && \
+    yarn run release && \
     cd .. && \
     mix phx.digest
 
