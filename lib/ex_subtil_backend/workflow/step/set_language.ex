@@ -88,9 +88,9 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
 
     audio_description_language =
       audio_tracks
-      |> Enum.find fn(track) -> track["code"] == "QAD" end
+      |> Enum.find(fn(track) -> track["code"] == "QAD" end)
 
-    languages = %{
+    %{
       audio_tracks: List.delete(audio_tracks, audio_description_language),
       audio_description_tracks: [audio_description_language],
       text_tracks: Map.get(video, "text_tracks")
