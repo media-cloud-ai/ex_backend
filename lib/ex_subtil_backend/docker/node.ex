@@ -28,7 +28,7 @@ defmodule ExSubtilBackend.Docker.Node do
     one_by_label(list(), label)
   end
 
-  defp one_by_label([], label), do: nil
+  defp one_by_label([], _label), do: nil
   defp one_by_label([config | configs], label) do
     if config.label == label do
       config

@@ -5,7 +5,6 @@ defmodule ExSubtilBackendWeb.Docker.ContainersController do
   alias ExSubtilBackend.Docker.Node
   alias RemoteDockers.{
     Container,
-    ContainerConfig,
     NodeConfig
   }
 
