@@ -54,7 +54,11 @@ export class VideosComponent {
       .queryParams
       .subscribe(params => {
         this.page = +params['page'] || 0;
-        this.selectedChannels = params['channels'] || this.getChannelIDsList();
+        var channels = params['channels'];
+        if(channels && !Array.isArray(channels)){
+          channels = [channels];
+        }
+        this.selectedChannels = channels || this.getChannelIDsList();
         this.searchInput = params['search'] || '';
         if(params['broadcasted_after']) {
           this.dateRange.setStartDate(moment(params['broadcasted_after']));
