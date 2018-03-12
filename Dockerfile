@@ -18,7 +18,7 @@ RUN apk update && \
     cd /usr/local/bin && \
     wget https://yarnpkg.com/latest.tar.gz && \
     tar zvxf latest.tar.gz && \
-    ln -s /usr/local/bin/dist/bin/yarn.js /usr/local/bin/yarn.js
+    ln -s /usr/local/bin/dist/bin/yarn.js /usr/local/bin/yarn
 
 WORKDIR /app
 ENV MIX_ENV prod
