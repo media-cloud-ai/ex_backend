@@ -143,37 +143,11 @@ export class VideosComponent {
   }
 
   start_process(video): void {
-    let languages_params = []
 
-    for (var index = 0; index < video.audio_tracks.length; index++) {
-      let audio_track = video.audio_tracks[index];
-      let params = {
-        "id": "audio_track",
-        "index": index + 1,
-        "type": "text",
-        "default": audio_track.code,
-        "value": audio_track.code,
-        "read_only": true
-      };
-      languages_params.push(params);
-    }
 
-    for (var index = 0; index < video.text_tracks.length; index++) {
-      let text_track = video.text_tracks[index];
-      let params = {
-        "id": "text_track",
-        "index": index + 1,
-        "type": "text",
-        "default": text_track.code,
-        "value": text_track.code,
-        "read_only": true
-      };
-      languages_params.push(params);
-    }
 
     let dialogRef = this.dialog.open(WorkflowDialogComponent, {
       data: {
-        languages: languages_params
       }
     });
 
