@@ -76,6 +76,7 @@ config :ex_subtil_backend,
   akamai_hostname: "akamai.com",
   akamai_username: "akamai_username",
   akamai_password: "akamai_password",
+  workdir: "/tmp/ftp_francetv",
   docker_hosts: [
     [
       label: "Worker 1",
