@@ -99,10 +99,10 @@
       {{video.additional_title}}
     </span>
     <span class="date">
-      {{video.creation | date: 'd LLL yy'}}
+      {{video.broadcasted_at | date: 'd LLL yy'}}
     </span>
     <span class="hour">
-      {{video.creation | date: 'H:mm:ss'}}
+      {{video.broadcasted_at | date: 'H:mm:ss'}}
     </span>
     <span class="jarvis" [ngClass]="{disabled: video.manifest_url == undefined}">
       <a target="_blank" href="http://master.player.build.ftven.net/jarvis/?streams={{get_encoded_uri(video.manifest_url)}}">
