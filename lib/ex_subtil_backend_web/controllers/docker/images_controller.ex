@@ -11,7 +11,7 @@ defmodule ExSubtilBackendWeb.Docker.ImagesController do
 
     volumes = [
       %{
-        "host": "/media",
+        "host": "/data",
         "container": workdir,
       }
     ]
