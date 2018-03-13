@@ -5,7 +5,7 @@ defmodule ExSubtilBackend.Workflow.Step.FtpUpload do
 
   def launch(workflow, _step) do
     current_date =
-      Timex.local
+      Timex.now
       |> Timex.format!("%Y_%m_%d__%H_%M_%S", :strftime)
 
     get_paths(workflow.jobs, [])
