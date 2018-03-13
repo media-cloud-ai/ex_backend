@@ -6,7 +6,7 @@ defmodule ExSubtilBackendWeb.Docker.ImagesController do
     hostname = System.get_env("AMQP_HOSTNAME") || Application.get_env(:amqp, :hostname)
     username = System.get_env("AMQP_USERNAME") || Application.get_env(:amqp, :username)
     password = System.get_env("AMQP_PASSWORD") || Application.get_env(:amqp, :password)
-    virtual_host = System.get_env("AMQP_VHOST") || Application.get_env(:amqp, :virtual_host) || ""
+    virtual_host = System.get_env("AMQP_VHOST") || Application.get_env(:amqp, :virtual_host) || "/"
     workdir = Application.get_env(:ex_subtil_backend, :workdir)
 
     volumes = [
@@ -26,7 +26,7 @@ defmodule ExSubtilBackendWeb.Docker.ImagesController do
             "AMQP_HOSTNAME": hostname,
             "AMQP_USERNAME": username,
             "AMQP_PASSWORD": password,
-            "AMQP_VHOST": "/" <> virtual_host
+            "AMQP_VHOST": virtual_host
           },
           "volumes": volumes
         }
@@ -40,7 +40,7 @@ defmodule ExSubtilBackendWeb.Docker.ImagesController do
             "AMQP_HOSTNAME": hostname,
             "AMQP_USERNAME": username,
             "AMQP_PASSWORD": password,
-            "AMQP_VHOST": "/" <> virtual_host
+            "AMQP_VHOST": virtual_host
           },
           "volumes": volumes
         }
@@ -54,7 +54,7 @@ defmodule ExSubtilBackendWeb.Docker.ImagesController do
             "AMQP_HOSTNAME": hostname,
             "AMQP_USERNAME": username,
             "AMQP_PASSWORD": password,
-            "AMQP_VHOST": "/" <> virtual_host
+            "AMQP_VHOST": virtual_host
           },
           "volumes": volumes
         }
