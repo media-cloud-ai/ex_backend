@@ -25,8 +25,10 @@ export class VideosComponent {
   pageSize = 10;
   page = 0;
   sub = undefined;
+  loading = true;
 
   searchInput = '';
+  videoid = '';
   channels = [
     {id: 'france-2', label: 'France 2'},
     {id: 'france-3', label: 'France 3'},
@@ -54,13 +56,20 @@ export class VideosComponent {
       .queryParams
       .subscribe(params => {
         this.page = +params['page'] || 0;
-        this.selectedChannels = params['channels'] || this.getChannelIDsList();
+        var channels = params['channels'];
+        if(channels && !Array.isArray(channels)){
+          channels = [channels];
+        }
+        this.selectedChannels = channels || this.getChannelIDsList();
         this.searchInput = params['search'] || '';
         if(params['broadcasted_after']) {
-          this.dateRange.setStartDate(moment(params['broadcasted_after']));
+          this.dateRange.setStartDate(moment(params['broadcasted_after'], "YYYY-MM-DD"));
         }
         if(params['broadcasted_before']) {
-          this.dateRange.setEndDate(moment(params['broadcasted_before']));
+          this.dateRange.setEndDate(moment(params['broadcasted_before'], "YYYY-MM-DD"));
+        }
+        if(params['video_id'] && params['video_id'].length == 36) {
+          this.videoid = params['video_id'];
         }
         this.getVideos(this.page);
       });
@@ -79,13 +88,16 @@ export class VideosComponent {
   }
 
   getVideos(index): void {
+    this.loading = true;
     this.videoService.getVideos(index,
       this.selectedChannels,
       this.searchInput,
-      this.dateRange)
+      this.dateRange,
+      this.videoid)
     .subscribe(videoPage => {
       this.videos = videoPage;
       this.length = videoPage.total;
+      this.loading = false;
     });
   }
 
@@ -99,23 +111,32 @@ export class VideosComponent {
     this.getVideos(0);
   }
 
+  updateSearchByVideoId(): void {
+    if(this.videoid.length == 36) {
+      this.getVideos(0);
+    }
+  }
+
   getQueryParamsForPage(pageIndex: number): Object {
-    var params = {
-      "channels": this.selectedChannels
+    var params = {}
+
+    if(this.selectedChannels.length != this.channels.length) {
+      params['channels'] = this.selectedChannels;
     }
     if(pageIndex != 0) {
       params['page'] = pageIndex;
     }
-
     if(this.searchInput != "") {
       params['search'] = this.searchInput;
     }
-
     if(this.dateRange.getStart() != undefined) {
-      params['broadcasted_after'] = this.dateRange.getStart().format();
+      params['broadcasted_after'] = this.dateRange.getStart().format('YYYY-MM-DD');
     }
     if(this.dateRange.getEnd() != undefined) {
-      params['broadcasted_before'] = this.dateRange.getEnd().format();
+      params['broadcasted_before'] = this.dateRange.getEnd().format('YYYY-MM-DD');
+    }
+    if(this.videoid && this.videoid.length == 36) {
+      params['video_id'] = this.videoid;
     }
     return params;
   }
@@ -143,9 +164,6 @@ export class VideosComponent {
   }
 
   start_process(video): void {
-
-
-
     let dialogRef = this.dialog.open(WorkflowDialogComponent, {
       data: {
       }
@@ -159,15 +177,6 @@ export class VideosComponent {
         });
       }
     });
-
-    // this.videoService.ingest(video.legacy_id)
-    // .subscribe(response => {
-    //   // console.log(response);
-    // });
-  }
-
-  redirect_to_workflow_view(video): void {
-    this.router.navigate(['/workflows'], { queryParams: {video_id: video.id} });
   }
 
   get_encoded_uri(uri): string {

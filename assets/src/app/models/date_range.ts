@@ -3,8 +3,8 @@ import {Moment} from 'moment';
 
 
 export class DateRange {
-  private start: Moment;
-  private end: Moment;
+  public start: Moment;
+  public end: Moment;
 
   constructor() {
     this.start = undefined;

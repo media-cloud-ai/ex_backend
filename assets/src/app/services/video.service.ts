@@ -14,7 +14,7 @@ export class VideoService {
 
   constructor(private http: HttpClient) { }
 
-  getVideos(page: number, channels: Array<string>, searchInput: string, dateRange: DateRange): Observable<VideoPage> {
+  getVideos(page: number, channels: Array<string>, searchInput: string, dateRange: DateRange, videoid: string): Observable<VideoPage> {
     let params = new HttpParams();
     params = params.append('per_page', '10');
     params = params.append('type.id', 'integrale');
@@ -24,6 +24,9 @@ export class VideoService {
 
     if(searchInput != ''){
       params = params.append('q', searchInput);
+    }
+    if(videoid.length == 36){
+      params = params.append('qid', videoid);
     }
     if(page > 0) {
       params = params.append('page', String(page + 1));

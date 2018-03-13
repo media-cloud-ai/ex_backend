@@ -1,4 +1,8 @@
 
+ul.videos.loading {
+  display: none;
+}
+
 ul.videos {
   list-style: none;
   padding: 0px;
@@ -38,6 +42,7 @@ ul.videos {
       color: #bbb;
     }
     span.workflows_count {
+      display: inline-block;
       background-color: #bbb;
       border-radius: 50%;
       width: 25px;
@@ -139,6 +144,7 @@ ul.videos {
   background-position-x: 13px;
 }
 
-.title_button:hover {
+.title_button:hover,
+.videoid_button:hover {
   cursor: pointer !important;
 }
