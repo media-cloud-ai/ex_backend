@@ -89,7 +89,7 @@ config :ex_subtil_backend,
   ]
 
 config :amqp,
-  hostname: "amqp_hostname",
+  hostname: "192.168.101.107",
   username: "guest",
   password: "guest",
   virtual_host: ""
