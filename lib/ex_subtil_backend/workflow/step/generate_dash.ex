@@ -27,7 +27,7 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
       workflow_id: workflow.id,
       params: %{
         kind: "generate_dash",
-        requirements: Requirements.get_first_dash_quality_path_exists(List.first(paths)),
+        requirements: Requirements.get_path_exists(paths),
         source: %{
           paths: paths
         },

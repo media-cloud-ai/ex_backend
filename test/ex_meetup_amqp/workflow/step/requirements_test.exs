@@ -11,6 +11,9 @@ defmodule ExSubtilBackend.Workflow.Step.RequirementsTest do
 
     requirements = Requirements.get_path_exists(requirements, "/path/to/some.thing")
     assert %{paths: ["/path/to/hello-world.thing", "/path/to/some.thing"]} == requirements
+
+    requirements = Requirements.get_path_exists(["/path/to/hello-world.thing", "/path/to/some.thing"])
+    assert %{paths: ["/path/to/hello-world.thing", "/path/to/some.thing"]} == requirements
   end
 
   test "get first dash quality exists" do
