@@ -2,6 +2,7 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
 
   alias ExSubtilBackend.Jobs
   alias ExSubtilBackend.Amqp.JobGpacEmitter
+  alias ExSubtilBackend.Workflow.Step.Requirements
 
   def launch(workflow, _step) do
     # Get file paths
@@ -66,6 +67,7 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
       workflow_id: workflow.id,
       params: %{
         kind: "set_language",
+        requirement: Requirements.get_path_exists(mapping.path),
         source: %{
           path: mapping.path
         },

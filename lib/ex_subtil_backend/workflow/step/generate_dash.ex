@@ -2,6 +2,7 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
 
   alias ExSubtilBackend.Jobs
   alias ExSubtilBackend.Amqp.JobGpacEmitter
+  alias ExSubtilBackend.Workflow.Step.Requirements
 
   def launch(workflow, step) do
 
@@ -26,6 +27,7 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
       workflow_id: workflow.id,
       params: %{
         kind: "generate_dash",
+        requirement: Requirements.get_first_dash_quality_path_exists(List.first(paths)),
         source: %{
           paths: paths
         },

@@ -2,6 +2,7 @@ defmodule ExSubtilBackend.Workflow.Step.FtpDownload do
 
   alias ExSubtilBackend.Jobs
   alias ExSubtilBackend.Amqp.JobFtpEmitter
+  alias ExSubtilBackend.Workflow.Step.Requirements
 
   def launch(workflow) do
     ExVideoFactory.get_ftp_paths_for_video_id(workflow.reference)
@@ -16,6 +17,7 @@ defmodule ExSubtilBackend.Workflow.Step.FtpDownload do
     work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_subtil_backend, :work_dir) || "/tmp/ftp_francetv"
 
     filename = Path.basename(file)
+    dst_path = work_dir <> "/" <> workflow.reference <> "/" <> filename
 
     job_params = %{
       name: "download_ftp",
@@ -27,8 +29,9 @@ defmodule ExSubtilBackend.Workflow.Step.FtpDownload do
           username: username,
           password: password,
         },
+        requirement: Requirements.get_first_dash_quality_path_exists(dst_path),
         destination: %{
-          path: work_dir <> "/" <> workflow.reference <> "/" <> filename
+          path: dst_path
         }
       }
     }

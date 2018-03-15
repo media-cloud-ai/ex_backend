@@ -2,6 +2,7 @@ defmodule ExSubtilBackend.Workflow.Step.FtpUpload do
 
   alias ExSubtilBackend.Jobs
   alias ExSubtilBackend.Amqp.JobFtpEmitter
+  alias ExSubtilBackend.Workflow.Step.Requirements
 
   def launch(workflow, _step) do
     current_date =
@@ -41,6 +42,7 @@ defmodule ExSubtilBackend.Workflow.Step.FtpUpload do
       name: "upload_ftp",
       workflow_id: workflow.id,
       params: %{
+        requirement: Requirements.get_first_dash_quality_path_exists(file),
         source: %{
           path: file
         },

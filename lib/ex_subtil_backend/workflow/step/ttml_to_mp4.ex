@@ -2,6 +2,7 @@ defmodule ExSubtilBackend.Workflow.Step.TtmlToMp4 do
 
   alias ExSubtilBackend.Jobs
   alias ExSubtilBackend.Amqp.JobGpacEmitter
+  alias ExSubtilBackend.Workflow.Step.Requirements
 
   def launch(workflow) do
     path = get_ttml_file(workflow.jobs, [])
@@ -13,6 +14,7 @@ defmodule ExSubtilBackend.Workflow.Step.TtmlToMp4 do
       workflow_id: workflow.id,
       params: %{
         kind: "ttml_to_mp4",
+        requirement: Requirements.get_first_dash_quality_path_exists(path),
         source: %{
           path: path
         },
