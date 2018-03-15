@@ -20,7 +20,7 @@ defmodule ExSubtilBackend.Workflow.Step.HttpDownload do
       name: "download_http",
       workflow_id: workflow.id,
       params: %{
-        requirement: Requirements.get_first_dash_quality_path_exists(dst_path),
+        requirements: Requirements.get_first_dash_quality_path_exists(dst_path),
         source: %{
           path: url
         },

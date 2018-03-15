@@ -67,7 +67,7 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
       workflow_id: workflow.id,
       params: %{
         kind: "set_language",
-        requirement: Requirements.get_path_exists(mapping.path),
+        requirements: Requirements.get_path_exists(mapping.path),
         source: %{
           path: mapping.path
         },

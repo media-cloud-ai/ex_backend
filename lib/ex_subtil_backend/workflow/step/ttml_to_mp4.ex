@@ -14,7 +14,7 @@ defmodule ExSubtilBackend.Workflow.Step.TtmlToMp4 do
       workflow_id: workflow.id,
       params: %{
         kind: "ttml_to_mp4",
-        requirement: Requirements.get_first_dash_quality_path_exists(path),
+        requirements: Requirements.get_first_dash_quality_path_exists(path),
         source: %{
           path: path
         },

@@ -29,7 +29,7 @@ defmodule ExSubtilBackend.Workflow.Step.FtpDownload do
           username: username,
           password: password,
         },
-        requirement: Requirements.get_first_dash_quality_path_exists(dst_path),
+        requirements: Requirements.get_first_dash_quality_path_exists(dst_path),
         destination: %{
           path: dst_path
         }
