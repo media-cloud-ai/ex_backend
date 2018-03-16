@@ -1,7 +1,12 @@
 defmodule ExSubtilBackend.Workflow.Step.Requirements do
 
   def get_path_exists(requirements \\ %{}, _path)
-  def get_path_exists(requirements, paths) when is_list(paths), do: Map.put(requirements, :paths, paths)
+  def get_path_exists(requirements, paths) when is_list(paths) do
+    Map.update(requirements, :paths, paths, fn(cur_paths) ->
+      Enum.concat(cur_paths, paths)
+      |> Enum.uniq
+    end)
+  end
   def get_path_exists(requirements, path) do
     paths =
         Map.get(requirements, :paths, [])
