@@ -51,6 +51,10 @@ defmodule ExSubtilBackend.WorkflowStep do
     ExSubtilBackend.Workflow.Step.FtpUpload.launch(workflow, step)
   end
 
+  defp launch_step(workflow, %{"id"=> "clean_workspace"} = _step, _step_index) do
+    ExSubtilBackend.Workflow.Step.CleanWorkspace.launch(workflow)
+  end
+
   defp launch_step(workflow, step, _step_index) do
     Logger.error "unable to match with the step #{inspect step} for workflow #{workflow.id}"
     {:error, "unable to match with the step #{inspect step}"}

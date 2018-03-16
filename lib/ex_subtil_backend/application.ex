@@ -26,6 +26,10 @@ defmodule ExSubtilBackend.Application do
       worker(ExSubtilBackend.Amqp.JobHttpCompletedConsumer, []),
       worker(ExSubtilBackend.Amqp.JobHttpErrorConsumer, []),
 
+      worker(ExSubtilBackend.Amqp.JobCleanEmitter, []),
+      worker(ExSubtilBackend.Amqp.JobCleanCompletedConsumer, []),
+      worker(ExSubtilBackend.Amqp.JobCleanErrorConsumer, []),
+
       worker(ExSubtilBackend.WorkflowStepManager, []),
     ]
 
