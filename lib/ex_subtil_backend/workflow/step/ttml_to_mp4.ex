@@ -8,13 +8,14 @@ defmodule ExSubtilBackend.Workflow.Step.TtmlToMp4 do
     path = get_ttml_file(workflow.jobs, [])
 
     mp4_path = String.replace(path, ".ttml", ".mp4")
+    requirements = Requirements.get_path_exists(path)
 
     job_params = %{
       name: "ttml_to_mp4",
       workflow_id: workflow.id,
       params: %{
         kind: "ttml_to_mp4",
-        requirements: Requirements.get_path_exists(path),
+        requirements: requirements,
         source: %{
           path: path
         },

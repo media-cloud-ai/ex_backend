@@ -37,12 +37,13 @@ defmodule ExSubtilBackend.Workflow.Step.FtpUpload do
     username = System.get_env("AKAMAI_VIDEO_USERNAME") || Application.get_env(:ex_subtil_backend, :akamai_video_username)
     password = System.get_env("AKAMAI_VIDEO_PASSWORD") || Application.get_env(:ex_subtil_backend, :akamai_video_password)
     prefix = System.get_env("AKAMAI_VIDEO_PREFIX") || Application.get_env(:ex_subtil_backend, :akamai_video_prefix) || "/421959/prod/innovation/SubTil"
+    requirements = Requirements.get_path_exists(file)
 
     job_params = %{
       name: "upload_ftp",
       workflow_id: workflow.id,
       params: %{
-        requirements: Requirements.get_path_exists(file),
+        requirements: requirements,
         source: %{
           path: file
         },

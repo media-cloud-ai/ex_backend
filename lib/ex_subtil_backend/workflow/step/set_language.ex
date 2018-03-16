@@ -61,13 +61,13 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
               |> Path.join("lang")
               |> Path.join(Path.basename(mapping.path))
     }
-
+    requirements = Requirements.get_path_exists(mapping.path)
     job_params = %{
       name: "set_language",
       workflow_id: workflow.id,
       params: %{
         kind: "set_language",
-        requirements: Requirements.get_path_exists(mapping.path),
+        requirements: requirements,
         source: %{
           path: mapping.path
         },

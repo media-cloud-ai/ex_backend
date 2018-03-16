@@ -18,6 +18,7 @@ defmodule ExSubtilBackend.Workflow.Step.FtpDownload do
 
     filename = Path.basename(file)
     dst_path = work_dir <> "/" <> workflow.reference <> "/" <> filename
+    requirements = Requirements.get_first_dash_quality_path_exists(dst_path)
 
     job_params = %{
       name: "download_ftp",
@@ -29,7 +30,7 @@ defmodule ExSubtilBackend.Workflow.Step.FtpDownload do
           username: username,
           password: password,
         },
-        requirements: Requirements.get_first_dash_quality_path_exists(dst_path),
+        requirements: requirements,
         destination: %{
           path: dst_path
         }

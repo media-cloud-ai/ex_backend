@@ -15,12 +15,13 @@ defmodule ExSubtilBackend.Workflow.Step.HttpDownload do
     work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_subtil_backend, :work_dir) || "/tmp/ftp_francetv"
     filename = Path.basename(url)
     dst_path = work_dir <> "/" <> workflow.reference <> "/" <> filename
+    requirements = Requirements.get_first_dash_quality_path_exists(dst_path)
 
     job_params = %{
       name: "download_http",
       workflow_id: workflow.id,
       params: %{
-        requirements: Requirements.get_first_dash_quality_path_exists(dst_path),
+        requirements: requirements,
         source: %{
           path: url
         },
