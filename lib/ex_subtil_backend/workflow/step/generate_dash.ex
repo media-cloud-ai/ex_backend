@@ -26,7 +26,7 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
       Map.get(step, "parameters", [])
       |> build_gpac_parameters(options)
 
-    requirements = Requirements.get_path_exists(source_paths)
+    requirements = Requirements.get_required_paths(source_paths)
 
     job_params = %{
       name: "generate_dash",
