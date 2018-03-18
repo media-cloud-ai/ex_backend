@@ -26,25 +26,35 @@ ul {
 }
 
 .step {
-  display: inline-block;
   flex: 1;
-}
+  .content {
+    
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 
-.step.completed {
-  border-bottom: 5px solid #71bd2c;
-  .material-icons.status {
-    color: #71bd2c;
-  }
-}
-.step.processing {
-  border-bottom: 5px solid #3965ac;
-  .material-icons.status {
-    color: #3965ac;
-  }
-}
-.step.error {
-  border-bottom: 5px solid #db280f;
-  .material-icons.status {
-    color: #db280f;
+    .details {
+      flex: 1;
+    }
+    .progress {
+      align-content: flex-end;
+      display: flex;
+      height: 12px;
+      background-color: #ddd;
+      text-align: center;
+      color: #fff;
+      line-height: 12px;
+      font-size: 10px;
+
+      .completed {
+        background-color: #71bd2c;
+      }
+      .queued {
+        background-color: #3965ac;
+      }
+      .error {
+        background-color: #db280f;
+      }
+    }
   }
 }

@@ -14,34 +14,53 @@
       </a>
     </span>
 
-    <mat-list dense class=steps>
-      <mat-list-item
+    <div class=steps>
+      <div
         *ngFor="let step of workflow.flow.steps"
         class="step {{step.id}} {{step.status}}">
-        <div>
-          <mat-icon matListIcon>{{step.id | iconForJob}}</mat-icon>
-          {{step.id | jobType}}
-          <i class="material-icons status">
-            {{step.status | jobStatusIcon}}
-          </i>
-          <div class=parameters>
-            <mat-list dense>
-              <mat-list-item
-                *ngFor="let parameter of step.parameters">
-                <mat-form-field class="parameter">
-                  <input matInput
-                    type={{parameter.type}}
-                    placeholder="{{parameter.id | parameterLabel}}"
-                    value={{parameter.default}}
-                    disabled="true"
-                    [(ngModel)]="parameter.default">
-                </mat-form-field>
-              </mat-list-item>
-            </mat-list>
+        <div class="content">
+          <div class=details>
+            <mat-icon matListIcon>{{step.id | iconForJob}}</mat-icon>
+            {{step.id | jobType}}
+            <div class=parameters>
+              <mat-list dense>
+                <mat-list-item
+                  *ngFor="let parameter of step.parameters">
+                  <mat-form-field class="parameter">
+                    <input matInput
+                      type={{parameter.type}}
+                      placeholder="{{parameter.id | parameterLabel}}"
+                      value={{parameter.default}}
+                      disabled="true"
+                      [(ngModel)]="parameter.default">
+                  </mat-form-field>
+                </mat-list-item>
+              </mat-list>
+            </div>
+          </div>
+          <div class=progress>
+            <span
+              class="completed"
+              *ngIf="step.jobs.completed > 0"
+              [ngStyle]="{'flex': step.jobs.completed}">
+              {{step.jobs.completed}}
+            </span>
+            <span
+              class="error"
+              *ngIf="step.jobs.error > 0"
+              [ngStyle]="{'flex': step.jobs.error}">
+              {{step.jobs.error}}
+            </span>
+            <span
+              class="queued"
+              *ngIf="step.jobs.queued > 0"
+              [ngStyle]="{'flex': step.jobs.queued}">
+              {{step.jobs.queued}}
+            </span>
           </div>
         </div>
-      </mat-list-item>
-    </mat-list>
+      </div>
+    </div>
   </li>
 </ul>
 
