@@ -3,7 +3,7 @@ defmodule ExSubtilBackend.Amqp.JobFileSystemErrorConsumer do
   require Logger
 
   use ExSubtilBackend.Amqp.CommonConsumer, %{
-    queue: "job_clean_error",
+    queue: "job_file_system_error",
     consumer: &ExSubtilBackend.Amqp.JobFileSystemErrorConsumer.consume/4,
   }
 

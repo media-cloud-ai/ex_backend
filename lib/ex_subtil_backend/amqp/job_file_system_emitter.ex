@@ -1,5 +1,5 @@
 defmodule ExSubtilBackend.Amqp.JobFileSystemEmitter do
   use ExSubtilBackend.Amqp.CommonEmitter, %{
-    queue: "job_clean"
+    queue: "job_file_system"
   }
 end

@@ -4,7 +4,7 @@ defmodule ExSubtilBackend.Amqp.JobFileSystemCompletedConsumer do
   alias ExSubtilBackend.Jobs
 
   use ExSubtilBackend.Amqp.CommonConsumer, %{
-    queue: "job_clean_completed",
+    queue: "job_file_system_completed",
     consumer: &ExSubtilBackend.Amqp.JobFileSystemCompletedConsumer.consume/4,
   }
 
