@@ -5,17 +5,17 @@ defmodule ExSubtilBackend.Workflow.Step.RequirementsTest do
   doctest Requirements
 
 
-  test "get required paths" do
-    requirements = Requirements.get_required_paths("/path/to/hello-world.thing")
+  test "add required paths" do
+    requirements = Requirements.add_required_paths("/path/to/hello-world.thing")
     assert %{paths: ["/path/to/hello-world.thing"]} == requirements
 
-    requirements = Requirements.get_required_paths(requirements, "/path/to/some.thing")
+    requirements = Requirements.add_required_paths("/path/to/some.thing", requirements)
     assert %{paths: ["/path/to/hello-world.thing", "/path/to/some.thing"]} == requirements
 
-    requirements = Requirements.get_required_paths(["/path/to/hello-world.thing", "/path/to/some.thing"])
+    requirements = Requirements.add_required_paths(["/path/to/hello-world.thing", "/path/to/some.thing"])
     assert %{paths: ["/path/to/hello-world.thing", "/path/to/some.thing"]} == requirements
 
-    requirements = Requirements.get_required_paths(requirements, ["/path/to/some.thing", "/path/to/other.thing"])
+    requirements = Requirements.add_required_paths(["/path/to/some.thing", "/path/to/other.thing"], requirements)
     assert %{paths: ["/path/to/hello-world.thing", "/path/to/some.thing", "/path/to/other.thing"]} == requirements
   end
 end

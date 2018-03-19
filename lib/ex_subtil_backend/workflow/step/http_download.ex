@@ -25,7 +25,7 @@ defmodule ExSubtilBackend.Workflow.Step.HttpDownload do
     requirements =
       if url == first_url do
         work_dir <> "/" <> workflow.reference <> "/" <> Path.basename(first_url)
-        |> Requirements.get_required_paths
+        |> Requirements.add_required_paths
       else
         %{}
       end

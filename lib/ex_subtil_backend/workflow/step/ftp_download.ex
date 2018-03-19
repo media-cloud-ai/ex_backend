@@ -28,7 +28,7 @@ defmodule ExSubtilBackend.Workflow.Step.FtpDownload do
     requirements =
       if file != first_file do
         work_dir <> "/" <> workflow.reference <> "/" <> Path.basename(first_file)
-        |> Requirements.get_required_paths
+        |> Requirements.add_required_paths
       else
         %{}
       end
