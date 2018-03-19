@@ -24,7 +24,7 @@ export class VideosComponent {
   length = 1000;
 
   pageSize = 10;
-  pageSizes = [
+  pageSizeOptions = [
     10,
     20,
     50,
@@ -111,8 +111,7 @@ export class VideosComponent {
   }
 
   eventGetVideos(event): void {
-    this.router.navigate(['/videos'], { queryParams: this.getQueryParamsForPage(event.pageIndex) });
-    this.getVideos(event.pageIndex);
+    this.router.navigate(['/videos'], { queryParams: this.getQueryParamsForPage(event.pageIndex, event.pageSize) });
   }
 
   updateVideos(): void {
@@ -126,7 +125,7 @@ export class VideosComponent {
     }
   }
 
-  getQueryParamsForPage(pageIndex: number): Object {
+  getQueryParamsForPage(pageIndex: number, pageSize: number = undefined): Object {
     var params = {}
 
     if(this.selectedChannels.length != this.channels.length) {
@@ -147,8 +146,14 @@ export class VideosComponent {
     if(this.videoid && this.videoid.length == 36) {
       params['video_id'] = this.videoid;
     }
-    if(this.pageSize != 10) {
-      params['per_page'] = this.pageSize;
+    if(pageSize) {
+      if(pageSize != 10) {
+        params['per_page'] = pageSize;
+      }
+    } else {
+      if(this.pageSize != 10) {
+        params['per_page'] = this.pageSize;
+      }
     }
     return params;
   }

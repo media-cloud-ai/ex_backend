@@ -80,24 +80,6 @@
           (click)="videoid = ''; updateVideos()" >clear</mat-icon>
     </mat-form-field>
   </div>
-  <div>
-    <mat-form-field>
-      <mat-select
-        class="page-size-select"
-        placeholder="Nombre de vidéos"
-        [(ngModel)]="pageSize"
-        (selectionChange)="updateVideos()"
-        >
-        <mat-option
-          *ngFor="let size of pageSizes"
-          [value]="size"
-          class="page-size-option"
-          >
-          {{ size }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
 </div>
 
 <ul *ngIf="videos" class="videos" [ngClass]="{loading: loading}">
@@ -167,5 +149,6 @@
   [length]="length"
   [pageSize]="pageSize"
   [pageIndex]="page"
+  [pageSizeOptions]="pageSizeOptions"
   (page)="pageEvent = eventGetVideos($event)">
 </mat-paginator>
