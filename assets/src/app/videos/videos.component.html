@@ -84,6 +84,12 @@
 
 <ul *ngIf="videos" class="videos" [ngClass]="{loading: loading}">
   <li *ngIf="(!videos || videos.total == 0)">Aucun résultat trouvé</li>
+  <li class="videos-header">
+    <span class="legacy_id">ID</span>
+    <span class="title">Titre</span>
+    <span class="additional_title">Titre additionnel</span>
+    <span class="broadcast_date">Date de diffusion</span>
+  </li>
   <li
     *ngFor="let video of videos.data"
     class="video {{video.channel}}"

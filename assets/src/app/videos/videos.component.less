@@ -7,6 +7,27 @@ ul.videos {
   list-style: none;
   padding: 0px;
 
+  li.videos-header {
+    font-weight: bold;
+    padding: 10px 10px 10px 23px;
+    display: flex;
+
+    .legacy_id {
+      text-align: center;
+      display: inline-block;
+      width: 50px;
+    }
+    .title,
+    .additional_title {
+      display: inline-block;
+      width: 300px;
+    }
+    .broadcast_date {
+      width: 160px;
+      justify-content: flex-end;
+    }
+  }
+
   li.video {
     padding: 10px;
     background-color: #FFF;
