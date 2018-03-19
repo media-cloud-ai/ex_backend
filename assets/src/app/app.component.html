@@ -2,6 +2,11 @@
   <main role="main">
     <mat-toolbar class="mat-toolbar mat-primary mat-toolbar-multiple-rows">
       <mat-toolbar-row class="mat-toolbar-row">
+        <button
+          mat-icon-button (click)="switchMenu()"
+          class="icon_menu">
+          <mat-icon>menu</mat-icon>
+        </button>
         <span>
           <a class=title routerLink='/'>
             Subtil Backend
@@ -10,13 +15,13 @@
         <span class=spacer>
         </span>
         <span class=logo>
-          <img src="/bundles/images/france_televisions_logo.png">
+          <img src="/bundles/images/logo_id_2018_fushia13_2lignes.png">
         </span>
       </mat-toolbar-row>
     </mat-toolbar>
 
     <mat-sidenav-container class="docs-component-viewer-sidenav-container mat-drawer-container mat-sidenav-container">
-      <mat-sidenav mode="side" opened="true"
+      <mat-sidenav mode="side" opened="{{menu_opened}}"
         class="docs-component-viewer-sidenav mat-drawer mat-sidenav ng-tns-c13-1 ng-trigger ng-trigger-transform mat-drawer-side ng-star-inserted">
         <ul>
           <li class="ng-star-inserted">

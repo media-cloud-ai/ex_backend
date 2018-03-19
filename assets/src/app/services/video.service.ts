@@ -38,6 +38,8 @@ export class VideoService {
       params = params.append('broadcasted_before', dateRange.getEnd().format());
     }
 
+    params = params.append('sort', '-broadcasted_at');
+
     return this.http.get<VideoPage>(this.videosUrl, {params: params})
       .pipe(
         tap(videoPage => this.log('fetched VideoPage')),

@@ -116,11 +116,12 @@ defmodule ExSubtilBackend.Workflows do
       join: w in assoc(item, :workflow), where: w.id == ^workflow_id,
       where: item.name == ^id
 
-    jobs = Repo.all(query)
+    jobs =
+      Repo.all(query)
+      |> Repo.preload(:status)
 
     status =
       jobs
-      |> Repo.preload(:status)
       |> get_current_status
 
     status =
@@ -129,10 +130,55 @@ defmodule ExSubtilBackend.Workflows do
         _ -> status
       end
 
-    step = Map.put(step, :status, status)
+    completed = count_status(jobs, "completed")
+    errors = count_status(jobs, "error")
+    queued = count_queued_status(jobs)
+
+    job_status = %{
+      total: length(jobs),
+      completed: completed,
+      errors: errors,
+      queued: queued,
+    }
+
+    step =
+      step
+      |> Map.put(:status, status)
+      |> Map.put(:jobs, job_status)
 
     result = List.insert_at(result, -1, step)
     get_step_status(steps, workflow_id, result)
+  end
+
+  defp count_status(jobs, status, count \\ 0)
+  defp count_status([], _status, count), do: count
+  defp count_status([job | jobs], status, count) do
+
+    count =
+      case Enum.map(job.status, fn s -> s.state end) |> List.last do
+        nil -> count
+        state ->
+          if state == status do
+            count + 1
+          else
+            count
+          end
+      end
+
+    count_status(jobs, status, count)
+  end
+
+  defp count_queued_status(jobs, count \\ 0)
+  defp count_queued_status([], count), do: count
+  defp count_queued_status([job | jobs], count) do
+
+    count =
+      case Enum.map(job.status, fn s -> s.state end) |> List.last do
+        nil -> count + 1
+        state -> count
+      end
+
+    count_queued_status(jobs, count)
   end
 
   defp get_current_status([]), do: "processing"
