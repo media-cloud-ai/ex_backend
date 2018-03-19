@@ -13,19 +13,4 @@ defmodule ExSubtilBackend.Workflow.Step.Requirements do
         |> List.insert_at(-1, path)
     get_required_paths(requirements, paths)
   end
-
-
-  def get_required_first_file_path(requirements \\ %{}, path) do
-    first_file_path =
-      Path.dirname(path) <> "/*"
-      |> Path.wildcard
-      |> List.first
-
-    if first_file_path != path do
-      get_required_paths(requirements, first_file_path)
-    else
-      requirements
-    end
-  end
-
 end
