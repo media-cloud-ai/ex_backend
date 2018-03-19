@@ -1,6 +1,6 @@
 defmodule ExSubtilBackend.Workflow.Step.Requirements do
 
-  def get_required_paths(requirements \\ %{}, _path)
+  def get_required_paths(requirements \\ %{}, path)
   def get_required_paths(requirements, paths) when is_list(paths) do
     Map.update(requirements, :paths, paths, fn(cur_paths) ->
       Enum.concat(cur_paths, paths)
