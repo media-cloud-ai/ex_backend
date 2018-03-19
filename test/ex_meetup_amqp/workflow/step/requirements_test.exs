@@ -19,19 +19,25 @@ defmodule ExSubtilBackend.Workflow.Step.RequirementsTest do
     assert %{paths: ["/path/to/hello-world.thing", "/path/to/some.thing", "/path/to/other.thing"]} == requirements
   end
 
-  test "get required first dash quality" do
-    requirements = Requirements.get_required_first_dash_quality_path("/path/to/hello-world.thing")
-    assert %{paths: ["/path/to/hello-standard1.mp4"]} == requirements
+  test "get required first file" do
+    dir_path = "/tmp/test_folder/"
+    path2 = dir_path <> "ijklmnop.some"
+    path1 = dir_path <> "abcdefgh.thing"
+    File.mkdir_p!("/tmp/test_folder/")
+    File.touch!(path1)
+    File.touch!(path2)
 
-    requirements = Requirements.get_required_first_dash_quality_path(%{foo: "bar"}, "/path/to/hello-world.thing")
-    assert %{paths: ["/path/to/hello-standard1.mp4"], foo: "bar"} == requirements
+    requirements = Requirements.get_required_first_file_path(path1)
+    assert %{} == requirements
 
-    requirements = Requirements.get_required_first_dash_quality_path(requirements, "/path/to/foo-bar.some")
-    assert %{paths: ["/path/to/hello-standard1.mp4", "/path/to/foo-standard1.mp4"], foo: "bar"} == requirements
-  end
+    requirements = Requirements.get_required_first_file_path(path2)
+    assert %{paths: [path1]} == requirements
 
-  test "get required first dash quality error" do
-     assert_raise(ArgumentError, fn -> Requirements.get_required_first_dash_quality_path("/path/to/some.thing") end)
+    requirements = Requirements.get_required_first_file_path(%{foo: "bar"}, path2)
+    assert %{paths: [path1], foo: "bar"} == requirements
+
+    requirements = Requirements.get_required_first_file_path(requirements, path2)
+    assert %{paths: [path1], foo: "bar"} == requirements
   end
 
 end

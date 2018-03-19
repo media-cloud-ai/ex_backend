@@ -15,15 +15,14 @@ defmodule ExSubtilBackend.Workflow.Step.Requirements do
   end
 
 
-  def get_required_first_dash_quality_path(requirements \\ %{}, path) do
-    if !String.match?(path, ~r/.*\-[a-zA-Z0-9]*\..*/) do
-      raise ArgumentError.exception("invalid dash media file: " <> path)
-    end
+  def get_required_first_file_path(requirements \\ %{}, path) do
+    first_file_path =
+      Path.dirname(path) <> "/*"
+      |> Path.wildcard
+      |> List.first
 
-    if !String.ends_with?(path, "-standard1.mp4") do
-      required_path = String.replace(path, ~r/\-[a-zA-Z0-9]*\..*/, "-standard1.mp4")
-
-      get_required_paths(requirements, required_path)
+    if first_file_path != path do
+      get_required_paths(requirements, first_file_path)
     else
       requirements
     end
