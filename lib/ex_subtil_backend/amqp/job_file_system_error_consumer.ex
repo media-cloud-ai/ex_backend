@@ -1,10 +1,10 @@
 
-defmodule ExSubtilBackend.Amqp.JobCleanErrorConsumer do
+defmodule ExSubtilBackend.Amqp.JobFileSystemErrorConsumer do
   require Logger
 
   use ExSubtilBackend.Amqp.CommonConsumer, %{
     queue: "job_clean_error",
-    consumer: &ExSubtilBackend.Amqp.JobCleanErrorConsumer.consume/4,
+    consumer: &ExSubtilBackend.Amqp.JobFileSystemErrorConsumer.consume/4,
   }
 
   def consume(channel, tag, _redelivered, payload) do

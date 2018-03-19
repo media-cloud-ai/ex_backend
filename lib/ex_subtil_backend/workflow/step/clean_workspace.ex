@@ -1,7 +1,7 @@
 defmodule ExSubtilBackend.Workflow.Step.CleanWorkspace do
 
   alias ExSubtilBackend.Jobs
-  alias ExSubtilBackend.Amqp.JobCleanEmitter
+  alias ExSubtilBackend.Amqp.JobFileSystemEmitter
   alias ExSubtilBackend.Workflow.Step.Requirements
 
   def launch(workflow) do
@@ -27,7 +27,7 @@ defmodule ExSubtilBackend.Workflow.Step.CleanWorkspace do
       job_id: job.id,
       parameters: job.params
     }
-    JobCleanEmitter.publish_json(params)
+    JobFileSystemEmitter.publish_json(params)
   end
 
   defp get_source_files([], result), do: result

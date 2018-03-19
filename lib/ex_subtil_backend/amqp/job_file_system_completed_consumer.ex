@@ -1,12 +1,11 @@
-
-defmodule ExSubtilBackend.Amqp.JobCleanCompletedConsumer do
+defmodule ExSubtilBackend.Amqp.JobFileSystemCompletedConsumer do
   require Logger
 
   alias ExSubtilBackend.Jobs
 
   use ExSubtilBackend.Amqp.CommonConsumer, %{
     queue: "job_clean_completed",
-    consumer: &ExSubtilBackend.Amqp.JobCleanCompletedConsumer.consume/4,
+    consumer: &ExSubtilBackend.Amqp.JobFileSystemCompletedConsumer.consume/4,
   }
 
   def consume(channel, tag, _redelivered, %{"job_id" => job_id, "status" => status} = payload) do
