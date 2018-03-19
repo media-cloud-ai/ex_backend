@@ -15,6 +15,7 @@ defmodule ExSubtilBackend.Workflow.Step.CleanWorkspace do
       workflow_id: workflow.id,
       params: %{
         kind: "clean_workspace",
+        action: "remove",
         requirements: requirements,
         source: %{
           paths: paths
