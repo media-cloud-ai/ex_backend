@@ -8,7 +8,7 @@ defmodule ExSubtilBackend.Workflow.Step.CleanWorkspace do
 
     paths = get_source_files(workflow.jobs, [])
 
-    requirements = Requirements.get_required_paths(paths)
+    requirements = Requirements.add_required_paths(paths)
 
     job_params = %{
       name: "clean_workspace",
