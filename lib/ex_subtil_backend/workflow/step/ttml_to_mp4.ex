@@ -2,17 +2,20 @@ defmodule ExSubtilBackend.Workflow.Step.TtmlToMp4 do
 
   alias ExSubtilBackend.Jobs
   alias ExSubtilBackend.Amqp.JobGpacEmitter
+  alias ExSubtilBackend.Workflow.Step.Requirements
 
   def launch(workflow) do
     path = get_ttml_file(workflow.jobs, [])
 
     mp4_path = String.replace(path, ".ttml", ".mp4")
+    requirements = Requirements.add_required_paths(path)
 
     job_params = %{
       name: "ttml_to_mp4",
       workflow_id: workflow.id,
       params: %{
         kind: "ttml_to_mp4",
+        requirements: requirements,
         source: %{
           path: path
         },

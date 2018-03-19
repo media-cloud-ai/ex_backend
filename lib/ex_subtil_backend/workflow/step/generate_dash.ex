@@ -2,11 +2,16 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
 
   alias ExSubtilBackend.Jobs
   alias ExSubtilBackend.Amqp.JobGpacEmitter
+  alias ExSubtilBackend.Workflow.Step.Requirements
 
   def launch(workflow, step) do
 
     filenames_with_language = get_filenames_with_language(workflow.jobs, %{})
-    paths = get_source_files(workflow.jobs, filenames_with_language, [])
+    source_track_paths = get_source_files(workflow.jobs, filenames_with_language, [])
+
+    source_paths =
+      source_track_paths
+      |> Enum.map(fn(path) -> String.replace(path, ~r/\.mp4#.*/, ".mp4") end)
 
     work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_subtil_backend, :work_dir) || "/tmp/ftp_francetv"
 
@@ -21,13 +26,16 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
       Map.get(step, "parameters", [])
       |> build_gpac_parameters(options)
 
+    requirements = Requirements.add_required_paths(source_paths)
+
     job_params = %{
       name: "generate_dash",
       workflow_id: workflow.id,
       params: %{
         kind: "generate_dash",
+        requirements: requirements,
         source: %{
-          paths: paths
+          paths: source_track_paths
         },
         options: options
       }
