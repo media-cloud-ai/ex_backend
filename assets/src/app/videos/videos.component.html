@@ -85,10 +85,20 @@
 <ul *ngIf="videos" class="videos" [ngClass]="{loading: loading}">
   <li *ngIf="(!videos || videos.total == 0)">Aucun résultat trouvé</li>
   <li class="videos-header">
-    <span class="legacy_id">ID</span>
-    <span class="title">Titre</span>
-    <span class="additional_title">Titre additionnel</span>
-    <span class="broadcast_date">Date de diffusion</span>
+    <span class="legacy_id">
+      ID
+    </span>
+    <span class="title">
+      Titre
+    </span>
+    <span class="additional_title">
+      Titre additionnel
+    </span>
+    <span class="broadcast_date">
+      Date de diffusion
+    </span>
+    <span class="actions">
+    </span>
   </li>
   <li
     *ngFor="let video of videos.data"
@@ -104,49 +114,54 @@
     <span class="additional_title">
       {{video.additional_title}}
     </span>
-    <span class="date">
-      {{video.broadcasted_at | date: 'd LLL yy'}}
+    <span class="broadcast_date">
+      <span class="date">
+        {{video.broadcasted_at | date: 'd LLL yy'}}
+      </span>
+      <span class="hour">
+        {{video.broadcasted_at | date: 'H:mm:ss'}}
+      </span>
     </span>
-    <span class="hour">
-      {{video.broadcasted_at | date: 'H:mm:ss'}}
-    </span>
-    <span class="jarvis" [ngClass]="{disabled: video.manifest_url == undefined}">
-      <a target="_blank" href="http://master.player.build.ftven.net/jarvis/?streams={{get_encoded_uri(video.manifest_url)}}">
-        <i class="material-icons">live_tv</i>
+
+    <span class="actions">
+      <span class="jarvis" [ngClass]="{disabled: video.manifest_url == undefined}">
+        <a target="_blank" href="http://master.player.build.ftven.net/jarvis/?streams={{get_encoded_uri(video.manifest_url)}}">
+          <i class="material-icons">live_tv</i>
+        </a>
+      </span>
+      <span class="tracks audio"
+        *ngFor="let track of video.audio_tracks">
+        <i class="material-icons">volume_down</i>
+        <span>
+          {{track.id | audioType}}
+        </span>
+      </span>
+      <span class="tracks text"
+        *ngFor="let track of video.text_tracks">
+        <i class="material-icons">closed_caption</i>
+        <span>
+          {{track.id | textType}}
+        </span>
+      </span>
+      <a href="/workflows?video_id={{video.id}}">
+        <span
+          class="workflows_count"
+          [ngClass]="{found: video.workflows_count > 0}"
+          >
+          {{video.workflows_count}}
+        </span>
       </a>
-    </span>
-    <span class="tracks audio"
-      *ngFor="let track of video.audio_tracks">
-      <i class="material-icons">volume_down</i>
-      <span>
-        {{track.id | audioType}}
+      <span class="starter">
+        <button
+          mat-raised-button
+          color="primary"
+          disabled={{!video.available}}
+          (click)="start_process(video)"
+          >
+          <mat-icon>play_arrow</mat-icon>
+          Ingest
+        </button>
       </span>
-    </span>
-    <span class="tracks text"
-      *ngFor="let track of video.text_tracks">
-      <i class="material-icons">closed_caption</i>
-      <span>
-        {{track.id | textType}}
-      </span>
-    </span>
-    <a href="/workflows?video_id={{video.id}}">
-      <span
-        class="workflows_count"
-        [ngClass]="{found: video.workflows_count > 0}"
-        >
-        {{video.workflows_count}}
-      </span>
-    </a>
-    <span class="starter">
-      <button
-        mat-raised-button
-        color="primary"
-        disabled={{!video.available}}
-        (click)="start_process(video)"
-        >
-        <mat-icon>play_arrow</mat-icon>
-        Ingest
-      </button>
     </span>
   </li>
 </ul>
