@@ -22,7 +22,14 @@ import * as moment from 'moment';
 
 export class VideosComponent {
   length = 1000;
+
   pageSize = 10;
+  pageSizes = [
+    10,
+    20,
+    50,
+    100
+  ];
   page = 0;
   sub = undefined;
   loading = true;
@@ -56,6 +63,7 @@ export class VideosComponent {
       .queryParams
       .subscribe(params => {
         this.page = +params['page'] || 0;
+        this.pageSize = +params['per_page'] || 10;
         var channels = params['channels'];
         if(channels && !Array.isArray(channels)){
           channels = [channels];
@@ -90,6 +98,7 @@ export class VideosComponent {
   getVideos(index): void {
     this.loading = true;
     this.videoService.getVideos(index,
+      this.pageSize,
       this.selectedChannels,
       this.searchInput,
       this.dateRange,
@@ -137,6 +146,9 @@ export class VideosComponent {
     }
     if(this.videoid && this.videoid.length == 36) {
       params['video_id'] = this.videoid;
+    }
+    if(this.pageSize != 10) {
+      params['per_page'] = this.pageSize;
     }
     return params;
   }
