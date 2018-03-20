@@ -207,6 +207,24 @@ export class VideosComponent {
     });
   }
 
+  start_all_process(): void {
+    let dialogRef = this.dialog.open(WorkflowDialogComponent, {
+      data: {
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(steps => {
+      if(steps != undefined) {
+        for(let video of this.selectedVideos) {
+          this.workflowService.createWorkflow({reference: video.id, flow: {steps: steps}})
+          .subscribe(response => {
+            console.log(response);
+          });
+        }
+      }
+    });
+  }
+
   get_encoded_uri(uri): string {
     return encodeURI("[\"" + uri + "\"]");
   }

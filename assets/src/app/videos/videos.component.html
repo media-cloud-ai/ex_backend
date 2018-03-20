@@ -98,6 +98,15 @@
       Date de diffusion
     </span>
     <span class="actions">
+      <button
+        mat-raised-button
+        color="primary"
+        disabled="{{selectedVideos.length == 0}}"
+        (click)="start_all_process()"
+        >
+        <mat-icon>play_arrow</mat-icon>
+        Ingest
+      </button>
     </span>
   </li>
   <li
