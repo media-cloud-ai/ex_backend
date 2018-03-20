@@ -175,7 +175,7 @@ defmodule ExSubtilBackend.Workflows do
     count =
       case Enum.map(job.status, fn s -> s.state end) |> List.last do
         nil -> count + 1
-        state -> count
+        _state -> count
       end
 
     count_queued_status(jobs, count)
