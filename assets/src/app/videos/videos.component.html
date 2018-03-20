@@ -157,6 +157,7 @@
         </span>
       </a>
       <span class="starter">
+        <mat-checkbox [(ngModel)]="video.selected" (change)="selectVideo(video, $event.checked)"></mat-checkbox>
         <button
           mat-raised-button
           color="primary"

@@ -8,6 +8,7 @@ import {AppComponent}     from './app.component';
 import {
   MatButtonModule,
   MatCardModule,
+  MatCheckboxModule,
   MatDatepickerModule,
   MatDialogModule,
   MatIconModule,
@@ -100,6 +101,7 @@ const SUBTIL_DATE_FORMATS = {
     HttpClientModule,
     MatButtonModule,
     MatCardModule,
+    MatCheckboxModule,
     MatDatepickerModule,
     MatDialogModule,
     MatIconModule,

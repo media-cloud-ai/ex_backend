@@ -1,6 +1,6 @@
 
 import {Component, ViewChild} from '@angular/core';
-import {MatDialog, PageEvent} from '@angular/material';
+import {MatDialog, MatCheckboxModule, PageEvent} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormControl} from '@angular/forms';
 
@@ -49,6 +49,8 @@ export class VideosComponent {
 
   pageEvent: PageEvent;
   videos: VideoPage;
+
+  selectedVideos = [];
 
   constructor(
     private videoService: VideoService,
@@ -178,6 +180,15 @@ export class VideosComponent {
   updateEnd(): void {
     this.getQueryParamsForPage(0);
     this.updateVideos();
+  }
+
+  selectVideo(video, checked): void {
+    video.selected = checked;
+    if(checked) {
+      this.selectedVideos.push(video);
+    } else {
+      this.selectedVideos = this.selectedVideos.filter(v => v.id !== video.id);
+    }
   }
 
   start_process(video): void {
