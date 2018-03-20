@@ -4,26 +4,35 @@ defmodule ExSubtilBackend.Workflow.Step.FtpUpload do
   alias ExSubtilBackend.Amqp.JobFtpEmitter
   alias ExSubtilBackend.Workflow.Step.Requirements
 
+  @action_name "upload_ftp"
+
   def launch(workflow, _step) do
     current_date =
       Timex.now
       |> Timex.format!("%Y_%m_%d__%H_%M_%S", :strftime)
 
-    get_paths(workflow.jobs, [])
-    |> start_upload(current_date, workflow)
+    case get_paths(workflow.jobs) do
+      [] -> Jobs.create_skipped_job(workflow, @action_name)
+      paths ->
+        start_upload(paths, current_date, workflow)
+    end
   end
 
-  defp get_paths([], result), do: result
-  defp get_paths([job | jobs], result) do
+  def get_paths(jobs, result \\ [])
+  def get_paths([], result), do: result
+  def get_paths([job | jobs], result) do
     result =
       case job.name do
         "generate_dash" ->
           paths =
             job.params
-            |> Map.get("destination")
+            |> Map.get("destination", %{})
             |> Map.get("paths")
 
-          result ++ paths
+          case paths do
+            nil -> result
+            paths -> result ++ paths
+          end
         _ -> result
       end
 
@@ -40,7 +49,7 @@ defmodule ExSubtilBackend.Workflow.Step.FtpUpload do
     requirements = Requirements.add_required_paths(file)
 
     job_params = %{
-      name: "upload_ftp",
+      name: @action_name,
       workflow_id: workflow.id,
       params: %{
         requirements: requirements,

@@ -4,6 +4,8 @@ defmodule ExSubtilBackend.Workflow.Step.FtpDownload do
   alias ExSubtilBackend.Amqp.JobFtpEmitter
   alias ExSubtilBackend.Workflow.Step.Requirements
 
+  @action_name "download_ftp"
+
   def launch(workflow) do
     ftp_paths = ExVideoFactory.get_ftp_paths_for_video_id(workflow.reference)
 
@@ -12,7 +14,10 @@ defmodule ExSubtilBackend.Workflow.Step.FtpDownload do
       |> Enum.sort
       |> List.first
 
-    start_download_via_ftp(ftp_paths, first_file, workflow)
+    case ftp_paths do
+      [] -> Jobs.create_skipped_job(workflow, @action_name)
+      _ -> start_download_via_ftp(ftp_paths, first_file, workflow)
+    end
   end
 
   defp start_download_via_ftp([], _first_file, _workflow), do: {:ok, "started"}
@@ -34,7 +39,7 @@ defmodule ExSubtilBackend.Workflow.Step.FtpDownload do
       end
 
     job_params = %{
-      name: "download_ftp",
+      name: @action_name,
       workflow_id: workflow.id,
       params: %{
         source: %{

@@ -4,51 +4,57 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
   alias ExSubtilBackend.Amqp.JobGpacEmitter
   alias ExSubtilBackend.Workflow.Step.Requirements
 
+  @action_name "generate_dash"
+
   def launch(workflow, step) do
 
     filenames_with_language = get_filenames_with_language(workflow.jobs, %{})
-    source_track_paths = get_source_files(workflow.jobs, filenames_with_language, [])
 
-    source_paths =
-      source_track_paths
-      |> Enum.map(fn(path) -> String.replace(path, ~r/\.mp4#.*/, ".mp4") end)
+    case get_source_files(workflow.jobs, filenames_with_language) do
+      [] -> Jobs.create_skipped_job(workflow, @action_name)
+      source_track_paths ->
+        source_paths =
+          source_track_paths
+          |> Enum.map(fn(path) -> String.replace(path, ~r/\.mp4#.*/, ".mp4") end)
 
-    work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_subtil_backend, :work_dir) || "/tmp/ftp_francetv"
+        work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_subtil_backend, :work_dir) || "/tmp/ftp_francetv"
 
-    options = %{
-      "-out": work_dir <> "/dash/" <> workflow.reference <> "/manifest.mpd",
-      "-profile": "onDemand",
-      "-rap": true,
-      "-url-template": true,
-    }
+        options = %{
+          "-out": work_dir <> "/dash/" <> workflow.reference <> "/manifest.mpd",
+          "-profile": "onDemand",
+          "-rap": true,
+          "-url-template": true,
+        }
 
-    options =
-      Map.get(step, "parameters", [])
-      |> build_gpac_parameters(options)
+        options =
+          Map.get(step, "parameters", [])
+          |> build_gpac_parameters(options)
 
-    requirements = Requirements.add_required_paths(source_paths)
+        requirements = Requirements.add_required_paths(source_paths)
 
-    job_params = %{
-      name: "generate_dash",
-      workflow_id: workflow.id,
-      params: %{
-        kind: "generate_dash",
-        requirements: requirements,
-        source: %{
-          paths: source_track_paths
-        },
-        options: options
-      }
-    }
+        job_params = %{
+          name: @action_name,
+          workflow_id: workflow.id,
+          params: %{
+            kind: @action_name,
+            requirements: requirements,
+            source: %{
+              paths: source_track_paths
+            },
+            options: options
+          }
+        }
 
-    {:ok, job} = Jobs.create_job(job_params)
-    params = %{
-      job_id: job.id,
-      parameters: job.params
-    }
-    JobGpacEmitter.publish_json(params)
+        {:ok, job} = Jobs.create_job(job_params)
+        params = %{
+          job_id: job.id,
+          parameters: job.params
+        }
+        JobGpacEmitter.publish_json(params)
+    end
   end
 
+  defp get_source_files(jobs, paths_with_languages, result\\ [])
   defp get_source_files([], _paths_with_languages, result), do: result
   defp get_source_files([job | jobs], paths_with_languages, result) do
     result =
@@ -56,11 +62,12 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
         "download_ftp" ->
           path =
             job.params
-            |> Map.get("destination")
+            |> Map.get("destination", %{})
             |> Map.get("path")
             |> get_path_with_language(paths_with_languages)
 
           case get_quality(path) do
+            nil -> result
             1 ->
               audio_path = path <> "#trackID=2#audio:id=a1"
               video_path = path <> "#trackID=1#video:id=v" <> Integer.to_string(5)
@@ -78,7 +85,7 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
         "ttml_to_mp4" ->
           caption_path =
             job.params
-            |> Map.get("destination")
+            |> Map.get("destination", %{})
             |> Map.get("paths")
             |> get_path_with_language(paths_with_languages)
 
@@ -101,16 +108,19 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
         "set_language" ->
           path =
             job.params
-            |> Map.get("destination")
+            |> Map.get("destination", %{})
             |> Map.get("paths")
-          Map.put(result, Path.basename(path), path)
-
+          case path do
+            nil -> result
+            path -> Map.put(result, Path.basename(path), path)
+          end
         _ -> result
       end
 
     get_filenames_with_language(jobs, result)
   end
 
+  defp get_path_with_language(nil, _paths_with_languages), do: nil
   defp get_path_with_language(path, paths_with_languages) do
     case Map.get(paths_with_languages, Path.basename(path)) do
       nil -> path
@@ -134,6 +144,7 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
   defp convert_gpac_key("fragment_duration"), do: "-frag"
   defp convert_gpac_key(_), do: nil
 
+  def get_quality(nil), do: nil
   def get_quality(path) do
     if String.ends_with?(path, "-qad.mp4") do
       "qad"

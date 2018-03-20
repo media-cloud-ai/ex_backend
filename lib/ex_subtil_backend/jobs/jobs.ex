@@ -7,6 +7,7 @@ defmodule ExSubtilBackend.Jobs do
   alias ExSubtilBackend.Repo
 
   alias ExSubtilBackend.Jobs.Job
+  alias ExSubtilBackend.Jobs.Status
 
   defp force_integer(param) when is_bitstring(param) do
     param
@@ -93,6 +94,26 @@ defmodule ExSubtilBackend.Jobs do
     %Job{}
     |> Job.changeset(attrs)
     |> Repo.insert()
+  end
+
+  @doc """
+  Creates a job with a skipped status.
+
+  ## Examples
+
+      iex> create_skipped_job(workflow, "download_http")
+      {:ok, "skipped"}
+
+  """
+  def create_skipped_job(workflow, action) do
+    job_params = %{
+      name: action,
+      workflow_id: workflow.id,
+      params: %{}
+    }
+    {:ok, job} = create_job(job_params)
+    Status.set_job_status(job.id, "skipped")
+    {:ok, "skipped"}
   end
 
   @doc """

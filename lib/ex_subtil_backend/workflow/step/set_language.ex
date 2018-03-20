@@ -4,22 +4,27 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
   alias ExSubtilBackend.Amqp.JobGpacEmitter
   alias ExSubtilBackend.Workflow.Step.Requirements
 
+  @action_name "set_language"
+
   def launch(workflow, _step) do
-    # Get file paths
-    paths = get_source_files(workflow.jobs)
 
-    # Get track languages
-    languages =
-      ExVideoFactory.videos(%{"qid" => workflow.reference})
-      |> Map.fetch!(:videos)
-      |> List.first
-      |> get_source_languages
+    case get_source_files(workflow.jobs) do
+      %{audio_description_tracks: [], audio_tracks: [], text_tracks: []} ->
+        Jobs.create_skipped_job(workflow, @action_name)
+      paths ->
+        # Get track languages
+        languages =
+          ExVideoFactory.videos(%{"qid" => workflow.reference})
+          |> Map.fetch!(:videos)
+          |> List.first
+          |> get_source_languages
 
-    # Set languages
-    set_text_languages(paths.text_tracks, languages.text_tracks)
-    |> set_audio_languages(paths.audio_description_tracks, languages.audio_description_tracks)
-    |> set_audio_languages(paths.audio_tracks, languages.audio_tracks)
-    |> start_setting_languages(workflow)
+        # Set languages
+        set_text_languages(paths.text_tracks, languages.text_tracks)
+        |> set_audio_languages(paths.audio_description_tracks, languages.audio_description_tracks)
+        |> set_audio_languages(paths.audio_tracks, languages.audio_tracks)
+        |> start_setting_languages(workflow)
+    end
   end
 
   defp set_audio_languages(result, [], _languages), do: result
@@ -38,8 +43,8 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
     List.insert_at(result, -1, mapping)
   end
 
-  defp set_text_languages(result \\ [], _paths, _languages)
-  defp set_text_languages(result, [], []), do: result
+  defp set_text_languages(result \\ [], paths, languages)
+  defp set_text_languages(result, [], _languages), do: result
   defp set_text_languages(result, [path | paths], [lang | languages]) do
 
     result = map_path_with_language(path, lang, result)
@@ -63,10 +68,10 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
     }
     requirements = Requirements.add_required_paths(mapping.path)
     job_params = %{
-      name: "set_language",
+      name: @action_name,
       workflow_id: workflow.id,
       params: %{
-        kind: "set_language",
+        kind: @action_name,
         requirements: requirements,
         source: %{
           path: mapping.path
@@ -107,10 +112,11 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
         "download_ftp" ->
           path =
             job.params
-            |> Map.get("destination")
+            |> Map.get("destination", %{})
             |> Map.get("path")
 
           cond do
+            is_nil(path) -> result
             String.ends_with?(path, "-standard1.mp4") ->
               audio_tracks =
                 Map.get(result, :audio_tracks, [])
@@ -129,7 +135,7 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
         "ttml_to_mp4" ->
           caption_path =
             job.params
-            |> Map.get("destination")
+            |> Map.get("destination", %{})
             |> Map.get("paths")
 
           text_tracks = Map.get(result, :text_tracks, [])

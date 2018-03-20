@@ -1,14 +1,27 @@
 defmodule ExSubtilBackend.Workflow.Step.HttpDownload do
 
+  alias ExSubtilBackend.Repo
   alias ExSubtilBackend.Jobs
   alias ExSubtilBackend.Amqp.JobHttpEmitter
   alias ExSubtilBackend.Workflow.Step.Requirements
 
-  def launch(workflow) do
-    ExVideoFactory.get_http_url_for_ttml(workflow.reference)
-    |> start_download_via_http(workflow)
-  end
+  @action_name "download_http"
 
+  def launch(workflow) do
+    first_job_state =
+      workflow.jobs
+      |> List.first
+      |> Repo.preload(:status)
+      |> Map.get(:status)
+      |> List.first
+      |> Map.get(:state)
+
+    case {first_job_state, ExVideoFactory.get_http_url_for_ttml(workflow.reference)} do
+      {"skipped", _} -> Jobs.create_skipped_job(workflow, @action_name)
+      {_, []} -> Jobs.create_skipped_job(workflow, @action_name)
+      {_, urls} -> start_download_via_http(urls, workflow)
+    end
+  end
 
   defp start_download_via_http([], _workflow), do: {:ok, "started"}
   defp start_download_via_http([url | urls], workflow) do
@@ -19,7 +32,7 @@ defmodule ExSubtilBackend.Workflow.Step.HttpDownload do
     requirements = Requirements.add_required_paths(work_dir <> "/" <> workflow.reference)
 
     job_params = %{
-      name: "download_http",
+      name: @action_name,
       workflow_id: workflow.id,
       params: %{
         requirements: requirements,
