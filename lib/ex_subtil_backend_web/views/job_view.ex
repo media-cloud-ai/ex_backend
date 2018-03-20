@@ -29,6 +29,7 @@ defmodule ExSubtilBackendWeb.JobView do
 
       %{
         id: job.id,
+        workflow_id: job.workflow_id,
         name: job.name,
         params: job.params,
         status: status,
