@@ -1,6 +1,6 @@
 defmodule ExSubtilBackendWeb.WorkflowView do
   use ExSubtilBackendWeb, :view
-  alias ExSubtilBackendWeb.{JobView, WorkflowView}
+  alias ExSubtilBackendWeb.{ArtifactView, JobView, WorkflowView}
 
   def render("index.json", %{workflows: %{data: workflows, total: total}}) do
     %{
@@ -20,6 +20,14 @@ defmodule ExSubtilBackendWeb.WorkflowView do
       flow: workflow.flow,
       created_at: workflow.inserted_at,
     }
+
+    result =
+      if is_list(workflow.artifacts) do
+        artifacts = render_many(workflow.artifacts, ArtifactView, "artifact.json")
+        Map.put(result, :artifacts, artifacts)
+      else
+        result
+      end
 
     if is_list(workflow.jobs) do
       jobs = render_many(workflow.jobs, JobView, "job.json")

@@ -45,6 +45,7 @@ import {JobsComponent}           from './jobs/jobs.component';
 import {QueuesComponent}         from './amqp/queues.component';
 import {VideosComponent}         from './videos/videos.component';
 import {WorkflowsComponent}      from './workflows/workflows.component';
+import {DurationComponent}       from './workflows/duration.component';
 
 import {WorkflowDialogComponent} from './videos/workflow/workflow_dialog.component';
 
@@ -126,6 +127,7 @@ const SUBTIL_DATE_FORMATS = {
     WorkflowDialogComponent,
     WorkflowsComponent,
     ContainersComponent,
+    DurationComponent,
 
     AudioTypePipe,
     BasenamePipe,
@@ -138,6 +140,7 @@ const SUBTIL_DATE_FORMATS = {
     TextTypePipe,
   ],
   entryComponents: [
+    DurationComponent,
     WorkflowDialogComponent,
   ],
   providers: [
