@@ -14,9 +14,9 @@ export class VideoService {
 
   constructor(private http: HttpClient) { }
 
-  getVideos(page: number, channels: Array<string>, searchInput: string, dateRange: DateRange, videoid: string): Observable<VideoPage> {
+  getVideos(page: number, per_page: number, channels: Array<string>, searchInput: string, dateRange: DateRange, videoid: string): Observable<VideoPage> {
     let params = new HttpParams();
-    params = params.append('per_page', '10');
+    params = params.append('per_page', per_page.toString());
     params = params.append('type.id', 'integrale');
     for (let entry of channels) {
       params = params.append('channels[]', entry);

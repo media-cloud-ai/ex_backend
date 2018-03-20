@@ -22,7 +22,14 @@ import * as moment from 'moment';
 
 export class VideosComponent {
   length = 1000;
+
   pageSize = 10;
+  pageSizeOptions = [
+    10,
+    20,
+    50,
+    100
+  ];
   page = 0;
   sub = undefined;
   loading = true;
@@ -56,6 +63,7 @@ export class VideosComponent {
       .queryParams
       .subscribe(params => {
         this.page = +params['page'] || 0;
+        this.pageSize = +params['per_page'] || 10;
         var channels = params['channels'];
         if(channels && !Array.isArray(channels)){
           channels = [channels];
@@ -90,6 +98,7 @@ export class VideosComponent {
   getVideos(index): void {
     this.loading = true;
     this.videoService.getVideos(index,
+      this.pageSize,
       this.selectedChannels,
       this.searchInput,
       this.dateRange,
@@ -102,8 +111,7 @@ export class VideosComponent {
   }
 
   eventGetVideos(event): void {
-    this.router.navigate(['/videos'], { queryParams: this.getQueryParamsForPage(event.pageIndex) });
-    this.getVideos(event.pageIndex);
+    this.router.navigate(['/videos'], { queryParams: this.getQueryParamsForPage(event.pageIndex, event.pageSize) });
   }
 
   updateVideos(): void {
@@ -117,7 +125,7 @@ export class VideosComponent {
     }
   }
 
-  getQueryParamsForPage(pageIndex: number): Object {
+  getQueryParamsForPage(pageIndex: number, pageSize: number = undefined): Object {
     var params = {}
 
     if(this.selectedChannels.length != this.channels.length) {
@@ -137,6 +145,15 @@ export class VideosComponent {
     }
     if(this.videoid && this.videoid.length == 36) {
       params['video_id'] = this.videoid;
+    }
+    if(pageSize) {
+      if(pageSize != 10) {
+        params['per_page'] = pageSize;
+      }
+    } else {
+      if(this.pageSize != 10) {
+        params['per_page'] = this.pageSize;
+      }
     }
     return params;
   }
