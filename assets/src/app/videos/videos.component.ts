@@ -191,6 +191,14 @@ export class VideosComponent {
     }
   }
 
+  selectAllVideos(event): void {
+    for(let video of this.videos.data) {
+      if(video.available) {
+        this.selectVideo(video, event.checked);
+      }
+    }
+  }
+
   start_process(video): void {
     let dialogRef = this.dialog.open(WorkflowDialogComponent, {
       data: {
