@@ -7,6 +7,31 @@ ul.videos {
   list-style: none;
   padding: 0px;
 
+  li.videos-header {
+    font-weight: bold;
+    padding: 10px;
+    padding-left: 23px;
+    display: flex;
+
+    .legacy_id {
+      display: inline-block;
+      width: 50px;
+    }
+    .title,
+    .additional_title {
+      display: inline-block;
+      flex: 1;
+    }
+    .broadcast_date {
+      // min-width: 160px;
+      flex: 1;
+      justify-content: flex-end;
+    }
+    .actions {
+      flex: 2;
+    }
+  }
+
   li.video {
     padding: 10px;
     background-color: #FFF;
@@ -23,50 +48,56 @@ ul.videos {
       text-overflow: ellipsis;
       overflow: hidden;
       height: 15px;
-      width: 300px;
+      flex: 1;
       white-space: nowrap;
       vertical-align: middle;
     }
 
-    span.date {
-      min-width: 80px;
-    }
-    span.hour {
-      min-width: 80px;
+    span.broadcast_date {
       flex: 1;
+      span.date,
+      span.hour {
+        min-width: 80px;
+      }
     }
-    span.jarvis i {
-      color: #3965ac;
-    }
-    span.jarvis.disabled i {
-      color: #bbb;
-    }
-    span.workflows_count {
-      display: inline-block;
-      background-color: #bbb;
-      border-radius: 50%;
-      width: 25px;
-      height: 25px;
-      color: #fff;
-      text-align: center;
-      line-height: 24px;
-      margin-top: 5px;
-      margin-right: 10px;
-      cursor: pointer;
-    }
-    span.workflows_count.found {
-      background-color: #671368;
-    }
-    span.starter {
-      justify-content: flex-end;
-    }
-    span.tracks {
-      padding-right: 10px;
-      span {
-        vertical-align: top;
-        font-size: 16px;
-        margin-top: 03px;
+    
+    span.actions {
+      flex: 2;
+      text-align: right;
+
+      span.jarvis i {
+        color: #3965ac;
+      }
+      span.jarvis.disabled i {
+        color: #bbb;
+      }
+      span.workflows_count {
         display: inline-block;
+        background-color: #bbb;
+        border-radius: 50%;
+        width: 25px;
+        height: 25px;
+        color: #fff;
+        text-align: center;
+        line-height: 24px;
+        margin-top: 5px;
+        margin-right: 10px;
+        cursor: pointer;
+      }
+      span.workflows_count.found {
+        background-color: #671368;
+      }
+      span.starter {
+        justify-content: flex-end;
+      }
+      span.tracks {
+        padding-right: 10px;
+        span {
+          vertical-align: top;
+          font-size: 16px;
+          margin-top: 03px;
+          display: inline-block;
+        }
       }
     }
   }
