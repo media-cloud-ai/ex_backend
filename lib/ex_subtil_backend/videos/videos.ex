@@ -8,6 +8,7 @@ defmodule ExSubtilBackend.Videos do
   import Ecto.Query, warn: false
   alias ExSubtilBackend.Repo
   alias ExSubtilBackend.Workflows.Workflow
+  alias ExSubtilBackend.Artifacts.Artifact
 
   def get_manifest_url(video_id) do
     workflow =
@@ -20,20 +21,19 @@ defmodule ExSubtilBackend.Videos do
       workflow ->
         try do
           query =
-            from item in Workflow,
-            where: item.id == ^workflow.id,
-            join: job in assoc(item, :jobs),
-            where: job.name == "upload_ftp",
-            where: fragment("?->?->>? LIKE ?", job.params, "destination", "path", "%.mpd"),
-            select: job,
-            order_by: [desc: :inserted_at],
-            limit: 1
+            from item in Artifact,
+              where: item.workflow_id == ^workflow.id,
+              order_by: item.inserted_at
 
-          Repo.one!(query)
-          |> Map.get(:params)
-          |> Map.get("destination")
-          |> Map.get("path")
-          |> String.replace("/421959/prod/innovation/", "http://videos-pmd.francetv.fr/innovation/")
+          case Repo.all(query) do
+            [] -> nil
+            artifacts ->
+              artifacts
+              |> List.first
+              |> Map.get(:resources, %{})
+              |> Map.get("manifest")
+              |> String.replace("/421959/prod/innovation/", "http://videos-pmd.francetv.fr/innovation/")
+          end
         rescue
           e ->
             Logger.error "unable to retrieve manifest URL for #{workflow.id}: #{inspect e}"

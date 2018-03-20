@@ -5,7 +5,6 @@ defmodule ExSubtilBackend.Jobs.Job do
   alias ExSubtilBackend.Jobs.Status
   alias ExSubtilBackend.Workflows.Workflow
 
-
   schema "jobs" do
     field :name, :string
     field :params, :map

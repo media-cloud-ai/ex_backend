@@ -6,25 +6,34 @@ defmodule ExSubtilBackend.WorkflowStep do
   require Logger
 
   alias ExSubtilBackend.Workflows.Workflow
+  alias ExSubtilBackend.Artifacts
 
   def start_next_step(%Workflow{id: workflow_id} = workflow) do
 
-    workflow = ExSubtilBackend.Repo.preload(workflow, :jobs)
+    workflow = ExSubtilBackend.Repo.preload(workflow, :jobs, force: true)
 
     step_index =
       Enum.map(workflow.jobs, fn(job) -> job.name end)
       |> Enum.uniq
       |> length
 
-    Logger.warn "#{__MODULE__}: start to process step #{step_index} for workflow #{workflow_id}"
-
     steps =
       workflow.flow
       |> Map.get("steps")
 
-    step = Enum.at(steps, step_index)
+    case Enum.at(steps, step_index) do
+      nil ->
+        set_artifacts(workflow)
+        Logger.warn "#{__MODULE__}: workflow #{workflow_id} is completed"
+      step ->
+        Logger.warn "#{__MODULE__}: start to process step #{step["id"]} (index #{step_index}) for workflow #{workflow_id}"
 
-    launch_step(workflow, step, step_index)
+        status = launch_step(workflow, step, step_index)
+        case status do
+          {:ok, "skipped"} -> start_next_step(workflow)
+          _ -> status
+        end
+    end
   end
 
   defp launch_step(workflow, %{"id"=> "download_ftp"} = _step, _step_index) do
@@ -58,5 +67,48 @@ defmodule ExSubtilBackend.WorkflowStep do
   defp launch_step(workflow, step, _step_index) do
     Logger.error "unable to match with the step #{inspect step} for workflow #{workflow.id}"
     {:error, "unable to match with the step #{inspect step}"}
+  end
+
+  def set_artifacts(workflow) do
+    paths =
+      get_uploaded_file_path(workflow.jobs)
+      |> Enum.filter(fn(path) -> String.ends_with?(path, ".mpd") end)
+
+    case paths do
+      [] -> nil
+      paths ->
+        manifest = List.first(paths)
+        params = %{
+          resources: %{
+            manifest: manifest
+          },
+          workflow_id: workflow.id
+        }
+
+        Artifacts.create_artifact(params)
+    end
+  end
+
+  def get_uploaded_file_path(jobs, result \\ [])
+  def get_uploaded_file_path([], result), do: result
+  def get_uploaded_file_path([job | jobs], result) do
+
+    result =
+      if job.name == "upload_ftp" do
+        path =
+          job
+          |> Map.get(:params, %{})
+          |> Map.get("destination", %{})
+          |> Map.get("path")
+
+        case path do
+          nil -> result
+          path -> List.insert_at(result, -1, path)
+        end
+      else
+        result
+      end
+
+    get_uploaded_file_path(jobs, result)
   end
 end

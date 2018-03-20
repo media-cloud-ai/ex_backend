@@ -58,6 +58,20 @@ defmodule ExSubtilBackendWeb.Docker.ImagesController do
           },
           "volumes": volumes
         }
+      },
+      %{
+        "id": "file-system-worker",
+        "label": "File System Worker",
+        "params": %{
+          "image": "ftvsubtil/file_system_worker",
+          "environment": %{
+            "AMQP_HOSTNAME": hostname,
+            "AMQP_USERNAME": username,
+            "AMQP_PASSWORD": password,
+            "AMQP_VHOST": virtual_host
+          },
+          "volumes": volumes
+        }
       }
     ]
 

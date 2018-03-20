@@ -132,6 +132,7 @@ defmodule ExSubtilBackend.Workflows do
 
     completed = count_status(jobs, "completed")
     errors = count_status(jobs, "error")
+    skipped = count_status(jobs, "skipped")
     queued = count_queued_status(jobs)
 
     job_status = %{
@@ -139,6 +140,7 @@ defmodule ExSubtilBackend.Workflows do
       completed: completed,
       errors: errors,
       queued: queued,
+      skipped: skipped,
     }
 
     step =
@@ -255,7 +257,7 @@ defmodule ExSubtilBackend.Workflows do
     Workflow.changeset(workflow, %{})
   end
 
-  def jobs_without_status?(workflow_id, status \\ "completed") do
+  def jobs_without_status?(workflow_id, status \\ ["completed", "skipped"]) do
     query_count_jobs = from workflow in Workflow,
       where: workflow.id == ^workflow_id,
       join: jobs in assoc(workflow, :jobs),
@@ -265,7 +267,7 @@ defmodule ExSubtilBackend.Workflows do
       where: workflow.id == ^workflow_id,
       join: jobs in assoc(workflow, :jobs),
       join: status in assoc(jobs, :status),
-      where: status.state == ^status,
+      where: status.state in ^status,
       select: count(status.id)
 
     total =

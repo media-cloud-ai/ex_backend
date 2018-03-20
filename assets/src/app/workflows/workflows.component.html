@@ -40,6 +40,12 @@
           </div>
           <div class=progress>
             <span
+              class="skipped"
+              *ngIf="step.jobs.skipped > 0"
+              [ngStyle]="{'flex': step.jobs.skipped}">
+              Skipped
+            </span>
+            <span
               class="completed"
               *ngIf="step.jobs.completed > 0"
               [ngStyle]="{'flex': step.jobs.completed}">
@@ -47,9 +53,9 @@
             </span>
             <span
               class="error"
-              *ngIf="step.jobs.error > 0"
-              [ngStyle]="{'flex': step.jobs.error}">
-              {{step.jobs.error}}
+              *ngIf="step.jobs.errors > 0"
+              [ngStyle]="{'flex': step.jobs.errors}">
+              {{step.jobs.errors}}
             </span>
             <span
               class="queued"

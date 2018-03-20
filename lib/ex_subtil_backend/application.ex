@@ -42,6 +42,7 @@ defmodule ExSubtilBackend.Application do
     Ecto.Migrator.up(ExSubtilBackend.Repo, 20171121233956, ExSubtilBackend.Migration.CreateStatus)
     Ecto.Migrator.up(ExSubtilBackend.Repo, 20180213135100, ExSubtilBackend.Migration.CreateWorkflow)
     Ecto.Migrator.up(ExSubtilBackend.Repo, 20180213171900, ExSubtilBackend.Migration.AddLinkBetweenJobAndWorkflow)
+    Ecto.Migrator.up(ExSubtilBackend.Repo, 20180319162700, ExSubtilBackend.Migration.CreateArtifacts)
 
     main_supervisor
   end
