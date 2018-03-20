@@ -126,12 +126,12 @@
     <span class="actions">
       <span class="parent">
         <a *ngIf="video.parent_id" href="/videos?video_id={{video.parent_id}}">
-          <i class="material-icons">launch</i>
+          <i class="material-icons" title="Rediffusion">launch</i>
         </a>
       </span>
       <span class="jarvis" [ngClass]="{disabled: video.manifest_url == undefined}">
         <a target="_blank" href="http://master.player.build.ftven.net/jarvis/?streams={{get_encoded_uri(video.manifest_url)}}">
-          <i class="material-icons">live_tv</i>
+          <i class="material-icons" title="Visualisation">live_tv</i>
         </a>
       </span>
       <span class="tracks audio"
