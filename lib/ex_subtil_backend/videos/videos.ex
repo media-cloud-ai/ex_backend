@@ -7,7 +7,6 @@ defmodule ExSubtilBackend.Videos do
 
   import Ecto.Query, warn: false
   alias ExSubtilBackend.Repo
-  alias ExSubtilBackend.Workflows.Workflow
   alias ExSubtilBackend.Artifacts.Artifact
 
   def get_manifest_url(video_id) do
