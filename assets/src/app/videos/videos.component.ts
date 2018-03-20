@@ -1,6 +1,6 @@
 
 import {Component, ViewChild} from '@angular/core';
-import {MatDialog, PageEvent} from '@angular/material';
+import {MatDialog, MatCheckboxModule, PageEvent} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormControl} from '@angular/forms';
 
@@ -49,6 +49,8 @@ export class VideosComponent {
 
   pageEvent: PageEvent;
   videos: VideoPage;
+
+  selectedVideos = [];
 
   constructor(
     private videoService: VideoService,
@@ -107,6 +109,7 @@ export class VideosComponent {
       this.videos = videoPage;
       this.length = videoPage.total;
       this.loading = false;
+      this.selectedVideos = [];
     });
   }
 
@@ -180,6 +183,23 @@ export class VideosComponent {
     this.updateVideos();
   }
 
+  selectVideo(video, checked): void {
+    video.selected = checked;
+    if(checked) {
+      this.selectedVideos.push(video);
+    } else {
+      this.selectedVideos = this.selectedVideos.filter(v => v.id !== video.id);
+    }
+  }
+
+  selectAllVideos(event): void {
+    for(let video of this.videos.data) {
+      if(video.available) {
+        this.selectVideo(video, event.checked);
+      }
+    }
+  }
+
   start_process(video): void {
     let dialogRef = this.dialog.open(WorkflowDialogComponent, {
       data: {
@@ -192,6 +212,24 @@ export class VideosComponent {
         .subscribe(response => {
           console.log(response);
         });
+      }
+    });
+  }
+
+  start_all_process(): void {
+    let dialogRef = this.dialog.open(WorkflowDialogComponent, {
+      data: {
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(steps => {
+      if(steps != undefined) {
+        for(let video of this.selectedVideos) {
+          this.workflowService.createWorkflow({reference: video.id, flow: {steps: steps}})
+          .subscribe(response => {
+            console.log(response);
+          });
+        }
       }
     });
   }

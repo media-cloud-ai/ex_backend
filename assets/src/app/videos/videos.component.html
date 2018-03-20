@@ -98,6 +98,21 @@
       Date de diffusion
     </span>
     <span class="actions">
+      Tout sélectionner
+      <mat-checkbox
+        color="primary"
+        [(checked)]="selectedVideos.length"
+        (change)="selectAllVideos($event)"
+        ></mat-checkbox>
+      <button
+        mat-raised-button
+        color="primary"
+        disabled="{{selectedVideos.length == 0}}"
+        (click)="start_all_process()"
+        >
+        <mat-icon>play_arrow</mat-icon>
+        Ingest
+      </button>
     </span>
   </li>
   <li
@@ -157,6 +172,12 @@
         </span>
       </a>
       <span class="starter">
+        <mat-checkbox
+          color="primary"
+          [(ngModel)]="video.selected"
+          disabled="{{ !video.available }}"
+          (change)="selectVideo(video, $event.checked)">
+        </mat-checkbox>
         <button
           mat-raised-button
           color="primary"
