@@ -45,6 +45,9 @@ export class WorkflowDialogComponent {
       },{
         "id": "upload_ftp",
         "parameters": []
+      },{
+        "id": "clean_workspace",
+        "parameters": []
       }
     ]
   }
