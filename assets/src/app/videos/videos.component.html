@@ -99,7 +99,10 @@
     </span>
     <span class="actions">
       Tout sélectionner
-      <mat-checkbox (change)="selectAllVideos($event)"></mat-checkbox>
+      <mat-checkbox
+        color="primary"
+        (change)="selectAllVideos($event)"
+        ></mat-checkbox>
       <button
         mat-raised-button
         color="primary"
@@ -169,6 +172,7 @@
       </a>
       <span class="starter">
         <mat-checkbox
+          color="primary"
           [(ngModel)]="video.selected"
           disabled="{{ !video.available }}"
           (change)="selectVideo(video, $event.checked)">
