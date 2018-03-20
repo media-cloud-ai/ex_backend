@@ -101,6 +101,7 @@
       Tout sélectionner
       <mat-checkbox
         color="primary"
+        [(checked)]="selectedVideos.length"
         (change)="selectAllVideos($event)"
         ></mat-checkbox>
       <button

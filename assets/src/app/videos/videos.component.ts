@@ -109,6 +109,7 @@ export class VideosComponent {
       this.videos = videoPage;
       this.length = videoPage.total;
       this.loading = false;
+      this.selectedVideos = [];
     });
   }
 
