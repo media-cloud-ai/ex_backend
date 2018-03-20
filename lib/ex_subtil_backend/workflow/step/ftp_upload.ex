@@ -18,9 +18,9 @@ defmodule ExSubtilBackend.Workflow.Step.FtpUpload do
     end
   end
 
-  def get_paths(jobs, result \\ [])
-  def get_paths([], result), do: result
-  def get_paths([job | jobs], result) do
+  defp get_paths(jobs, result \\ [])
+  defp get_paths([], result), do: result
+  defp get_paths([job | jobs], result) do
     result =
       case job.name do
         "generate_dash" ->

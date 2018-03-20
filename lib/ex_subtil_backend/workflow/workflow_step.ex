@@ -69,9 +69,9 @@ defmodule ExSubtilBackend.WorkflowStep do
     {:error, "unable to match with the step #{inspect step}"}
   end
 
-  defp set_artifacts(workflow) do
+  def set_artifacts(workflow) do
     paths =
-      ExSubtilBackend.Workflow.Step.FtpUpload.get_paths(workflow.jobs)
+      get_uploaded_file_path(workflow.jobs)
       |> Enum.filter(fn(path) -> String.ends_with?(path, ".mpd") end)
 
     case paths do
@@ -87,5 +87,28 @@ defmodule ExSubtilBackend.WorkflowStep do
 
         Artifacts.create_artifact(params)
     end
+  end
+
+  def get_uploaded_file_path(jobs, result \\ [])
+  def get_uploaded_file_path([], result), do: result
+  def get_uploaded_file_path([job | jobs], result) do
+
+    result =
+      if job.name == "upload_ftp" do
+        path =
+          job
+          |> Map.get(:params, %{})
+          |> Map.get("destination", %{})
+          |> Map.get("path")
+
+        case path do
+          nil -> result
+          path -> List.insert_at(result, -1, path)
+        end
+      else
+        result
+      end
+
+    get_uploaded_file_path(jobs, result)
   end
 end
