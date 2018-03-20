@@ -5,4 +5,5 @@ export class Video {
   channel: string;
   legacy_id: string;
   available: boolean;
+  parent_id: string;
 }
