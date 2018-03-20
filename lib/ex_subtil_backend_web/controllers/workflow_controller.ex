@@ -27,7 +27,10 @@ defmodule ExSubtilBackendWeb.WorkflowController do
   end
 
   def show(conn, %{"id" => id}) do
-    workflow = Workflows.get_workflow!(id)
+    workflow =
+      Workflows.get_workflow!(id)
+      |> ExSubtilBackend.Repo.preload(:jobs)
+
     render(conn, "show.json", workflow: workflow)
   end
 
