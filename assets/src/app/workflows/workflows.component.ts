@@ -75,6 +75,4 @@ export class WorkflowsComponent {
     }
     return params;
   }
-
 }
-

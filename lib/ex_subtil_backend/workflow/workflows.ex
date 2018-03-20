@@ -61,7 +61,7 @@ defmodule ExSubtilBackend.Workflows do
     workflows =
       Repo.all(query)
       |> preload_workflows
-      |> Repo.preload(:jobs)
+      |> Repo.preload([:jobs, :artifacts])
 
     %{
       data: workflows,

@@ -7,11 +7,13 @@
   <li
     *ngFor="let workflow of workflows.data"
     class="workflow"
+
     >
     <span class="reference">
       <a href="/videos?video_id={{workflow.reference}}">
         {{workflow.reference}}
       </a>
+      <duration-component [workflow]=workflow></duration-component>
     </span>
 
     <div class=steps>
