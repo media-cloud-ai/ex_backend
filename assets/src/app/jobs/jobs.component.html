@@ -23,10 +23,6 @@
     <span class="hour">
       {{job.inserted_at | date: 'H:mm:ss'}}
     </span>
-    <span class="source path"
-      *ngIf=job.params.source.path>
-      {{job.params.source.path | basename}}
-    </span>
   </li>
 </ul>
 
