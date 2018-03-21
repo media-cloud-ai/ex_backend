@@ -139,6 +139,9 @@
     </span>
 
     <span class="actions">
+      <span class="live">
+        <i *ngIf="video.broadcasted_live" class="material-icons" title="Diffusé en direct">local_movies</i>
+      </span>
       <span class="parent">
         <a *ngIf="video.parent_id" href="/videos?video_id={{video.parent_id}}">
           <i class="material-icons" title="Rediffusion">launch</i>

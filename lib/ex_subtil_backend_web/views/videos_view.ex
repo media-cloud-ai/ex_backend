@@ -28,6 +28,7 @@ defmodule ExSubtilBackendWeb.VideosView do
       text_tracks: video["text_tracks"],
       manifest_url: video["manifest_url"],
       parent_id: video["parent_id"],
+      broadcasted_live: video["broadcasted_live"],
     }
   end
 
