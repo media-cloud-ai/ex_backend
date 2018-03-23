@@ -6,5 +6,6 @@ export class Video {
   legacy_id: string;
   available: boolean;
   parent_id: string;
+  broadcasted_live: boolean;
   selected: boolean;
 }
