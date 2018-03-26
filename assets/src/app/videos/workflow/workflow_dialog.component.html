@@ -5,9 +5,15 @@
       *ngFor="let step of steps"
       class="step {{step.id}}">
       <div>
+        <mat-checkbox class='small'
+          color="primary"
+          [(ngModel)]="step.enable"
+          ></mat-checkbox>
         <mat-icon matListIcon>{{step.id | iconForJob}}</mat-icon>
         {{step.id | jobType}}
-        <div>
+        <div
+          class="label"
+          [ngClass]="{disabled: step.enable}">
           <mat-list dense>
             <mat-list-item
               *ngFor="let parameter of step.parameters">
@@ -27,5 +33,5 @@
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button [mat-dialog-close]="steps" cdkFocusInitial>Start</button>
+  <button mat-button (click)="onClose()" cdkFocusInitial>Start</button>
 </div>

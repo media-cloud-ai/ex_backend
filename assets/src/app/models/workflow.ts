@@ -8,6 +8,7 @@ export class Parameter {
 
 export class Step {
   id: string;
+  enable: boolean;
   parameters: Parameter[];
 }
 

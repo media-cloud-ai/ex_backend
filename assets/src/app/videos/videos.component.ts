@@ -204,10 +204,7 @@ export class VideosComponent {
   }
 
   start_process(video): void {
-    let dialogRef = this.dialog.open(WorkflowDialogComponent, {
-      data: {
-      }
-    });
+    let dialogRef = this.dialog.open(WorkflowDialogComponent, {});
 
     dialogRef.afterClosed().subscribe(steps => {
       if(steps != undefined) {
@@ -220,10 +217,7 @@ export class VideosComponent {
   }
 
   start_all_process(): void {
-    let dialogRef = this.dialog.open(WorkflowDialogComponent, {
-      data: {
-      }
-    });
+    let dialogRef = this.dialog.open(WorkflowDialogComponent, {});
 
     dialogRef.afterClosed().subscribe(steps => {
       if(steps != undefined) {
@@ -244,8 +238,6 @@ export class VideosComponent {
   show_rdf(video): void {
     this.rdfService.getRdf(video.id)
     .subscribe(response => {
-      // console.log(response);
-
       let dialogRef = this.dialog.open(RdfDialogComponent, {
         data: {
           rdf: response.content
@@ -265,4 +257,3 @@ export class VideosComponent {
     });
   }
 }
-
