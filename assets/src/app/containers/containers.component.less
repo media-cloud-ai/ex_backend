@@ -5,20 +5,44 @@
   }
 }
 
-ul.containers {
+.containers {
   list-style: none;
   padding: 0px;
 
-  li.container {
+  .container {
     padding: 10px;
     background-color: #FFF;
     display: flex;
 
     span {
       min-width: 80px;
-      flex: 1;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    span.id {
+      font-size: 0.8em;
+      color: #aaa;
+    }
+
+    span.image,
+    span.status,
+    span.host {
+      flex: 1;
+    }
+
+    span.actions {
+      width: 250px;
+    }
+
+    span.status.created {
+      color: #3f51b5;
+    }
+    span.status.running {
+      color: #71bd2c;
+    }
+    span.status.exited {
+      color: #ec4236;
     }
   }
 

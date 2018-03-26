@@ -121,7 +121,9 @@
     [ngClass]="{'available': video.available, 'not-available': !video.available}"
     >
     <span class="legacy_id">
-      {{video.id}}
+      <a target=_blank href="https://gatewayvf.webservices.francetelevisions.tv/v1/videos?qid={{video.id}}">
+        {{video.id}}
+      </a>
     </span>
     <span class="title">
       {{video.title}}
@@ -191,6 +193,22 @@
           >
           <mat-icon>play_arrow</mat-icon>
           Ingest
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          class="show rdf"
+          (click)="show_rdf(video)"
+          >
+          <mat-icon>visibility</mat-icon>
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="ingest_rdf(video)"
+          >
+          <mat-icon>play_arrow</mat-icon>
+          RDF
         </button>
       </span>
     </span>

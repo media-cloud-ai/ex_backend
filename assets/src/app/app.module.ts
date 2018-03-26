@@ -47,6 +47,7 @@ import {VideosComponent}         from './videos/videos.component';
 import {WorkflowsComponent}      from './workflows/workflows.component';
 import {DurationComponent}       from './workflows/duration.component';
 
+import {RdfDialogComponent}      from './videos/rdf/rdf_dialog.component';
 import {WorkflowDialogComponent} from './videos/workflow/workflow_dialog.component';
 
 import {AmqpService}             from './services/amqp.service';
@@ -54,11 +55,14 @@ import {ContainerService}        from './services/container.service';
 import {ImageService}            from './services/image.service';
 import {JobService}              from './services/job.service';
 import {NodeService}             from './services/node.service';
+import {RdfService}              from './services/rdf.service';
 import {VideoService}            from './services/video.service';
 import {WorkflowService}         from './services/workflow.service';
 
 import {AudioTypePipe}           from './pipes/audio_type.pipe';
 import {BasenamePipe}            from './pipes/basename.pipe';
+import {DockerImagePipe}         from './pipes/docker_image.pipe';
+import {DockerImageVersionPipe}  from './pipes/docker_image_version.pipe';
 import {IconForJobPipe}          from './pipes/icon_for_job.pipe';
 import {JobTypePipe}             from './pipes/job_type.pipe';
 import {JobStatusPipe}           from './pipes/job_status.pipe';
@@ -124,6 +128,7 @@ const SUBTIL_DATE_FORMATS = {
     JobsComponent,
     QueuesComponent,
     VideosComponent,
+    RdfDialogComponent,
     WorkflowDialogComponent,
     WorkflowsComponent,
     ContainersComponent,
@@ -131,6 +136,8 @@ const SUBTIL_DATE_FORMATS = {
 
     AudioTypePipe,
     BasenamePipe,
+    DockerImagePipe,
+    DockerImageVersionPipe,
     IconForJobPipe,
     JobTypePipe,
     JobStatusPipe,
@@ -141,6 +148,7 @@ const SUBTIL_DATE_FORMATS = {
   ],
   entryComponents: [
     DurationComponent,
+    RdfDialogComponent,
     WorkflowDialogComponent,
   ],
   providers: [
@@ -166,6 +174,7 @@ const SUBTIL_DATE_FORMATS = {
     ImageService,
     JobService,
     NodeService,
+    RdfService,
     VideoService,
     WorkflowService,
   ],
