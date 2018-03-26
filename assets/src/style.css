@@ -4,3 +4,9 @@
 .mat-fab.mat-accent, .mat-mini-fab.mat-accent, .mat-raised-button.mat-accent {
   background-color: #770029;
 }
+
+
+.mat-checkbox.small .mat-checkbox-layout {
+  transform: scale(.6);
+  margin-bottom: 5px;
+}
