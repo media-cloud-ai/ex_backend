@@ -13,7 +13,7 @@ defmodule ExSubtilBackend.Rdf.PerfectMemory do
     url = "https://" <> hostname <> "/v1/requests"
 
     body = %{
-      client_id: Keyword.get(config, :client_id, ""),
+      client_id: System.get_env("PM_ENDPOINT_CLIENT_ID") || Keyword.get(config, :client_id, ""),
       name: "push_rdf_infos",
       inputs: %{
         infos_graph: %{
@@ -26,7 +26,7 @@ defmodule ExSubtilBackend.Rdf.PerfectMemory do
     headers = [
       "Cache-Control": "no-cache",
       "Content-Type": "application/json",
-      "X-Api-Key": Keyword.get(config, :api_key, ""),
+      "X-Api-Key": System.get_env("PM_ENDPOINT_API_KEY") || Keyword.get(config, :api_key, ""),
     ]
 
     HTTPotion.post(url, [body: body |> Poison.encode!, headers: headers])
