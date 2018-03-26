@@ -11,12 +11,12 @@ import {NodeConfig} from '../models/node_config';
 import {Image} from '../models/image';
 
 @Component({
-  selector: 'containers-component',
-  templateUrl: 'containers.component.html',
-  styleUrls: ['containers.component.less']
+  selector: 'workers-component',
+  templateUrl: 'workers.component.html',
+  styleUrls: ['workers.component.less']
 })
 
-export class ContainersComponent {
+export class WorkersComponent {
   sub = undefined;
 
   containers: Container[];
@@ -109,5 +109,4 @@ export class ContainersComponent {
       this.startContainer(id);
     }
   }
-
 }

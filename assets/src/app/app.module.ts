@@ -40,12 +40,12 @@ import {
 import {RouterModule, Routes}    from '@angular/router';
 
 import {DashboardComponent}      from './dashboard/dashboard.component';
-import {ContainersComponent}     from './containers/containers.component';
+import {DurationComponent}       from './workflows/duration.component';
 import {JobsComponent}           from './jobs/jobs.component';
 import {QueuesComponent}         from './amqp/queues.component';
 import {VideosComponent}         from './videos/videos.component';
 import {WorkflowsComponent}      from './workflows/workflows.component';
-import {DurationComponent}       from './workflows/duration.component';
+import {WorkersComponent}        from './workers/workers.component';
 
 import {RdfDialogComponent}      from './videos/rdf/rdf_dialog.component';
 import {WorkflowDialogComponent} from './videos/workflow/workflow_dialog.component';
@@ -80,7 +80,7 @@ const routes: Routes = [
   { path: 'videos', component: VideosComponent },
   { path: 'jobs', component: JobsComponent },
   { path: 'workflows', component: WorkflowsComponent },
-  { path: 'containers', component: ContainersComponent }
+  { path: 'workers', component: WorkersComponent }
 ];
 
 const SUBTIL_DATE_FORMATS = {
@@ -131,7 +131,7 @@ const SUBTIL_DATE_FORMATS = {
     RdfDialogComponent,
     WorkflowDialogComponent,
     WorkflowsComponent,
-    ContainersComponent,
+    WorkersComponent,
     DurationComponent,
 
     AudioTypePipe,
