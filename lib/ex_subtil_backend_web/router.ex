@@ -31,6 +31,8 @@ defmodule ExSubtilBackendWeb.Router do
 
     resources "/videos", VideosController, except: [:new, :edit] do
       post "/jobs", JobController, :create
+      get "/rdf", RdfController, :show
+      post "/rdf", RdfController, :create
     end
 
     scope "/amqp", Amqp do

@@ -34,6 +34,11 @@ ul.videos {
     .actions {
       flex: 2;
       text-align: right;
+
+      button {
+        width: 100%;
+        max-width: 250px;
+      }
     }
   }
 
@@ -46,6 +51,10 @@ ul.videos {
       font-size: 0.6em;
       display: inline-block;
       width: 50px;
+      a {
+        text-decoration: none;
+        color: #888;
+      }
     }
     .title,
     .additional_title {
@@ -124,6 +133,11 @@ ul.videos {
       }
       span.starter {
         justify-content: flex-end;
+
+        button.show.rdf {
+          min-width: 50px;
+          width: 50px;
+        }
       }
       span.tracks {
         padding-right: 10px;

@@ -4,12 +4,14 @@ import {MatDialog, MatCheckboxModule, PageEvent} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormControl} from '@angular/forms';
 
+import {RdfService} from '../services/rdf.service';
 import {VideoService} from '../services/video.service';
 import {WorkflowService} from '../services/workflow.service';
 import {VideoPage} from '../models/page/video_page';
 import {Video} from '../models/video';
 import {DateRange} from '../models/date_range';
 
+import {RdfDialogComponent} from './rdf/rdf_dialog.component';
 import {WorkflowDialogComponent} from './workflow/workflow_dialog.component';
 
 import * as moment from 'moment';
@@ -53,6 +55,7 @@ export class VideosComponent {
   selectedVideos = [];
 
   constructor(
+    private rdfService: RdfService,
     private videoService: VideoService,
     private workflowService: WorkflowService,
     private route: ActivatedRoute,
@@ -236,6 +239,30 @@ export class VideosComponent {
 
   get_encoded_uri(uri): string {
     return encodeURI("[\"" + uri + "\"]");
+  }
+
+  show_rdf(video): void {
+    this.rdfService.getRdf(video.id)
+    .subscribe(response => {
+      // console.log(response);
+
+      let dialogRef = this.dialog.open(RdfDialogComponent, {
+        data: {
+          rdf: response.content
+        }
+      });
+
+      dialogRef.afterClosed().subscribe(steps => {});
+    });
+  }
+
+  ingest_rdf(video): void {
+    console.log("RDF ingest ", video.id);
+
+    this.rdfService.ingestRdf(video.id)
+    .subscribe(response => {
+      console.log(response);
+    });
   }
 }
 
