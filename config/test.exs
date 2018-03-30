@@ -31,5 +31,4 @@ config :ex_subtil_backend,
 config :amqp,
   hostname: "192.168.99.100",
   username: "guest",
-  password: "guest",
-  virtual_host: "qception"
+  password: "guest"
