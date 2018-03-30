@@ -27,7 +27,7 @@ defmodule ExSubtilBackend.Jobs do
       [%Job{}, ...]
 
   """
-  def list_jobs(params) do
+  def list_jobs(params \\ %{}) do
 
     page =
       Map.get(params, "page", 0)

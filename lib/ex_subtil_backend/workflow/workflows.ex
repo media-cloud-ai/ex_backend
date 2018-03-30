@@ -27,7 +27,7 @@ defmodule ExSubtilBackend.Workflows do
       [%Workflow{}, ...]
 
   """
-  def list_workflows(params) do
+  def list_workflows(params \\ %{}) do
     page =
       Map.get(params, "page", 0)
       |> force_integer
@@ -109,6 +109,7 @@ defmodule ExSubtilBackend.Workflows do
 
   defp get_step_status(steps, workflow_id, result \\[])
   defp get_step_status([], _workflow_id, result), do: result
+  defp get_step_status(nil, _workflow_id, result), do: result
   defp get_step_status([step | steps], workflow_id, result) do
     id = Map.get(step, "id")
 
