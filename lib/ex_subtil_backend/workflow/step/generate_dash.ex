@@ -4,14 +4,31 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
   alias ExSubtilBackend.Amqp.JobGpacEmitter
   alias ExSubtilBackend.Workflow.Step.Requirements
 
+  require Logger
+
   @action_name "generate_dash"
 
   def launch(workflow, step) do
+    case build_step_parameters(workflow, step) do
+      {:skipped, nil} -> Jobs.create_skipped_job(workflow, @action_name)
+      {:ok, job_params} ->
+        {:ok, job} = Jobs.create_job(job_params)
+        params = %{
+          job_id: job.id,
+          parameters: job.params
+        }
+        JobGpacEmitter.publish_json(params)
+      something_else ->
+        Logger.error "#{__MODULE__}: unable to match result of build_step_parameters to #{inspect something_else}"
+        {:error, something_else}
+    end
+  end
 
+  def build_step_parameters(workflow, step) do
     filenames_with_language = get_filenames_with_language(workflow.jobs, %{})
 
     case get_source_files(workflow.jobs, filenames_with_language) do
-      [] -> Jobs.create_skipped_job(workflow, @action_name)
+      [] -> {:skipped, nil}
       source_track_paths ->
         source_paths =
           source_track_paths
@@ -32,7 +49,7 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
 
         requirements = Requirements.add_required_paths(source_paths)
 
-        job_params = %{
+        %{
           name: @action_name,
           workflow_id: workflow.id,
           params: %{
@@ -44,20 +61,13 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
             options: options
           }
         }
-
-        {:ok, job} = Jobs.create_job(job_params)
-        params = %{
-          job_id: job.id,
-          parameters: job.params
-        }
-        JobGpacEmitter.publish_json(params)
     end
   end
 
-  defp get_source_files(jobs, paths_with_languages, result\\ [])
-  defp get_source_files([], _paths_with_languages, result), do: result
-  defp get_source_files([job | jobs], paths_with_languages, result) do
-    result =
+  defp get_source_files(jobs, paths_with_languages, audio_index \\ 1, result\\ [])
+  defp get_source_files([], _paths_with_languages, _audio_index, result), do: result
+  defp get_source_files([job | jobs], paths_with_languages, audio_index, result) do
+    {result, audio_index} =
       case job.name do
         "download_ftp" ->
           path =
@@ -69,17 +79,25 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
           case get_quality(path) do
             nil -> result
             1 ->
-              audio_path = path <> "#trackID=2#audio:id=a1"
+              audio_path = path <> "#trackID=2#audio:id=a" <> Integer.to_string(audio_index)
               video_path = path <> "#trackID=1#video:id=v" <> Integer.to_string(5)
 
-              List.insert_at(result, -1, audio_path)
-              |> List.insert_at(-1, video_path)
+              result =
+                List.insert_at(result, -1, audio_path)
+                |> List.insert_at(-1, video_path)
+              {result, audio_index + 1}
             "qad" ->
-              audio_path = path <> "#audio:id=a2"
-              List.insert_at(result, -1, audio_path)
+              audio_path = path <> "#audio:id=a" <> Integer.to_string(audio_index)
+              result = List.insert_at(result, -1, audio_path)
+              {result, audio_index + 1}
+            "qaa" ->
+              audio_path = path <> "#audio:id=a" <> Integer.to_string(audio_index)
+              result = List.insert_at(result, -1, audio_path)
+              {result, audio_index + 1}
             quality ->
               video_path = path <> "#video:id=v" <> Integer.to_string(6 - quality)
-              List.insert_at(result, -1, video_path)
+              result = List.insert_at(result, -1, video_path)
+              {result, audio_index}
           end
 
         "ttml_to_mp4" ->
@@ -90,15 +108,16 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
             |> get_path_with_language(paths_with_languages)
 
           if caption_path != nil do
-            List.insert_at(result, -1, caption_path <> "#subtitle")
+            result = List.insert_at(result, -1, caption_path <> "#subtitle")
+            {result, audio_index}
           else
-            result
+            {result, audio_index}
           end
           
-        _ -> result
+        _ -> {result, audio_index}
       end
 
-    get_source_files(jobs, paths_with_languages, result)
+    get_source_files(jobs, paths_with_languages, audio_index, result)
   end
 
   defp get_filenames_with_language([], result), do: result
@@ -140,19 +159,20 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
     build_gpac_parameters(params, result)
   end
 
-  defp convert_gpac_key("segment_duration"), do: "-dash"
-  defp convert_gpac_key("fragment_duration"), do: "-frag"
+  defp convert_gpac_key("segment_duration"), do: :"-dash"
+  defp convert_gpac_key("fragment_duration"), do: :"-frag"
   defp convert_gpac_key(_), do: nil
 
-  def get_quality(nil), do: nil
-  def get_quality(path) do
-    if String.ends_with?(path, "-qad.mp4") do
-      "qad"
-    else
-      String.trim_trailing(path, ".mp4")
-      |> String.split("-standard")
-      |> List.last
-      |> String.to_integer
+  defp get_quality(nil), do: nil
+  defp get_quality(path) do
+    cond do
+      String.ends_with?(path, "-qad.mp4") -> "qad"
+      String.ends_with?(path, "-qaa.mp4") -> "qaa"
+      true ->
+        String.trim_trailing(path, ".mp4")
+        |> String.split("-standard")
+        |> List.last
+        |> String.to_integer
     end
   end
 end
