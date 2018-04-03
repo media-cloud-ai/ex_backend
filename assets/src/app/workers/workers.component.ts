@@ -24,7 +24,6 @@ export class WorkersComponent {
   nodes: NodeConfig[];
   images: Image[];
 
-  selectedNode: NodeConfig;
   selectedWorker: Image;
 
   constructor(
@@ -70,11 +69,10 @@ export class WorkersComponent {
 
   addContainer(): void {
     this.containerService.createContainer(
-      this.selectedNode,
-      this.selectedWorker.id + "-" + Date.now(),
+      this.selectedWorker.node_config,
+      Date.now().toString(),
       this.selectedWorker.params)
     .subscribe(container => {
-      this.selectedNode = undefined;
       this.selectedWorker = undefined;
       this.getContainers();
     });
