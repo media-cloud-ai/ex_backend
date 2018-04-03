@@ -49,16 +49,19 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
 
         requirements = Requirements.add_required_paths(source_paths)
 
-        %{
-          name: @action_name,
-          workflow_id: workflow.id,
-          params: %{
-            kind: @action_name,
-            requirements: requirements,
-            source: %{
-              paths: source_track_paths
-            },
-            options: options
+        {
+          :ok,
+          %{
+            name: @action_name,
+            workflow_id: workflow.id,
+            params: %{
+              kind: @action_name,
+              requirements: requirements,
+              source: %{
+                paths: source_track_paths
+              },
+              options: options
+            }
           }
         }
     end
