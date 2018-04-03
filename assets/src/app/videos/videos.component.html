@@ -46,7 +46,7 @@
         [matDatepicker]="picker_after"
         (dateChange)="setStartDate($event)"
         (ngModelChange)="updateStart()"
-        placeholder="Broadcasted after..."
+        placeholder="Broadcast after..."
         >
       <mat-datepicker-toggle matSuffix [for]="picker_after"></mat-datepicker-toggle>
       <mat-datepicker #picker_after></mat-datepicker>
@@ -58,7 +58,7 @@
         [matDatepicker]="picker_before"
         (dateChange)="setEndDate($event)"
         (ngModelChange)="updateEnd()"
-        placeholder="Broadcasted before..."
+        placeholder="Broadcast before..."
         >
       <mat-datepicker-toggle matSuffix [for]="picker_before"></mat-datepicker-toggle>
       <mat-datepicker #picker_before></mat-datepicker>
@@ -69,7 +69,7 @@
       <input
         matInput
         type="text"
-        placeholder="Movie ID"
+        placeholder="Video ID"
         [(ngModel)]="videoid"
         (keydown)="updateSearchByVideoId()"
         >
@@ -94,7 +94,7 @@
       Additional title
     </span>
     <span class="broadcast_date">
-      Broadcasted date
+      Broadcasting date
     </span>
     <span class="actions">
       Select all
