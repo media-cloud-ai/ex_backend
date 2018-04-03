@@ -42,6 +42,7 @@ import {RouterModule, Routes}    from '@angular/router';
 import {DashboardComponent}      from './dashboard/dashboard.component';
 import {DurationComponent}       from './workflows/duration.component';
 import {JobsComponent}           from './jobs/jobs.component';
+import {ParametersComponent}     from './workflows/parameters.component';
 import {QueuesComponent}         from './amqp/queues.component';
 import {VideosComponent}         from './videos/videos.component';
 import {WorkflowsComponent}      from './workflows/workflows.component';
@@ -133,6 +134,7 @@ const SUBTIL_DATE_FORMATS = {
     WorkflowsComponent,
     WorkersComponent,
     DurationComponent,
+    ParametersComponent,
 
     AudioTypePipe,
     BasenamePipe,
@@ -148,6 +150,7 @@ const SUBTIL_DATE_FORMATS = {
   ],
   entryComponents: [
     DurationComponent,
+    ParametersComponent,
     RdfDialogComponent,
     WorkflowDialogComponent,
   ],

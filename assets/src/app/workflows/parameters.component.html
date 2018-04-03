@@ -1,0 +1,26 @@
+<span *ngIf="parameters && parameters.length > 0">
+<i class="material-icons"
+  *ngIf="!opened"
+  (click)="openParameters()"
+  >expand_more</i>
+<i class="material-icons"
+  *ngIf="opened"
+  (click)="closeParameters()"
+  >expand_less</i>
+</span>
+<div class=parameters
+  *ngIf="opened && parameters">
+  <mat-list dense>
+    <mat-list-item
+      *ngFor="let parameter of parameters">
+      <mat-form-field class="parameter">
+        <input matInput
+          type={{parameter.type}}
+          placeholder="{{parameter.id | parameterLabel}}"
+          value={{parameter.default}}
+          disabled="true"
+          [(ngModel)]="parameter.default">
+      </mat-form-field>
+    </mat-list-item>
+  </mat-list>
+</div>
