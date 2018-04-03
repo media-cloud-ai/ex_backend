@@ -42,7 +42,9 @@ defmodule ExSubtilBackendWeb.Docker.ImagesController do
   defp build_images([image | images], environment, volumes, image_list) do
     configuration = %{
       "id": image.id,
-      "node": image.node_config.label,
+      "node_config": %{
+        "label": image.node_config.label
+      },
       "params": %{
         "image": image.repo_tags |> List.first,
         "environment": environment,
