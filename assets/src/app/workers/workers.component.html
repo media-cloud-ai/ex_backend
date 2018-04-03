@@ -13,7 +13,7 @@
         <mat-option
           *ngFor="let image of images"
           [value]="image">
-          {{image.node}} | {{image.params.image | dockerImage}} - {{image.params.image | dockerImageVersion}}
+          {{image.node_config.label}} | {{image.params.image | dockerImage}} - {{image.params.image | dockerImageVersion}}
         </mat-option>
       </mat-select>
     </mat-form-field>

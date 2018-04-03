@@ -69,8 +69,8 @@ export class WorkersComponent {
 
   addContainer(): void {
     this.containerService.createContainer(
-      this.selectedWorker.node,
-      this.selectedWorker.id + "-" + Date.now(),
+      this.selectedWorker.node_config,
+      Date.now().toString(),
       this.selectedWorker.params)
     .subscribe(container => {
       this.selectedWorker = undefined;
