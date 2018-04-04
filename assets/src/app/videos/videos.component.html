@@ -134,7 +134,7 @@
       {{video.additional_title}}
     </span>
     <span class="duration">
-      {{video.duration | timecode }}
+      {{video.duration | duration : 'timecode_frame' }}
     </span>
     <span class="broadcast_date">
       <span class="date">

@@ -72,7 +72,6 @@ import {JobStatusIconPipe}       from './pipes/job_status_icon.pipe';
 import {ParameterLabelPipe}      from './pipes/parameter_label.pipe';
 import {QueuePipe}               from './pipes/queue.pipe';
 import {TextTypePipe}            from './pipes/text_type.pipe';
-import {TimecodePipe}            from './pipes/timecode.pipe';
 
 import 'hammerjs/hammer'; // for MatSlideToggleModule
 import * as moment from 'moment';
@@ -150,7 +149,6 @@ const SUBTIL_DATE_FORMATS = {
     ParameterLabelPipe,
     QueuePipe,
     TextTypePipe,
-    TimecodePipe,
   ],
   entryComponents: [
     DurationComponent,
