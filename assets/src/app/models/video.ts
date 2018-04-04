@@ -8,4 +8,5 @@ export class Video {
   parent_id: string;
   broadcasted_live: boolean;
   selected: boolean;
+  duration: string;
 }

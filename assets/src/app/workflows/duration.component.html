@@ -1,3 +1,3 @@
-<span *ngIf=duration>
-  Duration: {{duration.minutes}} m {{duration.seconds}} s
+<span *ngIf=duration title="{{duration | duration : 'human'}}">
+  Duration: {{duration | duration : 'timecode_ms' }}
 </span>

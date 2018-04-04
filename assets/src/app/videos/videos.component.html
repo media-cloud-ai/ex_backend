@@ -93,6 +93,9 @@
     <span class="additional_title">
       Additional title
     </span>
+    <span class="duration">
+      Duration
+    </span>
     <span class="broadcast_date">
       Broadcasting date
     </span>
@@ -129,6 +132,9 @@
     </span>
     <span class="additional_title">
       {{video.additional_title}}
+    </span>
+    <span class="duration">
+      {{video.duration | duration : 'timecode_frame' }}
     </span>
     <span class="broadcast_date">
       <span class="date">

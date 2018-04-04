@@ -2,6 +2,8 @@
 import {Component, Input} from '@angular/core';
 import {Workflow} from '../models/workflow';
 
+import * as moment from 'moment';
+
 @Component({
   selector: 'duration-component',
   templateUrl: 'duration.component.html',
@@ -17,18 +19,10 @@ export class DurationComponent {
 
   ngOnInit() {
     if(this.workflow.artifacts[0]) {
-      var end = new Date(this.workflow.artifacts[0]["inserted_at"])
-      var start = new Date(this.workflow.created_at)
+      let start_moment = moment(this.workflow.created_at)
+      let end_moment = moment(this.workflow.artifacts[0]["inserted_at"])
 
-      var duration : number = (+end - +start) / 1000;
-
-      var seconds = Math.floor(duration % 60);
-      var minutes = Math.floor(duration / 60);
-
-      this.duration = {
-        "minutes": minutes,
-        "seconds": seconds
-      }
+      this.duration = end_moment.diff(start_moment);
     } else {
       this.duration = undefined;
     }
