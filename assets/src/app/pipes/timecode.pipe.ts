@@ -22,22 +22,26 @@ export class TimecodePipe implements PipeTransform {
     return padding + text;
   }
 
-  transform(text: string): string {
+  transform(text: string, frame_based: boolean = true): string {
     let duration = moment.duration(text);
-
-    let frame_duration = 1000 / this.fps;
-    let frames = Math.floor(duration.milliseconds() / frame_duration);
 
     let seconds = duration.seconds();
     let minutes = duration.minutes();
     let hours = duration.hours();
 
-    // console.log("hours:", hours, "minutes:", minutes, "seconds:", seconds, "frames:", frames);
-
-    return this.pad_left(hours, 2, '0') + ":"
+    let timecode = this.pad_left(hours, 2, '0') + ":"
          + this.pad_left(minutes, 2, '0') + ":"
-         + this.pad_left(seconds, 2, '0') + ":"
-         + this.pad_left(frames, 2, '0');
+         + this.pad_left(seconds, 2, '0');
 
+    if(frame_based) {
+      let frame_duration = 1000 / this.fps;
+      let frames = Math.floor(duration.milliseconds() / frame_duration);
+      timecode += ":" + this.pad_left(frames, 2, '0');
+    } else {
+      timecode += "." + this.pad_left(duration.milliseconds(), 3, '0');
+    }
+    // console.log("timecode:", timecode);
+
+    return timecode;
   }
 }
