@@ -64,8 +64,8 @@ import {AudioTypePipe}           from './pipes/audio_type.pipe';
 import {BasenamePipe}            from './pipes/basename.pipe';
 import {DockerImagePipe}         from './pipes/docker_image.pipe';
 import {DockerImageVersionPipe}  from './pipes/docker_image_version.pipe';
+import {DurationPipe}            from './pipes/duration.pipe';
 import {IconForJobPipe}          from './pipes/icon_for_job.pipe';
-import {IsoDurationPipe}         from './pipes/iso_duration.pipe';
 import {JobTypePipe}             from './pipes/job_type.pipe';
 import {JobStatusPipe}           from './pipes/job_status.pipe';
 import {JobStatusIconPipe}       from './pipes/job_status_icon.pipe';
@@ -142,8 +142,8 @@ const SUBTIL_DATE_FORMATS = {
     BasenamePipe,
     DockerImagePipe,
     DockerImageVersionPipe,
+    DurationPipe,
     IconForJobPipe,
-    IsoDurationPipe,
     JobTypePipe,
     JobStatusPipe,
     JobStatusIconPipe,
