@@ -103,6 +103,14 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDashTest do
               "path" => "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4"
             }
           }
+        },
+        %Job{
+          name: "audio_extraction",
+          params: %{
+            "destination" => %{
+              "paths" => ["/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4"]
+            }
+          }
         }
       ]
     }
@@ -137,14 +145,14 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDashTest do
           },
           requirements: %{
             paths: [
-              "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4",
+              "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4",
               "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4"
             ]
           },
           source: %{
             paths: [
-              "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4#trackID=2#audio:id=a1",
-              "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4#trackID=1#video:id=v5"
+              "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4#audio:id=a1",
+              "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4#video:id=v5"
             ]
           }
         },
@@ -177,6 +185,14 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDashTest do
               "path" => "/2018/S12/J7/173535163-5ab81c23a3594-qad.mp4"
             }
           }
+        },
+        %Job{
+          name: "audio_extraction",
+          params: %{
+            "destination" => %{
+              "paths" => ["/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4"]
+            }
+          }
         }
       ]
     }
@@ -211,16 +227,16 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDashTest do
           },
           requirements: %{
             paths: [
-              "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4",
-              "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4",
-              "/2018/S12/J7/173535163-5ab81c23a3594-qad.mp4"
+              "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4",
+              "/2018/S12/J7/173535163-5ab81c23a3594-qad.mp4",
+              "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4"
             ]
           },
           source: %{
             paths: [
-              "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4#trackID=2#audio:id=a1",
-              "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4#trackID=1#video:id=v5",
-              "/2018/S12/J7/173535163-5ab81c23a3594-qad.mp4#audio:id=a2"
+              "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4#audio:id=a1",
+              "/2018/S12/J7/173535163-5ab81c23a3594-qad.mp4#audio:id=a2",
+              "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4#video:id=v5"
             ]
           }
         },
@@ -251,6 +267,14 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDashTest do
           params: %{
             "destination" => %{
               "path" => "/2018/S12/J7/173535163-5ab81c23a3594-qaa.mp4"
+            }
+          }
+        },
+        %Job{
+          name: "audio_extraction",
+          params: %{
+            "destination" => %{
+              "paths" => ["/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4"]
             }
           }
         }
@@ -287,16 +311,16 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDashTest do
           },
           requirements: %{
             paths: [
-              "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4",
-              "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4",
-              "/2018/S12/J7/173535163-5ab81c23a3594-qaa.mp4"
+              "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4",
+              "/2018/S12/J7/173535163-5ab81c23a3594-qaa.mp4",
+              "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4"
             ]
           },
           source: %{
             paths: [
-              "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4#trackID=2#audio:id=a1",
-              "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4#trackID=1#video:id=v5",
-              "/2018/S12/J7/173535163-5ab81c23a3594-qaa.mp4#audio:id=a2"
+              "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4#audio:id=a1",
+              "/2018/S12/J7/173535163-5ab81c23a3594-qaa.mp4#audio:id=a2",
+              "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4#video:id=v5"
             ]
           }
         },
@@ -336,6 +360,14 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDashTest do
               "path" => "/2018/S12/J7/173535163-5ab81c23a3594-qaa.mp4"
             }
           }
+        },
+        %Job{
+          name: "audio_extraction",
+          params: %{
+            "destination" => %{
+              "paths" => ["/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4"]
+            }
+          }
         }
       ]
     }
@@ -370,18 +402,18 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDashTest do
           },
           requirements: %{
             paths: [
-              "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4",
-              "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4",
+              "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4",
+              "/2018/S12/J7/173535163-5ab81c23a3594-qaa.mp4",
               "/2018/S12/J7/173535163-5ab81c23a3594-qad.mp4",
-              "/2018/S12/J7/173535163-5ab81c23a3594-qaa.mp4"
+              "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4"
             ]
           },
           source: %{
             paths: [
-              "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4#trackID=2#audio:id=a1",
-              "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4#trackID=1#video:id=v5",
-              "/2018/S12/J7/173535163-5ab81c23a3594-qad.mp4#audio:id=a2",
-              "/2018/S12/J7/173535163-5ab81c23a3594-qaa.mp4#audio:id=a3"
+              "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4#audio:id=a1",
+              "/2018/S12/J7/173535163-5ab81c23a3594-qaa.mp4#audio:id=a2",
+              "/2018/S12/J7/173535163-5ab81c23a3594-qad.mp4#audio:id=a3",
+              "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4#video:id=v5"
             ]
           }
         },

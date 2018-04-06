@@ -27,7 +27,10 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
   def build_step_parameters(workflow, step) do
     filenames_with_language = get_filenames_with_language(workflow.jobs, %{})
 
-    source_file_paths = get_source_files(workflow.jobs, filenames_with_language)
+    source_file_paths =
+      get_source_files(workflow.jobs, filenames_with_language)
+      |> Enum.sort
+
     formatted_source_paths = get_formatted_source_paths(source_file_paths)
     case formatted_source_paths do
       [] -> {:skipped, nil}
@@ -108,6 +111,7 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
             job.params
             |> Map.get("destination", %{})
             |> Map.get("paths")
+            |> List.first
             |> get_path_with_language(paths_with_languages)
           List.insert_at(result, -1, path)
 
