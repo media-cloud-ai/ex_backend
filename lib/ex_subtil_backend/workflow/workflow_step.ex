@@ -52,6 +52,10 @@ defmodule ExSubtilBackend.WorkflowStep do
     ExSubtilBackend.Workflow.Step.Acs.PrepareAudio.launch(workflow)
   end
 
+  defp launch_step(workflow, %{"id"=> "acs_synchronize"} = _step, _step_index) do
+    ExSubtilBackend.Workflow.Step.Acs.Synchronize.launch(workflow)
+  end
+
   defp launch_step(workflow, %{"id"=> "audio_encode"} = _step, _step_index) do
     ExSubtilBackend.Workflow.Step.AudioEncode.launch(workflow)
   end
