@@ -24,6 +24,11 @@ ul.videos {
     .title,
     .additional_title {
       display: inline-block;
+    }
+    .title {
+      flex: 0.7;
+    }
+    .additional_title {
       flex: 1;
     }
     .duration {
@@ -31,7 +36,7 @@ ul.videos {
     }
     .broadcast_date {
       // min-width: 160px;
-      flex: 1;
+      flex: 0.5;
       justify-content: flex-end;
     }
     .actions {
@@ -65,17 +70,29 @@ ul.videos {
       text-overflow: ellipsis;
       overflow: hidden;
       height: 15px;
-      flex: 1;
       white-space: nowrap;
       vertical-align: middle;
     }
-
-    span.duration {
-      flex: 0.5;
+    .title {
+      flex: 0.7;
+    }
+    .additional_title {
+      flex: 1;
     }
 
-    span.broadcast_date {
-      flex: 1;
+    .duration {
+      flex: 0.5;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .broadcast_date {
+      flex: 0.5;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
       span.date,
       span.hour {
         min-width: 80px;
