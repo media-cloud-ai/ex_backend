@@ -11,6 +11,7 @@ export class JobTypePipe implements PipeTransform {
 
   transform(jobType: string): string {
     var allJobType = [
+      { id: 'audio_extraction', name: 'Audio extraction' },
       { id: 'clean_workspace', name: 'Clean workspace' },
       { id: 'download_ftp', name: 'FTP download' },
       { id: 'download_http', name: 'HTTP download' },

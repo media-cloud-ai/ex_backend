@@ -26,6 +26,10 @@ export class WorkflowDialogComponent {
         enable: true,
         parameters: []
       },{
+        id: "audio_extraction",
+        enable: true,
+        parameters : []
+      },{
         id: "set_language",
         enable: true,
         parameters : []

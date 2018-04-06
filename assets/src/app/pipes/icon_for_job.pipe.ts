@@ -11,6 +11,7 @@ export class IconForJobPipe implements PipeTransform {
 
   transform(iconForJob: string): string {
     var allJobIcons = [
+      { id: 'audio_extraction', name: 'queue_music' },
       { id: 'clean_workspace', name: 'delete_forever' },
       { id: 'download_ftp', name: 'file_download' },
       { id: 'download_http', name: 'file_download' },

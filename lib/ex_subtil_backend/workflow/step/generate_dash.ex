@@ -27,7 +27,9 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
   def build_step_parameters(workflow, step) do
     filenames_with_language = get_filenames_with_language(workflow.jobs, %{})
 
-    case get_source_files(workflow.jobs, filenames_with_language) do
+    source_file_paths = get_source_files(workflow.jobs, filenames_with_language)
+    formatted_source_paths = get_formatted_source_paths(source_file_paths)
+    case formatted_source_paths do
       [] -> {:skipped, nil}
       source_track_paths ->
         source_paths =
@@ -67,41 +69,55 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
     end
   end
 
-  defp get_source_files(jobs, paths_with_languages, audio_index \\ 1, result\\ [])
-  defp get_source_files([], _paths_with_languages, _audio_index, result), do: result
-  defp get_source_files([job | jobs], paths_with_languages, audio_index, result) do
+  defp get_formatted_source_paths(_paths, _audio_index \\ 1, result \\ [])
+  defp get_formatted_source_paths([], _audio_index, result), do: result
+  defp get_formatted_source_paths([path | paths], audio_index, result) do
     {result, audio_index} =
+      case get_quality(path) do
+        nil -> {result, audio_index}
+        "fra" ->
+          audio_path = path <> "#audio:id=a" <> Integer.to_string(audio_index)
+          result = List.insert_at(result, -1, audio_path)
+          {result, audio_index + 1}
+        "qad" ->
+          audio_path = path <> "#audio:id=a" <> Integer.to_string(audio_index)
+          result = List.insert_at(result, -1, audio_path)
+          {result, audio_index + 1}
+        "qaa" ->
+          audio_path = path <> "#audio:id=a" <> Integer.to_string(audio_index)
+          result = List.insert_at(result, -1, audio_path)
+          {result, audio_index + 1}
+        "subtitle" ->
+          result = List.insert_at(result, -1, path <> "#subtitle")
+          {result, audio_index}
+        quality ->
+          video_path = path <> "#video:id=v" <> Integer.to_string(6 - quality)
+          result = List.insert_at(result, -1, video_path)
+          {result, audio_index}
+      end
+    get_formatted_source_paths(paths, audio_index, result)
+  end
+
+  defp get_source_files(jobs, paths_with_languages, result \\ [])
+  defp get_source_files([], _paths_with_languages, result), do: result
+  defp get_source_files([job | jobs], paths_with_languages, result) do
+    result =
       case job.name do
+        "audio_extraction" ->
+          path =
+            job.params
+            |> Map.get("destination", %{})
+            |> Map.get("paths")
+            |> get_path_with_language(paths_with_languages)
+          List.insert_at(result, -1, path)
+
         "download_ftp" ->
           path =
             job.params
             |> Map.get("destination", %{})
             |> Map.get("path")
             |> get_path_with_language(paths_with_languages)
-
-          case get_quality(path) do
-            nil -> result
-            1 ->
-              audio_path = path <> "#trackID=2#audio:id=a" <> Integer.to_string(audio_index)
-              video_path = path <> "#trackID=1#video:id=v" <> Integer.to_string(5)
-
-              result =
-                List.insert_at(result, -1, audio_path)
-                |> List.insert_at(-1, video_path)
-              {result, audio_index + 1}
-            "qad" ->
-              audio_path = path <> "#audio:id=a" <> Integer.to_string(audio_index)
-              result = List.insert_at(result, -1, audio_path)
-              {result, audio_index + 1}
-            "qaa" ->
-              audio_path = path <> "#audio:id=a" <> Integer.to_string(audio_index)
-              result = List.insert_at(result, -1, audio_path)
-              {result, audio_index + 1}
-            quality ->
-              video_path = path <> "#video:id=v" <> Integer.to_string(6 - quality)
-              result = List.insert_at(result, -1, video_path)
-              {result, audio_index}
-          end
+          List.insert_at(result, -1, path)
 
         "ttml_to_mp4" ->
           caption_path =
@@ -109,18 +125,12 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
             |> Map.get("destination", %{})
             |> Map.get("paths")
             |> get_path_with_language(paths_with_languages)
+          List.insert_at(result, -1, caption_path)
 
-          if caption_path != nil do
-            result = List.insert_at(result, -1, caption_path <> "#subtitle")
-            {result, audio_index}
-          else
-            {result, audio_index}
-          end
-          
-        _ -> {result, audio_index}
+        _ -> result
       end
 
-    get_source_files(jobs, paths_with_languages, audio_index, result)
+    get_source_files(jobs, paths_with_languages, result)
   end
 
   defp get_filenames_with_language([], result), do: result
@@ -169,13 +179,16 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
   defp get_quality(nil), do: nil
   defp get_quality(path) do
     cond do
+      String.ends_with?(path, "-fra.mp4") -> "fra"
       String.ends_with?(path, "-qad.mp4") -> "qad"
       String.ends_with?(path, "-qaa.mp4") -> "qaa"
-      true ->
+      Regex.match?(~r/.*-[0-9]*\.mp4/, path) -> "subtitle"
+      Regex.match?(~r/.*-standard.\.mp4/, path) ->
         String.trim_trailing(path, ".mp4")
         |> String.split("-standard")
         |> List.last
         |> String.to_integer
+      true -> nil
     end
   end
 end
