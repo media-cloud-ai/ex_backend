@@ -48,6 +48,10 @@ defmodule ExSubtilBackend.WorkflowStep do
     ExSubtilBackend.Workflow.Step.AudioDecode.launch(workflow)
   end
 
+  defp launch_step(workflow, %{"id"=> "acs_prepare_audio"} = _step, _step_index) do
+    ExSubtilBackend.Workflow.Step.Acs.PrepareAudio.launch(workflow)
+  end
+
   defp launch_step(workflow, %{"id"=> "ttml_to_mp4"} = _step, _step_index) do
     ExSubtilBackend.Workflow.Step.TtmlToMp4.launch(workflow)
   end
