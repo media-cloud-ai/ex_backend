@@ -7,66 +7,29 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
   @action_name "set_language"
 
   def launch(workflow, _step) do
+    audio_files = get_audio_source_files(workflow.jobs, ["audio_encode", "audio_extraction", "download_ftp"])
+    subtitles_files = get_subtitles_source_files(workflow.jobs)
 
-    case get_source_files(workflow.jobs) do
-      %{audio_description_tracks: [], audio_tracks: [], text_tracks: []} ->
-        Jobs.create_skipped_job(workflow, @action_name)
-      paths ->
-        # Get track languages
-        languages =
-          ExVideoFactory.videos(%{"qid" => workflow.reference})
-          |> Map.fetch!(:videos)
-          |> List.first
-          |> get_source_languages
-
-        # Set languages
-        set_text_languages(paths.text_tracks, languages.text_tracks)
-        |> set_audio_languages(paths.audio_description_tracks, languages.audio_description_tracks)
-        |> set_audio_languages(paths.audio_tracks, languages.audio_tracks)
-        |> start_setting_languages(workflow)
+    Enum.concat(audio_files, subtitles_files)
+    |> case do
+      [] -> Jobs.create_skipped_job(workflow, @action_name)
+      paths -> start_setting_languages(paths, workflow)
     end
   end
 
-  defp set_audio_languages(result, [], _languages), do: result
-  defp set_audio_languages(result, [path | paths], languages) do
-
-    result = map_path_with_language(path, List.first(languages), result)
-
-    set_audio_languages(result, paths, languages)
-  end
-
-  defp map_path_with_language(path, lang, result) do
-    mapping = %{
-        path: path,
-        language: lang
-      }
-    List.insert_at(result, -1, mapping)
-  end
-
-  defp set_text_languages(result \\ [], paths, languages)
-  defp set_text_languages(result, [], _languages), do: result
-  defp set_text_languages(result, [path | paths], [lang | languages]) do
-
-    result = map_path_with_language(path, lang, result)
-
-    set_text_languages(result, paths, languages)
-  end
-
-  # defp get_track_index(mapping, acc \\ 1), do: acc
-  # defp get_track_index(mapping, acc) when is_list(mapping.paths) do
-  #   acc = acc + 1
-  # end
-
   defp start_setting_languages([], _workflow), do: {:ok, "started"}
-  defp start_setting_languages([mapping | languages_mapping], workflow) do
+  defp start_setting_languages([path | paths], workflow) do
+    work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_subtil_backend, :work_dir) || "/tmp/ftp_francetv"
+
+    dst_path = work_dir <> "/" <> workflow.reference <> "/lang/"  <> Path.basename(path)
+
+    language_code = get_file_language(path, workflow)
 
     options = %{
-      "-lang": mapping.language["code"],
-      "-out": Path.dirname(mapping.path)
-              |> Path.join("lang")
-              |> Path.join(Path.basename(mapping.path))
+      "-lang": language_code,
+      "-out": dst_path
     }
-    requirements = Requirements.add_required_paths(mapping.path)
+    requirements = Requirements.add_required_paths(path)
     job_params = %{
       name: @action_name,
       workflow_id: workflow.id,
@@ -74,7 +37,7 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
         kind: @action_name,
         requirements: requirements,
         source: %{
-          path: mapping.path
+          path: path
         },
         options: options
       }
@@ -87,83 +50,92 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
     }
     JobGpacEmitter.publish_json(params)
 
-    start_setting_languages(languages_mapping, workflow)
+    start_setting_languages(paths, workflow)
   end
 
-  defp get_source_languages(video) do
-    audio_tracks = Map.get(video, "audio_tracks")
-
-    audio_description_language =
-      audio_tracks
-      |> Enum.find(fn(track) -> track["code"] == "QAD" end)
-
-    %{
-      audio_tracks: List.delete(audio_tracks, audio_description_language),
-      audio_description_tracks: [audio_description_language],
-      text_tracks: Map.get(video, "text_tracks")
-    }
+  defp get_file_language(path, workflow) do
+    cond do
+      String.ends_with?(path, "-fra.mp4") -> "fra"
+      String.ends_with?(path, "-qaa.mp4") -> "qaa"
+      String.ends_with?(path, "-qad.mp4") -> "qad"
+      true ->
+        ExVideoFactory.videos(%{"qid" => workflow.reference})
+        |> Map.fetch!(:videos)
+        |> List.first
+        |> Map.get("text_tracks")
+        |> List.first
+        |> Map.get("code")
+        |> String.downcase
+    end
   end
 
-  defp get_source_files(_jobs, result \\ %{audio_tracks: [], audio_description_tracks: [], text_tracks: []})
-  defp get_source_files([], result), do: result
-  defp get_source_files([job | jobs], result) do
+  defp get_audio_source_files(_jobs, _priority_job_names, result \\ [])
+  defp get_audio_source_files([], _priority_job_names, result), do: result
+  defp get_audio_source_files(_jobs, [], result), do: result
+  defp get_audio_source_files(jobs, priority_job_names, result) do
+
+    {jobs, priority_job_names, result} =
+      Enum.find(jobs, fn(job) -> job.name == List.first(priority_job_names) end)
+      |> case do
+          nil ->
+            {jobs, List.delete_at(priority_job_names, 0), result}
+          job ->
+            jobs = List.delete(jobs, job)
+
+            case get_job_destination_files(job) do
+              nil -> {jobs, List.delete_at(priority_job_names, 0), result}
+              job_dest_path ->
+                if Enum.find(result, fn(file) -> Path.basename(file) == Path.basename(job_dest_path) end) do
+                  {jobs, List.delete_at(priority_job_names, 0), result}
+                else
+                  {jobs, priority_job_names, List.insert_at(result, -1, job_dest_path)}
+                end
+            end
+        end
+
+    get_audio_source_files(jobs, priority_job_names, result)
+  end
+
+  defp get_job_destination_files(job) do
+    case job.name do
+      "download_ftp" ->
+        job.params
+        |> Map.get("destination", %{})
+        |> Map.get("path")
+        |> filter_audio_files
+      _ ->
+        job.params
+        |> Map.get("destination", %{})
+        |> Map.get("paths")
+        |> List.first
+        |> filter_audio_files
+    end
+  end
+
+  defp filter_audio_files(path) do
+    cond do
+      String.ends_with?(path, "-fra.mp4") -> path
+      String.ends_with?(path, "-qaa.mp4") -> path
+      String.ends_with?(path, "-qad.mp4") -> path
+      true -> nil
+    end
+  end
+
+  defp get_subtitles_source_files(_jobs, result \\ [])
+  defp get_subtitles_source_files([], result), do: result
+  defp get_subtitles_source_files([job | jobs], result) do
     result =
       case job.name do
-        "download_ftp" ->
-          path =
-            job.params
-            |> Map.get("destination", %{})
-            |> Map.get("path")
-
-          cond do
-            is_nil(path) -> result
-
-            String.ends_with?(path, "-qad.mp4") ->
-              audio_description_tracks =
-                Map.get(result, :audio_description_tracks, [])
-                |> List.insert_at(-1, path)
-              Map.put(result, :audio_description_tracks, audio_description_tracks)
-
-            true -> result
-          end
-
-        "audio_extraction" ->
-          path =
-            job.params
-            |> Map.get("destination", %{})
-            |> Map.get("paths")
-            |> List.first
-
-          cond do
-            is_nil(path) -> result
-            String.ends_with?(path, "-fra.mp4") ->
-              audio_tracks =
-                Map.get(result, :audio_tracks, [])
-                |> List.insert_at(-1, path)
-              Map.put(result, :audio_tracks, audio_tracks)
-
-            true -> result
-          end
-
         "ttml_to_mp4" ->
-          caption_path =
+          path =
             job.params
             |> Map.get("destination", %{})
             |> Map.get("paths")
-
-          text_tracks = Map.get(result, :text_tracks, [])
-          text_tracks =
-            if caption_path != nil do
-              List.insert_at(text_tracks, -1, caption_path)
-            else
-              text_tracks
-            end
-          Map.put(result, :text_tracks, text_tracks)
+          List.insert_at(result, -1, path)
 
         _ -> result
       end
-
-    get_source_files(jobs, result)
+    get_subtitles_source_files(jobs, result)
   end
 
 end
