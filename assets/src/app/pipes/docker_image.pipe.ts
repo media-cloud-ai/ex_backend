@@ -10,10 +10,11 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class DockerImagePipe implements PipeTransform {
   transform(image_name: string): string {
     var allDockerImages = [
-      { id: 'ftvsubtil/http_worker', name: 'HTTP Worker' },
-      { id: 'ftvsubtil/ftp_worker', name: 'FTP Worker' },
+      { id: 'ftvsubtil/ffmpeg_worker', name: 'FFmpeg Worker' },
       { id: 'ftvsubtil/file_system_worker', name: 'File System Worker' },
+      { id: 'ftvsubtil/ftp_worker', name: 'FTP Worker' },
       { id: 'ftvsubtil/gpac_worker', name: 'GPAC Worker' },
+      { id: 'ftvsubtil/http_worker', name: 'HTTP Worker' },
       { id: 'rabbitmq', name: 'RabbitMQ' },
     ];
 
