@@ -11,6 +11,10 @@ export class IconForJobPipe implements PipeTransform {
 
   transform(iconForJob: string): string {
     var allJobIcons = [
+      { id: 'acs_prepare_audio', name: 'music_video' },
+      { id: 'acs_synchronize', name: 'music_video' },
+      { id: 'audio_decode', name: 'music_video' },
+      { id: 'audio_encode', name: 'music_video' },
       { id: 'audio_extraction', name: 'queue_music' },
       { id: 'clean_workspace', name: 'delete_forever' },
       { id: 'download_ftp', name: 'file_download' },

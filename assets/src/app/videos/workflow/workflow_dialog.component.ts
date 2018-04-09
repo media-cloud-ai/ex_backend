@@ -1,5 +1,5 @@
 import {Component, Inject} from '@angular/core';
-import {MatDialogRef} from '@angular/material';
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import {Step} from '../../models/workflow';
 
 @Component({
@@ -9,9 +9,13 @@ import {Step} from '../../models/workflow';
 })
 export class WorkflowDialogComponent {
 
+  acs_enable: boolean;
   steps: Step[];
 
-  constructor(public dialogRef: MatDialogRef<WorkflowDialogComponent>) {
+  constructor(public dialogRef: MatDialogRef<WorkflowDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any) {
+    console.log("data:", data);
+    this.acs_enable = data["broadcasted_live"];
     this.steps = [
       {
         id: "download_ftp",
@@ -22,13 +26,29 @@ export class WorkflowDialogComponent {
         enable: true,
         parameters: []
       },{
-        id: "ttml_to_mp4",
-        enable: true,
-        parameters: []
-      },{
         id: "audio_extraction",
         enable: true,
         parameters : []
+      // },{
+      //   id: "audio_decode",
+      //   enable: this.acs_enable,
+      //   parameters : []
+      // },{
+      //   id: "acs_prepare_audio",
+      //   enable: this.acs_enable,
+      //   parameters : []
+      // },{
+      //   id: "acs_synchronize",
+      //   enable: this.acs_enable,
+      //   parameters : []
+      // },{
+      //   id: "audio_encode",
+      //   enable: this.acs_enable,
+      //   parameters : []
+      },{
+        id: "ttml_to_mp4",
+        enable: true,
+        parameters: []
       },{
         id: "set_language",
         enable: true,
