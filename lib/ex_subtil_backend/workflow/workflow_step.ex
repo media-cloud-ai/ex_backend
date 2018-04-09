@@ -44,6 +44,22 @@ defmodule ExSubtilBackend.WorkflowStep do
     ExSubtilBackend.Workflow.Step.HttpDownload.launch(workflow)
   end
 
+  defp launch_step(workflow, %{"id"=> "audio_decode"} = _step, _step_index) do
+    ExSubtilBackend.Workflow.Step.AudioDecode.launch(workflow)
+  end
+
+  defp launch_step(workflow, %{"id"=> "acs_prepare_audio"} = _step, _step_index) do
+    ExSubtilBackend.Workflow.Step.Acs.PrepareAudio.launch(workflow)
+  end
+
+  defp launch_step(workflow, %{"id"=> "acs_synchronize"} = _step, _step_index) do
+    ExSubtilBackend.Workflow.Step.Acs.Synchronize.launch(workflow)
+  end
+
+  defp launch_step(workflow, %{"id"=> "audio_encode"} = _step, _step_index) do
+    ExSubtilBackend.Workflow.Step.AudioEncode.launch(workflow)
+  end
+
   defp launch_step(workflow, %{"id"=> "ttml_to_mp4"} = _step, _step_index) do
     ExSubtilBackend.Workflow.Step.TtmlToMp4.launch(workflow)
   end

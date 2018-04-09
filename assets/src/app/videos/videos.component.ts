@@ -204,7 +204,7 @@ export class VideosComponent {
   }
 
   start_process(video): void {
-    let dialogRef = this.dialog.open(WorkflowDialogComponent, {});
+    let dialogRef = this.dialog.open(WorkflowDialogComponent, {data: {"broadcasted_live": video.broadcasted_live}});
 
     dialogRef.afterClosed().subscribe(steps => {
       if(steps != undefined) {

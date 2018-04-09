@@ -38,19 +38,19 @@ defmodule ExSubtilBackend.Workflow.Step.TtmlToMp4 do
     end
   end
 
-  defp get_ttml_file(jobs, result \\ [])
-  defp get_ttml_file([], result), do: result
-  defp get_ttml_file([job | jobs], result) do
-    result =
-      case job.name do
-        "download_http" ->
-          job.params
+  defp get_ttml_file(jobs) do
+    case Enum.find(jobs, fn(job) -> job.name == "acs_synchronize" end) do
+        nil ->
+          Enum.find(jobs, fn(job) -> job.name == "download_http" end)
+          |> Map.get(:params)
           |> Map.get("destination", %{})
           |> Map.get("path")
-        _ -> result
+        acs_job ->
+          acs_job.params
+          |> Map.get("destination", %{})
+          |> Map.get("paths")
+          |> List.first
       end
-
-    get_ttml_file(jobs, result)
   end
 
 end
