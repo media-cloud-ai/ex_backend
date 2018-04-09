@@ -31,7 +31,10 @@ defmodule ExSubtilBackend.Videos do
               |> List.first
               |> Map.get(:resources, %{})
               |> Map.get("manifest")
-              |> String.replace("/421959/prod/innovation/", "http://videos-pmd.francetv.fr/innovation/")
+              |> case do
+                  nil -> nil
+                  manifest -> String.replace(manifest, "/421959/prod/innovation/", "http://videos-pmd.francetv.fr/innovation/")
+                end
           end
         rescue
           e ->
