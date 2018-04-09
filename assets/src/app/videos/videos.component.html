@@ -173,8 +173,10 @@
           <i class="material-icons" title="Visualisation">live_tv</i>
         </a>
       </span>
-      <span class="icons">
-        <a href="/workflows?video_id={{video.id}}">
+      <span class="icons workflows">
+        <a href="/workflows?video_id={{video.id}}"
+          [ngClass]="{disabled: video.workflows_count == 0}"
+          >
           <span
             class="workflows_count"
             [ngClass]="{found: video.workflows_count > 0}"

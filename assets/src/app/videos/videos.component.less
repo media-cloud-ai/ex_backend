@@ -142,7 +142,13 @@ ul.videos {
           color: #bbb;
         }
       }
-      span.workflows_count {
+      span.workflows {
+
+        a.disabled {
+          pointer-events: none;
+        }
+
+        .workflows_count {
         display: inline-block;
         background-color: #bbb;
         border-radius: 50%;
@@ -154,9 +160,11 @@ ul.videos {
         margin-top: 5px;
         margin-right: 10px;
         cursor: pointer;
-      }
-      span.workflows_count.found {
-        background-color: #671368;
+        }
+
+        .workflows_count.found {
+          background-color: #671368;
+        }
       }
       span.starter {
         justify-content: flex-end;
