@@ -117,17 +117,30 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
 
           cond do
             is_nil(path) -> result
-            String.ends_with?(path, "-standard1.mp4") ->
-              audio_tracks =
-                Map.get(result, :audio_tracks, [])
-                |> List.insert_at(-1, path)
-              Map.put(result, :audio_tracks, audio_tracks)
 
             String.ends_with?(path, "-qad.mp4") ->
               audio_description_tracks =
                 Map.get(result, :audio_description_tracks, [])
                 |> List.insert_at(-1, path)
               Map.put(result, :audio_description_tracks, audio_description_tracks)
+
+            true -> result
+          end
+
+        "audio_extraction" ->
+          path =
+            job.params
+            |> Map.get("destination", %{})
+            |> Map.get("paths")
+            |> List.first
+
+          cond do
+            is_nil(path) -> result
+            String.ends_with?(path, "-fra.mp4") ->
+              audio_tracks =
+                Map.get(result, :audio_tracks, [])
+                |> List.insert_at(-1, path)
+              Map.put(result, :audio_tracks, audio_tracks)
 
             true -> result
           end

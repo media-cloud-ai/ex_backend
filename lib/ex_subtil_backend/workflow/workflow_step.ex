@@ -48,6 +48,10 @@ defmodule ExSubtilBackend.WorkflowStep do
     ExSubtilBackend.Workflow.Step.TtmlToMp4.launch(workflow)
   end
 
+  defp launch_step(workflow, %{"id"=> "audio_extraction"} = _step, _step_index) do
+    ExSubtilBackend.Workflow.Step.AudioExtraction.launch(workflow)
+  end
+
   defp launch_step(workflow, %{"id"=> "set_language"} = step, _step_index) do
     ExSubtilBackend.Workflow.Step.SetLanguage.launch(workflow, step)
   end
