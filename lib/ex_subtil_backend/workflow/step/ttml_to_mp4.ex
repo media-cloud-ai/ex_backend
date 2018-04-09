@@ -39,15 +39,14 @@ defmodule ExSubtilBackend.Workflow.Step.TtmlToMp4 do
   end
 
   defp get_ttml_file(jobs) do
-    Enum.find(jobs, fn(job) -> job.name == "acs_synchronize" end)
-    |> case do
+    case Enum.find(jobs, fn(job) -> job.name == "acs_synchronize" end) do
         nil ->
           Enum.find(jobs, fn(job) -> job.name == "download_http" end)
           |> Map.get(:params)
           |> Map.get("destination", %{})
           |> Map.get("path")
-        job ->
-          job.params
+        acs_job ->
+          acs_job.params
           |> Map.get("destination", %{})
           |> Map.get("paths")
           |> List.first
