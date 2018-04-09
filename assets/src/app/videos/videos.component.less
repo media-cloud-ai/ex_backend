@@ -136,8 +136,11 @@ ul.videos {
       span.jarvis i {
         color: #3965ac;
       }
-      span.jarvis.disabled i {
-        color: #bbb;
+      span.jarvis.disabled {
+        pointer-events: none;
+        i {
+          color: #bbb;
+        }
       }
       span.workflows_count {
         display: inline-block;
