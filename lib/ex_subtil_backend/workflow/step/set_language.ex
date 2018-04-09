@@ -8,7 +8,7 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
 
   def launch(workflow, _step) do
     reverse_ordered_jobs =
-      get_audio_jobs(workflow.jobs)
+      get_related_jobs(workflow.jobs)
       |> Enum.sort(&((&2).id < (&1).id))
 
     audio_files = get_audio_source_files(reverse_ordered_jobs)
@@ -73,9 +73,9 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
     end
   end
 
-  defp get_audio_jobs(_jobs, result \\ [])
-  defp get_audio_jobs([], result), do: result
-  defp get_audio_jobs([job | jobs], result) do
+  defp get_related_jobs(_jobs, result \\ [])
+  defp get_related_jobs([], result), do: result
+  defp get_related_jobs([job | jobs], result) do
     result =
       case job.name do
         "download_ftp" -> [job | result]
@@ -83,7 +83,7 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
         "audio_encode" -> [job | result]
         _ -> result
       end
-    get_audio_jobs(jobs, result)
+    get_related_jobs(jobs, result)
   end
 
   defp get_audio_source_files(_jobs, result \\ [])
