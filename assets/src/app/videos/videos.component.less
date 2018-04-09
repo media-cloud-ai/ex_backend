@@ -136,24 +136,35 @@ ul.videos {
       span.jarvis i {
         color: #3965ac;
       }
-      span.jarvis.disabled i {
-        color: #bbb;
+      span.jarvis.disabled {
+        pointer-events: none;
+        i {
+          color: #bbb;
+        }
       }
-      span.workflows_count {
-        display: inline-block;
-        background-color: #bbb;
-        border-radius: 50%;
-        width: 25px;
-        height: 25px;
-        color: #fff;
-        text-align: center;
-        line-height: 24px;
-        margin-top: 5px;
-        margin-right: 10px;
-        cursor: pointer;
-      }
-      span.workflows_count.found {
-        background-color: #671368;
+      span.workflows {
+
+        a.disabled {
+          pointer-events: none;
+        }
+
+        .workflows_count {
+          display: inline-block;
+          background-color: #bbb;
+          border-radius: 50%;
+          width: 25px;
+          height: 25px;
+          color: #fff;
+          text-align: center;
+          line-height: 24px;
+          margin-top: 5px;
+          margin-right: 10px;
+          cursor: pointer;
+        }
+
+        .workflows_count.found {
+          background-color: #671368;
+        }
       }
       span.starter {
         justify-content: flex-end;

@@ -74,19 +74,17 @@ defmodule ExSubtilBackend.WorkflowStep do
       get_uploaded_file_path(workflow.jobs)
       |> Enum.filter(fn(path) -> String.ends_with?(path, ".mpd") end)
 
-    case paths do
-      [] -> nil
-      paths ->
-        manifest = List.first(paths)
-        params = %{
-          resources: %{
-            manifest: manifest
-          },
-          workflow_id: workflow.id
-        }
+    resources =
+      case paths do
+        [] -> %{}
+        paths -> %{ manifest: List.first(paths) }
+      end
 
-        Artifacts.create_artifact(params)
-    end
+    params = %{
+      resources: resources,
+      workflow_id: workflow.id
+    }
+    Artifacts.create_artifact(params)
   end
 
   def get_uploaded_file_path(jobs, result \\ [])
