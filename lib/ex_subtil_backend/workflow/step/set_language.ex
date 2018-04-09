@@ -7,7 +7,11 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
   @action_name "set_language"
 
   def launch(workflow, _step) do
-    audio_files = get_audio_source_files(workflow.jobs, ["audio_encode", "audio_extraction", "download_ftp"])
+    reverse_ordered_jobs =
+      get_audio_jobs(workflow.jobs)
+      |> Enum.sort(&((&2).id < (&1).id))
+
+    audio_files = get_audio_source_files(reverse_ordered_jobs)
     subtitles_files = get_subtitles_source_files(workflow.jobs)
 
     Enum.concat(audio_files, subtitles_files)
@@ -69,31 +73,33 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
     end
   end
 
-  defp get_audio_source_files(_jobs, _priority_job_names, result \\ [])
-  defp get_audio_source_files([], _priority_job_names, result), do: result
-  defp get_audio_source_files(_jobs, [], result), do: result
-  defp get_audio_source_files(jobs, priority_job_names, result) do
+  defp get_audio_jobs(_jobs, result \\ [])
+  defp get_audio_jobs([], result), do: result
+  defp get_audio_jobs([job | jobs], result) do
+    result =
+      case job.name do
+        "download_ftp" -> [job | result]
+        "audio_extraction" -> [job | result]
+        "audio_encode" -> [job | result]
+        _ -> result
+      end
+    get_audio_jobs(jobs, result)
+  end
 
-    {jobs, priority_job_names, result} =
-      Enum.find(jobs, fn(job) -> job.name == List.first(priority_job_names) end)
-      |> case do
-          nil ->
-            {jobs, List.delete_at(priority_job_names, 0), result}
-          job ->
-            jobs = List.delete(jobs, job)
-
-            case get_job_destination_files(job) do
-              nil -> {jobs, List.delete_at(priority_job_names, 0), result}
-              job_dest_path ->
-                if Enum.find(result, fn(file) -> Path.basename(file) == Path.basename(job_dest_path) end) do
-                  {jobs, List.delete_at(priority_job_names, 0), result}
-                else
-                  {jobs, priority_job_names, List.insert_at(result, -1, job_dest_path)}
-                end
-            end
-        end
-
-    get_audio_source_files(jobs, priority_job_names, result)
+  defp get_audio_source_files(_jobs, result \\ [])
+  defp get_audio_source_files([], result), do: result
+  defp get_audio_source_files([job | jobs], result) do
+    {jobs, result} =
+      case get_job_destination_files(job) do
+        nil -> {jobs, result}
+        job_dest_path ->
+          if Enum.find(result, fn(file) -> Path.basename(file) == Path.basename(job_dest_path) end) do
+            {jobs, result}
+          else
+            {jobs, List.insert_at(result, -1, job_dest_path)}
+          end
+      end
+    get_audio_source_files(jobs, result)
   end
 
   defp get_job_destination_files(job) do
