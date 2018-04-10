@@ -1,6 +1,7 @@
 defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
 
   alias ExSubtilBackend.Jobs
+  alias ExSubtilBackend.Amqp.JobCommandLineEmitter
   alias ExSubtilBackend.Workflow.Step.Requirements
 
   require Logger
@@ -19,16 +20,39 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
     work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_subtil_backend, :work_dir) || "/tmp/ftp_francetv"
 
     filename = Path.basename(subtitle_path)
-    _dst_path = work_dir <> "/" <> workflow.reference <> "/acs/"  <> filename
-    |> IO.inspect
+    dst_path = work_dir <> "/" <> workflow.reference <> "/acs/"  <> filename
 
-    _requirements = Requirements.add_required_paths([audio_path, subtitle_path])
-    |> IO.inspect
+    requirements = Requirements.add_required_paths([audio_path, subtitle_path])
 
-    # TODO: publish synchronization message to ACS worker
-    Jobs.create_skipped_job(workflow, @action_name)
+    # TODO: execute ACS command instead of a simple copy...
+    job_params = %{
+      name: @action_name,
+      workflow_id: workflow.id,
+      params: %{
+        kind: @action_name,
+        requirements: requirements,
+        program: "/bin/cp",
+        inputs: [
+          %{
+            path: subtitle_path,
+            options: %{}
+          }
+        ],
+        outputs: [
+          %{
+            path: dst_path,
+            options: %{}
+          }
+        ]
+      }
+    }
 
-    # {:ok, "started"}
+    {:ok, job} = Jobs.create_job(job_params)
+    params = %{
+      job_id: job.id,
+      parameters: job.params
+    }
+    JobCommandLineEmitter.publish_json(params)
   end
 
   defp get_source_files(jobs, result \\ %{})
