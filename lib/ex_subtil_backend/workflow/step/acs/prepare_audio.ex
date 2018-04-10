@@ -117,4 +117,24 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.PrepareAudio do
 
     get_audio_file(paths, subtitle_languages, result)
   end
+
+  @doc """
+  Returns the list of destination paths of this workflow step
+  """
+  def get_jobs_destination_paths(_jobs, result \\ [])
+  def get_jobs_destination_paths([], result), do: result
+  def get_jobs_destination_paths([job | jobs], result) do
+    result =
+      case job.name do
+        @action_name ->
+          job.params
+          |> Map.get("destination", %{})
+          |> Map.get("paths")
+          |> Enum.concat(result)
+        _ -> result
+      end
+
+    get_jobs_destination_paths(jobs, result)
+  end
+
 end

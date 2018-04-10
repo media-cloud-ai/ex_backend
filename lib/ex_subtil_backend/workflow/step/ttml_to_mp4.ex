@@ -53,4 +53,24 @@ defmodule ExSubtilBackend.Workflow.Step.TtmlToMp4 do
       end
   end
 
+  @doc """
+  Returns the list of destination paths of this workflow step
+  """
+  def get_jobs_destination_paths(_jobs, result \\ [])
+  def get_jobs_destination_paths([], result), do: result
+  def get_jobs_destination_paths([job | jobs], result) do
+    result =
+      case job.name do
+        @action_name ->
+          path =
+            job.params
+            |> Map.get("destination", %{})
+            |> Map.get("path")
+          List.insert_at(result, -1, path)
+        _ -> result
+      end
+
+    get_jobs_destination_paths(jobs, result)
+  end
+
 end
