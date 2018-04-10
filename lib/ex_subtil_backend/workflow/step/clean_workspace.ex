@@ -61,7 +61,7 @@ defmodule ExSubtilBackend.Workflow.Step.CleanWorkspace do
                 result
               end
           end
-        "ttml_to_mp4" ->
+        "audio_extraction" ->
           src_paths =
             job.params
             |> Map.get("destination", %{})
@@ -70,7 +70,7 @@ defmodule ExSubtilBackend.Workflow.Step.CleanWorkspace do
           case src_paths do
             nil -> result
             src_paths ->
-              src_dir = Path.dirname(src_paths)
+              src_dir = Path.dirname(List.first(src_paths))
               if src_dir != nil do
                 List.insert_at(result, -1, src_dir)
               else
