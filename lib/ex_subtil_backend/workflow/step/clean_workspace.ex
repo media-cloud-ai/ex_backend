@@ -18,7 +18,6 @@ defmodule ExSubtilBackend.Workflow.Step.CleanWorkspace do
           name: @action_name,
           workflow_id: workflow.id,
           params: %{
-            kind: @action_name,
             action: "remove",
             requirements: requirements,
             source: %{

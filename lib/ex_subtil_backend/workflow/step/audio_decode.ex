@@ -37,7 +37,6 @@ defmodule ExSubtilBackend.Workflow.Step.AudioDecode do
       name: @action_name,
       workflow_id: workflow.id,
       params: %{
-        kind: @action_name,
         requirements: requirements,
         inputs: [
           %{

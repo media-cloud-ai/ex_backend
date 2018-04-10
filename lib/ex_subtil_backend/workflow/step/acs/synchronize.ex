@@ -29,7 +29,6 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
       name: @action_name,
       workflow_id: workflow.id,
       params: %{
-        kind: @action_name,
         requirements: requirements,
         program: "/bin/cp",
         inputs: [

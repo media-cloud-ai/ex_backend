@@ -41,7 +41,6 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.PrepareAudio do
       name: @action_name,
       workflow_id: workflow.id,
       params: %{
-        kind: @action_name,
         requirements: requirements,
         inputs: [
           %{
