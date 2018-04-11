@@ -16,7 +16,7 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
     end
   end
 
-  defp start_processing_synchro(%{ "audio_path" => audio_path, "subtitle_path" => subtitle_path }, workflow) do
+  defp start_processing_synchro(%{audio_path: audio_path, subtitle_path: subtitle_path}, workflow) do
     work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_subtil_backend, :work_dir) || "/tmp/ftp_francetv"
 
     filename = Path.basename(subtitle_path)
@@ -54,32 +54,19 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
     JobCommandLineEmitter.publish_json(params)
   end
 
-  defp get_source_files(jobs, result \\ %{})
-  defp get_source_files([], result), do: result
-  defp get_source_files([job | jobs], result) do
-    result =
-      case job.name do
-        "acs_prepare_audio" ->
-          audio_path =
-            job.params
-            |> Map.get("destination", %{})
-            |> Map.get("paths")
-            |> List.first
-          Map.put(result, "audio_path", audio_path)
+  defp get_source_files(jobs) do
+    audio_path =
+      ExSubtilBackend.Workflow.Step.Acs.PrepareAudio.get_jobs_destination_paths(jobs)
+      |> List.first
+    subtitle_path =
+      ExSubtilBackend.Workflow.Step.HttpDownload.get_jobs_destination_paths(jobs)
+      |> List.first
 
-        "download_http" ->
-          subtitle_path =
-            job.params
-            |> Map.get("destination", %{})
-            |> Map.get("path")
-          Map.put(result, "subtitle_path", subtitle_path)
-
-        _ -> result
-      end
-
-    get_source_files(jobs, result)
+    %{
+      audio_path: audio_path,
+      subtitle_path: subtitle_path
+    }
   end
-
 
   @doc """
   Returns the list of destination paths of this workflow step
