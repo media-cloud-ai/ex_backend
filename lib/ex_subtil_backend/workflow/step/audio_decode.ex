@@ -63,42 +63,22 @@ defmodule ExSubtilBackend.Workflow.Step.AudioDecode do
     start_processing_audio(paths, workflow)
   end
 
-  defp get_source_files(jobs, result \\ [])
-  defp get_source_files([], result), do: result
-  defp get_source_files([job | jobs], result) do
+  defp get_source_files(jobs) do
     result =
-      case job.name do
-        "download_ftp" ->
-          job.params
-          |> Map.get("destination", %{})
-          |> Map.get("path")
-          |> get_audio_file(result)
+      ExSubtilBackend.Workflow.Step.FtpDownload.get_jobs_destination_paths(jobs)
+      |> Enum.filter(fn(path) -> is_audio_file?(path) end)
 
-        "audio_extraction" ->
-          job.params
-          |> Map.get("destination", %{})
-          |> Map.get("paths")
-          |> get_audio_files(result)
-
-        _ -> result
-      end
-
-    get_source_files(jobs, result)
+    ExSubtilBackend.Workflow.Step.AudioExtraction.get_jobs_destination_paths(jobs)
+    |> Enum.filter(fn(path) -> is_audio_file?(path) end)
+    |> Enum.concat(result)
   end
 
-  defp get_audio_files(_paths, result \\ [])
-  defp get_audio_files([], result), do: result
-  defp get_audio_files([path | paths], result) do
-    result = get_audio_file(path, result)
-    get_audio_files(paths, result)
-  end
-
-  defp get_audio_file(path, result \\ []) do
+  defp is_audio_file?(path) do
     cond do
-      String.ends_with?(path, "-fra.mp4") -> List.insert_at(result, -1, path)
-      String.ends_with?(path, "-qaa.mp4") -> List.insert_at(result, -1, path)
-      String.ends_with?(path, "-qad.mp4") -> List.insert_at(result, -1, path)
-      true -> result
+      String.ends_with?(path, "-fra.mp4") -> true
+      String.ends_with?(path, "-qaa.mp4") -> true
+      String.ends_with?(path, "-qad.mp4") -> true
+      true -> false
     end
   end
 

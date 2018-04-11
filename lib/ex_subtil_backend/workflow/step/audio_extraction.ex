@@ -9,13 +9,11 @@ defmodule ExSubtilBackend.Workflow.Step.AudioExtraction do
   @action_name "audio_extraction"
 
   def launch(workflow) do
-    path = get_first_source_file(workflow.jobs)
-    case path do
+    case get_first_source_file(workflow.jobs) do
       nil -> Jobs.create_skipped_job(workflow, @action_name)
-      _ -> start_extracting_audio(path, workflow)
+      path -> start_extracting_audio(path, workflow)
     end
   end
-
 
   defp start_extracting_audio(path, workflow) do
     work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_subtil_backend, :work_dir) || "/tmp/ftp_francetv"
@@ -62,26 +60,9 @@ defmodule ExSubtilBackend.Workflow.Step.AudioExtraction do
     {:ok, "started"}
   end
 
-  defp get_first_source_file(jobs, result \\ nil)
-  defp get_first_source_file([], result), do: result
-  defp get_first_source_file([job | jobs], result) do
-    result =
-      case job.name do
-        "download_ftp" ->
-          path =
-            job.params
-            |> Map.get("destination", %{})
-            |> Map.get("path")
-
-          case String.ends_with?(path, "-standard1.mp4") do
-            false -> result
-            true -> path
-          end
-
-        _ -> result
-      end
-
-    get_first_source_file(jobs, result)
+  defp get_first_source_file(jobs) do
+    ExSubtilBackend.Workflow.Step.FtpDownload.get_jobs_destination_paths(jobs)
+    |> Enum.find(fn(path) -> String.ends_with?(path, "-standard1.mp4") end)
   end
 
   @doc """
