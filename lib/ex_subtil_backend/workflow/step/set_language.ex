@@ -7,15 +7,7 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
   @action_name "set_language"
 
   def launch(workflow, _step) do
-    reverse_ordered_jobs =
-      get_related_jobs(workflow.jobs)
-      |> Enum.sort(&((&2).id < (&1).id))
-
-    audio_files = get_audio_source_files(reverse_ordered_jobs)
-    subtitles_files = get_subtitles_source_files(workflow.jobs)
-
-    Enum.concat(audio_files, subtitles_files)
-    |> case do
+    case get_source_files(workflow.jobs) do
       [] -> Jobs.create_skipped_job(workflow, @action_name)
       paths -> start_setting_languages(paths, workflow)
     end
@@ -73,75 +65,40 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
     end
   end
 
-  defp get_related_jobs(_jobs, result \\ [])
-  defp get_related_jobs([], result), do: result
-  defp get_related_jobs([job | jobs], result) do
-    result =
-      case job.name do
-        "download_ftp" -> [job | result]
-        "audio_extraction" -> [job | result]
-        "audio_encode" -> [job | result]
-        _ -> result
-      end
-    get_related_jobs(jobs, result)
+  defp get_source_files(jobs) do
+    audio_files =
+      ExSubtilBackend.Workflow.Step.AudioEncode.get_jobs_destination_paths(jobs)
+      |> Enum.filter(fn(path) -> is_audio_file?(path) end)
+
+    audio_files =
+      ExSubtilBackend.Workflow.Step.AudioExtraction.get_jobs_destination_paths(jobs)
+      |> Enum.filter(fn(path) -> is_audio_file?(path) end)
+      |> Enum.reject(fn(path) -> is_file_already_in_list?(path, audio_files) end)
+      |> Enum.concat(audio_files)
+
+    audio_files =
+      ExSubtilBackend.Workflow.Step.FtpDownload.get_jobs_destination_paths(jobs)
+      |> Enum.filter(fn(path) -> is_audio_file?(path) end)
+      |> Enum.reject(fn(path) -> is_file_already_in_list?(path, audio_files) end)
+      |> Enum.concat(audio_files)
+
+    ExSubtilBackend.Workflow.Step.TtmlToMp4.get_jobs_destination_paths(jobs)
+    |> Enum.concat(audio_files)
   end
 
-  defp get_audio_source_files(_jobs, result \\ [])
-  defp get_audio_source_files([], result), do: result
-  defp get_audio_source_files([job | jobs], result) do
-    {jobs, result} =
-      case get_job_destination_files(job) do
-        nil -> {jobs, result}
-        job_dest_path ->
-          if Enum.find(result, fn(file) -> Path.basename(file) == Path.basename(job_dest_path) end) do
-            {jobs, result}
-          else
-            {jobs, List.insert_at(result, -1, job_dest_path)}
-          end
-      end
-    get_audio_source_files(jobs, result)
-  end
-
-  defp get_job_destination_files(job) do
-    case job.name do
-      "download_ftp" ->
-        job.params
-        |> Map.get("destination", %{})
-        |> Map.get("path")
-        |> filter_audio_files
-      _ ->
-        job.params
-        |> Map.get("destination", %{})
-        |> Map.get("paths")
-        |> List.first
-        |> filter_audio_files
-    end
-  end
-
-  defp filter_audio_files(path) do
+  defp is_audio_file?(path) do
     cond do
-      String.ends_with?(path, "-fra.mp4") -> path
-      String.ends_with?(path, "-qaa.mp4") -> path
-      String.ends_with?(path, "-qad.mp4") -> path
-      true -> nil
+      String.ends_with?(path, "-fra.mp4") -> true
+      String.ends_with?(path, "-qaa.mp4") -> true
+      String.ends_with?(path, "-qad.mp4") -> true
+      true -> false
     end
   end
 
-  defp get_subtitles_source_files(_jobs, result \\ [])
-  defp get_subtitles_source_files([], result), do: result
-  defp get_subtitles_source_files([job | jobs], result) do
-    result =
-      case job.name do
-        "ttml_to_mp4" ->
-          path =
-            job.params
-            |> Map.get("destination", %{})
-            |> Map.get("paths")
-          List.insert_at(result, -1, path)
-
-        _ -> result
-      end
-    get_subtitles_source_files(jobs, result)
+  defp is_file_already_in_list?(file_path, paths_list) do
+    Enum.any?(paths_list, fn(path) ->
+      Path.basename(file_path) == Path.basename(path)
+    end)
   end
 
   @doc """
@@ -153,10 +110,11 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
     result =
       case job.name do
         @action_name ->
-          job.params
-          |> Map.get("destination", %{})
-          |> Map.get("paths")
-          |> Enum.concat(result)
+          path =
+            job.params
+            |> Map.get("destination", %{})
+            |> Map.get("paths")
+          List.insert_at(result, -1, path)
         _ -> result
       end
 
