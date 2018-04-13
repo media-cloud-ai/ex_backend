@@ -18,7 +18,7 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
 
   defp start_processing_synchro(%{audio_path: audio_path, subtitle_path: subtitle_path}, workflow) do
     work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_subtil_backend, :work_dir) || "/tmp/ftp_francetv"
-    app_dir = System.get_env("APP_DIR") || Application.get_env(:ex_subtil_backend, :appdir) || "/app"
+    app_dir = System.get_env("APP_DIR") || Application.get_env(:ex_subtil_backend, :appdir) || "/opt/app"
 
     filename = Path.basename(subtitle_path)
     dst_path = work_dir <> "/" <> workflow.reference <> "/acs/"  <> filename
