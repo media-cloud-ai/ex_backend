@@ -69,7 +69,7 @@ config :ex_subtil_backend,
   docker_hosts: [
     [hostname: "http://localhost", port: 2357]
   ]
-  appdir: "/app"
+  appdir: "/opt/app"
 
 config :amqp,
   hostname: "192.168.99.100",
