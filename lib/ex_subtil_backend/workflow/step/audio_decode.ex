@@ -37,7 +37,6 @@ defmodule ExSubtilBackend.Workflow.Step.AudioDecode do
       name: @action_name,
       workflow_id: workflow.id,
       params: %{
-        kind: @action_name,
         requirements: requirements,
         inputs: [
           %{
@@ -64,42 +63,42 @@ defmodule ExSubtilBackend.Workflow.Step.AudioDecode do
     start_processing_audio(paths, workflow)
   end
 
-  defp get_source_files(jobs, result \\ [])
-  defp get_source_files([], result), do: result
-  defp get_source_files([job | jobs], result) do
+  defp get_source_files(jobs) do
+    result =
+      ExSubtilBackend.Workflow.Step.FtpDownload.get_jobs_destination_paths(jobs)
+      |> Enum.filter(fn(path) -> is_audio_file?(path) end)
+
+    ExSubtilBackend.Workflow.Step.AudioExtraction.get_jobs_destination_paths(jobs)
+    |> Enum.filter(fn(path) -> is_audio_file?(path) end)
+    |> Enum.concat(result)
+  end
+
+  defp is_audio_file?(path) do
+    cond do
+      String.ends_with?(path, "-fra.mp4") -> true
+      String.ends_with?(path, "-qaa.mp4") -> true
+      String.ends_with?(path, "-qad.mp4") -> true
+      true -> false
+    end
+  end
+
+  @doc """
+  Returns the list of destination paths of this workflow step
+  """
+  def get_jobs_destination_paths(_jobs, result \\ [])
+  def get_jobs_destination_paths([], result), do: result
+  def get_jobs_destination_paths([job | jobs], result) do
     result =
       case job.name do
-        "download_ftp" ->
-          job.params
-          |> Map.get("destination", %{})
-          |> Map.get("path")
-          |> get_audio_file(result)
-
-        "audio_extraction" ->
+        @action_name ->
           job.params
           |> Map.get("destination", %{})
           |> Map.get("paths")
-          |> get_audio_files(result)
-
+          |> Enum.concat(result)
         _ -> result
       end
 
-    get_source_files(jobs, result)
+    get_jobs_destination_paths(jobs, result)
   end
 
-  defp get_audio_files(_paths, result \\ [])
-  defp get_audio_files([], result), do: result
-  defp get_audio_files([path | paths], result) do
-    result = get_audio_file(path, result)
-    get_audio_files(paths, result)
-  end
-
-  defp get_audio_file(path, result \\ []) do
-    cond do
-      String.ends_with?(path, "-fra.mp4") -> List.insert_at(result, -1, path)
-      String.ends_with?(path, "-qaa.mp4") -> List.insert_at(result, -1, path)
-      String.ends_with?(path, "-qad.mp4") -> List.insert_at(result, -1, path)
-      true -> result
-    end
-  end
 end

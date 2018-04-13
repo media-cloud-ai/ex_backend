@@ -25,10 +25,8 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
   end
 
   def build_step_parameters(workflow, step) do
-    filenames_with_language = get_filenames_with_language(workflow.jobs, %{})
-
     source_file_paths =
-      get_source_files(workflow.jobs, filenames_with_language)
+      get_source_files(workflow.jobs)
       |> Enum.sort
 
     formatted_source_paths = get_formatted_source_paths(source_file_paths)
@@ -101,67 +99,29 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
     get_formatted_source_paths(paths, audio_index, result)
   end
 
-  defp get_source_files(jobs, paths_with_languages, result \\ [])
-  defp get_source_files([], _paths_with_languages, result), do: result
-  defp get_source_files([job | jobs], paths_with_languages, result) do
-    result =
-      case job.name do
-        "audio_extraction" ->
-          path =
-            job.params
-            |> Map.get("destination", %{})
-            |> Map.get("paths")
-            |> List.first
-            |> get_path_with_language(paths_with_languages)
-          List.insert_at(result, -1, path)
+  defp get_source_files(jobs) do
+    source_files =
+      ExSubtilBackend.Workflow.Step.SetLanguage.get_jobs_destination_paths(jobs)
 
-        "download_ftp" ->
-          path =
-            job.params
-            |> Map.get("destination", %{})
-            |> Map.get("path")
-            |> get_path_with_language(paths_with_languages)
-          List.insert_at(result, -1, path)
+    source_files =
+      ExSubtilBackend.Workflow.Step.AudioExtraction.get_jobs_destination_paths(jobs)
+      |> Enum.reject(fn(path) -> is_file_already_in_list?(path, source_files) end)
+      |> Enum.concat(source_files)
 
-        "ttml_to_mp4" ->
-          caption_path =
-            job.params
-            |> Map.get("destination", %{})
-            |> Map.get("paths")
-            |> get_path_with_language(paths_with_languages)
-          List.insert_at(result, -1, caption_path)
+    source_files =
+      ExSubtilBackend.Workflow.Step.TtmlToMp4.get_jobs_destination_paths(jobs)
+      |> Enum.reject(fn(path) -> is_file_already_in_list?(path, source_files) end)
+      |> Enum.concat(source_files)
 
-        _ -> result
-      end
-
-    get_source_files(jobs, paths_with_languages, result)
+    ExSubtilBackend.Workflow.Step.FtpDownload.get_jobs_destination_paths(jobs)
+    |> Enum.reject(fn(path) -> is_file_already_in_list?(path, source_files) end)
+    |> Enum.concat(source_files)
   end
 
-  defp get_filenames_with_language([], result), do: result
-  defp get_filenames_with_language([job | jobs], result) do
-    result =
-      case job.name do
-        "set_language" ->
-          path =
-            job.params
-            |> Map.get("destination", %{})
-            |> Map.get("paths")
-          case path do
-            nil -> result
-            path -> Map.put(result, Path.basename(path), path)
-          end
-        _ -> result
-      end
-
-    get_filenames_with_language(jobs, result)
-  end
-
-  defp get_path_with_language(nil, _paths_with_languages), do: nil
-  defp get_path_with_language(path, paths_with_languages) do
-    case Map.get(paths_with_languages, Path.basename(path)) do
-      nil -> path
-      new_path -> new_path
-    end
+  defp is_file_already_in_list?(file_path, paths_list) do
+    Enum.any?(paths_list, fn(path) ->
+      Path.basename(file_path) == Path.basename(path)
+    end)
   end
 
   defp build_gpac_parameters([], result), do: result
@@ -195,4 +155,24 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
       true -> nil
     end
   end
+
+  @doc """
+  Returns the list of destination paths of this workflow step
+  """
+  def get_jobs_destination_paths(_jobs, result \\ [])
+  def get_jobs_destination_paths([], result), do: result
+  def get_jobs_destination_paths([job | jobs], result) do
+    result =
+      case job.name do
+        @action_name ->
+          job.params
+          |> Map.get("destination", %{})
+          |> Map.get("paths")
+          |> Enum.concat(result)
+        _ -> result
+      end
+
+    get_jobs_destination_paths(jobs, result)
+  end
+
 end

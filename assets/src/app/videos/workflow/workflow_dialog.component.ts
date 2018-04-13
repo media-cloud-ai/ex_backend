@@ -29,18 +29,18 @@ export class WorkflowDialogComponent {
         id: "audio_extraction",
         enable: true,
         parameters : []
-      // },{
-      //   id: "audio_decode",
-      //   enable: this.acs_enable,
-      //   parameters : []
-      // },{
-      //   id: "acs_prepare_audio",
-      //   enable: this.acs_enable,
-      //   parameters : []
-      // },{
-      //   id: "acs_synchronize",
-      //   enable: this.acs_enable,
-      //   parameters : []
+      },{
+        id: "audio_decode",
+        enable: this.acs_enable,
+        parameters : []
+      },{
+        id: "acs_prepare_audio",
+        enable: this.acs_enable,
+        parameters : []
+      },{
+        id: "acs_synchronize",
+        enable: this.acs_enable,
+        parameters : []
       // },{
       //   id: "audio_encode",
       //   enable: this.acs_enable,

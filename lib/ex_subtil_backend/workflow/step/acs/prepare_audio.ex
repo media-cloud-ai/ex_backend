@@ -41,7 +41,6 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.PrepareAudio do
       name: @action_name,
       workflow_id: workflow.id,
       params: %{
-        kind: @action_name,
         requirements: requirements,
         inputs: [
           %{
@@ -79,43 +78,44 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.PrepareAudio do
        end)
   end
 
-  defp get_source_files(jobs, _subtitle_languages, result \\ [])
-  defp get_source_files([], _subtitle_languages, result), do: result
-  defp get_source_files([job | jobs], subtitle_languages, result) do
+  defp get_source_files(jobs, subtitle_languages) do
+    ExSubtilBackend.Workflow.Step.AudioDecode.get_jobs_destination_paths(jobs)
+    |> Enum.filter(fn(path) ->
+        is_audio_file_matching_subtitles?(path, subtitle_languages)
+      end)
+  end
+
+  defp is_audio_file_matching_subtitles?(path, subtitle_languages) do
+    is_audio_file_matching_subtitles_language?(path, subtitle_languages, "fra") ||
+    is_audio_file_matching_subtitles_language?(path, subtitle_languages, "qaa") ||
+    is_audio_file_matching_subtitles_language?(path, subtitle_languages, "qad")
+  end
+
+  defp is_audio_file_matching_subtitles_language?(path, subtitle_languages, language) do
+    if String.ends_with?(path, "-" <> language <> ".wav") do
+      Enum.any?(subtitle_languages, fn(lang) -> lang == language end)
+    else
+      false
+    end
+  end
+
+  @doc """
+  Returns the list of destination paths of this workflow step
+  """
+  def get_jobs_destination_paths(_jobs, result \\ [])
+  def get_jobs_destination_paths([], result), do: result
+  def get_jobs_destination_paths([job | jobs], result) do
     result =
       case job.name do
-        "audio_decode" ->
+        @action_name ->
           job.params
           |> Map.get("destination", %{})
           |> Map.get("paths")
-          |> get_audio_file(subtitle_languages)
-
+          |> Enum.concat(result)
         _ -> result
       end
 
-    get_source_files(jobs, subtitle_languages, result)
+    get_jobs_destination_paths(jobs, result)
   end
 
-  defp get_audio_file(_paths, _subtitle_languages, result \\ [])
-  defp get_audio_file([], _subtitle_languages, result), do: result
-  defp get_audio_file([path | paths], subtitle_languages, result) do
-    result =
-      cond do
-        String.ends_with?(path, "-fra.wav") ->
-          if Enum.find(subtitle_languages, fn(lang) -> lang == "fra" end) do
-            List.insert_at(result, -1, path)
-          end
-        String.ends_with?(path, "-qaa.wav") ->
-          if Enum.find(subtitle_languages, fn(lang) -> lang == "qaa" end) do
-            List.insert_at(result, -1, path)
-          end
-        String.ends_with?(path, "-qad.wav") ->
-          if Enum.find(subtitle_languages, fn(lang) -> lang == "qad" end) do
-            List.insert_at(result, -1, path)
-          end
-        true -> result
-      end
-
-    get_audio_file(paths, subtitle_languages, result)
-  end
 end

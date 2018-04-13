@@ -34,6 +34,10 @@ defmodule ExSubtilBackend.Application do
       worker(ExSubtilBackend.Amqp.JobFFmpegCompletedConsumer, []),
       worker(ExSubtilBackend.Amqp.JobFFmpegErrorConsumer, []),
 
+      worker(ExSubtilBackend.Amqp.JobCommandLineEmitter, []),
+      worker(ExSubtilBackend.Amqp.JobCommandLineCompletedConsumer, []),
+      worker(ExSubtilBackend.Amqp.JobCommandLineErrorConsumer, []),
+
       worker(ExSubtilBackend.WorkflowStepManager, []),
     ]
 

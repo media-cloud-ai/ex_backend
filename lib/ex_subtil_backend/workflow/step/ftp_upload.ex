@@ -11,34 +11,12 @@ defmodule ExSubtilBackend.Workflow.Step.FtpUpload do
       Timex.now
       |> Timex.format!("%Y_%m_%d__%H_%M_%S", :strftime)
 
-    case get_paths(workflow.jobs) do
+    case ExSubtilBackend.Workflow.Step.GenerateDash.get_jobs_destination_paths(workflow.jobs) do
       [] -> Jobs.create_skipped_job(workflow, @action_name)
       paths ->
         start_upload(paths, current_date, workflow)
     end
   end
-
-  defp get_paths(jobs, result \\ [])
-  defp get_paths([], result), do: result
-  defp get_paths([job | jobs], result) do
-    result =
-      case job.name do
-        "generate_dash" ->
-          paths =
-            job.params
-            |> Map.get("destination", %{})
-            |> Map.get("paths")
-
-          case paths do
-            nil -> result
-            paths -> result ++ paths
-          end
-        _ -> result
-      end
-
-    get_paths(jobs, result)
-  end
-
 
   defp start_upload([], _current_date, _workflow), do: {:ok, "started"}
   defp start_upload([file | files], current_date, workflow) do
@@ -73,6 +51,27 @@ defmodule ExSubtilBackend.Workflow.Step.FtpUpload do
     JobFtpEmitter.publish_json(params)
 
     start_upload(files, current_date, workflow)
+  end
+
+
+  @doc """
+  Returns the list of destination paths of this workflow step
+  """
+  def get_jobs_destination_paths(_jobs, result \\ [])
+  def get_jobs_destination_paths([], result), do: result
+  def get_jobs_destination_paths([job | jobs], result) do
+    result =
+      case job.name do
+        @action_name ->
+          path =
+            job.params
+            |> Map.get("destination", %{})
+            |> Map.get("path")
+          List.insert_at(result, -1, path)
+        _ -> result
+      end
+
+    get_jobs_destination_paths(jobs, result)
   end
 
 end

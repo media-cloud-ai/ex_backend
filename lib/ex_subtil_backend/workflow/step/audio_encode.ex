@@ -39,7 +39,6 @@ defmodule ExSubtilBackend.Workflow.Step.AudioEncode do
       name: @action_name,
       workflow_id: workflow.id,
       params: %{
-        kind: @action_name,
         requirements: requirements,
         inputs: [
           %{
@@ -67,23 +66,29 @@ defmodule ExSubtilBackend.Workflow.Step.AudioEncode do
     start_processing_audio(paths, workflow)
   end
 
-  defp get_source_files(jobs, result \\ [])
-  defp get_source_files([], result), do: result
-  defp get_source_files([job | jobs], result) do
+  defp get_source_files(jobs) do
+    # TODO: handle audio_split result
+    ExSubtilBackend.Workflow.Step.AudioDecode.get_jobs_destination_paths(jobs)
+  end
+
+
+  @doc """
+  Returns the list of destination paths of this workflow step
+  """
+  def get_jobs_destination_paths(_jobs, result \\ [])
+  def get_jobs_destination_paths([], result), do: result
+  def get_jobs_destination_paths([job | jobs], result) do
     result =
       case job.name do
-        # TODO: handle audio_split result
-
-        "audio_decode" ->
+        @action_name ->
           job.params
           |> Map.get("destination", %{})
           |> Map.get("paths")
           |> Enum.concat(result)
-
         _ -> result
       end
 
-    get_source_files(jobs, result)
+    get_jobs_destination_paths(jobs, result)
   end
 
 end

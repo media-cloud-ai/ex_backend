@@ -39,18 +39,34 @@ defmodule ExSubtilBackend.Workflow.Step.TtmlToMp4 do
   end
 
   defp get_ttml_file(jobs) do
-    case Enum.find(jobs, fn(job) -> job.name == "acs_synchronize" end) do
-        nil ->
-          Enum.find(jobs, fn(job) -> job.name == "download_http" end)
-          |> Map.get(:params)
-          |> Map.get("destination", %{})
-          |> Map.get("path")
-        acs_job ->
-          acs_job.params
-          |> Map.get("destination", %{})
-          |> Map.get("paths")
-          |> List.first
+    case ExSubtilBackend.Workflow.Step.Acs.Synchronize.get_jobs_destination_paths(jobs) do
+      [] ->
+        ExSubtilBackend.Workflow.Step.HttpDownload.get_jobs_destination_paths(jobs)
+        |> List.first
+      paths ->
+        paths
+        |> List.first
+    end
+  end
+
+  @doc """
+  Returns the list of destination paths of this workflow step
+  """
+  def get_jobs_destination_paths(_jobs, result \\ [])
+  def get_jobs_destination_paths([], result), do: result
+  def get_jobs_destination_paths([job | jobs], result) do
+    result =
+      case job.name do
+        @action_name ->
+          path =
+            job.params
+            |> Map.get("destination", %{})
+            |> Map.get("paths")
+          List.insert_at(result, -1, path)
+        _ -> result
       end
+
+    get_jobs_destination_paths(jobs, result)
   end
 
 end

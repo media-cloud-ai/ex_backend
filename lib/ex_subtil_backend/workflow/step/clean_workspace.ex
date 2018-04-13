@@ -8,7 +8,7 @@ defmodule ExSubtilBackend.Workflow.Step.CleanWorkspace do
 
   def launch(workflow) do
 
-    case get_source_files(workflow.jobs) do
+    case get_source_directories(workflow.jobs) do
       [] ->
         Jobs.create_skipped_job(workflow, @action_name)
       paths ->
@@ -18,7 +18,6 @@ defmodule ExSubtilBackend.Workflow.Step.CleanWorkspace do
           name: @action_name,
           workflow_id: workflow.id,
           params: %{
-            kind: @action_name,
             action: "remove",
             requirements: requirements,
             source: %{
@@ -36,51 +35,40 @@ defmodule ExSubtilBackend.Workflow.Step.CleanWorkspace do
     end
   end
 
-  defp get_source_files(jobs, result \\ [])
-  defp get_source_files([], result), do: result
-  defp get_source_files([job | jobs], result) do
+  defp get_source_directories(jobs) do
+    dash_directory =
+      ExSubtilBackend.Workflow.Step.GenerateDash.get_jobs_destination_paths(jobs)
+      |> List.first
+      |> Path.dirname
+
+    download_directory =
+      ExSubtilBackend.Workflow.Step.FtpDownload.get_jobs_destination_paths(jobs)
+      |> List.first
+      |> Path.dirname
+
+    [
+      dash_directory,
+      download_directory
+    ]
+  end
+
+  @doc """
+  Returns the list of destination paths of this workflow step
+  """
+  def get_jobs_destination_paths(_jobs, result \\ [])
+  def get_jobs_destination_paths([], result), do: result
+  def get_jobs_destination_paths([job | jobs], result) do
     result =
       case job.name do
-        "generate_dash" ->
-          dst_paths =
-            job.params
-            |> Map.get("destination", %{})
-            |> Map.get("paths")
-
-          case dst_paths do
-            nil -> result
-            dst_paths ->
-              dst_dir =
-                dst_paths
-                |> List.first
-                |> Path.dirname
-
-              if dst_dir != nil do
-                List.insert_at(result, -1, dst_dir)
-              else
-                result
-              end
-          end
-        "ttml_to_mp4" ->
-          src_paths =
-            job.params
-            |> Map.get("destination", %{})
-            |> Map.get("paths")
-
-          case src_paths do
-            nil -> result
-            src_paths ->
-              src_dir = Path.dirname(src_paths)
-              if src_dir != nil do
-                List.insert_at(result, -1, src_dir)
-              else
-                result
-              end
-          end
+        @action_name ->
+          job.params
+          |> Map.get("destination", %{})
+          |> Map.get("paths")
+          |> Enum.concat(result)
         _ -> result
       end
 
-    get_source_files(jobs, result)
+    get_jobs_destination_paths(jobs, result)
   end
 
 end

@@ -11,6 +11,9 @@ export class QueuePipe implements PipeTransform {
 
   transform(queue: string): string {
     var allQueueNames = [
+      { id: 'job_command_line', name: 'ACS jobs' },
+      { id: 'job_command_line_error', name: 'ACS jobs with error status' },
+      { id: 'job_command_line_completed', name: 'ACS jobs with completed status' },
       { id: 'job_ffmpeg', name: 'FFmpeg jobs' },
       { id: 'job_ffmpeg_error', name: 'FFmpeg jobs with error status' },
       { id: 'job_ffmpeg_completed', name: 'FFmpeg jobs with completed status' },
