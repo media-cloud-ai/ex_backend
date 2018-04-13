@@ -15,10 +15,17 @@ defmodule ExSubtilBackendWeb.Docker.ImagesController do
     mounted_workdir = Application.get_env(:ex_subtil_backend, :mounted_workdir, "/data")
     workdir = Application.get_env(:ex_subtil_backend, :workdir)
 
+    mounted_appdir = Application.get_env(:ex_subtil_backend, :mounted_workdir, "/app")
+    appdir = Application.get_env(:ex_subtil_backend, :appdir)
+
     volumes = [
       %{
         "host": mounted_workdir,
         "container": workdir,
+      },
+      %{
+        "host": mounted_appdir,
+        "container": appdir,
       }
     ]
 

@@ -18,20 +18,29 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
 
   defp start_processing_synchro(%{audio_path: audio_path, subtitle_path: subtitle_path}, workflow) do
     work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_subtil_backend, :work_dir) || "/tmp/ftp_francetv"
+    app_dir = System.get_env("APP_DIR") || Application.get_env(:ex_subtil_backend, :appdir) || "/app"
 
     filename = Path.basename(subtitle_path)
     dst_path = work_dir <> "/" <> workflow.reference <> "/acs/"  <> filename
+    exec_dir = app_dir <> "/acs"
 
     requirements = Requirements.add_required_paths([audio_path, subtitle_path])
 
-    # TODO: execute ACS command instead of a simple copy...
     job_params = %{
       name: @action_name,
       workflow_id: workflow.id,
       params: %{
         requirements: requirements,
-        program: "/bin/cp",
+        program: "./SincroSubtilTSP_V0.3",
+        exec_dir: exec_dir,
+        libraries: [
+          exec_dir
+        ],
         inputs: [
+          %{
+            path: audio_path,
+            options: %{}
+          },
           %{
             path: subtitle_path,
             options: %{}
@@ -41,6 +50,11 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
           %{
             path: dst_path,
             options: %{}
+          },
+          %{
+            options: %{
+              "4": true
+            }
           }
         ]
       }
