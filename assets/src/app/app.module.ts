@@ -45,6 +45,7 @@ import {JobsComponent}           from './jobs/jobs.component';
 import {ParametersComponent}     from './workflows/parameters.component';
 import {QueuesComponent}         from './amqp/queues.component';
 import {VideosComponent}         from './videos/videos.component';
+import {WorkflowComponent}       from './workflows/workflow.component';
 import {WorkflowsComponent}      from './workflows/workflows.component';
 import {WorkersComponent}        from './workers/workers.component';
 
@@ -66,6 +67,7 @@ import {DockerImagePipe}         from './pipes/docker_image.pipe';
 import {DockerImageVersionPipe}  from './pipes/docker_image_version.pipe';
 import {DurationPipe}            from './pipes/duration.pipe';
 import {IconForJobPipe}          from './pipes/icon_for_job.pipe';
+import {JobDurationPipe}         from './pipes/job_duration.pipe';
 import {JobTypePipe}             from './pipes/job_type.pipe';
 import {JobStatusPipe}           from './pipes/job_status.pipe';
 import {JobStatusIconPipe}       from './pipes/job_status_icon.pipe';
@@ -80,7 +82,6 @@ const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'videos', component: VideosComponent },
-  { path: 'jobs', component: JobsComponent },
   { path: 'workflows', component: WorkflowsComponent },
   { path: 'workers', component: WorkersComponent }
 ];
@@ -132,6 +133,7 @@ const SUBTIL_DATE_FORMATS = {
     VideosComponent,
     RdfDialogComponent,
     WorkflowDialogComponent,
+    WorkflowComponent,
     WorkflowsComponent,
     WorkersComponent,
     DurationComponent,
@@ -143,6 +145,7 @@ const SUBTIL_DATE_FORMATS = {
     DockerImageVersionPipe,
     DurationPipe,
     IconForJobPipe,
+    JobDurationPipe,
     JobTypePipe,
     JobStatusPipe,
     JobStatusIconPipe,
@@ -154,6 +157,7 @@ const SUBTIL_DATE_FORMATS = {
     DurationComponent,
     ParametersComponent,
     RdfDialogComponent,
+    WorkflowComponent,
     WorkflowDialogComponent,
   ],
   providers: [

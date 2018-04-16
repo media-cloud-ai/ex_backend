@@ -14,6 +14,7 @@ defmodule ExSubtilBackendWeb.StatusView do
     %{
       id: status.id,
       state: status.state,
+      description: status.description,
       inserted_at: status.inserted_at
     }
   end

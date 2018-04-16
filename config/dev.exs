@@ -66,16 +66,20 @@ config :ex_subtil_backend, ExSubtilBackend.Repo,
 
 config :ex_subtil_backend,
   workdir: "/tmp/ftp_francetv",
+  akamai_video_prefix: "/421959/prod/innovation/testing",
   docker_hosts: [
     [hostname: "http://localhost", port: 2357]
+  ],
+  rdf_converter: [
+    hostname: "localhost",
+    port: 1501
   ],
   appdir: "/opt/app"
 
 config :amqp,
   hostname: "192.168.99.100",
   username: "guest",
-  password: "guest",
-  virtual_host: ""
+  password: "guest"
 
 # Finally import the config/prod.secret.exs
 # with the private section for passwords
