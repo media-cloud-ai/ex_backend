@@ -1,6 +1,11 @@
 defmodule ExSubtilBackendWeb.Amqp.AmqpController do
   use ExSubtilBackendWeb, :controller
 
+  import ExSubtilBackendWeb.Authorize
+
+  # the following plugs are defined in the controllers/authorize.ex file
+  plug(:user_check when action in [:queues, :connections])
+
   def queues(conn, _params) do
     queues = get_amqp_informations("queues")
 

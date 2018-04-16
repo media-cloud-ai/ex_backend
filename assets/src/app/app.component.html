@@ -4,18 +4,22 @@
       <mat-toolbar-row class="mat-toolbar-row">
         <button
           mat-icon-button (click)="switchMenu()"
-          class="icon_menu">
+          class="icon_menu"
+          *ngIf=loggedIn>
           <mat-icon>menu</mat-icon>
         </button>
-        <span>
+        <span class=home>
           <a class=title routerLink='/'>
-            Subtil Backend
+            <img src="/bundles/images/SubTil_logo_preview.png" class=subtil_logo>
+            <span class=app_name>Backend</span>
           </a>
         </span>
         <span class=spacer>
         </span>
-        <span class=logo>
-          <img src="/bundles/images/logo_id_2018_fushia13_2lignes.png">
+        <span (click)="logout()"
+          *ngIf=loggedIn
+          class="logout_button">
+          <i class="material-icons">power_settings_new</i>
         </span>
       </mat-toolbar-row>
     </mat-toolbar>
@@ -46,5 +50,12 @@
         <router-outlet></router-outlet>
       </mat-sidenav-content>
     </mat-sidenav-container>
+
+    <div class="footer">
+      <span class=spacer></span>
+      <span class=logo>
+        <img src="/bundles/images/logo_id_2018_fushia13_2lignes.png">
+      </span>
+    </div>
   </main>
 </div>

@@ -1,12 +1,17 @@
 defmodule ExSubtilBackendWeb.Docker.ImagesController do
   use ExSubtilBackendWeb, :controller
 
+  import ExSubtilBackendWeb.Authorize
+
   alias ExSubtilBackend.Docker.Node
 
   alias RemoteDockers.{
     Image,
     NodeConfig
   }
+
+  # the following plugs are defined in the controllers/authorize.ex file
+  plug(:user_check when action in [:index])
 
   def index(conn, _params) do
     hostname = System.get_env("AMQP_HOSTNAME") || Application.get_env(:amqp, :hostname)

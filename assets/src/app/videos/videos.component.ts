@@ -110,7 +110,11 @@ export class VideosComponent {
       this.videoid)
     .subscribe(videoPage => {
       this.videos = videoPage;
-      this.length = videoPage.total;
+      if(videoPage == undefined) {
+        this.length = undefined;
+      } else {
+        this.length = videoPage.total;
+      }
       this.loading = false;
       this.selectedVideos = [];
     });

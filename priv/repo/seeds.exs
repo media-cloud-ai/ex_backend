@@ -2,10 +2,15 @@
 #
 #     mix run priv/repo/seeds.exs
 #
-# Inside the script, you can read and write to any of your
-# repositories directly:
+# It is also run when you use the command `mix ecto.setup`
 #
-#     ExSubtilBackend.Repo.insert!(%ExSubtilBackend.SomeSchema{})
-#
-# We recommend using the bang functions (`insert!`, `update!`
-# and so on) as they will fail if something goes wrong.
+
+users = [
+  %{email: "maarnaud@media-io.com", password: "marcantoine"},
+  %{email: "valentin.noel@media-io.com", password: "valentin"}
+]
+
+for user <- users do
+  {:ok, user} = ExSubtilBackend.Accounts.create_user(user)
+  ExSubtilBackend.Accounts.confirm_user(user)
+end

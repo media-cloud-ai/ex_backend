@@ -1,0 +1,36 @@
+<div class=content>
+  <form class="login" (ngSubmit)="login()" #heroForm="ngForm">
+    <div>
+      <mat-form-field class="search-text-input">
+        <input
+          matInput
+          type="text"
+          placeholder="Username"
+          name=username
+          [(ngModel)]="username"
+          >
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field class="search-text-input">
+        <input
+          matInput
+          type="password"
+          placeholder="Password"
+          name=password
+          [(ngModel)]="password"
+          >
+      </mat-form-field>
+    </div>
+    <div class="button submit">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        >
+        <mat-icon>chevron_right</mat-icon>
+        Login
+      </button>
+    </div>
+  </form>
+</div>

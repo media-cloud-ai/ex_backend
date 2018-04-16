@@ -22,6 +22,9 @@ defmodule ExSubtilBackend.Mixfile do
       mod: {ExSubtilBackend.Application, []},
       extra_applications: [
         :amqp,
+        :bamboo,
+        :bcrypt_elixir,
+        :phauxth,
         :logger,
         :httpotion,
         :poison,
@@ -41,6 +44,8 @@ defmodule ExSubtilBackend.Mixfile do
   defp deps do
     [
       {:amqp, "~> 0.3.1"},
+      {:bcrypt_elixir, "~> 1.0"},
+      {:bamboo, "~> 0.8"},
       {:cowboy, "~> 1.1.2"},
       {:distillery, "~> 1.5"},
       {:ex_video_factory, "0.3.4"},
@@ -51,6 +56,7 @@ defmodule ExSubtilBackend.Mixfile do
       {:phoenix_html, "~> 2.10"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:phoenix_pubsub, "~> 1.0"},
+      {:phauxth, "~> 1.0"},
       {:postgrex, ">= 0.0.0"},
       {:poison, "~> 3.1"},
       {:remote_dockers, "1.3.0"},

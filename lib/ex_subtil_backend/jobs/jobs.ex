@@ -42,7 +42,9 @@ defmodule ExSubtilBackend.Jobs do
 
     query =
       case Map.get(params, "workflow_id") do
-        nil -> query
+        nil ->
+          query
+
         str_workflow_id ->
           workflow_id = String.to_integer(str_workflow_id)
           from(job in query, where: job.workflow_id == ^workflow_id)
@@ -50,7 +52,9 @@ defmodule ExSubtilBackend.Jobs do
 
     query =
       case Map.get(params, "job_type") do
-        nil -> query
+        nil ->
+          query
+
         job_type ->
           from(job in query, where: job.name == ^job_type)
       end

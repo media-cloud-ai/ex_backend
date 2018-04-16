@@ -1,10 +1,16 @@
 defmodule ExSubtilBackendWeb.RdfController do
   use ExSubtilBackendWeb, :controller
 
+  import ExSubtilBackendWeb.Authorize
+
   action_fallback(ExSubtilBackendWeb.FallbackController)
 
   alias ExSubtilBackend.Rdf.Converter
   alias ExSubtilBackend.Rdf.PerfectMemory
+
+  # the following plugs are defined in the controllers/authorize.ex file
+  plug(:user_check when action in [:index, :show])
+  plug(:id_check when action in [:update, :delete])
 
   def create(conn, params) do
     video_id = Map.get(params, "videos_id")

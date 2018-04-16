@@ -1,11 +1,17 @@
 defmodule ExSubtilBackendWeb.WorkflowController do
   use ExSubtilBackendWeb, :controller
 
+  import ExSubtilBackendWeb.Authorize
+
   alias ExSubtilBackend.Workflows
   alias ExSubtilBackend.WorkflowStep
   alias ExSubtilBackend.Workflows.Workflow
 
   action_fallback(ExSubtilBackendWeb.FallbackController)
+
+  # the following plugs are defined in the controllers/authorize.ex file
+  plug(:user_check when action in [:index, :show])
+  plug(:id_check when action in [:update, :delete])
 
   def index(conn, params) do
     workflows = Workflows.list_workflows(params)

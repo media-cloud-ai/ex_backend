@@ -19,7 +19,6 @@
       height: 100%;
     }
   }
-
 }
 
 a.title:link, a.title:visited {
@@ -27,9 +26,40 @@ a.title:link, a.title:visited {
   color: #FFF;
 }
 
-.mat-toolbar {
+.home {
+  .subtil_logo {
+    height: 50px;
+    vertical-align: bottom;
+  }
+  .app_name {
+    font-weight: lighter;
+    font-size: 0.8em;
+    letter-spacing: 0.05rem;
+  }
+}
+
+
+.mat-toolbar .spacer {
+  flex: 1 1 auto;
+}
+
+.logout_button {
+  cursor: pointer;
+}
+
+.footer {
+  z-index: 1;
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  width: 100%;
+  background-color: #FFF;
+  border-top: 2px solid #3f51b5;
+
+  .spacer {
+    flex: 1 1 auto;
+  }
   .logo {
-    background-color: #FFF;
     padding-left: 10px;
     padding-right: 10px;
 
@@ -38,10 +68,6 @@ a.title:link, a.title:visited {
       margin-top: 10px;
     }
   }
-}
-
-.mat-toolbar .spacer {
-  flex: 1 1 auto;
 }
 
 .docs-component-viewer-sidenav {

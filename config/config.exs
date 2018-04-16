@@ -16,6 +16,14 @@ config :ex_subtil_backend, ExSubtilBackendWeb.Endpoint,
   render_errors: [view: ExSubtilBackendWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: ExSubtilBackend.PubSub, adapter: Phoenix.PubSub.PG2]
 
+# Phauxth authentication configuration
+config :phauxth,
+  token_salt: "KBPzeh/8",
+  endpoint: ExSubtilBackendWeb.Endpoint
+
+# Mailer configuration
+config :ex_subtil_backend, ExSubtilBackend.Mailer, adapter: Bamboo.LocalAdapter
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

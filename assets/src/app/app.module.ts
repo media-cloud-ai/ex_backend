@@ -1,6 +1,9 @@
 
 import {APP_BASE_HREF}    from '@angular/common';
-import {HttpClientModule} from '@angular/common/http';
+import {
+  HttpClientModule,
+  HTTP_INTERCEPTORS
+} from '@angular/common/http';
 import {NgModule}         from '@angular/core';
 import {FormsModule}      from '@angular/forms';
 import {BrowserModule}    from '@angular/platform-browser';
@@ -39,9 +42,12 @@ import {
 
 import {RouterModule, Routes}    from '@angular/router';
 
+import {AppRoutingModule}        from './app-routing.module';
+
 import {DashboardComponent}      from './dashboard/dashboard.component';
 import {DurationComponent}       from './workflows/duration.component';
 import {JobsComponent}           from './jobs/jobs.component';
+import {LoginComponent}          from './login/login.component';
 import {ParametersComponent}     from './workflows/parameters.component';
 import {QueuesComponent}         from './amqp/queues.component';
 import {VideosComponent}         from './videos/videos.component';
@@ -52,6 +58,7 @@ import {WorkersComponent}        from './workers/workers.component';
 import {RdfDialogComponent}      from './videos/rdf/rdf_dialog.component';
 import {WorkflowDialogComponent} from './videos/workflow/workflow_dialog.component';
 
+import {AuthService}             from './authentication/auth.service';
 import {AmqpService}             from './services/amqp.service';
 import {ContainerService}        from './services/container.service';
 import {ImageService}            from './services/image.service';
@@ -75,16 +82,10 @@ import {ParameterLabelPipe}      from './pipes/parameter_label.pipe';
 import {QueuePipe}               from './pipes/queue.pipe';
 import {TextTypePipe}            from './pipes/text_type.pipe';
 
+import {TokenInterceptor}        from './authentication/token.interceptor';
+
 import 'hammerjs/hammer'; // for MatSlideToggleModule
 import * as moment from 'moment';
-
-const routes: Routes = [
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'videos', component: VideosComponent },
-  { path: 'workflows', component: WorkflowsComponent },
-  { path: 'workers', component: WorkersComponent }
-];
 
 const SUBTIL_DATE_FORMATS = {
   parse: {
@@ -103,6 +104,7 @@ const SUBTIL_DATE_FORMATS = {
     RouterModule
   ],
   imports: [
+    AppRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
     FormsModule,
@@ -122,13 +124,15 @@ const SUBTIL_DATE_FORMATS = {
     MatSidenavModule,
     MatSlideToggleModule,
     MatTableModule,
-    MatToolbarModule,
-    RouterModule.forRoot(routes)
+    MatToolbarModule
   ],
   declarations: [
     AppComponent,
     DashboardComponent,
+    DurationComponent,
     JobsComponent,
+    LoginComponent,
+    ParametersComponent,
     QueuesComponent,
     VideosComponent,
     RdfDialogComponent,
@@ -136,8 +140,6 @@ const SUBTIL_DATE_FORMATS = {
     WorkflowComponent,
     WorkflowsComponent,
     WorkersComponent,
-    DurationComponent,
-    ParametersComponent,
 
     AudioTypePipe,
     BasenamePipe,
@@ -178,7 +180,13 @@ const SUBTIL_DATE_FORMATS = {
       provide: MAT_DATE_FORMATS,
       useValue: SUBTIL_DATE_FORMATS
     },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    },
     AmqpService,
+    AuthService,
     ContainerService,
     ImageService,
     JobService,

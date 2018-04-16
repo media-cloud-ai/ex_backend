@@ -1,11 +1,17 @@
 defmodule ExSubtilBackendWeb.JobController do
   use ExSubtilBackendWeb, :controller
 
+  import ExSubtilBackendWeb.Authorize
+
   alias ExSubtilBackend.Jobs
   alias ExSubtilBackend.Jobs.Job
   alias ExSubtilBackend.Amqp.JobFtpEmitter
 
   action_fallback(ExSubtilBackendWeb.FallbackController)
+
+  # the following plugs are defined in the controllers/authorize.ex file
+  plug(:user_check when action in [:index, :show, :update, :delete])
+  plug(:id_check when action in [:update, :delete])
 
   def index(conn, params) do
     jobs = Jobs.list_jobs(params)
