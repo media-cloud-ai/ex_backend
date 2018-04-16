@@ -3,7 +3,7 @@ defmodule ExSubtilBackendWeb.VideosController do
 
   alias ExSubtilBackend.{Videos, Workflows}
 
-  action_fallback ExSubtilBackendWeb.FallbackController
+  action_fallback(ExSubtilBackendWeb.FallbackController)
 
   def index(conn, params) do
     response = ExVideoFactory.videos(params)
@@ -19,6 +19,7 @@ defmodule ExSubtilBackendWeb.VideosController do
 
   defp search_workflow(videos, result \\ [])
   defp search_workflow([], result), do: result
+
   defp search_workflow([video | videos], result) do
     video_id = Map.get(video, "id")
 

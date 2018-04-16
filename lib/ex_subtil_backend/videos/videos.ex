@@ -13,32 +13,45 @@ defmodule ExSubtilBackend.Videos do
     workflow =
       ExSubtilBackend.Workflows.list_workflows(%{video_id: video_id})
       |> Map.get(:data)
-      |> List.first
+      |> List.first()
 
     case workflow do
-      nil -> nil
+      nil ->
+        nil
+
       workflow ->
         try do
           query =
-            from item in Artifact,
+            from(
+              item in Artifact,
               where: item.workflow_id == ^workflow.id,
               order_by: item.inserted_at
+            )
 
           case Repo.all(query) do
-            [] -> nil
+            [] ->
+              nil
+
             artifacts ->
               artifacts
-              |> List.first
+              |> List.first()
               |> Map.get(:resources, %{})
               |> Map.get("manifest")
               |> case do
-                  nil -> nil
-                  manifest -> String.replace(manifest, "/421959/prod/innovation/", "http://videos-pmd.francetv.fr/innovation/")
-                end
+                nil ->
+                  nil
+
+                manifest ->
+                  String.replace(
+                    manifest,
+                    "/421959/prod/innovation/",
+                    "http://videos-pmd.francetv.fr/innovation/"
+                  )
+              end
           end
         rescue
           e ->
-            Logger.error "unable to retrieve manifest URL for #{workflow.id}: #{inspect e}"
+            Logger.error("unable to retrieve manifest URL for #{workflow.id}: #{inspect(e)}")
             nil
         end
     end

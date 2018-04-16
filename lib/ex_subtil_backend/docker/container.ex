@@ -11,13 +11,14 @@ defmodule ExSubtilBackend.Docker.Container do
 
     container_config =
       Map.get(params, "environment", %{})
-      |> Map.to_list
+      |> Map.to_list()
       |> add_env_var(container_config)
 
     container_config
   end
 
   defp add_volumes([], config), do: config
+
   defp add_volumes([volume | volumes], config) do
     config =
       config
@@ -27,6 +28,7 @@ defmodule ExSubtilBackend.Docker.Container do
   end
 
   defp add_env_var([], config), do: config
+
   defp add_env_var([{key, value} | vars], config) do
     config =
       config

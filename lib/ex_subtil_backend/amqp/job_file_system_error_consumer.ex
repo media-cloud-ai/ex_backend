@@ -1,4 +1,3 @@
-
 defmodule ExSubtilBackend.Amqp.JobFileSystemErrorConsumer do
   require Logger
 
@@ -6,13 +5,13 @@ defmodule ExSubtilBackend.Amqp.JobFileSystemErrorConsumer do
 
   use ExSubtilBackend.Amqp.CommonConsumer, %{
     queue: "job_file_system_error",
-    consumer: &ExSubtilBackend.Amqp.JobFileSystemErrorConsumer.consume/4,
+    consumer: &ExSubtilBackend.Amqp.JobFileSystemErrorConsumer.consume/4
   }
 
   def consume(channel, tag, _redelivered, %{"job_id" => job_id} = payload) do
-    Logger.error "Clean error #{inspect payload}"
+    Logger.error("Clean error #{inspect(payload)}")
     Status.set_job_status(job_id, "error")
 
-    Basic.ack channel, tag
+    Basic.ack(channel, tag)
   end
 end

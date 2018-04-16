@@ -3,8 +3,8 @@ defmodule ExSubtilBackend.Migration.CreateArtifacts do
 
   def change do
     create table(:artifacts) do
-      add :resources, :map
-      add :workflow_id, references(:workflow, on_delete: :nothing)
+      add(:resources, :map)
+      add(:workflow_id, references(:workflow, on_delete: :nothing))
 
       timestamps()
     end

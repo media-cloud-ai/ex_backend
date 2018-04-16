@@ -1,4 +1,3 @@
-
 defmodule ExSubtilBackend.Amqp.JobFtpErrorConsumer do
   require Logger
 
@@ -6,12 +5,12 @@ defmodule ExSubtilBackend.Amqp.JobFtpErrorConsumer do
 
   use ExSubtilBackend.Amqp.CommonConsumer, %{
     queue: "job_ftp_error",
-    consumer: &ExSubtilBackend.Amqp.JobFtpErrorConsumer.consume/4,
+    consumer: &ExSubtilBackend.Amqp.JobFtpErrorConsumer.consume/4
   }
 
   def consume(channel, tag, _redelivered, %{"job_id" => job_id} = payload) do
-    Logger.error "FTP error #{inspect payload}"
+    Logger.error("FTP error #{inspect(payload)}")
     Status.set_job_status(job_id, "error")
-    Basic.ack channel, tag
+    Basic.ack(channel, tag)
   end
 end

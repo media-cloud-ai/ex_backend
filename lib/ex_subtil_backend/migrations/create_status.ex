@@ -3,12 +3,12 @@ defmodule ExSubtilBackend.Migration.CreateStatus do
 
   def change do
     create table(:status) do
-      add :state, :string
-      add :job_id, references(:jobs, on_delete: :nothing)
+      add(:state, :string)
+      add(:job_id, references(:jobs, on_delete: :nothing))
 
       timestamps()
     end
 
-    create index(:status, [:job_id])
+    create(index(:status, [:job_id]))
   end
 end

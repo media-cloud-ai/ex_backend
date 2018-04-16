@@ -1,5 +1,4 @@
 defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
-
   alias ExSubtilBackend.Jobs
   alias ExSubtilBackend.Amqp.JobGpacEmitter
   alias ExSubtilBackend.Workflow.Step.Requirements
@@ -14,10 +13,13 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
   end
 
   defp start_setting_languages([], _workflow), do: {:ok, "started"}
-  defp start_setting_languages([path | paths], workflow) do
-    work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_subtil_backend, :work_dir) || "/tmp/ftp_francetv"
 
-    dst_path = work_dir <> "/" <> workflow.reference <> "/lang/"  <> Path.basename(path)
+  defp start_setting_languages([path | paths], workflow) do
+    work_dir =
+      System.get_env("WORK_DIR") || Application.get_env(:ex_subtil_backend, :work_dir) ||
+        "/tmp/ftp_francetv"
+
+    dst_path = work_dir <> "/" <> workflow.reference <> "/lang/" <> Path.basename(path)
 
     language_code = get_file_language(path, workflow)
 
@@ -25,7 +27,9 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
       "-lang": language_code,
       "-out": dst_path
     }
+
     requirements = Requirements.add_required_paths(path)
+
     job_params = %{
       name: @action_name,
       workflow_id: workflow.id,
@@ -40,10 +44,12 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
     }
 
     {:ok, job} = Jobs.create_job(job_params)
+
     params = %{
       job_id: job.id,
       parameters: job.params
     }
+
     JobGpacEmitter.publish_json(params)
 
     start_setting_languages(paths, workflow)
@@ -51,35 +57,41 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
 
   defp get_file_language(path, workflow) do
     cond do
-      String.ends_with?(path, "-fra.mp4") -> "fra"
-      String.ends_with?(path, "-qaa.mp4") -> "qaa"
-      String.ends_with?(path, "-qad.mp4") -> "qad"
+      String.ends_with?(path, "-fra.mp4") ->
+        "fra"
+
+      String.ends_with?(path, "-qaa.mp4") ->
+        "qaa"
+
+      String.ends_with?(path, "-qad.mp4") ->
+        "qad"
+
       true ->
         ExVideoFactory.videos(%{"qid" => workflow.reference})
         |> Map.fetch!(:videos)
-        |> List.first
+        |> List.first()
         |> Map.get("text_tracks")
-        |> List.first
+        |> List.first()
         |> Map.get("code")
-        |> String.downcase
+        |> String.downcase()
     end
   end
 
   defp get_source_files(jobs) do
     audio_files =
       ExSubtilBackend.Workflow.Step.AudioEncode.get_jobs_destination_paths(jobs)
-      |> Enum.filter(fn(path) -> is_audio_file?(path) end)
+      |> Enum.filter(fn path -> is_audio_file?(path) end)
 
     audio_files =
       ExSubtilBackend.Workflow.Step.AudioExtraction.get_jobs_destination_paths(jobs)
-      |> Enum.filter(fn(path) -> is_audio_file?(path) end)
-      |> Enum.reject(fn(path) -> is_file_already_in_list?(path, audio_files) end)
+      |> Enum.filter(fn path -> is_audio_file?(path) end)
+      |> Enum.reject(fn path -> is_file_already_in_list?(path, audio_files) end)
       |> Enum.concat(audio_files)
 
     audio_files =
       ExSubtilBackend.Workflow.Step.FtpDownload.get_jobs_destination_paths(jobs)
-      |> Enum.filter(fn(path) -> is_audio_file?(path) end)
-      |> Enum.reject(fn(path) -> is_file_already_in_list?(path, audio_files) end)
+      |> Enum.filter(fn path -> is_audio_file?(path) end)
+      |> Enum.reject(fn path -> is_file_already_in_list?(path, audio_files) end)
       |> Enum.concat(audio_files)
 
     ExSubtilBackend.Workflow.Step.TtmlToMp4.get_jobs_destination_paths(jobs)
@@ -96,7 +108,7 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
   end
 
   defp is_file_already_in_list?(file_path, paths_list) do
-    Enum.any?(paths_list, fn(path) ->
+    Enum.any?(paths_list, fn path ->
       Path.basename(file_path) == Path.basename(path)
     end)
   end
@@ -106,6 +118,7 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
   """
   def get_jobs_destination_paths(_jobs, result \\ [])
   def get_jobs_destination_paths([], result), do: result
+
   def get_jobs_destination_paths([job | jobs], result) do
     result =
       case job.name do
@@ -114,11 +127,13 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
             job.params
             |> Map.get("destination", %{})
             |> Map.get("paths")
+
           List.insert_at(result, -1, path)
-        _ -> result
+
+        _ ->
+          result
       end
 
     get_jobs_destination_paths(jobs, result)
   end
-
 end

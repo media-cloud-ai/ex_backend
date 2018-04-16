@@ -8,6 +8,7 @@ defmodule ExSubtilBackend.Rdf.Converter do
   defp port_format(port) when is_integer(port) do
     Integer.to_string(port)
   end
+
   defp port_format(port) do
     port
   end
@@ -20,17 +21,19 @@ defmodule ExSubtilBackend.Rdf.Converter do
     information =
       ExVideoFactory.videos(params)
       |> Map.get(:videos)
-      |> List.first
+      |> List.first()
 
     config = Application.get_env(:ex_subtil_backend, :rdf_converter)
 
     hostname = System.get_env("RDF_CONVERTER_HOSTNAME") || Keyword.get(config, :hostname, "")
+
     port =
-      System.get_env("RDF_CONVERTER_PORT") || Keyword.get(config, :port, "")
-      |> port_format
+      System.get_env("RDF_CONVERTER_PORT") ||
+        Keyword.get(config, :port, "")
+        |> port_format
 
     url = "http://" <> hostname <> ":" <> port <> "/convert"
 
-    HTTPotion.post(url, [body: information |> Poison.encode!]).body
+    HTTPotion.post(url, body: information |> Poison.encode!()).body
   end
 end

@@ -1,5 +1,4 @@
 defmodule ExSubtilBackend.Workflow.Step.FtpUpload do
-
   alias ExSubtilBackend.Jobs
   alias ExSubtilBackend.Amqp.JobFtpEmitter
   alias ExSubtilBackend.Workflow.Step.Requirements
@@ -8,22 +7,38 @@ defmodule ExSubtilBackend.Workflow.Step.FtpUpload do
 
   def launch(workflow, _step) do
     current_date =
-      Timex.now
+      Timex.now()
       |> Timex.format!("%Y_%m_%d__%H_%M_%S", :strftime)
 
     case ExSubtilBackend.Workflow.Step.GenerateDash.get_jobs_destination_paths(workflow.jobs) do
-      [] -> Jobs.create_skipped_job(workflow, @action_name)
+      [] ->
+        Jobs.create_skipped_job(workflow, @action_name)
+
       paths ->
         start_upload(paths, current_date, workflow)
     end
   end
 
   defp start_upload([], _current_date, _workflow), do: {:ok, "started"}
+
   defp start_upload([file | files], current_date, workflow) do
-    hostname = System.get_env("AKAMAI_VIDEO_HOSTNAME") || Application.get_env(:ex_subtil_backend, :akamai_video_hostname)
-    username = System.get_env("AKAMAI_VIDEO_USERNAME") || Application.get_env(:ex_subtil_backend, :akamai_video_username)
-    password = System.get_env("AKAMAI_VIDEO_PASSWORD") || Application.get_env(:ex_subtil_backend, :akamai_video_password)
-    prefix = System.get_env("AKAMAI_VIDEO_PREFIX") || Application.get_env(:ex_subtil_backend, :akamai_video_prefix) || "/421959/prod/innovation/SubTil"
+    hostname =
+      System.get_env("AKAMAI_VIDEO_HOSTNAME") ||
+        Application.get_env(:ex_subtil_backend, :akamai_video_hostname)
+
+    username =
+      System.get_env("AKAMAI_VIDEO_USERNAME") ||
+        Application.get_env(:ex_subtil_backend, :akamai_video_username)
+
+    password =
+      System.get_env("AKAMAI_VIDEO_PASSWORD") ||
+        Application.get_env(:ex_subtil_backend, :akamai_video_password)
+
+    prefix =
+      System.get_env("AKAMAI_VIDEO_PREFIX") ||
+        Application.get_env(:ex_subtil_backend, :akamai_video_prefix) ||
+        "/421959/prod/innovation/SubTil"
+
     requirements = Requirements.add_required_paths(file)
 
     job_params = %{
@@ -35,30 +50,34 @@ defmodule ExSubtilBackend.Workflow.Step.FtpUpload do
           path: file
         },
         destination: %{
-          path: prefix <> "/" <> workflow.reference <> "/" <> current_date <> "/" <> (file |> Path.basename),
+          path:
+            prefix <>
+              "/" <> workflow.reference <> "/" <> current_date <> "/" <> (file |> Path.basename()),
           hostname: hostname,
           username: username,
-          password: password,
+          password: password
         }
       }
     }
 
     {:ok, job} = Jobs.create_job(job_params)
+
     params = %{
       job_id: job.id,
       parameters: job.params
     }
+
     JobFtpEmitter.publish_json(params)
 
     start_upload(files, current_date, workflow)
   end
-
 
   @doc """
   Returns the list of destination paths of this workflow step
   """
   def get_jobs_destination_paths(_jobs, result \\ [])
   def get_jobs_destination_paths([], result), do: result
+
   def get_jobs_destination_paths([job | jobs], result) do
     result =
       case job.name do
@@ -67,11 +86,13 @@ defmodule ExSubtilBackend.Workflow.Step.FtpUpload do
             job.params
             |> Map.get("destination", %{})
             |> Map.get("path")
+
           List.insert_at(result, -1, path)
-        _ -> result
+
+        _ ->
+          result
       end
 
     get_jobs_destination_paths(jobs, result)
   end
-
 end

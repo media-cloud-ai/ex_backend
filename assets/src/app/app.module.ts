@@ -80,7 +80,6 @@ const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'videos', component: VideosComponent },
-  { path: 'jobs', component: JobsComponent },
   { path: 'workflows', component: WorkflowsComponent },
   { path: 'workers', component: WorkersComponent }
 ];

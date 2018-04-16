@@ -1,0 +1,39 @@
+
+language: elixir
+
+elixir:
+  - 1.5.3
+  - 1.6.0
+otp_release:
+  - 18.3
+  - 19.3
+  - 20.2
+
+matrix:
+  exclude:
+    - elixir: 1.6.0
+      otp_release: 18.3
+
+dist: trusty
+
+addons:
+  postgresql: "9.6"
+
+services:
+  - rabbitmq
+
+env:
+  - MIX_ENV=test
+
+install:
+  - mix local.hex --force
+  - mix local.rebar --force
+  - mix deps.get
+
+before_script:
+  - psql -c 'create database ex_subtil_backend_test;' -U postgres
+  - mkdir priv/repo/migrations
+
+scripts:
+  - if [[ $(elixir --version) = *"1.6"* ]]; then mix format --check-formatted; fi
+  - mix test

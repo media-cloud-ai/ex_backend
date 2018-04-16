@@ -11,7 +11,7 @@ defmodule ExSubtilBackend.Workflows do
 
   defp force_integer(param) when is_bitstring(param) do
     param
-    |> String.to_integer
+    |> String.to_integer()
   end
 
   defp force_integer(param) do
@@ -31,6 +31,7 @@ defmodule ExSubtilBackend.Workflows do
     page =
       Map.get(params, "page", 0)
       |> force_integer
+
     size =
       Map.get(params, "size", 10)
       |> force_integer
@@ -40,23 +41,25 @@ defmodule ExSubtilBackend.Workflows do
     query =
       case Map.get(params, :video_id, nil) || Map.get(params, "video_id", nil) do
         nil ->
-          from workflow in Workflow
+          from(workflow in Workflow)
+
         video_id ->
-          from workflow in Workflow,
-            where: workflow.reference == ^video_id
+          from(workflow in Workflow, where: workflow.reference == ^video_id)
       end
 
-    total_query = from item in query,
-      select: count(item.id)
+    total_query = from(item in query, select: count(item.id))
 
     total =
       Repo.all(total_query)
-      |> List.first
+      |> List.first()
 
-    query = from workflow in query,
-      order_by: [desc: :inserted_at],
-      offset: ^offset,
-      limit: ^size
+    query =
+      from(
+        workflow in query,
+        order_by: [desc: :inserted_at],
+        offset: ^offset,
+        limit: ^size
+      )
 
     workflows =
       Repo.all(query)
@@ -102,20 +105,26 @@ defmodule ExSubtilBackend.Workflows do
 
   defp preload_workflows(workflows, result \\ [])
   defp preload_workflows([], result), do: result
+
   defp preload_workflows([workflow | workflows], result) do
     result = List.insert_at(result, -1, workflow |> preload_workflow)
     preload_workflows(workflows, result)
   end
 
-  defp get_step_status(steps, workflow_id, result \\[])
+  defp get_step_status(steps, workflow_id, result \\ [])
   defp get_step_status([], _workflow_id, result), do: result
   defp get_step_status(nil, _workflow_id, result), do: result
+
   defp get_step_status([step | steps], workflow_id, result) do
     id = Map.get(step, "id")
 
-    query = from item in Job,
-      join: w in assoc(item, :workflow), where: w.id == ^workflow_id,
-      where: item.name == ^id
+    query =
+      from(
+        item in Job,
+        join: w in assoc(item, :workflow),
+        where: w.id == ^workflow_id,
+        where: item.name == ^id
+      )
 
     jobs =
       Repo.all(query)
@@ -141,7 +150,7 @@ defmodule ExSubtilBackend.Workflows do
       completed: completed,
       errors: errors,
       queued: queued,
-      skipped: skipped,
+      skipped: skipped
     }
 
     step =
@@ -155,11 +164,13 @@ defmodule ExSubtilBackend.Workflows do
 
   defp count_status(jobs, status, count \\ 0)
   defp count_status([], _status, count), do: count
-  defp count_status([job | jobs], status, count) do
 
+  defp count_status([job | jobs], status, count) do
     count =
-      case Enum.map(job.status, fn s -> s.state end) |> List.last do
-        nil -> count
+      case Enum.map(job.status, fn s -> s.state end) |> List.last() do
+        nil ->
+          count
+
         state ->
           if state == status do
             count + 1
@@ -173,10 +184,10 @@ defmodule ExSubtilBackend.Workflows do
 
   defp count_queued_status(jobs, count \\ 0)
   defp count_queued_status([], count), do: count
-  defp count_queued_status([job | jobs], count) do
 
+  defp count_queued_status([job | jobs], count) do
     count =
-      case Enum.map(job.status, fn s -> s.state end) |> List.last do
+      case Enum.map(job.status, fn s -> s.state end) |> List.last() do
         nil -> count + 1
         _state -> count
       end
@@ -185,8 +196,9 @@ defmodule ExSubtilBackend.Workflows do
   end
 
   defp get_current_status([]), do: "processing"
+
   defp get_current_status([job | jobs]) do
-    if Enum.count(job.status, fn(x) -> x.state == "completed" end) > 0 do
+    if Enum.count(job.status, fn x -> x.state == "completed" end) > 0 do
       "completed"
     else
       get_current_status(jobs)
@@ -259,25 +271,31 @@ defmodule ExSubtilBackend.Workflows do
   end
 
   def jobs_without_status?(workflow_id, status \\ ["completed", "skipped"]) do
-    query_count_jobs = from workflow in Workflow,
-      where: workflow.id == ^workflow_id,
-      join: jobs in assoc(workflow, :jobs),
-      select: count(jobs.id)
+    query_count_jobs =
+      from(
+        workflow in Workflow,
+        where: workflow.id == ^workflow_id,
+        join: jobs in assoc(workflow, :jobs),
+        select: count(jobs.id)
+      )
 
-    query_count_state = from workflow in Workflow,
-      where: workflow.id == ^workflow_id,
-      join: jobs in assoc(workflow, :jobs),
-      join: status in assoc(jobs, :status),
-      where: status.state in ^status,
-      select: count(status.id)
+    query_count_state =
+      from(
+        workflow in Workflow,
+        where: workflow.id == ^workflow_id,
+        join: jobs in assoc(workflow, :jobs),
+        join: status in assoc(jobs, :status),
+        where: status.state in ^status,
+        select: count(status.id)
+      )
 
     total =
       Repo.all(query_count_jobs)
-      |> List.first
+      |> List.first()
 
     researched =
       Repo.all(query_count_state)
-      |> List.first
+      |> List.first()
 
     total == researched
   end
