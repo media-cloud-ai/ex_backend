@@ -10,12 +10,18 @@ defmodule ExSubtilBackendWeb.Router do
   end
 
   pipeline :api do
-    plug(:accepts, ["json"])
+    plug :accepts, ["json"]
+    plug Phauxth.Authenticate, method: :token
   end
 
-  # Other scopes may use custom stacks.
   scope "/api", ExSubtilBackendWeb do
-    pipe_through(:api)
+    pipe_through :api
+
+    post "/sessions", SessionController, :create
+    resources "/users", UserController, except: [:new, :edit]
+    get "/confirm", ConfirmController, :index
+    post "/password_resets", PasswordResetController, :create
+    put "/password_resets/update", PasswordResetController, :update
 
     get("/jobs", JobController, :index)
     resources("/workflows", WorkflowController, except: [:new, :edit])
