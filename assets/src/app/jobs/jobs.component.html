@@ -9,11 +9,20 @@
     <span class="status">
       {{job.status | jobStatus}}
     </span>
-    <span class="date">
+    <!-- <span class="date">
       {{job.inserted_at | date: 'd LLL yy'}}
     </span>
     <span class="hour">
       {{job.inserted_at | date: 'H:mm:ss'}}
+    </span> -->
+    <span
+      class="duration" *ngIf="job.status[0] && job.status[0].state == 'completed'"
+      (click)="switchDurationRenderingMode()"
+      >
+      Duration: {{job | jobDuration | duration: job_duration_rendering_mode}}
+    </span>
+    <span class="error" *ngIf="job.status[0] && job.status[0].state == 'error'">
+      {{job.status[0].description.message}}
     </span>
   </li>
 </ul>

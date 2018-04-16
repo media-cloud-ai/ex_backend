@@ -30,7 +30,7 @@ export class DurationPipe implements PipeTransform {
     return padding + text;
   }
 
-  transform(text: string, format: string = "iso"): string {
+  transform(text: any, format: string = "iso"): string {
     let duration = moment.duration(text);
     if(format == "iso") {
       return duration.toISOString();

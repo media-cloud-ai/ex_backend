@@ -20,6 +20,7 @@ export class JobsComponent {
   pageSize = 10;
   page = 0;
   sub = undefined;
+  job_duration_rendering_mode = "human";
 
   @Input() jobType: string;
   @Input() workflowId: number;
@@ -72,5 +73,15 @@ export class JobsComponent {
     return params;
   }
 
+  switchDurationRenderingMode() {
+    if(this.job_duration_rendering_mode == "human") {
+      this.job_duration_rendering_mode = "timecode_ms";
+    } else {
+      if(this.job_duration_rendering_mode == "timecode_ms") {
+        this.job_duration_rendering_mode = "human";
+      }
+    }
+
+  }
 }
 
