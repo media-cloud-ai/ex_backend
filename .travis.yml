@@ -14,6 +14,12 @@ matrix:
     - elixir: 1.6.0
       otp_release: 18.3
 
+services:
+  - rabbitmq
+
+env:
+  - MIX_ENV=test
+
 install:
   - mix local.hex --force
   - mix local.rebar --force
