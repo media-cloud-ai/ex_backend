@@ -14,9 +14,13 @@ matrix:
     - elixir: 1.6.0
       otp_release: 18.3
 
+dist: trusty
+
+addons:
+  postgresql: "9.6"
+
 services:
   - rabbitmq
-  - postgresql
 
 env:
   - MIX_ENV=test
