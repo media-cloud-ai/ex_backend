@@ -28,6 +28,7 @@ install:
 
 before_script:
   - psql -c 'create database ex_subtil_backend_test;' -U postgres
+  - mkdir priv/repo/migrations
 
 scripts:
   - if [[ $(elixir --version) = *"1.6"* ]]; then mix format --check-formatted; fi
