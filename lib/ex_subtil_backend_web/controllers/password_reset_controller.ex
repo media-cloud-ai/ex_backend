@@ -6,6 +6,7 @@ defmodule ExSubtilBackendWeb.PasswordResetController do
     key = Accounts.create_password_reset(ExSubtilBackendWeb.Endpoint, %{"email" => email})
     Accounts.Message.reset_request(email, key)
     message = "Check your inbox for instructions on how to reset your password"
+
     conn
     |> put_status(:created)
     |> render(ExSubtilBackendWeb.PasswordResetView, "info.json", %{info: message})
@@ -33,6 +34,10 @@ defmodule ExSubtilBackendWeb.PasswordResetController do
     message = with p <- changeset.errors[:password], do: elem(p, 0)
 
     put_status(conn, :unprocessable_entity)
-    |> render(ExSubtilBackendWeb.PasswordResetView, "error.json", error: message || "Invalid input")
+    |> render(
+      ExSubtilBackendWeb.PasswordResetView,
+      "error.json",
+      error: message || "Invalid input"
+    )
   end
 end

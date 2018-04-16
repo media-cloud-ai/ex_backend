@@ -4,7 +4,7 @@ defmodule ExSubtilBackendWeb.Docker.NodesController do
   import ExSubtilBackendWeb.Authorize
 
   # the following plugs are defined in the controllers/authorize.ex file
-  plug :user_check when action in [:index]
+  plug(:user_check when action in [:index])
 
   def index(conn, _) do
     nodes = ExSubtilBackend.Docker.Node.list()

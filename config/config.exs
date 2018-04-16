@@ -22,8 +22,7 @@ config :phauxth,
   endpoint: ExSubtilBackendWeb.Endpoint
 
 # Mailer configuration
-config :ex_subtil_backend, ExSubtilBackend.Mailer,
-  adapter: Bamboo.LocalAdapter
+config :ex_subtil_backend, ExSubtilBackend.Mailer, adapter: Bamboo.LocalAdapter
 
 # Configures Elixir's Logger
 config :logger, :console,

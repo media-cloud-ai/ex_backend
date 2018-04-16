@@ -5,11 +5,11 @@ defmodule ExSubtilBackendWeb.UserController do
   alias Phauxth.Log
   alias ExSubtilBackend.Accounts
 
-  action_fallback ExSubtilBackendWeb.FallbackController
+  action_fallback(ExSubtilBackendWeb.FallbackController)
 
   # the following plugs are defined in the controllers/authorize.ex file
-  plug :user_check when action in [:index, :show]
-  plug :id_check when action in [:update, :delete]
+  plug(:user_check when action in [:index, :show])
+  plug(:id_check when action in [:update, :delete])
 
   def index(conn, _) do
     users = Accounts.list_users()
@@ -23,6 +23,7 @@ defmodule ExSubtilBackendWeb.UserController do
       Log.info(%Log{user: user.id, message: "user created"})
 
       Accounts.Message.confirm_request(email, key)
+
       conn
       |> put_status(:created)
       |> put_resp_header("location", user_path(conn, :show, user))

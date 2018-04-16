@@ -12,8 +12,8 @@ defmodule ExSubtilBackendWeb.Docker.ContainersController do
   }
 
   # the following plugs are defined in the controllers/authorize.ex file
-  plug :user_check when action in [:index, :create, :show, :start, :stop]
-  plug :id_check when action in [:update, :delete]
+  plug(:user_check when action in [:index, :create, :show, :start, :stop])
+  plug(:id_check when action in [:update, :delete])
 
   def index(conn, _params) do
     containers = list_all()

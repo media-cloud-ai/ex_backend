@@ -11,7 +11,7 @@ defmodule ExSubtilBackendWeb.Docker.ImagesController do
   }
 
   # the following plugs are defined in the controllers/authorize.ex file
-  plug :user_check when action in [:index]
+  plug(:user_check when action in [:index])
 
   def index(conn, _params) do
     hostname = System.get_env("AMQP_HOSTNAME") || Application.get_env(:amqp, :hostname)

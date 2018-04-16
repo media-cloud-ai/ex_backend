@@ -3,7 +3,7 @@ defmodule ExSubtilBackend.Migration.AddStatusDescription do
 
   def change do
     alter table(:status) do
-      add :description, :map
+      add(:description, :map)
     end
   end
 end

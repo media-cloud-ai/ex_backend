@@ -11,6 +11,7 @@ defmodule ExSubtilBackendWeb.ConfirmController do
         message = "Your account has been confirmed"
         Accounts.Message.confirm_success(user.email)
         render(conn, ExSubtilBackendWeb.ConfirmView, "info.json", %{info: message})
+
       {:error, _message} ->
         error(conn, :unauthorized, 401)
     end

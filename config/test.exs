@@ -34,14 +34,12 @@ config :amqp,
   username: "guest",
   password: "guest"
 
-
 # Comeonin password hashing test config
-#config :argon2_elixir,
-  #t_cost: 2,
-  #m_cost: 8
+# config :argon2_elixir,
+# t_cost: 2,
+# m_cost: 8
 config :bcrypt_elixir, log_rounds: 4
-#config :pbkdf2_elixir, rounds: 1
+# config :pbkdf2_elixir, rounds: 1
 
 # Mailer test configuration
-config :ex_subtil_backend, ExSubtilBackend.Mailer,
-  adapter: Bamboo.TestAdapter
+config :ex_subtil_backend, ExSubtilBackend.Mailer, adapter: Bamboo.TestAdapter

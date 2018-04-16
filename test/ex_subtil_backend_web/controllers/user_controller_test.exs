@@ -25,7 +25,7 @@ defmodule ExSubtilBackendWeb.UserControllerTest do
     assert json_response(conn, 200)
   end
 
-  test "renders /users error for unauthorized user", %{conn: conn}  do
+  test "renders /users error for unauthorized user", %{conn: conn} do
     conn = get(conn, user_path(conn, :index))
     assert json_response(conn, 401)
   end
@@ -56,7 +56,10 @@ defmodule ExSubtilBackendWeb.UserControllerTest do
   end
 
   @tag login: "reg@example.com"
-  test "does not update chosen user and renders errors when data is invalid", %{conn: conn, user: user} do
+  test "does not update chosen user and renders errors when data is invalid", %{
+    conn: conn,
+    user: user
+  } do
     conn = put(conn, user_path(conn, :update, user), user: @invalid_attrs)
     assert json_response(conn, 422)["errors"] != %{}
   end

@@ -1,5 +1,4 @@
 defmodule ExSubtilBackendWeb.Authorize do
-
   import Plug.Conn
   import Phoenix.Controller
 
@@ -46,7 +45,7 @@ defmodule ExSubtilBackendWeb.Authorize do
         %Plug.Conn{params: %{"id" => id}, assigns: %{current_user: current_user}} = conn,
         _opts
       ) do
-    (id == to_string(current_user.id) and conn) ||error(conn, :forbidden, 403)
+    (id == to_string(current_user.id) and conn) || error(conn, :forbidden, 403)
   end
 
   def error(conn, status, code) do
