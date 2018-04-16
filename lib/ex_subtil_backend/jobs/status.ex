@@ -7,6 +7,7 @@ defmodule ExSubtilBackend.Jobs.Status do
 
   schema "status" do
     field :state, :string
+    field :description, :map, default: %{}
     belongs_to :job, Job, foreign_key: :job_id
 
     timestamps()
