@@ -6,8 +6,8 @@ defmodule ExSubtilBackend.Jobs.Status do
   alias ExSubtilBackend.Repo
 
   schema "status" do
-    field :state, :string
-    belongs_to :job, Job, foreign_key: :job_id
+    field(:state, :string)
+    belongs_to(:job, Job, foreign_key: :job_id)
 
     timestamps()
   end

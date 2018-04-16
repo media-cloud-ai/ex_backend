@@ -1,9 +1,7 @@
 defmodule ExSubtilBackend.Amqp.CommonConsumer do
-
   @doc false
   defmacro __using__(opts) do
     quote do
-
       use GenServer
       use AMQP
 
@@ -30,15 +28,19 @@ defmodule ExSubtilBackend.Amqp.CommonConsumer do
         {:noreply, channel}
       end
 
-      def handle_info({:basic_deliver, payload, %{delivery_tag: tag, redelivered: redelivered}}, channel) do
+      def handle_info(
+            {:basic_deliver, payload, %{delivery_tag: tag, redelivered: redelivered}},
+            channel
+          ) do
         queue = unquote(opts).queue
+
         data =
           payload
-          |> Poison.Parser.parse!
+          |> Poison.Parser.parse!()
 
-        Logger.warn "#{__MODULE__}: receive message on queue: #{queue}"
+        Logger.warn("#{__MODULE__}: receive message on queue: #{queue}")
 
-        spawn fn -> unquote(opts).consumer.(channel, tag, redelivered, data) end
+        spawn(fn -> unquote(opts).consumer.(channel, tag, redelivered, data) end)
         {:noreply, channel}
       end
 
@@ -54,6 +56,7 @@ defmodule ExSubtilBackend.Amqp.CommonConsumer do
       def port_format(port) when is_integer(port) do
         Integer.to_string(port)
       end
+
       def port_format(port) do
         port
       end
@@ -62,7 +65,9 @@ defmodule ExSubtilBackend.Amqp.CommonConsumer do
         hostname = System.get_env("AMQP_HOSTNAME") || Application.get_env(:amqp, :hostname)
         username = System.get_env("AMQP_USERNAME") || Application.get_env(:amqp, :username)
         password = System.get_env("AMQP_PASSWORD") || Application.get_env(:amqp, :password)
-        virtual_host = System.get_env("AMQP_VHOST") || Application.get_env(:amqp, :virtual_host) || ""
+
+        virtual_host =
+          System.get_env("AMQP_VHOST") || Application.get_env(:amqp, :virtual_host) || ""
 
         virtual_host =
           case virtual_host do
@@ -71,11 +76,15 @@ defmodule ExSubtilBackend.Amqp.CommonConsumer do
           end
 
         port =
-          System.get_env("AMQP_PORT") || Application.get_env(:amqp, :port) || 5672
-          |> port_format
+          System.get_env("AMQP_PORT") || Application.get_env(:amqp, :port) ||
+            5672
+            |> port_format
 
-        url = "amqp://" <> username <> ":" <> password <> "@" <> hostname <> ":" <> port <> virtual_host
-        Logger.warn "#{__MODULE__}: Connecting with url: #{url}"
+        url =
+          "amqp://" <>
+            username <> ":" <> password <> "@" <> hostname <> ":" <> port <> virtual_host
+
+        Logger.warn("#{__MODULE__}: Connecting with url: #{url}")
 
         case AMQP.Connection.open(url) do
           {:ok, connection} ->
@@ -85,12 +94,16 @@ defmodule ExSubtilBackend.Amqp.CommonConsumer do
             queue = unquote(opts).queue
 
             AMQP.Queue.declare(channel, queue, durable: false)
-            Logger.warn "#{__MODULE__}: connected to queue #{queue}"
+            Logger.warn("#{__MODULE__}: connected to queue #{queue}")
 
             {:ok, _consumer_tag} = AMQP.Basic.consume(channel, queue)
             {:ok, channel}
+
           {:error, message} ->
-            Logger.error "#{__MODULE__}: unable to connect to: #{url}, reason: #{inspect message}"
+            Logger.error(
+              "#{__MODULE__}: unable to connect to: #{url}, reason: #{inspect(message)}"
+            )
+
             # Reconnection loop
             :timer.sleep(10000)
             rabbitmq_connect()

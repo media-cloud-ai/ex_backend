@@ -17,7 +17,7 @@ defmodule ExSubtilBackend.Rdf.PerfectMemory do
       name: "push_rdf_infos",
       inputs: %{
         infos_graph: %{
-          value: rdf_content |> Base.encode64,
+          value: rdf_content |> Base.encode64(),
           type: "binary"
         }
       }
@@ -26,10 +26,10 @@ defmodule ExSubtilBackend.Rdf.PerfectMemory do
     headers = [
       "Cache-Control": "no-cache",
       "Content-Type": "application/json",
-      "X-Api-Key": System.get_env("PM_ENDPOINT_API_KEY") || Keyword.get(config, :api_key, ""),
+      "X-Api-Key": System.get_env("PM_ENDPOINT_API_KEY") || Keyword.get(config, :api_key, "")
     ]
 
-    HTTPotion.post(url, [body: body |> Poison.encode!, headers: headers])
+    HTTPotion.post(url, body: body |> Poison.encode!(), headers: headers)
     |> Map.get(:status_code)
   end
 end

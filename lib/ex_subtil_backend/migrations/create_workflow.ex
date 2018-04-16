@@ -3,8 +3,8 @@ defmodule ExSubtilBackend.Migration.CreateWorkflow do
 
   def change do
     create table(:workflow) do
-      add :reference, :string
-      add :flow, :map
+      add(:reference, :string)
+      add(:flow, :map)
 
       timestamps()
     end

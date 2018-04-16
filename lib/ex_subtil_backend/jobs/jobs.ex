@@ -11,7 +11,7 @@ defmodule ExSubtilBackend.Jobs do
 
   defp force_integer(param) when is_bitstring(param) do
     param
-    |> String.to_integer
+    |> String.to_integer()
   end
 
   defp force_integer(param) do
@@ -28,27 +28,29 @@ defmodule ExSubtilBackend.Jobs do
 
   """
   def list_jobs(params \\ %{}) do
-
     page =
       Map.get(params, "page", 0)
       |> force_integer
+
     size =
       Map.get(params, "size", 10)
       |> force_integer
 
     offset = page * size
 
-    total_query = from item in Job,
-      select: count(item.id)
+    total_query = from(item in Job, select: count(item.id))
 
     total =
       Repo.all(total_query)
-      |> List.first
+      |> List.first()
 
-    query = from job in Job,
-      order_by: [desc: :inserted_at],
-      offset: ^offset,
-      limit: ^size
+    query =
+      from(
+        job in Job,
+        order_by: [desc: :inserted_at],
+        offset: ^offset,
+        limit: ^size
+      )
 
     jobs =
       Repo.all(query)
@@ -111,6 +113,7 @@ defmodule ExSubtilBackend.Jobs do
       workflow_id: workflow.id,
       params: %{}
     }
+
     {:ok, job} = create_job(job_params)
     Status.set_job_status(job.id, "skipped")
     {:ok, "skipped"}

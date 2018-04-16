@@ -3,6 +3,7 @@ defmodule ExSubtilBackendWeb.Docker.ContainersController do
   require Logger
 
   alias ExSubtilBackend.Docker.Node
+
   alias RemoteDockers.{
     Container,
     NodeConfig
@@ -30,8 +31,9 @@ defmodule ExSubtilBackendWeb.Docker.ContainersController do
       render(conn, "container.json", containers: container)
     rescue
       error ->
-        IO.inspect container_config
-        Logger.error "#{__MODULE__}: #{inspect error}"
+        IO.inspect(container_config)
+        Logger.error("#{__MODULE__}: #{inspect(error)}")
+
         conn
         |> send_resp(:internal_server_error, Exception.message(error))
     end
@@ -40,7 +42,9 @@ defmodule ExSubtilBackendWeb.Docker.ContainersController do
   def delete(conn, %{"id" => container_id}) do
     get_container(container_id)
     |> case do
-      nil -> send_resp(conn, :not_found, "unable to find container for ID: " <> container_id)
+      nil ->
+        send_resp(conn, :not_found, "unable to find container for ID: " <> container_id)
+
       container ->
         Container.remove!(container)
         send_resp(conn, :ok, container_id)
@@ -50,7 +54,9 @@ defmodule ExSubtilBackendWeb.Docker.ContainersController do
   def start(conn, %{"containers_id" => container_id}) do
     get_container(container_id)
     |> case do
-      nil -> send_resp(conn, :not_found, "unable to find container for ID: " <> container_id)
+      nil ->
+        send_resp(conn, :not_found, "unable to find container for ID: " <> container_id)
+
       container ->
         Container.start!(container)
         |> case do
@@ -63,7 +69,9 @@ defmodule ExSubtilBackendWeb.Docker.ContainersController do
   def stop(conn, %{"containers_id" => container_id}) do
     get_container(container_id)
     |> case do
-      nil -> send_resp(conn, :not_found, "unable to find container for ID: " <> container_id)
+      nil ->
+        send_resp(conn, :not_found, "unable to find container for ID: " <> container_id)
+
       container ->
         Container.stop!(container)
         |> case do
@@ -75,7 +83,7 @@ defmodule ExSubtilBackendWeb.Docker.ContainersController do
 
   defp get_container(container_id) do
     list_all()
-    |> Enum.find(fn(container) ->
+    |> Enum.find(fn container ->
       container.id == container_id
     end)
   end
@@ -86,9 +94,9 @@ defmodule ExSubtilBackendWeb.Docker.ContainersController do
 
   defp list_all() do
     Node.list()
-    |> Enum.map(fn(node_config) ->
-        list_containers(node_config)
-      end)
-    |> Enum.concat
+    |> Enum.map(fn node_config ->
+      list_containers(node_config)
+    end)
+    |> Enum.concat()
   end
 end

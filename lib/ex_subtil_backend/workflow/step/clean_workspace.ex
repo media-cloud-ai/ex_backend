@@ -1,5 +1,4 @@
 defmodule ExSubtilBackend.Workflow.Step.CleanWorkspace do
-
   alias ExSubtilBackend.Jobs
   alias ExSubtilBackend.Amqp.JobFileSystemEmitter
   alias ExSubtilBackend.Workflow.Step.Requirements
@@ -7,10 +6,10 @@ defmodule ExSubtilBackend.Workflow.Step.CleanWorkspace do
   @action_name "clean_workspace"
 
   def launch(workflow) do
-
     case get_source_directories(workflow.jobs) do
       [] ->
         Jobs.create_skipped_job(workflow, @action_name)
+
       paths ->
         requirements = Requirements.add_required_paths(paths)
 
@@ -27,10 +26,12 @@ defmodule ExSubtilBackend.Workflow.Step.CleanWorkspace do
         }
 
         {:ok, job} = Jobs.create_job(job_params)
+
         params = %{
           job_id: job.id,
           parameters: job.params
         }
+
         JobFileSystemEmitter.publish_json(params)
     end
   end
@@ -38,13 +39,13 @@ defmodule ExSubtilBackend.Workflow.Step.CleanWorkspace do
   defp get_source_directories(jobs) do
     dash_directory =
       ExSubtilBackend.Workflow.Step.GenerateDash.get_jobs_destination_paths(jobs)
-      |> List.first
-      |> Path.dirname
+      |> List.first()
+      |> Path.dirname()
 
     download_directory =
       ExSubtilBackend.Workflow.Step.FtpDownload.get_jobs_destination_paths(jobs)
-      |> List.first
-      |> Path.dirname
+      |> List.first()
+      |> Path.dirname()
 
     [
       dash_directory,
@@ -57,6 +58,7 @@ defmodule ExSubtilBackend.Workflow.Step.CleanWorkspace do
   """
   def get_jobs_destination_paths(_jobs, result \\ [])
   def get_jobs_destination_paths([], result), do: result
+
   def get_jobs_destination_paths([job | jobs], result) do
     result =
       case job.name do
@@ -65,10 +67,11 @@ defmodule ExSubtilBackend.Workflow.Step.CleanWorkspace do
           |> Map.get("destination", %{})
           |> Map.get("paths")
           |> Enum.concat(result)
-        _ -> result
+
+        _ ->
+          result
       end
 
     get_jobs_destination_paths(jobs, result)
   end
-
 end

@@ -1,7 +1,7 @@
 defmodule ExSubtilBackendWeb.RdfController do
   use ExSubtilBackendWeb, :controller
 
-  action_fallback ExSubtilBackendWeb.FallbackController
+  action_fallback(ExSubtilBackendWeb.FallbackController)
 
   alias ExSubtilBackend.Rdf.Converter
   alias ExSubtilBackend.Rdf.PerfectMemory
@@ -11,13 +11,14 @@ defmodule ExSubtilBackendWeb.RdfController do
 
     response =
       Converter.get_rdf(video_id)
-      |> PerfectMemory.publish_rdf
+      |> PerfectMemory.publish_rdf()
 
     case response do
       201 ->
         conn
         |> put_status(:created)
         |> json(%{status: :ok})
+
       _ ->
         conn
         |> put_status(:unprocessable_entity)
@@ -29,7 +30,7 @@ defmodule ExSubtilBackendWeb.RdfController do
     rdf_serialized =
       params
       |> Map.get("videos_id")
-      |> Converter.get_rdf
+      |> Converter.get_rdf()
 
     conn
     |> json(%{content: rdf_serialized})

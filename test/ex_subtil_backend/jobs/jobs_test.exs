@@ -8,7 +8,7 @@ defmodule ExSubtilBackend.JobsTest do
     alias ExSubtilBackend.Jobs.Job
 
     @valid_attrs %{name: "some name", params: %{}}
-    @update_attrs %{name: "some updated name", params: %{"key": "value"}}
+    @update_attrs %{name: "some updated name", params: %{key: "value"}}
     @invalid_attrs %{name: nil, workflow_id: nil, params: nil}
 
     def job_fixture(attrs \\ %{}) do
@@ -27,8 +27,10 @@ defmodule ExSubtilBackend.JobsTest do
     end
 
     test "list_jobs/0 returns all jobs" do
-      job = job_fixture()
+      job =
+        job_fixture()
         |> Repo.preload(:status)
+
       assert Jobs.list_jobs() == %{data: [job], page: 0, size: 10, total: 1}
     end
 
@@ -58,7 +60,7 @@ defmodule ExSubtilBackend.JobsTest do
       assert {:ok, job} = Jobs.update_job(job, @update_attrs)
       assert %Job{} = job
       assert job.name == "some updated name"
-      assert job.params == %{"key": "value"}
+      assert job.params == %{key: "value"}
     end
 
     test "update_job/2 with invalid data returns error changeset" do

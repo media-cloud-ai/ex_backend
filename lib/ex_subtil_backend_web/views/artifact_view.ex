@@ -14,7 +14,7 @@ defmodule ExSubtilBackendWeb.ArtifactView do
     %{
       id: artifact.id,
       resources: artifact.resources,
-      inserted_at: artifact.inserted_at,
+      inserted_at: artifact.inserted_at
     }
   end
 end

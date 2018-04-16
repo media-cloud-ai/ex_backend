@@ -8,7 +8,6 @@ defmodule ExSubtilBackend.Artifacts do
 
   alias ExSubtilBackend.Artifacts.Artifact
 
-
   @doc """
   Creates a artifact.
 

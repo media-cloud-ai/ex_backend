@@ -6,10 +6,10 @@ defmodule ExSubtilBackend.Jobs.Job do
   alias ExSubtilBackend.Workflows.Workflow
 
   schema "jobs" do
-    field :name, :string
-    field :params, :map
-    belongs_to :workflow, Workflow, foreign_key: :workflow_id
-    has_many :status, Status, on_delete: :delete_all
+    field(:name, :string)
+    field(:params, :map)
+    belongs_to(:workflow, Workflow, foreign_key: :workflow_id)
+    has_many(:status, Status, on_delete: :delete_all)
 
     timestamps()
   end

@@ -24,6 +24,7 @@ defmodule ExSubtilBackend.WorkflowsTest do
       workflow =
         workflow_fixture()
         |> Repo.preload([:artifacts, :jobs])
+
       assert Workflows.list_workflows() == %{data: [workflow], page: 0, size: 10, total: 1}
     end
 

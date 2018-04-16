@@ -1,5 +1,4 @@
 defmodule ExSubtilBackend.Workflow.Step.HttpDownload do
-
   alias ExSubtilBackend.Repo
   alias ExSubtilBackend.Jobs
   alias ExSubtilBackend.Amqp.JobHttpEmitter
@@ -10,10 +9,10 @@ defmodule ExSubtilBackend.Workflow.Step.HttpDownload do
   def launch(workflow) do
     first_job_state =
       workflow.jobs
-      |> List.first
+      |> List.first()
       |> Repo.preload(:status)
       |> Map.get(:status)
-      |> List.first
+      |> List.first()
       |> Map.get(:state)
 
     case {first_job_state, ExVideoFactory.get_http_url_for_ttml(workflow.reference)} do
@@ -24,8 +23,12 @@ defmodule ExSubtilBackend.Workflow.Step.HttpDownload do
   end
 
   defp start_download_via_http([], _workflow), do: {:ok, "started"}
+
   defp start_download_via_http([url | urls], workflow) do
-    work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_subtil_backend, :work_dir) || "/tmp/ftp_francetv"
+    work_dir =
+      System.get_env("WORK_DIR") || Application.get_env(:ex_subtil_backend, :work_dir) ||
+        "/tmp/ftp_francetv"
+
     filename = Path.basename(url)
     dst_path = work_dir <> "/" <> workflow.reference <> "/" <> filename
 
@@ -46,10 +49,12 @@ defmodule ExSubtilBackend.Workflow.Step.HttpDownload do
     }
 
     {:ok, job} = Jobs.create_job(job_params)
+
     params = %{
       job_id: job.id,
       parameters: job.params
     }
+
     JobHttpEmitter.publish_json(params)
     start_download_via_http(urls, workflow)
   end
@@ -59,6 +64,7 @@ defmodule ExSubtilBackend.Workflow.Step.HttpDownload do
   """
   def get_jobs_destination_paths(_jobs, result \\ [])
   def get_jobs_destination_paths([], result), do: result
+
   def get_jobs_destination_paths([job | jobs], result) do
     result =
       case job.name do
@@ -67,11 +73,13 @@ defmodule ExSubtilBackend.Workflow.Step.HttpDownload do
             job.params
             |> Map.get("destination", %{})
             |> Map.get("path")
+
           List.insert_at(result, -1, path)
-        _ -> result
+
+        _ ->
+          result
       end
 
     get_jobs_destination_paths(jobs, result)
   end
-
 end
