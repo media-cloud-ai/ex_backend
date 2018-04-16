@@ -77,7 +77,7 @@ config :ex_subtil_backend,
   appdir: "/opt/app"
 
 config :amqp,
-  hostname: "192.168.99.100",
+  hostname: "localhost",
   username: "guest",
   password: "guest"
 
