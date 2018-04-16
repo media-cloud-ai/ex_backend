@@ -38,7 +38,24 @@ defmodule ExSubtilBackend.Jobs do
 
     offset = page * size
 
-    total_query = from(item in Job, select: count(item.id))
+    query = from(job in Job)
+
+    query =
+      case Map.get(params, "workflow_id") do
+        nil -> query
+        str_workflow_id ->
+          workflow_id = String.to_integer(str_workflow_id)
+          from(job in query, where: job.workflow_id == ^workflow_id)
+      end
+
+    query =
+      case Map.get(params, "job_type") do
+        nil -> query
+        job_type ->
+          from(job in query, where: job.name == ^job_type)
+      end
+
+    total_query = from(item in query, select: count(item.id))
 
     total =
       Repo.all(total_query)
@@ -46,7 +63,7 @@ defmodule ExSubtilBackend.Jobs do
 
     query =
       from(
-        job in Job,
+        job in query,
         order_by: [desc: :inserted_at],
         offset: ^offset,
         limit: ^size

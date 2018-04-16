@@ -79,8 +79,7 @@ config :ex_subtil_backend,
 config :amqp,
   hostname: "192.168.99.100",
   username: "guest",
-  password: "guest",
-  virtual_host: ""
+  password: "guest"
 
 # Finally import the config/prod.secret.exs
 # with the private section for passwords

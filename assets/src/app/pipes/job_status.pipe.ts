@@ -18,6 +18,9 @@ export class JobStatusPipe implements PipeTransform {
       if(jobStatus[i].state == "error"){
         return "error";
       }
+      if(jobStatus[i].state == "skipped"){
+        return "skipped";
+      }
     }
     return "processing";
   }

@@ -3,58 +3,12 @@
 </h1>
 
 <ul *ngIf="workflows" class="workflows">
-  <li *ngIf="workflows.total == 0">Aucun résultat trouvé</li>
+  <li *ngIf="workflows.total == 0">No workflow found.</li>
   <li
     *ngFor="let workflow of workflows.data"
     class="workflow"
-
     >
-    <span class="reference">
-      <a href="/videos?video_id={{workflow.reference}}">
-        {{workflow.reference}}
-      </a>
-      <duration-component [workflow]=workflow></duration-component>
-    </span>
-
-    <div class=steps>
-      <div
-        *ngFor="let step of workflow.flow.steps"
-        class="step {{step.id}} {{step.status}}">
-        <div class="content">
-          <div class=details>
-            <mat-icon matListIcon>{{step.id | iconForJob}}</mat-icon>
-            {{step.id | jobType}}
-            <parameters-component [parameters]=step.parameters></parameters-component>
-          </div>
-          <div class=progress>
-            <span
-              class="skipped"
-              *ngIf="step.jobs.skipped > 0"
-              [ngStyle]="{'flex': step.jobs.skipped}">
-              Skipped
-            </span>
-            <span
-              class="completed"
-              *ngIf="step.jobs.completed > 0"
-              [ngStyle]="{'flex': step.jobs.completed}">
-              {{step.jobs.completed}}
-            </span>
-            <span
-              class="error"
-              *ngIf="step.jobs.errors > 0"
-              [ngStyle]="{'flex': step.jobs.errors}">
-              {{step.jobs.errors}}
-            </span>
-            <span
-              class="queued"
-              *ngIf="step.jobs.queued > 0"
-              [ngStyle]="{'flex': step.jobs.queued}">
-              {{step.jobs.queued}}
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
+    <workflow-component [workflow]=workflow></workflow-component>
   </li>
 </ul>
 

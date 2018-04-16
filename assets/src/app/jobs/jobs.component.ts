@@ -1,5 +1,5 @@
 
-import {Component, ViewChild} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {PageEvent} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
 
@@ -21,6 +21,9 @@ export class JobsComponent {
   page = 0;
   sub = undefined;
 
+  @Input() jobType: string;
+  @Input() workflowId: number;
+
   pageEvent: PageEvent;
   jobs: JobPage;
 
@@ -34,7 +37,7 @@ export class JobsComponent {
     this.sub = this.route
       .queryParams
       .subscribe(params => {
-        this.page = +params['page'] || 0;
+        this.page = 0;
         this.getJobs(this.page);
       });
   }
@@ -44,7 +47,7 @@ export class JobsComponent {
   }
 
   getJobs(index): void {
-    this.jobService.getJobs(index)
+    this.jobService.getJobs(index, 100, this.workflowId, this.jobType)
     .subscribe(jobPage => {
       this.jobs = jobPage;
       this.length = jobPage.total;

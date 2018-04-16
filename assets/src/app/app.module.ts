@@ -45,6 +45,7 @@ import {JobsComponent}           from './jobs/jobs.component';
 import {ParametersComponent}     from './workflows/parameters.component';
 import {QueuesComponent}         from './amqp/queues.component';
 import {VideosComponent}         from './videos/videos.component';
+import {WorkflowComponent}       from './workflows/workflow.component';
 import {WorkflowsComponent}      from './workflows/workflows.component';
 import {WorkersComponent}        from './workers/workers.component';
 
@@ -131,6 +132,7 @@ const SUBTIL_DATE_FORMATS = {
     VideosComponent,
     RdfDialogComponent,
     WorkflowDialogComponent,
+    WorkflowComponent,
     WorkflowsComponent,
     WorkersComponent,
     DurationComponent,
@@ -153,6 +155,7 @@ const SUBTIL_DATE_FORMATS = {
     DurationComponent,
     ParametersComponent,
     RdfDialogComponent,
+    WorkflowComponent,
     WorkflowDialogComponent,
   ],
   providers: [
