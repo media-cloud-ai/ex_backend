@@ -5,7 +5,7 @@ defmodule ExSubtilBackendWeb.WorkflowController do
   alias ExSubtilBackend.WorkflowStep
   alias ExSubtilBackend.Workflows.Workflow
 
-  action_fallback ExSubtilBackendWeb.FallbackController
+  action_fallback(ExSubtilBackendWeb.FallbackController)
 
   def index(conn, params) do
     workflows = Workflows.list_workflows(params)
@@ -16,9 +16,11 @@ defmodule ExSubtilBackendWeb.WorkflowController do
     case Workflows.create_workflow(workflow_params) do
       {:ok, %Workflow{} = workflow} ->
         WorkflowStep.start_next_step(workflow)
+
         conn
         |> put_status(:created)
         |> render("show.json", workflow: workflow)
+
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
@@ -44,6 +46,7 @@ defmodule ExSubtilBackendWeb.WorkflowController do
 
   def delete(conn, %{"id" => id}) do
     workflow = Workflows.get_workflow!(id)
+
     with {:ok, %Workflow{}} <- Workflows.delete_workflow(workflow) do
       send_resp(conn, :no_content, "")
     end

@@ -3,8 +3,8 @@ defmodule ExSubtilBackend.Migration.CreateJobs do
 
   def change do
     create table(:jobs) do
-      add :name, :string
-      add :params, :map
+      add(:name, :string)
+      add(:params, :map)
 
       timestamps()
     end

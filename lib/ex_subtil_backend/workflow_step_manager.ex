@@ -1,5 +1,4 @@
 defmodule ExSubtilBackend.WorkflowStepManager do
-
   require Logger
 
   use GenServer
@@ -19,7 +18,7 @@ defmodule ExSubtilBackend.WorkflowStepManager do
   end
 
   def handle_cast({:check_step_status, %{job_id: job_id}}, state) do
-    Logger.warn "#{__MODULE__}: check for job #{job_id}"
+    Logger.warn("#{__MODULE__}: check for job #{job_id}")
 
     job = ExSubtilBackend.Jobs.get_job!(job_id)
 
@@ -32,7 +31,7 @@ defmodule ExSubtilBackend.WorkflowStepManager do
   end
 
   def handle_cast({:check_step_status, message}, state) do
-    Logger.error "#{__MODULE__}: unable to handle message: #{inspect message}"
+    Logger.error("#{__MODULE__}: unable to handle message: #{inspect(message)}")
     {:noreply, state}
   end
 end

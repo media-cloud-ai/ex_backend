@@ -11,7 +11,7 @@ defmodule ExSubtilBackendWeb.JobControllerTest do
 
   describe "index" do
     test "lists all jobs", %{conn: conn} do
-      conn = get conn, job_path(conn, :index)
+      conn = get(conn, job_path(conn, :index))
       assert json_response(conn, 200)["data"] == []
     end
   end

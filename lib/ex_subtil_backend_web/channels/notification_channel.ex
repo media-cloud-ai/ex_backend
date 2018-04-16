@@ -11,7 +11,7 @@ defmodule ExSubtilBackendWeb.NotificationChannel do
   end
 
   def handle_in("get", %{"body" => body}, socket) do
-    Logger.info "websocket message #{inspect body}"
+    Logger.info("websocket message #{inspect(body)}")
     {:noreply, socket}
   end
 end

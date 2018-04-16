@@ -5,7 +5,7 @@ defmodule ExSubtilBackendWeb.JobController do
   alias ExSubtilBackend.Jobs.Job
   alias ExSubtilBackend.Amqp.JobFtpEmitter
 
-  action_fallback ExSubtilBackendWeb.FallbackController
+  action_fallback(ExSubtilBackendWeb.FallbackController)
 
   def index(conn, params) do
     jobs = Jobs.list_jobs(params)
@@ -19,11 +19,13 @@ defmodule ExSubtilBackendWeb.JobController do
           job_id: job.id,
           parameters: job.params
         }
+
         JobFtpEmitter.publish_json(params)
 
         conn
         |> put_status(:created)
         |> render("show.json", job: job)
+
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
@@ -46,6 +48,7 @@ defmodule ExSubtilBackendWeb.JobController do
 
   def delete(conn, %{"id" => id}) do
     job = Jobs.get_job!(id)
+
     with {:ok, %Job{}} <- Jobs.delete_job(job) do
       send_resp(conn, :no_content, "")
     end

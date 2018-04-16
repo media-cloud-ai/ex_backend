@@ -1,5 +1,4 @@
 defmodule ExSubtilBackend.Amqp.CommonEmitter do
-
   @doc false
   defmacro __using__(opts) do
     quote do
@@ -17,7 +16,7 @@ defmodule ExSubtilBackend.Amqp.CommonEmitter do
 
       def publish_json(message) do
         message
-        |> Poison.encode!
+        |> Poison.encode!()
         |> publish
       end
 
@@ -28,13 +27,14 @@ defmodule ExSubtilBackend.Amqp.CommonEmitter do
       def port_format(port) when is_integer(port) do
         Integer.to_string(port)
       end
+
       def port_format(port) do
         port
       end
 
       def handle_cast({:publish, message}, state) do
         queue = unquote(opts).queue
-        Logger.warn "#{__MODULE__}: publish message on queue: #{queue}"
+        Logger.warn("#{__MODULE__}: publish message on queue: #{queue}")
         AMQP.Basic.publish(state.channel, "", queue, message)
         {:noreply, state}
       end
@@ -52,7 +52,9 @@ defmodule ExSubtilBackend.Amqp.CommonEmitter do
         hostname = System.get_env("AMQP_HOSTNAME") || Application.get_env(:amqp, :hostname)
         username = System.get_env("AMQP_USERNAME") || Application.get_env(:amqp, :username)
         password = System.get_env("AMQP_PASSWORD") || Application.get_env(:amqp, :password)
-        virtual_host = System.get_env("AMQP_VHOST") || Application.get_env(:amqp, :virtual_host) || ""
+
+        virtual_host =
+          System.get_env("AMQP_VHOST") || Application.get_env(:amqp, :virtual_host) || ""
 
         virtual_host =
           case virtual_host do
@@ -61,21 +63,30 @@ defmodule ExSubtilBackend.Amqp.CommonEmitter do
           end
 
         port =
-          System.get_env("AMQP_PORT") || Application.get_env(:amqp, :port) || 5672
-          |> port_format
+          System.get_env("AMQP_PORT") || Application.get_env(:amqp, :port) ||
+            5672
+            |> port_format
 
-        url = "amqp://" <> username <> ":" <> password <> "@" <> hostname <> ":" <> port <> virtual_host
-        Logger.warn "#{__MODULE__}: Connecting with url: #{url}"
+        url =
+          "amqp://" <>
+            username <> ":" <> password <> "@" <> hostname <> ":" <> port <> virtual_host
+
+        Logger.warn("#{__MODULE__}: Connecting with url: #{url}")
+
         case AMQP.Connection.open(url) do
           {:ok, connection} ->
             Process.monitor(connection.pid)
             queue = unquote(opts).queue
             {:ok, channel} = AMQP.Channel.open(connection)
             AMQP.Queue.declare(channel, queue)
-            Logger.warn "#{__MODULE__}: connected to queue #{queue}"
-            {:ok, %{channel: channel, connection: connection} }
+            Logger.warn("#{__MODULE__}: connected to queue #{queue}")
+            {:ok, %{channel: channel, connection: connection}}
+
           {:error, message} ->
-            Logger.error "#{__MODULE__}: unable to connect to: #{url}, reason: #{inspect message}"
+            Logger.error(
+              "#{__MODULE__}: unable to connect to: #{url}, reason: #{inspect(message)}"
+            )
+
             # Reconnection loop
             :timer.sleep(10000)
             rabbitmq_connect()

@@ -18,7 +18,7 @@ defmodule ExSubtilBackendWeb.WorkflowView do
       id: workflow.id,
       reference: workflow.reference,
       flow: workflow.flow,
-      created_at: workflow.inserted_at,
+      created_at: workflow.inserted_at
     }
 
     result =

@@ -1,5 +1,4 @@
 defmodule ExSubtilBackend.Workflow.Step.Acs.PrepareAudio do
-
   alias ExSubtilBackend.Jobs
   alias ExSubtilBackend.Amqp.JobFFmpegEmitter
   alias ExSubtilBackend.Workflow.Step.Requirements
@@ -9,7 +8,6 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.PrepareAudio do
   @action_name "acs_prepare_audio"
 
   def launch(workflow) do
-
     subtitle_languages = get_subtitles_languages(workflow.reference)
 
     case get_source_files(workflow.jobs, subtitle_languages) do
@@ -19,11 +17,14 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.PrepareAudio do
   end
 
   defp start_processing_audio([], _workflow), do: {:ok, "started"}
+
   defp start_processing_audio([path | paths], workflow) do
-    work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_subtil_backend, :work_dir) || "/tmp/ftp_francetv"
+    work_dir =
+      System.get_env("WORK_DIR") || Application.get_env(:ex_subtil_backend, :work_dir) ||
+        "/tmp/ftp_francetv"
 
     filename = Path.basename(path)
-    dst_path = work_dir <> "/" <> workflow.reference <> "/acs/"  <> filename
+    dst_path = work_dir <> "/" <> workflow.reference <> "/acs/" <> filename
 
     requirements = Requirements.add_required_paths(path)
 
@@ -58,10 +59,12 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.PrepareAudio do
     }
 
     {:ok, job} = Jobs.create_job(job_params)
+
     params = %{
       job_id: job.id,
       parameters: job.params
     }
+
     JobFFmpegEmitter.publish_json(params)
 
     start_processing_audio(paths, workflow)
@@ -69,31 +72,31 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.PrepareAudio do
 
   defp get_subtitles_languages(workflow_reference) do
     ExVideoFactory.videos(%{"qid" => workflow_reference})
-      |> Map.fetch!(:videos)
-      |> List.first
-      |> Map.get("text_tracks")
-      |> Enum.map(fn(track) ->
-        track["code"]
-        |> String.downcase
-       end)
+    |> Map.fetch!(:videos)
+    |> List.first()
+    |> Map.get("text_tracks")
+    |> Enum.map(fn track ->
+      track["code"]
+      |> String.downcase()
+    end)
   end
 
   defp get_source_files(jobs, subtitle_languages) do
     ExSubtilBackend.Workflow.Step.AudioDecode.get_jobs_destination_paths(jobs)
-    |> Enum.filter(fn(path) ->
-        is_audio_file_matching_subtitles?(path, subtitle_languages)
-      end)
+    |> Enum.filter(fn path ->
+      is_audio_file_matching_subtitles?(path, subtitle_languages)
+    end)
   end
 
   defp is_audio_file_matching_subtitles?(path, subtitle_languages) do
     is_audio_file_matching_subtitles_language?(path, subtitle_languages, "fra") ||
-    is_audio_file_matching_subtitles_language?(path, subtitle_languages, "qaa") ||
-    is_audio_file_matching_subtitles_language?(path, subtitle_languages, "qad")
+      is_audio_file_matching_subtitles_language?(path, subtitle_languages, "qaa") ||
+      is_audio_file_matching_subtitles_language?(path, subtitle_languages, "qad")
   end
 
   defp is_audio_file_matching_subtitles_language?(path, subtitle_languages, language) do
     if String.ends_with?(path, "-" <> language <> ".wav") do
-      Enum.any?(subtitle_languages, fn(lang) -> lang == language end)
+      Enum.any?(subtitle_languages, fn lang -> lang == language end)
     else
       false
     end
@@ -104,6 +107,7 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.PrepareAudio do
   """
   def get_jobs_destination_paths(_jobs, result \\ [])
   def get_jobs_destination_paths([], result), do: result
+
   def get_jobs_destination_paths([job | jobs], result) do
     result =
       case job.name do
@@ -112,10 +116,11 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.PrepareAudio do
           |> Map.get("destination", %{})
           |> Map.get("paths")
           |> Enum.concat(result)
-        _ -> result
+
+        _ ->
+          result
       end
 
     get_jobs_destination_paths(jobs, result)
   end
-
 end

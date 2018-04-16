@@ -25,13 +25,13 @@ defmodule ExSubtilBackendWeb.ChannelCase do
     end
   end
 
-
   setup tags do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(ExSubtilBackend.Repo)
+
     unless tags[:async] do
       Ecto.Adapters.SQL.Sandbox.mode(ExSubtilBackend.Repo, {:shared, self()})
     end
+
     :ok
   end
-
 end

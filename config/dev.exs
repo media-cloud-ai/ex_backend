@@ -68,7 +68,7 @@ config :ex_subtil_backend,
   workdir: "/tmp/ftp_francetv",
   docker_hosts: [
     [hostname: "http://localhost", port: 2357]
-  ]
+  ],
   appdir: "/opt/app"
 
 config :amqp,

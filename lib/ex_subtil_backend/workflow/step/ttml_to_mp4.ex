@@ -1,5 +1,4 @@
 defmodule ExSubtilBackend.Workflow.Step.TtmlToMp4 do
-
   alias ExSubtilBackend.Jobs
   alias ExSubtilBackend.Amqp.JobGpacEmitter
   alias ExSubtilBackend.Workflow.Step.Requirements
@@ -10,6 +9,7 @@ defmodule ExSubtilBackend.Workflow.Step.TtmlToMp4 do
     case get_ttml_file(workflow.jobs) do
       nil ->
         Jobs.create_skipped_job(workflow, @action_name)
+
       path ->
         mp4_path = String.replace(path, ".ttml", ".mp4")
         requirements = Requirements.add_required_paths(path)
@@ -25,15 +25,17 @@ defmodule ExSubtilBackend.Workflow.Step.TtmlToMp4 do
             },
             destination: %{
               path: mp4_path
-            },
+            }
           }
         }
 
         {:ok, job} = Jobs.create_job(job_params)
+
         params = %{
           job_id: job.id,
           parameters: job.params
         }
+
         JobGpacEmitter.publish_json(params)
     end
   end
@@ -42,10 +44,11 @@ defmodule ExSubtilBackend.Workflow.Step.TtmlToMp4 do
     case ExSubtilBackend.Workflow.Step.Acs.Synchronize.get_jobs_destination_paths(jobs) do
       [] ->
         ExSubtilBackend.Workflow.Step.HttpDownload.get_jobs_destination_paths(jobs)
-        |> List.first
+        |> List.first()
+
       paths ->
         paths
-        |> List.first
+        |> List.first()
     end
   end
 
@@ -54,6 +57,7 @@ defmodule ExSubtilBackend.Workflow.Step.TtmlToMp4 do
   """
   def get_jobs_destination_paths(_jobs, result \\ [])
   def get_jobs_destination_paths([], result), do: result
+
   def get_jobs_destination_paths([job | jobs], result) do
     result =
       case job.name do
@@ -62,11 +66,13 @@ defmodule ExSubtilBackend.Workflow.Step.TtmlToMp4 do
             job.params
             |> Map.get("destination", %{})
             |> Map.get("paths")
+
           List.insert_at(result, -1, path)
-        _ -> result
+
+        _ ->
+          result
       end
 
     get_jobs_destination_paths(jobs, result)
   end
-
 end

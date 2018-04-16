@@ -16,8 +16,11 @@ defmodule ExSubtilBackendWeb.JobView do
   def render("job.json", %{job: job}) do
     if is_tuple(job) do
       case job do
-        {:error, changeset} -> %{errors: changeset |> ExSubtilBackendWeb.ChangesetView.translate_errors}
-        _ -> %{errors: ["unknown error"]}
+        {:error, changeset} ->
+          %{errors: changeset |> ExSubtilBackendWeb.ChangesetView.translate_errors()}
+
+        _ ->
+          %{errors: ["unknown error"]}
       end
     else
       status =

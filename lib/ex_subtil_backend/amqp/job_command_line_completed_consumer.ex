@@ -5,11 +5,16 @@ defmodule ExSubtilBackend.Amqp.JobCommandLineCompletedConsumer do
 
   use ExSubtilBackend.Amqp.CommonConsumer, %{
     queue: "job_command_line_completed",
-    consumer: &ExSubtilBackend.Amqp.JobCommandLineCompletedConsumer.consume/4,
+    consumer: &ExSubtilBackend.Amqp.JobCommandLineCompletedConsumer.consume/4
   }
 
-  def consume(channel, tag, _redelivered, %{"job_id" => job_id, "status" => status, "output" => paths} = payload) do
-    Logger.warn "receive #{inspect payload}"
+  def consume(
+        channel,
+        tag,
+        _redelivered,
+        %{"job_id" => job_id, "status" => status, "output" => paths} = payload
+      ) do
+    Logger.warn("receive #{inspect(payload)}")
     Jobs.Status.set_job_status(job_id, status)
 
     job = Jobs.get_job!(job_id)
@@ -21,6 +26,6 @@ defmodule ExSubtilBackend.Amqp.JobCommandLineCompletedConsumer do
     Jobs.update_job(job, %{params: params})
 
     ExSubtilBackend.WorkflowStepManager.check_step_status(%{job_id: job_id})
-    Basic.ack channel, tag
+    Basic.ack(channel, tag)
   end
 end

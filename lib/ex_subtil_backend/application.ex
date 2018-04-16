@@ -17,28 +17,22 @@ defmodule ExSubtilBackend.Application do
       worker(ExSubtilBackend.Amqp.JobFtpEmitter, []),
       worker(ExSubtilBackend.Amqp.JobFtpCompletedConsumer, []),
       worker(ExSubtilBackend.Amqp.JobFtpErrorConsumer, []),
-
       worker(ExSubtilBackend.Amqp.JobGpacEmitter, []),
       worker(ExSubtilBackend.Amqp.JobGpacCompletedConsumer, []),
       worker(ExSubtilBackend.Amqp.JobGpacErrorConsumer, []),
-
       worker(ExSubtilBackend.Amqp.JobHttpEmitter, []),
       worker(ExSubtilBackend.Amqp.JobHttpCompletedConsumer, []),
       worker(ExSubtilBackend.Amqp.JobHttpErrorConsumer, []),
-
       worker(ExSubtilBackend.Amqp.JobFileSystemEmitter, []),
       worker(ExSubtilBackend.Amqp.JobFileSystemCompletedConsumer, []),
       worker(ExSubtilBackend.Amqp.JobFileSystemErrorConsumer, []),
-
       worker(ExSubtilBackend.Amqp.JobFFmpegEmitter, []),
       worker(ExSubtilBackend.Amqp.JobFFmpegCompletedConsumer, []),
       worker(ExSubtilBackend.Amqp.JobFFmpegErrorConsumer, []),
-
       worker(ExSubtilBackend.Amqp.JobCommandLineEmitter, []),
       worker(ExSubtilBackend.Amqp.JobCommandLineCompletedConsumer, []),
       worker(ExSubtilBackend.Amqp.JobCommandLineErrorConsumer, []),
-
-      worker(ExSubtilBackend.WorkflowStepManager, []),
+      worker(ExSubtilBackend.WorkflowStepManager, [])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
@@ -46,11 +40,35 @@ defmodule ExSubtilBackend.Application do
     opts = [strategy: :one_for_one, name: ExSubtilBackend.Supervisor]
     main_supervisor = Supervisor.start_link(children, opts)
 
-    Ecto.Migrator.up(ExSubtilBackend.Repo, 20171116223034, ExSubtilBackend.Migration.CreateJobs)
-    Ecto.Migrator.up(ExSubtilBackend.Repo, 20171121233956, ExSubtilBackend.Migration.CreateStatus)
-    Ecto.Migrator.up(ExSubtilBackend.Repo, 20180213135100, ExSubtilBackend.Migration.CreateWorkflow)
-    Ecto.Migrator.up(ExSubtilBackend.Repo, 20180213171900, ExSubtilBackend.Migration.AddLinkBetweenJobAndWorkflow)
-    Ecto.Migrator.up(ExSubtilBackend.Repo, 20180319162700, ExSubtilBackend.Migration.CreateArtifacts)
+    Ecto.Migrator.up(
+      ExSubtilBackend.Repo,
+      20_171_116_223_034,
+      ExSubtilBackend.Migration.CreateJobs
+    )
+
+    Ecto.Migrator.up(
+      ExSubtilBackend.Repo,
+      20_171_121_233_956,
+      ExSubtilBackend.Migration.CreateStatus
+    )
+
+    Ecto.Migrator.up(
+      ExSubtilBackend.Repo,
+      20_180_213_135_100,
+      ExSubtilBackend.Migration.CreateWorkflow
+    )
+
+    Ecto.Migrator.up(
+      ExSubtilBackend.Repo,
+      20_180_213_171_900,
+      ExSubtilBackend.Migration.AddLinkBetweenJobAndWorkflow
+    )
+
+    Ecto.Migrator.up(
+      ExSubtilBackend.Repo,
+      20_180_319_162_700,
+      ExSubtilBackend.Migration.CreateArtifacts
+    )
 
     main_supervisor
   end

@@ -3,7 +3,7 @@ defmodule ExSubtilBackend.Migration.AddLinkBetweenJobAndWorkflow do
 
   def change do
     alter table(:jobs) do
-      add :workflow_id, references(:workflow, on_delete: :nothing)
+      add(:workflow_id, references(:workflow, on_delete: :nothing))
     end
   end
 end

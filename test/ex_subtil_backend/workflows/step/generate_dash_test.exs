@@ -15,8 +15,7 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDashTest do
     }
 
     step = %{
-      "parameters" => [
-      ]
+      "parameters" => []
     }
 
     result = GenerateDash.build_step_parameters(workflow, step)
@@ -57,34 +56,35 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDashTest do
     }
 
     result = GenerateDash.build_step_parameters(workflow, step)
+
     assert result == {
-      :ok,
-      %{
-        name: "generate_dash",
-        params: %{
-          kind: "generate_dash",
-          options: %{
-            "-out": "/tmp/ftp_francetv/dash/reference_id/manifest.mpd",
-            "-profile": "onDemand",
-            "-rap": true,
-            "-url-template": true,
-            "-dash": 20000,
-            "-frag": 60000
-          },
-          requirements: %{
-            paths: [
-              "/2018/S12/J7/173535163-5ab81c23a3594-standard3.mp4"
-            ]
-          },
-          source: %{
-            paths: [
-              "/2018/S12/J7/173535163-5ab81c23a3594-standard3.mp4#video:id=v3"
-            ]
-          }
-        },
-        workflow_id: 666
-      }
-    }
+             :ok,
+             %{
+               name: "generate_dash",
+               params: %{
+                 kind: "generate_dash",
+                 options: %{
+                   "-out": "/tmp/ftp_francetv/dash/reference_id/manifest.mpd",
+                   "-profile": "onDemand",
+                   "-rap": true,
+                   "-url-template": true,
+                   "-dash": 20000,
+                   "-frag": 60000
+                 },
+                 requirements: %{
+                   paths: [
+                     "/2018/S12/J7/173535163-5ab81c23a3594-standard3.mp4"
+                   ]
+                 },
+                 source: %{
+                   paths: [
+                     "/2018/S12/J7/173535163-5ab81c23a3594-standard3.mp4#video:id=v3"
+                   ]
+                 }
+               },
+               workflow_id: 666
+             }
+           }
   end
 
   test "video with 1 audio" do
@@ -129,36 +129,37 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDashTest do
     }
 
     result = GenerateDash.build_step_parameters(workflow, step)
+
     assert result == {
-      :ok,
-      %{
-        name: "generate_dash",
-        params: %{
-          kind: "generate_dash",
-          options: %{
-            "-out": "/tmp/ftp_francetv/dash/reference_id/manifest.mpd",
-            "-profile": "onDemand",
-            "-rap": true,
-            "-url-template": true,
-            "-dash": 20000,
-            "-frag": 60000
-          },
-          requirements: %{
-            paths: [
-              "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4",
-              "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4"
-            ]
-          },
-          source: %{
-            paths: [
-              "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4#audio:id=a1",
-              "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4#video:id=v5"
-            ]
-          }
-        },
-        workflow_id: 666
-      }
-    }
+             :ok,
+             %{
+               name: "generate_dash",
+               params: %{
+                 kind: "generate_dash",
+                 options: %{
+                   "-out": "/tmp/ftp_francetv/dash/reference_id/manifest.mpd",
+                   "-profile": "onDemand",
+                   "-rap": true,
+                   "-url-template": true,
+                   "-dash": 20000,
+                   "-frag": 60000
+                 },
+                 requirements: %{
+                   paths: [
+                     "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4",
+                     "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4"
+                   ]
+                 },
+                 source: %{
+                   paths: [
+                     "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4#audio:id=a1",
+                     "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4#video:id=v5"
+                   ]
+                 }
+               },
+               workflow_id: 666
+             }
+           }
   end
 
   test "video with 1 audio and 1 Audio Description" do
@@ -211,38 +212,39 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDashTest do
     }
 
     result = GenerateDash.build_step_parameters(workflow, step)
+
     assert result == {
-      :ok,
-        %{
-        name: "generate_dash",
-        params: %{
-          kind: "generate_dash",
-          options: %{
-            "-out": "/tmp/ftp_francetv/dash/reference_id/manifest.mpd",
-            "-profile": "onDemand",
-            "-rap": true,
-            "-url-template": true,
-            "-dash": 20000,
-            "-frag": 60000
-          },
-          requirements: %{
-            paths: [
-              "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4",
-              "/2018/S12/J7/173535163-5ab81c23a3594-qad.mp4",
-              "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4"
-            ]
-          },
-          source: %{
-            paths: [
-              "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4#audio:id=a1",
-              "/2018/S12/J7/173535163-5ab81c23a3594-qad.mp4#audio:id=a2",
-              "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4#video:id=v5"
-            ]
-          }
-        },
-        workflow_id: 666
-      }
-    }
+             :ok,
+             %{
+               name: "generate_dash",
+               params: %{
+                 kind: "generate_dash",
+                 options: %{
+                   "-out": "/tmp/ftp_francetv/dash/reference_id/manifest.mpd",
+                   "-profile": "onDemand",
+                   "-rap": true,
+                   "-url-template": true,
+                   "-dash": 20000,
+                   "-frag": 60000
+                 },
+                 requirements: %{
+                   paths: [
+                     "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4",
+                     "/2018/S12/J7/173535163-5ab81c23a3594-qad.mp4",
+                     "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4"
+                   ]
+                 },
+                 source: %{
+                   paths: [
+                     "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4#audio:id=a1",
+                     "/2018/S12/J7/173535163-5ab81c23a3594-qad.mp4#audio:id=a2",
+                     "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4#video:id=v5"
+                   ]
+                 }
+               },
+               workflow_id: 666
+             }
+           }
   end
 
   test "video with 1 audio and 1 original version" do
@@ -295,39 +297,41 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDashTest do
     }
 
     result = GenerateDash.build_step_parameters(workflow, step)
+
     assert result == {
-      :ok,
-      %{
-        name: "generate_dash",
-        params: %{
-          kind: "generate_dash",
-          options: %{
-            "-out": "/tmp/ftp_francetv/dash/reference_id/manifest.mpd",
-            "-profile": "onDemand",
-            "-rap": true,
-            "-url-template": true,
-            "-dash": 20000,
-            "-frag": 60000
-          },
-          requirements: %{
-            paths: [
-              "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4",
-              "/2018/S12/J7/173535163-5ab81c23a3594-qaa.mp4",
-              "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4"
-            ]
-          },
-          source: %{
-            paths: [
-              "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4#audio:id=a1",
-              "/2018/S12/J7/173535163-5ab81c23a3594-qaa.mp4#audio:id=a2",
-              "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4#video:id=v5"
-            ]
-          }
-        },
-        workflow_id: 666
-      }
-    }
+             :ok,
+             %{
+               name: "generate_dash",
+               params: %{
+                 kind: "generate_dash",
+                 options: %{
+                   "-out": "/tmp/ftp_francetv/dash/reference_id/manifest.mpd",
+                   "-profile": "onDemand",
+                   "-rap": true,
+                   "-url-template": true,
+                   "-dash": 20000,
+                   "-frag": 60000
+                 },
+                 requirements: %{
+                   paths: [
+                     "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4",
+                     "/2018/S12/J7/173535163-5ab81c23a3594-qaa.mp4",
+                     "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4"
+                   ]
+                 },
+                 source: %{
+                   paths: [
+                     "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4#audio:id=a1",
+                     "/2018/S12/J7/173535163-5ab81c23a3594-qaa.mp4#audio:id=a2",
+                     "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4#video:id=v5"
+                   ]
+                 }
+               },
+               workflow_id: 666
+             }
+           }
   end
+
   test "video with 1 audio and 1 original version and 1 audio description" do
     alias ExSubtilBackend.Workflows.Workflow
     alias ExSubtilBackend.Jobs.Job
@@ -386,39 +390,40 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDashTest do
     }
 
     result = GenerateDash.build_step_parameters(workflow, step)
+
     assert result == {
-      :ok,
-      %{
-        name: "generate_dash",
-        params: %{
-          kind: "generate_dash",
-          options: %{
-            "-out": "/tmp/ftp_francetv/dash/reference_id/manifest.mpd",
-            "-profile": "onDemand",
-            "-rap": true,
-            "-url-template": true,
-            "-dash": 20000,
-            "-frag": 60000
-          },
-          requirements: %{
-            paths: [
-              "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4",
-              "/2018/S12/J7/173535163-5ab81c23a3594-qaa.mp4",
-              "/2018/S12/J7/173535163-5ab81c23a3594-qad.mp4",
-              "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4"
-            ]
-          },
-          source: %{
-            paths: [
-              "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4#audio:id=a1",
-              "/2018/S12/J7/173535163-5ab81c23a3594-qaa.mp4#audio:id=a2",
-              "/2018/S12/J7/173535163-5ab81c23a3594-qad.mp4#audio:id=a3",
-              "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4#video:id=v5"
-            ]
-          }
-        },
-        workflow_id: 666
-      }
-    }
+             :ok,
+             %{
+               name: "generate_dash",
+               params: %{
+                 kind: "generate_dash",
+                 options: %{
+                   "-out": "/tmp/ftp_francetv/dash/reference_id/manifest.mpd",
+                   "-profile": "onDemand",
+                   "-rap": true,
+                   "-url-template": true,
+                   "-dash": 20000,
+                   "-frag": 60000
+                 },
+                 requirements: %{
+                   paths: [
+                     "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4",
+                     "/2018/S12/J7/173535163-5ab81c23a3594-qaa.mp4",
+                     "/2018/S12/J7/173535163-5ab81c23a3594-qad.mp4",
+                     "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4"
+                   ]
+                 },
+                 source: %{
+                   paths: [
+                     "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4#audio:id=a1",
+                     "/2018/S12/J7/173535163-5ab81c23a3594-qaa.mp4#audio:id=a2",
+                     "/2018/S12/J7/173535163-5ab81c23a3594-qad.mp4#audio:id=a3",
+                     "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4#video:id=v5"
+                   ]
+                 }
+               },
+               workflow_id: 666
+             }
+           }
   end
 end
