@@ -21,7 +21,7 @@ defmodule ExSubtilBackend.Jobs.Status do
     |> validate_required([:state, :job_id])
   end
 
-  def set_job_status(job_id, status, description = %{}) do
+  def set_job_status(job_id, status, description \\ %{}) do
     %Status{}
     |> Status.changeset(%{job_id: job_id, state: status, description: description})
     |> Repo.insert()
