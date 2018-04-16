@@ -1,0 +1,60 @@
+<i class="material-icons open"
+  *ngIf="!jobs_opened"
+  (click)="openJobs()"
+  >menu</i>
+
+<i class="material-icons close"
+  *ngIf="jobs_opened"
+  (click)="closeJobs()"
+  >vertical_align_center</i>
+
+<span *ngIf="workflow" class="reference">
+  <a href="/videos?video_id={{workflow.reference}}">
+    {{workflow.reference}}
+  </a>
+  <duration-component [workflow]=workflow></duration-component>
+</span>
+
+<div *ngIf="workflow" class=steps>
+  <div
+    *ngFor="let step of workflow.flow.steps"
+    class="step {{step.id}} {{step.status}}">
+    <div class="content">
+      <div class=details>
+        <mat-icon matListIcon>{{step.id | iconForJob}}</mat-icon>
+        {{step.id | jobType}}
+        <parameters-component [parameters]=step.parameters></parameters-component>
+      </div>
+      <div class=jobs
+        *ngIf=jobs_opened>
+        <jobs-component jobType={{step.id}} workflowId={{workflow.id}}></jobs-component>
+      </div>
+      <div class=progress>
+        <span
+          class="skipped"
+          *ngIf="step.jobs.skipped > 0"
+          [ngStyle]="{'flex': step.jobs.skipped}">
+          Skipped
+        </span>
+        <span
+          class="completed"
+          *ngIf="step.jobs.completed > 0"
+          [ngStyle]="{'flex': step.jobs.completed}">
+          {{step.jobs.completed}}
+        </span>
+        <span
+          class="error"
+          *ngIf="step.jobs.errors > 0"
+          [ngStyle]="{'flex': step.jobs.errors}">
+          {{step.jobs.errors}}
+        </span>
+        <span
+          class="queued"
+          *ngIf="step.jobs.queued > 0"
+          [ngStyle]="{'flex': step.jobs.queued}">
+          {{step.jobs.queued}}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

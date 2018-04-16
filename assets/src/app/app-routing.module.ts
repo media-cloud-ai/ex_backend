@@ -33,11 +33,6 @@ const appRoutes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'jobs',
-    component: JobsComponent,
-    canActivate: [AuthGuard]
-  },
-  {
     path: 'workflows',
     component: WorkflowsComponent,
     canActivate: [AuthGuard]

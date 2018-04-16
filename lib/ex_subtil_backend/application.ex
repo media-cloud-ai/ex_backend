@@ -76,6 +76,12 @@ defmodule ExSubtilBackend.Application do
       ExSubtilBackend.Migration.CreateUsers
     )
 
+    Ecto.Migrator.up(
+      ExSubtilBackend.Repo,
+      20_180_416_094_200,
+      ExSubtilBackend.Migration.AddStatusDescription
+    )
+
     main_supervisor
   end
 

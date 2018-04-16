@@ -3,6 +3,7 @@
 @green: #71bd2c;
 @blue: #3965ac;
 @red: #db280f;
+@grey: #696f74;
 
 ul {
   list-style: none;
@@ -34,6 +35,14 @@ ul {
     span.source.path {
       justify-content: flex-end;
     }
+
+    span.duration {
+      cursor: pointer;
+      padding: 3px;
+    }
+    span.error {
+      padding: 3px;
+    }
   }
 
   li.completed span.status {
@@ -41,6 +50,10 @@ ul {
   }
   li.processing span.status {
     background-color: @blue;
+    color: @white;
+  }
+  li.skipped span.status {
+    background-color: @grey;
     color: @white;
   }
   li.error span.status {
