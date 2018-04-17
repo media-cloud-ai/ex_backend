@@ -1,35 +1,42 @@
 <h1 mat-dialog-title>Workflow configuration</h1>
 <div mat-dialog-content>
-  <mat-list dense>
-    <mat-list-item
-      *ngFor="let step of steps"
-      class="step {{step.id}}">
-      <div>
+  <div
+    class="line"
+    *ngFor="let line of graph"
+    >
+    <span *ngFor="let step of line"
+      class="step"
+      [ngStyle]="{flex: 1 / line.length}"
+      >
+      <span
+        *ngIf="step.name"
+        [ngClass]="{disabled: !step.enable}"
+        title="{{step.name | jobType}}"
+        >
         <mat-checkbox class='small'
           color="primary"
           [(ngModel)]="step.enable"
           ></mat-checkbox>
-        <mat-icon matListIcon>{{step.id | iconForJob}}</mat-icon>
-        {{step.id | jobType}}
-        <div
-          class="label"
-          [ngClass]="{disabled: step.enable}">
-          <mat-list dense>
-            <mat-list-item
-              *ngFor="let parameter of step.parameters">
-              <mat-form-field class="parameter">
-                <input matInput
-                  type={{parameter.type}}
-                  placeholder="{{parameter.id | parameterLabel}}"
-                  value={{parameter.default}}
-                  [(ngModel)]="parameter.default">
-              </mat-form-field>
-            </mat-list-item>
-          </mat-list>
-        </div>
-      </div>
-    </mat-list-item>
-  </mat-list>
+
+        <mat-icon>{{step.name | iconForJob}}</mat-icon>
+        {{step.name | jobType}}
+
+        <mat-list dense>
+          <mat-list-item
+            *ngFor="let parameter of step.parameters">
+            <mat-form-field class="parameter">
+              <input matInput
+                type={{parameter.type}}
+                placeholder="{{parameter.id | parameterLabel}}"
+                value={{parameter.default}}
+                [(ngModel)]="parameter.default">
+            </mat-form-field>
+          </mat-list-item>
+        </mat-list>
+      </span>
+      <mat-divider *ngIf="step.name"></mat-divider>
+    </span>
+  </div>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancel</button>
