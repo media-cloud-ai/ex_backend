@@ -73,6 +73,7 @@ config :ex_subtil_backend, ExSubtilBackend.Repo,
   pool_size: 10
 
 config :ex_subtil_backend,
+  hostname: "https://194.51.35.43:10743",
   akamai_hostname: "akamai.com",
   akamai_username: "akamai_username",
   akamai_password: "akamai_password",

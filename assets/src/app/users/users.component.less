@@ -1,0 +1,82 @@
+
+.new {
+  border: 2px solid #3965ac;
+  .title {
+    background-color: #3965ac;
+    color: #fff;
+
+    i {
+      font-size: 18px;
+    }
+    label {
+      line-height: 24px;
+      vertical-align: top;
+    }
+  }
+  .form {
+    padding: 5px;
+    i {
+      font-size: 18px;
+    }
+
+    .message {
+      padding: 10px;
+      color: #db280f;
+    }
+  }
+}
+
+ul.users {
+  list-style: none;
+  padding: 0px;
+
+  li.users-header {
+    font-weight: bold;
+    padding: 10px;
+    display: flex;
+
+    span {
+      line-height: 35px;
+    }
+
+    span.email,
+    span.status {
+      flex: 1
+    }
+
+    span.actions {
+      width: 100px;
+    }
+  }
+
+  li.user {
+    padding: 10px;
+    background-color: #FFF;
+    display: flex;
+
+    span.email {
+      flex: 1;
+    }
+
+    span.status {
+      flex: 1;
+      .state {
+        color: #fff;
+        padding: 4px;
+        border-radius: 3px;
+      }
+
+      .state.enabled {
+        background-color: #71bd2c;
+      }
+
+      .state.pending {
+        background-color: #3965ac;
+      }
+    }
+
+    span.actions {
+      width: 100px;
+    }
+  }
+}

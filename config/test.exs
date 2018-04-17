@@ -19,6 +19,7 @@ config :ex_subtil_backend, ExSubtilBackend.Repo,
   pool: Ecto.Adapters.SQL.Sandbox
 
 config :ex_subtil_backend,
+  hostname: "http://localhost:4000",
   docker_hosts: [
     [
       hostname: "http://localhost",
@@ -29,7 +30,7 @@ config :ex_subtil_backend,
   ]
 
 config :amqp,
-  hostname: "localhost",
+  hostname: "192.168.99.100",
   username: "guest",
   password: "guest"
 

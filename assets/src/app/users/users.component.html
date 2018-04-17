@@ -1,0 +1,83 @@
+<h1>
+  Users
+</h1>
+
+<div class=new>
+  <div class=title>
+    <i class="material-icons">add</i>
+    <label>
+      Add User
+    </label>
+  </div>
+  <div class="form">
+    <mat-form-field class="email-input">
+      <input
+        matInput
+        type="text"
+        placeholder="Email"
+        [(ngModel)]="email"
+        >
+    </mat-form-field>
+    <mat-form-field class="password-input">
+      <input
+        matInput
+        type="password"
+        placeholder="Password"
+        [(ngModel)]="password"
+        >
+    </mat-form-field>
+    <button mat-button
+      color="primary"
+      (click)="createUser()">
+        <i class="material-icons">add</i> Create
+    </button>
+    <span class=message>
+      {{error_message}}
+    </span>
+  </div>
+</div>
+
+<ul *ngIf="users" class="users">
+  <li *ngIf="users.total == 0">No users found.</li>
+  <li class="users-header">
+    <span class="email">
+      Email
+    </span>
+    <span class="status">
+      Status
+    </span>
+    <span class="actions">
+    </span>
+  </li>
+  <li
+    *ngFor="let user of users.data"
+    class="user"
+    >
+    <span class="email">
+      {{user.email}}
+    </span>
+    <span class="status">
+      <span class="state enabled" *ngIf="user.confirmed_at">
+        ENABLED
+      </span>
+      <span class="state pending" *ngIf="!user.confirmed_at">
+        PENDING
+      </span>
+    </span>
+    
+    <span class="actions">
+      <button mat-raised-button
+        color="warn"
+        (click)="removeUser(user.id)">
+          <i class="material-icons">delete</i> Delete
+      </button>
+    </span>
+  </li>
+</ul>
+
+<mat-paginator
+  [length]="length"
+  [pageSize]="pageSize"
+  [pageIndex]="page"
+  (page)="pageEvent = eventGetUsers($event)">
+</mat-paginator>
