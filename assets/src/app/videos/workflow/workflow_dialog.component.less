@@ -1,7 +1,19 @@
-
-.step {
+.line {
+  display: flex;
+  align-items: flex-end;
   font-family: sans-serif;
-  .label.disabled {
-    color: #bbb;
+
+  .step {
+    min-height: 32px;
+    min-width: 200px;
+    padding: 10px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    .disabled {
+      color: #bbb;
+    }
   }
 }
