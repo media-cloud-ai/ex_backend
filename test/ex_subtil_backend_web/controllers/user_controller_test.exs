@@ -33,7 +33,7 @@ defmodule ExSubtilBackendWeb.UserControllerTest do
   @tag login: "reg@example.com"
   test "show chosen user's page", %{conn: conn, user: user} do
     conn = get(conn, user_path(conn, :show, user))
-    assert json_response(conn, 200)["data"] == %{"id" => user.id, "email" => "reg@example.com"}
+    assert json_response(conn, 200)["data"] == %{"id" => user.id, "email" => "reg@example.com", "confirmed_at" => nil}
   end
 
   test "creates user when data is valid", %{conn: conn} do
@@ -65,16 +65,8 @@ defmodule ExSubtilBackendWeb.UserControllerTest do
   end
 
   @tag login: "reg@example.com"
-  test "deletes chosen user", %{conn: conn, user: user} do
+  test "unable to delete myself", %{conn: conn, user: user} do
     conn = delete(conn, user_path(conn, :delete, user))
-    assert response(conn, 204)
-    refute Accounts.get(user.id)
-  end
-
-  @tag login: "reg@example.com"
-  test "cannot delete other user", %{conn: conn, other: other} do
-    conn = delete(conn, user_path(conn, :delete, other))
-    assert json_response(conn, 403)["errors"]["detail"] =~ "not authorized"
-    assert Accounts.get(other.id)
+    assert response(conn, 403)
   end
 end
