@@ -172,6 +172,37 @@ export class WorkflowDialogComponent {
 
   }
 
+  getStepWeight(step: Step): number {
+    let step_line: Step[] = this.graph.find(line => line.includes(step));
+    let step_line_idx: number = this.graph.indexOf(step_line);
+
+    if(step_line.length == 1) {
+      return 1;
+    }
+
+    let children_weigth = 1;
+    let children_line = this.graph[step_line_idx + 1];
+    if(children_line != undefined) {
+      let step_children = children_line.filter(s => s.parent_ids.includes(step.id));
+      children_weigth = 1 / children_line.length;
+      if(step_children.length > 0) {
+        children_weigth = step_children.length / children_line.length;
+      }
+    }
+
+    let parent_weigth = 1;
+    let parent_line = this.graph[step_line_idx - 1];
+    if(parent_line != undefined) {
+      let step_parents = parent_line.filter(s => step.parent_ids.includes(s.id));
+      parent_weigth = 1 / parent_line.length;
+      if(step_parents.length > 0) {
+        parent_weigth = step_parents.length / parent_line.length;
+      }
+    }
+
+    return parent_weigth * children_weigth * step_line.length;
+  }
+
   onNoClick(): void {
     this.dialogRef.close();
   }

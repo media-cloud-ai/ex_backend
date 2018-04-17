@@ -6,7 +6,7 @@
     >
     <span *ngFor="let step of line"
       class="step"
-      [ngStyle]="{flex: 1 / line.length}"
+      [ngStyle]="{flex: getStepWeight(step)}"
       >
       <span
         *ngIf="step.name"
