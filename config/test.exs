@@ -30,7 +30,7 @@ config :ex_subtil_backend,
   ]
 
 config :amqp,
-  hostname: "locahost",
+  hostname: "localhost",
   username: "guest",
   password: "guest"
 
