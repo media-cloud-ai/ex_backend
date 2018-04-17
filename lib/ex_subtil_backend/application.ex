@@ -82,10 +82,14 @@ defmodule ExSubtilBackend.Application do
       ExSubtilBackend.Migration.AddStatusDescription
     )
 
-    root_email = System.get_env("ROOT_EMAIL") || Application.get_env(:ex_subtil_backend, :root_email)
-    root_password = System.get_env("ROOT_PASSWORD") || Application.get_env(:ex_subtil_backend, :root_password)
+    root_email =
+      System.get_env("ROOT_EMAIL") || Application.get_env(:ex_subtil_backend, :root_email)
 
-    if !is_nil(root_email) && !is_nil(root_password) && is_nil(ExSubtilBackend.Accounts.get_by(%{"email" => root_email})) do
+    root_password =
+      System.get_env("ROOT_PASSWORD") || Application.get_env(:ex_subtil_backend, :root_password)
+
+    if !is_nil(root_email) && !is_nil(root_password) &&
+         is_nil(ExSubtilBackend.Accounts.get_by(%{"email" => root_email})) do
       user = %{email: root_email, password: root_password}
 
       {:ok, user} = ExSubtilBackend.Accounts.create_user(user)
