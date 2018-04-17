@@ -1,6 +1,8 @@
 defmodule ExSubtilBackend.Application do
   use Application
 
+  require Logger
+
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   def start(_type, _args) do
@@ -94,6 +96,8 @@ defmodule ExSubtilBackend.Application do
 
       {:ok, user} = ExSubtilBackend.Accounts.create_user(user)
       {:ok, _user} = ExSubtilBackend.Accounts.confirm_user(user)
+    else
+      Logger.warn("No root user (re-)created")
     end
 
     main_supervisor
