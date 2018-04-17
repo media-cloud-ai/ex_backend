@@ -44,12 +44,14 @@ import {RouterModule, Routes}    from '@angular/router';
 
 import {AppRoutingModule}        from './app-routing.module';
 
+import {ConfirmComponent}        from './confirm/confirm.component';
 import {DashboardComponent}      from './dashboard/dashboard.component';
 import {DurationComponent}       from './workflows/duration.component';
 import {JobsComponent}           from './jobs/jobs.component';
 import {LoginComponent}          from './login/login.component';
 import {ParametersComponent}     from './workflows/parameters.component';
 import {QueuesComponent}         from './amqp/queues.component';
+import {UsersComponent}          from './users/users.component';
 import {VideosComponent}         from './videos/videos.component';
 import {WorkflowComponent}       from './workflows/workflow.component';
 import {WorkflowsComponent}      from './workflows/workflows.component';
@@ -65,6 +67,7 @@ import {ImageService}            from './services/image.service';
 import {JobService}              from './services/job.service';
 import {NodeService}             from './services/node.service';
 import {RdfService}              from './services/rdf.service';
+import {UserService}             from './services/user.service';
 import {VideoService}            from './services/video.service';
 import {WorkflowService}         from './services/workflow.service';
 
@@ -128,12 +131,14 @@ const SUBTIL_DATE_FORMATS = {
   ],
   declarations: [
     AppComponent,
+    ConfirmComponent,
     DashboardComponent,
     DurationComponent,
     JobsComponent,
     LoginComponent,
     ParametersComponent,
     QueuesComponent,
+    UsersComponent,
     VideosComponent,
     RdfDialogComponent,
     WorkflowDialogComponent,
@@ -192,6 +197,7 @@ const SUBTIL_DATE_FORMATS = {
     JobService,
     NodeService,
     RdfService,
+    UserService,
     VideoService,
     WorkflowService,
   ],

@@ -8,11 +8,11 @@ defmodule ExSubtilBackendWeb.UserController do
   action_fallback(ExSubtilBackendWeb.FallbackController)
 
   # the following plugs are defined in the controllers/authorize.ex file
-  plug(:user_check when action in [:index, :show])
-  plug(:id_check when action in [:update, :delete])
+  plug(:user_check when action in [:index, :show, :delete])
+  plug(:id_check when action in [:update])
 
-  def index(conn, _) do
-    users = Accounts.list_users()
+  def index(conn, params) do
+    users = Accounts.list_users(params)
     render(conn, "index.json", users: users)
   end
 
@@ -42,9 +42,14 @@ defmodule ExSubtilBackendWeb.UserController do
     end
   end
 
-  def delete(%Plug.Conn{assigns: %{current_user: user}} = conn, _) do
-    {:ok, _user} = Accounts.delete_user(user)
+  def delete(%Plug.Conn{assigns: %{current_user: user}} = conn, params) do
+    selected_user = Accounts.get(Map.get(params, "id") |> String.to_integer())
 
-    send_resp(conn, :no_content, "")
+    if selected_user.id != user.id do
+      {:ok, _user} = Accounts.delete_user(selected_user)
+      send_resp(conn, :no_content, "")
+    else
+      send_resp(conn, 403, "unable to delete yourself")
+    end
   end
 end

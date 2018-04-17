@@ -9,9 +9,11 @@ import {CanDeactivateGuard} from './authentication/can-deactivate-guard.service'
 import {AuthGuard} from './authentication/auth-guard.service';
 import {AuthService} from './authentication/auth.service';
 
+import {ConfirmComponent} from './confirm/confirm.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {LoginComponent} from './login/login.component';
 import {JobsComponent} from './jobs/jobs.component';
+import {UsersComponent} from './users/users.component';
 import {VideosComponent} from './videos/videos.component';
 import {WorkflowsComponent} from './workflows/workflows.component';
 import {WorkersComponent} from './workers/workers.component';
@@ -19,12 +21,21 @@ import {WorkersComponent} from './workers/workers.component';
 const appRoutes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   {
+    path: 'confirm',
+    component: ConfirmComponent
+  },
+  {
     path: 'login',
     component: LoginComponent
   },
   {
     path: 'dashboard',
     component: DashboardComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'users',
+    component: UsersComponent,
     canActivate: [AuthGuard]
   },
   {
