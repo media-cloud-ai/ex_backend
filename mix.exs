@@ -45,7 +45,7 @@ defmodule ExSubtilBackend.Mixfile do
     [
       {:amqp, "~> 0.3.1"},
       {:bcrypt_elixir, "~> 1.0"},
-      {:bamboo, "~> 0.8"},
+      {:bamboo, github: "media-io/bamboo"},
       {:cowboy, "~> 1.1.2"},
       {:distillery, "~> 1.5"},
       {:ex_video_factory, "0.3.4"},

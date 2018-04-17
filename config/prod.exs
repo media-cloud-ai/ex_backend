@@ -73,7 +73,8 @@ config :ex_subtil_backend, ExSubtilBackend.Repo,
   pool_size: 10
 
 config :ex_subtil_backend, ExSubtilBackend.Mailer,
-  adapter: Bamboo.SendgridAdapter
+  adapter: Bamboo.SendGridAdapter,
+  api_key: {:system, "SENDGRID_API_KEY"}
 
 config :ex_subtil_backend,
   hostname: "https://194.51.35.43:10743",
