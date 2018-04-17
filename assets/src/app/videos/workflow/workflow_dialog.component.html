@@ -16,6 +16,8 @@
         <mat-checkbox class='small'
           color="primary"
           [(ngModel)]="step.enable"
+          (change)="updateEnabledSteps(step)"
+          [disabled]=!active_steps[step.name]
           ></mat-checkbox>
 
         <mat-icon>{{step.name | iconForJob}}</mat-icon>
