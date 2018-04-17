@@ -119,7 +119,7 @@ defmodule ExSubtilBackend.Accounts.Message do
   defp prep_mail(address) do
     new_email()
     |> to(address)
-    |> from("maarnaud@media-io.com")
+    |> from("no-reply@media-io.com")
   end
 
   defp build_html_body(config, content) do
