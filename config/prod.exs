@@ -72,6 +72,9 @@ config :ex_subtil_backend, ExSubtilBackend.Repo,
   hostname: "database",
   pool_size: 10
 
+config :ex_subtil_backend, ExSubtilBackend.Mailer,
+  adapter: Bamboo.SendgridAdapter
+
 config :ex_subtil_backend,
   hostname: "https://194.51.35.43:10743",
   akamai_hostname: "akamai.com",
