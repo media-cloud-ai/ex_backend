@@ -115,12 +115,10 @@ export class WorkflowDialogComponent {
       let child_line_index = 0;
       if(step.parent_ids.length != 0) {
 
-        let parent_id = Math.max(...step.parent_ids);
-        let parent_step = this.steps.find(s => s.id == parent_id);
-        let parent_line = this.graph.find(line => line.includes(parent_step));
-        let parent_line_index = this.graph.indexOf(parent_line);
-
-        child_line_index = parent_line_index + 1;
+        let parents_lines_index = this.graph
+          .filter(line => line.filter(s => step.parent_ids.includes(s.id)).length > 0)
+          .map(line => this.graph.indexOf(line));
+        child_line_index = Math.max(...parents_lines_index) + 1;
       }
 
       if(this.graph[child_line_index] == undefined) {
