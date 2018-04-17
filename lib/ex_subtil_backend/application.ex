@@ -1,6 +1,8 @@
 defmodule ExSubtilBackend.Application do
   use Application
 
+  require Logger
+
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   def start(_type, _args) do
@@ -81,6 +83,22 @@ defmodule ExSubtilBackend.Application do
       20_180_416_094_200,
       ExSubtilBackend.Migration.AddStatusDescription
     )
+
+    root_email =
+      System.get_env("ROOT_EMAIL") || Application.get_env(:ex_subtil_backend, :root_email)
+
+    root_password =
+      System.get_env("ROOT_PASSWORD") || Application.get_env(:ex_subtil_backend, :root_password)
+
+    if !is_nil(root_email) && !is_nil(root_password) &&
+         is_nil(ExSubtilBackend.Accounts.get_by(%{"email" => root_email})) do
+      user = %{email: root_email, password: root_password}
+
+      {:ok, user} = ExSubtilBackend.Accounts.create_user(user)
+      {:ok, _user} = ExSubtilBackend.Accounts.confirm_user(user)
+    else
+      Logger.warn("No root user (re-)created")
+    end
 
     main_supervisor
   end

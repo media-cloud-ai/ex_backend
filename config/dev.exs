@@ -74,7 +74,9 @@ config :ex_subtil_backend,
     hostname: "localhost",
     port: 1501
   ],
-  appdir: "/opt/app"
+  appdir: "/opt/app",
+  root_email: "admin@media-io.com",
+  root_password: "admin123"
 
 config :amqp,
   hostname: "localhost",
