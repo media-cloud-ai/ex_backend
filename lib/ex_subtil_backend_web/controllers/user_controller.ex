@@ -43,7 +43,7 @@ defmodule ExSubtilBackendWeb.UserController do
   end
 
   def delete(%Plug.Conn{assigns: %{current_user: user}} = conn, params) do
-    selected_user = Accounts.get(Map.get(params, "id") |> String.to_integer)
+    selected_user = Accounts.get(Map.get(params, "id") |> String.to_integer())
 
     if selected_user.id != user.id do
       {:ok, _user} = Accounts.delete_user(selected_user)

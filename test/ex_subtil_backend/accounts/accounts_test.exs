@@ -15,12 +15,13 @@ defmodule ExSubtilBackend.AccountsTest do
 
   test "list_users/1 returns all users" do
     user = fixture(:user)
+
     assert Accounts.list_users() == %{
-      data: [user],
-      page: 0,
-      size: 10,
-      total: 1,
-    }
+             data: [user],
+             page: 0,
+             size: 10,
+             total: 1
+           }
   end
 
   test "get returns the user with given id" do

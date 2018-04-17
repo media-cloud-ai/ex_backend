@@ -33,7 +33,12 @@ defmodule ExSubtilBackendWeb.UserControllerTest do
   @tag login: "reg@example.com"
   test "show chosen user's page", %{conn: conn, user: user} do
     conn = get(conn, user_path(conn, :show, user))
-    assert json_response(conn, 200)["data"] == %{"id" => user.id, "email" => "reg@example.com", "confirmed_at" => nil}
+
+    assert json_response(conn, 200)["data"] == %{
+             "id" => user.id,
+             "email" => "reg@example.com",
+             "confirmed_at" => nil
+           }
   end
 
   test "creates user when data is valid", %{conn: conn} do

@@ -43,30 +43,30 @@ defmodule ExSubtilBackend.Accounts.Message do
     |> subject("[Subtil Backend] Confirm your account")
     |> text_body("Confirm your email here #{hostname}/confirm?key=#{key}")
     |> build_html_body("""
-      <h2 style="margin: 0; margin-bottom: 30px; font-family: 'Open Sans', 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-weight: 300; line-height: 1.5; font-size: 24px; color: #294661 !important;">
-        You&#39;re on your way!<br />
-        Let&#39;s confirm your email address.
-      </h2>
+    <h2 style="margin: 0; margin-bottom: 30px; font-family: 'Open Sans', 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-weight: 300; line-height: 1.5; font-size: 24px; color: #294661 !important;">
+      You&#39;re on your way!<br />
+      Let&#39;s confirm your email address.
+    </h2>
 
-      <p style="margin: 0; margin-bottom: 30px; color: #294661; font-family: 'Open Sans', 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 300;">
-        By clicking on the following link, you are confirming your email address.
-      </p>
+    <p style="margin: 0; margin-bottom: 30px; color: #294661; font-family: 'Open Sans', 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 300;">
+      By clicking on the following link, you are confirming your email address.
+    </p>
 
-      <table align="center" table cellpadding="0" cellspacing="0" style="box-sizing: border-box; border-spacing: 0; mso-table-rspace: 0pt; mso-table-lspace: 0pt; width: auto; border-collapse: separate !important;">
-        <tbody>
-          <tr>
-            <td align="center" bgcolor="#348eda"
-              style="box-sizing: border-box; padding: 0; font-family: 'Open Sans', 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 16px; vertical-align: top; background-color: #348eda; border-radius: 2px; text-align: center;"
-              valign="top">
-              <a href="#{hostname}/confirm?key=#{key}"
-                style="box-sizing: border-box; border-color: #348eda; font-weight: 400; text-decoration: none; display: inline-block; margin: 0; color: #ffffff; background-color: #348eda; border: solid 1px #348eda; border-radius: 2px; cursor: pointer; font-size: 14px; padding: 12px 45px;">
-                Confirm Email Address
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      """)
+    <table align="center" table cellpadding="0" cellspacing="0" style="box-sizing: border-box; border-spacing: 0; mso-table-rspace: 0pt; mso-table-lspace: 0pt; width: auto; border-collapse: separate !important;">
+      <tbody>
+        <tr>
+          <td align="center" bgcolor="#348eda"
+            style="box-sizing: border-box; padding: 0; font-family: 'Open Sans', 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 16px; vertical-align: top; background-color: #348eda; border-radius: 2px; text-align: center;"
+            valign="top">
+            <a href="#{hostname}/confirm?key=#{key}"
+              style="box-sizing: border-box; border-color: #348eda; font-weight: 400; text-decoration: none; display: inline-block; margin: 0; color: #ffffff; background-color: #348eda; border: solid 1px #348eda; border-radius: 2px; cursor: pointer; font-size: 14px; padding: 12px 45px;">
+              Confirm Email Address
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    """)
     |> Mailer.deliver_now()
   end
 
@@ -99,10 +99,10 @@ defmodule ExSubtilBackend.Accounts.Message do
     |> subject("[Subtil Backend] Confirmed account")
     |> text_body("Your account has been confirmed.")
     |> build_html_body("""
-      <h2 style="margin: 0; margin-bottom: 30px; font-family: 'Open Sans', 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-weight: 300; line-height: 1.5; font-size: 24px; color: #294661 !important;">
-        Your account has been confirmed.
-      </h2>
-      """)
+    <h2 style="margin: 0; margin-bottom: 30px; font-family: 'Open Sans', 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-weight: 300; line-height: 1.5; font-size: 24px; color: #294661 !important;">
+      Your account has been confirmed.
+    </h2>
+    """)
     |> Mailer.deliver_now()
   end
 
@@ -126,64 +126,63 @@ defmodule ExSubtilBackend.Accounts.Message do
     hostname = Application.get_env(:ex_subtil_backend, :hostname)
 
     config
-    |> html_body(
-      """
-      <head>
-        <style type="text/css">
-          @font-face {
-            font-family: 'Open Sans';
-            font-style: normal;
-            font-weight: 300;
-            src: local('Open Sans Light'), local('OpenSans-Light'), url(https://fonts.gstatic.com/s/opensans/v13/DXI1ORHCpsQm3Vp6mXoaTYnF5uFdDttMLvmWuJdhhgs.ttf) format('truetype');
-          }
+    |> html_body("""
+    <head>
+      <style type="text/css">
+        @font-face {
+          font-family: 'Open Sans';
+          font-style: normal;
+          font-weight: 300;
+          src: local('Open Sans Light'), local('OpenSans-Light'), url(https://fonts.gstatic.com/s/opensans/v13/DXI1ORHCpsQm3Vp6mXoaTYnF5uFdDttMLvmWuJdhhgs.ttf) format('truetype');
+        }
 
-          @font-face {
-            font-family: 'Open Sans';
-            font-style: normal;
-            font-weight: 400;
-            src: local('Open Sans'), local('OpenSans'), url(https://fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3aCWcynf_cDxXwCLxiixG1c.ttf) format('truetype');
-          }
+        @font-face {
+          font-family: 'Open Sans';
+          font-style: normal;
+          font-weight: 400;
+          src: local('Open Sans'), local('OpenSans'), url(https://fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3aCWcynf_cDxXwCLxiixG1c.ttf) format('truetype');
+        }
 
-          @font-face {
-            font-family: 'Open Sans';
-            font-style: normal;
-            font-weight: 600;
-            src: local('Open Sans Semibold'), local('OpenSans-Semibold'), url(https://fonts.gstatic.com/s/opensans/v13/MTP_ySUJH_bn48VBG8sNSonF5uFdDttMLvmWuJdhhgs.ttf) format('truetype');
+        @font-face {
+          font-family: 'Open Sans';
+          font-style: normal;
+          font-weight: 600;
+          src: local('Open Sans Semibold'), local('OpenSans-Semibold'), url(https://fonts.gstatic.com/s/opensans/v13/MTP_ySUJH_bn48VBG8sNSonF5uFdDttMLvmWuJdhhgs.ttf) format('truetype');
+        }
+      </style>
+
+      <!--[if mso]>
+        <style>
+          h1, h2, h3, h4,
+          p, ol, ul {
+            font-family: Arial, sans-serif !important;
           }
         </style>
+      <![endif]-->
+    </head>
 
-        <!--[if mso]>
-          <style>
-            h1, h2, h3, h4,
-            p, ol, ul {
-              font-family: Arial, sans-serif !important;
-            }
-          </style>
-        <![endif]-->
-      </head>
-
-      <body style="font-size: 16px; background-color: #fdfdfd; margin: 0; padding: 0; font-family: 'Open Sans', 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; -webkit-text-size-adjust: 100%; line-height: 1.5; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; height: 100% !important; width: 100% !important;">
-        <table bgcolor="#fdfdfd" class="body" style="box-sizing: border-box; border-spacing: 0; mso-table-rspace: 0pt; mso-table-lspace: 0pt; width: 100%; background-color: #fdfdfd; border-collapse: separate !important;" width="100%">
-          <tbody>
-            <tr>
-              <td>
-                <div style="max-width: 440px; margin:auto;">
-                  &nbsp;<br/>
-                  <img alt="Subtil" height="22" src="#{hostname}/bundles/images/SubTil_logo_preview.png" style="max-width: 100%; border-style: none; width: 123px; height: 22px;" width="123" />
-                  <br/>&nbsp;
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div bgcolor="#fffff" style="background-color: #ffffff; border: 1px solid #f0f0f0; padding: 20px; max-width: 400px; margin:auto;">
-                  #{content}
-                <div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </body>
-      """)
+    <body style="font-size: 16px; background-color: #fdfdfd; margin: 0; padding: 0; font-family: 'Open Sans', 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; -webkit-text-size-adjust: 100%; line-height: 1.5; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; height: 100% !important; width: 100% !important;">
+      <table bgcolor="#fdfdfd" class="body" style="box-sizing: border-box; border-spacing: 0; mso-table-rspace: 0pt; mso-table-lspace: 0pt; width: 100%; background-color: #fdfdfd; border-collapse: separate !important;" width="100%">
+        <tbody>
+          <tr>
+            <td>
+              <div style="max-width: 440px; margin:auto;">
+                &nbsp;<br/>
+                <img alt="Subtil" height="22" src="#{hostname}/bundles/images/SubTil_logo_preview.png" style="max-width: 100%; border-style: none; width: 123px; height: 22px;" width="123" />
+                <br/>&nbsp;
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div bgcolor="#fffff" style="background-color: #ffffff; border: 1px solid #f0f0f0; padding: 20px; max-width: 400px; margin:auto;">
+                #{content}
+              <div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </body>
+    """)
   end
 end
