@@ -11,6 +11,7 @@ export class Step {
   parent_ids: number[];
   name: string;
   enable: boolean;
+  required: string[];
   parameters: Parameter[];
 }
 

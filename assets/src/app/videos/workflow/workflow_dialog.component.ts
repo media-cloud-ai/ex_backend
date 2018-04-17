@@ -12,6 +12,7 @@ export class WorkflowDialogComponent {
   acs_enable: boolean;
   steps: Step[];
   graph: Step[][];
+  active_steps = {};
 
   constructor(public dialogRef: MatDialogRef<WorkflowDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -23,36 +24,52 @@ export class WorkflowDialogComponent {
         parent_ids: [],
         name: "download_ftp",
         enable: true,
+        required: [],
         parameters: []
       },{
         id: 1,
         parent_ids: [0],
         name: "download_http",
         enable: true,
+        required: [
+          "download_ftp"
+        ],
         parameters: []
       },{
         id: 2,
         parent_ids: [0],
         name: "audio_extraction",
         enable: true,
+        required: [
+          "download_ftp"
+        ],
         parameters : []
       },{
         id: 3,
         parent_ids: [2],
         name: "audio_decode",
         enable: this.acs_enable,
+        required: [
+          "audio_extraction"
+        ],
         parameters : []
       },{
         id: 4,
         parent_ids: [3],
         name: "acs_prepare_audio",
         enable: this.acs_enable,
+        required: [
+          "audio_decode"
+        ],
         parameters : []
       },{
         id: 5,
         parent_ids: [4],
         name: "acs_synchronize",
         enable: this.acs_enable,
+        required: [
+          "acs_prepare_audio"
+        ],
         parameters : []
       // },{
       //   id: "audio_encode",
@@ -63,18 +80,28 @@ export class WorkflowDialogComponent {
         parent_ids: [1, 5],
         name: "ttml_to_mp4",
         enable: true,
+        required: [
+          "download_http"
+        ],
         parameters: []
       },{
         id: 7,
         parent_ids: [6],
         name: "set_language",
         enable: true,
+        required: [
+          "audio_extraction",
+          "ttml_to_mp4"
+        ],
         parameters : []
       },{
         id: 8,
         parent_ids: [7],
         name: "generate_dash",
         enable: true,
+        required: [
+          "set_language"
+        ],
         parameters : [
           {
             id: "segment_duration",
@@ -93,11 +120,17 @@ export class WorkflowDialogComponent {
         parent_ids: [8],
         name: "upload_ftp",
         enable: true,
+        required: [
+          "generate_dash"
+        ],
         parameters: []
       },{
         id: 10,
         parent_ids: [9],
         name: "clean_workspace",
+        required: [
+          "download_ftp"
+        ],
         enable: true,
         parameters: []
       }
@@ -105,11 +138,12 @@ export class WorkflowDialogComponent {
 
     this.graph = new Array();
     this.initWorkflowGraph();
+
+    this.updateStepRequirements(this.steps[0]);
   }
 
   private initWorkflowGraph(): void {
 
-    console.log(this.graph.length);
     for(let step of this.steps) {
 
       let child_line_index = 0;
@@ -153,6 +187,7 @@ export class WorkflowDialogComponent {
             parent_ids: parent.parent_ids,
             name: undefined,
             enable: true,
+            required: [],
             parameters: []
           };
           cur_line.splice(idx, 0, fake_step);
@@ -160,9 +195,6 @@ export class WorkflowDialogComponent {
 
       this.graph[i] = cur_line;
     }
-
-    console.log("this.graph:", this.graph);
-
   }
 
   getStepWeight(step: Step): number {
@@ -194,6 +226,33 @@ export class WorkflowDialogComponent {
     }
 
     return parent_weigth * children_weigth * step_line.length;
+  }
+
+  updateStepRequirements(step: Step) {
+    let step_dependencies = this.steps.filter(s => step.required.some(dependency => dependency == s.name));
+    let can_step_be_enabled = true;
+    for(let dep of step_dependencies) {
+      if(!dep.enable) {
+        can_step_be_enabled = false;
+      }
+    }
+    this.active_steps[step.name] = can_step_be_enabled;
+
+    let step_children = this.steps.filter(s => s.parent_ids.includes(step.id)); // step.parent_ids.indexOf(s.id) >= 0
+    for(let child of step_children) {
+      this.updateStepRequirements(child);
+    }
+  }
+
+  updateEnabledSteps(step: Step): void {
+    if(!step.enable) {
+      let step_children = this.steps.filter(s => s.parent_ids.includes(step.id)); // step.parent_ids.indexOf(s.id) >= 0
+      for(let child of step_children) {
+        child.enable = false;
+        this.updateEnabledSteps(child);
+      }
+    }
+    this.updateStepRequirements(step);
   }
 
   onNoClick(): void {
