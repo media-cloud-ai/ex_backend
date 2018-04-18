@@ -1,6 +1,6 @@
 defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
   alias ExSubtilBackend.Jobs
-  alias ExSubtilBackend.Amqp.JobCommandLineEmitter
+  alias ExSubtilBackend.Amqp.JobAcsEmitter
   alias ExSubtilBackend.Workflow.Step.Requirements
 
   require Logger
@@ -71,7 +71,7 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
       parameters: job.params
     }
 
-    JobCommandLineEmitter.publish_json(params)
+    JobAcsEmitter.publish_json(params)
   end
 
   defp get_source_files(jobs) do
