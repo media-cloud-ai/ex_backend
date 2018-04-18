@@ -35,7 +35,7 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
       workflow_id: workflow.id,
       params: %{
         requirements: requirements,
-        program: "./SincroSubtilTSP_V0.3",
+        program: "./SynchroSubtilTSP_V0.4",
         exec_dir: exec_dir,
         libraries: [
           exec_dir
