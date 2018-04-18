@@ -24,6 +24,9 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
     app_dir =
       System.get_env("APP_DIR") || Application.get_env(:ex_subtil_backend, :appdir) || "/opt/app"
 
+    acs_app =
+      System.get_env("ACS_APP") || Application.get_env(:ex_subtil_backend, :acs_app)
+
     filename = Path.basename(subtitle_path)
     dst_path = work_dir <> "/" <> workflow.reference <> "/acs/" <> filename
     exec_dir = app_dir <> "/acs"
@@ -35,7 +38,7 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
       workflow_id: workflow.id,
       params: %{
         requirements: requirements,
-        program: "./SynchroSubtilTSP_V0.4",
+        program: acs_app,
         exec_dir: exec_dir,
         libraries: [
           exec_dir

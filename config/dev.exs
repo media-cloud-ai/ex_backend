@@ -76,6 +76,7 @@ config :ex_subtil_backend,
     port: 1501
   ],
   appdir: "/opt/app",
+  acs_app: "./SynchroSubtilTSP_V0.4",
   root_email: "admin@media-io.com",
   root_password: "admin123"
 
