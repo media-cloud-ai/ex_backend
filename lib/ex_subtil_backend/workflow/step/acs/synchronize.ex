@@ -1,6 +1,6 @@
 defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
   alias ExSubtilBackend.Jobs
-  alias ExSubtilBackend.Amqp.JobCommandLineEmitter
+  alias ExSubtilBackend.Amqp.JobAcsEmitter
   alias ExSubtilBackend.Workflow.Step.Requirements
 
   require Logger
@@ -24,6 +24,9 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
     app_dir =
       System.get_env("APP_DIR") || Application.get_env(:ex_subtil_backend, :appdir) || "/opt/app"
 
+    acs_app =
+      System.get_env("ACS_APP") || Application.get_env(:ex_subtil_backend, :acs_app)
+
     filename = Path.basename(subtitle_path)
     dst_path = work_dir <> "/" <> workflow.reference <> "/acs/" <> filename
     exec_dir = app_dir <> "/acs"
@@ -35,7 +38,7 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
       workflow_id: workflow.id,
       params: %{
         requirements: requirements,
-        program: "./SincroSubtilTSP_V0.3",
+        program: acs_app,
         exec_dir: exec_dir,
         libraries: [
           exec_dir
@@ -71,7 +74,7 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
       parameters: job.params
     }
 
-    JobCommandLineEmitter.publish_json(params)
+    JobAcsEmitter.publish_json(params)
   end
 
   defp get_source_files(jobs) do
