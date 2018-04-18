@@ -32,7 +32,7 @@ defmodule ExSubtilBackend.Amqp.JobAcsErrorConsumer do
         118 -> "[Error 118] Cannot save the synchronized subtitle file"
         _ -> description
       end
-    Status.set_job_status(job_id, "error", %{"message": description})
+    Status.set_job_status(job_id, "error", %{"code": error_code, "message": description})
     Basic.ack(channel, tag)
   end
 end
