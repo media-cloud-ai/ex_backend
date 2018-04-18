@@ -42,7 +42,8 @@ defmodule ExSubtilBackendWeb.Docker.ImagesController do
       AMQP_HOSTNAME: hostname,
       AMQP_USERNAME: username,
       AMQP_PASSWORD: password,
-      AMQP_VHOST: virtual_host
+      AMQP_VHOST: virtual_host,
+      AMQP_QUEUE: "acs" # TODO: ACS worker specific, remove from here and pass environment configuration as parameter
     }
 
     image_list =
