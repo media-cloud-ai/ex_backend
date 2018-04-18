@@ -83,6 +83,7 @@ config :ex_subtil_backend,
   akamai_password: "akamai_password",
   workdir: "/tmp/ftp_francetv",
   appdir: "/opt/app",
+  acs_app: "./SynchroSubtilTSP_V0.4",
   docker_hosts: [
     [
       label: "Worker 1",

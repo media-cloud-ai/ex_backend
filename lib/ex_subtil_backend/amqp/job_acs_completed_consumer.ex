@@ -1,11 +1,11 @@
-defmodule ExSubtilBackend.Amqp.JobCommandLineCompletedConsumer do
+defmodule ExSubtilBackend.Amqp.JobAcsCompletedConsumer do
   require Logger
 
   alias ExSubtilBackend.Jobs
 
   use ExSubtilBackend.Amqp.CommonConsumer, %{
-    queue: "job_command_line_completed",
-    consumer: &ExSubtilBackend.Amqp.JobCommandLineCompletedConsumer.consume/4
+    queue: "job_acs_completed",
+    consumer: &ExSubtilBackend.Amqp.JobAcsCompletedConsumer.consume/4
   }
 
   def consume(
