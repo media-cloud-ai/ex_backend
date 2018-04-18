@@ -50,7 +50,7 @@ config :ex_subtil_backend, ExSubtilBackendWeb.Endpoint,
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
-config :logger, level: :warn
+config :logger, level: :debug
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20
@@ -65,6 +65,7 @@ config :ex_subtil_backend, ExSubtilBackend.Repo,
   pool_size: 10
 
 config :ex_subtil_backend,
+  hostname: "http://localhost:4000",
   workdir: "/tmp/ftp_francetv",
   akamai_video_prefix: "/421959/prod/innovation/testing",
   docker_hosts: [

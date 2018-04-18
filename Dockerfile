@@ -11,6 +11,7 @@ RUN apk update && \
     python \
     tar \
     wget \
+    g++ \
     && \
     mix local.hex --force && \
     mix local.rebar --force && \

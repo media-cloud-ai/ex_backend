@@ -7,8 +7,50 @@ defmodule ExSubtilBackend.Accounts do
   alias Phauxth.Log
   alias ExSubtilBackend.{Accounts.User, Repo}
 
-  def list_users do
-    Repo.all(User)
+  defp force_integer(param) when is_bitstring(param) do
+    param
+    |> String.to_integer()
+  end
+
+  defp force_integer(param) do
+    param
+  end
+
+  def list_users(params \\ %{}) do
+    page =
+      Map.get(params, "page", 0)
+      |> force_integer
+
+    size =
+      Map.get(params, "size", 10)
+      |> force_integer
+
+    offset = page * size
+
+    query = from(user in User)
+
+    total_query = from(item in query, select: count(item.id))
+
+    total =
+      Repo.all(total_query)
+      |> List.first()
+
+    query =
+      from(
+        user in query,
+        order_by: [desc: :inserted_at],
+        offset: ^offset,
+        limit: ^size
+      )
+
+    users = Repo.all(query)
+
+    %{
+      data: users,
+      total: total,
+      page: page,
+      size: size
+    }
   end
 
   def get(id), do: Repo.get(User, id)
