@@ -24,8 +24,7 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
     app_dir =
       System.get_env("APP_DIR") || Application.get_env(:ex_subtil_backend, :appdir) || "/opt/app"
 
-    acs_app =
-      System.get_env("ACS_APP") || Application.get_env(:ex_subtil_backend, :acs_app)
+    acs_app = System.get_env("ACS_APP") || Application.get_env(:ex_subtil_backend, :acs_app)
 
     filename = Path.basename(subtitle_path)
     dst_path = work_dir <> "/" <> workflow.reference <> "/acs/" <> filename
@@ -86,10 +85,19 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
       ExSubtilBackend.Workflow.Step.HttpDownload.get_jobs_destination_paths(jobs)
       |> List.first()
 
-    %{
-      audio_path: audio_path,
-      subtitle_path: subtitle_path
-    }
+    cond do
+      is_nil(audio_path) ->
+        %{}
+
+      is_nil(subtitle_path) ->
+        %{}
+
+      true ->
+        %{
+          audio_path: audio_path,
+          subtitle_path: subtitle_path
+        }
+    end
   end
 
   @doc """
@@ -105,7 +113,10 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
           job.params
           |> Map.get("destination", %{})
           |> Map.get("paths")
-          |> Enum.concat(result)
+          |> case do
+            nil -> result
+            paths -> Enum.concat(paths, result)
+          end
 
         _ ->
           result
