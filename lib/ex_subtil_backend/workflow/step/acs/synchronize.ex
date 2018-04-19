@@ -86,10 +86,19 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
       ExSubtilBackend.Workflow.Step.HttpDownload.get_jobs_destination_paths(jobs)
       |> List.first()
 
-    %{
-      audio_path: audio_path,
-      subtitle_path: subtitle_path
-    }
+    cond do
+      is_nil(audio_path) ->
+        %{}
+
+      is_nil(subtitle_path) ->
+        %{}
+
+      true ->
+        %{
+          audio_path: audio_path,
+          subtitle_path: subtitle_path
+        }
+    end
   end
 
   @doc """

@@ -8,11 +8,15 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.PrepareAudio do
   @action_name "acs_prepare_audio"
 
   def launch(workflow) do
-    subtitle_languages = get_subtitles_languages(workflow.reference)
+    if !is_subtitle_file_present?(workflow.jobs) do
+      Jobs.create_skipped_job(workflow, @action_name)
+    else
+      subtitle_languages = get_subtitles_languages(workflow.reference)
 
-    case get_source_files(workflow.jobs, subtitle_languages) do
-      [] -> Jobs.create_skipped_job(workflow, @action_name)
-      paths -> start_processing_audio(paths, workflow)
+      case get_source_files(workflow.jobs, subtitle_languages) do
+        [] -> Jobs.create_skipped_job(workflow, @action_name)
+        paths -> start_processing_audio(paths, workflow)
+      end
     end
   end
 
@@ -80,6 +84,16 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.PrepareAudio do
       |> String.downcase()
     end)
   end
+
+  defp is_subtitle_file_present?(jobs) do
+    ExSubtilBackend.Workflow.Step.HttpDownload.get_jobs_destination_paths(jobs)
+    |> case do
+      [] -> false
+      _ -> true
+    end
+  end
+
+  defp get_source_files(_jobs, []), do: []
 
   defp get_source_files(jobs, subtitle_languages) do
     ExSubtilBackend.Workflow.Step.AudioDecode.get_jobs_destination_paths(jobs)
