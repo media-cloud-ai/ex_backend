@@ -86,11 +86,7 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.PrepareAudio do
   end
 
   defp is_subtitle_file_present?(jobs) do
-    ExSubtilBackend.Workflow.Step.HttpDownload.get_jobs_destination_paths(jobs)
-    |> case do
-      [] -> false
-      _ -> true
-    end
+    length(ExSubtilBackend.Workflow.Step.HttpDownload.get_jobs_destination_paths(jobs)) > 0
   end
 
   defp get_source_files(_jobs, []), do: []
