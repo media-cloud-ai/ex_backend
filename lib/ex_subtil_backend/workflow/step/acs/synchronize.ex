@@ -105,7 +105,10 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
           job.params
           |> Map.get("destination", %{})
           |> Map.get("paths")
-          |> Enum.concat(result)
+          |> case do
+            nil -> result
+            paths -> Enum.concat(paths, result)
+          end
 
         _ ->
           result

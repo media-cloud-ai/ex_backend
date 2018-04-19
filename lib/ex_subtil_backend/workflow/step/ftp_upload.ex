@@ -82,12 +82,13 @@ defmodule ExSubtilBackend.Workflow.Step.FtpUpload do
     result =
       case job.name do
         @action_name ->
-          path =
-            job.params
-            |> Map.get("destination", %{})
-            |> Map.get("path")
-
-          List.insert_at(result, -1, path)
+          job.params
+          |> Map.get("destination", %{})
+          |> Map.get("path")
+          |> case do
+            nil -> result
+            path -> List.insert_at(result, -1, path)
+          end
 
         _ ->
           result

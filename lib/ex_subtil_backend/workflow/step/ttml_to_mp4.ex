@@ -62,12 +62,13 @@ defmodule ExSubtilBackend.Workflow.Step.TtmlToMp4 do
     result =
       case job.name do
         @action_name ->
-          path =
-            job.params
-            |> Map.get("destination", %{})
-            |> Map.get("paths")
-
-          List.insert_at(result, -1, path)
+          job.params
+          |> Map.get("destination", %{})
+          |> Map.get("paths")
+          |> case do
+            nil -> result
+            path -> List.insert_at(result, -1, path)
+          end
 
         _ ->
           result
