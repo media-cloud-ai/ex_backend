@@ -28,7 +28,10 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.PrepareAudio do
         "/tmp/ftp_francetv"
 
     filename = Path.basename(path)
-    dst_path = work_dir <> "/" <> workflow.reference <> "/acs/" <> filename
+
+    dst_path =
+      work_dir <>
+        "/" <> workflow.reference <> "_" <> Integer.to_string(workflow.id) <> "/acs/" <> filename
 
     requirements = Requirements.add_required_paths(path)
 

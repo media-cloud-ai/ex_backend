@@ -54,7 +54,10 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
             "/tmp/ftp_francetv"
 
         options = %{
-          "-out": work_dir <> "/dash/" <> workflow.reference <> "/manifest.mpd",
+          "-out":
+            work_dir <>
+              "/dash/" <>
+              workflow.reference <> "_" <> Integer.to_string(workflow.id) <> "/manifest.mpd",
           "-profile": "onDemand",
           "-rap": true,
           "-url-template": true

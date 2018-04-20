@@ -31,7 +31,11 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
     acs_app = System.get_env("ACS_APP") || Application.get_env(:ex_subtil_backend, :acs_app)
 
     filename = Path.basename(subtitle_path)
-    dst_path = work_dir <> "/" <> workflow.reference <> "/acs/" <> filename
+
+    dst_path =
+      work_dir <>
+        "/" <> workflow.reference <> "_" <> Integer.to_string(workflow.id) <> "/acs/" <> filename
+
     exec_dir = app_dir <> "/acs"
 
     requirements = Requirements.add_required_paths([audio_path, subtitle_path])

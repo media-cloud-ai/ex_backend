@@ -30,9 +30,12 @@ defmodule ExSubtilBackend.Workflow.Step.HttpDownload do
         "/tmp/ftp_francetv"
 
     filename = Path.basename(url)
-    dst_path = work_dir <> "/" <> workflow.reference <> "/" <> filename
 
-    requirements = Requirements.add_required_paths(work_dir <> "/" <> workflow.reference)
+    dst_path =
+      work_dir <>
+        "/" <> workflow.reference <> "_" <> Integer.to_string(workflow.id) <> "/" <> filename
+
+    requirements = Requirements.add_required_paths(Path.dirname(dst_path))
 
     job_params = %{
       name: @action_name,

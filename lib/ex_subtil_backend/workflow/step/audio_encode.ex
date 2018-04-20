@@ -22,7 +22,12 @@ defmodule ExSubtilBackend.Workflow.Step.AudioEncode do
         "/tmp/ftp_francetv"
 
     filename = Path.basename(path, ".wav")
-    dst_path = work_dir <> "/" <> workflow.reference <> "/audio/" <> filename <> ".mp4"
+
+    dst_path =
+      work_dir <>
+        "/" <>
+        workflow.reference <>
+        "_" <> Integer.to_string(workflow.id) <> "/audio/" <> filename <> ".mp4"
 
     requirements = Requirements.add_required_paths(path)
 
