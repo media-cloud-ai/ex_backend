@@ -21,8 +21,8 @@
                 <input matInput
                   type={{parameter.type}}
                   placeholder="{{parameter.id | parameterLabel}}"
-                  value={{parameter.default}}
-                  [(ngModel)]="parameter.default">
+                  value={{parameter.value}}
+                  [(ngModel)]=parameter.value>
               </mat-form-field>
             </mat-list-item>
           </mat-list>
