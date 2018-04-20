@@ -16,7 +16,11 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
     end
   end
 
-  defp start_processing_synchro(%{audio_path: audio_path, subtitle_path: subtitle_path}, workflow, step) do
+  defp start_processing_synchro(
+         %{audio_path: audio_path, subtitle_path: subtitle_path},
+         workflow,
+         step
+       ) do
     work_dir =
       System.get_env("WORK_DIR") || Application.get_env(:ex_subtil_backend, :work_dir) ||
         "/tmp/ftp_francetv"
@@ -34,12 +38,12 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
 
     threads_number =
       Map.get(step, "parameters", [])
-      |> Enum.find(fn(param) -> Map.get(param, "id") == "threads_number" end)
+      |> Enum.find(fn param -> Map.get(param, "id") == "threads_number" end)
       |> case do
         nil -> 8
         threads_param -> Map.get(threads_param, "value")
       end
-      |> Integer.to_string
+      |> Integer.to_string()
 
     job_params = %{
       name: @action_name,
