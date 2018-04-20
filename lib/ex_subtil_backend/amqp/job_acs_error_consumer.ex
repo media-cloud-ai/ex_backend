@@ -8,6 +8,12 @@ defmodule ExSubtilBackend.Amqp.JobAcsErrorConsumer do
     consumer: &ExSubtilBackend.Amqp.JobAcsErrorConsumer.consume/4
   }
 
+  def consume(channel, tag, _redelivered, %{"job_id" => job_id, "error" => description} = payload) do
+    Logger.error("Command line error #{inspect(payload)}")
+    Status.set_job_status(job_id, "error", %{"message": description})
+    Basic.ack(channel, tag)
+  end
+
   def consume(channel, tag, _redelivered, %{"job_id" => job_id, "error" => description, "code" => error_code} = payload) do
     Logger.error("Command line error #{inspect(payload)}")
     description =

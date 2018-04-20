@@ -7,16 +7,20 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
 
   @action_name "acs_synchronize"
 
-  def launch(workflow) do
+  def launch(workflow, step) do
     source_files = get_source_files(workflow.jobs)
 
     case map_size(source_files) do
       0 -> Jobs.create_skipped_job(workflow, @action_name)
-      _ -> start_processing_synchro(source_files, workflow)
+      _ -> start_processing_synchro(source_files, workflow, step)
     end
   end
 
-  defp start_processing_synchro(%{audio_path: audio_path, subtitle_path: subtitle_path}, workflow) do
+  defp start_processing_synchro(
+         %{audio_path: audio_path, subtitle_path: subtitle_path},
+         workflow,
+         step
+       ) do
     work_dir =
       System.get_env("WORK_DIR") || Application.get_env(:ex_subtil_backend, :work_dir) ||
         "/tmp/ftp_francetv"
@@ -31,6 +35,15 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
     exec_dir = app_dir <> "/acs"
 
     requirements = Requirements.add_required_paths([audio_path, subtitle_path])
+
+    threads_number =
+      Map.get(step, "parameters", [])
+      |> Enum.find(fn param -> Map.get(param, "id") == "threads_number" end)
+      |> case do
+        nil -> 8
+        threads_param -> Map.get(threads_param, "value")
+      end
+      |> Integer.to_string()
 
     job_params = %{
       name: @action_name,
@@ -59,7 +72,7 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
           },
           %{
             options: %{
-              "4": true
+              threads_number => true
             }
           }
         ]

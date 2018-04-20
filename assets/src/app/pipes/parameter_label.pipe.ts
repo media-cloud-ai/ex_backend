@@ -15,6 +15,7 @@ export class ParameterLabelPipe implements PipeTransform {
       { id: 'fragment_duration', name: 'Fragment Duration' },
       { id: 'audio_track', name: 'Audio track' },
       { id: 'text_track', name: 'Text track' },
+      { id: 'threads_number', name: 'Threads number' },
     ];
 
     for (var i = allLabels.length - 1; i >= 0; i--) {
