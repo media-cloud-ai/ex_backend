@@ -8,9 +8,9 @@ defmodule ExSubtilBackend.Amqp.JobGpacErrorConsumer do
     consumer: &ExSubtilBackend.Amqp.JobGpacErrorConsumer.consume/4
   }
 
-  def consume(channel, tag, _redelivered, %{"job_id" => job_id} = payload) do
+  def consume(channel, tag, _redelivered, %{"job_id" => job_id, "error" => description} = payload) do
     Logger.error("GPAC error #{inspect(payload)}")
-    Status.set_job_status(job_id, "error")
+    Status.set_job_status(job_id, "error", %{"message": description})
     Basic.ack(channel, tag)
   end
 end
