@@ -40,7 +40,14 @@ export class WorkflowDialogComponent {
       },{
         id: "acs_synchronize",
         enable: this.acs_enable,
-        parameters : []
+        parameters : [
+          {
+            id: "threads_number",
+            type: "number",
+            default: 8,
+            value: 8
+          }
+        ]
       // },{
       //   id: "audio_encode",
       //   enable: this.acs_enable,
@@ -93,5 +100,11 @@ export class WorkflowDialogComponent {
       }
     }
     this.dialogRef.close(steps);
+  }
+
+  toNumber(param): void  {
+    if(param.type == "number") {
+      param.value = +param.value;
+    }
   }
 }
