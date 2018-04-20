@@ -19,7 +19,7 @@ defmodule ExSubtilBackend.Workflow.Step.SetLanguage do
       System.get_env("WORK_DIR") || Application.get_env(:ex_subtil_backend, :work_dir) ||
         "/tmp/ftp_francetv"
 
-    dst_path = work_dir <> "/" <> workflow.reference <> "/lang/" <> Path.basename(path)
+    dst_path = work_dir <> "/" <> workflow.reference <> "_" <> Integer.to_string(workflow.id) <> "/lang/" <> Path.basename(path)
 
     language_code = get_file_language(path, workflow)
 

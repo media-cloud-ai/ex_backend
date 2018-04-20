@@ -20,7 +20,7 @@ defmodule ExSubtilBackend.Workflow.Step.AudioExtraction do
         "/tmp/ftp_francetv"
 
     filename = Path.basename(path, "-standard1.mp4")
-    dst_path = work_dir <> "/" <> workflow.reference <> "/" <> filename <> "-fra.mp4"
+    dst_path = work_dir <> "/" <> workflow.reference <> "_" <> Integer.to_string(workflow.id) <> "/" <> filename <> "-fra.mp4"
 
     requirements = Requirements.add_required_paths(path)
 

@@ -39,11 +39,11 @@ defmodule ExSubtilBackend.Workflow.Step.FtpDownload do
         "/tmp/ftp_francetv"
 
     filename = Path.basename(file)
-    dst_path = work_dir <> "/" <> workflow.reference <> "/" <> filename
+    dst_path = work_dir <> "/" <> workflow.reference <> "_" <> Integer.to_string(workflow.id) <> "/" <> filename
 
     requirements =
       if file != first_file do
-        (work_dir <> "/" <> workflow.reference <> "/" <> Path.basename(first_file))
+        (Path.dirname(dst_path) <> "/" <> Path.basename(first_file))
         |> Requirements.add_required_paths()
       else
         %{}
