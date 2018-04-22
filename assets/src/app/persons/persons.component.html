@@ -1,0 +1,64 @@
+<h1>
+  People
+</h1>
+
+<div class=new>
+    <button mat-button
+      color="primary"
+      (click)="newPerson()">
+        <i class="material-icons">add</i> Add Person
+    </button>
+</div>
+
+<ul *ngIf="persons" class="persons">
+  <li *ngIf="persons.total == 0">No persons found.</li>
+  <li class="persons-header">
+    <span class="last_name">
+      Last Name
+    </span>
+    <span class="first_name">
+      First Name
+    </span>
+    <span class="birth_date">
+      Birth Date
+    </span>
+    <span class="actions">
+    </span>
+  </li>
+  <li
+    *ngFor="let person of persons.data"
+    class="person"
+    >
+    <span class="last_name">
+      {{person.last_name}}
+    </span>
+    <span class="first_name">
+      <!-- <span *ngFor="let name in person.first_names"> -->
+        {{person.first_names}}
+      <!-- </span> -->
+    </span>
+    <span class="birth_date">
+      {{person.birthday_date | date: 'd LLL yyyy'}}
+    </span>
+    <span class="actions">
+     <button mat-raised-button
+        color="primary"
+        (click)="showPerson(person.id)">
+          <i class="material-icons">visibility</i> Edit
+      </button>
+      <button mat-raised-button
+        color="warn"
+        (click)="removePerson(person.id)">
+          <i class="material-icons">delete</i> Delete
+      </button>
+    </span>
+  </li>
+</ul>
+
+<mat-paginator
+  class="paginator"
+  [length]="length"
+  [pageSize]="pageSize"
+  [pageIndex]="page"
+  (page)="pageEvent = eventGetUsers($event)">
+</mat-paginator>

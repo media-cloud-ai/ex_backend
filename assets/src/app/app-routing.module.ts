@@ -13,6 +13,8 @@ import {ConfirmComponent} from './confirm/confirm.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {LoginComponent} from './login/login.component';
 import {JobsComponent} from './jobs/jobs.component';
+import {PersonComponent} from './persons/person.component';
+import {PersonsComponent} from './persons/persons.component';
 import {UsersComponent} from './users/users.component';
 import {VideosComponent} from './videos/videos.component';
 import {WorkflowsComponent} from './workflows/workflows.component';
@@ -31,6 +33,16 @@ const appRoutes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'people',
+    component: PersonsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'person',
+    component: PersonComponent,
     canActivate: [AuthGuard]
   },
   {

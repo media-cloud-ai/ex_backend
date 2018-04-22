@@ -1,0 +1,196 @@
+<h1>
+  Person
+</h1>
+
+<mat-horizontal-stepper>
+  <mat-step label="Edition">
+    <div class="person">
+      <div class="form">
+        <div>
+          <mat-form-field class="name-input">
+            <input
+              matInput
+              type="text"
+              placeholder="Last Name"
+              [(ngModel)]="last_name"
+              >
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field class="firstname-1-input">
+            <input
+              matInput
+              placeholder="First Name 1"
+              [(ngModel)]="first_name_1"
+              >
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field class="firstname-2-input">
+            <input
+              matInput
+              placeholder="First Name 2"
+              [(ngModel)]="first_name_2"
+              >
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field class="firstname-3-input">
+            <input
+              matInput
+              placeholder="First Name 3"
+              [(ngModel)]="first_name_3"
+              >
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field>
+            <input matInput
+              [(ngModel)]="birth_date"
+              [matDatepicker]="picker_birth_date"
+              placeholder="Birth Date"
+              >
+            <mat-datepicker-toggle matSuffix [for]="picker_birth_date"></mat-datepicker-toggle>
+            <mat-datepicker #picker_birth_date></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field class="birth_city-input">
+            <input
+              matInput
+              placeholder="Birth City"
+              [(ngModel)]="birthday_city"
+              >
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field class="birth_country-input">
+            <input
+              matInput
+              placeholder="Birth Country"
+              [(ngModel)]="birthday_country"
+              >
+          </mat-form-field>
+        </div>
+        <div>
+          Nationalities
+          <input-list-component [items]=nationalities></input-list-component>
+        </div>
+        <div>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </div>
+    </div>
+  </mat-step>
+  <mat-step label="Validation">
+    <div class="person">
+      <div class="form">
+        <div
+          *ngIf="last_name">
+          <mat-form-field class="name-input">
+            <input
+              matInput
+              type="text"
+              placeholder="Last Name"
+              [(ngModel)]="last_name"
+              disabled=true
+              >
+          </mat-form-field>
+        </div>
+        <div
+          *ngIf="first_name_1">
+          <mat-form-field class="firstname-1-input">
+            <input
+              matInput
+              placeholder="First Name 1"
+              [(ngModel)]="first_name_1"
+              disabled=true
+              >
+          </mat-form-field>
+        </div>
+        <div
+          *ngIf="first_name_2">
+          <mat-form-field class="firstname-2-input">
+            <input
+              matInput
+              placeholder="First Name 2"
+              [(ngModel)]="first_name_2"
+              disabled=true
+              >
+          </mat-form-field>
+        </div>
+        <div
+          *ngIf="first_name_3">
+          <mat-form-field class="firstname-3-input">
+            <input
+              matInput
+              placeholder="First Name 3"
+              [(ngModel)]="first_name_3"
+              disabled=true
+              >
+          </mat-form-field>
+        </div>
+        <div
+          *ngIf="birth_date">
+          <mat-form-field>
+            <input matInput
+              [(ngModel)]="birth_date"
+              [matDatepicker]="validate_picker_birth_date"
+              placeholder="Birth Date"
+              disabled=true
+              >
+            <mat-datepicker-toggle matSuffix [for]="validate_picker_birth_date"></mat-datepicker-toggle>
+            <mat-datepicker #validate_picker_birth_date></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div
+          *ngIf="birthday_city">
+          <mat-form-field class="birth_city-input">
+            <input
+              matInput
+              placeholder="Birth City"
+              [(ngModel)]="birthday_city"
+              disabled=true
+              >
+          </mat-form-field>
+        </div>
+        <div
+          *ngIf="birthday_country">
+          <mat-form-field class="birth_country-input">
+            <input
+              matInput
+              placeholder="Birth Country"
+              [(ngModel)]="birthday_country"
+              disabled=true
+              >
+          </mat-form-field>
+        </div>
+        <div
+          *ngIf="nationalities">
+          <input-list-component [items]=nationalities></input-list-component>
+        </div>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button
+            color="primary"
+            (click)="createPerson()"
+            *ngIf="!edition">
+              <i class="material-icons">add</i> Create
+          </button>
+          <button mat-button
+            color="primary"
+            (click)="updatePerson()"
+            *ngIf="edition">
+              <i class="material-icons">add</i> Update
+          </button>
+        </div>
+        <div>
+          <span class=message
+            *ngIf="error_message">
+            {{error_message}}
+          </span>
+        </div>
+      </div>
+    </div>
+  </mat-step>
+</mat-horizontal-stepper>
