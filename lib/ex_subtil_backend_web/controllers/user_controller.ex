@@ -8,8 +8,8 @@ defmodule ExSubtilBackendWeb.UserController do
   action_fallback(ExSubtilBackendWeb.FallbackController)
 
   # the following plugs are defined in the controllers/authorize.ex file
-  plug(:user_check when action in [:index, :show, :delete])
-  plug(:id_check when action in [:update])
+  plug(:user_check when action in [:index, :show, :update, :delete])
+  # plug(:admin_check when action in [:update, :delete])
 
   def index(conn, params) do
     users = Accounts.list_users(params)
@@ -36,8 +36,10 @@ defmodule ExSubtilBackendWeb.UserController do
     render(conn, "show.json", user: user)
   end
 
-  def update(%Plug.Conn{assigns: %{current_user: user}} = conn, %{"user" => user_params}) do
-    with {:ok, user} <- Accounts.update_user(user, user_params) do
+  def update(%Plug.Conn{assigns: %{current_user: user}} = conn, %{"id" => id, "user" => user_params}) do
+    selected_user = Accounts.get(id)
+
+    with {:ok, user} <- Accounts.update_user(selected_user, user_params) do
       render(conn, "show.json", user: user)
     end
   end
