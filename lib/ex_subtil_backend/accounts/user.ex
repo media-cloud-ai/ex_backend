@@ -7,6 +7,7 @@ defmodule ExSubtilBackend.Accounts.User do
     field(:email, :string)
     field(:password, :string, virtual: true)
     field(:password_hash, :string)
+    field(:rights, {:array, :string}, default: ["administrator"])
     field(:confirmed_at, :utc_datetime)
     field(:reset_sent_at, :utc_datetime)
 
@@ -15,14 +16,14 @@ defmodule ExSubtilBackend.Accounts.User do
 
   def changeset(%User{} = user, attrs) do
     user
-    |> cast(attrs, [:email])
+    |> cast(attrs, [:email, :rights])
     |> validate_required([:email])
     |> unique_email
   end
 
   def create_changeset(%User{} = user, attrs) do
     user
-    |> cast(attrs, [:email, :password])
+    |> cast(attrs, [:email, :password, :rights])
     |> validate_required([:email, :password])
     |> unique_email
     |> validate_password(:password)
