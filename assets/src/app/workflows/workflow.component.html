@@ -8,10 +8,9 @@
   (click)="closeJobs()"
   >vertical_align_center</i>
 
-<span *ngIf="workflow" class="reference">
-  <a href="/videos?video_id={{workflow.reference}}">
-    {{workflow.reference}}
-  </a>
+<span *ngIf="workflow" class="reference"
+  (click)="gotoVideo(workflow.reference)">
+  {{workflow.reference}}
   <duration-component [workflow]=workflow></duration-component>
 </span>
 
