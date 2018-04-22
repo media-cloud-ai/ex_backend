@@ -53,8 +53,7 @@ defmodule ExSubtilBackend.Persons do
         limit: ^size
       )
 
-    persons =
-      Repo.all(query)
+    persons = Repo.all(query)
 
     %{
       data: persons,
