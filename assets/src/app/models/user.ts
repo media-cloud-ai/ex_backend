@@ -10,4 +10,5 @@ export class Confirm {
 export class User {
   email: string;
   password: string;
+  rights: any;
 }

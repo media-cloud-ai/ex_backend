@@ -14,6 +14,7 @@ export class AuthService {
   isLoggedIn = false;
   token : string;
   username : string;
+  rights : any;
   redirectUrl: string;
 
   private userLoggedInSource = new Subject<string>();
@@ -33,6 +34,7 @@ export class AuthService {
       var parsedUser = JSON.parse(currentUser);
       this.token = parsedUser.token;
       this.username = parsedUser.username;
+      this.rights = parsedUser.rights;
     }
   }
 
@@ -51,17 +53,22 @@ export class AuthService {
 
     return this.http.post<Token>('/api/sessions', query).pipe(
       tap(response => {
-        console.log(response)
         if (response && response.access_token) {
-          sessionStorage.setItem('currentUser', JSON.stringify({ username: email, token: response.access_token }));
+          sessionStorage.setItem('currentUser', JSON.stringify({
+            username: email,
+            token: response.access_token,
+            rights: response.user.rights
+          }));
           this.isLoggedIn = true;
           this.token = response.access_token;
           this.username = email;
+          this.rights = response.user.rights;
           this.userLoggedInSource.next(email);
         } else {
           this.isLoggedIn = false;
           this.token = undefined;
           this.username = undefined;
+          this.rights = undefined;
           this.userLoggedOutSource.next("");
           this.rightPanelSwitchSource.next("close");
         }
@@ -74,6 +81,7 @@ export class AuthService {
     this.isLoggedIn = false;
     this.token = undefined;
     this.username = undefined;
+    this.rights = undefined;
     this.userLoggedOutSource.next("");
     sessionStorage.removeItem('currentUser');
     this.rightPanelSwitchSource.next("close");
@@ -82,6 +90,18 @@ export class AuthService {
 
   getToken(): string {
     return this.token;
+  }
+
+  hasAdministratorRight(): boolean {
+    return this.rights.indexOf("administrator") != -1;
+  }
+
+  hasTechnicianRight(): boolean {
+    return this.rights.indexOf("technician") != -1;
+  }
+
+  hasEditorRight(): boolean {
+    return this.rights.indexOf("editor") != -1;
   }
 
   private handleError<T> (operation = 'operation', result?: T) {

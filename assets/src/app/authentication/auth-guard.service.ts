@@ -22,7 +22,43 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   }
 
   checkLogin(url: string): boolean {
-    if (this.authService.isLoggedIn) { return true; }
+    if (this.authService.isLoggedIn) {
+      // console.log("Check URL ", url)
+      if(url.startsWith("/videos") ||
+        url.startsWith("/workflows") ||
+        url.startsWith("/workers")
+        ) {
+        if(this.authService.hasTechnicianRight()) {
+          return true;
+        } else {
+          this.router.navigate(['/dashboard']);
+          return false;
+        }
+      }
+      if(url.startsWith("/users")
+        ) {
+        if(this.authService.hasAdministratorRight()) {
+          return true;
+        } else {
+          this.router.navigate(['/dashboard']);
+          return false;
+        }
+      }
+      if(url.startsWith("/people") ||
+        url.startsWith("/person")) {
+        if(this.authService.hasEditorRight()) {
+          return true;
+        } else {
+          this.router.navigate(['/dashboard']);
+          return false;
+        }
+      }
+
+      if(url.startsWith("/dashboard")) {
+        return true;
+      }
+      return false;
+    }
 
     // Store the attempted URL for redirecting
     this.authService.redirectUrl = url;
