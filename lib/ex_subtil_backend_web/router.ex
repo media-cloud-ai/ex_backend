@@ -46,6 +46,8 @@ defmodule ExSubtilBackendWeb.Router do
       get("/queues", AmqpController, :queues)
       get("/connections", AmqpController, :connections)
     end
+
+    resources "/persons", PersonController, except: [:new, :edit]
   end
 
   scope "/", ExSubtilBackendWeb do
