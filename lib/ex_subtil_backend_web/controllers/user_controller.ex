@@ -9,7 +9,7 @@ defmodule ExSubtilBackendWeb.UserController do
 
   # the following plugs are defined in the controllers/authorize.ex file
   plug(:user_check when action in [:index, :show, :update, :delete])
-  # plug(:admin_check when action in [:update, :delete])
+  plug(:right_administrator_check when action in [:update, :delete])
 
   def index(conn, params) do
     users = Accounts.list_users(params)
@@ -36,7 +36,7 @@ defmodule ExSubtilBackendWeb.UserController do
     render(conn, "show.json", user: user)
   end
 
-  def update(%Plug.Conn{assigns: %{current_user: user}} = conn, %{
+  def update(%Plug.Conn{assigns: %{current_user: _user}} = conn, %{
         "id" => id,
         "user" => user_params
       }) do

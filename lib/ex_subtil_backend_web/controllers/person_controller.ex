@@ -10,7 +10,7 @@ defmodule ExSubtilBackendWeb.PersonController do
 
   # the following plugs are defined in the controllers/authorize.ex file
   plug(:user_check when action in [:index, :show, :update, :delete])
-  # plug(:id_check when action in [:update, :delete])
+  plug(:right_editor_check when action in [:index, :show, :update, :delete])
 
   def index(conn, params) do
     persons = Persons.list_persons(params)

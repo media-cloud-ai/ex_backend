@@ -9,8 +9,8 @@ defmodule ExSubtilBackendWeb.RdfController do
   alias ExSubtilBackend.Rdf.PerfectMemory
 
   # the following plugs are defined in the controllers/authorize.ex file
-  plug(:user_check when action in [:index, :show])
-  plug(:id_check when action in [:update, :delete])
+  plug(:user_check when action in [:create, :show])
+  plug(:right_technician_check when action in [:create, :show])
 
   def create(conn, params) do
     video_id = Map.get(params, "videos_id")
