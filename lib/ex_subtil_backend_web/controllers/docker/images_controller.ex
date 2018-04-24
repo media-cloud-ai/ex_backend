@@ -43,7 +43,7 @@ defmodule ExSubtilBackendWeb.Docker.ImagesController do
       AMQP_HOSTNAME: hostname,
       AMQP_USERNAME: username,
       AMQP_PASSWORD: password,
-      AMQP_VHOST: virtual_host,
+      AMQP_VHOST: virtual_host
     }
 
     image_list =
@@ -58,7 +58,6 @@ defmodule ExSubtilBackendWeb.Docker.ImagesController do
   defp build_images([], _environment, _volumes, image_list), do: image_list
 
   defp build_images([image | images], environment, volumes, image_list) do
-
     environment =
       if String.starts_with?(image.id, "ftvsubtil/acs_worker") do
         Map.put(environment, AMQP_QUEUE, "acs")
