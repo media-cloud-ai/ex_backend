@@ -96,6 +96,12 @@ defmodule ExSubtilBackend.Application do
       ExSubtilBackend.Migration.AddUserRight
     )
 
+    Ecto.Migrator.up(
+      ExSubtilBackend.Repo,
+      20_180_424_161_800,
+      ExSubtilBackend.Migration.WorkflowSteps
+    )
+
     root_email =
       System.get_env("ROOT_EMAIL") || Application.get_env(:ex_subtil_backend, :root_email)
 
