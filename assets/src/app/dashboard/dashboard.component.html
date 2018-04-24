@@ -3,5 +3,8 @@
 	Dashboard
 </h1>
 
-<amqp-queues>
+<amqp-queues *ngIf="right_technician">
 </amqp-queues>
+
+<persons-component *ngIf="right_editor">
+</persons-component>

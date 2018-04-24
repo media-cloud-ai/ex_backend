@@ -11,7 +11,7 @@ defmodule ExSubtilBackendWeb.SessionController do
     case Login.verify(params, Accounts) do
       {:ok, user} ->
         token = Phauxth.Token.sign(conn, user.id)
-        render(conn, "info.json", %{info: token})
+        render(conn, "info.json", %{info: token, user: user})
 
       {:error, _message} ->
         error(conn, :unauthorized, 401)

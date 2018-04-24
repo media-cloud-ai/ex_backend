@@ -60,6 +60,19 @@ export class UserService {
       );
   }
 
+  updateRights(user_id: number, rights: any) {
+    let params = {
+      user: {
+        rights: rights
+      }
+    }
+    return this.http.put<User>(this.usersUrl + "/" + user_id, params)
+      .pipe(
+        tap(userPage => this.log('update Rights')),
+        catchError(this.handleError('updateRights', undefined))
+      );
+  }
+
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       this.log(`${operation} failed: ${error.message}`);

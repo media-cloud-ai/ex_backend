@@ -43,6 +43,9 @@
     <span class="email">
       Email
     </span>
+    <span class="rights">
+      Rights
+    </span>
     <span class="status">
       Status
     </span>
@@ -55,6 +58,9 @@
     >
     <span class="email">
       {{user.email}}
+    </span>
+    <span class="rights">
+      <rights-component [user]=user></rights-component>
     </span>
     <span class="status">
       <span class="state enabled" *ngIf="user.confirmed_at">

@@ -48,6 +48,39 @@ defmodule ExSubtilBackendWeb.Authorize do
     (id == to_string(current_user.id) and conn) || error(conn, :forbidden, 403)
   end
 
+  def right_administrator_check(%Plug.Conn{assigns: %{current_user: nil}} = conn, _opts) do
+    error(conn, :unauthorized, 401)
+  end
+
+  def right_administrator_check(
+        %Plug.Conn{assigns: %{current_user: current_user}} = conn,
+        _opts
+      ) do
+    (Enum.member?(current_user.rights, "administrator") and conn) || error(conn, :forbidden, 403)
+  end
+
+  def right_technician_check(%Plug.Conn{assigns: %{current_user: nil}} = conn, _opts) do
+    error(conn, :unauthorized, 401)
+  end
+
+  def right_technician_check(
+        %Plug.Conn{assigns: %{current_user: current_user}} = conn,
+        _opts
+      ) do
+    (Enum.member?(current_user.rights, "technician") and conn) || error(conn, :forbidden, 403)
+  end
+
+  def right_editor_check(%Plug.Conn{assigns: %{current_user: nil}} = conn, _opts) do
+    error(conn, :unauthorized, 401)
+  end
+
+  def right_editor_check(
+        %Plug.Conn{assigns: %{current_user: current_user}} = conn,
+        _opts
+      ) do
+    (Enum.member?(current_user.rights, "editor") and conn) || error(conn, :forbidden, 403)
+  end
+
   def error(conn, status, code) do
     put_status(conn, status)
     |> put_view(ExSubtilBackendWeb.AuthView)

@@ -77,7 +77,7 @@ config :ex_subtil_backend, ExSubtilBackend.Mailer,
   api_key: {:system, "SENDGRID_API_KEY"}
 
 config :ex_subtil_backend,
-  hostname: "https://194.51.35.43:10743",
+  hostname: "https://backend.media-io.com",
   akamai_hostname: "akamai.com",
   akamai_username: "akamai_username",
   akamai_password: "akamai_password",

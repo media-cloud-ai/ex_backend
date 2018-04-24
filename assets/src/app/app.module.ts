@@ -26,6 +26,7 @@ import {
   MatToolbarModule
   } from '@angular/material';
 
+import {MatStepperModule} from '@angular/material/stepper';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import {
@@ -47,9 +48,13 @@ import {AppRoutingModule}        from './app-routing.module';
 import {ConfirmComponent}        from './confirm/confirm.component';
 import {DashboardComponent}      from './dashboard/dashboard.component';
 import {DurationComponent}       from './workflows/duration.component';
+import {InputListComponent}      from './persons/input_list.component';
 import {JobsComponent}           from './jobs/jobs.component';
 import {LoginComponent}          from './login/login.component';
 import {ParametersComponent}     from './workflows/parameters.component';
+import {PersonComponent}         from './persons/person.component';
+import {PersonsComponent}        from './persons/persons.component';
+import {RightsComponent}         from './users/rights.component';
 import {QueuesComponent}         from './amqp/queues.component';
 import {UsersComponent}          from './users/users.component';
 import {VideosComponent}         from './videos/videos.component';
@@ -66,6 +71,7 @@ import {ContainerService}        from './services/container.service';
 import {ImageService}            from './services/image.service';
 import {JobService}              from './services/job.service';
 import {NodeService}             from './services/node.service';
+import {PersonService}           from './services/person.service';
 import {RdfService}              from './services/rdf.service';
 import {UserService}             from './services/user.service';
 import {VideoService}            from './services/video.service';
@@ -126,6 +132,7 @@ const SUBTIL_DATE_FORMATS = {
     MatSelectModule,
     MatSidenavModule,
     MatSlideToggleModule,
+    MatStepperModule,
     MatTableModule,
     MatToolbarModule
   ],
@@ -134,10 +141,14 @@ const SUBTIL_DATE_FORMATS = {
     ConfirmComponent,
     DashboardComponent,
     DurationComponent,
+    InputListComponent,
     JobsComponent,
     LoginComponent,
     ParametersComponent,
+    PersonComponent,
+    PersonsComponent,
     QueuesComponent,
+    RightsComponent,
     UsersComponent,
     VideosComponent,
     RdfDialogComponent,
@@ -162,8 +173,10 @@ const SUBTIL_DATE_FORMATS = {
   ],
   entryComponents: [
     DurationComponent,
+    InputListComponent,
     ParametersComponent,
     RdfDialogComponent,
+    RightsComponent,
     WorkflowComponent,
     WorkflowDialogComponent,
   ],
@@ -196,6 +209,7 @@ const SUBTIL_DATE_FORMATS = {
     ImageService,
     JobService,
     NodeService,
+    PersonService,
     RdfService,
     UserService,
     VideoService,

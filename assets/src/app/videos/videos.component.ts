@@ -260,4 +260,12 @@ export class VideosComponent {
       console.log(response);
     });
   }
+
+  gotoRelatedWorkflows(video_id): void {
+    this.router.navigate(['/workflows'], { queryParams: {video_id: video_id} });
+  }
+
+  gotoVideo(video_id): void {
+    this.router.navigate(['/videos'], { queryParams: {video_id: video_id} });
+  }
 }

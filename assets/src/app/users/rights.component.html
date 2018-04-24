@@ -1,0 +1,30 @@
+
+<span *ngIf="user">
+  <span>
+    <mat-checkbox
+    color="primary"
+    [(checked)]="administrator"
+    (change)="updateAdministratorRight($event, user)"
+    >
+      Administrator
+    </mat-checkbox>
+  </span>
+  <span>
+    <mat-checkbox
+    color="primary"
+    [(checked)]="technician"
+    (change)="updateTechnicianRight($event, user)"
+    >
+      Technician
+    </mat-checkbox>
+  </span>
+  <span>
+    <mat-checkbox
+    color="primary"
+    [(checked)]="editor"
+    (change)="updateEditorRight($event, user)"
+    >
+      Editor
+    </mat-checkbox>
+  </span>
+</span>

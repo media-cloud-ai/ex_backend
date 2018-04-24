@@ -1,5 +1,6 @@
 
 import {Component, Input} from '@angular/core';
+import {Router} from '@angular/router';
 import {Workflow} from '../models/workflow';
 
 @Component({
@@ -13,6 +14,7 @@ export class WorkflowComponent {
   @Input() workflow: Workflow[];
 
   constructor(
+    private router: Router,
   ) {}
 
   openJobs() : void {
@@ -20,5 +22,9 @@ export class WorkflowComponent {
   }
   closeJobs() : void {
     this.jobs_opened = false;
+  }
+
+  gotoVideo(video_id): void {
+    this.router.navigate(['/videos'], { queryParams: {video_id: video_id} });
   }
 }

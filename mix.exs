@@ -24,9 +24,9 @@ defmodule ExSubtilBackend.Mixfile do
         :amqp,
         :bamboo,
         :bcrypt_elixir,
-        :phauxth,
-        :logger,
         :httpotion,
+        :logger,
+        :phauxth,
         :poison,
         :runtime_tools,
         :timex
