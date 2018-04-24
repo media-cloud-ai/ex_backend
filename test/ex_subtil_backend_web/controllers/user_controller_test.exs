@@ -37,7 +37,8 @@ defmodule ExSubtilBackendWeb.UserControllerTest do
     assert json_response(conn, 200)["data"] == %{
              "id" => user.id,
              "email" => "reg@example.com",
-             "confirmed_at" => nil
+             "confirmed_at" => nil,
+             "rights" => ["administrator"]
            }
   end
 
