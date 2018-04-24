@@ -7,8 +7,11 @@ export class Parameter {
 }
 
 export class Step {
-  id: string;
+  id: number;
+  parent_ids: number[];
+  name: string;
   enable: boolean;
+  required: string[];
   parameters: Parameter[];
 }
 
