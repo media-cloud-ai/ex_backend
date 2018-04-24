@@ -1,13 +1,11 @@
 
 import {Component, ViewChild} from '@angular/core';
-import {PageEvent} from '@angular/material';
+import {MatCheckboxModule, PageEvent} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {UserService} from '../services/user.service';
 import {UserPage} from '../models/page/user_page';
 import {User} from '../models/user';
-
-import * as moment from 'moment';
 
 @Component({
   selector: 'users-component',
@@ -90,7 +88,6 @@ export class UsersComponent {
     if(pageIndex != 0) {
       params['page'] = pageIndex;
     }
-
     return params;
   }
 }

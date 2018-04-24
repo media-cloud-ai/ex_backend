@@ -10,7 +10,7 @@ defmodule ExSubtilBackend.Amqp.JobFileSystemErrorConsumer do
 
   def consume(channel, tag, _redelivered, %{"job_id" => job_id, "error" => description} = payload) do
     Logger.error("Clean error #{inspect(payload)}")
-    Status.set_job_status(job_id, "error", %{"message": description})
+    Status.set_job_status(job_id, "error", %{message: description})
 
     Basic.ack(channel, tag)
   end

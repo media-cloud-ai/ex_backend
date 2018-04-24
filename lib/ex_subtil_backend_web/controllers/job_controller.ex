@@ -11,7 +11,7 @@ defmodule ExSubtilBackendWeb.JobController do
 
   # the following plugs are defined in the controllers/authorize.ex file
   plug(:user_check when action in [:index, :show, :update, :delete])
-  plug(:id_check when action in [:update, :delete])
+  plug(:right_technician_check when action in [:index, :show, :update, :delete])
 
   def index(conn, params) do
     jobs = Jobs.list_jobs(params)

@@ -12,6 +12,7 @@ defmodule ExSubtilBackendWeb.Docker.ImagesController do
 
   # the following plugs are defined in the controllers/authorize.ex file
   plug(:user_check when action in [:index])
+  plug(:right_technician_check when action in [:index])
 
   def index(conn, _params) do
     hostname = System.get_env("AMQP_HOSTNAME") || Application.get_env(:amqp, :hostname)
@@ -42,8 +43,7 @@ defmodule ExSubtilBackendWeb.Docker.ImagesController do
       AMQP_HOSTNAME: hostname,
       AMQP_USERNAME: username,
       AMQP_PASSWORD: password,
-      AMQP_VHOST: virtual_host,
-      AMQP_QUEUE: "acs" # TODO: ACS worker specific, remove from here and pass environment configuration as parameter
+      AMQP_VHOST: virtual_host
     }
 
     image_list =
@@ -58,6 +58,13 @@ defmodule ExSubtilBackendWeb.Docker.ImagesController do
   defp build_images([], _environment, _volumes, image_list), do: image_list
 
   defp build_images([image | images], environment, volumes, image_list) do
+    environment =
+      if String.starts_with?(image.id, "ftvsubtil/acs_worker") do
+        Map.put(environment, AMQP_QUEUE, "acs")
+      else
+        environment
+      end
+
     configuration = %{
       id: image.id,
       node_config: %{

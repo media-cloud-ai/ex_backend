@@ -10,12 +10,18 @@ defmodule ExSubtilBackend.Amqp.JobAcsErrorConsumer do
 
   def consume(channel, tag, _redelivered, %{"job_id" => job_id, "error" => description} = payload) do
     Logger.error("Command line error #{inspect(payload)}")
-    Status.set_job_status(job_id, "error", %{"message": description})
+    Status.set_job_status(job_id, "error", %{message: description})
     Basic.ack(channel, tag)
   end
 
-  def consume(channel, tag, _redelivered, %{"job_id" => job_id, "error" => description, "code" => error_code} = payload) do
+  def consume(
+        channel,
+        tag,
+        _redelivered,
+        %{"job_id" => job_id, "error" => description, "code" => error_code} = payload
+      ) do
     Logger.error("Command line error #{inspect(payload)}")
+
     description =
       case error_code do
         101 -> "[Error 101] Incorrect number of arguments"
@@ -38,7 +44,8 @@ defmodule ExSubtilBackend.Amqp.JobAcsErrorConsumer do
         118 -> "[Error 118] Cannot save the synchronized subtitle file"
         _ -> description
       end
-    Status.set_job_status(job_id, "error", %{"code": error_code, "message": description})
+
+    Status.set_job_status(job_id, "error", %{code: error_code, message: description})
     Basic.ack(channel, tag)
   end
 end

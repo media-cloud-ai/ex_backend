@@ -28,22 +28,32 @@
       <mat-sidenav mode="side" opened="{{menu_opened}}"
         class="docs-component-viewer-sidenav mat-drawer mat-sidenav ng-tns-c13-1 ng-trigger ng-trigger-transform mat-drawer-side ng-star-inserted">
         <ul>
-          <li class="ng-star-inserted">
+          <li class="ng-star-inserted"
+            *ngIf="right_technician">
             <a routerLink='/videos'>
-              Catalog
+              Catalog {{rights}}
             </a>
           </li>
-          <li class="ng-star-inserted">
+          <li class="ng-star-inserted"
+            *ngIf="right_technician">
             <a routerLink='/workflows'>
               Workflows
             </a>
           </li>
-          <li class="ng-star-inserted">
+          <li class="ng-star-inserted"
+            *ngIf="right_technician">
             <a routerLink='/workers'>
               Workers
             </a>
           </li>
-          <li class="ng-star-inserted">
+          <li class="ng-star-inserted"
+            *ngIf="right_editor">
+            <a routerLink='/people'>
+              People
+            </a>
+          </li>
+          <li class="ng-star-inserted"
+            *ngIf="right_administrator">
             <a routerLink='/users'>
               Users
             </a>

@@ -4,15 +4,15 @@ defmodule ExSubtilBackendWeb.AuthCase do
   import Ecto.Changeset
   alias ExSubtilBackend.{Accounts, Repo}
 
-  def add_user(email) do
-    user = %{email: email, password: "reallyHard2gue$$"}
+  def add_user(email, rights \\ ["administrator"]) do
+    user = %{email: email, password: "reallyHard2gue$$", rights: rights}
     {:ok, user} = Accounts.create_user(user)
     user
   end
 
-  def add_user_confirmed(email) do
+  def add_user_confirmed(email, rights \\ ["administrator"]) do
     add_user(email)
-    |> change(%{confirmed_at: DateTime.utc_now()})
+    |> change(%{confirmed_at: DateTime.utc_now(), rights: rights})
     |> Repo.update!()
   end
 

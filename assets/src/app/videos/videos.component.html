@@ -164,26 +164,23 @@
         <i *ngIf="video.broadcasted_live" title="Diffusé en direct">Direct</i>
       </span>
       <span class="icons parent">
-        <a *ngIf="video.parent_id" href="/videos?video_id={{video.parent_id}}">
+        <span *ngIf="video.parent_id" (click)="gotoVideo(video.parent_id)">
           <i class="material-icons" title="Rediffusion">launch</i>
-        </a>
+        </span>
       </span>
       <span class="icons jarvis" [ngClass]="{disabled: video.manifest_url == undefined}">
         <a target="_blank" href="http://master.player.build.ftven.net/jarvis/?streams={{get_encoded_uri(video.manifest_url)}}">
           <i class="material-icons" title="Visualisation">live_tv</i>
         </a>
       </span>
-      <span class="icons workflows">
-        <a href="/workflows?video_id={{video.id}}"
-          [ngClass]="{disabled: video.workflows_count == 0}"
+      <span class="icons workflows"
+        (click)="gotoRelatedWorkflows(video.id)">
+        <span
+          class="workflows_count"
+          [ngClass]="{found: video.workflows_count > 0}"
           >
-          <span
-            class="workflows_count"
-            [ngClass]="{found: video.workflows_count > 0}"
-            >
-            {{video.workflows_count}}
-          </span>
-        </a>
+          {{video.workflows_count}}
+        </span>
       </span>
       <span class="starter">
         <mat-checkbox
