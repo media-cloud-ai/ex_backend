@@ -10,7 +10,7 @@ defmodule ExSubtilBackendWeb.UserControllerTest do
 
   setup %{conn: conn} = config do
     if email = config[:login] do
-      user = add_user(email)
+      user = add_user(email, config[:rights] || ["administrator"])
       other = add_user("tony@example.com")
       conn = conn |> add_token_conn(user)
       {:ok, %{conn: conn, user: user, other: other}}
@@ -74,5 +74,35 @@ defmodule ExSubtilBackendWeb.UserControllerTest do
   test "unable to delete myself", %{conn: conn, user: user} do
     conn = delete(conn, user_path(conn, :delete, user))
     assert response(conn, 403)
+  end
+
+  @tag login: "reg@example.com"
+  test "delete an another user", %{conn: conn, other: other} do
+    conn = delete(conn, user_path(conn, :delete, other))
+    assert response(conn, 204)
+  end
+
+  @tag login: "reg@example.com", rights: ["editor"]
+  test "check editor right on delete", %{conn: conn, other: other} do
+    conn = delete(conn, user_path(conn, :delete, other))
+    assert response(conn, 403)
+  end
+
+  @tag login: "reg@example.com", rights: ["technician"]
+  test "check technician right on delete", %{conn: conn, other: other} do
+    conn = delete(conn, user_path(conn, :delete, other))
+    assert response(conn, 403)
+  end
+
+  @tag login: "reg@example.com", rights: ["technician", "editor"]
+  test "check multi rights on delete", %{conn: conn, other: other} do
+    conn = delete(conn, user_path(conn, :delete, other))
+    assert response(conn, 403)
+  end
+
+  @tag login: "reg@example.com", rights: ["administrator", "technician", "editor"]
+  test "check multi rights with administrator on delete", %{conn: conn, other: other} do
+    conn = delete(conn, user_path(conn, :delete, other))
+    assert response(conn, 204)
   end
 end
