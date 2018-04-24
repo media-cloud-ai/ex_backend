@@ -44,8 +44,6 @@ defmodule ExSubtilBackendWeb.Docker.ImagesController do
       AMQP_USERNAME: username,
       AMQP_PASSWORD: password,
       AMQP_VHOST: virtual_host,
-      # TODO: ACS worker specific, remove from here and pass environment configuration as parameter
-      AMQP_QUEUE: "acs"
     }
 
     image_list =
@@ -60,6 +58,14 @@ defmodule ExSubtilBackendWeb.Docker.ImagesController do
   defp build_images([], _environment, _volumes, image_list), do: image_list
 
   defp build_images([image | images], environment, volumes, image_list) do
+
+    environment =
+      if String.starts_with?(image.id, "ftvsubtil/acs_worker") do
+        Map.put(environment, AMQP_QUEUE, "acs")
+      else
+        environment
+      end
+
     configuration = %{
       id: image.id,
       node_config: %{
