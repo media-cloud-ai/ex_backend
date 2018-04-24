@@ -104,7 +104,7 @@ defmodule ExSubtilBackend.Application do
 
     if !is_nil(root_email) && !is_nil(root_password) &&
          is_nil(ExSubtilBackend.Accounts.get_by(%{"email" => root_email})) do
-      user = %{email: root_email, password: root_password, rights: ["administrator"]]}
+      user = %{email: root_email, password: root_password, rights: ["administrator"]}
 
       {:ok, user} = ExSubtilBackend.Accounts.create_user(user)
       {:ok, _user} = ExSubtilBackend.Accounts.confirm_user(user)
