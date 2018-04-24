@@ -17,16 +17,16 @@
 <div *ngIf="workflow" class=steps>
   <div
     *ngFor="let step of workflow.flow.steps"
-    class="step {{step.id}} {{step.status}}">
+    class="step {{step.name}} {{step.status}}">
     <div class="content">
       <div class=details>
-        <mat-icon matListIcon>{{step.id | iconForJob}}</mat-icon>
-        {{step.id | jobType}}
+        <mat-icon matListIcon>{{step.name | iconForJob}}</mat-icon>
+        {{step.name | jobType}}
         <parameters-component [parameters]=step.parameters></parameters-component>
       </div>
       <div class=jobs
         *ngIf=jobs_opened>
-        <jobs-component jobType={{step.id}} workflowId={{workflow.id}}></jobs-component>
+        <jobs-component jobType={{step.name}} workflowId={{workflow.id}}></jobs-component>
       </div>
       <div class=progress>
         <span
