@@ -1,6 +1,29 @@
 <div *ngIf=job>
   <h1 mat-dialog-title>Job details: {{ job.name | jobType }} #{{ job.id }}</h1>
   <div mat-dialog-content  class="details">
+    <div class="status">
+      <span>
+        Status:
+      </span>
+      <span class="processing" *ngIf="job.status.length == 0">
+        Processing
+      </span>
+      <span class="completed" *ngIf="job.status[0] && job.status[0].state == 'completed'">
+        Succeeded
+      </span>
+      <span class="error" *ngIf="job.status[0] && job.status[0].state == 'error'">
+        Failed
+      </span>
+      <span class="skipped" *ngIf="job.status[0] && job.status[0].state == 'skipped'">
+        Skipped
+      </span>
+    </div>
+
+    <div class="error-description" *ngIf="job.status[0] && job.status[0].state == 'error' && job.status[0].description">
+      <h4>Error</h4>
+      {{ job.status[0].description.message }}
+    </div>
+
     <ul *ngIf=params class="paths">
       <li *ngIf=params.in>
         <h4>Input paths</h4>
