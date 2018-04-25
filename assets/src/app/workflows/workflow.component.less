@@ -1,4 +1,13 @@
 
+.workflow {
+  display: inline-flex;
+}
+
+i {
+  cursor: pointer;
+  padding-top: 50px;
+}
+
 .reference:before {
   content: "Reference ID:"
 }
@@ -11,21 +20,18 @@
 }
 
 .steps {
-  display: flex !important;
-  i {
-    cursor: pointer;
-    padding-top: 15px;
-  }
+  display: table !important;
+  width: 100%;
+  table-layout: fixed;
 }
 
 .step {
-  flex: 1;
+  display: table-cell;
   .content {
     
     display: flex;
     flex-direction: column;
     height: 100%;
-    max-width: 130px;
 
     .details {
       text-align: center;
