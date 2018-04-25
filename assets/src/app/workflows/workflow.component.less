@@ -1,10 +1,15 @@
 
-i {
-  
+.workflow {
+  display: inline-flex;
 }
 
-.reference:before {
-  content: "Reference ID:"
+i {
+  cursor: pointer;
+  padding-top: 50px;
+}
+
+.info {
+  padding: 10px;
 }
 
 .reference {
@@ -13,11 +18,13 @@ i {
 }
 
 .steps {
-  display: flex !important;
+  display: table !important;
+  width: 100%;
+  table-layout: fixed;
 }
 
 .step {
-  flex: 1;
+  display: table-cell;
   .content {
     
     display: flex;
@@ -25,17 +32,28 @@ i {
     height: 100%;
 
     .details {
-      flex: 1;
+      text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
+
     .progress {
       align-content: flex-end;
       display: flex;
-      height: 12px;
+      height: 24px;
       background-color: #ddd;
+
+      border-style: solid;
+      border-width: 1px;
+      border-color: #fff;
       text-align: center;
-      color: #fff;
-      line-height: 12px;
-      font-size: 10px;
+
+      span {
+        color: #fff;
+        line-height: 24px;
+        font-size: 10px;
+      }
 
       .skipped {
         background-color: #696f74;
