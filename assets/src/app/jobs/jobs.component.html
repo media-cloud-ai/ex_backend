@@ -7,11 +7,15 @@
     <div>Job #{{job.id}}</div>
     <div class="status">
       <span class="icon">
+        <mat-icon class="processing" *ngIf="job.status.length == 0">play_arrow</mat-icon>
         <mat-icon class="completed" *ngIf="job.status[0] && job.status[0].state == 'completed'">check</mat-icon>
         <mat-icon class="skipped" *ngIf="job.status[0] && job.status[0].state == 'skipped'">skip_next</mat-icon>
         <mat-icon class="error" *ngIf="job.status[0] && job.status[0].state == 'error'">close</mat-icon>
       </span>
       <span class="info" title="{{job.status | jobStatus}}">
+        <div class="processing" *ngIf="job.status.length == 0">
+          Processing
+        </div>
         <div
           class="duration" *ngIf="job.status[0] && job.status[0].state == 'completed'"
           (click)="switchDurationRenderingMode()"
@@ -19,13 +23,18 @@
           {{job | jobDuration | duration: job_duration_rendering_mode}}
         </div>
         <div class="error" *ngIf="job.status[0] && job.status[0].state == 'error'">
-          {{job.status[0].description.message}}
+          <span>Error</span>
+          <span *ngIf="job.status[0].description">
+            <i class="material-icons" title="{{job.status[0].description.message}}">info_outline</i>
+          </span>
         </div>
         <div class="skipped" *ngIf="job.status[0] && job.status[0].state == 'skipped'">
           Skipped
         </div>
 
       </span>
+    </div>
+    <div class="bar processing" *ngIf="job.status.length == 0">
     </div>
     <div class="bar completed" *ngIf="job.status[0] && job.status[0].state == 'completed'">
     </div>

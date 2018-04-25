@@ -11,13 +11,13 @@
     *ngIf="!jobs_opened"
     (click)="openJobs()"
     title="Show jobs"
-    >keyboard_arrow_down</i>
+    >expand_more</i>
 
   <i class="material-icons close"
     *ngIf="jobs_opened"
     (click)="closeJobs()"
     title="Hide jobs"
-    >keyboard_arrow_up</i>
+    >expand_less</i>
   <div
     *ngFor="let step of workflow.flow.steps"
     class="step {{step.name}} {{step.status}}">
