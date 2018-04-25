@@ -15,10 +15,7 @@ export class ParametersComponent {
   constructor(
   ) {}
 
-  openParameters() : void {
-    this.opened = true;
-  }
-  closeParameters() : void {
-    this.opened = false;
+  toggleParameters(): void {
+    this.opened = !this.opened;
   }
 }

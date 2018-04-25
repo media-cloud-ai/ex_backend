@@ -2,16 +2,15 @@
   <mat-divider ></mat-divider>
 
   <span
-    class="param-header">
+    class="param-header"
+    (click)="toggleParameters()">
     <span>
-    <i class="material-icons"
-      *ngIf="!opened"
-      (click)="openParameters()"
-      >expand_more</i>
-    <i class="material-icons"
-      *ngIf="opened"
-      (click)="closeParameters()"
-      >expand_less</i>
+      <i class="material-icons"
+        *ngIf="!opened"
+        >expand_more</i>
+      <i class="material-icons"
+        *ngIf="opened"
+        >expand_less</i>
     </span>
     <span>Parameters</span>
   </span>
