@@ -1,19 +1,21 @@
 
-i {
-  
-}
-
 .reference:before {
   content: "Reference ID:"
 }
 
 .reference {
+  display: block;
+  padding: 10px;
   cursor: pointer;
   color: #3965ac;
 }
 
 .steps {
   display: flex !important;
+  i {
+    cursor: pointer;
+    padding-top: 15px;
+  }
 }
 
 .step {
@@ -23,19 +25,31 @@ i {
     display: flex;
     flex-direction: column;
     height: 100%;
+    max-width: 130px;
 
     .details {
-      flex: 1;
+      text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
+
     .progress {
       align-content: flex-end;
       display: flex;
-      height: 12px;
+      height: 24px;
       background-color: #ddd;
+
+      border-style: solid;
+      border-width: 1px;
+      border-color: #fff;
       text-align: center;
-      color: #fff;
-      line-height: 12px;
-      font-size: 10px;
+
+      span {
+        color: #fff;
+        line-height: 24px;
+        font-size: 10px;
+      }
 
       .skipped {
         background-color: #696f74;
