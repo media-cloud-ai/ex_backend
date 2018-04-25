@@ -19,6 +19,24 @@
       </span>
     </div>
 
+    <div class="duration">
+      <div *ngIf="job.status[0]">
+        <span class="label">Executed in</span>
+        <span class="time">: {{ job | jobDuration | duration: 'timecode_ms' }}</span>
+      </div>
+    </div>
+
+    <div class="times">
+      <div>
+        <span class="label">Started at</span>
+        <span class="time">: {{ job.inserted_at | date: 'yyyy-MM-dd hh:mm:ss' }}</span>
+      </div>
+      <div *ngIf="job.status[0]">
+        <span class="label">Ended at</span>
+        <span class="time">: {{ job.status[0].inserted_at | date: 'yyyy-MM-dd hh:mm:ss' }}</span>
+      </div>
+    </div>
+
     <div class="error-description" *ngIf="job.status[0] && job.status[0].state == 'error' && job.status[0].description">
       <h4>Error</h4>
       {{ job.status[0].description.message }}
