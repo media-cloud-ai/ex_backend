@@ -14,9 +14,12 @@
   </span>
 
   <span class="line">
-    <div *ngIf="workflow" class="reference"
-      (click)="gotoVideo(workflow.reference)">
-      {{workflow.reference}}
+    <div *ngIf="workflow" class="info">
+      <span>Reference ID:</span>
+      <span class="reference"
+        (click)="gotoVideo(workflow.reference)">
+        {{workflow.reference}}
+      </span>
       <duration-component [workflow]=workflow></duration-component>
     </div>
     <div *ngIf="workflow" class=steps>
