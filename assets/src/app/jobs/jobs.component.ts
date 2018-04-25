@@ -81,7 +81,9 @@ export class JobsComponent {
         this.job_duration_rendering_mode = "human";
       }
     }
+  }
 
+  displayJobDetails(job: Job): void {
   }
 }
 

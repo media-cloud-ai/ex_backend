@@ -13,10 +13,23 @@ ul {
   li {
     padding: 5px 2px;
 
+    .info {
+      display: flex;
+
+      span {
+        flex: 1;
+      }
+
+      .details {
+        text-align: right;
+        cursor: pointer;
+      }
+    }
+
     .status {
       display: flex;
 
-      .info {
+      .summary {
         width: 100%;
         line-height: 27px;
         border-radius: 4px;

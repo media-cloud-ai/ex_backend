@@ -4,7 +4,14 @@
     class="job {{job.channel}} {{job.status | jobStatus}}"
     >
 
-    <div>Job #{{job.id}}</div>
+    <div class="info">
+      <span class="name">Job #{{job.id}}</span>
+      <span class="details"
+        (click)="displayJobDetails(job)"
+        >
+        Details
+      </span>
+    </div>
     <div class="status">
       <span class="icon">
         <mat-icon class="processing" *ngIf="job.status.length == 0">play_arrow</mat-icon>
@@ -12,7 +19,7 @@
         <mat-icon class="skipped" *ngIf="job.status[0] && job.status[0].state == 'skipped'">skip_next</mat-icon>
         <mat-icon class="error" *ngIf="job.status[0] && job.status[0].state == 'error'">close</mat-icon>
       </span>
-      <span class="info" title="{{job.status | jobStatus}}">
+      <span class="summary" title="{{job.status | jobStatus}}">
         <div class="processing" *ngIf="job.status.length == 0">
           Processing
         </div>
