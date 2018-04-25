@@ -43,13 +43,16 @@ export class DurationPipe implements PipeTransform {
 
     if(format == "human") {
       if(hours) {
-        display += hours + " h "
+        display += hours + " h ";
       }
       if(minutes) {
-        display += minutes + " m "
+        display += minutes + " m ";
       }
       if(seconds) {
-        display += seconds + " s"
+        display += seconds + " s";
+      }
+      if(display == "") {
+        display = "0 s";
       }
       return display;
     }
