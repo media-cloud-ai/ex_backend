@@ -1,11 +1,13 @@
 
 import {Component, Input, ViewChild} from '@angular/core';
-import {PageEvent} from '@angular/material';
+import {PageEvent, MatDialog} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {JobService} from '../services/job.service';
 import {JobPage} from '../models/page/job_page';
 import {Job} from '../models/job';
+
+import {JobDetailsDialogComponent} from './details/job_details_dialog.component';
 
 import * as moment from 'moment';
 
@@ -31,7 +33,8 @@ export class JobsComponent {
   constructor(
     private jobService: JobService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -84,6 +87,7 @@ export class JobsComponent {
   }
 
   displayJobDetails(job: Job): void {
+    this.dialog.open(JobDetailsDialogComponent, { data: job });
   }
 }
 

@@ -62,6 +62,7 @@ import {WorkflowComponent}       from './workflows/workflow.component';
 import {WorkflowsComponent}      from './workflows/workflows.component';
 import {WorkersComponent}        from './workers/workers.component';
 
+import {JobDetailsDialogComponent}  from './jobs/details/job_details_dialog.component';
 import {RdfDialogComponent}      from './videos/rdf/rdf_dialog.component';
 import {WorkflowDialogComponent} from './videos/workflow/workflow_dialog.component';
 
@@ -143,6 +144,7 @@ const SUBTIL_DATE_FORMATS = {
     DurationComponent,
     InputListComponent,
     JobsComponent,
+    JobDetailsDialogComponent,
     LoginComponent,
     ParametersComponent,
     PersonComponent,
@@ -174,6 +176,7 @@ const SUBTIL_DATE_FORMATS = {
   entryComponents: [
     DurationComponent,
     InputListComponent,
+    JobDetailsDialogComponent,
     ParametersComponent,
     RdfDialogComponent,
     RightsComponent,

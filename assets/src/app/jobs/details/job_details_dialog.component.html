@@ -1,0 +1,28 @@
+<div *ngIf=job>
+  <h1 mat-dialog-title>Job details: {{ job.name | jobType }} #{{ job.id }}</h1>
+  <div mat-dialog-content  class="details">
+    <ul *ngIf=params class="paths">
+      <li *ngIf=params.in>
+        <h4>Input paths</h4>
+        <ul>
+          <li *ngFor="let input of params.in"
+            class="path">
+            {{ input }}
+          </li>
+        </ul>
+      </li>
+      <li *ngIf=params.out>
+        <h4>Output paths</h4>
+        <ul>
+          <li *ngFor="let output of params.out"
+            class="path">
+            {{ output }}
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onClose()">OK</button>
+  </div>
+</div>
