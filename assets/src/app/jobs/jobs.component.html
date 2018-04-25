@@ -3,26 +3,42 @@
     *ngFor="let job of jobs.data"
     class="job {{job.channel}} {{job.status | jobStatus}}"
     >
-    <span *ngIf="job.name == 'ftp_order'" class="icon">
-      <mat-icon>compare_arrows</mat-icon>
-    </span>
-    <span class="status">
-      {{job.status | jobStatus}}
-    </span>
+
+    <div>Job #{{job.id}}</div>
+    <div class="status">
+      <span class="icon">
+        <mat-icon class="completed" *ngIf="job.status[0] && job.status[0].state == 'completed'">check</mat-icon>
+        <mat-icon class="skipped" *ngIf="job.status[0] && job.status[0].state == 'skipped'">skip_next</mat-icon>
+        <mat-icon class="error" *ngIf="job.status[0] && job.status[0].state == 'error'">close</mat-icon>
+      </span>
+      <span class="info" title="{{job.status | jobStatus}}">
+        <div
+          class="duration" *ngIf="job.status[0] && job.status[0].state == 'completed'"
+          (click)="switchDurationRenderingMode()"
+          >
+          {{job | jobDuration | duration: job_duration_rendering_mode}}
+        </div>
+        <div class="error" *ngIf="job.status[0] && job.status[0].state == 'error'">
+          {{job.status[0].description.message}}
+        </div>
+        <div class="skipped" *ngIf="job.status[0] && job.status[0].state == 'skipped'">
+          Skipped
+        </div>
+
+      </span>
+    </div>
+    <div class="bar completed" *ngIf="job.status[0] && job.status[0].state == 'completed'">
+    </div>
+    <div class="bar error" *ngIf="job.status[0] && job.status[0].state == 'error'">
+    </div>
+    <div class="bar skipped" *ngIf="job.status[0] && job.status[0].state == 'skipped'">
+    </div>
+
     <!-- <span class="date">
       {{job.inserted_at | date: 'd LLL yy'}}
     </span>
     <span class="hour">
       {{job.inserted_at | date: 'H:mm:ss'}}
     </span> -->
-    <span
-      class="duration" *ngIf="job.status[0] && job.status[0].state == 'completed'"
-      (click)="switchDurationRenderingMode()"
-      >
-      Duration: {{job | jobDuration | duration: job_duration_rendering_mode}}
-    </span>
-    <span class="error" *ngIf="job.status[0] && job.status[0].state == 'error'">
-      {{job.status[0].description.message}}
-    </span>
   </li>
 </ul>

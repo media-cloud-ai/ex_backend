@@ -8,56 +8,37 @@
 ul {
   list-style: none;
   padding: 0px;
+  font-size: 10px;
 
   li {
-    padding: 10px;
-    background-color: @white;
-    display: flex;
+    padding: 5px 2px;
 
-    span.title {
-      min-width: 150px;
-      text-align: center;
-    }
-    span.status {
-      min-width: 80px;
-      line-height: 20px;
-      border-radius: 4px;
-      text-align: center;
-    }
-    span.date {
-      min-width: 80px;
-      text-align: center;
-    }
-    span.hour {
-      min-width: 80px;
-      flex: 1;
-    }
-    span.source.path {
-      justify-content: flex-end;
+    .status {
+      display: flex;
+
+      .info {
+        width: 100%;
+        line-height: 27px;
+        border-radius: 4px;
+        text-align: center;
+      }
     }
 
-    span.duration {
-      cursor: pointer;
-      padding: 3px;
-    }
-    span.error {
-      padding: 3px;
+    .bar {
+      height: 5px;
     }
   }
 
-  li.completed span.status {
+  li.completed .bar {
     background-color: @green;
   }
-  li.processing span.status {
+  li.processing .bar {
     background-color: @blue;
-    color: @white;
   }
-  li.skipped span.status {
+  li.skipped .bar {
     background-color: @grey;
-    color: @white;
   }
-  li.error span.status {
+  li.error .bar {
     background-color: @red;
-    color: @white;
   }
 }
