@@ -1,20 +1,42 @@
 
-.workflow {
-  display: inline-flex;
-}
-
-i {
-  cursor: pointer;
-  padding-top: 50px;
-}
-
 .info {
-  padding: 10px;
-}
+  display: flex;
+  line-height: 36px;
+  vertical-align: middle;
 
-.reference {
-  cursor: pointer;
-  color: #3965ac;
+  .identifier {
+    padding: 0px 4px;
+    align-content: flex-start;
+  }
+
+  .reference {
+    flex: 1;
+    padding: 0px 4px;
+
+    .reference-link {
+      cursor: pointer;
+      color: #3965ac;
+    }
+  }
+
+  .duration {
+    flex: 1;
+  }
+
+  .steps-count {
+    align-content: flex-end;
+    padding: 0px 4px;
+  }
+
+  .details {
+    align-content: flex-end;
+    padding: 0px 4px;
+
+    .details-link {
+      cursor: pointer;
+      color: #3965ac;
+    }
+  }
 }
 
 .steps {
@@ -25,48 +47,54 @@ i {
 
 .step {
   display: table-cell;
-  .content {
-    
+
+  .header {
     display: flex;
-    flex-direction: column;
-    height: 100%;
 
-    .details {
-      text-align: center;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .progress {
-      align-content: flex-end;
+    .header-content {
       display: flex;
+      width:100%;
       height: 24px;
-      background-color: #ddd;
+      line-height: 24px;
 
-      border-style: solid;
-      border-width: 1px;
-      border-color: #fff;
-      text-align: center;
-
-      span {
-        color: #fff;
-        line-height: 24px;
-        font-size: 10px;
+      .icon {
+        align-content: flex-start;
+        padding: 0px 4px;
+      }
+      .name {
+        flex: 1;
+        width: 100%;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
-      .skipped {
-        background-color: #696f74;
+      .jobs-count {
+        align-content: flex-end;
+        padding: 0px 4px;
       }
-      .completed {
-        background-color: #71bd2c;
-      }
-      .queued {
-        background-color: #3965ac;
-      }
-      .error {
-        background-color: #db280f;
-      }
+    }
+  }
+
+  .progress {
+    align-content: flex-end;
+    display: flex;
+    height: 5px;
+    background-color: #ddd;
+    text-align: center;
+
+    .skipped {
+      background-color: #696f74;
+    }
+    .completed {
+      background-color: #71bd2c;
+    }
+    .queued {
+      background-color: #3965ac;
+    }
+    .error {
+      background-color: #db280f;
     }
   }
 }

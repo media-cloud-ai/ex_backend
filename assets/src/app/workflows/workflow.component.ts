@@ -27,4 +27,20 @@ export class WorkflowComponent {
   gotoVideo(video_id): void {
     this.router.navigate(['/videos'], { queryParams: {video_id: video_id} });
   }
+
+  goToDetails(workflow_id): void {
+  }
+
+  getStepsCount(): string {
+    let count = 0;
+    for(let step of this.workflow["flow"].steps) {
+      if(step["jobs"].skipped > 0 ||
+         step["jobs"].completed > 0 ||
+         step["jobs"].errors > 0) {
+        count++;
+      }
+    }
+    return count.toString() + "/" + this.workflow["flow"].steps.length.toString();
+  }
+
 }
