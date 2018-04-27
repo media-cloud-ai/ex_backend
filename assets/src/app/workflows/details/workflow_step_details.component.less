@@ -1,0 +1,73 @@
+.header {
+  display: flex;
+  padding: 10px;
+  box-shadow: 1px 1px 2px #ccc;
+
+  .expander {
+    align-content: flex-start;
+
+    i {
+      padding-top: 5px;
+      cursor: pointer;
+    }
+  }
+
+  .header-content {
+    width:100%;
+    line-height: 24px;
+
+    .info {
+
+      .icon {
+        align-content: flex-start;
+        padding: 0px 4px;
+      }
+      .name {
+        flex: 1;
+        width: 100%;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .jobs-count {
+        align-content: flex-end;
+        padding: 0px 4px;
+      }
+
+    }
+
+    .progress {
+      display: flex;
+      height: 5px;
+      background-color: #ddd;
+      text-align: center;
+
+      .skipped {
+        background-color: #696f74;
+      }
+      .completed {
+        background-color: #71bd2c;
+      }
+      .queued {
+        background-color: #3965ac;
+      }
+      .error {
+        background-color: #db280f;
+      }
+    }
+  }
+}
+
+
+.details {
+  padding: 10px;
+  padding-left: 34px;
+  font-size: 10px;
+
+  div {
+    padding: 5px 10px;
+    background-color: #eee;
+  }
+}

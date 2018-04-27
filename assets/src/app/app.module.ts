@@ -59,7 +59,8 @@ import {QueuesComponent}         from './amqp/queues.component';
 import {UsersComponent}          from './users/users.component';
 import {VideosComponent}         from './videos/videos.component';
 import {WorkflowComponent}       from './workflows/workflow.component';
-import {WorkflowDetailsComponent} from './workflows/details/workflow_details.component';
+import {WorkflowDetailsComponent}     from './workflows/details/workflow_details.component';
+import {WorkflowStepDetailsComponent} from './workflows/details/workflow_step_details.component';
 import {WorkflowsComponent}      from './workflows/workflows.component';
 import {WorkersComponent}        from './workers/workers.component';
 
@@ -158,6 +159,7 @@ const SUBTIL_DATE_FORMATS = {
     WorkflowDialogComponent,
     WorkflowComponent,
     WorkflowDetailsComponent,
+    WorkflowStepDetailsComponent,
     WorkflowsComponent,
     WorkersComponent,
 
@@ -184,6 +186,7 @@ const SUBTIL_DATE_FORMATS = {
     RightsComponent,
     WorkflowComponent,
     WorkflowDialogComponent,
+    WorkflowStepDetailsComponent
   ],
   providers: [
     {
