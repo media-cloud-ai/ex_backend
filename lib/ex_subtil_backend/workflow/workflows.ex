@@ -91,6 +91,7 @@ defmodule ExSubtilBackend.Workflows do
   def get_workflow!(id) do
     Repo.get!(Workflow, id)
     |> preload_workflow
+    |> Repo.preload([:jobs, :artifacts])
   end
 
   defp preload_workflow(workflow) do

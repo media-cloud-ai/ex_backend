@@ -14,6 +14,9 @@
         {{workflow.reference}}
       </span>
     </span>
+    <span class="duration">
+      <duration-component [workflow]=workflow></duration-component>
+    </span>
     <span class="steps-count">Steps: {{ getStepsCount() }}</span>
   </div>
 
