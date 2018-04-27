@@ -29,6 +29,7 @@ export class WorkflowComponent {
   }
 
   goToDetails(workflow_id): void {
+    this.router.navigate(['/workflows', workflow_id]);
   }
 
   getStepsCount(): string {

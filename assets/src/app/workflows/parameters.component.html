@@ -1,22 +1,5 @@
 <div *ngIf="parameters && parameters.length > 0">
-  <mat-divider ></mat-divider>
-
-  <span
-    class="param-header"
-    (click)="toggleParameters()">
-    <span>
-      <i class="material-icons"
-        *ngIf="!opened"
-        >expand_more</i>
-      <i class="material-icons"
-        *ngIf="opened"
-        >expand_less</i>
-    </span>
-    <span>Parameters</span>
-  </span>
-
-  <div class=parameters
-    *ngIf="opened">
+  <div class=parameters>
     <mat-list dense>
       <mat-list-item
         *ngFor="let parameter of parameters">

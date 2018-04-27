@@ -6,19 +6,6 @@
 
     <div class="info">
       <span class="name">Job #{{job.id}}</span>
-      <span class="details"
-        (click)="displayJobDetails(job)"
-        >
-        Details
-      </span>
-    </div>
-    <div class="status">
-      <span class="icon">
-        <mat-icon class="processing" *ngIf="job.status.length == 0">play_arrow</mat-icon>
-        <mat-icon class="completed" *ngIf="job.status[0] && job.status[0].state == 'completed'">check</mat-icon>
-        <mat-icon class="skipped" *ngIf="job.status[0] && job.status[0].state == 'skipped'">skip_next</mat-icon>
-        <mat-icon class="error" *ngIf="job.status[0] && job.status[0].state == 'error'">close</mat-icon>
-      </span>
       <span class="summary" title="{{job.status | jobStatus}}">
         <div class="processing" *ngIf="job.status.length == 0">
           Processing
@@ -30,15 +17,24 @@
           {{job | jobDuration | duration: job_duration_rendering_mode}}
         </div>
         <div class="error" *ngIf="job.status[0] && job.status[0].state == 'error'">
-          <span>Error</span>
+          Error
+          <!-- <span>Error</span>
           <span *ngIf="job.status[0].description">
             <i class="material-icons" title="{{job.status[0].description.message}}">info_outline</i>
-          </span>
+          </span> -->
         </div>
         <div class="skipped" *ngIf="job.status[0] && job.status[0].state == 'skipped'">
           Skipped
         </div>
-
+      </span>
+      <span class="details">
+        [
+        <span class="details-link"
+          (click)="displayJobDetails(job)"
+          >
+          Details
+        </span>
+        ]
       </span>
     </div>
     <div class="bar processing" *ngIf="job.status.length == 0">

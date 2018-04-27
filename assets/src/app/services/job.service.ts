@@ -9,7 +9,7 @@ import {JobPage} from '../models/page/job_page';
 
 @Injectable()
 export class JobService {
-  private jobsUrl = 'api/jobs';
+  private jobsUrl = '/api/jobs';
 
   constructor(private http: HttpClient) { }
 

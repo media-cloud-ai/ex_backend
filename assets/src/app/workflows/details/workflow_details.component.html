@@ -1,0 +1,86 @@
+<div class="workflow"
+  *ngIf="workflow"
+  >
+
+  <h1>
+    Workflows #{{ workflow.id }}
+  </h1>
+
+  <div class="info">
+    <span class="reference">
+      <span>Reference ID:</span>
+      <span class="reference-link"
+        (click)="goToVideo(workflow.reference)">
+        {{workflow.reference}}
+      </span>
+    </span>
+    <span class="steps-count">Steps: {{ getStepsCount() }}</span>
+  </div>
+
+  <div
+    class="line"
+    *ngFor="let line of graph"
+    >
+    <span *ngFor="let step of line"
+      class="step"
+      [ngStyle]="{flex: getStepWeight(step)}"
+      >
+      <span
+        *ngIf="step.name"
+        title="{{step.name | jobType}}"
+        >
+
+        <div class="header">
+          <div class="header-content">
+            <mat-icon class="icon" >{{ step.name | iconForJob }}</mat-icon>
+            <span class="name">{{ step.name | jobType }}</span>
+            <span class="jobs-count">{{ step.jobs.completed + step.jobs.errors }}/{{ step.jobs.total }}</span>
+          </div>
+        </div>
+
+        <div class="progress">
+          <span
+            class="skipped"
+            title="{{step.name | jobType}}: skipped"
+            *ngIf="step.jobs.skipped > 0"
+            [ngStyle]="{'flex': step.jobs.skipped}">
+          </span>
+          <span
+            class="completed"
+            title="{{step.name | jobType}}: completed"
+            *ngIf="step.jobs.completed > 0"
+            [ngStyle]="{'flex': step.jobs.completed}">
+          </span>
+          <span
+            class="error"
+            title="{{step.name | jobType}}: error"
+            *ngIf="step.jobs.errors > 0"
+            [ngStyle]="{'flex': step.jobs.errors}">
+          </span>
+          <span
+            class="queued"
+            title="{{step.name | jobType}}: queued"
+            *ngIf="step.jobs.queued > 0"
+            [ngStyle]="{'flex': step.jobs.queued}">
+          </span>
+        </div>
+
+        <div class="details">
+          <div class="parameters" *ngIf="step.parameters && step.parameters.length > 0">
+            <h4 class="header">
+              Parameters
+            </h4>
+            <parameters-component [parameters]=step.parameters></parameters-component>
+          </div>
+          <div class="jobs">
+            <h4 class="header">
+              Jobs
+            </h4>
+            <jobs-component jobType={{step.name}} workflowId={{workflow.id}}></jobs-component>
+          </div>
+        </div>
+      </span>
+      <mat-divider *ngIf="step.name"></mat-divider>
+    </span>
+  </div>
+</div>

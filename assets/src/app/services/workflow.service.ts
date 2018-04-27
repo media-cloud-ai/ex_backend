@@ -10,7 +10,7 @@ import {Step, Workflow} from '../models/workflow';
 
 @Injectable()
 export class WorkflowService {
-  private workflowsUrl = 'api/workflows';
+  private workflowsUrl = '/api/workflows';
 
   constructor(private http: HttpClient) { }
 
@@ -27,6 +27,14 @@ export class WorkflowService {
       .pipe(
         tap(workflowPage => this.log('fetched WorkflowPage')),
         catchError(this.handleError('getWorkflows', undefined))
+      );
+  }
+
+  getWorkflow(workflow_id: number): Observable<Workflow> {
+    return this.http.get<Workflow>(this.workflowsUrl  + "/" + workflow_id.toString())
+      .pipe(
+        tap(workflowPage => this.log('fetched Workflow')),
+        catchError(this.handleError('getWorkflow', undefined))
       );
   }
 

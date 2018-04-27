@@ -20,15 +20,6 @@ ul {
         flex: 1;
       }
 
-      .details {
-        text-align: right;
-        cursor: pointer;
-      }
-    }
-
-    .status {
-      display: flex;
-
       .summary {
         width: 100%;
         line-height: 27px;
@@ -36,18 +27,15 @@ ul {
         text-align: center;
       }
 
-      .error {
-        display: inline-flex;
-        max-height: 24px;
-
-        span {
-          padding: 0px 5px;
-        }
-        i {
-          cursor: help;
+      .details {
+        text-align: right;
+        .details-link {
+          cursor: pointer;
+          color: #3965ac;
         }
       }
     }
+
 
     .bar {
       height: 5px;

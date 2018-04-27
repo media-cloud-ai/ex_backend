@@ -9,13 +9,8 @@ import {Parameter} from '../models/workflow';
 })
 
 export class ParametersComponent {
-  opened: boolean = false;
   @Input() parameters: Parameter[];
 
   constructor(
   ) {}
-
-  toggleParameters(): void {
-    this.opened = !this.opened;
-  }
 }
