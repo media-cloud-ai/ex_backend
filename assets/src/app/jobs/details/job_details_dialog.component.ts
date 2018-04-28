@@ -21,13 +21,13 @@ export class JobDetailsDialogComponent {
   private initJobParametersToDisplay(): void {
     for(let param_key in this.job.params) {
       if(param_key.indexOf("source") >= 0 ||
-         param_key.indexOf("input") >= 0) {
+        param_key.indexOf("input") >= 0) {
         let paths = this.getParamPaths(this.job.params[param_key]);
         this.params["in"] = paths;
       }
 
       if(param_key.indexOf("destination") >= 0 ||
-         param_key.indexOf("output") >= 0) {
+        param_key.indexOf("output") >= 0) {
         let paths = this.getParamPaths(this.job.params[param_key]);
         this.params["out"] = paths;
       }
@@ -35,29 +35,22 @@ export class JobDetailsDialogComponent {
   }
 
   private getParamPaths(param: object): string[] {
-    let paths = new Array<string>();
-
     if(typeof param == "string") {
       return [param];
     }
 
     if(Array.isArray(param)) {
+      let paths = new Array<string>();
       for(let p of param) {
         paths = paths.concat(this.getParamPaths(p))
       }
       return paths;
     }
 
-    if("path" in param) {
-      paths = paths.concat(param["path"]);
-    } else if("paths" in param) {
-      paths = paths.concat(param["paths"]);
-    }
-    return paths;
+    return param["paths"] || [param["path"]];
   }
 
   onClose(): void {
     this.dialogRef.close();
   }
-
 }
