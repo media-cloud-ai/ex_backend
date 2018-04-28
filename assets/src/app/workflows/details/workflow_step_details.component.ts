@@ -10,6 +10,7 @@ import {Step} from '../../models/workflow';
 
 export class WorkflowStepDetailsComponent {
   details_opened = false;
+  disabled: boolean = true;
 
   @Input() step: Step;
   @Input() workflowId: number;
@@ -18,11 +19,19 @@ export class WorkflowStepDetailsComponent {
   ) { }
 
   ngOnInit() {
-    console.log("this.step", this.step);
+
+    if(this.step.parameters) {
+      this.disabled = this.step.parameters.length == 0;
+    }
+
+    if(this.step.jobs && this.step.jobs.total != undefined && this.disabled) {
+      this.disabled = this.step.jobs.total == 0;
+    }
   }
 
   toggleStepDetails(): void {
-    this.details_opened = !this.details_opened;
+    if(!this.disabled) {
+      this.details_opened = !this.details_opened;
+    }
   }
-
 }

@@ -1,7 +1,11 @@
+
+.content {
+  box-shadow: 1px 1px 2px #ccc;
+}
+
 .header {
   display: flex;
   padding: 10px;
-  box-shadow: 1px 1px 2px #ccc;
 
   .expander {
     align-content: flex-start;
@@ -10,6 +14,10 @@
       padding-top: 5px;
       cursor: pointer;
     }
+
+    i.disabled {
+      color: #ddd;
+    }
   }
 
   .header-content {
@@ -17,6 +25,7 @@
     line-height: 24px;
 
     .info {
+      display: flex;
 
       .icon {
         align-content: flex-start;
@@ -35,7 +44,6 @@
         align-content: flex-end;
         padding: 0px 4px;
       }
-
     }
 
     .progress {
@@ -60,11 +68,9 @@
   }
 }
 
-
 .details {
   padding: 10px;
   padding-left: 34px;
-  font-size: 10px;
 
   div {
     padding: 5px 10px;
