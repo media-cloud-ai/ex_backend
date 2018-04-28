@@ -8,11 +8,11 @@ export class Parameter {
 
 export class Step {
   id: number;
-  parent_ids: number[];
+  parent_ids?: number[];
   name: string;
   enable: boolean;
-  required: string[];
-  parameters: Parameter[];
+  required?: string[];
+  parameters?: Parameter[];
 }
 
 export class Flow {
