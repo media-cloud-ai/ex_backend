@@ -2,38 +2,29 @@
   <h1 mat-dialog-title>Job details: {{ job.name | jobType }} #{{ job.id }}</h1>
   <div mat-dialog-content  class="details">
     <div class="status">
-      <span>
-        Status:
-      </span>
-      <span class="processing" *ngIf="job.status.length == 0">
-        Processing
-      </span>
-      <span class="completed" *ngIf="job.status[0] && job.status[0].state == 'completed'">
-        Succeeded
-      </span>
-      <span class="error" *ngIf="job.status[0] && job.status[0].state == 'error'">
-        Failed
-      </span>
-      <span class="skipped" *ngIf="job.status[0] && job.status[0].state == 'skipped'">
-        Skipped
+      <label>
+        Status
+      </label>
+      <span class="{{job.status | jobStatus}}">
+        {{job.status | jobStatus}}
       </span>
     </div>
 
     <div class="duration">
       <div *ngIf="job.status[0]">
         <span class="label">Executed in</span>
-        <span class="time">: {{ job | jobDuration | duration: 'timecode_ms' }}</span>
+        <span class="time">{{ job | jobDuration | duration: 'timecode_ms' }}</span>
       </div>
     </div>
 
     <div class="times">
       <div>
-        <span class="label">Started at</span>
-        <span class="time">: {{ job.inserted_at | date: 'yyyy-MM-dd hh:mm:ss' }}</span>
+        <span class="label">Started at:</span>
+        <span class="time">{{ job.inserted_at | date: 'yyyy-MM-dd hh:mm:ss' }}</span>
       </div>
       <div *ngIf="job.status[0]">
         <span class="label">Ended at</span>
-        <span class="time">: {{ job.status[0].inserted_at | date: 'yyyy-MM-dd hh:mm:ss' }}</span>
+        <span class="time">{{ job.status[0].inserted_at | date: 'yyyy-MM-dd hh:mm:ss' }}</span>
       </div>
     </div>
 

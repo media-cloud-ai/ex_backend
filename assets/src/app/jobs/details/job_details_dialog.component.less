@@ -7,16 +7,18 @@
 
 .details {
   font-family: sans-serif;
-  font-size: 12px;
 
   .status {
     padding: 5px 0px;
-    font-size: 16px;
     font-weight: bold;
 
+    label {
+      width: 85px;
+    }
+
+    label,
     span {
       display: inline-block;
-      line-height: 32px;
     }
 
     span.completed {
@@ -31,7 +33,6 @@
     span.error {
       color: @red;
     }
-
   }
 
   .duration,
@@ -43,11 +44,7 @@
     }
 
     .label {
-      min-width: 72px;
-    }
-
-    .time {
-      min-width: 200px;
+      width: 85px;
     }
   }
 
@@ -56,6 +53,4 @@
     padding: 0px;
     margin-top: 0px;
   }
-
 }
-
