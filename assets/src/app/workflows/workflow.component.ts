@@ -12,10 +12,24 @@ import {Workflow} from '../models/workflow';
 export class WorkflowComponent {
   jobs_opened: boolean = false;
   @Input() workflow: Workflow[];
+  processing_steps: Step[] = new Array();
+  error_steps: Step[] = new Array();
 
   constructor(
     private router: Router,
   ) {}
+
+  ngOnInit() {
+    for(let step of this.workflow.flow.steps){
+      console.log(step);
+      if(step.jobs.errors > 0) {
+        this.error_steps.push(step);
+      }
+      if(step.jobs.queued > 0) {
+        this.processing_steps.push(step);
+      }
+    }
+  }
 
   openJobs() : void {
     this.jobs_opened = true;
@@ -32,16 +46,19 @@ export class WorkflowComponent {
     this.router.navigate(['/workflows', workflow_id]);
   }
 
-  getStepsCount(): string {
+  getStepsCount(): number {
     let count = 0;
-    for(let step of this.workflow["flow"].steps) {
-      if(step["jobs"].skipped > 0 ||
-         step["jobs"].completed > 0 ||
-         step["jobs"].errors > 0) {
+    for(let step of this.workflow.flow.steps) {
+      if(step.jobs.skipped > 0 ||
+         step.jobs.completed > 0 ||
+         step.jobs.errors > 0) {
         count++;
       }
     }
-    return count.toString() + "/" + this.workflow["flow"].steps.length.toString();
+    return count;
   }
-
+  
+  getTotalSteps(): number {
+    return this.workflow["flow"].steps.length;
+  }
 }

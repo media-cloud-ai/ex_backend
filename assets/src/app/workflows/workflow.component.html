@@ -1,10 +1,9 @@
 <div class="workflow">
-
   <div *ngIf="workflow" class="info">
     <span class="identifier">#{{ workflow.id }}</span>
     <span class="reference">
       <span>Reference ID:</span>
-      <span class="reference-link"
+      <span class="link"
         (click)="gotoVideo(workflow.reference)">
         {{workflow.reference}}
       </span>
@@ -12,57 +11,22 @@
     <span class="duration">
       <duration-component [workflow]=workflow></duration-component>
     </span>
-    <span class="steps-count">Steps: {{ getStepsCount() }}</span>
+    <span class="steps-count">Steps: {{getStepsCount()}}/{{getTotalSteps()}}</span>
     <span class="details">
-      [
-      <span class="details-link"
-        (click)="goToDetails(workflow.id)">
+      <button
+        mat-raised-button
+        (click)="goToDetails(workflow.id)"
+        >
+        <mat-icon>visibility</mat-icon>
         Details
-      </span>
-      ]
+      </button>
     </span>
   </div>
-
   <div *ngIf="workflow" class=steps>
     <div
       *ngFor="let step of workflow.flow.steps"
       class="step {{step.name}} {{step.status}}">
-
-      <div class="header">
-        <div class="header-content" *ngIf="step.jobs.total > 0 && step.jobs.completed != step.jobs.total && step.jobs.skipped == 0">
-          <mat-icon class="icon" matListIcon>{{ step.name | iconForJob }}</mat-icon>
-          <span class="name">{{ step.name | jobType }}</span>
-          <span class="jobs-count">{{ step.jobs.completed + step.jobs.errors }}/{{ step.jobs.total }}</span>
-        </div>
-      </div>
-
-      <div class="progress">
-        <span
-          class="skipped"
-          title="{{step.name | jobType}}: skipped"
-          *ngIf="step.jobs.skipped > 0"
-          [ngStyle]="{'flex': step.jobs.skipped}">
-        </span>
-        <span
-          class="completed"
-          title="{{step.name | jobType}}: completed"
-          *ngIf="step.jobs.completed > 0"
-          [ngStyle]="{'flex': step.jobs.completed}">
-        </span>
-        <span
-          class="error"
-          title="{{step.name | jobType}}: error"
-          *ngIf="step.jobs.errors > 0"
-          [ngStyle]="{'flex': step.jobs.errors}">
-        </span>
-        <span
-          class="queued"
-          title="{{step.name | jobType}}: queued"
-          *ngIf="step.jobs.queued > 0"
-          [ngStyle]="{'flex': step.jobs.queued}">
-        </span>
-      </div>
+      <step-progress-bar-component [step]=step></step-progress-bar-component>
     </div>
   </div>
-
 </div>
