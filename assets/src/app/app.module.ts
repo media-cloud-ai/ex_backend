@@ -56,6 +56,7 @@ import {PersonComponent}         from './persons/person.component';
 import {PersonsComponent}        from './persons/persons.component';
 import {RightsComponent}         from './users/rights.component';
 import {QueuesComponent}         from './amqp/queues.component';
+import {StepProgressBarComponent} from './workflows/step_progress_bar.component';
 import {UsersComponent}          from './users/users.component';
 import {VideosComponent}         from './videos/videos.component';
 import {WorkflowComponent}       from './workflows/workflow.component';
@@ -64,7 +65,7 @@ import {WorkflowStepDetailsComponent} from './workflows/details/workflow_step_de
 import {WorkflowsComponent}      from './workflows/workflows.component';
 import {WorkersComponent}        from './workers/workers.component';
 
-import {JobDetailsDialogComponent}  from './jobs/details/job_details_dialog.component';
+import {JobDetailsDialogComponent}    from './jobs/details/job_details_dialog.component';
 import {RdfDialogComponent}      from './videos/rdf/rdf_dialog.component';
 import {WorkflowDialogComponent} from './videos/workflow/workflow_dialog.component';
 
@@ -153,6 +154,7 @@ const SUBTIL_DATE_FORMATS = {
     PersonsComponent,
     QueuesComponent,
     RightsComponent,
+    StepProgressBarComponent,
     UsersComponent,
     VideosComponent,
     RdfDialogComponent,
@@ -184,6 +186,7 @@ const SUBTIL_DATE_FORMATS = {
     ParametersComponent,
     RdfDialogComponent,
     RightsComponent,
+    StepProgressBarComponent,
     WorkflowComponent,
     WorkflowDialogComponent,
     WorkflowStepDetailsComponent
