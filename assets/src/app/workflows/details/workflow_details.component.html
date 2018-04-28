@@ -3,13 +3,13 @@
   >
 
   <h1>
-    Workflows #{{ workflow.id }}
+    Workflow #{{ workflow.id }}
   </h1>
 
   <div class="info">
     <span class="reference">
       <span>Reference ID:</span>
-      <span class="reference-link"
+      <span class="link"
         (click)="goToVideo(workflow.reference)">
         {{workflow.reference}}
       </span>
@@ -17,18 +17,21 @@
     <span class="duration">
       <duration-component [workflow]=workflow></duration-component>
     </span>
-    <span class="steps-count">Steps: {{ getStepsCount() }}</span>
+    <span class="steps-count">Steps: {{getStepsCount()}} / {{getTotalSteps()}}</span>
   </div>
 
   <div
     class="line"
-    *ngFor="let line of graph"
+    *ngFor="let line of render.graph"
     >
     <span *ngFor="let step of line"
       class="step"
-      [ngStyle]="{flex: getStepWeight(step)}"
+      [ngStyle]="{flex: render.getStepWeight(step)}"
       >
-      <workflow-step-details-component [step]=step workflowId={{workflow.id}}></workflow-step-details-component>
+      <workflow-step-details-component
+        [step]=step
+        workflowId={{workflow.id}}>
+      </workflow-step-details-component>
     </span>
   </div>
 </div>
