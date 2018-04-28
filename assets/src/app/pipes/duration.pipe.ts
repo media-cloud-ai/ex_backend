@@ -36,26 +36,14 @@ export class DurationPipe implements PipeTransform {
       return duration.toISOString();
     }
 
+    if(format == "human") {
+      return duration.humanize();
+    }
+
     let display = "";
     let hours = duration.hours();
     let minutes = duration.minutes();
     let seconds = duration.seconds();
-
-    if(format == "human") {
-      if(hours) {
-        display += hours + " h ";
-      }
-      if(minutes) {
-        display += minutes + " m ";
-      }
-      if(seconds) {
-        display += seconds + " s";
-      }
-      if(display == "") {
-        display = "0 s";
-      }
-      return display;
-    }
 
     display = this.pad_left(hours, 2, '0') + ":"
             + this.pad_left(minutes, 2, '0') + ":"
