@@ -30,6 +30,7 @@
               <input matInput
                 type={{parameter.type}}
                 placeholder="{{parameter.id | parameterLabel}}"
+                [disabled]=!step.enable
                 value={{parameter.value}}
                 [(ngModel)]=parameter.value
                 (change)=toNumber(parameter)>

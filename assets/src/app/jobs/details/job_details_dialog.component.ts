@@ -39,15 +39,15 @@ export class JobDetailsDialogComponent {
       return [param];
     }
 
+    let paths = new Array<string>();
     if(Array.isArray(param)) {
-      let paths = new Array<string>();
       for(let p of param) {
         paths = paths.concat(this.getParamPaths(p))
       }
       return paths;
     }
 
-    return param["paths"] || [param["path"]];
+    return paths.concat(param["paths"] || param["path"]);
   }
 
   onClose(): void {

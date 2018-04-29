@@ -26,7 +26,7 @@
     
     <div class="description {{job.status | jobStatus}}">
       <label>Error:</label>
-      <span>
+      <span *ngIf="job.status[0] && job.status[0].description">
         {{job.status[0].description.message}}
       </span>
     </div>

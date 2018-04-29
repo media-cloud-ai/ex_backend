@@ -54,7 +54,7 @@ export class WorkflowRender {
 
       this.graph[i] = current_line;
     }
-    console.log(this.graph)
+    // console.log(this.graph)
   }
 
 

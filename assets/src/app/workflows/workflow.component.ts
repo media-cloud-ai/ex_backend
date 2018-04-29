@@ -1,7 +1,7 @@
 
 import {Component, Input} from '@angular/core';
 import {Router} from '@angular/router';
-import {Workflow} from '../models/workflow';
+import {Workflow, Step} from '../models/workflow';
 
 @Component({
   selector: 'workflow-component',
@@ -11,7 +11,7 @@ import {Workflow} from '../models/workflow';
 
 export class WorkflowComponent {
   jobs_opened: boolean = false;
-  @Input() workflow: Workflow[];
+  @Input() workflow: Workflow;
   processing_steps: Step[] = new Array();
   error_steps: Step[] = new Array();
 
@@ -21,7 +21,7 @@ export class WorkflowComponent {
 
   ngOnInit() {
     for(let step of this.workflow.flow.steps){
-      console.log(step);
+      // console.log(step);
       if(step.jobs.errors > 0) {
         this.error_steps.push(step);
       }
