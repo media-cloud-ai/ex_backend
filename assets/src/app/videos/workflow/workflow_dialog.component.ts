@@ -17,7 +17,7 @@ export class WorkflowDialogComponent {
 
   constructor(public dialogRef: MatDialogRef<WorkflowDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
-    console.log("data:", data);
+    // console.log("data:", data);
     this.acs_enable = data["broadcasted_live"];
     this.steps = [
       {

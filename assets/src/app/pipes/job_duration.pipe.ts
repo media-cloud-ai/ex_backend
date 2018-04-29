@@ -15,7 +15,7 @@ export class JobDurationPipe implements PipeTransform {
   transform(job: Job): number {
     var start = +new Date(job.inserted_at);
     if(job.status[0] == undefined) {
-      console.log(moment.utc(), start, moment().utcOffset());
+      // console.log(moment.utc(), start, moment().utcOffset());
       return moment().add(-moment().utcOffset(), 'minutes').diff(start);
     }
 
