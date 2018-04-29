@@ -16,7 +16,7 @@ config :ex_subtil_backend, ExSubtilBackendWeb.Endpoint,
       "node_modules/webpack/bin/webpack.js",
       "--watch",
       "--watch-poll",
-      # "--mode=development",
+      "--mode=development",
       "--stdin",
       cd: Path.expand("../assets", __DIR__)
     ]
