@@ -1,27 +1,20 @@
 
-/*@import "../node_modules/@angular/material/prebuilt-themes/indigo-pink.css";*/
-
-.mat-fab.mat-accent, .mat-mini-fab.mat-accent, .mat-raised-button.mat-accent {
+/*.mat-fab.mat-accent, .mat-mini-fab.mat-accent, .mat-raised-button.mat-accent {
   background-color: #770029;
 }
-
-/*button.mat-primary {
-    background-color: #3964ac;
-}
-
-.mat-fab.mat-accent[disabled], .mat-fab.mat-primary[disabled], .mat-fab.mat-warn[disabled], .mat-fab[disabled][disabled], .mat-mini-fab.mat-accent[disabled], .mat-mini-fab.mat-primary[disabled], .mat-mini-fab.mat-warn[disabled], .mat-mini-fab[disabled][disabled], .mat-raised-button.mat-accent[disabled], .mat-raised-button.mat-primary[disabled], .mat-raised-button.mat-warn[disabled], .mat-raised-button[disabled][disabled] {
-    background-color: rgba(0,0,0,.12);
-}
-
-.mat-form-field-ripple {
-    background-color: #3964ac;
-}
-
-.mat-toolbar.mat-primary {
-    background: #3964ac;
-    color: #fff;
-}
 */
+@font-face {
+    font-family: 'Castorgate';
+    src: url('/bundles/fonts/Castorgate.eot');
+    src: url('/bundles/fonts/Castorgate.eot?#iefix') format('embedded-opentype'),
+        url('/bundles/fonts/Castorgate.woff2') format('woff2'),
+        url('/bundles/fonts/Castorgate.woff') format('woff'),
+        url('/bundles/fonts/Castorgate.ttf') format('truetype'),
+        url('/bundles/fonts/Castorgate.svg#Castorgate') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
 .mat-checkbox.small .mat-checkbox-layout {
   transform: scale(.6);
   margin-bottom: 5px;
