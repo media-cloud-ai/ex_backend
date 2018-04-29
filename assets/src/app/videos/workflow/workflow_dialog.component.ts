@@ -149,7 +149,7 @@ export class WorkflowDialogComponent {
     }
     this.active_steps[step.name] = can_step_be_enabled;
 
-    let step_children = this.steps.filter(s => s.parent_ids.includes(step.id)); // step.parent_ids.indexOf(s.id) >= 0
+    let step_children = this.steps.filter(s => s.parent_ids.indexOf(step.id) >= 0);
     for(let child of step_children) {
       this.updateStepRequirements(child);
     }
@@ -157,7 +157,7 @@ export class WorkflowDialogComponent {
 
   updateEnabledSteps(step: Step): void {
     if(!step.enable) {
-      let step_children = this.steps.filter(s => s.parent_ids.includes(step.id)); // step.parent_ids.indexOf(s.id) >= 0
+      let step_children = this.steps.filter(s => s.parent_ids.indexOf(step.id) >= 0);
       for(let child of step_children) {
         child.enable = false;
         this.updateEnabledSteps(child);
