@@ -1,8 +1,10 @@
 const path = require("path")
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const webpack = require("webpack");
 
 const config = {
+  mode: 'production',
   entry: {
     "common": [
       "./src/common.ts"
@@ -47,7 +49,11 @@ const config = {
     ]
   },
   plugins: [
-    new CopyWebpackPlugin([{ from: "./static" }])
+    new CopyWebpackPlugin([{ from: "./static" }]),
+    new webpack.ContextReplacementPlugin(
+      /\@angular(\\|\/)core(\\|\/)esm5/,
+      path.join(__dirname, './assets')
+    ),
   ]
 };
 
