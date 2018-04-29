@@ -1,9 +1,4 @@
-
-
-@white: #fff;
-@green: #71bd2c;
-@blue: #3965ac;
-@red: #db280f;
+@import 'colors';
 
 .container {
   position: absolute;
@@ -23,7 +18,7 @@
 
 a.title:link, a.title:visited {
   text-decoration: none;
-  color: #FFF;
+  color: @white;
 }
 
 .home {
@@ -53,8 +48,8 @@ a.title:link, a.title:visited {
   bottom: 0;
   display: flex;
   width: 100%;
-  background-color: #FFF;
-  border-top: 2px solid #3964ac;
+  background-color: @white;
+  border-top: 2px solid @blue;
 
   .spacer {
     flex: 1 1 auto;

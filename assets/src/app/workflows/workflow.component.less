@@ -1,7 +1,4 @@
-
-i {
-  
-}
+@import '../colors';
 
 .reference:before {
   content: "Reference ID:"
@@ -9,7 +6,7 @@ i {
 
 .reference {
   cursor: pointer;
-  color: #3965ac;
+  color: @blue;
 }
 
 .steps {
@@ -31,23 +28,23 @@ i {
       align-content: flex-end;
       display: flex;
       height: 12px;
-      background-color: #ddd;
+      background-color: @grey;
       text-align: center;
-      color: #fff;
+      color: @white;
       line-height: 12px;
       font-size: 10px;
 
       .skipped {
-        background-color: #696f74;
+        background-color: @grey;
       }
       .completed {
-        background-color: #71bd2c;
+        background-color: @green;
       }
       .queued {
-        background-color: #3965ac;
+        background-color: @blue;
       }
       .error {
-        background-color: #db280f;
+        background-color: @red;
       }
     }
   }

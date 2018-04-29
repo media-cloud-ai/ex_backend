@@ -14,5 +14,8 @@ export class InputListComponent {
   ) {}
 
   ngOnInit() {
+    if(this.items == undefined) {
+      this.items = new Array();
+    }
   }
 }
