@@ -2,11 +2,11 @@
 <div mat-dialog-content>
   <div
     class="line"
-    *ngFor="let line of render.graph"
+    *ngFor="let line of renderer.graph"
     >
     <span *ngFor="let step of line"
       class="step"
-      [ngStyle]="{flex: render.getStepWeight(step)}"
+      [ngStyle]="{flex: renderer.getStepWeight(step)}"
       >
       <span
         *ngIf="step.name"

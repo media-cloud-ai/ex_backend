@@ -22,11 +22,11 @@
 
   <div
     class="line"
-    *ngFor="let line of render.graph"
+    *ngFor="let line of renderer.graph"
     >
     <span *ngFor="let step of line"
       class="step"
-      [ngStyle]="{flex: render.getStepWeight(step)}"
+      [ngStyle]="{flex: renderer.getStepWeight(step)}"
       >
       <workflow-step-details-component
         [step]=step

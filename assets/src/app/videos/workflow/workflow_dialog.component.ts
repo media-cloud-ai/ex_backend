@@ -1,7 +1,7 @@
 import {Component, Inject} from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import {Step} from '../../models/workflow';
-import {WorkflowRender} from '../../models/workflow_render';
+import {WorkflowRenderer} from '../../models/workflow_renderer';
 
 @Component({
   selector: 'workflow_dialog',
@@ -12,7 +12,7 @@ export class WorkflowDialogComponent {
 
   acs_enable: boolean;
   steps: Step[];
-  render: WorkflowRender;
+  renderer: WorkflowRenderer;
   active_steps = {};
 
   constructor(public dialogRef: MatDialogRef<WorkflowDialogComponent>,
@@ -135,7 +135,7 @@ export class WorkflowDialogComponent {
       }
     ]
 
-    this.render = new WorkflowRender(this.steps);
+    this.renderer = new WorkflowRenderer(this.steps);
     this.updateStepRequirements(this.steps[0]);
   }
 

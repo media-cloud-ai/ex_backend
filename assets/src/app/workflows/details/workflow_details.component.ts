@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 
 import {WorkflowService} from '../../services/workflow.service';
 import {Workflow, Step} from '../../models/workflow';
-import {WorkflowRender} from '../../models/workflow_render';
+import {WorkflowRenderer} from '../../models/workflow_renderer';
 
 @Component({
   selector: 'workflow-details-component',
@@ -14,7 +14,7 @@ export class WorkflowDetailsComponent {
   private sub: any;
 
   workflow: Workflow;
-  render: WorkflowRender;
+  renderer: WorkflowRenderer;
 
   constructor(
     private workflowService: WorkflowService,
@@ -38,7 +38,7 @@ export class WorkflowDetailsComponent {
     this.workflowService.getWorkflow(workflow_id)
     .subscribe(workflow => {
       this.workflow = workflow["data"];
-      this.render = new WorkflowRender(this.workflow.flow.steps);
+      this.renderer = new WorkflowRenderer(this.workflow.flow.steps);
     });
   }
 
