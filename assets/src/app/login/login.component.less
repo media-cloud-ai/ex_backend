@@ -1,15 +1,60 @@
+@import '../colors';
 
 .content {
 	text-align: center;
-	margin-top: 20px;
+	display: flex;
+	height: 100%;
+	padding: 0px;
 
-	.button.submit {
+	.logo {
+		flex: 1;
+		box-shadow: 1px 1px 5px 0 @blue;
+		background-color: @blue;
+		padding-top: 15%;
+
+		.wrapper {
+			display: block;
+			width: 300px;
+			margin: auto;
+			background-color: #fff;
+			padding-top: 5px;
+			padding-bottom: 15px;
+
+			.powered {
+				color: @grey;
+				text-align: left;
+				font-size: 0.8em;
+				padding-left: 10px;
+			}
+			label {
+				font-family: "Castorgate";
+				font-size: 5em;
+				color: @blue;
+				vertical-align: middle;
+				display: inline-block;
+			}
+			img {
+				width: 100px;
+				height: 100px;
+				vertical-align: middle;
+				display: inline-block;
+			}
+		}
+	}
+
+	.login {
+		margin-top: 20px;
+		padding-top: 15%;
+		flex: 1;
+
+		.button.submit {
 		display: inline-block;
 		width: 180px;
 		text-align: right;
-	}
-	.message {
-		padding: 10px;
-		color: #db280f;
+		}
+		.message {
+			padding: 10px;
+			color: @red;
+		}
 	}
 }

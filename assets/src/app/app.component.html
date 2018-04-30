@@ -61,7 +61,9 @@
         </ul>
       </mat-sidenav>
       <mat-sidenav-content
-        class="mat-drawer-content mat-sidenav-content ng-star-inserted" style="margin-left: 240px; margin-right: 0px; padding: 0 10px;">
+        class="mat-drawer-content mat-sidenav-content ng-star-inserted"
+        [ngClass]="{loggedIn: loggedIn}"
+        >
         <router-outlet></router-outlet>
       </mat-sidenav-content>
     </mat-sidenav-container>

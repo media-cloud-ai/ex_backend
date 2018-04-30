@@ -77,7 +77,11 @@
           <input-list-component [items]=nationalities></input-list-component>
         </div>
         <div>
-          <button mat-button matStepperNext>Next</button>
+          <button mat-raised-button matStepperNext
+            color="accent">
+            <i class="material-icons">chevron_right</i>
+            Next
+          </button>
         </div>
       </div>
     </div>
@@ -170,15 +174,19 @@
           <input-list-component [items]=nationalities></input-list-component>
         </div>
         <div>
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button
-            color="primary"
+          <button mat-raised-button matStepperPrevious
+            color="primary">
+            <i class="material-icons">chevron_left</i>
+            Back
+          </button>
+          <button mat-raised-button
+            color="accent"
             (click)="createPerson()"
             *ngIf="!edition">
               <i class="material-icons">add</i> Create
           </button>
-          <button mat-button
-            color="primary"
+          <button mat-raised-button
+            color="accent"
             (click)="updatePerson()"
             *ngIf="edition">
               <i class="material-icons">add</i> Update
