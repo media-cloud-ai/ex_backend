@@ -31,7 +31,11 @@ defmodule ExSubtilBackend.Workflow.Step.AudioDecode do
 
     requirements = Requirements.add_required_paths(path)
 
-    options = %{
+    decoding_options = %{
+      "-codec:a": "libfdk_aac"
+    }
+
+    encoding_options = %{
       "-codec:a": "pcm_s16le",
       "-y": true,
       "-vn": true,
@@ -48,13 +52,13 @@ defmodule ExSubtilBackend.Workflow.Step.AudioDecode do
         inputs: [
           %{
             path: path,
-            options: %{}
+            options: decoding_options
           }
         ],
         outputs: [
           %{
             path: dst_path,
-            options: options
+            options: encoding_options
           }
         ]
       }
