@@ -31,13 +31,13 @@ defmodule ExSubtilBackend.Workflow.Step.AudioEncode do
 
     requirements = Requirements.add_required_paths(path)
 
-    options = %{
-      "-codec:a": "aac",
-      "-strict": "-2",
+    encoding_options = %{
+      "-codec:a": "libfdk_aac",
+      "-profile:a": "aac_he",
+      "-vbr": 4,
       "-y": true,
       "-vn": true,
       "-dn": true,
-      "-ab": "78k",
       "-ar": 48000,
       "-ac": 2
     }
@@ -56,7 +56,7 @@ defmodule ExSubtilBackend.Workflow.Step.AudioEncode do
         outputs: [
           %{
             path: dst_path,
-            options: options
+            options: encoding_options
           }
         ]
       }
