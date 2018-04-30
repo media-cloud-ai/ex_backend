@@ -20,14 +20,14 @@ export class JobDetailsDialogComponent {
 
   private initJobParametersToDisplay(): void {
     for(let param_key in this.job.params) {
-      if(param_key.indexOf("source") >= 0 ||
-        param_key.indexOf("input") >= 0) {
+      if(param_key.includes("source") ||
+        param_key.includes("input")) {
         let paths = this.getParamPaths(this.job.params[param_key]);
         this.params["in"] = paths;
       }
 
-      if(param_key.indexOf("destination") >= 0 ||
-        param_key.indexOf("output") >= 0) {
+      if(param_key.includes("destination") ||
+        param_key.includes("output")) {
         let paths = this.getParamPaths(this.job.params[param_key]);
         this.params["out"] = paths;
       }

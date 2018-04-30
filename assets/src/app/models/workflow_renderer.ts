@@ -12,7 +12,7 @@ export class WorkflowRenderer {
       let child_line_index = 0;
       if(step.parent_ids.length != 0) {
         let parents_lines_index = this.graph
-          .filter(line => line.filter(s => step.parent_ids.indexOf(s.id) != -1).length > 0)
+          .filter(line => line.filter(s => step.parent_ids.includes(s.id)).length > 0)
           .map(line => this.graph.indexOf(line));
         child_line_index = Math.max(...parents_lines_index) + 1;
       }
@@ -37,9 +37,9 @@ export class WorkflowRenderer {
       }
       line_parent_ids = line_parent_ids.filter((s, pos) => line_parent_ids.indexOf(s) == pos).sort((a, b) => a - b);
 
-      let ids_diff = last_line_ids.filter(id => line_parent_ids.indexOf(id) == -1);
+      let ids_diff = last_line_ids.filter(id => !line_parent_ids.includes(id));
 
-      let no_child_parents = last_line.filter(s => ids_diff.indexOf(s.id) != -1);
+      let no_child_parents = last_line.filter(s => ids_diff.includes(s.id));
       for(let parent of no_child_parents) {
         let idx = last_line.indexOf(parent);
         let fake_step = {
@@ -59,7 +59,7 @@ export class WorkflowRenderer {
 
 
   getStepWeight(step: Step): number {
-    let step_line: Step[] = this.graph.find(line => line.indexOf(step) >= 0);
+    let step_line: Step[] = this.graph.find(line => line.includes(step));
     let step_line_idx: number = this.graph.indexOf(step_line);
 
     if(step_line.length == 1) {
@@ -69,7 +69,7 @@ export class WorkflowRenderer {
     let children_weigth = 1;
     let children_line = this.graph[step_line_idx + 1];
     if(children_line != undefined) {
-      let step_children = children_line.filter(s => s.parent_ids.indexOf(step.id) >= 0);
+      let step_children = children_line.filter(s => s.parent_ids.includes(step.id));
       children_weigth = 1 / children_line.length;
       if(step_children.length > 0) {
         children_weigth = step_children.length / children_line.length;
@@ -79,7 +79,7 @@ export class WorkflowRenderer {
     let parent_weigth = 1;
     let parent_line = this.graph[step_line_idx - 1];
     if(parent_line != undefined) {
-      let step_parents = parent_line.filter(s => step.parent_ids.indexOf(s.id) >= 0);
+      let step_parents = parent_line.filter(s => step.parent_ids.includes(s.id));
       parent_weigth = 1 / parent_line.length;
       if(step_parents.length > 0) {
         parent_weigth = step_parents.length / parent_line.length;
