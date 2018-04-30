@@ -1,3 +1,4 @@
+@import '../../colors';
 
 .content {
   box-shadow: 1px 1px 2px #ccc;
@@ -49,20 +50,20 @@
     .progress {
       display: flex;
       height: 5px;
-      background-color: #ddd;
+      background-color: @lightGrey;
       text-align: center;
 
       .skipped {
-        background-color: #696f74;
+        background-color: @grey;
       }
       .completed {
-        background-color: #71bd2c;
+        background-color: @green;
       }
       .queued {
-        background-color: #3965ac;
+        background-color: @blue;
       }
       .error {
-        background-color: #db280f;
+        background-color: @red;
       }
     }
   }
