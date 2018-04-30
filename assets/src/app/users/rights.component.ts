@@ -25,9 +25,9 @@ export class RightsComponent {
 
   ngOnInit() {
     if(this.user && this.user.rights) {
-      this.administrator = this.user.rights.indexOf("administrator") != -1;
-      this.technician = this.user.rights.indexOf("technician") != -1;
-      this.editor = this.user.rights.indexOf("editor") != -1;
+      this.administrator = this.user.rights.includes("administrator");
+      this.technician = this.user.rights.includes("technician");
+      this.editor = this.user.rights.includes("editor");
     }
   }
 
@@ -56,7 +56,7 @@ export class RightsComponent {
       }
     }
 
-    if(event.checked == true && this.user.rights.indexOf(kind) == -1) {
+    if(event.checked == true && this.user.rights.includes(kind)) {
       rights.push(kind);
     }
 

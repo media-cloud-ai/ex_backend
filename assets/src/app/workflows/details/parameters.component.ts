@@ -1,6 +1,6 @@
 
 import {Component, Input} from '@angular/core';
-import {Parameter} from '../models/workflow';
+import {Parameter} from '../../models/workflow';
 
 @Component({
   selector: 'parameters-component',
@@ -9,16 +9,8 @@ import {Parameter} from '../models/workflow';
 })
 
 export class ParametersComponent {
-  opened: boolean = false;
   @Input() parameters: Parameter[];
 
   constructor(
   ) {}
-
-  openParameters() : void {
-    this.opened = true;
-  }
-  closeParameters() : void {
-    this.opened = false;
-  }
 }

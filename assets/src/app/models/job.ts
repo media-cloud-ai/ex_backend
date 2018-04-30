@@ -13,5 +13,6 @@ export class Job {
   id: string;
   name: string;
   inserted_at: string;
+  params: object;
   status: Status[];
 }

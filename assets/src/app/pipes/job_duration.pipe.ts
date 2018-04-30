@@ -1,5 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Job, Status } from '../models/job';
+import * as moment from 'moment';
+
 /*
  * Usage:
  *   value | jobDuration
@@ -11,8 +13,13 @@ import { Job, Status } from '../models/job';
 export class JobDurationPipe implements PipeTransform {
 
   transform(job: Job): number {
-    var end = +new Date(job.status[0].inserted_at);
     var start = +new Date(job.inserted_at);
+    if(job.status[0] == undefined) {
+      // console.log(moment.utc(), start, moment().utcOffset());
+      return moment().add(-moment().utcOffset(), 'minutes').diff(start);
+    }
+
+    var end = +new Date(job.status[0].inserted_at);
     return (end - start);
   }
 }

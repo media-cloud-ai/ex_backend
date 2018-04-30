@@ -1,0 +1,56 @@
+
+@white: #fff;
+@green: #71bd2c;
+@blue: #3965ac;
+@red: #db280f;
+@grey: #696f74;
+
+.details {
+  font-family: sans-serif;
+
+  .status {
+    padding: 5px 0px;
+    font-weight: bold;
+
+    label {
+      width: 85px;
+    }
+
+    label,
+    span {
+      display: inline-block;
+    }
+
+    span.completed {
+      color: @green;
+    }
+    span.processing {
+      color: @blue;
+    }
+    span.skipped {
+      color: @grey;
+    }
+    span.error {
+      color: @red;
+    }
+  }
+
+  .duration,
+  .times {
+    padding: 5px 0px;
+
+    span {
+      display: inline-block;
+    }
+
+    .label {
+      width: 85px;
+    }
+  }
+
+  ul, li {
+    list-style: none;
+    padding: 0px;
+    margin-top: 0px;
+  }
+}

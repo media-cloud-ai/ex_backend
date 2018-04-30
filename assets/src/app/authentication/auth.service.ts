@@ -93,15 +93,15 @@ export class AuthService {
   }
 
   hasAdministratorRight(): boolean {
-    return this.rights.indexOf("administrator") != -1;
+    return this.rights.includes("administrator");
   }
 
   hasTechnicianRight(): boolean {
-    return this.rights.indexOf("technician") != -1;
+    return this.rights.includes("technician");
   }
 
   hasEditorRight(): boolean {
-    return this.rights.indexOf("editor") != -1;
+    return this.rights.includes("editor");
   }
 
   private handleError<T> (operation = 'operation', result?: T) {

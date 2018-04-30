@@ -1,50 +1,75 @@
 @import '../colors';
 
-.reference:before {
-  content: "Reference ID:"
-}
+.info {
+  display: flex;
+  line-height: 36px;
+  vertical-align: middle;
 
-.reference {
-  cursor: pointer;
-  color: @blue;
+  .identifier {
+    padding: 0px 4px;
+    align-content: flex-start;
+  }
+
+  .reference {
+    flex: 1;
+    padding: 0px 4px;
+
+    .link {
+      cursor: pointer;
+      color: @blue;
+    }
+  }
+
+  .duration {
+    flex: 1;
+  }
+
+  .steps-count {
+    align-content: flex-end;
+    padding: 0px 4px;
+  }
+
+  .details {
+    align-content: flex-end;
+    padding: 0px 4px;
+  }
 }
 
 .steps {
-  display: flex !important;
+  display: table !important;
+  width: 100%;
+  table-layout: fixed;
 }
 
 .step {
-  flex: 1;
-  .content {
-    
+  display: table-cell;
+  vertical-align: bottom;
+
+  .header {
     display: flex;
-    flex-direction: column;
-    height: 100%;
 
-    .details {
-      flex: 1;
-    }
-    .progress {
-      align-content: flex-end;
+    .header-content {
       display: flex;
-      height: 12px;
-      background-color: @grey;
-      text-align: center;
-      color: @white;
-      line-height: 12px;
-      font-size: 10px;
+      width:100%;
+      height: 24px;
+      line-height: 24px;
 
-      .skipped {
-        background-color: @grey;
+      .icon {
+        align-content: flex-start;
+        padding: 0px 4px;
       }
-      .completed {
-        background-color: @green;
+      .name {
+        flex: 1;
+        width: 100%;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
-      .queued {
-        background-color: @blue;
-      }
-      .error {
-        background-color: @red;
+
+      .jobs-count {
+        align-content: flex-end;
+        padding: 0px 4px;
       }
     }
   }

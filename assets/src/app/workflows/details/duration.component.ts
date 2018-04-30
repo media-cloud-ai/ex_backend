@@ -1,6 +1,6 @@
 
 import {Component, Input} from '@angular/core';
-import {Workflow} from '../models/workflow';
+import {Workflow} from '../../models/workflow';
 
 import * as moment from 'moment';
 

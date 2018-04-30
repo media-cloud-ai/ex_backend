@@ -27,7 +27,7 @@ defmodule ExSubtilBackend.WorkflowStep do
 
       step ->
         Logger.warn(
-          "#{__MODULE__}: start to process step #{step["id"]} (index #{step_index}) for workflow #{
+          "#{__MODULE__}: start to process step #{step["name"]} (index #{step_index}) for workflow #{
             workflow_id
           }"
         )
@@ -41,51 +41,51 @@ defmodule ExSubtilBackend.WorkflowStep do
     end
   end
 
-  defp launch_step(workflow, %{"id" => "download_ftp"} = _step, _step_index) do
+  defp launch_step(workflow, %{"name" => "download_ftp"} = _step, _step_index) do
     ExSubtilBackend.Workflow.Step.FtpDownload.launch(workflow)
   end
 
-  defp launch_step(workflow, %{"id" => "download_http"} = _step, _step_index) do
+  defp launch_step(workflow, %{"name" => "download_http"} = _step, _step_index) do
     ExSubtilBackend.Workflow.Step.HttpDownload.launch(workflow)
   end
 
-  defp launch_step(workflow, %{"id" => "audio_decode"} = _step, _step_index) do
+  defp launch_step(workflow, %{"name" => "audio_decode"} = _step, _step_index) do
     ExSubtilBackend.Workflow.Step.AudioDecode.launch(workflow)
   end
 
-  defp launch_step(workflow, %{"id" => "acs_prepare_audio"} = _step, _step_index) do
+  defp launch_step(workflow, %{"name" => "acs_prepare_audio"} = _step, _step_index) do
     ExSubtilBackend.Workflow.Step.Acs.PrepareAudio.launch(workflow)
   end
 
-  defp launch_step(workflow, %{"id" => "acs_synchronize"} = step, _step_index) do
+  defp launch_step(workflow, %{"name" => "acs_synchronize"} = step, _step_index) do
     ExSubtilBackend.Workflow.Step.Acs.Synchronize.launch(workflow, step)
   end
 
-  defp launch_step(workflow, %{"id" => "audio_encode"} = _step, _step_index) do
+  defp launch_step(workflow, %{"name" => "audio_encode"} = _step, _step_index) do
     ExSubtilBackend.Workflow.Step.AudioEncode.launch(workflow)
   end
 
-  defp launch_step(workflow, %{"id" => "ttml_to_mp4"} = _step, _step_index) do
+  defp launch_step(workflow, %{"name" => "ttml_to_mp4"} = _step, _step_index) do
     ExSubtilBackend.Workflow.Step.TtmlToMp4.launch(workflow)
   end
 
-  defp launch_step(workflow, %{"id" => "audio_extraction"} = _step, _step_index) do
+  defp launch_step(workflow, %{"name" => "audio_extraction"} = _step, _step_index) do
     ExSubtilBackend.Workflow.Step.AudioExtraction.launch(workflow)
   end
 
-  defp launch_step(workflow, %{"id" => "set_language"} = step, _step_index) do
+  defp launch_step(workflow, %{"name" => "set_language"} = step, _step_index) do
     ExSubtilBackend.Workflow.Step.SetLanguage.launch(workflow, step)
   end
 
-  defp launch_step(workflow, %{"id" => "generate_dash"} = step, _step_index) do
+  defp launch_step(workflow, %{"name" => "generate_dash"} = step, _step_index) do
     ExSubtilBackend.Workflow.Step.GenerateDash.launch(workflow, step)
   end
 
-  defp launch_step(workflow, %{"id" => "upload_ftp"} = step, _step_index) do
+  defp launch_step(workflow, %{"name" => "upload_ftp"} = step, _step_index) do
     ExSubtilBackend.Workflow.Step.FtpUpload.launch(workflow, step)
   end
 
-  defp launch_step(workflow, %{"id" => "clean_workspace"} = _step, _step_index) do
+  defp launch_step(workflow, %{"name" => "clean_workspace"} = _step, _step_index) do
     ExSubtilBackend.Workflow.Step.CleanWorkspace.launch(workflow)
   end
 

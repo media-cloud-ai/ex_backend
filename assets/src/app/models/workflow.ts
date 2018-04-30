@@ -1,4 +1,12 @@
 
+export class JobsStatus {
+  completed: number;
+  errors: number;
+  queued: number;
+  skipped: number;
+  total: number;
+}
+
 export class Parameter {
   id: string;
   type: string;
@@ -7,9 +15,13 @@ export class Parameter {
 }
 
 export class Step {
-  id: string;
+  id: number;
+  parent_ids?: number[];
+  name: string;
   enable: boolean;
-  parameters: Parameter[];
+  required?: string[];
+  parameters?: Parameter[];
+  jobs?: JobsStatus;
 }
 
 export class Flow {

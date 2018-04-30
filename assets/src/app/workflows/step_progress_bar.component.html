@@ -1,0 +1,22 @@
+<div class="progress">
+  <span
+    class="skipped"
+    title="{{step.name | jobType}}: skipped"
+    [ngStyle]="{'flex': step.jobs.skipped}">
+  </span>
+  <span
+    class="completed"
+    title="{{step.name | jobType}}: completed"
+    [ngStyle]="{'flex': step.jobs.completed}">
+  </span>
+  <span
+    class="error"
+    title="{{step.name | jobType}}: error"
+    [ngStyle]="{'flex': step.jobs.errors}">
+  </span>
+  <span
+    class="queued"
+    title="{{step.name | jobType}}: queued"
+    [ngStyle]="{'flex': step.jobs.queued}">
+  </span>
+</div>

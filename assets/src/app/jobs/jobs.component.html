@@ -3,26 +3,33 @@
     *ngFor="let job of jobs.data"
     class="job {{job.channel}} {{job.status | jobStatus}}"
     >
-    <span *ngIf="job.name == 'ftp_order'" class="icon">
-      <mat-icon>compare_arrows</mat-icon>
-    </span>
-    <span class="status">
-      {{job.status | jobStatus}}
-    </span>
-    <!-- <span class="date">
-      {{job.inserted_at | date: 'd LLL yy'}}
-    </span>
-    <span class="hour">
-      {{job.inserted_at | date: 'H:mm:ss'}}
-    </span> -->
-    <span
-      class="duration" *ngIf="job.status[0] && job.status[0].state == 'completed'"
-      (click)="switchDurationRenderingMode()"
-      >
-      Duration: {{job | jobDuration | duration: job_duration_rendering_mode}}
-    </span>
-    <span class="error" *ngIf="job.status[0] && job.status[0].state == 'error'">
-      {{job.status[0].description.message}}
-    </span>
+
+    <div class="info">
+      <span class="name">Job #{{job.id}}</span>
+      <span class="summary" title="{{job.status | jobStatus}}">
+        <div class="duration"
+          (click)="switchDurationRenderingMode()"
+          >
+          {{job | jobDuration | duration: job_duration_rendering_mode}}
+        </div>
+      </span>
+      <span class="details">
+        <button
+          mat-button
+          (click)="displayJobDetails(job)"
+          >
+          <mat-icon>visibility</mat-icon>
+          Details
+        </button>
+      </span>
+    </div>
+    
+    <div class="description {{job.status | jobStatus}}">
+      <label>Error:</label>
+      <span *ngIf="job.status[0] && job.status[0].description">
+        {{job.status[0].description.message}}
+      </span>
+    </div>
+    <div class="bar {{job.status | jobStatus}}"></div>
   </li>
 </ul>

@@ -1,0 +1,60 @@
+<div *ngIf=job>
+  <h1 mat-dialog-title>Job details: {{ job.name | jobType }} #{{ job.id }}</h1>
+  <div mat-dialog-content  class="details">
+    <div class="status">
+      <label>
+        Status
+      </label>
+      <span class="{{job.status | jobStatus}}">
+        {{job.status | jobStatus}}
+      </span>
+    </div>
+
+    <div class="duration">
+      <div *ngIf="job.status[0]">
+        <span class="label">Executed in</span>
+        <span class="time">{{ job | jobDuration | duration: 'timecode_ms' }}</span>
+      </div>
+    </div>
+
+    <div class="times">
+      <div>
+        <span class="label">Started at:</span>
+        <span class="time">{{ job.inserted_at | date: 'yyyy-MM-dd hh:mm:ss' }}</span>
+      </div>
+      <div *ngIf="job.status[0]">
+        <span class="label">Ended at</span>
+        <span class="time">{{ job.status[0].inserted_at | date: 'yyyy-MM-dd hh:mm:ss' }}</span>
+      </div>
+    </div>
+
+    <div class="error-description" *ngIf="job.status[0] && job.status[0].state == 'error' && job.status[0].description">
+      <h4>Error</h4>
+      {{ job.status[0].description.message }}
+    </div>
+
+    <ul *ngIf=params class="paths">
+      <li *ngIf=params.in>
+        <h4>Input paths</h4>
+        <ul>
+          <li *ngFor="let input of params.in"
+            class="path">
+            {{ input }}
+          </li>
+        </ul>
+      </li>
+      <li *ngIf=params.out>
+        <h4>Output paths</h4>
+        <ul>
+          <li *ngFor="let output of params.out"
+            class="path">
+            {{ output }}
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onClose()">OK</button>
+  </div>
+</div>

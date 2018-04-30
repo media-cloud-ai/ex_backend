@@ -47,21 +47,25 @@ import {AppRoutingModule}        from './app-routing.module';
 
 import {ConfirmComponent}        from './confirm/confirm.component';
 import {DashboardComponent}      from './dashboard/dashboard.component';
-import {DurationComponent}       from './workflows/duration.component';
+import {DurationComponent}       from './workflows/details/duration.component';
 import {InputListComponent}      from './persons/input_list.component';
 import {JobsComponent}           from './jobs/jobs.component';
 import {LoginComponent}          from './login/login.component';
-import {ParametersComponent}     from './workflows/parameters.component';
+import {ParametersComponent}     from './workflows/details/parameters.component';
 import {PersonComponent}         from './persons/person.component';
 import {PersonsComponent}        from './persons/persons.component';
 import {RightsComponent}         from './users/rights.component';
 import {QueuesComponent}         from './amqp/queues.component';
+import {StepProgressBarComponent} from './workflows/step_progress_bar.component';
 import {UsersComponent}          from './users/users.component';
 import {VideosComponent}         from './videos/videos.component';
 import {WorkflowComponent}       from './workflows/workflow.component';
+import {WorkflowDetailsComponent}     from './workflows/details/workflow_details.component';
+import {WorkflowStepDetailsComponent} from './workflows/details/workflow_step_details.component';
 import {WorkflowsComponent}      from './workflows/workflows.component';
 import {WorkersComponent}        from './workers/workers.component';
 
+import {JobDetailsDialogComponent}    from './jobs/details/job_details_dialog.component';
 import {RdfDialogComponent}      from './videos/rdf/rdf_dialog.component';
 import {WorkflowDialogComponent} from './videos/workflow/workflow_dialog.component';
 
@@ -143,17 +147,21 @@ const SUBTIL_DATE_FORMATS = {
     DurationComponent,
     InputListComponent,
     JobsComponent,
+    JobDetailsDialogComponent,
     LoginComponent,
     ParametersComponent,
     PersonComponent,
     PersonsComponent,
     QueuesComponent,
     RightsComponent,
+    StepProgressBarComponent,
     UsersComponent,
     VideosComponent,
     RdfDialogComponent,
     WorkflowDialogComponent,
     WorkflowComponent,
+    WorkflowDetailsComponent,
+    WorkflowStepDetailsComponent,
     WorkflowsComponent,
     WorkersComponent,
 
@@ -174,11 +182,14 @@ const SUBTIL_DATE_FORMATS = {
   entryComponents: [
     DurationComponent,
     InputListComponent,
+    JobDetailsDialogComponent,
     ParametersComponent,
     RdfDialogComponent,
     RightsComponent,
+    StepProgressBarComponent,
     WorkflowComponent,
     WorkflowDialogComponent,
+    WorkflowStepDetailsComponent
   ],
   providers: [
     {

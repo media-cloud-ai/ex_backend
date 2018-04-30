@@ -1,0 +1,42 @@
+@import '../../colors';
+
+.workflow {
+  overflow-y: hidden;
+  margin-bottom: 80px;
+}
+
+.info {
+  display: flex;
+  line-height: 36px;
+  vertical-align: middle;
+
+  .reference {
+    flex: 1;
+    padding: 0px 4px;
+
+    .link {
+      cursor: pointer;
+      color: #blue;
+    }
+  }
+
+  .duration {
+    flex: 1;
+  }
+
+  .steps-count {
+    align-content: flex-end;
+    padding: 0px 4px;
+  }
+}
+
+.line {
+  display: flex;
+  font-family: sans-serif;
+
+  .step {
+    min-height: 32px;
+    min-width: 200px;
+    padding: 10px;
+  }
+}

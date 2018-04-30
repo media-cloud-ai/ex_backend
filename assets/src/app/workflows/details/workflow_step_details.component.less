@@ -1,0 +1,80 @@
+@import '../../colors';
+
+.content {
+  box-shadow: 1px 1px 2px #ccc;
+}
+
+.header {
+  display: flex;
+  padding: 10px;
+
+  .expander {
+    align-content: flex-start;
+
+    i {
+      padding-top: 5px;
+      cursor: pointer;
+    }
+
+    i.disabled {
+      color: #ddd;
+    }
+  }
+
+  .header-content {
+    width:100%;
+    line-height: 24px;
+
+    .info {
+      display: flex;
+
+      .icon {
+        align-content: flex-start;
+        padding: 0px 4px;
+      }
+      .name {
+        flex: 1;
+        width: 100%;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .jobs-count {
+        align-content: flex-end;
+        padding: 0px 4px;
+      }
+    }
+
+    .progress {
+      display: flex;
+      height: 5px;
+      background-color: @lightGrey;
+      text-align: center;
+
+      .skipped {
+        background-color: @grey;
+      }
+      .completed {
+        background-color: @green;
+      }
+      .queued {
+        background-color: @blue;
+      }
+      .error {
+        background-color: @red;
+      }
+    }
+  }
+}
+
+.details {
+  padding: 10px;
+  padding-left: 34px;
+
+  div {
+    padding: 5px 10px;
+    background-color: #eee;
+  }
+}

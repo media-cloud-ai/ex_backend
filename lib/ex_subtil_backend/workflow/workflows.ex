@@ -91,6 +91,7 @@ defmodule ExSubtilBackend.Workflows do
   def get_workflow!(id) do
     Repo.get!(Workflow, id)
     |> preload_workflow
+    |> Repo.preload([:jobs, :artifacts])
   end
 
   defp preload_workflow(workflow) do
@@ -116,14 +117,13 @@ defmodule ExSubtilBackend.Workflows do
   defp get_step_status(nil, _workflow_id, result), do: result
 
   defp get_step_status([step | steps], workflow_id, result) do
-    id = Map.get(step, "id")
-
+    name = Map.get(step, "name")
     query =
       from(
         item in Job,
         join: w in assoc(item, :workflow),
         where: w.id == ^workflow_id,
-        where: item.name == ^id
+        where: item.name == ^name
       )
 
     jobs =
