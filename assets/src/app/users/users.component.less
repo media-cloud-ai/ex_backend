@@ -1,9 +1,10 @@
+@import '../colors';
 
 .new {
-  border: 2px solid #3965ac;
+  border: 2px solid @blue;
   .title {
-    background-color: #3965ac;
-    color: #fff;
+    background-color: @blue;
+    color: @white;
 
     i {
       font-size: 18px;
@@ -21,7 +22,7 @@
 
     .message {
       padding: 10px;
-      color: #db280f;
+      color: @red;
     }
   }
 }
@@ -52,7 +53,7 @@ ul.users {
 
   li.user {
     padding: 10px;
-    background-color: #FFF;
+    background-color: @white;
     display: flex;
 
     span.email,
@@ -63,17 +64,17 @@ ul.users {
     span.status {
       flex: 1;
       .state {
-        color: #fff;
+        color: @white;
         padding: 4px;
         border-radius: 3px;
       }
 
       .state.enabled {
-        background-color: #71bd2c;
+        background-color: @green;
       }
 
       .state.pending {
-        background-color: #3965ac;
+        background-color: @blue;
       }
     }
 
@@ -86,4 +87,3 @@ ul.users {
 .paginator {
   margin-bottom: 80px;
 }
-

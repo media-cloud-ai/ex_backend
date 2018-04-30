@@ -1,3 +1,5 @@
+@import '../colors';
+
 .containers-creation-bar {
   div {
     margin: 0 10px;
@@ -12,7 +14,7 @@
 
   .container {
     padding: 10px;
-    background-color: #FFF;
+    background-color: @white;
     display: flex;
 
     span {
@@ -23,7 +25,7 @@
 
     span.id {
       font-size: 0.8em;
-      color: #aaa;
+      color: @grey;
     }
 
     span.image,
@@ -37,13 +39,13 @@
     }
 
     span.status.created {
-      color: #3f51b5;
+      color: @blue;
     }
     span.status.running {
-      color: #71bd2c;
+      color: @green;
     }
     span.status.exited {
-      color: #ec4236;
+      color: @red;
     }
   }
 

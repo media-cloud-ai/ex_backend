@@ -1,21 +1,23 @@
+@import '../colors';
+
 .progress {
   align-content: flex-end;
   display: flex;
   height: 5px;
-  background-color: #ddd;
+  background-color: @grey;
   text-align: center;
-  border-right: 2px solid #fff;
+  border-right: 2px solid @white;
 
   .skipped {
-    background-color: #696f74;
+    background-color: @grey;
   }
   .completed {
-    background-color: #71bd2c;
+    background-color: @green;
   }
   .queued {
-    background-color: #3965ac;
+    background-color: @blue;
   }
   .error {
-    background-color: #db280f;
+    background-color: @red;
   }
 }

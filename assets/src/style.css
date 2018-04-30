@@ -1,10 +1,19 @@
 
-@import "../node_modules/@angular/material/prebuilt-themes/indigo-pink.css";
-
-.mat-fab.mat-accent, .mat-mini-fab.mat-accent, .mat-raised-button.mat-accent {
+/*.mat-fab.mat-accent, .mat-mini-fab.mat-accent, .mat-raised-button.mat-accent {
   background-color: #770029;
 }
-
+*/
+@font-face {
+    font-family: 'Castorgate';
+    src: url('/bundles/fonts/Castorgate.eot');
+    src: url('/bundles/fonts/Castorgate.eot?#iefix') format('embedded-opentype'),
+        url('/bundles/fonts/Castorgate.woff2') format('woff2'),
+        url('/bundles/fonts/Castorgate.woff') format('woff'),
+        url('/bundles/fonts/Castorgate.ttf') format('truetype'),
+        url('/bundles/fonts/Castorgate.svg#Castorgate') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
 
 .mat-checkbox.small .mat-checkbox-layout {
   transform: scale(.6);

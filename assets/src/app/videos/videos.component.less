@@ -1,3 +1,4 @@
+@import '../colors';
 
 ul.videos.loading {
   display: none;
@@ -52,7 +53,7 @@ ul.videos {
 
   li.video {
     padding: 10px;
-    background-color: #FFF;
+    background-color: @white;
     display: flex;
 
     .legacy_id {
@@ -61,7 +62,7 @@ ul.videos {
       width: 50px;
       a {
         text-decoration: none;
-        color: #888;
+        color: @grey;
       }
     }
     .title,
@@ -119,10 +120,10 @@ ul.videos {
         text-align: center;
 
         i {
-          border: 1px solid #3965ac;
+          border: 1px solid @blue;
           line-height: 14px;
           font-size: 0.8em;
-          color: #3965ac;
+          color: @blue;
           padding: 3px;
         }
       }
@@ -134,13 +135,13 @@ ul.videos {
 
       span.parent span,
       span.jarvis i {
-        color: #3965ac;
+        color: @blue;
         cursor: pointer;
       }
       span.jarvis.disabled {
         pointer-events: none;
         i {
-          color: #bbb;
+          color: @grey;
         }
       }
       span.workflows {
@@ -151,11 +152,11 @@ ul.videos {
 
         .workflows_count {
           display: inline-block;
-          background-color: #bbb;
+          background-color: @grey;
           border-radius: 50%;
           width: 25px;
           height: 25px;
-          color: #fff;
+          color: @white;
           text-align: center;
           line-height: 24px;
           margin-top: 5px;
@@ -164,7 +165,7 @@ ul.videos {
         }
 
         .workflows_count.found {
-          background-color: #671368;
+          background-color: @purple;
         }
       }
       span.starter {
@@ -188,7 +189,7 @@ ul.videos {
   }
 
   li.video.not-available {
-    color: #bbb;
+    color: @grey;
   }
 
   li.video:before {

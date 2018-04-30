@@ -1,8 +1,10 @@
 const path = require("path")
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const webpack = require("webpack");
 
 const config = {
+  mode: 'production',
   entry: {
     "common": [
       "./src/common.ts"
@@ -11,7 +13,10 @@ const config = {
       "./src/app.ts",
     ],
     "style": [
-      "./src/style.css",
+      "./src/style.css"
+    ],
+    "theme": [
+      "./src/theme.scss",
     ]
   },
   output: {
@@ -19,7 +24,7 @@ const config = {
     filename: "[name].js"
   },
   resolve: {
-    extensions: [".ts", ".js"],
+    extensions: [".ts", ".js", ".scss"],
     modules: ["deps", "node_modules"]
   },
   module: {
@@ -37,6 +42,10 @@ const config = {
         loaders: ["to-string-loader", "css-loader", "less-loader"]
       },
       {
+        test: /\.scss(\?v=\d+\.\d+\.\d+)?$/,
+        loaders: ["style-loader", "css-loader", "sass-loader"]
+      },
+      {
         test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
         loader: 'file-loader?name=fonts/[name].[ext]'
       },
@@ -47,7 +56,11 @@ const config = {
     ]
   },
   plugins: [
-    new CopyWebpackPlugin([{ from: "./static" }])
+    new CopyWebpackPlugin([{ from: "./static" }]),
+    new webpack.ContextReplacementPlugin(
+      /\@angular(\\|\/)core(\\|\/)esm5/,
+      path.join(__dirname, './assets')
+    ),
   ]
 };
 

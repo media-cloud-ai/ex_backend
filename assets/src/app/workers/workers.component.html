@@ -4,7 +4,7 @@
 
 <div class="containers-creation-bar">
   <div class=workers_selector>
-    <mat-form-field>
+    <mat-form-field color="accent">
       <mat-select
         class="workers-select"
         placeholder="Worker"
@@ -19,7 +19,7 @@
     </mat-form-field>
   </div>
   <button mat-raised-button
-    color="primary"
+    color="accent"
     (click)="addContainer()"
     [disabled]="!selectedWorker">
       <i class="material-icons">add</i> Add a worker
