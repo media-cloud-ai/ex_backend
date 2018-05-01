@@ -1,6 +1,7 @@
 <div class="container">
   <main role="main">
-    <mat-toolbar class="mat-toolbar mat-primary mat-toolbar-multiple-rows">
+    <mat-toolbar class="mat-toolbar mat-primary mat-toolbar-multiple-rows"
+    [ngClass]="{logout: !loggedIn}">
       <mat-toolbar-row class="mat-toolbar-row">
         <button
           mat-icon-button (click)="switchMenu()"
@@ -68,11 +69,11 @@
       </mat-sidenav-content>
     </mat-sidenav-container>
 
-    <div class="footer">
+    <!-- <div class="footer">
       <span class=spacer></span>
       <span class=logo>
         <img src="/bundles/images/logo_id_2018_fushia13_2lignes.png">
       </span>
-    </div>
+    </div> -->
   </main>
 </div>
