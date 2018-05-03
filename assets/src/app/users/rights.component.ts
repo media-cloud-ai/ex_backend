@@ -56,7 +56,7 @@ export class RightsComponent {
       }
     }
 
-    if(event.checked == true && this.user.rights.includes(kind)) {
+    if(event.checked == true && !this.user.rights.includes(kind)) {
       rights.push(kind);
     }
 
