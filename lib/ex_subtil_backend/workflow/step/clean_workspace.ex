@@ -37,20 +37,23 @@ defmodule ExSubtilBackend.Workflow.Step.CleanWorkspace do
   end
 
   defp get_source_directories(jobs) do
-    dash_directory =
+    directories =
       ExSubtilBackend.Workflow.Step.GenerateDash.get_jobs_destination_paths(jobs)
-      |> List.first()
+      |> get_paths_directory()
+
+    ExSubtilBackend.Workflow.Step.FtpDownload.get_jobs_destination_paths(jobs)
+    |> get_paths_directory(directories)
+  end
+
+  defp get_paths_directory(_paths, directories \\ [])
+  defp get_paths_directory([], directories), do: directories
+
+  defp get_paths_directory(paths, directories) do
+    dir =
+      List.first(paths)
       |> Path.dirname()
 
-    download_directory =
-      ExSubtilBackend.Workflow.Step.FtpDownload.get_jobs_destination_paths(jobs)
-      |> List.first()
-      |> Path.dirname()
-
-    [
-      dash_directory,
-      download_directory
-    ]
+    List.insert_at(directories, -1, dir)
   end
 
   @doc """
