@@ -48,7 +48,7 @@ defmodule ExSubtilBackend.Mixfile do
       {:bamboo, github: "media-io/bamboo"},
       {:cowboy, "~> 1.1.2"},
       {:distillery, "~> 1.5"},
-      {:ex_video_factory, "0.3.4"},
+      {:ex_video_factory, "0.3.5"},
       {:gettext, "~> 0.14"},
       {:httpotion, "~> 3.1.0"},
       {:phoenix, "~> 1.3.0"},
