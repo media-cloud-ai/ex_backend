@@ -47,11 +47,14 @@ defmodule ExSubtilBackend.Workflow.Step.CleanWorkspace do
 
   defp get_paths_directory(paths, directories \\ []) do
     case paths do
-      [] -> directories
+      [] ->
+        directories
+
       _ ->
         dir =
           List.first(paths)
           |> Path.dirname()
+
         List.insert_at(directories, -1, dir)
     end
   end
