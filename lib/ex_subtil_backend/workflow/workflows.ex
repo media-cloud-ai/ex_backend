@@ -7,7 +7,6 @@ defmodule ExSubtilBackend.Workflows do
   alias ExSubtilBackend.Repo
 
   alias ExSubtilBackend.Workflows.Workflow
-  alias ExSubtilBackend.Jobs.Job
 
   defp force_integer(param) when is_bitstring(param) do
     param
@@ -63,8 +62,8 @@ defmodule ExSubtilBackend.Workflows do
 
     workflows =
       Repo.all(query)
-      |> preload_workflows
       |> Repo.preload([:jobs, :artifacts])
+      |> preload_workflows
 
     %{
       data: workflows,
@@ -90,18 +89,23 @@ defmodule ExSubtilBackend.Workflows do
   """
   def get_workflow!(id) do
     Repo.get!(Workflow, id)
-    |> preload_workflow
     |> Repo.preload([:jobs, :artifacts])
+    |> preload_workflow
   end
 
   defp preload_workflow(workflow) do
+    jobs =
+      Repo.preload(workflow.jobs, :status)
+
     steps =
       workflow
       |> Map.get(:flow)
       |> Map.get("steps")
-      |> get_step_status(workflow.id)
+      |> get_step_status(jobs)
 
-    Map.put(workflow, :flow, %{steps: steps})
+    workflow
+    |> Map.put(:flow, %{steps: steps})
+    |> Map.put(:jobs, jobs)
   end
 
   defp preload_workflows(workflows, result \\ [])
@@ -112,23 +116,14 @@ defmodule ExSubtilBackend.Workflows do
     preload_workflows(workflows, result)
   end
 
-  defp get_step_status(steps, workflow_id, result \\ [])
-  defp get_step_status([], _workflow_id, result), do: result
-  defp get_step_status(nil, _workflow_id, result), do: result
+  defp get_step_status(steps, workflow_jobs, result \\ [])
+  defp get_step_status([], _workflow_jobs, result), do: result
+  defp get_step_status(nil, _workflow_jobs, result), do: result
 
-  defp get_step_status([step | steps], workflow_id, result) do
+  defp get_step_status([step | steps], workflow_jobs, result) do
     name = Map.get(step, "name")
-    query =
-      from(
-        item in Job,
-        join: w in assoc(item, :workflow),
-        where: w.id == ^workflow_id,
-        where: item.name == ^name
-      )
-
     jobs =
-      Repo.all(query)
-      |> Repo.preload(:status)
+      Enum.filter(workflow_jobs, fn(job) -> job.name == name end)
 
     status =
       jobs
@@ -159,7 +154,7 @@ defmodule ExSubtilBackend.Workflows do
       |> Map.put(:jobs, job_status)
 
     result = List.insert_at(result, -1, step)
-    get_step_status(steps, workflow_id, result)
+    get_step_status(steps, workflow_jobs, result)
   end
 
   defp count_status(jobs, status, count \\ 0)
@@ -198,10 +193,11 @@ defmodule ExSubtilBackend.Workflows do
   defp get_current_status([]), do: "processing"
 
   defp get_current_status([job | jobs]) do
-    if Enum.count(job.status, fn x -> x.state == "completed" end) > 0 do
-      "completed"
-    else
-      get_current_status(jobs)
+    cond do
+      Enum.any?(job.status, fn x -> x.state == "error" end) -> "error"
+      Enum.any?(job.status, fn x -> x.state == "skipped" end) -> "skipped"
+      Enum.any?(job.status, fn x -> x.state == "completed" end) -> "completed"
+      true -> get_current_status(jobs)
     end
   end
 
