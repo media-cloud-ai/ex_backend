@@ -125,16 +125,6 @@ defmodule ExSubtilBackend.Workflows do
     jobs =
       Enum.filter(workflow_jobs, fn(job) -> job.name == name end)
 
-    status =
-      jobs
-      |> get_current_status
-
-    status =
-      case length(jobs) do
-        0 -> "queued"
-        _ -> status
-      end
-
     completed = count_status(jobs, "completed")
     errors = count_status(jobs, "error")
     skipped = count_status(jobs, "skipped")
@@ -147,6 +137,15 @@ defmodule ExSubtilBackend.Workflows do
       queued: queued,
       skipped: skipped
     }
+
+    status =
+      cond do
+        errors > 0 -> "error"
+        queued > 0 -> "processing"
+        skipped > 0 -> "skipped"
+        completed > 0 -> "completed"
+        true -> "queued"
+      end
 
     step =
       step
@@ -188,17 +187,6 @@ defmodule ExSubtilBackend.Workflows do
       end
 
     count_queued_status(jobs, count)
-  end
-
-  defp get_current_status([]), do: "processing"
-
-  defp get_current_status([job | jobs]) do
-    cond do
-      Enum.any?(job.status, fn x -> x.state == "error" end) -> "error"
-      Enum.any?(job.status, fn x -> x.state == "skipped" end) -> "skipped"
-      Enum.any?(job.status, fn x -> x.state == "completed" end) -> "completed"
-      true -> get_current_status(jobs)
-    end
   end
 
   @doc """
