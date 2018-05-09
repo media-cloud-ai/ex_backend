@@ -11,8 +11,7 @@ defmodule ExSubtilBackendWeb.WorkflowEventsController do
   plug(:user_check when action in [:handle])
   plug(:right_technician_check when action in [:handle])
 
-  def handle(conn, %{"id" => id, "event" => %{"abort" => abort, "skip" => step} }) do
-
+  def handle(conn, %{"id" => id, "event" => %{"abort" => abort, "skip" => step}}) do
     workflow = Workflows.get_workflow!(id)
 
     if abort do
@@ -26,6 +25,7 @@ defmodule ExSubtilBackendWeb.WorkflowEventsController do
   end
 
   defp skip_remaining_steps([], _workflow), do: nil
+
   defp skip_remaining_steps([step | steps], workflow) do
     case Map.get(step, "name") do
       "clean_workspace" ->
@@ -38,7 +38,7 @@ defmodule ExSubtilBackendWeb.WorkflowEventsController do
           _ -> nil
         end
     end
+
     skip_remaining_steps(steps, workflow)
   end
-
 end

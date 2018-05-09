@@ -5,5 +5,4 @@ defmodule ExSubtilBackendWeb.WorkflowEventsView do
   def render("show.json", %{workflow: workflow}) do
     %{data: render_one(workflow, WorkflowView, "workflow.json")}
   end
-
 end

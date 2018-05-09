@@ -94,8 +94,7 @@ defmodule ExSubtilBackend.Workflows do
   end
 
   defp preload_workflow(workflow) do
-    jobs =
-      Repo.preload(workflow.jobs, :status)
+    jobs = Repo.preload(workflow.jobs, :status)
 
     steps =
       workflow
@@ -122,8 +121,7 @@ defmodule ExSubtilBackend.Workflows do
 
   defp get_step_status([step | steps], workflow_jobs, result) do
     name = Map.get(step, "name")
-    jobs =
-      Enum.filter(workflow_jobs, fn(job) -> job.name == name end)
+    jobs = Enum.filter(workflow_jobs, fn job -> job.name == name end)
 
     completed = count_status(jobs, "completed")
     errors = count_status(jobs, "error")

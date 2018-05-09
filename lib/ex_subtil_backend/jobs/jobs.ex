@@ -151,8 +151,8 @@ defmodule ExSubtilBackend.Jobs do
   """
   def skip_jobs(workflow, action) do
     list_jobs(%{"workflow_id" => workflow.id, "job_type" => action})
-    |> Enum.filter(fn(job) -> job.status.state != "queued" end)
-    |> Enum.each(fn(job) -> Status.set_job_status(job.id, "skipped") end)
+    |> Enum.filter(fn job -> job.status.state != "queued" end)
+    |> Enum.each(fn job -> Status.set_job_status(job.id, "skipped") end)
   end
 
   @doc """
