@@ -1,7 +1,11 @@
 
 import {Component, Input} from '@angular/core';
 import {Router} from '@angular/router';
+
+import {MatDialog} from '@angular/material';
+import {WorkflowService} from '../services/workflow.service';
 import {Workflow, Step} from '../models/workflow';
+import {WorkflowAbortDialogComponent} from './dialogs/workflow_abort_dialog.component';
 
 @Component({
   selector: 'workflow-component',
@@ -10,32 +14,20 @@ import {Workflow, Step} from '../models/workflow';
 })
 
 export class WorkflowComponent {
-  jobs_opened: boolean = false;
   @Input() workflow: Workflow;
-  processing_steps: Step[] = new Array();
-  error_steps: Step[] = new Array();
+  can_abort: boolean = false;
 
   constructor(
     private router: Router,
+    private workflowService: WorkflowService,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit() {
-    for(let step of this.workflow.flow.steps){
-      // console.log(step);
-      if(step.jobs.errors > 0) {
-        this.error_steps.push(step);
-      }
-      if(step.jobs.queued > 0) {
-        this.processing_steps.push(step);
-      }
+    this.can_abort = this.workflow.flow.steps.some((s) => s["status"] == "error");
+    if(this.can_abort && this.workflow.flow.steps.some((s) => s.name == "clean_workspace" && s["status"] != "queued")) {
+      this.can_abort = false;
     }
-  }
-
-  openJobs() : void {
-    this.jobs_opened = true;
-  }
-  closeJobs() : void {
-    this.jobs_opened = false;
   }
 
   gotoVideo(video_id): void {
@@ -60,5 +52,19 @@ export class WorkflowComponent {
   
   getTotalSteps(): number {
     return this.workflow["flow"].steps.length;
+  }
+
+  abort(workflow_id): void {
+    let dialogRef = this.dialog.open(WorkflowAbortDialogComponent, {data: {"workflow": this.workflow}});
+
+    dialogRef.afterClosed().subscribe(workflow => {
+      if(workflow != undefined) {
+        console.log("Abort workflow!");
+        this.workflowService.sendWorkflowEvent(workflow.id, { abort: true, skip: null })
+        .subscribe(response => {
+          console.log(response);
+        });
+      }
+    });
   }
 }

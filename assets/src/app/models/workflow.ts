@@ -38,3 +38,8 @@ export class Workflow {
   artifacts?: Artifact;
   flow: Flow;
 }
+
+export class WorkflowEvent {
+  skip: Step;
+  abort: boolean;
+}

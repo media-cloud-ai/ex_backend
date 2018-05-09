@@ -6,7 +6,7 @@ import { of } from 'rxjs/observable/of';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import {WorkflowPage} from '../models/page/workflow_page';
-import {Step, Workflow} from '../models/workflow';
+import {Step, Workflow, WorkflowEvent} from '../models/workflow';
 
 @Injectable()
 export class WorkflowService {
@@ -43,6 +43,14 @@ export class WorkflowService {
       .pipe(
         tap(workflowPage => this.log('fetched Workflow')),
         catchError(this.handleError('createWorkflow', undefined))
+      );
+  }
+
+  sendWorkflowEvent(workflow_id: number, event: WorkflowEvent): Observable<Workflow> {
+    return this.http.put<Workflow>(this.workflowsUrl + "/events", {id: workflow_id, event: event})
+      .pipe(
+        tap(workflowPage => this.log('aborted Workflow')),
+        catchError(this.handleError('abortWorkflow', undefined))
       );
   }
 

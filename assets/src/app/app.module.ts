@@ -67,6 +67,7 @@ import {WorkersComponent}        from './workers/workers.component';
 
 import {JobDetailsDialogComponent}    from './jobs/details/job_details_dialog.component';
 import {RdfDialogComponent}      from './videos/rdf/rdf_dialog.component';
+import {WorkflowAbortDialogComponent} from './workflows/dialogs/workflow_abort_dialog.component';
 import {WorkflowDialogComponent} from './videos/workflow/workflow_dialog.component';
 
 import {AuthService}             from './authentication/auth.service';
@@ -158,6 +159,7 @@ const SUBTIL_DATE_FORMATS = {
     UsersComponent,
     VideosComponent,
     RdfDialogComponent,
+    WorkflowAbortDialogComponent,
     WorkflowDialogComponent,
     WorkflowComponent,
     WorkflowDetailsComponent,
@@ -188,6 +190,7 @@ const SUBTIL_DATE_FORMATS = {
     RightsComponent,
     StepProgressBarComponent,
     WorkflowComponent,
+    WorkflowAbortDialogComponent,
     WorkflowDialogComponent,
     WorkflowStepDetailsComponent
   ],
