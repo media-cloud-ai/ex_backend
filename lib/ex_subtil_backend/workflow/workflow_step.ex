@@ -41,6 +41,20 @@ defmodule ExSubtilBackend.WorkflowStep do
     end
   end
 
+  def skip_step(workflow, step) do
+    step_name = Map.get(step, "name")
+
+    ExSubtilBackend.Repo.preload(workflow, :jobs, force: true)
+    |> ExSubtilBackend.Jobs.create_skipped_job(step_name)
+  end
+
+  def skip_step_jobs(workflow, step) do
+    step_name = Map.get(step, "name")
+
+    ExSubtilBackend.Repo.preload(workflow, :jobs, force: true)
+    |> ExSubtilBackend.Jobs.skip_jobs(step_name)
+  end
+
   defp launch_step(workflow, %{"name" => "download_ftp"} = _step, _step_index) do
     ExSubtilBackend.Workflow.Step.FtpDownload.launch(workflow)
   end

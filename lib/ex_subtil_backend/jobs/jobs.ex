@@ -141,6 +141,21 @@ defmodule ExSubtilBackend.Jobs do
   end
 
   @doc """
+  Set skipped status to all queued jobs.
+
+  ## Examples
+
+      iex> skip_jobs(workflow, "download_http")
+      :ok
+
+  """
+  def skip_jobs(workflow, action) do
+    list_jobs(%{"workflow_id" => workflow.id, "job_type" => action})
+    |> Enum.filter(fn(job) -> job.status.state != "queued" end)
+    |> Enum.each(fn(job) -> Status.set_job_status(job.id, "skipped") end)
+  end
+
+  @doc """
   Updates a job.
 
   ## Examples
