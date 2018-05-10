@@ -13,6 +13,16 @@
 </div>
 
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button (click)="onClose()" cdkFocusInitial>Continue</button>
+  <button mat-button (click)="onNoClick()">
+    <mat-icon>clear</mat-icon>
+    Cancel
+  </button>
+  <button
+    mat-raised-button
+    (click)="onClose()"
+    color="warn"
+    cdkFocusInitial>
+    <mat-icon>cancel</mat-icon>
+    Yes, abort
+  </button>
 </div>
