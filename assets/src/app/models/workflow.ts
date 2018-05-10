@@ -40,6 +40,5 @@ export class Workflow {
 }
 
 export class WorkflowEvent {
-  skip: Step;
-  abort: boolean;
+  event: string;
 }
