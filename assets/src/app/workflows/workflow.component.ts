@@ -15,7 +15,7 @@ import {WorkflowAbortDialogComponent} from './dialogs/workflow_abort_dialog.comp
 
 export class WorkflowComponent {
   @Input() workflow: Workflow;
-  can_abort: boolean = false;
+  can_abort: boolean;
 
   constructor(
     private router: Router,
@@ -60,7 +60,7 @@ export class WorkflowComponent {
     dialogRef.afterClosed().subscribe(workflow => {
       if(workflow != undefined) {
         console.log("Abort workflow!");
-        this.workflowService.sendWorkflowEvent(workflow.id, { abort: true, skip: null })
+        this.workflowService.sendWorkflowEvent(workflow.id, {event: "abort"})
         .subscribe(response => {
           console.log(response);
         });

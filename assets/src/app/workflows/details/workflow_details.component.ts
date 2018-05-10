@@ -77,7 +77,7 @@ export class WorkflowDetailsComponent {
     dialogRef.afterClosed().subscribe(workflow => {
       if(workflow != undefined) {
         console.log("Abort workflow!");
-        this.workflowService.sendWorkflowEvent(workflow.id, { abort: true, skip: null })
+        this.workflowService.sendWorkflowEvent(workflow.id, {event: "abort"})
         .subscribe(response => {
           console.log(response);
         });
