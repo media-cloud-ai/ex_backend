@@ -24,8 +24,10 @@ defmodule ExSubtilBackendWeb.Router do
     put("/password_resets/update", PasswordResetController, :update)
 
     get("/jobs", JobController, :index)
-    put("/workflows/events", WorkflowEventsController, :handle)
-    resources("/workflows", WorkflowController, except: [:new, :edit])
+
+    resources("/workflows", WorkflowController, except: [:new, :edit]) do
+      post("/events", WorkflowEventsController, :handle)
+    end
 
     scope "/docker", Docker do
       get("/nodes", NodesController, :index)

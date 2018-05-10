@@ -47,7 +47,7 @@ export class WorkflowService {
   }
 
   sendWorkflowEvent(workflow_id: number, event: WorkflowEvent): Observable<Workflow> {
-    return this.http.put<Workflow>(this.workflowsUrl + "/events", {id: workflow_id, event: event})
+    return this.http.post<Workflow>(this.workflowsUrl + "/" + workflow_id + "/events", event)
       .pipe(
         tap(workflowPage => this.log('aborted Workflow')),
         catchError(this.handleError('abortWorkflow', undefined))
