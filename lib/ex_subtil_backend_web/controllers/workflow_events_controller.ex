@@ -11,26 +11,26 @@ defmodule ExSubtilBackendWeb.WorkflowEventsController do
   plug(:user_check when action in [:handle])
   plug(:right_technician_check when action in [:handle])
 
-  def handle(conn, %{"id" => id, "event" => %{"abort" => abort, "skip" => step}}) do
+  def handle(conn, %{"workflow_id" => id, "event" => event}) do
     workflow = Workflows.get_workflow!(id)
 
-    if abort do
-      workflow.flow.steps
-      |> skip_remaining_steps(workflow)
+    case event do
+      "abort" ->
+        workflow.flow.steps
+        |> skip_remaining_steps(workflow)
 
-      ExSubtilBackend.Workflow.Step.CleanWorkspace.launch(workflow)
+        ExSubtilBackend.Workflow.Step.CleanWorkspace.launch(workflow)
+        send_resp(conn, :ok, "")
+      _ ->
+        send_resp(conn, 422, "event is not supported")
     end
-
-    render(conn, "show.json", workflow: Workflows.get_workflow!(id))
   end
 
   defp skip_remaining_steps([], _workflow), do: nil
 
   defp skip_remaining_steps([step | steps], workflow) do
     case Map.get(step, "name") do
-      "clean_workspace" ->
-        nil
-
+      "clean_workspace" -> nil
       _ ->
         case step.status do
           "queued" -> ExSubtilBackend.WorkflowStep.skip_step(workflow, step)
