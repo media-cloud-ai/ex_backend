@@ -21,11 +21,12 @@
       <span class="label">Steps:</span>
       <span class="count">{{getStepsCount()}} / {{getTotalSteps()}}</span>
     </span>
-    <span *ngIf=can_abort
+    <span
       class="abort">
       <button
         mat-raised-button
         color="warn"
+        [disabled]=!can_abort
         (click)="abort(workflow.id)"
         >
         <mat-icon>cancel</mat-icon>
