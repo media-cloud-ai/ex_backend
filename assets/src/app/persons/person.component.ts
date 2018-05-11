@@ -19,9 +19,7 @@ export class PersonComponent {
   person: Person;
 
   last_name: string;
-  first_name_1: string;
-  first_name_2: string;
-  first_name_3: string;
+  first_names: string[];
   birth_date: Moment;
   nationalities: any;
 
@@ -48,9 +46,7 @@ export class PersonComponent {
           .subscribe(response => {
             this.person = response.data;
             this.last_name = this.person.last_name;
-            this.first_name_1 = this.person.first_names[0];
-            this.first_name_2 = this.person.first_names[1];
-            this.first_name_3 = this.person.first_names[2];
+            this.first_names = this.person.first_names;
             this.birth_date = moment(this.person.birthday_date);
             this.nationalities = this.person.nationalities;
           });
@@ -69,7 +65,7 @@ export class PersonComponent {
 
     let person = {
       last_name: this.last_name,
-      first_names: [this.first_name_1, this.first_name_2, this.first_name_3],
+      first_names: this.first_names,
       birthday_date: this.birth_date,
       nationalities: this.nationalities,
     }
@@ -88,20 +84,9 @@ export class PersonComponent {
   updatePerson(): void {
     this.error_message = "";
 
-    let first_names = [];
-    if(this.first_name_1) {
-      first_names.push(this.first_name_1);
-      if(this.first_name_2) {
-        first_names.push(this.first_name_2);
-        if(this.first_name_3) {
-          first_names.push(this.first_name_3);
-        }
-      }
-    }
-
     let person = {
       last_name: this.last_name,
-      first_names: first_names,
+      first_names: this.first_names,
       birthday_date: this.birth_date,
       nationalities: this.nationalities,
     }

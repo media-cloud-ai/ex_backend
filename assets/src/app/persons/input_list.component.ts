@@ -1,5 +1,5 @@
 
-import {Component, Input} from '@angular/core';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 
 @Component({
   selector: 'input-list-component',
@@ -9,6 +9,9 @@ import {Component, Input} from '@angular/core';
 
 export class InputListComponent {
   @Input() items: any;
+  @Input() name: string;
+
+  @Output() onChange = new EventEmitter<any>();
 
   constructor(
   ) {}
@@ -17,6 +20,10 @@ export class InputListComponent {
     if(this.items == undefined) {
       this.items = new Array();
     }
+  }
+
+  update(): void {
+    this.onChange.emit(this.items);
   }
 
   track(index: any, item: any): any {
