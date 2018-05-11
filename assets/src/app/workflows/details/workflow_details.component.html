@@ -17,6 +17,10 @@
     <span class="duration">
       <duration-component [workflow]=workflow></duration-component>
     </span>
+    <span class="steps-count">
+      <span class="label">Steps:</span>
+      <span class="count">{{getStepsCount()}} / {{getTotalSteps()}}</span>
+    </span>
     <span *ngIf=can_abort
       class="abort">
       <button
@@ -28,7 +32,6 @@
         Abort
       </button>
     </span>
-    <span class="steps-count">Steps: {{getStepsCount()}} / {{getTotalSteps()}}</span>
   </div>
 
   <div
