@@ -1,6 +1,6 @@
 <div class=input>
   <mat-list>
-    <mat-list-item *ngFor="let item of items; let i = index" [attr.data-index]="i">
+    <mat-list-item *ngFor="let item of items; let i = index; trackBy: track" [attr.data-index]="i">
 
       <mat-form-field class="item-input">
         <input

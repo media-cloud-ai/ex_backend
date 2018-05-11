@@ -18,4 +18,9 @@ export class InputListComponent {
       this.items = new Array();
     }
   }
+
+  track(index: any, item: any): any {
+    return index;
+  }
+
 }
