@@ -1,0 +1,28 @@
+<h1 mat-dialog-title *ngIf=workflow>Aborting workflow #{{ workflow.id }}</h1>
+
+<div mat-dialog-content
+  *ngIf=workflow
+  class="confirm">
+  <div >Do you really want to abort workflow #{{ workflow.id }}?</div>
+  <div *ngIf=forceWorkspaceClean() class="warning">
+    <span>
+      <mat-icon color="warn">warning</mat-icon>
+    </span>
+    <span> Aborting will remove the current worflow files.</span>
+  </div>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">
+    <mat-icon>clear</mat-icon>
+    Cancel
+  </button>
+  <button
+    mat-raised-button
+    (click)="onClose()"
+    color="warn"
+    cdkFocusInitial>
+    <mat-icon>cancel</mat-icon>
+    Yes, abort
+  </button>
+</div>

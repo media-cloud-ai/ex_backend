@@ -38,3 +38,7 @@ export class Workflow {
   artifacts?: Artifact;
   flow: Flow;
 }
+
+export class WorkflowEvent {
+  event: string;
+}
