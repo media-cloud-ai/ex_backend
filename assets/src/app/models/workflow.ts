@@ -19,6 +19,7 @@ export class Step {
   parent_ids?: number[];
   name: string;
   enable: boolean;
+  status?: string;
   required?: string[];
   parameters?: Parameter[];
   jobs?: JobsStatus;
@@ -33,6 +34,7 @@ export class Artifact {
 }
 
 export class Workflow {
+  id?: number;
   reference: string;
   created_at?: string;
   artifacts?: Artifact;
