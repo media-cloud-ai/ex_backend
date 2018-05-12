@@ -1,6 +1,7 @@
 import {Injectable, Component, OnDestroy} from '@angular/core';
 import {Router} from '@angular/router';
 import {HttpClient, HttpParams, HttpHeaders} from '@angular/common/http';
+import {CookieService} from 'ngx-cookie-service';
 import {Observable} from 'rxjs/Observable';
 import {of} from 'rxjs/observable/of';
 import {catchError, map, tap} from 'rxjs/operators';
@@ -27,8 +28,12 @@ export class AuthService {
 
   subPanelSwitch: Subscription;
 
-  constructor(private http: HttpClient, public router: Router) {
-    var currentUser = sessionStorage.getItem('currentUser');
+  constructor(
+    private cookieService: CookieService,
+    private http: HttpClient,
+    public router: Router
+  ) {
+    var currentUser = this.cookieService.get('currentUser');
     if(currentUser != undefined && currentUser != "") {
       this.isLoggedIn = true;
       var parsedUser = JSON.parse(currentUser);
@@ -54,7 +59,7 @@ export class AuthService {
     return this.http.post<Token>('/api/sessions', query).pipe(
       tap(response => {
         if (response && response.access_token) {
-          sessionStorage.setItem('currentUser', JSON.stringify({
+          this.cookieService.set('currentUser', JSON.stringify({
             username: email,
             token: response.access_token,
             rights: response.user.rights
@@ -83,7 +88,7 @@ export class AuthService {
     this.username = undefined;
     this.rights = undefined;
     this.userLoggedOutSource.next("");
-    sessionStorage.removeItem('currentUser');
+    this.cookieService.delete('currentUser');
     this.rightPanelSwitchSource.next("close");
     this.router.navigate(["/login"]);
   }
