@@ -1,11 +1,14 @@
 <div class=input>
   <mat-list>
-    <mat-list-item *ngFor="let item of items; let i = index" [attr.data-index]="i">
+    <mat-list-item *ngFor="let item of items; let i = index; trackBy: track" [attr.data-index]="i">
 
       <mat-form-field class="item-input">
         <input
           matInput
+          type="text"
+          placeholder="{{name}} {{i + 1}}"
           name="input_{{i}}"
+          (keyup)="update()"
           [(ngModel)]="items[i]"
           >
         <mat-icon matSuffix 

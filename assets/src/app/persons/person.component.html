@@ -17,31 +17,8 @@
           </mat-form-field>
         </div>
         <div>
-          <mat-form-field class="firstname-1-input">
-            <input
-              matInput
-              placeholder="First Name 1"
-              [(ngModel)]="first_name_1"
-              >
-          </mat-form-field>
-        </div>
-        <div>
-          <mat-form-field class="firstname-2-input">
-            <input
-              matInput
-              placeholder="First Name 2"
-              [(ngModel)]="first_name_2"
-              >
-          </mat-form-field>
-        </div>
-        <div>
-          <mat-form-field class="firstname-3-input">
-            <input
-              matInput
-              placeholder="First Name 3"
-              [(ngModel)]="first_name_3"
-              >
-          </mat-form-field>
+          First names
+          <input-list-component [items]=first_names name="First name" (onChange)="first_names = $event"></input-list-component>
         </div>
         <div>
           <mat-form-field>
@@ -74,7 +51,7 @@
         </div>
         <div>
           Nationalities
-          <input-list-component [items]=nationalities></input-list-component>
+          <input-list-component [items]=nationalities name="Nationality" (onChange)="nationalities = $event"></input-list-component>
         </div>
         <div>
           <button mat-raised-button matStepperNext
@@ -102,37 +79,21 @@
           </mat-form-field>
         </div>
         <div
-          *ngIf="first_name_1">
-          <mat-form-field class="firstname-1-input">
-            <input
-              matInput
-              placeholder="First Name 1"
-              [(ngModel)]="first_name_1"
-              disabled=true
-              >
-          </mat-form-field>
-        </div>
-        <div
-          *ngIf="first_name_2">
-          <mat-form-field class="firstname-2-input">
-            <input
-              matInput
-              placeholder="First Name 2"
-              [(ngModel)]="first_name_2"
-              disabled=true
-              >
-          </mat-form-field>
-        </div>
-        <div
-          *ngIf="first_name_3">
-          <mat-form-field class="firstname-3-input">
-            <input
-              matInput
-              placeholder="First Name 3"
-              [(ngModel)]="first_name_3"
-              disabled=true
-              >
-          </mat-form-field>
+          *ngIf="first_names">
+          <mat-list>
+            <mat-list-item *ngFor="let item of first_names; let i = index" [attr.data-index]="i">
+              <mat-form-field>
+                <input
+                  matInput
+                  type="text"
+                  placeholder="First name {{i + 1}}"
+                  name="input_{{i}}"
+                  value={{item}}
+                  disabled=true
+                  >
+              </mat-form-field>
+            </mat-list-item>
+          </mat-list>
         </div>
         <div
           *ngIf="birth_date">
@@ -171,7 +132,20 @@
         </div>
         <div
           *ngIf="nationalities">
-          <input-list-component [items]=nationalities></input-list-component>
+          <mat-list>
+            <mat-list-item *ngFor="let item of nationalities; let i = index" [attr.data-index]="i">
+              <mat-form-field>
+                <input
+                  matInput
+                  type="text"
+                  placeholder="Nationality {{i + 1}}"
+                  name="input_{{i}}"
+                  value={{item}}
+                  disabled=true
+                  >
+              </mat-form-field>
+            </mat-list-item>
+          </mat-list>
         </div>
         <div>
           <button mat-raised-button matStepperPrevious
