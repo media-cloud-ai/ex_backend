@@ -227,7 +227,10 @@ defmodule ExSubtilBackend.Workflows do
   def notification_from_job(job_id) do
     job = Jobs.get_job!(job_id)
     topic = "update_workflow_" <> Integer.to_string(job.workflow_id)
-    ExSubtilBackendWeb.Endpoint.broadcast! "notifications:all", topic, %{body: %{workflow_id: job.workflow_id}}
+
+    ExSubtilBackendWeb.Endpoint.broadcast!("notifications:all", topic, %{
+      body: %{workflow_id: job.workflow_id}
+    })
   end
 
   @doc """

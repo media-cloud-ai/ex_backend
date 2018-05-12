@@ -32,6 +32,7 @@ defmodule ExSubtilBackend.WorkflowsTest do
       workflow =
         workflow_fixture()
         |> Repo.preload([:artifacts, :jobs])
+
       assert Workflows.get_workflow!(workflow.id) == workflow
     end
 
@@ -57,6 +58,7 @@ defmodule ExSubtilBackend.WorkflowsTest do
       workflow =
         workflow_fixture()
         |> Repo.preload([:artifacts, :jobs])
+
       assert {:error, %Ecto.Changeset{}} = Workflows.update_workflow(workflow, @invalid_attrs)
       assert workflow == Workflows.get_workflow!(workflow.id)
     end
