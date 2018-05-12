@@ -2,6 +2,8 @@ import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {MatDialog} from '@angular/material';
+import {Message} from '../../models/message';
+import {SocketService} from '../../services/socket.service';
 import {WorkflowService} from '../../services/workflow.service';
 import {Workflow, Step} from '../../models/workflow';
 import {WorkflowRenderer} from '../../models/workflow_renderer';
@@ -15,11 +17,15 @@ import {WorkflowAbortDialogComponent} from '../dialogs/workflow_abort_dialog.com
 export class WorkflowDetailsComponent {
   private sub: any;
 
+  workflow_id: number;
   workflow: Workflow;
   renderer: WorkflowRenderer;
   can_abort: boolean = false;
+  connection: any;
+  messages: Message[] = [];
 
   constructor(
+    private socketService: SocketService,
     private workflowService: WorkflowService,
     private route: ActivatedRoute,
     private router: Router,
@@ -29,9 +35,16 @@ export class WorkflowDetailsComponent {
   ngOnInit() {
     this.sub = this.route
     .params.subscribe(params => {
-      let workflow_id = +params['id'];
-      this.getWorkflow(workflow_id);
+      this.workflow_id = +params['id'];
+      this.getWorkflow(this.workflow_id);
     });
+
+    this.socketService.initSocket();
+
+    this.connection = this.socketService.onWorkflowUpdate(this.workflow_id)
+      .subscribe((message: Message) => {
+        this.getWorkflow(this.workflow_id);
+      });
   }
 
   ngOnDestroy() {
@@ -41,11 +54,17 @@ export class WorkflowDetailsComponent {
   getWorkflow(workflow_id): void {
     this.workflowService.getWorkflow(workflow_id)
     .subscribe(workflow => {
-      this.workflow = workflow["data"];
+      if(workflow == undefined) {
+        this.workflow = undefined;
+        this.renderer = undefined;
+        return
+      }
+
+      this.workflow = workflow.data;
       this.renderer = new WorkflowRenderer(this.workflow.flow.steps);
 
-      this.can_abort = this.workflow.flow.steps.some((s) => s["status"] == "error");
-      if(this.can_abort && this.workflow.flow.steps.some((s) => s.name == "clean_workspace" && s["status"] != "queued")) {
+      this.can_abort = this.workflow.flow.steps.some((s) => s.status == "error");
+      if(this.can_abort && this.workflow.flow.steps.some((s) => s.name == "clean_workspace" && s.status != "queued")) {
         this.can_abort = false;
       }
     });
@@ -57,10 +76,10 @@ export class WorkflowDetailsComponent {
 
   getStepsCount(): string {
     let count = 0;
-    for(let step of this.workflow["flow"].steps) {
-      if(step["jobs"].skipped > 0 ||
-         step["jobs"].completed > 0 ||
-         step["jobs"].errors > 0) {
+    for(let step of this.workflow.flow.steps) {
+      if(step.jobs.skipped > 0 ||
+         step.jobs.completed > 0 ||
+         step.jobs.errors > 0) {
         count++;
       }
     }
@@ -68,7 +87,7 @@ export class WorkflowDetailsComponent {
   }
 
   getTotalSteps(): number {
-    return this.workflow["flow"].steps.length;
+    return this.workflow.flow.steps.length;
   }
 
   abort(workflow_id): void {
