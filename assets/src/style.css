@@ -19,3 +19,9 @@
   transform: scale(.6);
   margin-bottom: 5px;
 }
+
+.mat-checkbox,
+.mat-button,
+.mat-raised-button {
+  margin-left: 5px !important;
+}
