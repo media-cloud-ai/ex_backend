@@ -1,7 +1,6 @@
 
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
+import { Observable, Observer } from 'rxjs';
 import { Message } from '../models/message';
 import { AuthService } from '../authentication/auth.service';
 const { Socket } = require('phoenix');

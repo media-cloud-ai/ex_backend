@@ -2,11 +2,8 @@ import {Injectable, Component, OnDestroy} from '@angular/core';
 import {Router} from '@angular/router';
 import {HttpClient, HttpParams, HttpHeaders} from '@angular/common/http';
 import {CookieService} from 'ngx-cookie-service';
-import {Observable} from 'rxjs/Observable';
-import {of} from 'rxjs/observable/of';
+import {Observable, of, Subject, Subscription} from 'rxjs';
 import {catchError, map, tap} from 'rxjs/operators';
-import {Subject} from 'rxjs/Subject';
-import {Subscription} from 'rxjs/Subscription';
 import {Token} from '../models/token';
 import 'rxjs/add/operator/do';
 
