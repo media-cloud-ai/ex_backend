@@ -2,6 +2,7 @@ defmodule ExSubtilBackend.Amqp.JobHttpErrorConsumer do
   require Logger
 
   alias ExSubtilBackend.Jobs.Status
+  alias ExSubtilBackend.Workflows
 
   use ExSubtilBackend.Amqp.CommonConsumer, %{
     queue: "job_http_error",

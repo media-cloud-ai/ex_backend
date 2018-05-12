@@ -2,6 +2,7 @@ defmodule ExSubtilBackend.Amqp.JobFFmpegErrorConsumer do
   require Logger
 
   alias ExSubtilBackend.Jobs.Status
+  alias ExSubtilBackend.Workflows
 
   use ExSubtilBackend.Amqp.CommonConsumer, %{
     queue: "job_ffmpeg_error",
