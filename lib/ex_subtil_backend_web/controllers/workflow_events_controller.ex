@@ -20,6 +20,10 @@ defmodule ExSubtilBackendWeb.WorkflowEventsController do
         |> skip_remaining_steps(workflow)
 
         ExSubtilBackend.Workflow.Step.CleanWorkspace.launch(workflow)
+
+        topic = "update_workflow_" <> Integer.to_string(workflow.id)
+        ExSubtilBackendWeb.Endpoint.broadcast! "notifications:all", topic, %{body: %{workflow_id: workflow.id}}
+
         send_resp(conn, :ok, "")
       _ ->
         send_resp(conn, 422, "event is not supported")

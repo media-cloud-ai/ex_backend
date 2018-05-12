@@ -22,6 +22,9 @@ defmodule ExSubtilBackend.WorkflowStepManager do
 
     job = ExSubtilBackend.Jobs.get_job!(job_id)
 
+    topic = "update_workflow_" <> Integer.to_string(job.workflow_id)
+    ExSubtilBackendWeb.Endpoint.broadcast! "notifications:all", topic, %{body: %{workflow_id: job.workflow_id}}
+
     if ExSubtilBackend.Workflows.jobs_without_status?(job.workflow_id) == true do
       job = Repo.preload(job, :workflow)
       WorkflowStep.start_next_step(job.workflow)
