@@ -17,18 +17,22 @@
     <span class="duration">
       <duration-component [workflow]=workflow></duration-component>
     </span>
-    <span *ngIf=can_abort
+    <span class="steps-count">
+      <span class="label">Steps:</span>
+      <span class="count">{{getStepsCount()}} / {{getTotalSteps()}}</span>
+    </span>
+    <span
       class="abort">
       <button
         mat-raised-button
         color="warn"
+        [disabled]=!can_abort
         (click)="abort(workflow.id)"
         >
         <mat-icon>cancel</mat-icon>
         Abort
       </button>
     </span>
-    <span class="steps-count">Steps: {{getStepsCount()}} / {{getTotalSteps()}}</span>
   </div>
 
   <div
