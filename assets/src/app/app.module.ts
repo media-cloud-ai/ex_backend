@@ -42,8 +42,10 @@ import {
 } from '@angular/material/core';
 
 import {RouterModule, Routes}    from '@angular/router';
+import {CookieService}           from 'ngx-cookie-service';
 
 import {AppRoutingModule}        from './app-routing.module';
+import {SocketModule}            from './socket.module';
 
 import {ConfirmComponent}        from './confirm/confirm.component';
 import {DashboardComponent}      from './dashboard/dashboard.component';
@@ -97,6 +99,7 @@ import {QueuePipe}               from './pipes/queue.pipe';
 import {TextTypePipe}            from './pipes/text_type.pipe';
 
 import {TokenInterceptor}        from './authentication/token.interceptor';
+import {ErrorInterceptor}        from './authentication/error.interceptor';
 
 import 'hammerjs/hammer'; // for MatSlideToggleModule
 import * as moment from 'moment';
@@ -139,7 +142,8 @@ const SUBTIL_DATE_FORMATS = {
     MatSlideToggleModule,
     MatStepperModule,
     MatTableModule,
-    MatToolbarModule
+    MatToolbarModule,
+    SocketModule
   ],
   declarations: [
     AppComponent,
@@ -217,9 +221,15 @@ const SUBTIL_DATE_FORMATS = {
       useClass: TokenInterceptor,
       multi: true
     },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true
+    },
     AmqpService,
     AuthService,
     ContainerService,
+    CookieService,
     ImageService,
     JobService,
     NodeService,
