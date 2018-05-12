@@ -109,14 +109,17 @@ export class VideosComponent {
       this.dateRange,
       this.videoid)
     .subscribe(videoPage => {
-      this.videos = videoPage;
-      if(videoPage == undefined) {
-        this.length = undefined;
-      } else {
-        this.length = videoPage.total;
-      }
       this.loading = false;
       this.selectedVideos = [];
+
+      if(videoPage == undefined) {
+        this.videos = new VideoPage();
+        this.length = undefined;
+        return;
+      }
+
+      this.videos = videoPage;
+      this.length = videoPage.total;
     });
   }
 
