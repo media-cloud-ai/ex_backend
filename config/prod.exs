@@ -63,6 +63,8 @@ config :logger, level: :info
 config :ex_subtil_backend, ExSubtilBackendWeb.Endpoint,
   secret_key_base: "WzHyGzHsy0VflZcAynNf3xwUbUBzw3m7BkaiuiVpD0qofv0r8+BlXDJzadh+NTLN"
 
+config :logger, level: :debug
+
 # Configure your database
 config :ex_subtil_backend, ExSubtilBackend.Repo,
   adapter: Ecto.Adapters.Postgres,
