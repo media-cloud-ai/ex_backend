@@ -14,9 +14,11 @@ export class SocketService {
 
   public initSocket(): void {
     var token = this.authService.getToken();
+    console.log(token);
+
     this.socket = new Socket("/socket", {params: {userToken: token}});
-    this.socket.onError(() => this.authService.logout())
-    this.socket.onClose(() => this.authService.logout())
+    // this.socket.onError(() => this.authService.logout())
+    // this.socket.onClose(() => this.authService.logout())
 
     this.socket.connect();
     this.channel = this.socket.channel("notifications:all", {});
