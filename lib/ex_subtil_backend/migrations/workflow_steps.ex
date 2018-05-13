@@ -6,27 +6,29 @@ defmodule ExSubtilBackend.Migration.WorkflowSteps do
   def change do
     Repo.all(ExSubtilBackend.Workflows.Workflow)
     |> Enum.map(fn workflow ->
+      steps =
+        workflow
+        |> Map.get(:flow)
+        |> Map.get("steps")
+        |> process_steps(0, [])
 
-        steps =
-          workflow
-          |> Map.get(:flow)
-          |> Map.get("steps")
-          |> process_steps(0, [])
+      flow =
+        Map.get(workflow, :flow)
+        |> Map.put("steps", steps)
 
-        flow =
-          Map.get(workflow, :flow)
-          |> Map.put("steps", steps)
+      reference = Map.get(workflow, :reference)
 
-        reference = Map.get(workflow, :reference)
-
-        ExSubtilBackend.Workflows.Workflow.changeset(workflow, %{"reference" => reference, "flow" => flow})
-        |> Repo.update([{:force, true}])
+      ExSubtilBackend.Workflows.Workflow.changeset(workflow, %{
+        "reference" => reference,
+        "flow" => flow
+      })
+      |> Repo.update([{:force, true}])
     end)
   end
 
   def process_steps([], _index, result), do: result
-  def process_steps([step | steps], index, result) do
 
+  def process_steps([step | steps], index, result) do
     result = List.insert_at(result, -1, process_step(step, index, result))
 
     process_steps(steps, index + 1, result)
@@ -38,6 +40,7 @@ defmodule ExSubtilBackend.Migration.WorkflowSteps do
       step
     else
       step_name = Map.get(step, "id")
+
       step
       |> Map.put("name", step_name)
       |> Map.put("id", index)
@@ -64,7 +67,9 @@ defmodule ExSubtilBackend.Migration.WorkflowSteps do
       end
 
     processed_steps
-    |> Enum.filter(fn(step) -> Enum.any?(parent_names, fn(name) -> Map.get(step, "name") == name end) end)
-    |> Enum.map(fn(step) -> Map.get(step, "id") end)
+    |> Enum.filter(fn step ->
+      Enum.any?(parent_names, fn name -> Map.get(step, "name") == name end)
+    end)
+    |> Enum.map(fn step -> Map.get(step, "id") end)
   end
 end

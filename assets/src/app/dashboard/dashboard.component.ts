@@ -1,7 +1,7 @@
 
 import {Component} from '@angular/core';
 import {AuthService}    from '../authentication/auth.service';
-import {Subscription}   from 'rxjs/Subscription';
+import {Subscription}   from 'rxjs';
 
 @Component({
     selector: 'dashboard-component',

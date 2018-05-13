@@ -7,6 +7,7 @@ defmodule ExSubtilBackend.Workflows do
   alias ExSubtilBackend.Repo
 
   alias ExSubtilBackend.Workflows.Workflow
+  alias ExSubtilBackend.Jobs
 
   defp force_integer(param) when is_bitstring(param) do
     param
@@ -221,6 +222,15 @@ defmodule ExSubtilBackend.Workflows do
     workflow
     |> Workflow.changeset(attrs)
     |> Repo.update()
+  end
+
+  def notification_from_job(job_id) do
+    job = Jobs.get_job!(job_id)
+    topic = "update_workflow_" <> Integer.to_string(job.workflow_id)
+
+    ExSubtilBackendWeb.Endpoint.broadcast!("notifications:all", topic, %{
+      body: %{workflow_id: job.workflow_id}
+    })
   end
 
   @doc """

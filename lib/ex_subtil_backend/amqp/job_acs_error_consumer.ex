@@ -2,6 +2,7 @@ defmodule ExSubtilBackend.Amqp.JobAcsErrorConsumer do
   require Logger
 
   alias ExSubtilBackend.Jobs.Status
+  alias ExSubtilBackend.Workflows
 
   use ExSubtilBackend.Amqp.CommonConsumer, %{
     queue: "job_acs_error",
@@ -26,6 +27,7 @@ defmodule ExSubtilBackend.Amqp.JobAcsErrorConsumer do
 
   defp do_consume(channel, tag, job_id, description) do
     Status.set_job_status(job_id, "error", description)
+    Workflows.notification_from_job(job_id)
     Basic.ack(channel, tag)
   end
 

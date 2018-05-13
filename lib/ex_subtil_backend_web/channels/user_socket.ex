@@ -19,8 +19,16 @@ defmodule ExSubtilBackendWeb.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
-  def connect(_params, socket) do
-    {:ok, socket}
+  def connect(params, socket) do
+    token = Map.get(params, "userToken")
+
+    case Phauxth.Token.verify(ExSubtilBackendWeb.Endpoint, token, 4 * 60 * 60) do
+      {:ok, verified_user_id} ->
+        {:ok, assign(socket, :user_id, verified_user_id)}
+
+      _ ->
+        :error
+    end
   end
 
   # Socket id's are topics that allow you to identify all sockets for a given user:

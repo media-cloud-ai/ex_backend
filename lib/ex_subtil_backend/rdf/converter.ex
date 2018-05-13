@@ -21,21 +21,22 @@ defmodule ExSubtilBackend.Rdf.Converter do
     workflow =
       ExSubtilBackend.Workflows.list_workflows(%{video_id: video_id})
       |> Map.get(:data, [])
-      |> List.first
+      |> List.first()
 
     manifest =
       case workflow do
-        nil -> ""
+        nil ->
+          ""
+
         _ ->
           workflow
           |> Map.get(:artifacts, [])
-          |> List.first
+          |> List.first()
           |> Map.get(:resources, %{})
           |> Map.get("manifest")
       end
 
-    files =
-      ExVideoFactory.get_files_for_video_id(video_id)
+    files = ExVideoFactory.get_files_for_video_id(video_id)
 
     information =
       ExVideoFactory.videos(params)
@@ -47,7 +48,11 @@ defmodule ExSubtilBackend.Rdf.Converter do
       if manifest != "" do
         manifest =
           manifest
-          |> String.replace( "/421959/prod/innovation/", "http://videos-pmd.francetv.fr/innovation/")
+          |> String.replace(
+            "/421959/prod/innovation/",
+            "http://videos-pmd.francetv.fr/innovation/"
+          )
+
         information
         |> Map.put(:artefacts, %{manifest: manifest})
       else

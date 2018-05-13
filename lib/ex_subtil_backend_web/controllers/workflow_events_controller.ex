@@ -20,7 +20,15 @@ defmodule ExSubtilBackendWeb.WorkflowEventsController do
         |> skip_remaining_steps(workflow)
 
         ExSubtilBackend.Workflow.Step.CleanWorkspace.launch(workflow)
+
+        topic = "update_workflow_" <> Integer.to_string(workflow.id)
+
+        ExSubtilBackendWeb.Endpoint.broadcast!("notifications:all", topic, %{
+          body: %{workflow_id: workflow.id}
+        })
+
         send_resp(conn, :ok, "")
+
       _ ->
         send_resp(conn, 422, "event is not supported")
     end
@@ -30,7 +38,9 @@ defmodule ExSubtilBackendWeb.WorkflowEventsController do
 
   defp skip_remaining_steps([step | steps], workflow) do
     case Map.get(step, "name") do
-      "clean_workspace" -> nil
+      "clean_workspace" ->
+        nil
+
       _ ->
         case step.status do
           "queued" -> ExSubtilBackend.WorkflowStep.skip_step(workflow, step)

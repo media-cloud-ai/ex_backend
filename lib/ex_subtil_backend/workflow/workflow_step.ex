@@ -34,6 +34,12 @@ defmodule ExSubtilBackend.WorkflowStep do
 
         status = launch_step(workflow, step, step_index)
 
+        topic = "update_workflow_" <> Integer.to_string(workflow_id)
+
+        ExSubtilBackendWeb.Endpoint.broadcast!("notifications:all", topic, %{
+          body: %{workflow_id: workflow_id}
+        })
+
         case status do
           {:ok, "skipped"} -> start_next_step(workflow)
           _ -> status

@@ -23,6 +23,10 @@ defmodule ExSubtilBackendWeb.WorkflowController do
       {:ok, %Workflow{} = workflow} ->
         WorkflowStep.start_next_step(workflow)
 
+        ExSubtilBackendWeb.Endpoint.broadcast!("notifications:all", "new_workflow", %{
+          body: %{workflow_id: workflow.id}
+        })
+
         conn
         |> put_status(:created)
         |> render("show.json", workflow: workflow)
