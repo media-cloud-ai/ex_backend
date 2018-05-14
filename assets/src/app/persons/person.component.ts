@@ -21,6 +21,8 @@ export class PersonComponent {
   last_name: string;
   first_names: string[];
   birth_date: Moment;
+  birth_city: string;
+  birth_country: string;
   nationalities: any;
 
   error_message : string;
@@ -47,7 +49,9 @@ export class PersonComponent {
             this.person = response.data;
             this.last_name = this.person.last_name;
             this.first_names = this.person.first_names;
-            this.birth_date = moment(this.person.birthday_date);
+            this.birth_date = moment(this.person.birth_date);
+            this.birth_city = this.person.birth_city,
+            this.birth_country = this.person.birth_country,
             this.nationalities = this.person.nationalities;
           });
         } else {
@@ -66,7 +70,9 @@ export class PersonComponent {
     let person = {
       last_name: this.last_name,
       first_names: this.first_names,
-      birthday_date: this.birth_date,
+      birth_date: this.birth_date,
+      birth_city: this.birth_city,
+      birth_country: this.birth_country,
       nationalities: this.nationalities,
     }
 
@@ -87,7 +93,9 @@ export class PersonComponent {
     let person = {
       last_name: this.last_name,
       first_names: this.first_names,
-      birthday_date: this.birth_date,
+      birth_date: this.birth_date,
+      birth_city: this.birth_city,
+      birth_country: this.birth_country,
       nationalities: this.nationalities,
     }
 

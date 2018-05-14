@@ -23,9 +23,9 @@
         <div>
           <mat-form-field>
             <input matInput
-              [(ngModel)]="birth_date"
               [matDatepicker]="picker_birth_date"
               placeholder="Birth Date"
+              [(ngModel)]="birth_date"
               >
             <mat-datepicker-toggle matSuffix [for]="picker_birth_date"></mat-datepicker-toggle>
             <mat-datepicker #picker_birth_date></mat-datepicker>
@@ -36,7 +36,7 @@
             <input
               matInput
               placeholder="Birth City"
-              [(ngModel)]="birthday_city"
+              [(ngModel)]="birth_city"
               >
           </mat-form-field>
         </div>
@@ -45,7 +45,7 @@
             <input
               matInput
               placeholder="Birth Country"
-              [(ngModel)]="birthday_country"
+              [(ngModel)]="birth_country"
               >
           </mat-form-field>
         </div>
@@ -109,23 +109,23 @@
           </mat-form-field>
         </div>
         <div
-          *ngIf="birthday_city">
+          *ngIf="birth_city">
           <mat-form-field class="birth_city-input">
             <input
               matInput
               placeholder="Birth City"
-              [(ngModel)]="birthday_city"
+              [(ngModel)]="birth_city"
               disabled=true
               >
           </mat-form-field>
         </div>
         <div
-          *ngIf="birthday_country">
+          *ngIf="birth_country">
           <mat-form-field class="birth_country-input">
             <input
               matInput
               placeholder="Birth Country"
-              [(ngModel)]="birthday_country"
+              [(ngModel)]="birth_country"
               disabled=true
               >
           </mat-form-field>
