@@ -17,8 +17,7 @@
           </mat-form-field>
         </div>
         <div>
-          First names
-          <input-list-component [items]=first_names name="First name" (onChange)="first_names = $event"></input-list-component>
+          <input-list-component title="First names" [items]=first_names name="First name" (onChange)="first_names = $event"></input-list-component>
         </div>
         <div>
           <mat-form-field>
@@ -50,8 +49,7 @@
           </mat-form-field>
         </div>
         <div>
-          Nationalities
-          <input-list-component [items]=nationalities name="Nationality" (onChange)="nationalities = $event"></input-list-component>
+          <input-list-component title="Nationalities" [items]=nationalities name="Nationality" (onChange)="nationalities = $event"></input-list-component>
         </div>
         <div>
           <button mat-raised-button matStepperNext
