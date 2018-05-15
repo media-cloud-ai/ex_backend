@@ -22,7 +22,7 @@ export class PersonFormComponent {
   set person(person: Person) {
     if(person != undefined) {
       this._person = person;
-      console.log("set person:", person);
+      // console.log("set person:", person);
       this.links = Links.toLinksArray(this.person.links);
     }
   }
