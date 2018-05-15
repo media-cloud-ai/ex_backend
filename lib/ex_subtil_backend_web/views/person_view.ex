@@ -18,6 +18,7 @@ defmodule ExSubtilBackendWeb.PersonView do
       id: person.id,
       last_name: person.last_name,
       first_names: person.first_names,
+      gender: person.gender,
       birth_date: person.birth_date,
       birth_city: person.birth_city,
       birth_country: person.birth_country,

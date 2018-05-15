@@ -104,7 +104,7 @@ defmodule ExSubtilBackend.Application do
 
     Ecto.Migrator.up(
       ExSubtilBackend.Repo,
-      20_180_514_110_700,
+      20_180_514_190_000,
       ExSubtilBackend.Migration.UpdatePersons
     )
 
