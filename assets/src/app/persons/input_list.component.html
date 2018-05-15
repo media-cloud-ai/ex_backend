@@ -9,8 +9,8 @@
           type="text"
           placeholder="{{name}} {{i + 1}}"
           name="input_{{i}}"
-          (keyup)="update()"
           [(ngModel)]="items[i]"
+          (ngModelChange)="update()"
           >
         <mat-icon matSuffix 
           (click)="items.splice(i, 1)"

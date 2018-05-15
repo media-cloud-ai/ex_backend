@@ -2,175 +2,39 @@
   Person
 </h1>
 
-<mat-horizontal-stepper>
-  <mat-step label="Edition">
-    <div class="person">
-      <div class="form">
-        <div>
-          <mat-form-field class="name-input">
-            <input
-              matInput
-              type="text"
-              placeholder="Last Name"
-              [(ngModel)]="last_name"
-              >
-          </mat-form-field>
-        </div>
-        <div>
-          <input-list-component title="First names" [items]=first_names name="First name" (onChange)="first_names = $event"></input-list-component>
-        </div>
-        <div>
-          <mat-form-field>
-            <input matInput
-              [matDatepicker]="picker_birth_date"
-              placeholder="Birth Date"
-              [(ngModel)]="birth_date"
-              >
-            <mat-datepicker-toggle matSuffix [for]="picker_birth_date"></mat-datepicker-toggle>
-            <mat-datepicker #picker_birth_date></mat-datepicker>
-          </mat-form-field>
-        </div>
-        <div>
-          <mat-form-field class="birth_city-input">
-            <input
-              matInput
-              placeholder="Birth City"
-              [(ngModel)]="birth_city"
-              >
-          </mat-form-field>
-        </div>
-        <div>
-          <mat-form-field class="birth_country-input">
-            <input
-              matInput
-              placeholder="Birth Country"
-              [(ngModel)]="birth_country"
-              >
-          </mat-form-field>
-        </div>
-        <div>
-          <input-list-component title="Nationalities" [items]=nationalities name="Nationality" (onChange)="nationalities = $event"></input-list-component>
-        </div>
-        <div>
-          <button mat-raised-button matStepperNext
-            color="accent">
-            <i class="material-icons">chevron_right</i>
-            Next
-          </button>
-        </div>
-      </div>
+<div class="person">
+
+  <div *ngIf=!creation>
+    <person-form-component [person]=person (change)="updated = true"></person-form-component>
+    <div>
+      <button mat-raised-button
+        color="primary"
+        [disabled]=!updated
+        (click)="updatePerson()">
+        Update
+      </button>
+      <button mat-raised-button
+        (click)="cancel()">
+        Cancel
+      </button>
     </div>
-  </mat-step>
-  <mat-step label="Validation">
-    <div class="person">
-      <div class="form">
-        <div
-          *ngIf="last_name">
-          <mat-form-field class="name-input">
-            <input
-              matInput
-              type="text"
-              placeholder="Last Name"
-              [(ngModel)]="last_name"
-              disabled=true
-              >
-          </mat-form-field>
-        </div>
-        <div
-          *ngIf="first_names">
-          <mat-list>
-            <mat-list-item *ngFor="let item of first_names; let i = index" [attr.data-index]="i">
-              <mat-form-field>
-                <input
-                  matInput
-                  type="text"
-                  placeholder="First name {{i + 1}}"
-                  name="input_{{i}}"
-                  value={{item}}
-                  disabled=true
-                  >
-              </mat-form-field>
-            </mat-list-item>
-          </mat-list>
-        </div>
-        <div
-          *ngIf="birth_date">
-          <mat-form-field>
-            <input matInput
-              [(ngModel)]="birth_date"
-              [matDatepicker]="validate_picker_birth_date"
-              placeholder="Birth Date"
-              disabled=true
-              >
-            <mat-datepicker-toggle matSuffix [for]="validate_picker_birth_date"></mat-datepicker-toggle>
-            <mat-datepicker #validate_picker_birth_date></mat-datepicker>
-          </mat-form-field>
-        </div>
-        <div
-          *ngIf="birth_city">
-          <mat-form-field class="birth_city-input">
-            <input
-              matInput
-              placeholder="Birth City"
-              [(ngModel)]="birth_city"
-              disabled=true
-              >
-          </mat-form-field>
-        </div>
-        <div
-          *ngIf="birth_country">
-          <mat-form-field class="birth_country-input">
-            <input
-              matInput
-              placeholder="Birth Country"
-              [(ngModel)]="birth_country"
-              disabled=true
-              >
-          </mat-form-field>
-        </div>
-        <div
-          *ngIf="nationalities">
-          <mat-list>
-            <mat-list-item *ngFor="let item of nationalities; let i = index" [attr.data-index]="i">
-              <mat-form-field>
-                <input
-                  matInput
-                  type="text"
-                  placeholder="Nationality {{i + 1}}"
-                  name="input_{{i}}"
-                  value={{item}}
-                  disabled=true
-                  >
-              </mat-form-field>
-            </mat-list-item>
-          </mat-list>
-        </div>
-        <div>
-          <button mat-raised-button matStepperPrevious
-            color="primary">
-            <i class="material-icons">chevron_left</i>
-            Back
-          </button>
-          <button mat-raised-button
-            color="accent"
-            (click)="createPerson()"
-            *ngIf="!edition">
-              <i class="material-icons">add</i> Create
-          </button>
-          <button mat-raised-button
-            color="accent"
-            (click)="updatePerson()"
-            *ngIf="edition">
-              <i class="material-icons">add</i> Update
-          </button>
-        </div>
-        <div>
-          <span class=message
-            *ngIf="error_message">
-            {{error_message}}
-          </span>
-        </div>
-      </div>
+  </div>
+
+  <div *ngIf="creation">
+    <person-form-component (change)="person = $event"></person-form-component>
+    <div>
+      <button mat-raised-button
+        (click)="createPerson()"
+        color="accent">
+        Add person
+      </button>
     </div>
-  </mat-step>
-</mat-horizontal-stepper>
+  </div>
+
+  <div>
+    <span class=message
+      *ngIf="error_message">
+      {{error_message}}
+    </span>
+  </div>
+</div>

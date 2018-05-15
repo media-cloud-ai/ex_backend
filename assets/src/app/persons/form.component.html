@@ -1,0 +1,46 @@
+<div *ngIf=person class="form">
+  <div>
+    <mat-form-field class="name-input">
+      <input matInput type="text" placeholder="Last Name" [(ngModel)]="person.last_name" (ngModelChange)="update()">
+    </mat-form-field>
+  </div>
+  <div>
+    <input-list-component title="First names" [items]=person.first_names name="First name" (onChange)="person.first_names = $event; update()"></input-list-component>
+  </div>
+
+  <div>
+    <mat-radio-group class="gender-radio-group" [(ngModel)]="person.gender" (ngModelChange)="update()">
+      <mat-radio-button class="gender-radio-button" *ngFor="let gender of genders" [value]="gender">{{ gender }}</mat-radio-button>
+    </mat-radio-group>
+  </div>
+
+  <div>
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker_birth_date" placeholder="Birth Date" [(ngModel)]="person.birth_date" (ngModelChange)="update()">
+      <mat-datepicker-toggle matSuffix [for]="picker_birth_date"></mat-datepicker-toggle>
+      <mat-datepicker #picker_birth_date></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="birth_city-input">
+      <input matInput placeholder="Birth City" [(ngModel)]="person.birth_city" (ngModelChange)="update()">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="birth_country-input">
+      <input matInput placeholder="Birth Country" [(ngModel)]="person.birth_country" (ngModelChange)="update()">
+    </mat-form-field>
+  </div>
+
+  <div>
+    <input-list-component title="Nationalities" [items]=person.nationalities name="Nationality" (onChange)="person.nationalities = $event; update()"></input-list-component>
+  </div>
+
+  <div class="links">
+    <div class="link" *ngFor="let link of links">
+      <mat-form-field class="name-input">
+        <input matInput type="url" placeholder={{link.label}} [(ngModel)]=link.url (ngModelChange)="update()" url>
+      </mat-form-field>
+    </div>
+  </div>
+</div>
