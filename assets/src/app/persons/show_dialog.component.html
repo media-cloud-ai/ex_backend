@@ -20,7 +20,7 @@
   </div>
   <div>
     <span class="label">Birth date</span>
-    <span class="value">{{ person.birth_date }}</span>
+    <span class="value">{{ person.birth_date | date: 'd LLL yyyy'}}</span>
   </div>
   <div *ngIf="person.birth_city">
     <span class="label">Birth city</span>
