@@ -108,7 +108,10 @@
   <div class="links">
     <div class="link" *ngFor="let link of links">
       <mat-form-field class="name-input">
-        <input matInput type="url" placeholder={{link.label}} [(ngModel)]=link.url (ngModelChange)="update()" url>
+        <input matInput type="url" placeholder={{link.label}} [(ngModel)]=link.url (ngModelChange)="update()">
+        <a matSuffix *ngIf="link.url" target="_blank" href="{{link.url}}" class=link_button>
+          <i class="material-icons" title="Access link">language</i>
+        </a>
       </mat-form-field>
     </div>
   </div>
