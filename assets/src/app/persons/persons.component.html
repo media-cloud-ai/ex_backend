@@ -41,10 +41,15 @@
       {{person.birth_date | date: 'd LLL yyyy'}}
     </span>
     <span class="actions">
-     <button mat-raised-button
+      <button mat-raised-button
         color="primary"
         (click)="showPerson(person.id)">
-          <i class="material-icons">visibility</i> View & Edit
+        <i class="material-icons">visibility</i> View
+      </button>
+      <button mat-raised-button
+        color="primary"
+        (click)="editPerson(person.id)">
+        <i class="material-icons">edit</i> Edit
       </button>
       <button mat-raised-button
         color="warn"

@@ -71,6 +71,7 @@ import {WorkflowsComponent}      from './workflows/workflows.component';
 import {WorkersComponent}        from './workers/workers.component';
 
 import {JobDetailsDialogComponent}    from './jobs/details/job_details_dialog.component';
+import {PersonShowDialogComponent} from './persons/show_dialog.component';
 import {RdfDialogComponent}      from './videos/rdf/rdf_dialog.component';
 import {WorkflowAbortDialogComponent} from './workflows/dialogs/workflow_abort_dialog.component';
 import {WorkflowDialogComponent} from './videos/workflow/workflow_dialog.component';
@@ -163,6 +164,7 @@ const SUBTIL_DATE_FORMATS = {
     PersonComponent,
     PersonFormComponent,
     PersonLinkImportComponent,
+    PersonShowDialogComponent,
     PersonsComponent,
     QueuesComponent,
     RightsComponent,
@@ -198,6 +200,7 @@ const SUBTIL_DATE_FORMATS = {
     ParametersComponent,
     PersonFormComponent,
     PersonLinkImportComponent,
+    PersonShowDialogComponent,
     RdfDialogComponent,
     RightsComponent,
     StepProgressBarComponent,
