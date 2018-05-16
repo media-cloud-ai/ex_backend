@@ -1,0 +1,19 @@
+<h4>Import from link</h4>
+
+<div class="link-import">
+  <div class="links">
+    <div class="link" *ngFor="let link of links">
+      <mat-form-field class="name-input">
+        <input matInput type="url" placeholder={{link.label}} [(ngModel)]=link.url (ngModelChange)="checkUrl(link.label, link.url)">
+      </mat-form-field>
+    </div>
+
+    <div>
+      <span class="error-message"
+        *ngIf="error_message">
+        {{error_message}}
+      </span>
+    </div>
+
+  </div>
+</div>
