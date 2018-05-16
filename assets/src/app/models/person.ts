@@ -52,3 +52,10 @@ export class Person {
   nationalities: any;
   links: Links;
 }
+
+export class IMDbPeople {
+  name: string;
+  birth_date: string;
+  birth_location: string;
+  picture_url: string;
+}

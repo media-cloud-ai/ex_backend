@@ -3,8 +3,7 @@
 </h1>
 
 <div class="person">
-
-  <div *ngIf=!creation>
+  <div *ngIf=!creation class="step-content">
     <person-form-component [person]=person (change)="updated = true"></person-form-component>
     <div>
       <button mat-raised-button
@@ -21,14 +20,51 @@
   </div>
 
   <div *ngIf="creation">
-    <person-form-component (change)="person = $event"></person-form-component>
-    <div>
-      <button mat-raised-button
-        (click)="createPerson()"
-        color="accent">
-        Add person
-      </button>
-    </div>
+    <mat-horizontal-stepper>
+      <mat-step>
+        <div class="step-content">
+          <link-import-component (onUrlSet)="setPeopleInfoLink($event)"></link-import-component>
+          <div>
+            <button mat-raised-button
+              *ngIf="peopleInfoLink && peopleInfoLink.url.length > 0"
+              matStepperNext
+              color="accent"
+              (click)="getPeopleInfo()"
+              >Next
+              <i class="material-icons">navigate_next</i>
+            </button>
+            <button mat-raised-button
+              *ngIf="!peopleInfoLink || peopleInfoLink.url.length == 0"
+              matStepperNext
+              color="primary"
+              >Skip
+              <i class="material-icons">navigate_next</i>
+            </button>
+          </div>
+        </div>
+      </mat-step>
+      <mat-step>
+        <div class="step-content">
+          <mat-spinner *ngIf=gettingPeopleInfo class="spinner" [color]="accent"></mat-spinner>
+          <div *ngIf=!gettingPeopleInfo>
+            <person-form-component [person]=person (change)="setPerson($event)"></person-form-component>
+            <div>
+              <button mat-raised-button
+                matStepperPrevious>
+                <i class="material-icons">navigate_before</i>
+                Back
+              </button>
+              <button mat-raised-button
+                (click)="createPerson()"
+                color="accent"
+                [disabled]=!filled>
+                + Add person
+              </button>
+            </div>
+          </div>
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper>
   </div>
 
   <div>
@@ -37,4 +73,5 @@
       {{error_message}}
     </span>
   </div>
+
 </div>

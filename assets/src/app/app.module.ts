@@ -19,6 +19,7 @@ import {
   MatListModule,
   MatMenuModule,
   MatPaginatorModule,
+  MatProgressSpinnerModule,
   MatRadioModule,
   MatSelectModule,
   MatSidenavModule,
@@ -79,6 +80,7 @@ import {AuthService}             from './authentication/auth.service';
 import {AmqpService}             from './services/amqp.service';
 import {ContainerService}        from './services/container.service';
 import {ImageService}            from './services/image.service';
+import {IMDbService}            from './services/imdb.service';
 import {JobService}              from './services/job.service';
 import {NodeService}             from './services/node.service';
 import {PersonService}           from './services/person.service';
@@ -140,6 +142,7 @@ const SUBTIL_DATE_FORMATS = {
     MatMenuModule,
     MatMomentDateModule,
     MatPaginatorModule,
+    MatProgressSpinnerModule,
     MatRadioModule,
     MatSelectModule,
     MatSidenavModule,
@@ -239,6 +242,7 @@ const SUBTIL_DATE_FORMATS = {
     ContainerService,
     CookieService,
     ImageService,
+    IMDbService,
     JobService,
     NodeService,
     PersonService,
