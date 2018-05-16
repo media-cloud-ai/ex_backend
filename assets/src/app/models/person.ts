@@ -44,13 +44,18 @@ export class Links {
 export class Person {
   id: number;
   last_name: string;
-  first_names: any;
+  first_names: string[];
   gender: string;
   birth_date: string;
   birth_city: string;
   birth_country: string;
-  nationalities: any;
+  nationalities: string[];
   links: Links;
+
+  constructor() {
+    this.first_names = new Array<string>("");
+    this.nationalities = new Array<string>();
+  }
 }
 
 export class IMDbPeople {

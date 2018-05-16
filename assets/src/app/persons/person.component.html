@@ -7,14 +7,14 @@
     <person-form-component [person]=person (change)="updated = true"></person-form-component>
     <div>
       <button mat-raised-button
+        (click)="cancel()">
+        Cancel
+      </button>
+      <button mat-raised-button
         color="primary"
         [disabled]=!updated
         (click)="updatePerson()">
         Update
-      </button>
-      <button mat-raised-button
-        (click)="cancel()">
-        Cancel
       </button>
     </div>
   </div>
@@ -25,6 +25,10 @@
         <div class="step-content">
           <link-import-component (onUrlSet)="setPeopleInfoLink($event)"></link-import-component>
           <div>
+            <button mat-raised-button
+              (click)="cancel()">
+              Cancel
+            </button>
             <button mat-raised-button
               *ngIf="peopleInfoLink && peopleInfoLink.url.length > 0"
               matStepperNext

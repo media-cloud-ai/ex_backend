@@ -18,21 +18,6 @@ export class PersonFormComponent {
 
   private _person: Person;
 
-  @Input()
-  set person(person: Person) {
-    if(person != undefined) {
-      this._person = person;
-      // console.log("set person:", person);
-      this.links = Links.toLinksArray(this.person.links);
-    }
-  }
-
-  get person(): Person {
-    return this._person;
-  }
-
-  @Output() change = new EventEmitter<Person>();
-
   links: Link[] = [
     { label: LinkLabels.imdb, url: "" },
     { label: LinkLabels.linkedin, url: "" },
@@ -45,6 +30,21 @@ export class PersonFormComponent {
     "Undefined"
   ];
 
+  @Input()
+  set person(person: Person) {
+    if(person != undefined && person.last_name) {
+      this._person = person;
+      // console.log("set person:", person);
+      this.links = Links.toLinksArray(this.person.links);
+    }
+  }
+
+  get person(): Person {
+    return this._person;
+  }
+
+  @Output() change = new EventEmitter<Person>();
+
   ngOnInit() {
     if(this._person == undefined) {
       this._person = new Person();
@@ -52,8 +52,11 @@ export class PersonFormComponent {
   }
 
   update(): void {
-    this._person.links = new Links(this.links);
-    this.change.emit(this._person);
+    if(this._person.last_name && this._person.first_names && this._person.gender && this._person.birth_date) {
+      console.log("Update", this._person);
+      this._person.links = new Links(this.links);
+      this.change.emit(this._person);
+    }
   }
 
 }

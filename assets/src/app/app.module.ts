@@ -52,7 +52,6 @@ import {SocketModule}            from './socket.module';
 import {ConfirmComponent}        from './confirm/confirm.component';
 import {DashboardComponent}      from './dashboard/dashboard.component';
 import {DurationComponent}       from './workflows/details/duration.component';
-import {InputListComponent}      from './persons/input_list.component';
 import {JobsComponent}           from './jobs/jobs.component';
 import {LoginComponent}          from './login/login.component';
 import {ParametersComponent}     from './workflows/details/parameters.component';
@@ -157,7 +156,6 @@ const SUBTIL_DATE_FORMATS = {
     ConfirmComponent,
     DashboardComponent,
     DurationComponent,
-    InputListComponent,
     JobsComponent,
     JobDetailsDialogComponent,
     LoginComponent,
@@ -196,7 +194,6 @@ const SUBTIL_DATE_FORMATS = {
   ],
   entryComponents: [
     DurationComponent,
-    InputListComponent,
     JobDetailsDialogComponent,
     ParametersComponent,
     PersonFormComponent,
