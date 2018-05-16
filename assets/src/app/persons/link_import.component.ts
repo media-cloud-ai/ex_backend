@@ -5,9 +5,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 
 import {Link, LinkLabels} from '../models/person';
 
-import * as moment from 'moment';
-import {Moment} from 'moment';
-
 @Component({
   selector: 'link-import-component',
   templateUrl: 'link_import.component.html',
@@ -33,7 +30,7 @@ export class PersonLinkImportComponent {
       case LinkLabels.imdb:
         if(link_url.search(/https:\/\/www.imdb.com\/name\/nm[0-9]{7}\/.*/) >= 0) {
           this.link.url = link_url.replace("https://www.imdb.com/name/", "").split("/")[0];
-        } else if(link_url.search(/nm[0-9]{7}/) > 0) {
+        } else if(link_url.search(/nm[0-9]{7}/) >= 0) {
           this.link.url = link_url;
         }
         break;
