@@ -53,6 +53,7 @@ export class Person {
   links: Links;
 
   constructor() {
+    this.gender = "Undefined";
     this.first_names = new Array<string>("");
     this.nationalities = new Array<string>();
   }

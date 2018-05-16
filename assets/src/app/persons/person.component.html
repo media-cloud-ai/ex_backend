@@ -8,12 +8,14 @@
     <div>
       <button mat-raised-button
         (click)="cancel()">
+        <i class="material-icons">cancel</i>
         Cancel
       </button>
       <button mat-raised-button
         color="primary"
         [disabled]=!updated
         (click)="updatePerson()">
+        <i class="material-icons">done</i>
         Update
       </button>
     </div>
@@ -21,12 +23,18 @@
 
   <div *ngIf="creation">
     <mat-horizontal-stepper>
-      <mat-step>
+      <ng-template matStepperIcon="edit" let-index="index">
+        <div *ngIf="index>0">{{index + 1}}</div>
+        <mat-icon *ngIf="index==0">done</mat-icon>
+      </ng-template>
+
+      <mat-step label="Import from link">
         <div class="step-content">
           <link-import-component (onUrlSet)="setPeopleInfoLink($event)"></link-import-component>
           <div>
             <button mat-raised-button
               (click)="cancel()">
+              <i class="material-icons">cancel</i>
               Cancel
             </button>
             <button mat-raised-button
@@ -47,12 +55,17 @@
           </div>
         </div>
       </mat-step>
-      <mat-step>
+      <mat-step label="Complete information">
         <div class="step-content">
           <mat-spinner *ngIf=gettingPeopleInfo class="spinner" [color]="accent"></mat-spinner>
           <div *ngIf=!gettingPeopleInfo>
             <person-form-component [person]=person (change)="setPerson($event)"></person-form-component>
             <div>
+              <button mat-raised-button
+                (click)="cancel()">
+                <i class="material-icons">cancel</i>
+                Cancel
+              </button>
               <button mat-raised-button
                 matStepperPrevious>
                 <i class="material-icons">navigate_before</i>

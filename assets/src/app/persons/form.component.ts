@@ -59,4 +59,8 @@ export class PersonFormComponent {
     }
   }
 
+  track(index: any, item: any): any {
+    return index;
+  }
+
 }
