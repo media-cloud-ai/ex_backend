@@ -16,6 +16,7 @@ export class ParameterLabelPipe implements PipeTransform {
       { id: 'audio_track', name: 'Audio track' },
       { id: 'text_track', name: 'Text track' },
       { id: 'threads_number', name: 'Threads number' },
+      { id: 'keep_original', name: 'Keep original' },
     ];
 
     for (var i = allLabels.length - 1; i >= 0; i--) {

@@ -85,8 +85,8 @@ defmodule ExSubtilBackend.WorkflowStep do
     ExSubtilBackend.Workflow.Step.AudioEncode.launch(workflow)
   end
 
-  defp launch_step(workflow, %{"name" => "ttml_to_mp4"} = _step, _step_index) do
-    ExSubtilBackend.Workflow.Step.TtmlToMp4.launch(workflow)
+  defp launch_step(workflow, %{"name" => "ttml_to_mp4"} = step, _step_index) do
+    ExSubtilBackend.Workflow.Step.TtmlToMp4.launch(workflow, step)
   end
 
   defp launch_step(workflow, %{"name" => "audio_extraction"} = _step, _step_index) do

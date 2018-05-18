@@ -120,25 +120,48 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
   @doc """
   Returns the list of destination paths of this workflow step
   """
-  def get_jobs_destination_paths(_jobs, result \\ [])
-  def get_jobs_destination_paths([], result), do: result
+  def get_jobs_destination_paths(_jobs, step \\ %{}, result \\ [])
+  def get_jobs_destination_paths([], _step, result), do: result
 
-  def get_jobs_destination_paths([job | jobs], result) do
+  def get_jobs_destination_paths([job | jobs], step, result) do
     result =
       case job.name do
         @action_name ->
-          job.params
-          |> Map.get("destination", %{})
-          |> Map.get("paths")
-          |> case do
-            nil -> result
-            paths -> Enum.concat(paths, result)
+          paths =
+            job.params
+            |> Map.get("destination", %{})
+            |> Map.get("paths")
+            |> case do
+              nil -> result
+              paths -> Enum.concat(paths, result)
+            end
+
+          keep_original =
+            step
+            |> Map.get("parameters", [])
+            |> Enum.any?(fn param ->
+              Map.get(param, "id") == "keep_original" && Map.get(param, "value") == true
+            end)
+
+          if keep_original do
+            job.params
+            |> Map.get("inputs", [])
+            |> Enum.find(fn input ->
+              Map.get(input, "path", "")
+              |> String.ends_with?(".ttml")
+            end)
+            |> case do
+              nil -> paths
+              input -> List.insert_at(paths, -1, Map.get(input, "path"))
+            end
+          else
+            paths
           end
 
         _ ->
           result
       end
 
-    get_jobs_destination_paths(jobs, result)
+    get_jobs_destination_paths(jobs, step, result)
   end
 end

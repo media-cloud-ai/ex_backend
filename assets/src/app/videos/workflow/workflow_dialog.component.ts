@@ -72,12 +72,14 @@ export class WorkflowDialogComponent {
             type: "number",
             default: 8,
             value: 8
+          },
+          {
+            id: "keep_original",
+            type: "boolean",
+            default: false,
+            value: false
           }
         ]
-      // },{
-      //   id: "audio_encode",
-      //   enable: this.acs_enable,
-      //   parameters : []
       },{
         id: 6,
         parent_ids: [1, 5],
