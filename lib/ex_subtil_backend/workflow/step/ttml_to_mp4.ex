@@ -5,8 +5,8 @@ defmodule ExSubtilBackend.Workflow.Step.TtmlToMp4 do
 
   @action_name "ttml_to_mp4"
 
-  def launch(workflow, step) do
-    case get_ttml_files(workflow.jobs, step) do
+  def launch(workflow) do
+    case get_ttml_files(workflow.jobs, Map.get(workflow.flow, "steps", [])) do
       [] ->
         Jobs.create_skipped_job(workflow, @action_name)
 
@@ -48,8 +48,8 @@ defmodule ExSubtilBackend.Workflow.Step.TtmlToMp4 do
     start_process(paths, workflow)
   end
 
-  defp get_ttml_files(jobs, step) do
-    case ExSubtilBackend.Workflow.Step.Acs.Synchronize.get_jobs_destination_paths(jobs, step) do
+  defp get_ttml_files(jobs, steps) do
+    case ExSubtilBackend.Workflow.Step.Acs.Synchronize.get_jobs_destination_paths(jobs, steps) do
       [] ->
         ExSubtilBackend.Workflow.Step.HttpDownload.get_jobs_destination_paths(jobs)
 

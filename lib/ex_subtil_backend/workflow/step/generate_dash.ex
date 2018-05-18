@@ -178,7 +178,7 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
       String.ends_with?(path, "-qaa.mp4") ->
         "qaa"
 
-      Regex.match?(~r/.*-[0-9]*\.mp4/, path) ->
+      Regex.match?(~r/.*-[0-9]*(_synchronized)?\.mp4/, path) ->
         "subtitle"
 
       Regex.match?(~r/.*-standard.\.mp4/, path) ->
