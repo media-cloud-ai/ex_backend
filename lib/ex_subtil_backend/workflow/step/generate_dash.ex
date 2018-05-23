@@ -112,7 +112,11 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
           {result, audio_index + 1}
 
         "subtitle" ->
-          result = List.insert_at(result, -1, path <> "#subtitle")
+          result = List.insert_at(result, -1, path <> "#subtitle:role=main")
+          {result, audio_index}
+
+        "synchro_subtitle" ->
+          result = List.insert_at(result, -1, path <> "#subtitle:role=synchronized")
           {result, audio_index}
 
         quality ->
@@ -178,8 +182,11 @@ defmodule ExSubtilBackend.Workflow.Step.GenerateDash do
       String.ends_with?(path, "-qaa.mp4") ->
         "qaa"
 
-      Regex.match?(~r/.*-[0-9]*(_synchronized)?\.mp4/, path) ->
+      Regex.match?(~r/.*-[0-9]*\.mp4/, path) ->
         "subtitle"
+
+      Regex.match?(~r/.*-[0-9]*_synchronized\.mp4/, path) ->
+        "synchro_subtitle"
 
       Regex.match?(~r/.*-standard.\.mp4/, path) ->
         String.trim_trailing(path, ".mp4")
