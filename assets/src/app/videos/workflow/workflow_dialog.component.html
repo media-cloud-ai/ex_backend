@@ -21,7 +21,10 @@
           ></mat-checkbox>
 
         <mat-icon>{{step.name | iconForJob}}</mat-icon>
-        {{step.name | jobType}}
+        <label [ngClass]="{'active': active_steps[step.name]}"
+          (click)="step.enable = !step.enable; updateEnabledSteps(step)">
+          {{step.name | jobType}}
+        </label>
 
         <mat-list dense>
           <mat-list-item
@@ -36,7 +39,10 @@
                 (change)=toNumber(parameter)>
             </mat-form-field>
             <div *ngIf="parameter.type == 'boolean'" class="parameter" [ngClass]="{disabled: !step.enable}">
-              {{parameter.id | parameterLabel}}:
+              <label [ngClass]="{'active': active_steps[step.name]}"
+                (click)="parameter.value = (step.enable)? !parameter.value : parameter.value">
+                {{parameter.id | parameterLabel}}
+              </label>
               <mat-checkbox class="small"
                 color="accent"
                 [disabled]=!step.enable
