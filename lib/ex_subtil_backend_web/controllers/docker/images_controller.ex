@@ -59,11 +59,12 @@ defmodule ExSubtilBackendWeb.Docker.ImagesController do
 
   defp build_images([image | images], environment, volumes, image_list) do
     environment =
-      if String.starts_with?(image.id, "ftvsubtil/acs_worker") do
-        Map.put(environment, AMQP_QUEUE, "acs")
+      if Enum.any?(image.repo_tags, fn(tag) -> String.starts_with?(tag, "ftvsubtil/acs_worker") end) do
+        Map.put(environment, :AMQP_QUEUE, "acs")
       else
         environment
       end
+
 
     configuration = %{
       id: image.id,
