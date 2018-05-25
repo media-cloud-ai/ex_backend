@@ -19,6 +19,7 @@ import {
   MatListModule,
   MatMenuModule,
   MatPaginatorModule,
+  MatRadioModule,
   MatSelectModule,
   MatSidenavModule,
   MatSlideToggleModule,
@@ -55,6 +56,7 @@ import {JobsComponent}           from './jobs/jobs.component';
 import {LoginComponent}          from './login/login.component';
 import {ParametersComponent}     from './workflows/details/parameters.component';
 import {PersonComponent}         from './persons/person.component';
+import {PersonFormComponent}     from './persons/form.component';
 import {PersonsComponent}        from './persons/persons.component';
 import {RightsComponent}         from './users/rights.component';
 import {QueuesComponent}         from './amqp/queues.component';
@@ -137,6 +139,7 @@ const SUBTIL_DATE_FORMATS = {
     MatMenuModule,
     MatMomentDateModule,
     MatPaginatorModule,
+    MatRadioModule,
     MatSelectModule,
     MatSidenavModule,
     MatSlideToggleModule,
@@ -156,6 +159,7 @@ const SUBTIL_DATE_FORMATS = {
     LoginComponent,
     ParametersComponent,
     PersonComponent,
+    PersonFormComponent,
     PersonsComponent,
     QueuesComponent,
     RightsComponent,
@@ -190,6 +194,7 @@ const SUBTIL_DATE_FORMATS = {
     InputListComponent,
     JobDetailsDialogComponent,
     ParametersComponent,
+    PersonFormComponent,
     RdfDialogComponent,
     RightsComponent,
     StepProgressBarComponent,

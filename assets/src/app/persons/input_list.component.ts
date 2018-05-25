@@ -8,6 +8,7 @@ import {Component, Input, Output, EventEmitter} from '@angular/core';
 })
 
 export class InputListComponent {
+  @Input() title: string;
   @Input() items: any;
   @Input() name: string;
 

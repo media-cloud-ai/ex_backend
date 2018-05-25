@@ -6,9 +6,10 @@ defmodule ExSubtilBackend.Persons.Person do
   schema "persons" do
     field(:last_name, :string)
     field(:first_names, {:array, :string})
-    field(:birthday_date, :date)
-    field(:birthday_city, :string, default: "")
-    field(:birthday_country, :string, default: "")
+    field(:gender, :string, default: "")
+    field(:birth_date, :date)
+    field(:birth_city, :string, default: "")
+    field(:birth_country, :string, default: "")
     field(:nationalities, {:array, :string}, default: [])
     field(:links, :map, defaut: %{})
 
@@ -21,12 +22,13 @@ defmodule ExSubtilBackend.Persons.Person do
     |> cast(attrs, [
       :last_name,
       :first_names,
-      :birthday_date,
-      :birthday_city,
-      :birthday_country,
+      :gender,
+      :birth_date,
+      :birth_city,
+      :birth_country,
       :nationalities,
       :links
     ])
-    |> validate_required([:last_name, :first_names, :birthday_date])
+    |> validate_required([:last_name, :first_names, :gender, :birth_date])
   end
 end

@@ -18,14 +18,10 @@ import {Moment} from 'moment';
 export class PersonComponent {
   person: Person;
 
-  last_name: string;
-  first_names: string[];
-  birth_date: Moment;
-  nationalities: any;
-
   error_message : string;
 
-  edition: boolean;
+  creation: boolean;
+  updated: boolean;
   sub = undefined;
 
   constructor(
@@ -39,20 +35,20 @@ export class PersonComponent {
       .queryParams
       .subscribe(params => {
         var person_id = +params['id'];
+
         if(person_id >= 0) {
-          this.edition = true;
-          console.log(person_id);
+          // console.log(person_id);
+          this.creation = false;
           this.personService.getPerson(person_id)
           .subscribe(response => {
             this.person = response.data;
-            this.last_name = this.person.last_name;
-            this.first_names = this.person.first_names;
-            this.birth_date = moment(this.person.birthday_date);
-            this.nationalities = this.person.nationalities;
           });
+
         } else {
-          this.edition = false;
+          this.creation = true;
         }
+
+        this.updated = false;
       });
   }
 
@@ -63,14 +59,7 @@ export class PersonComponent {
   createPerson(): void {
     this.error_message = "";
 
-    let person = {
-      last_name: this.last_name,
-      first_names: this.first_names,
-      birthday_date: this.birth_date,
-      nationalities: this.nationalities,
-    }
-
-    this.personService.createPerson(person)
+    this.personService.createPerson(this.person)
     .subscribe(response => {
       console.log(response)
       if(response == undefined) {
@@ -84,14 +73,7 @@ export class PersonComponent {
   updatePerson(): void {
     this.error_message = "";
 
-    let person = {
-      last_name: this.last_name,
-      first_names: this.first_names,
-      birthday_date: this.birth_date,
-      nationalities: this.nationalities,
-    }
-
-    this.personService.updatePerson(this.person.id, person)
+    this.personService.updatePerson(this.person.id, this.person)
     .subscribe(response => {
       console.log(response)
       if(response == undefined) {
@@ -100,5 +82,9 @@ export class PersonComponent {
         this.router.navigate(['/people']);
       }
     });
+  }
+
+  cancel(): void {
+    this.router.navigate(['/people']);
   }
 }
