@@ -3,7 +3,7 @@
     <mat-list dense>
       <mat-list-item
         *ngFor="let parameter of parameters">
-        <mat-form-field class="parameter">
+        <mat-form-field class="parameter" *ngIf="parameter.type != 'boolean'">
           <input matInput
             type={{parameter.type}}
             placeholder="{{parameter.id | parameterLabel}}"
@@ -11,6 +11,14 @@
             disabled="true"
             [(ngModel)]="parameter.value">
         </mat-form-field>
+        <div *ngIf="parameter.type == 'boolean'" class="parameter disabled">
+          {{parameter.id | parameterLabel}}:
+          <mat-checkbox class="small"
+            color="accent"
+            disabled="true"
+            [(ngModel)]=parameter.value
+            ></mat-checkbox>
+        </div>
       </mat-list-item>
     </mat-list>
   </div>

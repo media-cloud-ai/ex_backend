@@ -30,7 +30,9 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
 
     acs_app = System.get_env("ACS_APP") || Application.get_env(:ex_subtil_backend, :acs_app)
 
-    filename = Path.basename(subtitle_path)
+    filename =
+      Path.basename(subtitle_path)
+      |> String.replace(".ttml", "_synchronized.ttml")
 
     dst_path =
       work_dir <>
@@ -120,25 +122,52 @@ defmodule ExSubtilBackend.Workflow.Step.Acs.Synchronize do
   @doc """
   Returns the list of destination paths of this workflow step
   """
-  def get_jobs_destination_paths(_jobs, result \\ [])
-  def get_jobs_destination_paths([], result), do: result
+  def get_jobs_destination_paths(_jobs, steps, result \\ [])
+  def get_jobs_destination_paths([], _steps, result), do: result
 
-  def get_jobs_destination_paths([job | jobs], result) do
+  def get_jobs_destination_paths([job | jobs], steps, result) do
     result =
       case job.name do
         @action_name ->
-          job.params
-          |> Map.get("destination", %{})
-          |> Map.get("paths")
-          |> case do
-            nil -> result
-            paths -> Enum.concat(paths, result)
+          paths =
+            job.params
+            |> Map.get("destination", %{})
+            |> Map.get("paths")
+            |> case do
+              nil -> result
+              paths -> Enum.concat(paths, result)
+            end
+
+          case Enum.find(steps, fn(step) -> Map.get(step, "name") == @action_name end) do
+            nil -> paths
+            step ->
+              keep_original =
+                step
+                |> Map.get("parameters", [])
+                |> Enum.any?(fn param ->
+                  Map.get(param, "id") == "keep_original" && Map.get(param, "value") == true
+                end)
+
+              if keep_original do
+                job.params
+                |> Map.get("inputs", [])
+                |> Enum.find(fn input ->
+                  Map.get(input, "path", "")
+                  |> String.ends_with?(".ttml")
+                end)
+                |> case do
+                  nil -> paths
+                  input -> List.insert_at(paths, -1, Map.get(input, "path"))
+                end
+              else
+                paths
+              end
           end
 
         _ ->
           result
       end
 
-    get_jobs_destination_paths(jobs, result)
+    get_jobs_destination_paths(jobs, steps, result)
   end
 end
