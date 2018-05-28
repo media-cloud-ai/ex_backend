@@ -2,10 +2,11 @@
 import {Component, ViewChild} from '@angular/core';
 import {PageEvent} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
+import {MatStepper} from '@angular/material/stepper';
 
 import {IMDbService} from '../services/imdb.service';
 import {PersonService} from '../services/person.service';
-import {Person, IMDbPeople, Link, Links, LinkLabels} from '../models/person';
+import {Person, IMDbPeople, LinkLabel, Links} from '../models/person';
 
 import * as moment from 'moment';
 import {Moment} from 'moment';
@@ -19,8 +20,6 @@ import {Moment} from 'moment';
 export class PersonComponent {
   person: Person;
 
-  peopleInfo: IMDbPeople;
-  peopleInfoLink: Link;
   gettingPeopleInfo: boolean = false;
 
   error_message : string;
@@ -45,10 +44,10 @@ export class PersonComponent {
         var person_id = +params['id'];
 
         if(person_id >= 0) {
-          // console.log(person_id);
           this.creation = false;
           this.personService.getPerson(person_id)
           .subscribe(response => {
+            console.log(response)
             this.person = response.data;
           });
 
@@ -65,40 +64,33 @@ export class PersonComponent {
     this.sub.unsubscribe();
   }
 
-  setPeopleInfoLink(link: Link): void {
-    this.peopleInfoLink = link;
+  addPeopleLink(stepper: MatStepper, links: Links): void {
+    this.person.links = links;
+    stepper.next();
+    this.getPeopleInfo();
   }
 
   getPeopleInfo(): void {
-
-    switch (this.peopleInfoLink.label) {
-      case LinkLabels.imdb:
-        this.gettingPeopleInfo = true;
-        this.imdbService.getPeople(this.peopleInfoLink.url)
-        .subscribe(response => {
-          this.peopleInfo = response;
-          if(this.peopleInfo == undefined) {
-            this.error_message = "Could not retrieve people information from " + LinkLabels.imdb
-          } else {
-            this.peopleInfoLink.url = "https://www.imdb.com/name/" + this.peopleInfoLink.url + "/"
-            this.prefillPersonForm();
-          }
-          this.gettingPeopleInfo = false;
-        });
-        break;
-
-      default:
-        this.error_message = "Unsupported link: " + this.peopleInfoLink.label;
-        break;
+    if(this.person.links.imdb) {
+      this.gettingPeopleInfo = true;
+      this.imdbService.getPeople(this.person.links.imdb)
+      .subscribe(response => {
+        if(response == undefined) {
+          this.error_message = "Could not retrieve people information from " + LinkLabel.imdb
+        } else {
+          this.prefillPersonForm(response);
+        }
+        this.gettingPeopleInfo = false;
+      });
     }
   }
 
-  private prefillPersonForm(): void {
-    if(this.peopleInfo == undefined) {
+  private prefillPersonForm(imdbPeople: IMDbPeople): void {
+    if(imdbPeople == undefined) {
       return;
     }
 
-    let name_elems = this.peopleInfo.name.split(" ");
+    let name_elems = imdbPeople.name.split(" ");
     this.person.first_names = new Array<string>();
 
     for(var i = 0; i < name_elems.length - 1; ++i) {
@@ -106,13 +98,11 @@ export class PersonComponent {
     }
     this.person.last_name = name_elems[name_elems.length - 1];
 
-    this.person.birth_date = moment(this.peopleInfo.birth_date).toISOString(true);
+    this.person.birth_date = moment(imdbPeople.birth_date).toISOString(true);
 
-    let birth_location_elems = this.peopleInfo.birth_location.split(", ");
+    let birth_location_elems = imdbPeople.birth_location.split(", ");
     this.person.birth_country = birth_location_elems[birth_location_elems.length - 1];
     this.person.birth_city = birth_location_elems.splice(0, birth_location_elems.length - 1).join(", ");
-
-    this.person.links = new Links([this.peopleInfoLink]);
   }
 
   setPerson(person: Person): void {
@@ -130,7 +120,6 @@ export class PersonComponent {
 
   createPerson(): void {
     this.error_message = "";
-
     this.personService.createPerson(this.person)
     .subscribe(response => {
       console.log(response)

@@ -11,6 +11,14 @@ export class IMDbService {
 
   constructor(private http: HttpClient) { }
 
+  search(query: string): Observable<any> {
+    return this.http.get<any>(this.imdbUrl + "/search/" + query)
+      .pipe(
+        tap(searchData => this.log('search IMDb people', searchData)),
+        catchError(this.handleError('seach', undefined))
+      );
+  }
+
   getPeople(imdb_id: string): Observable<IMDbPeople> {
     return this.http.get<IMDbPeople>(this.imdbUrl + "/" + imdb_id)
       .pipe(

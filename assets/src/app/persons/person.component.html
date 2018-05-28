@@ -22,23 +22,26 @@
   </div>
 
   <div *ngIf="creation">
-    <mat-horizontal-stepper>
+    <mat-horizontal-stepper [linear]=true #stepper>
       <ng-template matStepperIcon="edit" let-index="index">
-        <div *ngIf="index>0">{{index + 1}}</div>
-        <mat-icon *ngIf="index==0">done</mat-icon>
+        <mat-icon *ngIf="index > -1">done</mat-icon>
       </ng-template>
 
-      <mat-step label="Import from link">
+      <mat-step label="IMDb Profile">
         <div class="step-content">
-          <link-import-component (onUrlSet)="setPeopleInfoLink($event)"></link-import-component>
-          <div>
+          <link-import-component
+            type="imdb"
+            (onUrlSet)="addPeopleLink(stepper, $event)">
+          </link-import-component>
+          <div class=actions>
+            <span class=spanner></span>
             <button mat-raised-button
               (click)="cancel()">
               <i class="material-icons">cancel</i>
               Cancel
             </button>
             <button mat-raised-button
-              *ngIf="peopleInfoLink && peopleInfoLink.url.length > 0"
+              *ngIf="person.links.length > 0"
               matStepperNext
               color="accent"
               (click)="getPeopleInfo()"
@@ -46,7 +49,7 @@
               <i class="material-icons">navigate_next</i>
             </button>
             <button mat-raised-button
-              *ngIf="!peopleInfoLink || peopleInfoLink.url.length == 0"
+              *ngIf="person.links.length == 0"
               matStepperNext
               color="primary"
               >Skip
@@ -55,12 +58,87 @@
           </div>
         </div>
       </mat-step>
+      <!-- <mat-step label="LinkedIn Profile">
+        <div class="step-content" >
+          <link-import-component
+            type="linkedin"
+            (onUrlSet)="addPeopleLink(stepper, $event)">
+          </link-import-component>
+          <div class=actions>
+            <span class=spanner></span>
+            <button mat-raised-button
+              (click)="cancel()">
+              <i class="material-icons">cancel</i>
+              Cancel
+            </button>
+            <button mat-raised-button
+              matStepperPrevious>
+              <i class="material-icons">navigate_before</i>
+              Back
+            </button>
+            <button mat-raised-button
+              matStepperNext
+              color="accent"
+              >
+              <i class="material-icons">navigate_next</i>
+              Next
+            </button>
+            <button mat-raised-button
+              matStepperNext
+              color="primary"
+              >
+              <i class="material-icons">navigate_next</i>
+              Skip
+            </button>
+          </div>
+        </div>
+      </mat-step>
+      <mat-step label="Facebook Profile">
+        <div class="step-content">
+          <link-import-component
+            type="facebook"
+            (onUrlSet)="addPeopleLink(stepper, $event)">
+          </link-import-component>
+          <div class=actions>
+            <span class=spanner></span>
+            <button mat-raised-button
+              (click)="cancel()">
+              <i class="material-icons">cancel</i>
+              Cancel
+            </button>
+            <button mat-raised-button
+              matStepperPrevious>
+              <i class="material-icons">navigate_before</i>
+              Back
+            </button>
+            <button mat-raised-button
+              matStepperNext
+              color="accent"
+              >
+              <i class="material-icons">navigate_next</i>
+              Next
+            </button>
+            <button mat-raised-button
+              matStepperNext
+              color="primary"
+              >
+              <i class="material-icons">navigate_next</i>
+              Skip
+            </button>
+          </div>
+        </div>
+      </mat-step> -->
       <mat-step label="Complete information">
         <div class="step-content">
-          <mat-spinner *ngIf=gettingPeopleInfo class="spinner" [color]="accent"></mat-spinner>
+          <mat-spinner
+            *ngIf=gettingPeopleInfo
+            class="spinner"
+            [color]="accent">
+          </mat-spinner>
           <div *ngIf=!gettingPeopleInfo>
             <person-form-component [person]=person (change)="setPerson($event)"></person-form-component>
-            <div>
+            <div class=actions>
+              <span class=spanner></span>
               <button mat-raised-button
                 (click)="cancel()">
                 <i class="material-icons">cancel</i>
@@ -75,7 +153,8 @@
                 (click)="createPerson()"
                 color="accent"
                 [disabled]=!filled>
-                + Add person
+                <i class="material-icons">add</i>
+                Add person
               </button>
             </div>
           </div>
@@ -83,12 +162,4 @@
       </mat-step>
     </mat-horizontal-stepper>
   </div>
-
-  <div>
-    <span class=message
-      *ngIf="error_message">
-      {{error_message}}
-    </span>
-  </div>
-
 </div>

@@ -1,5 +1,5 @@
 <h1 mat-dialog-title *ngIf=person class="title">
-  <i class="material-icons">people</i>
+  <i class="material-icons">person</i>
   {{ first_names }} {{ person.last_name }}
 </h1>
 
@@ -7,48 +7,61 @@
   *ngIf=person
   class="show-person">
   <div>
-    <span class="label">Last name</span>
-    <span class="value">{{ person.last_name }}</span>
+    <label>Last name</label>
+    <span>{{ person.last_name }}</span>
   </div>
   <div>
-    <span class="label">First name(s)</span>
-    <span class="value">{{ first_names }}</span>
+    <label>First name(s)</label>
+    <span>{{ first_names }}</span>
   </div>
   <div>
-    <span class="label">Gender</span>
-    <span class="value">{{ person.gender }}</span>
+    <label>Gender</label>
+    <span>{{ person.gender }}</span>
   </div>
   <div>
-    <span class="label">Birth date</span>
-    <span class="value">{{ person.birth_date | date: 'd LLL yyyy'}}</span>
+    <label>Date of birth</label>
+    <span>{{ person.birth_date | date: 'd LLL yyyy'}}</span>
   </div>
   <div *ngIf="person.birth_city">
-    <span class="label">Birth city</span>
-    <span class="value">{{ person.birth_city }}</span>
+    <label>City of birth</label>
+    <span>{{ person.birth_city }}</span>
   </div>
   <div *ngIf="person.birth_country">
-    <span class="label">Birth country</span>
-    <span class="value">{{ person.birth_country }}</span>
+    <label>Country of birth</label>
+    <span>{{ person.birth_country }}</span>
   </div>
   <div *ngIf="nationalities">
-    <span class="label">Nationality</span>
-    <span class="value">{{ nationalities }}</span>
+    <label>Nationality</label>
+    <span>{{ nationalities }}</span>
   </div>
-  <div *ngIf="person.links.imdb">
-    <span class="label">IMDb</span>
-    <span class="value"><a href="{{ person.links.imdb }}">{{ person.links.imdb }}</a></span>
-  </div>
-  <div *ngIf="person.links.linkedin">
-    <span class="label">LinkedIn</span>
-    <span class="value"><a href="{{ person.links.linkedin }}">{{ person.links.linkedin }}</a></span>
-  </div>
-  <div *ngIf="person.links.facebook">
-    <span class="label">Facebook</span>
-    <span class="value"><a href="{{ person.links.facebook }}">{{ person.links.facebook }}</a></span>
+  <div class="icons">
+    <label>Links</label>
+    <a *ngIf="person.links.imdb"
+      target="_blank"
+      href="https://www.imdb.com/name/{{ person.links.imdb }}/">
+      <span class="icon imdb" >
+        <img src="/bundles/images/imdb.png" />
+      </span>
+    </a>
+    <a *ngIf="person.links.linkedin"
+      target="_blank"
+      href="{{ person.links.linkedin }}">
+      <span class="icon linkedin" >
+        <img src="/bundles/images/linkedin.jpg" />
+      </span>
+    </a>
+    <a *ngIf="person.links.facebook"
+      target="_blank"
+      href="{{ person.links.facebook }}">
+      <span class="icon facebook" >
+        <img src="/bundles/images/facebook.png" />
+      </span>
+    </a>
   </div>
 </div>
 
 <div mat-dialog-actions>
+  <span class="spacer"></span>
   <button mat-button (click)="onNoClick()">
     OK
   </button>

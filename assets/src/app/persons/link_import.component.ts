@@ -1,9 +1,10 @@
 
-import {Component, ViewChild, Output, EventEmitter} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {PageEvent} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
 
-import {Link, LinkLabels} from '../models/person';
+import {IMDbService} from '../services/imdb.service';
+import {LinkLabel, Links} from '../models/person';
 
 @Component({
   selector: 'link-import-component',
@@ -11,43 +12,43 @@ import {Link, LinkLabels} from '../models/person';
   styleUrls: ['./link_import.component.less'],
 })
 
-export class PersonLinkImportComponent {
+export class LinkImportComponent {
 
+  @Input() type: string;
+  loading: boolean = false; 
   error_message: string = "";
-  link: Link = new Link();
+  autocomplete: any;
+  selected: any;
+  label: LinkLabel;
 
-  @Output() onUrlSet = new EventEmitter<Link>();
+  @Output() onUrlSet = new EventEmitter<Links>();
 
-  links: Link[] = [
-    { label: LinkLabels.imdb, url: "" },
-  ];
+  constructor(
+    private imdbService: IMDbService,
+  ) {}
 
-  checkUrl(link_label: string, link_url: string): void {
-    this.error_message = "";
-    this.link.url = "";
-
-    switch(link_label) {
-      case LinkLabels.imdb:
-        if(link_url.search(/https:\/\/www.imdb.com\/name\/nm[0-9]{7}\/.*/) >= 0) {
-          this.link.url = link_url.replace("https://www.imdb.com/name/", "").split("/")[0];
-        } else if(link_url.search(/nm[0-9]{7}/) >= 0) {
-          this.link.url = link_url;
-        }
-        break;
-
-      default:
-        this.error_message = "Unsupported link label: " + link_label;
-        break;
+  ngOnInit() {
+    if(this.type == "imdb") {
+      this.label = LinkLabel.imdb;
     }
-
-    if(this.link.url == "") {
-      this.error_message = "Invalid URL";
-      return;
+    if(this.type == "linkedin") {
+      this.label = LinkLabel.linkedin;
     }
-
-    this.link.label = link_label;
-    // console.log("Link:", this.link);
-    this.onUrlSet.emit(this.link);
+    if(this.type == "facebook") {
+      this.label = LinkLabel.facebook;
+    }
   }
 
+  searchImdb(text: string): void {
+    this.imdbService.search(text)
+    .subscribe(response => {
+      this.autocomplete = response;
+    });
+  }
+
+  selectUser(user_id: string) {
+    let links = new Links;
+    links.imdb = user_id;
+    this.onUrlSet.emit(links);
+  }
 }

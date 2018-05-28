@@ -1,5 +1,70 @@
 @import '../colors';
 
-.error-message {
-  color: @red;
+.logo {
+  height: 50px;
+  overflow: hidden;
+  img {
+    height: 50px;
+  }
+}
+
+.logo.imdb img {
+  height: 100px;
+}
+
+.name-input {
+  width: 800px;
+}
+
+mat-option {
+  line-height: 25px;
+  height: 50px;
+
+  .poster {
+    display: inline-block;
+    width: 80px;
+    vertical-align: middle;
+
+    img{
+      height: 50px;
+    }
+  }
+
+  .description {
+    vertical-align: middle;
+    display: inline-block;
+    .title {
+      color: #666;
+      font-size: 0.8em;
+      line-height: 15px;
+    }
+  }
+}
+
+.spinner {
+  width: 80px;
+  margin: auto;
+}
+
+.selected {
+  .poster {
+    display: inline-block;
+    width: 200px;
+    vertical-align: middle;
+
+    img{
+      height: 150px;
+    }
+  }
+
+  .description {
+    vertical-align: middle;
+    display: inline-block;
+    .birth_date,
+    .birth_location {
+      color: #666;
+      font-size: 0.8em;
+      line-height: 15px;
+    }
+  }
 }

@@ -9,14 +9,6 @@
   </mat-form-field>
 
   <div class="list-input">
-    <div *ngIf="!person.first_names || person.first_names.length == 0" class="item-input">
-      <span class="add_button">
-        <button mat-button (click)="person.first_names.push('')">
-          <i class="material-icons">add</i>
-          Nationality
-        </button>
-      </span>
-    </div>
     <div *ngFor="let item of person.first_names; let i = index; trackBy: track" [attr.data-index]="i" class="item-input">
       <mat-form-field>
         <input matInput
@@ -27,19 +19,21 @@
           (ngModelChange)="update()"
           required
           >
-        <mat-icon *ngIf="i>0" matSuffix
+        <mat-icon *ngIf="person.first_names.length > 1" matSuffix
           (click)="person.first_names.splice(i, 1)"
           title="Remove first name"
           class="delete_button">
           delete
         </mat-icon>
-        <mat-icon *ngIf="i==(person.first_names.length - 1)" matSuffix
-          (click)="person.first_names.push('')"
-          title="Add a first name"
-          class="add_button">
-          add
-        </mat-icon>
       </mat-form-field>
+    </div>
+    <div class="item-input">
+      <span class="add_button">
+        <button mat-button (click)="person.first_names.push('')">
+          <i class="material-icons">add</i>
+          First name
+        </button>
+      </span>
     </div>
   </div>
 
@@ -64,22 +58,14 @@
   </mat-form-field>
 
   <mat-form-field class="birth_city-input">
-    <input matInput placeholder="Birth City" [(ngModel)]="person.birth_city" (ngModelChange)="update()">
+    <input matInput placeholder="City of birth" [(ngModel)]="person.birth_city" (ngModelChange)="update()">
   </mat-form-field>
 
   <mat-form-field class="birth_country-input">
-    <input matInput placeholder="Birth Country" [(ngModel)]="person.birth_country" (ngModelChange)="update()">
+    <input matInput placeholder="Country of birth" [(ngModel)]="person.birth_country" (ngModelChange)="update()">
   </mat-form-field>
 
   <div class="list-input">
-    <div *ngIf="!person.nationalities || person.nationalities.length == 0" class="item-input">
-      <span class="add_button">
-        <button mat-button (click)="person.nationalities.push('')">
-          <i class="material-icons">add</i>
-          Nationality
-        </button>
-      </span>
-    </div>
     <div *ngFor="let item of person.nationalities; let i = index; trackBy: track" [attr.data-index]="i" class="item-input">
       <mat-form-field>
         <input matInput
@@ -95,21 +81,40 @@
           class="delete_button">
           delete
         </mat-icon>
-        <mat-icon *ngIf="i==(person.nationalities.length - 1)" matSuffix
-          (click)="person.nationalities.push('')"
-          title="Add a nationality"
-          class="add_button">
-          add
-        </mat-icon>
       </mat-form-field>
+    </div>
+
+    <div class="item-input">
+      <span class="add_button">
+        <button mat-button (click)="person.nationalities.push('')">
+          <i class="material-icons">add</i>
+          Nationality
+        </button>
+      </span>
     </div>
   </div>
 
   <div class="links">
-    <div class="link" *ngFor="let link of links">
+    <div class="link">
       <mat-form-field class="name-input">
-        <input matInput type="url" placeholder={{link.label}} [(ngModel)]=link.url (ngModelChange)="update()">
-        <a matSuffix *ngIf="link.url" target="_blank" href="{{link.url}}" class=link_button>
+        <input matInput type="url" placeholder=IMDb [(ngModel)]=person.links.imdb (ngModelChange)="update()">
+        <a matSuffix *ngIf="person.links.imdb" target="_blank" href="https://www.imdb.com/name/{{person.links.imdb}}/" class=link_button>
+          <i class="material-icons" title="Access link">language</i>
+        </a>
+      </mat-form-field>
+    </div>
+    <div class="link">
+      <mat-form-field class="name-input">
+        <input matInput type="url" placeholder=LinkedIn [(ngModel)]=person.links.facebook (ngModelChange)="update()">
+        <a matSuffix *ngIf="person.links.facebook" target="_blank" href="{{person.links.facebook}}" class=link_button>
+          <i class="material-icons" title="Access link">language</i>
+        </a>
+      </mat-form-field>
+    </div>
+    <div class="link">
+      <mat-form-field class="name-input">
+        <input matInput type="url" placeholder=Facebook [(ngModel)]=person.links.facebook (ngModelChange)="update()">
+        <a matSuffix *ngIf="person.links.facebook" target="_blank" href="{{person.links.facebook}}" class=link_button>
           <i class="material-icons" title="Access link">language</i>
         </a>
       </mat-form-field>

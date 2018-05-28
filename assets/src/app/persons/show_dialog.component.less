@@ -17,13 +17,37 @@
     line-height: 26px;
     display: flex;
 
-    .label {
-      flex: 0.3;
+    label {
+      width: 120px;
       font-weight: bold;
     }
-    .value {
+    span {
       flex: 1;
     }
   }
 
+  .icons {
+    a {
+      margin-right: 10px;
+      outline: none;
+    }
+  }
+
+  span.icon {
+    display: inline-block;
+    overflow: hidden;
+    height: 25px;
+
+    img {
+      height: 25px;
+    }
+  }
+
+  span.icon.imdb img {
+    height: 50px;
+  }
+}
+
+.spacer {
+  flex: 1 1 auto;
 }

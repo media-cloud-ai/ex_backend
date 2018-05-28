@@ -7,8 +7,8 @@ import {Person} from '../models/person';
   templateUrl: 'show_dialog.component.html',
   styleUrls: ['./show_dialog.component.less'],
 })
-export class PersonShowDialogComponent {
 
+export class PersonShowDialogComponent {
   person: Person;
   first_names: string;
   nationalities: string;
@@ -26,5 +26,4 @@ export class PersonShowDialogComponent {
   onNoClick(): void {
     this.dialogRef.close();
   }
-
 }

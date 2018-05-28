@@ -9,6 +9,7 @@ import {FormsModule}      from '@angular/forms';
 import {BrowserModule}    from '@angular/platform-browser';
 import {AppComponent}     from './app.component';
 import {
+  MatAutocompleteModule,
   MatButtonModule,
   MatCardModule,
   MatCheckboxModule,
@@ -57,7 +58,7 @@ import {LoginComponent}          from './login/login.component';
 import {ParametersComponent}     from './workflows/details/parameters.component';
 import {PersonComponent}         from './persons/person.component';
 import {PersonFormComponent}     from './persons/form.component';
-import {PersonLinkImportComponent}    from './persons/link_import.component';
+import {LinkImportComponent}     from './persons/link_import.component';
 import {PersonsComponent}        from './persons/persons.component';
 import {RightsComponent}         from './users/rights.component';
 import {QueuesComponent}         from './amqp/queues.component';
@@ -131,6 +132,7 @@ const SUBTIL_DATE_FORMATS = {
     BrowserModule,
     FormsModule,
     HttpClientModule,
+    MatAutocompleteModule,
     MatButtonModule,
     MatCardModule,
     MatCheckboxModule,
@@ -159,11 +161,11 @@ const SUBTIL_DATE_FORMATS = {
     DurationComponent,
     JobsComponent,
     JobDetailsDialogComponent,
+    LinkImportComponent,
     LoginComponent,
     ParametersComponent,
     PersonComponent,
     PersonFormComponent,
-    PersonLinkImportComponent,
     PersonShowDialogComponent,
     PersonsComponent,
     QueuesComponent,
@@ -197,9 +199,9 @@ const SUBTIL_DATE_FORMATS = {
   entryComponents: [
     DurationComponent,
     JobDetailsDialogComponent,
+    LinkImportComponent,
     ParametersComponent,
     PersonFormComponent,
-    PersonLinkImportComponent,
     PersonShowDialogComponent,
     RdfDialogComponent,
     RightsComponent,

@@ -51,6 +51,7 @@ defmodule ExSubtilBackendWeb.Router do
     end
 
     resources("/persons", PersonController, except: [:new, :edit])
+    get("/imdb/search/:query", ImdbController, :index)
     get("/imdb/:id", ImdbController, :show)
   end
 
