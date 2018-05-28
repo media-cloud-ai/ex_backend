@@ -9,6 +9,7 @@ import {FormsModule}      from '@angular/forms';
 import {BrowserModule}    from '@angular/platform-browser';
 import {AppComponent}     from './app.component';
 import {
+  MatAutocompleteModule,
   MatButtonModule,
   MatCardModule,
   MatCheckboxModule,
@@ -19,6 +20,8 @@ import {
   MatListModule,
   MatMenuModule,
   MatPaginatorModule,
+  MatProgressSpinnerModule,
+  MatRadioModule,
   MatSelectModule,
   MatSidenavModule,
   MatSlideToggleModule,
@@ -50,11 +53,12 @@ import {SocketModule}            from './socket.module';
 import {ConfirmComponent}        from './confirm/confirm.component';
 import {DashboardComponent}      from './dashboard/dashboard.component';
 import {DurationComponent}       from './workflows/details/duration.component';
-import {InputListComponent}      from './persons/input_list.component';
 import {JobsComponent}           from './jobs/jobs.component';
 import {LoginComponent}          from './login/login.component';
 import {ParametersComponent}     from './workflows/details/parameters.component';
 import {PersonComponent}         from './persons/person.component';
+import {PersonFormComponent}     from './persons/form.component';
+import {LinkImportComponent}     from './persons/link_import.component';
 import {PersonsComponent}        from './persons/persons.component';
 import {RightsComponent}         from './users/rights.component';
 import {QueuesComponent}         from './amqp/queues.component';
@@ -68,6 +72,7 @@ import {WorkflowsComponent}      from './workflows/workflows.component';
 import {WorkersComponent}        from './workers/workers.component';
 
 import {JobDetailsDialogComponent}    from './jobs/details/job_details_dialog.component';
+import {PersonShowDialogComponent} from './persons/show_dialog.component';
 import {RdfDialogComponent}      from './videos/rdf/rdf_dialog.component';
 import {WorkflowAbortDialogComponent} from './workflows/dialogs/workflow_abort_dialog.component';
 import {WorkflowDialogComponent} from './videos/workflow/workflow_dialog.component';
@@ -76,6 +81,7 @@ import {AuthService}             from './authentication/auth.service';
 import {AmqpService}             from './services/amqp.service';
 import {ContainerService}        from './services/container.service';
 import {ImageService}            from './services/image.service';
+import {IMDbService}            from './services/imdb.service';
 import {JobService}              from './services/job.service';
 import {NodeService}             from './services/node.service';
 import {PersonService}           from './services/person.service';
@@ -126,6 +132,7 @@ const SUBTIL_DATE_FORMATS = {
     BrowserModule,
     FormsModule,
     HttpClientModule,
+    MatAutocompleteModule,
     MatButtonModule,
     MatCardModule,
     MatCheckboxModule,
@@ -137,6 +144,8 @@ const SUBTIL_DATE_FORMATS = {
     MatMenuModule,
     MatMomentDateModule,
     MatPaginatorModule,
+    MatProgressSpinnerModule,
+    MatRadioModule,
     MatSelectModule,
     MatSidenavModule,
     MatSlideToggleModule,
@@ -150,12 +159,14 @@ const SUBTIL_DATE_FORMATS = {
     ConfirmComponent,
     DashboardComponent,
     DurationComponent,
-    InputListComponent,
     JobsComponent,
     JobDetailsDialogComponent,
+    LinkImportComponent,
     LoginComponent,
     ParametersComponent,
     PersonComponent,
+    PersonFormComponent,
+    PersonShowDialogComponent,
     PersonsComponent,
     QueuesComponent,
     RightsComponent,
@@ -187,9 +198,11 @@ const SUBTIL_DATE_FORMATS = {
   ],
   entryComponents: [
     DurationComponent,
-    InputListComponent,
     JobDetailsDialogComponent,
+    LinkImportComponent,
     ParametersComponent,
+    PersonFormComponent,
+    PersonShowDialogComponent,
     RdfDialogComponent,
     RightsComponent,
     StepProgressBarComponent,
@@ -231,6 +244,7 @@ const SUBTIL_DATE_FORMATS = {
     ContainerService,
     CookieService,
     ImageService,
+    IMDbService,
     JobService,
     NodeService,
     PersonService,

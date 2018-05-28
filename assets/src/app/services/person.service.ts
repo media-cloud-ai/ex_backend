@@ -42,6 +42,7 @@ export class PersonService {
     let params = {
       person: person
     };
+    console.log(params);
     return this.http.post<Person>(this.personsUrl, params)
       .pipe(
         tap(personPage => this.log('create Person')),

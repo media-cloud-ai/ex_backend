@@ -1,0 +1,67 @@
+@import '../colors';
+
+.form {
+
+  .mat-form-field {
+    display: block;
+  }
+
+  .list-input {
+    font-size: 12px;
+    display: block;
+    width: 100%;
+
+    .item-input {
+      display: flex;
+
+      .mat-form-field {
+        flex: 1;
+      }
+    }
+
+    .delete_button {
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .delete_button:hover {
+      color: @red;
+    }
+
+    .add_button {
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .add_button:hover {
+      color: @green;
+    }
+  }
+
+  .gender-label {
+    color: @grey;
+  }
+
+  .gender-radio-button {
+    padding: 10px;
+  }
+
+  .links {
+    padding: 10px 0px;
+
+    .link_button {
+      cursor: pointer;
+      text-decoration: none;
+      color: @black;
+
+      i {
+        font-size: 18px;
+      }
+    }
+
+    .link_button:hover {
+      color: @blue;
+    }
+  }
+
+}

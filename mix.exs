@@ -48,6 +48,7 @@ defmodule ExSubtilBackend.Mixfile do
       {:bamboo, github: "media-io/bamboo"},
       {:cowboy, "~> 1.1.2"},
       {:distillery, "~> 1.5"},
+      {:ex_imdb_sniffer, git: "https://github.com/FTV-Subtil/ex_imdb_sniffer.git", branch: "master"},
       {:ex_video_factory, "0.3.5"},
       {:gettext, "~> 0.14"},
       {:httpotion, "~> 3.1.0"},

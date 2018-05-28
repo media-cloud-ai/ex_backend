@@ -33,18 +33,21 @@
       {{person.last_name}}
     </span>
     <span class="first_name">
-      <!-- <span *ngFor="let name in person.first_names"> -->
-        {{person.first_names}}
-      <!-- </span> -->
+      {{person.first_names}}
     </span>
     <span class="birth_date">
-      {{person.birthday_date | date: 'd LLL yyyy'}}
+      {{person.birth_date | date: 'd LLL yyyy'}}
     </span>
     <span class="actions">
-     <button mat-raised-button
+      <button mat-raised-button
         color="primary"
         (click)="showPerson(person.id)">
-          <i class="material-icons">visibility</i> Edit
+        <i class="material-icons">visibility</i> View
+      </button>
+      <button mat-raised-button
+        color="primary"
+        (click)="editPerson(person.id)">
+        <i class="material-icons">edit</i> Edit
       </button>
       <button mat-raised-button
         color="warn"
