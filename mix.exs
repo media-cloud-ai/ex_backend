@@ -48,7 +48,7 @@ defmodule ExSubtilBackend.Mixfile do
       {:amqp, "~> 1.0"},
       {:bcrypt_elixir, "~> 1.0"},
       {:bamboo, github: "media-io/bamboo"},
-      # {:cowboy, "~> 2.0.0"},
+      {:cowboy, "~> 1.1.2"},
       {:distillery, "~> 1.5"},
       {:ex_imdb_sniffer, git: "https://github.com/FTV-Subtil/ex_imdb_sniffer.git", branch: "master"},
       {:ex_video_factory, "0.3.5"},
@@ -62,6 +62,7 @@ defmodule ExSubtilBackend.Mixfile do
       {:phauxth, "~> 1.0"},
       {:postgrex, ">= 0.0.0"},
       {:poison, "~> 3.1"},
+      {:ranch, "~> 1.5", override: true},
       {:remote_dockers, "1.3.0"},
       {:timex, "~> 3.2"}
     ]
