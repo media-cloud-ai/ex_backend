@@ -29,7 +29,9 @@ defmodule ExSubtilBackend.Mixfile do
         :phauxth,
         :poison,
         :runtime_tools,
-        :timex
+        :timex,
+        :elixir_make,
+        :parse_trans,
       ]
     ]
   end
@@ -43,10 +45,10 @@ defmodule ExSubtilBackend.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:amqp, "~> 0.3.1"},
+      {:amqp, "~> 1.0"},
       {:bcrypt_elixir, "~> 1.0"},
       {:bamboo, github: "media-io/bamboo"},
-      {:cowboy, "~> 1.1.2"},
+      # {:cowboy, "~> 2.0.0"},
       {:distillery, "~> 1.5"},
       {:ex_imdb_sniffer, git: "https://github.com/FTV-Subtil/ex_imdb_sniffer.git", branch: "master"},
       {:ex_video_factory, "0.3.5"},
