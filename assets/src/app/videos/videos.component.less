@@ -1,5 +1,20 @@
 @import '../colors';
 
+.loading {
+  text-align: center;
+  padding-top: 20px;
+
+  span {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  span.text {
+    font-size: 2em;
+    font-weight: bold;
+    padding-left: 15px;
+  }
+}
+
 ul.videos.loading {
   display: none;
 }
@@ -7,6 +22,12 @@ ul.videos.loading {
 ul.videos {
   list-style: none;
   padding: 0px;
+
+  li.notfound {
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+  }
 
   li.videos-header {
     font-weight: bold;
@@ -204,20 +225,27 @@ ul.videos {
     display: inline-block;
     background-size: cover;
     vertical-align: middle;
+    opacity: 0;
   }
 
   li.video.france-2:before {
+    opacity: 1;
+    background-position-x: 0px;
   }
   li.video.france-3:before {
+    opacity: 1;
     background-position-x: 60px;
   }
   li.video.france-4:before {
+    opacity: 1;
     background-position-x: 44px;
   }
   li.video.france-5:before {
+    opacity: 1;
     background-position-x: 28px;
   }
   li.video.france-o:before {
+    opacity: 1;
     background-position-x: 13px;
   }
 }

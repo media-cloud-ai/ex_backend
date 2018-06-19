@@ -46,6 +46,7 @@ export class VideosComponent {
     {id: 'france-o', label: 'France Ô'}
   ];
   selectedChannels = [];
+  integrale = false;
 
   dateRange = new DateRange();
 
@@ -107,7 +108,8 @@ export class VideosComponent {
       this.selectedChannels,
       this.searchInput,
       this.dateRange,
-      this.videoid)
+      this.videoid,
+      this.integrale)
     .subscribe(videoPage => {
       this.loading = false;
       this.selectedVideos = [];

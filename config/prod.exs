@@ -65,6 +65,9 @@ config :ex_subtil_backend, ExSubtilBackendWeb.Endpoint,
 
 config :logger, level: :debug
 
+config :httpotion,
+  :default_timeout, 60000
+
 # Configure your database
 config :ex_subtil_backend, ExSubtilBackend.Repo,
   adapter: Ecto.Adapters.Postgres,

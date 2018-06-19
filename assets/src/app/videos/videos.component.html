@@ -79,11 +79,38 @@
           (click)="videoid = ''; updateVideos()" >clear</mat-icon>
     </mat-form-field>
   </div>
+  <div>
+    <mat-slide-toggle
+        [color]="color"
+        [checked]="integrale"
+        [(ngModel)]="integrale"
+        (change)=updateVideos()>
+      Integral
+    </mat-slide-toggle>
+  </div>
 </div>
 
-<ul *ngIf="videos" class="videos" [ngClass]="{loading: loading}">
-  <li *ngIf="(!videos || videos.total == 0)">Aucun résultat trouvé</li>
-  <li class="videos-header">
+<div *ngIf="loading" class="loading">
+  <span>
+    <mat-spinner
+      diameter=50
+      strokeWidth=3
+      [color]="accent">
+    </mat-spinner>
+  </span>
+  <span class=text>
+    Loading ...
+  </span>
+</div>
+<ul
+  *ngIf="videos && !loading"
+  class="videos"
+  [ngClass]="{loading: loading}"
+  >
+  <li *ngIf="videos.total == 0" class="notfound">
+    No result found.
+  </li>
+  <li *ngIf="videos.total > 0" class="videos-header">
     <span class="legacy_id">
       ID
     </span>
@@ -98,6 +125,9 @@
     </span>
     <span class="broadcast_date">
       Broadcasting date
+    </span>
+    <span class="type">
+      Type
     </span>
     <span class="actions">
       Select all
@@ -124,7 +154,10 @@
     >
     <span class="legacy_id">
       <a target=_blank href="https://gatewayvf.webservices.francetelevisions.tv/v1/videos?qid={{video.id}}">
-        {{video.id}}
+        <i class="material-icons">
+          code
+        </i>
+        <!-- {{video.id}} -->
       </a>
     </span>
     <span class="title">
@@ -145,6 +178,9 @@
       </span>
     </span>
 
+    <span class="type">
+      {{video.type | videoType}}
+    </span>
     <span class="actions">
       <span class="tracks audio"
         *ngFor="let track of video.audio_tracks">
@@ -226,5 +262,6 @@
   [pageSize]="pageSize"
   [pageIndex]="page"
   [pageSizeOptions]="pageSizeOptions"
-  (page)="pageEvent = eventGetVideos($event)">
+  (page)="pageEvent = eventGetVideos($event)"
+   *ngIf="!loading">
 </mat-paginator>

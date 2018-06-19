@@ -103,6 +103,7 @@ import {JobStatusIconPipe}       from './pipes/job_status_icon.pipe';
 import {ParameterLabelPipe}      from './pipes/parameter_label.pipe';
 import {QueuePipe}               from './pipes/queue.pipe';
 import {TextTypePipe}            from './pipes/text_type.pipe';
+import {VideoTypePipe}           from './pipes/video_type.pipe';
 
 import {TokenInterceptor}        from './authentication/token.interceptor';
 import {ErrorInterceptor}        from './authentication/error.interceptor';
@@ -195,6 +196,7 @@ const SUBTIL_DATE_FORMATS = {
     ParameterLabelPipe,
     QueuePipe,
     TextTypePipe,
+    VideoTypePipe,
   ],
   entryComponents: [
     DurationComponent,
