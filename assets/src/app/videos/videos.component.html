@@ -228,7 +228,7 @@
         <button
           mat-raised-button
           color="primary"
-          disabled={{!video.available}}
+          [disabled]="!video.available || video.type != 'integrale'"
           (click)="start_process(video)"
           >
           <mat-icon>play_arrow</mat-icon>
