@@ -2,8 +2,32 @@
   Workflows
 </h1>
 
+<div class=search>
+    <mat-form-field>
+      <mat-select
+        class="status-select"
+        placeholder="Status"
+        [(ngModel)]="selectedStatus"
+        (selectionChange)="updateWorkflows()"
+        multiple
+        >
+        <mat-option
+          *ngFor="let state of status"
+          [value]="state.id"
+          [ngClass]="state.id"
+          class="state-option"
+          >
+          {{ state.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+</div>
+
 <ul *ngIf="workflows" class="workflows">
-  <li *ngIf="workflows.total == 0">No workflow found.</li>
+  <li *ngIf="workflows.total == 0"
+     class="notfound">
+    No workflow found.
+  </li>
   <li
     *ngFor="let workflow of workflows.data"
     class="workflow"

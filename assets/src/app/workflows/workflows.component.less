@@ -2,6 +2,11 @@
 
 ul {
   list-style: none;
+  .notfound {
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+  }
 }
 
 .workflow {
@@ -14,4 +19,16 @@ ul {
 
 .paginator {
   margin-bottom: 80px;
+}
+
+mat-option.completed {
+  color: @green !important;
+}
+
+mat-option.error {
+  color: @red !important;
+}
+
+mat-option.processing {
+  color: @blue !important;
 }

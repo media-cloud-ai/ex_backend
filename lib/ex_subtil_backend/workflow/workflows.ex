@@ -47,6 +47,19 @@ defmodule ExSubtilBackend.Workflows do
           from(workflow in Workflow, where: workflow.reference == ^video_id)
       end
 
+    status = Map.get(params, "state", [])
+
+    query =
+      if not "completed" in status do
+        from(
+          workflow in query,
+          left_join: artifact in assoc(workflow, :artifacts),
+          where: is_nil(artifact.id)
+        )
+      else
+        query
+      end
+
     total_query = from(item in query, select: count(item.id))
 
     total =

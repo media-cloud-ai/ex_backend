@@ -13,13 +13,16 @@ export class WorkflowService {
 
   constructor(private http: HttpClient) { }
 
-  getWorkflows(page: number, video_id: string): Observable<WorkflowPage> {
+  getWorkflows(page: number, video_id: string, status: Array<string>): Observable<WorkflowPage> {
     let params = new HttpParams();
     if(page > 0) {
       params = params.append('page', String(page + 1));
     }
     if(video_id != "" && video_id != undefined) {
       params = params.append('video_id', video_id);
+    }
+    for (let state of status) {
+      params = params.append('state[]', state);
     }
 
     return this.http.get<WorkflowPage>(this.workflowsUrl, {params: params})

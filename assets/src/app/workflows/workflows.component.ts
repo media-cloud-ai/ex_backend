@@ -24,6 +24,17 @@ export class WorkflowsComponent {
   page = 0;
   sub = undefined;
 
+  selectedStatus = [
+    'error',
+    'processing',
+  ];
+
+  status = [
+    {id: 'completed', label: 'Completed'},
+    {id: 'error', label: 'Error'},
+    {id: 'processing', label: 'Processing'},
+  ];
+
   pageEvent: PageEvent;
   workflows: WorkflowPage;
   connection: any;
@@ -66,7 +77,7 @@ export class WorkflowsComponent {
     }
 
     this.workflowService.getWorkflows(index,
-      this.video_id)
+      this.video_id, this.selectedStatus)
     .subscribe(workflowPage => {
       if(workflowPage == undefined) {
         this.length = undefined;
