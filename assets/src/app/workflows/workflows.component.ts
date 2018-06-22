@@ -4,6 +4,7 @@ import {PageEvent} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {Message} from '../models/message';
+import {CookieService} from 'ngx-cookie-service';
 import {SocketService} from '../services/socket.service';
 import {WorkflowService} from '../services/workflow.service';
 import {WorkflowPage} from '../models/page/workflow_page';
@@ -48,6 +49,7 @@ export class WorkflowsComponent {
   messages: Message[] = [];
 
   constructor(
+    private cookieService: CookieService,
     private socketService: SocketService,
     private workflowService: WorkflowService,
     private route: ActivatedRoute,
@@ -68,6 +70,13 @@ export class WorkflowsComponent {
         if(status) {
           this.selectedStatus = status;
         }
+
+        var filters = this.cookieService.get('workflowsFilters');
+        if(filters != undefined && filters != "") {
+          var parsed_filters = JSON.parse(filters);
+          this.router.navigate(['/workflows'], { queryParams: parsed_filters});
+        }
+
         this.getWorkflows(this.page);
 
         this.socketService.initSocket();
@@ -166,6 +175,8 @@ export class WorkflowsComponent {
     if(this.selectedStatus != ["error", "processing"]) {
       params['status[]'] = this.selectedStatus;
     }
+
+    this.cookieService.set('workflowsFilters', JSON.stringify(params));
     return params;
   }
 }
