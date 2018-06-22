@@ -131,7 +131,6 @@ export class WorkflowsComponent {
         this.pageIndex,
         this.pageSize)
     });
-    console.log(this.selectedStatus);
     this.getWorkflows(0);
   }
 
