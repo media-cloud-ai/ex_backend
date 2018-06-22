@@ -47,10 +47,10 @@ defmodule ExSubtilBackend.Workflows do
           from(workflow in Workflow, where: workflow.reference == ^video_id)
       end
 
-    status = Map.get(params, "state", [])
+    status = Map.get(params, "state")
 
     query =
-      if not "completed" in status do
+      if status != nil && not "completed" in status do
         from(
           workflow in query,
           left_join: artifact in assoc(workflow, :artifacts),
