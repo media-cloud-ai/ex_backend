@@ -5,6 +5,7 @@
 /deps
 /assets/node_modules
 /priv/static
+/log
 erl_crash.dump
 *.ez
 *.beam
