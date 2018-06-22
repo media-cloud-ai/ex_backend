@@ -27,13 +27,19 @@ defmodule ExSubtilBackend.Rdf.Converter do
       case workflow do
         nil ->
           ""
-
         _ ->
-          workflow
-          |> Map.get(:artifacts, [])
-          |> List.first()
-          |> Map.get(:resources, %{})
-          |> Map.get("manifest")
+          artifact =
+            workflow
+            |> Map.get(:artifacts, [])
+            |> List.first()
+
+          case artifact do
+            nil -> ""
+            _ ->
+              artifact
+              |> Map.get(:resources, %{})
+              |> Map.get("manifest")
+          end
       end
 
     files = ExVideoFactory.get_files_for_video_id(video_id)
