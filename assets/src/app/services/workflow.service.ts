@@ -13,10 +13,13 @@ export class WorkflowService {
 
   constructor(private http: HttpClient) { }
 
-  getWorkflows(page: number, video_id: string, status: Array<string>): Observable<WorkflowPage> {
+  getWorkflows(page: number, per_page: number, video_id: string, status: Array<string>): Observable<WorkflowPage> {
     let params = new HttpParams();
+    if(per_page) {
+      params = params.append('size', per_page.toString());
+    }
     if(page > 0) {
-      params = params.append('page', String(page + 1));
+      params = params.append('page', String(page));
     }
     if(video_id != "" && video_id != undefined) {
       params = params.append('video_id', video_id);

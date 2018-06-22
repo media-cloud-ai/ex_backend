@@ -20,6 +20,12 @@ import * as moment from 'moment';
 export class WorkflowsComponent {
   length = 1000;
   pageSize = 10;
+  pageSizeOptions = [
+    10,
+    20,
+    50,
+    100
+  ];
   video_id: string;
   page = 0;
   sub = undefined;
@@ -53,7 +59,15 @@ export class WorkflowsComponent {
       .queryParams
       .subscribe(params => {
         this.page = +params['page'] || 0;
+        this.pageSize = +params['per_page'] || 10;
         this.video_id = params['video_id'];
+        var status = params['status[]'];
+        if(status && !Array.isArray(status)){
+          status = [status];
+        }
+        if(status) {
+          this.selectedStatus = status;
+        }
         this.getWorkflows(this.page);
 
         this.socketService.initSocket();
@@ -76,8 +90,11 @@ export class WorkflowsComponent {
       connection.unsubscribe();
     }
 
-    this.workflowService.getWorkflows(index,
-      this.video_id, this.selectedStatus)
+    this.workflowService.getWorkflows(
+      index,
+      this.pageSize,
+      this.video_id,
+      this.selectedStatus)
     .subscribe(workflowPage => {
       if(workflowPage == undefined) {
         this.length = undefined;
@@ -98,7 +115,8 @@ export class WorkflowsComponent {
   }
 
   eventGetWorkflows(event): void {
-    this.router.navigate(['/workflows'], { queryParams: this.getQueryParamsForPage(event.pageIndex) });
+    this.pageSize = event.pageSize;
+    this.router.navigate(['/workflows'], { queryParams: this.getQueryParamsForPage(event.pageIndex, event.pageSize) });
     this.getWorkflows(event.pageIndex);
   }
 
@@ -107,6 +125,15 @@ export class WorkflowsComponent {
     this.getWorkflows(0);
   }
 
+  updateSearchStatus(workflow_id): void {
+    this.router.navigate(['/workflows'], {
+      queryParams: this.getQueryParamsForPage(
+        this.pageIndex,
+        this.pageSize)
+    });
+    console.log(this.selectedStatus);
+    this.getWorkflows(0);
+  }
 
   updateWorkflow(workflow_id): void {
     this.workflowService.getWorkflow(workflow_id)
@@ -120,14 +147,25 @@ export class WorkflowsComponent {
     });
   }
 
-  getQueryParamsForPage(pageIndex: number): Object {
+  getQueryParamsForPage(pageIndex: number, pageSize: number = undefined): Object {
     var params = {};
     if(pageIndex != 0) {
       params['page'] = pageIndex;
     }
-    
+    if(pageSize) {
+      if(pageSize != 10) {
+        params['per_page'] = pageSize;
+      }
+    } else {
+      if(this.pageSize != 10) {
+        params['per_page'] = this.pageSize;
+      }
+    }
     if(this.video_id != "") {
       params['video_id'] = this.video_id;
+    }
+    if(this.selectedStatus != ["error", "processing"]) {
+      params['status[]'] = this.selectedStatus;
     }
     return params;
   }

@@ -8,7 +8,7 @@
         class="status-select"
         placeholder="Status"
         [(ngModel)]="selectedStatus"
-        (selectionChange)="updateWorkflows()"
+        (selectionChange)="updateSearchStatus()"
         multiple
         >
         <mat-option
@@ -42,5 +42,6 @@
   [length]="length"
   [pageSize]="pageSize"
   [pageIndex]="page"
+  [pageSizeOptions]="pageSizeOptions"
   (page)="pageEvent = eventGetWorkflows($event)">
 </mat-paginator>
