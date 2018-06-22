@@ -128,7 +128,7 @@ export class WorkflowsComponent {
   updateSearchStatus(workflow_id): void {
     this.router.navigate(['/workflows'], {
       queryParams: this.getQueryParamsForPage(
-        this.pageIndex,
+        this.page,
         this.pageSize)
     });
     this.getWorkflows(0);
