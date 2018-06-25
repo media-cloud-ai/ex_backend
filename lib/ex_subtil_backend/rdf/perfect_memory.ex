@@ -22,6 +22,7 @@ defmodule ExSubtilBackend.Rdf.PerfectMemory do
         }
       }
     }
+    |> IO.inspect
 
     headers = [
       "Cache-Control": "no-cache",
