@@ -10,7 +10,7 @@ defmodule ExSubtilBackend.Rdf.PerfectMemory do
 
     hostname = System.get_env("PM_ENDPOINT_HOSTNAME") || Keyword.get(config, :hostname, "")
 
-    url = "https://" <> hostname <> "/v1/requests"
+    url = hostname <> "/v1/requests"
 
     body = %{
       client_id: System.get_env("PM_ENDPOINT_CLIENT_ID") || Keyword.get(config, :client_id, ""),
