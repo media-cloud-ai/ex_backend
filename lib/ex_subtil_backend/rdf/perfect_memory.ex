@@ -30,6 +30,7 @@ defmodule ExSubtilBackend.Rdf.PerfectMemory do
     ]
 
     HTTPotion.post(url, body: body |> Poison.encode!(), headers: headers)
+    |> IO.inspect
     |> Map.get(:status_code)
   end
 end
