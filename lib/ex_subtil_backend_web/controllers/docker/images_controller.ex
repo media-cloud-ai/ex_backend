@@ -49,6 +49,7 @@ defmodule ExSubtilBackendWeb.Docker.ImagesController do
     image_list =
       list_all()
       |> build_images(environment, volumes)
+      |> IO.inspect
 
     conn
     |> json(%{data: image_list})
@@ -56,15 +57,13 @@ defmodule ExSubtilBackendWeb.Docker.ImagesController do
 
   defp build_images(images, environment, volumes, image_list \\ [])
   defp build_images([], _environment, _volumes, image_list), do: image_list
-
   defp build_images([image | images], environment, volumes, image_list) do
-    environment =
+    image_environment =
       if Enum.any?(image.repo_tags, fn(tag) -> String.starts_with?(tag, "ftvsubtil/acs_worker") end) do
         Map.put(environment, :AMQP_QUEUE, "acs")
       else
         environment
       end
-
 
     configuration = %{
       id: image.id,
@@ -73,13 +72,20 @@ defmodule ExSubtilBackendWeb.Docker.ImagesController do
       },
       params: %{
         image: image.repo_tags |> List.first(),
-        environment: environment,
+        environment: image_environment,
         volumes: volumes
       }
     }
 
     image_list = List.insert_at(image_list, -1, configuration)
     build_images(images, environment, volumes, image_list)
+  end
+
+  defp get_queue_name([]), do: nil
+  defp get_queue_name(["ftvsubtil/acs_worker" <> _ | _names]), do: "job_acs"
+  # defp get_queue_name(["ftvsubtil/http_worker" <> _ | _names]), do: "job_http"
+  defp get_queue_name([_ | names]) do
+    get_queue_name(names)
   end
 
   defp list_images(%NodeConfig{} = node_config) do
