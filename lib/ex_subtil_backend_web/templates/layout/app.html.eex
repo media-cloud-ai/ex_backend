@@ -11,6 +11,7 @@
     <link href=https://fonts.googleapis.com/icon?family=Material+Icons rel="stylesheet">
     <script src="<%= static_path(@conn, "/bundles/style.js") %>"></script>
     <script src="<%= static_path(@conn, "/bundles/common.js") %>"></script>
+    <link rel="icon" type="image/png" href="/bundles/images/mediaio_logo.png" />
   </head>
 
   <body>
