@@ -8,6 +8,17 @@
         {{workflow.reference}}
       </span>
     </span>
+    <span class="created">
+      <label>
+        Created at
+      </label> 
+      <span class="date">
+        {{workflow.created_at | date: 'd LLL yy'}}
+      </span>
+      <span class="hour">
+        {{workflow.created_at | date: 'H:mm:ss'}}
+      </span>
+    </span>
     <span class="duration">
       <duration-component [workflow]=workflow></duration-component>
     </span>
