@@ -6,23 +6,23 @@
 use Mix.Config
 
 # General application configuration
-config :ex_subtil_backend, ecto_repos: [ExSubtilBackend.Repo]
+config :ex_backend, ecto_repos: [ExBackend.Repo]
 
 # Configures the endpoint
-config :ex_subtil_backend, ExSubtilBackendWeb.Endpoint,
+config :ex_backend, ExBackendWeb.Endpoint,
   url: [host: "localhost"],
   server: true,
   secret_key_base: "VQyOE7QLAMr0qyhIR+4/NtEK9G8DU+mdESssX4ZO0j05mchaW1VzebD2dZ+r9xCS",
-  render_errors: [view: ExSubtilBackendWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: ExSubtilBackend.PubSub, adapter: Phoenix.PubSub.PG2]
+  render_errors: [view: ExBackendWeb.ErrorView, accepts: ~w(html json)],
+  pubsub: [name: ExBackend.PubSub, adapter: Phoenix.PubSub.PG2]
 
 # Phauxth authentication configuration
 config :phauxth,
   token_salt: "KBPzeh/8",
-  endpoint: ExSubtilBackendWeb.Endpoint
+  endpoint: ExBackendWeb.Endpoint
 
 # Mailer configuration
-config :ex_subtil_backend, ExSubtilBackend.Mailer, adapter: Bamboo.LocalAdapter
+config :ex_backend, ExBackend.Mailer, adapter: Bamboo.LocalAdapter
 
 # Configures Elixir's Logger
 config :logger, :console,

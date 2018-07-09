@@ -1,4 +1,4 @@
-defmodule ExSubtilBackendWeb.ChannelCase do
+defmodule ExBackendWeb.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -21,15 +21,15 @@ defmodule ExSubtilBackendWeb.ChannelCase do
       use Phoenix.ChannelTest
 
       # The default endpoint for testing
-      @endpoint ExSubtilBackendWeb.Endpoint
+      @endpoint ExBackendWeb.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(ExSubtilBackend.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(ExBackend.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(ExSubtilBackend.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(ExBackend.Repo, {:shared, self()})
     end
 
     :ok

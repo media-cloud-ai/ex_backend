@@ -11,6 +11,6 @@ users = [
 ]
 
 for user <- users do
-  {:ok, user} = ExSubtilBackend.Accounts.create_user(user)
-  ExSubtilBackend.Accounts.confirm_user(user)
+  {:ok, user} = ExBackend.Accounts.create_user(user)
+  ExBackend.Accounts.confirm_user(user)
 end

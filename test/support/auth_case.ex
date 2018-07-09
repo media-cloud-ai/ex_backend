@@ -1,8 +1,8 @@
-defmodule ExSubtilBackendWeb.AuthCase do
+defmodule ExBackendWeb.AuthCase do
   use Phoenix.ConnTest
 
   import Ecto.Changeset
-  alias ExSubtilBackend.{Accounts, Repo}
+  alias ExBackend.{Accounts, Repo}
 
   def add_user(email, rights \\ ["administrator"]) do
     user = %{email: email, password: "reallyHard2gue$$", rights: rights}
@@ -24,7 +24,7 @@ defmodule ExSubtilBackendWeb.AuthCase do
   end
 
   def add_token_conn(conn, user) do
-    user_token = Phauxth.Token.sign(ExSubtilBackendWeb.Endpoint, user.id)
+    user_token = Phauxth.Token.sign(ExBackendWeb.Endpoint, user.id)
 
     conn
     |> put_req_header("accept", "application/json")
@@ -32,6 +32,6 @@ defmodule ExSubtilBackendWeb.AuthCase do
   end
 
   def gen_key(email) do
-    Phauxth.Token.sign(ExSubtilBackendWeb.Endpoint, %{"email" => email})
+    Phauxth.Token.sign(ExBackendWeb.Endpoint, %{"email" => email})
   end
 end

@@ -112,7 +112,7 @@ import {ErrorInterceptor}        from './authentication/error.interceptor';
 import 'hammerjs/hammer'; // for MatSlideToggleModule
 import * as moment from 'moment';
 
-const SUBTIL_DATE_FORMATS = {
+const EX_BACKEND_DATE_FORMATS = {
   parse: {
     dateInput: 'LL',
   },
@@ -232,7 +232,7 @@ const SUBTIL_DATE_FORMATS = {
     },
     {
       provide: MAT_DATE_FORMATS,
-      useValue: SUBTIL_DATE_FORMATS
+      useValue: EX_BACKEND_DATE_FORMATS
     },
     {
       provide: HTTP_INTERCEPTORS,

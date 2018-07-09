@@ -2,7 +2,7 @@
 
 @include mat-core();
 
-$subtil-primary: (
+$ex-backend-primary: (
     50 : #e7ecf5,
     100 : #c3d1e6,
     200 : #9cb2d5,
@@ -35,7 +35,7 @@ $subtil-primary: (
     )
 );
 
-$subtil-secondary: (
+$ex-backend-secondary: (
     50 : #f1f6e1,
     100 : #dbe8b5,
     200 : #c3d984,
@@ -68,7 +68,7 @@ $subtil-secondary: (
     )
 );
 
-$subtil-error: (
+$ex-backend-error: (
     50 : #ffe7e3,
     100 : #ffc3ba,
     200 : #ff9b8c,
@@ -101,11 +101,11 @@ $subtil-error: (
     )
 );
 
-$subtil-app-primary: mat-palette($subtil-primary);
-$subtil-app-accent:  mat-palette($subtil-secondary);
-$subtil-app-warn:    mat-palette($subtil-error);
+$ex-backend-app-primary: mat-palette($ex-backend-primary);
+$ex-backend-app-accent:  mat-palette($ex-backend-secondary);
+$ex-backend-app-warn:    mat-palette($ex-backend-error);
 
-$subtil-app-theme: mat-light-theme($subtil-app-primary, $subtil-app-accent, $subtil-app-warn);
+$ex-backend-app-theme: mat-light-theme($ex-backend-app-primary, $ex-backend-app-accent, $ex-backend-app-warn);
 
-@include angular-material-theme($subtil-app-theme);
+@include angular-material-theme($ex-backend-app-theme);
 

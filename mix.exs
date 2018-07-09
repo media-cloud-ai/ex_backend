@@ -1,9 +1,9 @@
-defmodule ExSubtilBackend.Mixfile do
+defmodule ExBackend.Mixfile do
   use Mix.Project
 
   def project do
     [
-      app: :ex_subtil_backend,
+      app: :ex_backend,
       version: "0.0.1",
       elixir: "~> 1.4",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -19,7 +19,7 @@ defmodule ExSubtilBackend.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {ExSubtilBackend.Application, []},
+      mod: {ExBackend.Application, []},
       extra_applications: [
         :amqp,
         :bamboo,
@@ -50,8 +50,6 @@ defmodule ExSubtilBackend.Mixfile do
       {:bamboo, github: "media-io/bamboo"},
       {:cowboy, "~> 1.1.2"},
       {:distillery, "~> 1.5"},
-      {:ex_imdb_sniffer, git: "https://github.com/FTV-Subtil/ex_imdb_sniffer.git", branch: "master"},
-      {:ex_video_factory, "0.3.6"},
       {:gettext, "~> 0.14"},
       {:httpotion, "~> 3.1.0"},
       {:phoenix, "~> 1.3.3"},
