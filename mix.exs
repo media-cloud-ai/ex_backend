@@ -4,7 +4,7 @@ defmodule ExBackend.Mixfile do
   def project do
     [
       app: :ex_backend,
-      version: "0.0.1",
+      version: get_version(),
       elixir: "~> 1.4",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
@@ -50,7 +50,8 @@ defmodule ExBackend.Mixfile do
       {:bamboo, github: "media-io/bamboo"},
       {:cowboy, "~> 1.1.2"},
       {:distillery, "~> 1.5"},
-      {:ex_imdb_sniffer, "~> 0.1.1" },
+      {:ex_imdb_sniffer, "~> 0.1.1"},
+      {:ex_video_factory, "0.3.6"},
       {:gettext, "~> 0.14"},
       {:httpotion, "~> 3.1.0"},
       {:phoenix, "~> 1.3.3"},
@@ -80,5 +81,31 @@ defmodule ExBackend.Mixfile do
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
+  end
+
+  defp get_version do
+    version_from_file()
+    |> handle_file_version()
+    |> String.replace_leading("v", "")
+  end
+
+  defp version_from_file(file \\ "VERSION") do
+    File.read(file)
+  end
+
+  defp handle_file_version({:ok, content}) do
+    content
+  end
+
+  defp handle_file_version({:error, _}) do
+    retrieve_version_from_git()
+  end
+
+  defp retrieve_version_from_git do
+    require Logger
+    Logger.warn "Calling out to `git describe` for the version number. This is slow! You should think about a hook to set the VERSION file"
+    System.cmd("git", ~w{describe --always --tags --first-parent})
+    |> elem(0)
+    |> String.trim
   end
 end

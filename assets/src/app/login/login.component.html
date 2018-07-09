@@ -1,18 +1,30 @@
 <div class=content>
   <div class=logo>
     <span class=home>
-      <a class=title routerLink='/'>
-        <img src="/bundles/images/SubTil_logo_preview.png" class=app_logo>
+      <a
+        class=title
+        routerLink='/'
+        *ngIf="application"
+        >
+        <img src="{{application.logo}}" class=app_logo>
         <span class=app_name>Backend</span>
       </a>
     </span>
-    
+
     <span class=wrapper>
-      <div class="powered">
-        Powered by
-      </div>
-      <label>Media</label>
-      <img src="/bundles/images/mediaio_logo.png">
+      <a href="http://media-io.com" target="_blank">
+        <div class="powered">
+          Powered by
+        </div>
+        <label>Media</label>
+        <img src="/bundles/images/mediaio_logo.png">
+      </a>
+    </span>
+
+    <span
+      class="version"
+      *ngIf="application">
+      {{application.version}}
     </span>
   </div>
 
@@ -53,8 +65,9 @@
       {{message}}
     </div>
 
-    <div class=id_logo>
-      <img src="/bundles/images/logo_id_2018_fushia13_2lignes.png">
+    <div class=id_logo
+      *ngIf="application">
+      <img src="{{application.company_logo}}">
     </div>
   </form>
 </div>

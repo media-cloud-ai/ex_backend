@@ -94,6 +94,10 @@ export class AuthService {
     return this.token;
   }
 
+  getUsername(): string {
+    return this.username;
+  }
+
   hasAdministratorRight(): boolean {
     return this.rights.includes("administrator");
   }

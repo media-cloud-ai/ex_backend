@@ -37,11 +37,11 @@ defmodule ExBackend.Accounts.Message do
   An email with a confirmation link in it.
   """
   def confirm_request(address, key) do
-    app_name = Application.get_env(:ex_backend, :app_name)
+    app_label = Application.get_env(:ex_backend, :app_label)
     hostname = Application.get_env(:ex_backend, :hostname)
 
     prep_mail(address)
-    |> subject("[#{app_name} Backend] Confirm your account")
+    |> subject("[#{app_label} Backend] Confirm your account")
     |> text_body("Confirm your email here #{hostname}/confirm?key=#{key}")
     |> build_html_body("""
     <h2 style="margin: 0; margin-bottom: 30px; font-family: 'Open Sans', 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-weight: 300; line-height: 1.5; font-size: 24px; color: #294661 !important;">
@@ -75,10 +75,10 @@ defmodule ExBackend.Accounts.Message do
   An email with a link to reset the password.
   """
   def reset_request(address, nil) do
-    app_name = Application.get_env(:ex_backend, :app_name)
+    app_label = Application.get_env(:ex_backend, :app_label)
 
     prep_mail(address)
-    |> subject("[#{app_name} Backend] Reset your password")
+    |> subject("[#{app_label} Backend] Reset your password")
     |> text_body(
       "You requested a password reset, but no user is associated with the email you provided."
     )
@@ -86,11 +86,11 @@ defmodule ExBackend.Accounts.Message do
   end
 
   def reset_request(address, key) do
-    app_name = Application.get_env(:ex_backend, :app_name)
+    app_label = Application.get_env(:ex_backend, :app_label)
     hostname = Application.get_env(:ex_backend, :hostname)
 
     prep_mail(address)
-    |> subject("[#{app_name} Backend] Reset your password")
+    |> subject("[#{app_label} Backend] Reset your password")
     |> text_body("Reset your password at " <> hostname <> "/password_resets/edit?key=#{key}")
     |> Mailer.deliver_now()
   end
@@ -99,10 +99,10 @@ defmodule ExBackend.Accounts.Message do
   An email acknowledging that the account has been successfully confirmed.
   """
   def confirm_success(address) do
-    app_name = Application.get_env(:ex_backend, :app_name)
+    app_label = Application.get_env(:ex_backend, :app_label)
 
     prep_mail(address)
-    |> subject("[#{app_name} Backend] Confirmed account")
+    |> subject("[#{app_label} Backend] Confirmed account")
     |> text_body("Your account has been confirmed.")
     |> build_html_body("""
     <h2 style="margin: 0; margin-bottom: 30px; font-family: 'Open Sans', 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-weight: 300; line-height: 1.5; font-size: 24px; color: #294661 !important;">
@@ -116,10 +116,10 @@ defmodule ExBackend.Accounts.Message do
   An email acknowledging that the password has been successfully reset.
   """
   def reset_success(address) do
-    app_name = Application.get_env(:ex_backend, :app_name)
+    app_label = Application.get_env(:ex_backend, :app_label)
 
     prep_mail(address)
-    |> subject("[#{app_name} Backend] Password reset")
+    |> subject("[#{app_label} Backend] Password reset")
     |> text_body("Your password has been reset.")
     |> Mailer.deliver_now()
   end
@@ -131,7 +131,8 @@ defmodule ExBackend.Accounts.Message do
   end
 
   defp build_html_body(config, content) do
-    app_name = Application.get_env(:ex_backend, :app_name)
+    app_label = Application.get_env(:ex_backend, :app_label)
+    app_logo = Application.get_env(:ex_backend, :app_logo)
     hostname = Application.get_env(:ex_backend, :hostname)
 
     config
@@ -177,7 +178,7 @@ defmodule ExBackend.Accounts.Message do
             <td>
               <div style="max-width: 440px; margin:auto;">
                 &nbsp;<br/>
-                <img alt="#{app_name}" height="22" src="#{hostname}/bundles/images/#{app_name}_logo_preview.png" style="max-width: 100%; border-style: none; width: 123px; height: 22px;" width="123" />
+                <img alt="#{app_label}" height="22" src="#{hostname}/bundles/images/#{app_logo}" style="max-width: 100%; border-style: none; width: 123px; height: 22px;" width="123" />
                 <br/>&nbsp;
               </div>
             </td>

@@ -15,7 +15,7 @@ defmodule ExBackend.Amqp.Supervisor do
   #   DynamicSupervisor.start_child(__MODULE__, spec)
   # end
 
-  def add_consumer(queue_name) do
+  def add_consumer(_queue_name) do
     Logger.warn("#{__MODULE__} add_consumer")
     child_spec = {ExBackend.Amqp.JobFtpCompletedConsumer, {}}
     DynamicSupervisor.start_child(__MODULE__, child_spec) |> IO.inspect

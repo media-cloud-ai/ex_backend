@@ -56,8 +56,15 @@ a.title:link, a.title:visited {
   display: none;
 }
 
-.logout_button {
+.user_settings {
   cursor: pointer;
+  label {
+    font-size: 0.7em;
+    padding-right: 10px;
+  }
+  i {
+    vertical-align: middle;
+  }
 }
 
 .footer {
@@ -101,22 +108,26 @@ a.title:link, a.title:visited {
       padding: 0;
       border-color: rgba(0,0,0,.06);
       color: rgba(0,0,0,.54);
-    }
-    li>a {
       box-sizing: border-box;
       display: block;
       font-size: 14px;
       font-weight: 400;
       line-height: 47px;
-      text-decoration: none;
       transition: all .3s;
       padding: 0 16px;
       position: relative;
-      color: rgba(0,0,0,.54);
-      text-decoration: none;
+      cursor: pointer;
+      i {
+        vertical-align: middle;
+      }
     }
-    li>a:hover {
-      color: #3f51b5;
+    li>a {
+      text-decoration: none;
+      color: rgba(0,0,0,.54);
+    }
+
+    li:hover {
+      background-color: @lightBlue;
     }
   }
 }

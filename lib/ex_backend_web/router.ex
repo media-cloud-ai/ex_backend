@@ -14,6 +14,8 @@ defmodule ExBackendWeb.Router do
     plug(Phauxth.Authenticate, method: :token)
   end
 
+  get("/app", ExBackendWeb.ApplicationController, :index)
+
   scope "/api", ExBackendWeb do
     pipe_through(:api)
 

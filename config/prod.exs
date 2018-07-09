@@ -73,7 +73,7 @@ config :ex_backend, ExBackend.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "postgres",
-  database: "ex_subtil_backend_dev",
+  database: "ex_backend_dev",
   hostname: "database",
   pool_size: 10
 

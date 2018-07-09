@@ -39,6 +39,9 @@
 			padding-bottom: 15px;
 			padding-top: 42%;
 
+			a {
+				text-decoration: none;
+			}
 			.powered {
 				color: @lightGrey;
 				text-align: left;
@@ -60,6 +63,16 @@
 				vertical-align: middle;
 				display: inline-block;
 			}
+		}
+
+		.version:before {
+			content: "version ";
+		}
+		.version {
+			position: absolute;
+			bottom: 5px;
+			left: 5px;
+			color: @lightGrey;
 		}
 	}
 

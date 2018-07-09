@@ -4,6 +4,8 @@ import {
   NavigationExtras,
   Router,
 } from '@angular/router';
+import {Application} from '../models/application';
+import {ApplicationService} from '../services/application.service';
 import {AuthService} from '../authentication/auth.service';
 
 @Component({
@@ -16,8 +18,19 @@ export class LoginComponent {
   username: string;
   password: string;
   message: string;
+  application: Application;
 
-  constructor(public authService: AuthService, public router: Router) {}
+  constructor(
+    private applicationService: ApplicationService,
+    public authService: AuthService,
+    public router: Router) {}
+
+  ngOnInit() {
+    this.applicationService.get()
+    .subscribe(response => {
+      this.application = response;
+    });
+  }
 
   login() {
     this.authService.login(this.username, this.password)

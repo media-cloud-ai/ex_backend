@@ -16,7 +16,7 @@ defmodule ExBackend.Amqp.JobFtpErrorConsumer do
     Basic.ack(channel, tag)
   end
 
-  def consume(channel, tag, _redelivered, %{"error" => description} = payload) do
+  def consume(channel, tag, _redelivered, payload) do
     Logger.error("FTP error #{inspect(payload)}")
     Basic.ack(channel, tag)
   end

@@ -6,7 +6,10 @@ import {
 } from '@angular/common/http';
 import {NgModule}         from '@angular/core';
 import {FormsModule}      from '@angular/forms';
-import {BrowserModule}    from '@angular/platform-browser';
+import {
+  BrowserModule,
+  Title
+} from '@angular/platform-browser';
 import {AppComponent}     from './app.component';
 import {
   MatAutocompleteModule,
@@ -80,9 +83,10 @@ import {WorkflowDialogComponent} from './videos/workflow/workflow_dialog.compone
 
 import {AuthService}             from './authentication/auth.service';
 import {AmqpService}             from './services/amqp.service';
+import {ApplicationService}      from './services/application.service';
 import {ContainerService}        from './services/container.service';
 import {ImageService}            from './services/image.service';
-import {IMDbService}            from './services/imdb.service';
+import {IMDbService}             from './services/imdb.service';
 import {JobService}              from './services/job.service';
 import {NodeService}             from './services/node.service';
 import {PersonService}           from './services/person.service';
@@ -245,6 +249,7 @@ const EX_BACKEND_DATE_FORMATS = {
       multi: true
     },
     AmqpService,
+    ApplicationService,
     AuthService,
     ContainerService,
     CookieService,
@@ -254,6 +259,7 @@ const EX_BACKEND_DATE_FORMATS = {
     NodeService,
     PersonService,
     RdfService,
+    Title,
     UserService,
     VideoService,
     WorkflowService,
