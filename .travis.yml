@@ -9,7 +9,7 @@ otp_release:
   - 20.3
   - 21.0
 
--matrix:
+matrix:
   exclude:
     - elixir: 1.6.0
       otp_release: 21.0
