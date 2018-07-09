@@ -37,7 +37,7 @@ defmodule ExSubtilBackendWeb.Docker.ContainersController do
       render(conn, "container.json", containers: container)
     rescue
       error ->
-        IO.inspect(container_config)
+        # IO.inspect(container_config)
         Logger.error("#{__MODULE__}: #{inspect(error)}")
 
         conn

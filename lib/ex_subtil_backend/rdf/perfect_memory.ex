@@ -22,7 +22,6 @@ defmodule ExSubtilBackend.Rdf.PerfectMemory do
         }
       }
     }
-    |> IO.inspect
 
     headers = [
       "Cache-Control": "no-cache",
@@ -30,8 +29,14 @@ defmodule ExSubtilBackend.Rdf.PerfectMemory do
       "X-Api-Key": System.get_env("PM_ENDPOINT_API_KEY") || Keyword.get(config, :api_key, "")
     ]
 
-    HTTPotion.post(url, body: body |> Poison.encode!(), headers: headers)
-    |> IO.inspect
-    |> Map.get(:status_code)
+    status_code =
+      HTTPotion.post(url, body: body |> Poison.encode!(), headers: headers)
+      |> Map.get(:status_code)
+
+    case status_code do
+      200 -> {:ok, "completed"}
+      201 -> {:ok, "create"}
+      _ -> {:error, "unable to publish to Perfect Memory (HTTP code:#{status_code})"}
+    end
   end
 end

@@ -49,7 +49,6 @@ defmodule ExSubtilBackendWeb.Docker.ImagesController do
     image_list =
       list_all()
       |> build_images(environment, volumes)
-      |> IO.inspect
 
     conn
     |> json(%{data: image_list})
@@ -79,13 +78,6 @@ defmodule ExSubtilBackendWeb.Docker.ImagesController do
 
     image_list = List.insert_at(image_list, -1, configuration)
     build_images(images, environment, volumes, image_list)
-  end
-
-  defp get_queue_name([]), do: nil
-  defp get_queue_name(["ftvsubtil/acs_worker" <> _ | _names]), do: "job_acs"
-  # defp get_queue_name(["ftvsubtil/http_worker" <> _ | _names]), do: "job_http"
-  defp get_queue_name([_ | names]) do
-    get_queue_name(names)
   end
 
   defp list_images(%NodeConfig{} = node_config) do

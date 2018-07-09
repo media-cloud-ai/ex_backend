@@ -23,6 +23,16 @@ defmodule ExSubtilBackendWeb.VideosController do
     render(conn, "index.json", videos: response)
   end
 
+  def show(conn, params) do
+
+    case ExVideoFactory.videos(%{"qid" => params["id"]}) do
+      %{total: "1", size: 1, videos: videos} ->
+        render(conn, "show.json", video: videos |> List.first)
+      _ ->
+        error(conn, :notfound, 404)
+    end
+  end
+
   defp search_workflow(videos, result \\ [])
   defp search_workflow([], result), do: result
 

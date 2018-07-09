@@ -4,6 +4,7 @@ defmodule ExSubtilBackend.Amqp.CommonConsumer do
     quote do
       use GenServer
       use AMQP
+      # alias ExSubtilBackend.Amqp.Connection
 
       def start_link do
         GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
@@ -11,6 +12,7 @@ defmodule ExSubtilBackend.Amqp.CommonConsumer do
 
       def init(:ok) do
         rabbitmq_connect()
+        # Connection.consume(unquote(opts).queue, unquote(opts).consumer)
       end
 
       # Confirmation sent by the broker after registering this process as a consumer
@@ -46,7 +48,7 @@ defmodule ExSubtilBackend.Amqp.CommonConsumer do
 
       def handle_info({:DOWN, _, :process, _pid, _reason}, _) do
         {:ok, chan} = rabbitmq_connect()
-        {:noreply, chan}
+        # {:noreply, :ok}
       end
 
       def terminate(_reason, state) do

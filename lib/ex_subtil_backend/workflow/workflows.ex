@@ -50,12 +50,24 @@ defmodule ExSubtilBackend.Workflows do
     status = Map.get(params, "state")
 
     query =
-      if status != nil && not "completed" in status do
-        from(
-          workflow in query,
-          left_join: artifact in assoc(workflow, :artifacts),
-          where: is_nil(artifact.id)
-        )
+      if status != nil do
+        if not "completed" in status do
+          from(
+            workflow in query,
+            left_join: artifact in assoc(workflow, :artifacts),
+            where: is_nil(artifact.id)
+          )
+        else
+          if status == ["completed"] do
+            from(
+              workflow in query,
+              left_join: artifact in assoc(workflow, :artifacts),
+              where: not is_nil(artifact.id)
+            )
+          else
+            query
+          end
+        end
       else
         query
       end
@@ -170,20 +182,29 @@ defmodule ExSubtilBackend.Workflows do
 
   defp count_status(jobs, status, count \\ 0)
   defp count_status([], _status, count), do: count
-
   defp count_status([job | jobs], status, count) do
-    count =
-      case Enum.map(job.status, fn s -> s.state end) |> List.last() do
-        nil ->
-          count
+    count_completed =
+      Enum.filter(job.status, fn s -> s.state == "completed" end)
+      |> length
 
-        state ->
-          if state == status do
-            count + 1
-          else
+    count =
+      if count_completed >= 1 do
+        if status == "completed" do
+          count + 1
+        else
+          count
+        end
+      else
+        Enum.filter(job.status, fn s -> s == status end)
+        |> length
+        |> case do
+          0 ->
             count
-          end
+          _ ->
+            count + 1
+        end
       end
+
 
     count_status(jobs, status, count)
   end
@@ -302,6 +323,6 @@ defmodule ExSubtilBackend.Workflows do
       Repo.all(query_count_state)
       |> List.first()
 
-    total == researched
+    researched >= total
   end
 end

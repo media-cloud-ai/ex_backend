@@ -42,6 +42,12 @@ defmodule ExSubtilBackend.Rdf.Converter do
           end
       end
 
+    acs_enabled =
+      workflow
+      |> Map.get(:flow, %{steps: []})
+      |> Map.get(:steps, [])
+      |> has_acs_step()
+
     files = ExVideoFactory.get_files_for_video_id(video_id)
 
     information =
@@ -49,6 +55,10 @@ defmodule ExSubtilBackend.Rdf.Converter do
       |> Map.get(:videos)
       |> List.first()
       |> Map.put(:files, files)
+
+    information =
+      information
+      |> Map.put(:acs_enabled, acs_enabled |> to_string)
 
     information =
       if manifest != "" do
@@ -76,6 +86,20 @@ defmodule ExSubtilBackend.Rdf.Converter do
 
     url = "http://" <> hostname <> ":" <> port <> "/convert"
 
-    HTTPotion.post(url, body: information |> Poison.encode!()).body
+    case HTTPotion.post(url, body: information |> Poison.encode!()) do
+      %HTTPotion.ErrorResponse{message: message} ->
+        {:error, "unable to convert: #{message}"}
+      response ->
+        {:ok, response.body}
+    end
+  end
+
+  defp has_acs_step([]), do: false
+  defp has_acs_step([step | steps]) do
+    if Map.get(step,"name") == "acs_synchronize" do
+      true
+    else
+      has_acs_step(steps)
+    end
   end
 end

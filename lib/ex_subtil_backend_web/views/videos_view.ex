@@ -11,6 +11,10 @@ defmodule ExSubtilBackendWeb.VideosView do
     }
   end
 
+  def render("show.json", %{video: video}) do
+    %{data: render_one(video, VideosView, "video.json")}
+  end
+
   def render("video.json", %{videos: video}) do
     %{
       id: video["id"],

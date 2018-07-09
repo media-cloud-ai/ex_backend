@@ -14,24 +14,22 @@ defmodule ExSubtilBackend.Application do
       supervisor(ExSubtilBackend.Repo, []),
       # Start the endpoint when the application starts
       supervisor(ExSubtilBackendWeb.Endpoint, []),
+
       # Start your own worker by calling: ExSubtilBackend.Worker.start_link(arg1, arg2, arg3)
       # worker(ExSubtilBackend.Worker, [arg1, arg2, arg3]),
-      worker(ExSubtilBackend.Amqp.JobFtpEmitter, []),
+      worker(ExSubtilBackend.Amqp.Connection, []),
+      # {DynamicSupervisor, name: ExSubtilBackend.Amqp.Supervisor, strategy: :one_for_one},
+
       worker(ExSubtilBackend.Amqp.JobFtpCompletedConsumer, []),
       worker(ExSubtilBackend.Amqp.JobFtpErrorConsumer, []),
-      worker(ExSubtilBackend.Amqp.JobGpacEmitter, []),
       worker(ExSubtilBackend.Amqp.JobGpacCompletedConsumer, []),
       worker(ExSubtilBackend.Amqp.JobGpacErrorConsumer, []),
-      worker(ExSubtilBackend.Amqp.JobHttpEmitter, []),
       worker(ExSubtilBackend.Amqp.JobHttpCompletedConsumer, []),
       worker(ExSubtilBackend.Amqp.JobHttpErrorConsumer, []),
-      worker(ExSubtilBackend.Amqp.JobFileSystemEmitter, []),
       worker(ExSubtilBackend.Amqp.JobFileSystemCompletedConsumer, []),
       worker(ExSubtilBackend.Amqp.JobFileSystemErrorConsumer, []),
-      worker(ExSubtilBackend.Amqp.JobFFmpegEmitter, []),
       worker(ExSubtilBackend.Amqp.JobFFmpegCompletedConsumer, []),
       worker(ExSubtilBackend.Amqp.JobFFmpegErrorConsumer, []),
-      worker(ExSubtilBackend.Amqp.JobAcsEmitter, []),
       worker(ExSubtilBackend.Amqp.JobAcsCompletedConsumer, []),
       worker(ExSubtilBackend.Amqp.JobAcsErrorConsumer, []),
       worker(ExSubtilBackend.WorkflowStepManager, [])
@@ -124,6 +122,7 @@ defmodule ExSubtilBackend.Application do
       Logger.warn("No root user (re-)created")
     end
 
+    # ExSubtilBackend.Amqp.Supervisor.add_consumer("ftp")
     main_supervisor
   end
 

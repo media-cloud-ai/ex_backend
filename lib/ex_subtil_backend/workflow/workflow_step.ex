@@ -42,6 +42,7 @@ defmodule ExSubtilBackend.WorkflowStep do
 
         case status do
           {:ok, "skipped"} -> start_next_step(workflow)
+          {:ok, "completed"} -> start_next_step(workflow)
           _ -> status
         end
     end
@@ -103,6 +104,10 @@ defmodule ExSubtilBackend.WorkflowStep do
 
   defp launch_step(workflow, %{"name" => "upload_ftp"} = step, _step_index) do
     ExSubtilBackend.Workflow.Step.FtpUpload.launch(workflow, step)
+  end
+
+  defp launch_step(workflow, %{"name" => "push_rdf"} = _step, _step_index) do
+    ExSubtilBackend.Workflow.Step.PushRdf.launch(workflow)
   end
 
   defp launch_step(workflow, %{"name" => "clean_workspace"} = _step, _step_index) do

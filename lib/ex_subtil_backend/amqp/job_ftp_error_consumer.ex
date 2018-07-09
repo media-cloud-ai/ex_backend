@@ -15,4 +15,9 @@ defmodule ExSubtilBackend.Amqp.JobFtpErrorConsumer do
     Workflows.notification_from_job(job_id)
     Basic.ack(channel, tag)
   end
+
+  def consume(channel, tag, _redelivered, %{"error" => description} = payload) do
+    Logger.error("FTP error #{inspect(payload)}")
+    Basic.ack(channel, tag)
+  end
 end
