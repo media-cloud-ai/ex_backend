@@ -1,0 +1,48 @@
+@import '../colors';
+
+.link {
+  cursor: pointer;
+  color: @blue;
+}
+
+.link:hover {
+  color: @purple;
+}
+
+
+
+.video.not-available {
+  color: @grey;
+}
+
+.video:before {
+  background-image: url("/bundles/images/logo_chaines.jpg");
+  content: "";
+  width: 13px;
+  height: 20px;
+  display: inline-block;
+  background-size: cover;
+  vertical-align: middle;
+  opacity: 0;
+}
+
+.video.france-2:before {
+  opacity: 1;
+  background-position-x: 0px;
+}
+.video.france-3:before {
+  opacity: 1;
+  background-position-x: 60px;
+}
+.video.france-4:before {
+  opacity: 1;
+  background-position-x: 44px;
+}
+.video.france-5:before {
+  opacity: 1;
+  background-position-x: 28px;
+}
+.video.france-o:before {
+  opacity: 1;
+  background-position-x: 13px;
+}

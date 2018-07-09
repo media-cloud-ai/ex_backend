@@ -133,6 +133,14 @@ export class WorkflowDialogComponent {
       },{
         id: 10,
         parent_ids: [9],
+        name: "push_rdf",
+        enable: true,
+        required: [
+          "upload_ftp"
+        ]
+      },{
+        id: 11,
+        parent_ids: [10],
         name: "clean_workspace",
         enable: true,
         required: [

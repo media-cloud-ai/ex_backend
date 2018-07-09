@@ -2,11 +2,7 @@
   <div *ngIf="workflow" class="info">
     <span class="identifier">#{{ workflow.id }}</span>
     <span class="reference">
-      <span>Reference ID:</span>
-      <span class="link"
-        (click)="gotoVideo(workflow.reference)">
-        {{workflow.reference}}
-      </span>
+      <video-title-component [id]=workflow.reference></video-title-component>
     </span>
     <span class="created">
       <label>

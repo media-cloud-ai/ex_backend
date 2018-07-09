@@ -15,11 +15,7 @@ export class WorkflowStepDetailsComponent {
   @Input() step: Step;
   @Input() workflowId: number;
 
-  constructor(
-  ) { }
-
   ngOnInit() {
-
     if(this.step.parameters) {
       this.disabled = this.step.parameters.length == 0;
     }

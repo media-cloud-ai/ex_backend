@@ -25,6 +25,7 @@ export class JobTypePipe implements PipeTransform {
       { id: 'set_language', name: 'Language setting' },
       { id: 'ttml_to_mp4', name: 'TTML to MP4' },
       { id: 'upload_ftp', name: 'FTP upload' },
+      { id: 'push_rdf', name: 'Push RDF' },
     ];
 
     for (var i = allJobType.length - 1; i >= 0; i--) {

@@ -3,7 +3,7 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import {VideoPage} from '../models/page/video_page';
+import {VideoPage, VideoData} from '../models/page/video_page';
 import {DateRange} from '../models/date_range';
 import {IngestResponse} from '../models/ingest_response';
 
@@ -56,6 +56,15 @@ export class VideoService {
       .pipe(
         tap(videoPage => this.log('fetched VideoPage')),
         catchError(this.handleError('getVideos', undefined))
+      );
+  }
+
+  getVideo(video_id: string)
+  : Observable<VideoData> {
+    return this.http.get<VideoData>(this.videosUrl + "/" + video_id)
+      .pipe(
+        tap(video => this.log('fetched Video')),
+        catchError(this.handleError('getVideo', undefined))
       );
   }
 

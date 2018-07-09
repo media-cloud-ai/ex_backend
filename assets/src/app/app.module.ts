@@ -65,6 +65,7 @@ import {QueuesComponent}         from './amqp/queues.component';
 import {StepProgressBarComponent} from './workflows/step_progress_bar.component';
 import {UsersComponent}          from './users/users.component';
 import {VideosComponent}         from './videos/videos.component';
+import {VideoTitleComponent}     from './workflows/video_title.component';
 import {WorkflowComponent}       from './workflows/workflow.component';
 import {WorkflowDetailsComponent}     from './workflows/details/workflow_details.component';
 import {WorkflowStepDetailsComponent} from './workflows/details/workflow_step_details.component';
@@ -174,6 +175,7 @@ const SUBTIL_DATE_FORMATS = {
     StepProgressBarComponent,
     UsersComponent,
     VideosComponent,
+    VideoTitleComponent,
     RdfDialogComponent,
     WorkflowAbortDialogComponent,
     WorkflowDialogComponent,
@@ -208,6 +210,7 @@ const SUBTIL_DATE_FORMATS = {
     RdfDialogComponent,
     RightsComponent,
     StepProgressBarComponent,
+    VideoTitleComponent,
     WorkflowComponent,
     WorkflowAbortDialogComponent,
     WorkflowDialogComponent,

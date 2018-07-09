@@ -43,4 +43,5 @@ export class Workflow {
 
 export class WorkflowEvent {
   event: string;
+  job_id?: string;
 }

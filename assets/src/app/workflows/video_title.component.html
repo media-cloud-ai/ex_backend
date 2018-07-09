@@ -1,0 +1,15 @@
+
+<div *ngIf="! video">
+  <mat-spinner
+      diameter=20
+      strokeWidth=1
+      [color]="accent">
+  </mat-spinner>
+</div>
+<div
+  class="link video {{video.channel}}"
+  *ngIf=video
+  (click)="gotoVideo(id)"
+  >
+  {{video.title}} <span *ngIf=video.additional_title>- {{video.additional_title}}</span>
+</div>

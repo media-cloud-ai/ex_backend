@@ -4,6 +4,7 @@ import {PageEvent, MatDialog} from '@angular/material';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {JobService} from '../services/job.service';
+import {WorkflowService} from '../services/workflow.service';
 import {JobPage} from '../models/page/job_page';
 import {Job} from '../models/job';
 
@@ -32,6 +33,7 @@ export class JobsComponent {
 
   constructor(
     private jobService: JobService,
+    private workflowService: WorkflowService,
     private route: ActivatedRoute,
     private router: Router,
     public dialog: MatDialog
@@ -50,7 +52,7 @@ export class JobsComponent {
     this.sub.unsubscribe();
   }
 
-  getJobs(index): void {
+  getJobs(index) {
     this.jobService.getJobs(index, 100, this.workflowId, this.jobType)
     .subscribe(jobPage => {
       this.jobs = jobPage;
@@ -58,12 +60,12 @@ export class JobsComponent {
     });
   }
 
-  eventGetJobs(event): void {
+  eventGetJobs(event) {
     this.router.navigate(['/jobs'], { queryParams: this.getQueryParamsForPage(event.pageIndex) });
     this.getJobs(event.pageIndex);
   }
 
-  updateJobs(): void {
+  updateJobs() {
     this.router.navigate(['/jobs'], { queryParams: this.getQueryParamsForPage(0) });
     this.getJobs(0);
   }
@@ -86,8 +88,14 @@ export class JobsComponent {
     }
   }
 
-  displayJobDetails(job: Job): void {
+  displayJobDetails(job: Job) {
     this.dialog.open(JobDetailsDialogComponent, { data: job });
   }
-}
 
+  retryJob(job: Job) {
+    this.workflowService.sendWorkflowEvent(this.workflowId, {event: "retry", job_id: job.id})
+    .subscribe(response => {
+      console.log(response);
+    });
+  }
+}

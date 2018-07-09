@@ -11,17 +11,22 @@ import { Status } from '../models/job';
 export class JobStatusPipe implements PipeTransform {
 
   transform(jobStatus: Status[]): string {
+    var status = undefined;
     for (var i = jobStatus.length - 1; i >= 0; i--) {
       if(jobStatus[i].state == "completed"){
         return "completed";
       }
       if(jobStatus[i].state == "error"){
-        return "error";
+        status = "error";
       }
       if(jobStatus[i].state == "skipped"){
         return "skipped";
       }
     }
-    return "processing";
+    if(status == undefined) {
+      return "processing";
+    } else {
+      return status
+    }
   }
 }
