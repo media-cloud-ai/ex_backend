@@ -50,6 +50,7 @@ defmodule ExBackend.Mixfile do
       {:bamboo, github: "media-io/bamboo"},
       {:cowboy, "~> 1.1.2"},
       {:distillery, "~> 1.5"},
+      {:ex_imdb_sniffer, "~> 0.1.1" },
       {:gettext, "~> 0.14"},
       {:httpotion, "~> 3.1.0"},
       {:phoenix, "~> 1.3.3"},
