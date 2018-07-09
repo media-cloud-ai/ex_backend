@@ -1,5 +1,7 @@
 # ExSubtilBackend
 
+[![Build Status](https://travis-ci.org/FTV-Subtil/ex_subtil_backend.svg?branch=master)](https://travis-ci.org/FTV-Subtil/ex_subtil_backend)
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
