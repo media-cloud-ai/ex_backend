@@ -1,5 +1,5 @@
 
-export class Video {
+export class Catalog {
   id: string;
   title: string;
   channel: string;

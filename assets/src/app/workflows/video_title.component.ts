@@ -2,8 +2,8 @@
 import {Component, Input} from '@angular/core';
 import {Router} from '@angular/router';
 
-import {VideoService} from '../services/video.service';
-import {Video} from '../models/video';
+import {CatalogService} from '../services/catalog.service';
+import {Catalog} from '../models/catalog';
 
 @Component({
   selector: 'video-title-component',
@@ -14,11 +14,11 @@ import {Video} from '../models/video';
 export class VideoTitleComponent {
   @Input() id: string;
 
-  video: Video;
+  video: Catalog;
 
   constructor(
     private router: Router,
-    private videoService: VideoService,
+    private catalogService: CatalogService,
   ) {}
 
   ngOnInit() {
@@ -26,7 +26,7 @@ export class VideoTitleComponent {
     var page = 0;
     var selectedChannels = undefined;
 
-    this.videoService.getVideo(this.id)
+    this.catalogService.getVideo(this.id)
     .subscribe(response => {
       console.log(response)
       this.video = response.data;
@@ -34,6 +34,6 @@ export class VideoTitleComponent {
   }
 
   gotoVideo(video_id): void {
-    this.router.navigate(['/videos'], { queryParams: {video_id: video_id} });
+    this.router.navigate(['/catalog'], { queryParams: {video_id: video_id} });
   }
 }

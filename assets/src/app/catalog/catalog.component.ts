@@ -5,10 +5,10 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FormControl} from '@angular/forms';
 
 import {RdfService} from '../services/rdf.service';
-import {VideoService} from '../services/video.service';
+import {CatalogService} from '../services/catalog.service';
 import {WorkflowService} from '../services/workflow.service';
-import {VideoPage} from '../models/page/video_page';
-import {Video} from '../models/video';
+import {CatalogPage} from '../models/page/catalog_page';
+import {Catalog} from '../models/catalog';
 import {DateRange} from '../models/date_range';
 
 import {RdfDialogComponent} from './rdf/rdf_dialog.component';
@@ -17,12 +17,12 @@ import {WorkflowDialogComponent} from './workflow/workflow_dialog.component';
 import * as moment from 'moment';
 
 @Component({
-  selector: 'videos-component',
-  templateUrl: 'videos.component.html',
-  styleUrls: ['./videos.component.less'],
+  selector: 'catalog-component',
+  templateUrl: 'catalog.component.html',
+  styleUrls: ['./catalog.component.less'],
 })
 
-export class VideosComponent {
+export class CatalogComponent {
   length = 1000;
 
   pageSize = 10;
@@ -51,13 +51,13 @@ export class VideosComponent {
   dateRange = new DateRange();
 
   pageEvent: PageEvent;
-  videos: VideoPage;
+  videos: CatalogPage;
 
   selectedVideos = [];
 
   constructor(
     private rdfService: RdfService,
-    private videoService: VideoService,
+    private catalogService: CatalogService,
     private workflowService: WorkflowService,
     private route: ActivatedRoute,
     private router: Router,
@@ -103,7 +103,7 @@ export class VideosComponent {
 
   getVideos(index): void {
     this.loading = true;
-    this.videoService.getVideos(index,
+    this.catalogService.getVideos(index,
       this.pageSize,
       this.selectedChannels,
       this.searchInput,
@@ -115,7 +115,7 @@ export class VideosComponent {
       this.selectedVideos = [];
 
       if(videoPage == undefined) {
-        this.videos = new VideoPage();
+        this.videos = new CatalogPage();
         this.length = undefined;
         return;
       }

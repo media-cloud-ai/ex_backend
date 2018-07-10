@@ -16,7 +16,7 @@ import {JobsComponent} from './jobs/jobs.component';
 import {PersonComponent} from './persons/person.component';
 import {PersonsComponent} from './persons/persons.component';
 import {UsersComponent} from './users/users.component';
-import {VideosComponent} from './videos/videos.component';
+import {CatalogComponent} from './catalog/catalog.component';
 import {WorkflowDetailsComponent} from "./workflows/details/workflow_details.component";
 import {WorkflowsComponent} from './workflows/workflows.component';
 import {WorkersComponent} from './workers/workers.component';
@@ -53,8 +53,8 @@ const appRoutes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'videos',
-    component: VideosComponent,
+    path: 'catalog',
+    component: CatalogComponent,
     canActivate: [AuthGuard]
   },
   {

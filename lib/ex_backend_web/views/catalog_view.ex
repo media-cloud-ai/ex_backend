@@ -1,21 +1,21 @@
-defmodule ExBackendWeb.VideosView do
+defmodule ExBackendWeb.CatalogView do
   use ExBackendWeb, :view
-  alias ExBackendWeb.VideosView
+  alias ExBackendWeb.CatalogView
 
   def render("index.json", %{videos: videos}) do
     %{
       size: videos.size,
       offset: videos.offset,
       total: videos.total,
-      data: render_many(videos.videos, VideosView, "video.json")
+      data: render_many(videos.videos, CatalogView, "video.json")
     }
   end
 
   def render("show.json", %{video: video}) do
-    %{data: render_one(video, VideosView, "video.json")}
+    %{data: render_one(video, CatalogView, "video.json")}
   end
 
-  def render("video.json", %{videos: video}) do
+  def render("video.json", %{catalog: video}) do
     %{
       id: video["id"],
       title: video["title"],

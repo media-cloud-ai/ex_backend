@@ -1,9 +1,9 @@
-defmodule ExBackendWeb.VideosController do
+defmodule ExBackendWeb.CatalogController do
   use ExBackendWeb, :controller
 
   import ExBackendWeb.Authorize
 
-  alias ExBackend.{Videos, Workflows}
+  alias ExBackend.{Catalog, Workflows}
 
   action_fallback(ExBackendWeb.FallbackController)
 
@@ -45,7 +45,7 @@ defmodule ExBackendWeb.VideosController do
 
     video = Map.put(video, "workflows_count", total)
 
-    url = Videos.get_manifest_url(video_id)
+    url = Catalog.get_manifest_url(video_id)
     video = Map.put(video, "workflows_count", total)
     video = Map.put(video, "manifest_url", url)
 

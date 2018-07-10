@@ -3,13 +3,13 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import {VideoPage, VideoData} from '../models/page/video_page';
+import {CatalogPage, CatalogData} from '../models/page/catalog_page';
 import {DateRange} from '../models/date_range';
 import {IngestResponse} from '../models/ingest_response';
 
 @Injectable()
-export class VideoService {
-  private videosUrl = 'api/videos';
+export class CatalogService {
+  private catalogUrl = 'api/catalog';
 
   constructor(private http: HttpClient) { }
 
@@ -21,7 +21,7 @@ export class VideoService {
     dateRange: DateRange,
     videoid: string,
     integrale: boolean)
-  : Observable<VideoPage> {
+  : Observable<CatalogPage> {
 
     let params = new HttpParams();
     params = params.append('per_page', per_page.toString());
@@ -52,7 +52,7 @@ export class VideoService {
 
     params = params.append('sort', '-broadcasted_at');
 
-    return this.http.get<VideoPage>(this.videosUrl, {params: params})
+    return this.http.get<CatalogPage>(this.catalogUrl, {params: params})
       .pipe(
         tap(videoPage => this.log('fetched VideoPage')),
         catchError(this.handleError('getVideos', undefined))
@@ -60,8 +60,8 @@ export class VideoService {
   }
 
   getVideo(video_id: string)
-  : Observable<VideoData> {
-    return this.http.get<VideoData>(this.videosUrl + "/" + video_id)
+  : Observable<CatalogData> {
+    return this.http.get<CatalogData>(this.catalogUrl + "/" + video_id)
       .pipe(
         tap(video => this.log('fetched Video')),
         catchError(this.handleError('getVideo', undefined))
@@ -69,7 +69,7 @@ export class VideoService {
   }
 
   ingest(video_id: number): Observable<IngestResponse> {
-    const url = `${this.videosUrl}/${video_id}`;
+    const url = `${this.catalogUrl}/${video_id}`;
 
     return this.http.put<IngestResponse>(url, {})
       .pipe(
@@ -86,6 +86,6 @@ export class VideoService {
   }
 
   private log(message: string) {
-    console.log('VideoService: ' + message);
+    console.log('CatalogService: ' + message);
   }
 }

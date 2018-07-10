@@ -42,7 +42,7 @@ defmodule ExBackendWeb.Router do
       end
     end
 
-    resources "/videos", VideosController, except: [:new, :edit] do
+    resources "/catalog", CatalogController, except: [:new, :edit] do
       post("/jobs", JobController, :create)
       get("/rdf", RdfController, :show)
       post("/rdf", RdfController, :create)

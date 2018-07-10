@@ -53,6 +53,7 @@ import {CookieService}           from 'ngx-cookie-service';
 import {AppRoutingModule}        from './app-routing.module';
 import {SocketModule}            from './socket.module';
 
+import {CatalogComponent}         from './catalog/catalog.component';
 import {ConfirmComponent}        from './confirm/confirm.component';
 import {DashboardComponent}      from './dashboard/dashboard.component';
 import {DurationComponent}       from './workflows/details/duration.component';
@@ -67,7 +68,6 @@ import {RightsComponent}         from './users/rights.component';
 import {QueuesComponent}         from './amqp/queues.component';
 import {StepProgressBarComponent} from './workflows/step_progress_bar.component';
 import {UsersComponent}          from './users/users.component';
-import {VideosComponent}         from './videos/videos.component';
 import {VideoTitleComponent}     from './workflows/video_title.component';
 import {WorkflowComponent}       from './workflows/workflow.component';
 import {WorkflowDetailsComponent}     from './workflows/details/workflow_details.component';
@@ -77,13 +77,14 @@ import {WorkersComponent}        from './workers/workers.component';
 
 import {JobDetailsDialogComponent}    from './jobs/details/job_details_dialog.component';
 import {PersonShowDialogComponent} from './persons/show_dialog.component';
-import {RdfDialogComponent}      from './videos/rdf/rdf_dialog.component';
+import {RdfDialogComponent}      from './catalog/rdf/rdf_dialog.component';
 import {WorkflowAbortDialogComponent} from './workflows/dialogs/workflow_abort_dialog.component';
-import {WorkflowDialogComponent} from './videos/workflow/workflow_dialog.component';
+import {WorkflowDialogComponent} from './catalog/workflow/workflow_dialog.component';
 
 import {AuthService}             from './authentication/auth.service';
 import {AmqpService}             from './services/amqp.service';
 import {ApplicationService}      from './services/application.service';
+import {CatalogService}          from './services/catalog.service';
 import {ContainerService}        from './services/container.service';
 import {ImageService}            from './services/image.service';
 import {IMDbService}             from './services/imdb.service';
@@ -92,7 +93,6 @@ import {NodeService}             from './services/node.service';
 import {PersonService}           from './services/person.service';
 import {RdfService}              from './services/rdf.service';
 import {UserService}             from './services/user.service';
-import {VideoService}            from './services/video.service';
 import {WorkflowService}         from './services/workflow.service';
 
 import {AudioTypePipe}           from './pipes/audio_type.pipe';
@@ -162,6 +162,7 @@ const EX_BACKEND_DATE_FORMATS = {
   ],
   declarations: [
     AppComponent,
+    CatalogComponent,
     ConfirmComponent,
     DashboardComponent,
     DurationComponent,
@@ -178,7 +179,6 @@ const EX_BACKEND_DATE_FORMATS = {
     RightsComponent,
     StepProgressBarComponent,
     UsersComponent,
-    VideosComponent,
     VideoTitleComponent,
     RdfDialogComponent,
     WorkflowAbortDialogComponent,
@@ -251,6 +251,7 @@ const EX_BACKEND_DATE_FORMATS = {
     AmqpService,
     ApplicationService,
     AuthService,
+    CatalogService,
     ContainerService,
     CookieService,
     ImageService,
@@ -261,7 +262,6 @@ const EX_BACKEND_DATE_FORMATS = {
     RdfService,
     Title,
     UserService,
-    VideoService,
     WorkflowService,
   ],
   bootstrap: [

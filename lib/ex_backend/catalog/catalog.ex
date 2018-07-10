@@ -1,6 +1,6 @@
-defmodule ExBackend.Videos do
+defmodule ExBackend.Catalog do
   @moduledoc """
-  The Videos context.
+  The Catalog context.
   """
 
   require Logger
