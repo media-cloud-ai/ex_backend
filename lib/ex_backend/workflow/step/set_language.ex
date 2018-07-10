@@ -70,9 +70,6 @@ defmodule ExBackend.Workflow.Step.SetLanguage do
       String.ends_with?(path, "-qad.mp4") ->
         "qad"
 
-      String.ends_with?(path, "_synchronized.mp4") ->
-        "qad"
-
       true ->
         ExVideoFactory.videos(%{"qid" => workflow.reference})
         |> Map.fetch!(:videos)
