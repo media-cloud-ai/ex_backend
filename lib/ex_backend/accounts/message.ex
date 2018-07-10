@@ -37,8 +37,8 @@ defmodule ExBackend.Accounts.Message do
   An email with a confirmation link in it.
   """
   def confirm_request(address, key) do
-    app_label = Application.get_env(:ex_backend, :app_label)
-    hostname = Application.get_env(:ex_backend, :hostname)
+    app_label = System.get_env("APP_LABEL") || Application.get_env(:ex_backend, :app_label)
+    hostname = System.get_env("HOSTNAME") || Application.get_env(:ex_backend, :hostname)
 
     prep_mail(address)
     |> subject("[#{app_label} Backend] Confirm your account")
@@ -75,7 +75,7 @@ defmodule ExBackend.Accounts.Message do
   An email with a link to reset the password.
   """
   def reset_request(address, nil) do
-    app_label = Application.get_env(:ex_backend, :app_label)
+    app_label = System.get_env("APP_LABEL") || Application.get_env(:ex_backend, :app_label)
 
     prep_mail(address)
     |> subject("[#{app_label} Backend] Reset your password")
@@ -86,8 +86,8 @@ defmodule ExBackend.Accounts.Message do
   end
 
   def reset_request(address, key) do
-    app_label = Application.get_env(:ex_backend, :app_label)
-    hostname = Application.get_env(:ex_backend, :hostname)
+    app_label = System.get_env("APP_LABEL") || Application.get_env(:ex_backend, :app_label)
+    hostname = System.get_env("HOSTNAME") || Application.get_env(:ex_backend, :hostname)
 
     prep_mail(address)
     |> subject("[#{app_label} Backend] Reset your password")
@@ -99,7 +99,7 @@ defmodule ExBackend.Accounts.Message do
   An email acknowledging that the account has been successfully confirmed.
   """
   def confirm_success(address) do
-    app_label = Application.get_env(:ex_backend, :app_label)
+    app_label = System.get_env("APP_LABEL") || Application.get_env(:ex_backend, :app_label)
 
     prep_mail(address)
     |> subject("[#{app_label} Backend] Confirmed account")
@@ -116,7 +116,7 @@ defmodule ExBackend.Accounts.Message do
   An email acknowledging that the password has been successfully reset.
   """
   def reset_success(address) do
-    app_label = Application.get_env(:ex_backend, :app_label)
+    app_label = System.get_env("APP_LABEL") || Application.get_env(:ex_backend, :app_label)
 
     prep_mail(address)
     |> subject("[#{app_label} Backend] Password reset")
@@ -131,9 +131,9 @@ defmodule ExBackend.Accounts.Message do
   end
 
   defp build_html_body(config, content) do
-    app_label = Application.get_env(:ex_backend, :app_label)
-    app_logo = Application.get_env(:ex_backend, :app_logo)
-    hostname = Application.get_env(:ex_backend, :hostname)
+    app_label = System.get_env("APP_LABEL") || Application.get_env(:ex_backend, :app_label)
+    app_logo = System.get_env("APP_LOGO") || Application.get_env(:ex_backend, :app_logo)
+    hostname = System.get_env("HOSTNAME") || Application.get_env(:ex_backend, :hostname)
 
     config
     |> html_body("""
