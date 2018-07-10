@@ -43,10 +43,14 @@ defmodule ExBackend.Rdf.Converter do
       end
 
     acs_enabled =
-      workflow
-      |> Map.get(:flow, %{steps: []})
-      |> Map.get(:steps, [])
-      |> has_acs_step()
+      if workflow != nil do
+        workflow
+        |> Map.get(:flow, %{steps: []})
+        |> Map.get(:steps, [])
+        |> has_acs_step()
+      else
+        false
+      end
 
     files = ExVideoFactory.get_files_for_video_id(video_id)
 

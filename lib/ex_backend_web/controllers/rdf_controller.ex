@@ -16,8 +16,11 @@ defmodule ExBackendWeb.RdfController do
     video_id = Map.get(params, "videos_id")
 
     response =
-      Converter.get_rdf(video_id)
-      |> PerfectMemory.publish_rdf()
+      case Converter.get_rdf(video_id) do
+        {:ok, rdf_serialized} ->
+          PerfectMemory.publish_rdf(rdf_serialized)
+        _ -> 500
+      end
 
     case response do
       201 ->
@@ -33,7 +36,7 @@ defmodule ExBackendWeb.RdfController do
   end
 
   def show(conn, params) do
-    rdf_serialized =
+    {:ok, rdf_serialized} =
       params
       |> Map.get("videos_id")
       |> Converter.get_rdf()
