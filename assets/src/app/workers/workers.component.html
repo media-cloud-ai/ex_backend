@@ -1,3 +1,23 @@
+
+<div *ngIf=nodes>
+  <h1>
+    Nodes
+  </h1>
+  <ul class=nodes>
+    <li  *ngFor="let node of nodes" class=node>
+      <label>
+        {{node.label}}
+      </label>
+      <span class=hostname>
+        {{node.hostname}}:{{node.port}}
+      </span>
+      <span *ngIf=node.ssl.cert_file class="SSL">
+        SSL
+      </span>
+    </li>
+  </ul>
+</div>
+
 <h1>
   Workers
 </h1>

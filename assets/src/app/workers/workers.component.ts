@@ -17,8 +17,6 @@ import {Image} from '../models/image';
 })
 
 export class WorkersComponent {
-  sub = undefined;
-
   containers: Container[];
 
   nodes: NodeConfig[];
@@ -41,16 +39,9 @@ export class WorkersComponent {
     .subscribe(imagePage => {
       this.images = imagePage.data;
     });
-    this.sub = this.route
-      .queryParams
-      .subscribe(params => {
-        this.getNodes();
-        this.getContainers();
-      });
-  }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
+    this.getNodes();
+    this.getContainers();
   }
 
   getNodes(): void {

@@ -1,5 +1,22 @@
 @import '../colors';
 
+.nodes {
+  list-style: none;
+
+  .node {
+    border: 1px solid @green;
+    border-radius: 3px;
+    padding: 5px;
+    display: inline-block;
+    width: 170px;
+
+    label {
+      font-weight: bold;
+      display: block;
+    }
+  }
+}
+
 .containers-creation-bar {
   div {
     margin: 0 10px;

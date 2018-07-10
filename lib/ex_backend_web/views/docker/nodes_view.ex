@@ -10,10 +10,21 @@ defmodule ExBackendWeb.Docker.NodesView do
   end
 
   def render("node.json", %{nodes: node_config}) do
+    ssl =
+      case node_config.ssl do
+        [certfile: certfile, keyfile: keyfile] ->
+          %{
+            cert_file: certfile,
+            key_file: keyfile
+          }
+        _ -> %{}
+      end
+
     %{
       label: node_config.label,
       hostname: node_config.hostname,
-      port: node_config.port
+      port: node_config.port,
+      ssl: ssl
     }
   end
 end
