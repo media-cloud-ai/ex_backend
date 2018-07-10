@@ -42,6 +42,6 @@ RUN apk update && \
 
 COPY --from=ex_builder /app/_build/prod/rel/ex_backend .
 COPY --from=ex_builder /app/priv/static static/
-RUN backend="$(ls -1 lib/ | grep ex_backend)" && mv static lib/$backend/
+RUN backend="$(ls -1 lib/ | grep ex_backend)" && mv static lib/$backend/priv/
 
 CMD ["./bin/ex_backend", "foreground"]
