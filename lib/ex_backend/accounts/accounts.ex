@@ -61,12 +61,13 @@ defmodule ExBackend.Accounts do
 
   def create_user(attrs) do
     %User{}
-    |> User.create_changeset(attrs)
+    |> User.changeset(attrs)
     |> Repo.insert()
   end
 
   def confirm_user(%User{} = user) do
-    change(user, %{confirmed_at: DateTime.utc_now()}) |> Repo.update()
+    change(user, %{confirmed_at: DateTime.utc_now()})
+    |> Repo.update()
   end
 
   def create_password_reset(endpoint, attrs) do
@@ -85,7 +86,7 @@ defmodule ExBackend.Accounts do
 
   def update_password(%User{} = user, attrs) do
     user
-    |> User.create_changeset(attrs)
+    |> User.password_changeset(attrs)
     |> change(%{reset_sent_at: nil})
     |> Repo.update()
   end

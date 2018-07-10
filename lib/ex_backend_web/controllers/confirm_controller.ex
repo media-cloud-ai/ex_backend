@@ -7,11 +7,17 @@ defmodule ExBackendWeb.ConfirmController do
   def index(conn, params) do
     case Phauxth.Confirm.verify(params, Accounts) do
       {:ok, user} ->
-        Accounts.confirm_user(user)
-        message = "Your account has been confirmed"
-        Accounts.Message.confirm_success(user.email)
-        render(conn, ExBackendWeb.ConfirmView, "info.json", %{info: message})
-
+        case Accounts.update_password(user, params) do
+          {:ok, user} ->
+            Accounts.confirm_user(user)
+            message = "Your account has been confirmed"
+            Accounts.Message.confirm_success(user.email)
+            render(conn, ExBackendWeb.ConfirmView, "info.json", %{info: message})
+          {:error, changeset} ->
+            conn
+            |> put_status(:unprocessable_entity)
+            |> render(ExBackendWeb.ChangesetView, "error.json", changeset: changeset)
+        end
       {:error, _message} ->
         error(conn, :unauthorized, 401)
     end

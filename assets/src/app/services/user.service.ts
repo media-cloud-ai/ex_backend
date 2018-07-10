@@ -26,17 +26,16 @@ export class UserService {
       );
   }
 
-  createUser(email: string, password: string): Observable<User> {
+  inviteUser(email: string): Observable<User> {
     let params = {
-      user:{
-        email: email,
-        password: password
+      user: {
+        email: email
       }
     };
     return this.http.post<User>(this.usersUrl, params)
       .pipe(
-        tap(userPage => this.log('create User')),
-        catchError(this.handleError('createUser', undefined))
+        tap(userPage => this.log('invite User')),
+        catchError(this.handleError('inviteUser', undefined))
       );
   }
 
@@ -48,11 +47,12 @@ export class UserService {
       );
   }
 
-  confirm(key: string): Observable<Confirm> {
+  confirm(password: string, key: string): Observable<Confirm> {
     let params = new HttpParams();
+    params = params.append('password', password);
     params = params.append('key', key);
 
-    return this.http.get<Confirm>("/api/confirm", {params: params})
+    return this.http.get<Confirm>("/validate", {params: params})
       .pipe(
         tap(user => this.log('fetched Confirm User')),
         catchError(this.handleError('confirm', undefined))

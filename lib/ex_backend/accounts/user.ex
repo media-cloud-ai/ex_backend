@@ -30,6 +30,14 @@ defmodule ExBackend.Accounts.User do
     |> put_pass_hash
   end
 
+  def password_changeset(%User{} = user, attrs) do
+    user
+    |> cast(attrs, [:password])
+    |> validate_required([:password])
+    |> validate_password(:password)
+    |> put_pass_hash
+  end
+
   defp unique_email(changeset) do
     validate_format(changeset, :email, ~r/@/)
     |> validate_length(:email, max: 254)

@@ -15,13 +15,14 @@ defmodule ExBackendWeb.Router do
   end
 
   get("/app", ExBackendWeb.ApplicationController, :index)
+  get("/validate", ExBackendWeb.ConfirmController, :index)
 
   scope "/api", ExBackendWeb do
     pipe_through(:api)
 
     post("/sessions", SessionController, :create)
     resources("/users", UserController, except: [:new, :edit])
-    get("/confirm", ConfirmController, :index)
+
     post("/password_resets", PasswordResetController, :create)
     put("/password_resets/update", PasswordResetController, :update)
 

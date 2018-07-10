@@ -61,9 +61,9 @@ export class UsersComponent {
     this.getUsers(event.pageIndex);
   }
 
-  createUser(): void {
+  inviteUser(): void {
     this.error_message = "";
-    this.userService.createUser(this.email, this.password)
+    this.userService.inviteUser(this.email)
     .subscribe(response => {
       console.log(response)
       if(response == undefined) {

@@ -10,7 +10,8 @@
           <mat-icon>menu</mat-icon>
         </button>
         <span class=home>
-          <a class=title routerLink='/'>
+          <a class=title routerLink='/'
+            *ngIf=application>
             <img src="{{application.logo}}" class=app_logo>
             <span class=app_name>Backend</span>
           </a>
@@ -30,36 +31,36 @@
       <mat-sidenav mode="side" opened="{{menu_opened}}"
         class="docs-component-viewer-sidenav mat-drawer mat-sidenav ng-tns-c13-1 ng-trigger ng-trigger-transform mat-drawer-side ng-star-inserted">
         <ul>
-          <li class="ng-star-inserted"
-            *ngIf="right_technician">
-            <a routerLink='/videos'>
+          <a routerLink='/videos'>
+            <li class="ng-star-inserted"
+              *ngIf="right_technician">
               Catalog {{rights}}
-            </a>
-          </li>
-          <li class="ng-star-inserted"
-            *ngIf="right_technician">
-            <a routerLink='/workflows'>
+            </li>
+          </a>
+          <a routerLink='/workflows'>
+            <li class="ng-star-inserted"
+              *ngIf="right_technician">
               Workflows
-            </a>
-          </li>
-          <li class="ng-star-inserted"
-            *ngIf="right_technician">
-            <a routerLink='/workers'>
+            </li>
+          </a>
+          <a routerLink='/workers'>
+            <li class="ng-star-inserted"
+              *ngIf="right_technician">
               Workers
-            </a>
-          </li>
-          <li class="ng-star-inserted"
-            *ngIf="right_editor">
-            <a routerLink='/people'>
+            </li>
+          </a>
+          <a routerLink='/people'>
+            <li class="ng-star-inserted"
+              *ngIf="right_editor">
               People
-            </a>
-          </li>
-          <li class="ng-star-inserted"
-            *ngIf="right_administrator">
-            <a routerLink='/users'>
+            </li>
+          </a>
+          <a routerLink='/users'>
+            <li class="ng-star-inserted"
+              *ngIf="right_administrator">
               Users
-            </a>
-          </li>
+            </li>
+          </a>
         </ul>
       </mat-sidenav>
       <mat-sidenav-content

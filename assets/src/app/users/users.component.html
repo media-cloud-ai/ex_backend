@@ -18,18 +18,10 @@
         [(ngModel)]="email"
         >
     </mat-form-field>
-    <mat-form-field class="password-input">
-      <input
-        matInput
-        type="password"
-        placeholder="Password"
-        [(ngModel)]="password"
-        >
-    </mat-form-field>
     <button mat-button
       color="primary"
-      (click)="createUser()">
-        <i class="material-icons">add</i> Create
+      (click)="inviteUser()">
+        <i class="material-icons">add</i> Invite
     </button>
     <span class=message>
       {{error_message}}

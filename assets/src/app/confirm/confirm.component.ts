@@ -1,8 +1,9 @@
 
 import {Component}   from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
-
+import {Application} from '../models/application';
+import {ApplicationService} from '../services/application.service';
 import {UserService} from '../services/user.service';
 import {User} from '../models/user';
 
@@ -13,32 +14,53 @@ import {User} from '../models/user';
 })
 
 export class ConfirmComponent {
-  message: string;
+  application: Application;
+  validating = false;
+  validated = false;
+  error = false;
+  key: string;
+  password: string;
   sub = undefined;
 
   constructor(
+    private applicationService: ApplicationService,
     private userService: UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public router: Router
   ) {}
 
   ngOnInit() {
-    this.message = "Validating your account."
-    this.sub = this.route
-      .queryParams
-      .subscribe(params => {
+    this.applicationService.get()
+    .subscribe(application => {
+      this.application = application;
+    });
 
-        this.userService.confirm(params['key'])
-        .subscribe(response => {
-          if(response) {
-            this.message = response.info.detail;
-          } else {
-            this.message = "Unable to validate your account"
-          }
-        });
+    this.sub = this.route.queryParams
+      .subscribe(params => {
+        this.key = params['key'];
       });
   }
 
   ngOnDestroy() {
     this.sub.unsubscribe();
+  }
+
+  setPasswordAndValidate() {
+    this.validating = true;
+    this.error = false;
+
+    this.userService.confirm(this.password, this.key)
+    .subscribe(response => {
+      this.validating = false;
+      if(response) {
+        this.validated = true;
+      } else {
+        this.error = true;
+      }
+    });
+  }
+
+  goToLogin() {
+    this.router.navigate(["/"]);
   }
 }
