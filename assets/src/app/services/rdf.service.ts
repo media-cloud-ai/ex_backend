@@ -11,7 +11,7 @@ export class RdfService {
   constructor(private http: HttpClient) { }
 
   getRdf(video_id: number): Observable<Rdf> {
-    let rdfUrl = 'api/videos/' + video_id + '/rdf';
+    let rdfUrl = 'api/catalog/' + video_id + '/rdf';
     let params = {};
 
     return this.http.get<Rdf>(rdfUrl, params)
@@ -22,7 +22,7 @@ export class RdfService {
   }
 
   ingestRdf(video_id: number): Observable<Rdf> {
-    let rdfUrl = 'api/videos/' + video_id + '/rdf';
+    let rdfUrl = 'api/catalog/' + video_id + '/rdf';
     let params = {};
 
     return this.http.post<Rdf>(rdfUrl, params)

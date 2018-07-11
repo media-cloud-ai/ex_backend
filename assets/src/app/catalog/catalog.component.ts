@@ -247,13 +247,15 @@ export class CatalogComponent {
   show_rdf(video): void {
     this.rdfService.getRdf(video.id)
     .subscribe(response => {
-      let dialogRef = this.dialog.open(RdfDialogComponent, {
-        data: {
-          rdf: response.content
-        }
-      });
+      if(response) {
+        let dialogRef = this.dialog.open(RdfDialogComponent, {
+          data: {
+            rdf: response.content
+          }
+        });
 
-      dialogRef.afterClosed().subscribe(steps => {});
+        dialogRef.afterClosed().subscribe(steps => {});
+      }
     });
   }
 

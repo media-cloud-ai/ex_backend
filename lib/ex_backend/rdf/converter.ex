@@ -58,7 +58,13 @@ defmodule ExBackend.Rdf.Converter do
       ExVideoFactory.videos(params)
       |> Map.get(:videos)
       |> List.first()
-      |> Map.put(:files, files)
+      |> case do
+        nil ->
+          %{files: files}
+        items ->
+          items
+          |> Map.put(:files, files)
+      end
 
     information =
       information

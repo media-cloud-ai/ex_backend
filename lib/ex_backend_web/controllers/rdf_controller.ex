@@ -13,7 +13,7 @@ defmodule ExBackendWeb.RdfController do
   plug(:right_technician_check when action in [:create, :show])
 
   def create(conn, params) do
-    video_id = Map.get(params, "videos_id")
+    video_id = Map.get(params, "catalog_id")
 
     response =
       case Converter.get_rdf(video_id) do
@@ -38,7 +38,7 @@ defmodule ExBackendWeb.RdfController do
   def show(conn, params) do
     {:ok, rdf_serialized} =
       params
-      |> Map.get("videos_id")
+      |> Map.get("catalog_id")
       |> Converter.get_rdf()
 
     conn
