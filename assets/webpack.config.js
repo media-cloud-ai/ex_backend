@@ -55,6 +55,11 @@ const config = {
       }
     ]
   },
+  optimization: {
+    splitChunks: {
+      chunks: 'all'
+    }
+  },
   plugins: [
     new CopyWebpackPlugin([{ from: "./static" }]),
     new webpack.ContextReplacementPlugin(

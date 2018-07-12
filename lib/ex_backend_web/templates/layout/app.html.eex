@@ -16,5 +16,10 @@
   <body>
     <%= render @view_module, @view_template, assigns %>
     <script src="<%= static_path(@conn, "/bundles/main.js") %>"></script>
+    <script src="<%= static_path(@conn, "/bundles/main~theme.js") %>"></script>
+    <script src="<%= static_path(@conn, "/bundles/style.js") %>"></script>
+    <script src="<%= static_path(@conn, "/bundles/theme.js") %>"></script>
+    <script src="<%= static_path(@conn, "/bundles/vendors~main.js") %>"></script>
+    <script src="<%= static_path(@conn, "/bundles/vendors~main~style~theme.js") %>"></script>
   </body>
 </html>
