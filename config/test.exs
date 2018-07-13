@@ -31,7 +31,7 @@ config :ex_backend,
   ]
 
 config :amqp,
-  hostname: "192.168.99.100",
+  hostname: "localhost",
   username: "guest",
   password: "guest"
 
