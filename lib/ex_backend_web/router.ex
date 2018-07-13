@@ -22,6 +22,7 @@ defmodule ExBackendWeb.Router do
 
     post("/sessions", SessionController, :create)
     resources("/users", UserController, except: [:new, :edit])
+    resources("/watchers", WatcherController, except: [:new, :edit])
 
     post("/password_resets", PasswordResetController, :create)
     put("/password_resets/update", PasswordResetController, :update)

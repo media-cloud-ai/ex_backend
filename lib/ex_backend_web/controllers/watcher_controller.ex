@@ -1,0 +1,55 @@
+defmodule ExBackendWeb.WatcherController do
+  use ExBackendWeb, :controller
+
+  import ExBackendWeb.Authorize
+  alias ExBackend.Accounts
+
+  action_fallback(ExBackendWeb.FallbackController)
+
+  # the following plugs are defined in the controllers/authorize.ex file
+  plug(:user_check when action in [:index, :show, :update, :delete])
+  plug(:right_administrator_check when action in [:update, :delete])
+
+  def index(conn, _params) do
+    watchers =
+      Phoenix.Presence.list(ExBackendWeb.Presence, "watch:all")
+      |> Map.to_list()
+      |> format_watchers()
+
+    render(conn, "index.json", watchers: watchers)
+  end
+
+  def format_watchers(watchers, result \\ [])
+  def format_watchers([], result), do: result
+  def format_watchers([head | tail], result) do
+    {user_id, %{metas: metas}} = head
+    user = Accounts.get(user_id)
+
+    connections = Enum.map(metas, fn(connection) ->
+      date_time =
+        connection.online_at
+        |> String.to_integer
+        |> DateTime.from_unix!
+
+      identifier =
+        case connection do
+          %{message: %{"identifier"=> identifier}} ->
+            identifier
+          _ -> nil
+        end
+
+      %{
+        online_at: date_time,
+        identifier: identifier,
+      }
+    end)
+
+    user_connection = %{
+      user: user,
+      connections: connections
+    }
+
+    result = List.insert_at(result, -1, user_connection)
+    format_watchers(tail, result)
+  end
+end

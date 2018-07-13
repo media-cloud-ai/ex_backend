@@ -14,6 +14,7 @@ defmodule ExBackend.Application do
       supervisor(ExBackend.Repo, []),
       # Start the endpoint when the application starts
       supervisor(ExBackendWeb.Endpoint, []),
+      supervisor(ExBackendWeb.Presence, []),
 
       # Start your own worker by calling: ExBackend.Worker.start_link(arg1, arg2, arg3)
       # worker(ExBackend.Worker, [arg1, arg2, arg3]),

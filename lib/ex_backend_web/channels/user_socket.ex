@@ -3,6 +3,7 @@ defmodule ExBackendWeb.UserSocket do
 
   ## Channels
   channel("notifications:*", ExBackendWeb.NotificationChannel)
+  channel("watch:*", ExBackendWeb.WatchChannel)
 
   ## Transports
   transport(:websocket, Phoenix.Transports.WebSocket)

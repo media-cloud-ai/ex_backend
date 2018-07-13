@@ -1,0 +1,27 @@
+
+<span class=watchers>
+  <h3>
+    Watchers
+  </h3>
+  <div *ngIf=watchers>
+    <ul>
+      <li *ngFor="let watcher of watchers.data">
+        <div *ngFor="let connection of watcher.connections">
+          <i class="material-icons">
+            link
+          </i>
+          <label>
+            {{connection.identifier}} is connect with account {{watcher.user.email}} from
+          </label>
+          <span class="date">
+            {{connection.online_at | date: 'd LLL yy'}}
+          </span>
+          <label>at</label>
+          <span class="hour">
+            {{connection.online_at | date: 'H:mm:ss'}}
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</span>
