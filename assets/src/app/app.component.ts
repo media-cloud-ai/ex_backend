@@ -27,6 +27,10 @@ export class AppComponent {
   subIn: Subscription;
   subOut: Subscription;
 
+  left_menu = [
+  ]
+
+
   constructor(
     public authService: AuthService,
     private applicationService: ApplicationService,
@@ -43,6 +47,7 @@ export class AppComponent {
         this.right_technician = this.authService.hasTechnicianRight();
         this.right_editor = this.authService.hasEditorRight();
         this.menu_opened = !this.breakpointObserver.isMatched('(max-width: 599px)');
+        this.updateLeftMenu();
       });
     this.subOut = this.authService.userLoggedOut$.subscribe(
       username => {
@@ -53,6 +58,7 @@ export class AppComponent {
         this.right_administrator = false;
         this.right_technician = false;
         this.right_editor = false;
+        this.updateLeftMenu();
       });
 
     if(this.authService.isLoggedIn) {
@@ -62,13 +68,55 @@ export class AppComponent {
       this.right_technician = this.authService.hasTechnicianRight();
       this.right_editor = this.authService.hasEditorRight();
       this.menu_opened = !this.breakpointObserver.isMatched('(max-width: 599px)');
+      this.updateLeftMenu();
     }
 
     this.applicationService.get()
     .subscribe(application => {
       this.application = application;
-      this.setTitle(application.label)
+      this.setTitle(application.label);
+      this.updateLeftMenu();
     });
+  }
+
+  updateLeftMenu() {
+    if(this.loggedIn) {
+      this.left_menu = [];
+
+      if(this.right_technician) {
+        if(this.application && this.application.identifier == "subtil") {
+          this.left_menu.push({
+            "link": "/catalog",
+            "label": "Catalog"
+          });
+        }
+        this.left_menu.push({
+          "link": "/workflows",
+          "label": "Workflows"
+        });
+        this.left_menu.push({
+          "link": "/workers",
+          "label": "Workers"
+        });
+      }
+
+      if(this.right_editor) {
+        this.left_menu.push({
+          "link": "/people",
+          "label": "People"
+        });
+      }
+
+      if(this.right_administrator) {
+        this.left_menu.push({
+          "link": "/users",
+          "label": "Users"
+        });
+      }
+
+    } else {
+      this.left_menu = [];
+    }
   }
 
   public setTitle(newTitle: string) {
