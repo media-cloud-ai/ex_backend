@@ -13,7 +13,8 @@ defmodule ExBackend.Accounts.MessageTest do
   test "sends confirmation request email", %{email: email, key: key} do
     sent_email = Message.confirm_request(email, key)
     assert sent_email.subject =~ "Confirm your account"
-    assert sent_email.text_body =~ "email here http://localhost:4000/confirm?key="
+    assert sent_email.text_body =~ "Confirm your email here"
+    assert sent_email.text_body =~ "/confirm?key="
     assert_delivered_email(Message.confirm_request(email, key))
   end
 
@@ -25,7 +26,8 @@ defmodule ExBackend.Accounts.MessageTest do
   test "sends reset password request email", %{email: email, key: key} do
     sent_email = Message.reset_request(email, key)
     assert sent_email.subject =~ "Reset your password"
-    assert sent_email.text_body =~ "password at http://localhost:4000/password_resets/edit?key="
+    assert sent_email.text_body =~ "Reset your password at "
+    assert sent_email.text_body =~ "/password_resets/edit?key="
     assert_delivered_email(Message.reset_request(email, key))
   end
 
