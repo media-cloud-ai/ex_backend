@@ -176,7 +176,7 @@ defmodule ExBackend.Accounts.Message do
         <tbody>
           <tr>
             <td>
-              <div style="max-width: 440px; margin:auto;">
+              <div style="max-width: 440px; margin:auto; background-color: #3864aa;">
                 &nbsp;<br/>
                 <img alt="#{app_label}" height="22" src="#{hostname}/bundles/images/#{app_logo}" style="max-width: 100%; border-style: none; width: 123px; height: 22px;" width="123" />
                 <br/>&nbsp;
