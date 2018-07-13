@@ -11,8 +11,9 @@ import {AuthService} from './authentication/auth.service';
 
 import {ConfirmComponent} from './confirm/confirm.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
-import {LoginComponent} from './login/login.component';
+import {IngestComponent} from './ingest/ingest.component';
 import {JobsComponent} from './jobs/jobs.component';
+import {LoginComponent} from './login/login.component';
 import {PersonComponent} from './persons/person.component';
 import {PersonsComponent} from './persons/persons.component';
 import {UsersComponent} from './users/users.component';
@@ -55,6 +56,11 @@ const appRoutes: Routes = [
   {
     path: 'catalog',
     component: CatalogComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'ingest',
+    component: IngestComponent,
     canActivate: [AuthGuard]
   },
   {

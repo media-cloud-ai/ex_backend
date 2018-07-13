@@ -10,7 +10,10 @@ import {AuthService} from './auth.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     let url: string = state.url;
@@ -25,6 +28,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     if (this.authService.isLoggedIn) {
       // console.log("Check URL ", url)
       if(url.startsWith("/catalog") ||
+        url.startsWith("/ingest") ||
         url.startsWith("/workflows") ||
         url.startsWith("/workers")
         ) {

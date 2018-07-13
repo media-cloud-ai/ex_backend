@@ -57,12 +57,13 @@ import {CatalogComponent}         from './catalog/catalog.component';
 import {ConfirmComponent}        from './confirm/confirm.component';
 import {DashboardComponent}      from './dashboard/dashboard.component';
 import {DurationComponent}       from './workflows/details/duration.component';
+import {IngestComponent}           from './ingest/ingest.component';
 import {JobsComponent}           from './jobs/jobs.component';
+import {LinkImportComponent}     from './persons/link_import.component';
 import {LoginComponent}          from './login/login.component';
 import {ParametersComponent}     from './workflows/details/parameters.component';
 import {PersonComponent}         from './persons/person.component';
 import {PersonFormComponent}     from './persons/form.component';
-import {LinkImportComponent}     from './persons/link_import.component';
 import {PersonsComponent}        from './persons/persons.component';
 import {RightsComponent}         from './users/rights.component';
 import {QueuesComponent}         from './amqp/queues.component';
@@ -168,6 +169,7 @@ const EX_BACKEND_DATE_FORMATS = {
     ConfirmComponent,
     DashboardComponent,
     DurationComponent,
+    IngestComponent,
     JobsComponent,
     JobDetailsDialogComponent,
     LinkImportComponent,

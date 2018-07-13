@@ -90,6 +90,12 @@ export class AppComponent {
             "label": "Catalog"
           });
         }
+        if(this.application && this.application.identifier == "vidtext") {
+          this.left_menu.push({
+            "link": "/ingest",
+            "label": "Ingest"
+          });
+        }
         this.left_menu.push({
           "link": "/workflows",
           "label": "Workflows"
