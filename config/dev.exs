@@ -79,9 +79,6 @@ config :ex_backend,
   hostname: "http://localhost:4000",
   workdir: "/tmp/ftp_francetv",
   akamai_video_prefix: "/421959/prod/innovation/testing",
-  docker_hosts: [
-    [hostname: "http://localhost", port: 2357]
-  ],
   rdf_converter: [
     hostname: "localhost",
     port: 1501

@@ -11,11 +11,27 @@
       <span class=hostname>
         {{node.hostname}}:{{node.port}}
       </span>
-      <span *ngIf=node.ssl.cert_file class="SSL">
+      <span *ngIf=node.ssl.certfile class="SSL">
         SSL
+      </span>
+      <span class="trash">
+        <mat-icon
+          (click)="deleteNode(node.id)">
+          delete_forever
+        </mat-icon>
       </span>
     </li>
   </ul>
+  <span>
+    <button
+      mat-raised-button
+      color="accent"
+      (click)="addNode()"
+      >
+      <i class="material-icons">add</i>
+      New Node
+    </button>
+  </span>
 </div>
 
 <h1>
@@ -41,7 +57,8 @@
     color="accent"
     (click)="addContainer()"
     [disabled]="!selectedWorker">
-      <i class="material-icons">add</i> Add a worker
+      <i class="material-icons">add</i>
+      Add a worker
   </button>
 </div>
 
@@ -88,12 +105,14 @@
     <span class="actions">
       <button mat-raised-button
         color="primary"
-        (click)="actionContainer(container.id, container.state)" *ngIf="container.state != 'running'">
+        (click)="actionContainer(container.id, container.state)"
+        *ngIf="container.state != 'running'">
           <i class="material-icons">play_circle_outline</i> Start
       </button>
       <button mat-raised-button
         color="accent"
-        (click)="actionContainer(container.id, container.state)" *ngIf="container.state == 'running'">
+        (click)="actionContainer(container.id, container.state)"
+        *ngIf="container.state == 'running'">
           <i class="material-icons">pause_circle_outline</i> Stop
       </button>
       <button mat-raised-button

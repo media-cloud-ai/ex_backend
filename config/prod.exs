@@ -90,17 +90,7 @@ config :ex_backend,
   akamai_video_prefix: "/421959/prod/innovation/SubTil",
   workdir: "/tmp/ftp_francetv",
   appdir: "/opt/app",
-  acs_app: "./SynchroSubtilTSP_V0.6",
-  docker_hosts: [
-    [
-      label: "Worker 1",
-      hostname: "http://192.168.101.108"
-    ],
-    [
-      label: "Worker 2",
-      hostname: "http://192.168.101.109"
-    ]
-  ]
+  acs_app: "./SynchroSubtilTSP_V0.6"
 
 config :amqp,
   hostname: "192.168.101.107",

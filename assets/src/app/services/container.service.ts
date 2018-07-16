@@ -24,9 +24,9 @@ export class ContainerService {
       );
   }
 
-  createContainer(node_config: NodeConfig, container_name: string, image_parameters: ImageParameters): Observable<Container> {
+  createContainer(node_id: number, container_name: string, image_parameters: ImageParameters): Observable<Container> {
     let params = {
-      node_config: node_config,
+      node_id: node_id,
       container_name: container_name,
       image_parameters: image_parameters
     };

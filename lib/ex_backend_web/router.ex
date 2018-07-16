@@ -34,7 +34,8 @@ defmodule ExBackendWeb.Router do
     end
 
     scope "/docker", Docker do
-      get("/nodes", NodesController, :index)
+      post("/test", NodeController, :test)
+      resources("/nodes", NodeController, except: [:new, :edit])
       get("/images", ImagesController, :index)
 
       resources "/containers", ContainersController, except: [:new, :edit] do

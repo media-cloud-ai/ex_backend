@@ -10,6 +10,7 @@ export class ImageParameters {
 export class Image {
   id: string;
   label: string;
+  node_id: number;
   node_config: NodeConfig;
   params: ImageParameters
 }

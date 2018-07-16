@@ -10,6 +10,8 @@ defmodule ExBackendWeb.Docker.ContainersView do
   end
 
   def render("container.json", %{containers: container}) do
+    node_id = Map.get(container, :node_id)
+
     node_config = %{
       hostname: container.node_config.hostname,
       port: container.node_config.port
@@ -41,6 +43,7 @@ defmodule ExBackendWeb.Docker.ContainersView do
       image: container.image,
       state: container.state,
       status: container.status,
+      node_id: node_id,
       node_config: node_config
     }
   end

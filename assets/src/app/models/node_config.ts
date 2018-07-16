@@ -1,13 +1,10 @@
 
-
-export class Ssl {
-  cert_file?: string;
-  key_file?: string;
-}
-
 export class NodeConfig {
+  id?: string;
   label: string;
   hostname: string;
   port: number;
-  ssl: Ssl;
+  ssl_enabled: boolean;
+  certfile?: string;
+  keyfile?: string;
 }

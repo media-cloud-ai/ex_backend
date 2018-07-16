@@ -2,13 +2,8 @@ defmodule ExBackendWeb.Docker.ImagesController do
   use ExBackendWeb, :controller
 
   import ExBackendWeb.Authorize
-
-  alias ExBackend.Docker.Node
-
-  alias RemoteDockers.{
-    Image,
-    NodeConfig
-  }
+  alias ExBackend.Nodes.Node
+  alias RemoteDockers.Image
 
   # the following plugs are defined in the controllers/authorize.ex file
   plug(:user_check when action in [:index])
@@ -69,6 +64,7 @@ defmodule ExBackendWeb.Docker.ImagesController do
       node_config: %{
         label: image.node_config.label
       },
+      node_id: image.node_id,
       params: %{
         image: image.repo_tags |> List.first(),
         environment: image_environment,
@@ -80,14 +76,21 @@ defmodule ExBackendWeb.Docker.ImagesController do
     build_images(images, environment, volumes, image_list)
   end
 
-  defp list_images(%NodeConfig{} = node_config) do
-    Image.list_all!(node_config)
+  defp list_images(%Node{} = node_config) do
+    node_config
+    |> ExBackend.Docker.NodeConfig.to_node_config()
+    |> Image.list_all!()
   end
 
   defp list_all() do
-    Node.list()
+    ExBackend.Nodes.list_nodes()
+    |> Map.get(:data)
     |> Enum.map(fn node_config ->
       list_images(node_config)
+      |> Enum.map(fn image ->
+        image
+        |> Map.put(:node_id, node_config.id)
+      end)
     end)
     |> Enum.concat()
   end

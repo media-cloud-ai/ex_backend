@@ -4,12 +4,9 @@ defmodule ExBackendWeb.Docker.ContainersController do
 
   import ExBackendWeb.Authorize
 
-  alias ExBackend.Docker.Node
-
-  alias RemoteDockers.{
-    Container,
-    NodeConfig
-  }
+  alias ExBackend.Nodes
+  alias ExBackend.Nodes.Node
+  alias RemoteDockers.Container
 
   # the following plugs are defined in the controllers/authorize.ex file
   plug(:user_check when action in [:index, :create, :show, :start, :stop])
@@ -23,13 +20,14 @@ defmodule ExBackendWeb.Docker.ContainersController do
   def create(conn, params) do
     %{
       "container_name" => container_name,
-      "node_config" => %{
-        "label" => label
-      },
+      "node_id" => node_id,
       "image_parameters" => parameters
     } = params
 
-    node_config = ExBackend.Docker.Node.get_by_label(label)
+    node_config =
+      Nodes.get_node!(node_id)
+      |> ExBackend.Docker.NodeConfig.to_node_config()
+
     container_config = ExBackend.Docker.Container.build_config(parameters)
 
     try do
@@ -37,7 +35,6 @@ defmodule ExBackendWeb.Docker.ContainersController do
       render(conn, "container.json", containers: container)
     rescue
       error ->
-        # IO.inspect(container_config)
         Logger.error("#{__MODULE__}: #{inspect(error)}")
 
         conn
@@ -94,14 +91,21 @@ defmodule ExBackendWeb.Docker.ContainersController do
     end)
   end
 
-  defp list_containers(%NodeConfig{} = node_config) do
-    Container.list_all!(node_config)
+  defp list_containers(%Node{} = node_config) do
+    node_config
+    |> ExBackend.Docker.NodeConfig.to_node_config()
+    |> Container.list_all!()
   end
 
   defp list_all() do
-    Node.list()
+    ExBackend.Nodes.list_nodes()
+    |> Map.get(:data)
     |> Enum.map(fn node_config ->
       list_containers(node_config)
+      |> Enum.map(fn container ->
+        container
+        |> Map.put(:node_id, node_config.id)
+      end)
     end)
     |> Enum.concat()
   end

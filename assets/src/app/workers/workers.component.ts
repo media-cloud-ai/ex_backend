@@ -1,10 +1,12 @@
 
 import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
+import {MatDialog} from '@angular/material';
 
 import {ContainerService} from '../services/container.service';
 import {NodeService} from '../services/node.service';
 import {ImageService} from '../services/image.service';
+import {NewNodeDialogComponent} from '../nodes/new_node_dialog.component'
 
 import {Container} from '../models/container';
 import {NodeConfig} from '../models/node_config';
@@ -29,12 +31,12 @@ export class WorkersComponent {
     private nodeService: NodeService,
     private imageService: ImageService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {
   }
 
   ngOnInit() {
-
     this.imageService.getImages()
     .subscribe(imagePage => {
       this.images = imagePage.data;
@@ -44,23 +46,40 @@ export class WorkersComponent {
     this.getContainers();
   }
 
-  getNodes(): void {
+  getNodes() {
     this.nodeService.getNodes()
     .subscribe(nodeConfigPage => {
       this.nodes = nodeConfigPage.data;
     });
   }
 
-  getContainers(): void {
+  addNode() {
+    let dialogRef = this.dialog.open(NewNodeDialogComponent);
+
+    dialogRef.afterClosed().subscribe(node => {
+      if(node != undefined) {
+        this.getNodes();
+      }
+    });
+  }
+
+  deleteNode(id: number) {
+    this.nodeService.deleteNode(id)
+    .subscribe(response => {
+      this.getNodes();
+    });
+  }
+
+  getContainers() {
     this.containerService.getContainers()
     .subscribe(containerPage => {
       this.containers = containerPage.data;
     });
   }
 
-  addContainer(): void {
+  addContainer() {
     this.containerService.createContainer(
-      this.selectedWorker.node_config,
+      this.selectedWorker.node_id,
       Date.now().toString(),
       this.selectedWorker.params)
     .subscribe(container => {
@@ -69,21 +88,21 @@ export class WorkersComponent {
     });
   }
 
-  removeContainer(id: string): void {
+  removeContainer(id: string) {
     this.containerService.removeContainer(id)
     .subscribe(container => {
       this.getContainers();
     });
   }
 
-  private startContainer(id: string): void {
+  startContainer(id: string) {
     this.containerService.updateContainer(id, "start")
     .subscribe(container => {
       this.getContainers()
     });
   }
 
-  private stopContainer(id: string): void {
+  stopContainer(id: string) {
     this.containerService.updateContainer(id, "stop")
     .subscribe(container => {
       var that = this;
@@ -91,7 +110,7 @@ export class WorkersComponent {
     });
   }
 
-  actionContainer(id: string, state: string): void {
+  actionContainer(id: string, state: string) {
     if(state == 'running') {
       this.stopContainer(id);
     } else {

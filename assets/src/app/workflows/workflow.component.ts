@@ -1,8 +1,8 @@
 
 import {Component, Input} from '@angular/core';
 import {Router} from '@angular/router';
-
 import {MatDialog} from '@angular/material';
+
 import {WorkflowService} from '../services/workflow.service';
 import {Workflow, Step} from '../models/workflow';
 import {WorkflowAbortDialogComponent} from './dialogs/workflow_abort_dialog.component';

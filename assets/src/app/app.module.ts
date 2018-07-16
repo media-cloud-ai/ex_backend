@@ -77,9 +77,10 @@ import {WorkflowStepDetailsComponent} from './workflows/details/workflow_step_de
 import {WorkflowsComponent}      from './workflows/workflows.component';
 import {WorkersComponent}        from './workers/workers.component';
 
-import {JobDetailsDialogComponent}    from './jobs/details/job_details_dialog.component';
+import {JobDetailsDialogComponent} from './jobs/details/job_details_dialog.component';
+import {NewNodeDialogComponent} from './nodes/new_node_dialog.component';
 import {PersonShowDialogComponent} from './persons/show_dialog.component';
-import {RdfDialogComponent}      from './catalog/rdf/rdf_dialog.component';
+import {RdfDialogComponent} from './catalog/rdf/rdf_dialog.component';
 import {WorkflowAbortDialogComponent} from './workflows/dialogs/workflow_abort_dialog.component';
 import {WorkflowDialogComponent} from './catalog/workflow/workflow_dialog.component';
 
@@ -95,7 +96,7 @@ import {NodeService}             from './services/node.service';
 import {PersonService}           from './services/person.service';
 import {RdfService}              from './services/rdf.service';
 import {UserService}             from './services/user.service';
-import {WatcherService}         from './services/watcher.service';
+import {WatcherService}          from './services/watcher.service';
 import {WorkflowService}         from './services/workflow.service';
 
 import {AudioTypePipe}           from './pipes/audio_type.pipe';
@@ -174,6 +175,7 @@ const EX_BACKEND_DATE_FORMATS = {
     JobDetailsDialogComponent,
     LinkImportComponent,
     LoginComponent,
+    NewNodeDialogComponent,
     ParametersComponent,
     PersonComponent,
     PersonFormComponent,
@@ -213,6 +215,7 @@ const EX_BACKEND_DATE_FORMATS = {
     DurationComponent,
     JobDetailsDialogComponent,
     LinkImportComponent,
+    NewNodeDialogComponent,
     ParametersComponent,
     PersonFormComponent,
     PersonShowDialogComponent,
