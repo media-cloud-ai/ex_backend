@@ -33,12 +33,27 @@ defmodule ExBackend.Accounts.Message do
   import Bamboo.Email
   alias ExBackend.Mailer
 
+  defp get_url_base() do
+    hostname = System.get_env("HOSTNAME") || Application.get_env(:ex_backend, :hostname)
+    port = System.get_env("PORT") || Application.get_env(:ex_backend, :port)
+    ssl = System.get_env("SSL") || Application.get_env(:ex_backend, :ssl)
+
+    protocol =
+    if ssl == true do
+      "https://"
+    else
+      "http://"
+    end
+
+    protocol <> hostname <> ":" <> port
+  end
+
   @doc """
   An email with a confirmation link in it.
   """
   def confirm_request(address, key) do
     app_label = System.get_env("APP_LABEL") || Application.get_env(:ex_backend, :app_label)
-    hostname = System.get_env("HOSTNAME") || Application.get_env(:ex_backend, :hostname)
+    hostname = get_url_base()
 
     prep_mail(address)
     |> subject("[#{app_label} Backend] Confirm your account")
@@ -87,7 +102,7 @@ defmodule ExBackend.Accounts.Message do
 
   def reset_request(address, key) do
     app_label = System.get_env("APP_LABEL") || Application.get_env(:ex_backend, :app_label)
-    hostname = System.get_env("HOSTNAME") || Application.get_env(:ex_backend, :hostname)
+    hostname = get_url_base()
 
     prep_mail(address)
     |> subject("[#{app_label} Backend] Reset your password")
@@ -133,7 +148,7 @@ defmodule ExBackend.Accounts.Message do
   defp build_html_body(config, content) do
     app_label = System.get_env("APP_LABEL") || Application.get_env(:ex_backend, :app_label)
     app_logo = System.get_env("APP_LOGO") || Application.get_env(:ex_backend, :app_logo)
-    hostname = System.get_env("HOSTNAME") || Application.get_env(:ex_backend, :hostname)
+    hostname = get_url_base()
 
     config
     |> html_body("""

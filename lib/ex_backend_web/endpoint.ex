@@ -57,7 +57,13 @@ defmodule ExBackendWeb.Endpoint do
   def init(_key, config) do
     if config[:load_from_system_env] do
       port = System.get_env("PORT") || raise "expected the PORT environment variable to be set"
-      {:ok, Keyword.put(config, :http, [:inet6, port: port])}
+      hostname = System.get_env("HOSTNAME") || raise "expected the HOSTNAME environment variable to be set"
+
+      config =
+        config
+        |> Keyword.put(:http, [:inet6, port: port])
+        |> Keyword.put(:url, [host: hostname, port: port])
+      {:ok, config}
     else
       {:ok, config}
     end

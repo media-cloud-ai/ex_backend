@@ -21,6 +21,8 @@ config :ex_backend, ExBackend.Repo,
 config :ex_backend,
   app_name: "Subtil",
   hostname: "http://localhost:4000",
+  port: 4000,
+  ssl: false,
   docker_hosts: [
     [
       hostname: "http://localhost",
