@@ -6,7 +6,7 @@ defmodule ExBackendWeb.WatchChannel do
 
   def join("watch:all", message, socket) do
     IO.inspect message
-    send(self, {:after_join, message})
+    send(self(), {:after_join, message})
     {:ok, socket}
   end
 
@@ -28,7 +28,7 @@ defmodule ExBackendWeb.WatchChannel do
     {:noreply, socket}
   end
 
-  def terminate(msg, socket) do
+  def terminate(_msg, _socket) do
     # ExBackendWeb.Endpoint.broadcast!("notifications:all", topic, %{})
     # IO.inspect msg
   end
