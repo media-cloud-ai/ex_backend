@@ -28,7 +28,6 @@ export class VideoTitleComponent {
 
     this.catalogService.getVideo(this.id)
     .subscribe(response => {
-      console.log(response)
       this.video = response.data;
     });
   }

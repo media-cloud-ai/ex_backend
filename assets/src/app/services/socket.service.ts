@@ -14,7 +14,6 @@ export class SocketService {
 
   public initSocket(): void {
     var token = this.authService.getToken();
-    console.log(token);
 
     this.socket = new Socket("/socket", {params: {userToken: token}});
     // this.socket.onError(() => this.authService.logout())
