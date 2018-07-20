@@ -2,4 +2,24 @@
 	<h1>
 		Ingest
 	</h1>
+
+	<ul *ngIf="entries">
+		<li *ngFor="let entry of entries.entries"
+			(click)="ingest(entry)"
+			[ngClass]="{'file': entry.is_file }">
+			<i class="material-icons"
+				*ngIf="entry.is_dir"
+				>
+				folder_open
+			</i>
+			<i class="material-icons"
+				*ngIf="entry.is_file"
+				>
+				description
+			</i>
+			<label>
+				{{entry.filename}}
+			</label>
+		</li>
+	</ul>
 </div>

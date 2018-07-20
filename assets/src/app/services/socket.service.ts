@@ -12,7 +12,7 @@ export class SocketService {
 
   constructor(private authService: AuthService) { }
 
-  public initSocket(): void {
+  public initSocket() {
     var token = this.authService.getToken();
 
     this.socket = new Socket("/socket", {params: {userToken: token}});
@@ -20,7 +20,10 @@ export class SocketService {
     // this.socket.onClose(() => this.authService.logout())
 
     this.socket.connect();
-    this.channel = this.socket.channel("notifications:all", {});
+  }
+
+  public connectToChannel(channel: string) {
+    this.channel = this.socket.channel(channel, {});
 
     this.channel.join()
       .receive("ok", resp => {
@@ -31,14 +34,28 @@ export class SocketService {
       });
   }
 
+  public sendMessage(topic: string, body: any) {
+    this.channel.push(topic, {body: body}, 10000)
+      .receive("ok", (msg) => console.log("created message", msg) )
+      .receive("error", (reasons) => console.log("create failed", reasons) )
+      .receive("timeout", () => console.log("Networking issue...") )
+  }
+
   public onNewWorkflow(): Observable<Message> {
     return new Observable<Message>(observer => {
       this.channel.on('new_workflow', (data: Message) => observer.next(data));
     });
   }
+
   public onWorkflowUpdate(workflow_id: number): Observable<Message> {
     return new Observable<Message>(observer => {
       this.channel.on('update_workflow_' + workflow_id, (data: Message) => observer.next(data));
+    });
+  }
+
+  public onList(id: string): Observable<Message> {
+    return new Observable<Message>(observer => {
+      this.channel.on(id, (data: Message) => observer.next(data));
     });
   }
 }

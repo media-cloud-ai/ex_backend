@@ -2,6 +2,7 @@ defmodule ExBackendWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
+  channel("browser:*", ExBackendWeb.BrowserChannel)
   channel("notifications:*", ExBackendWeb.NotificationChannel)
   channel("watch:*", ExBackendWeb.WatchChannel)
 

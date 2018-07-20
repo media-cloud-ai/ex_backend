@@ -40,6 +40,7 @@ export class WorkflowDetailsComponent {
     });
 
     this.socketService.initSocket();
+    this.socketService.connectToChannel("notifications:all");
 
     this.connection = this.socketService.onWorkflowUpdate(this.workflow_id)
       .subscribe((message: Message) => {

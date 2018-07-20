@@ -12,7 +12,7 @@ defmodule ExBackendWeb.WatcherController do
 
   def index(conn, _params) do
     watchers =
-      Phoenix.Presence.list(ExBackendWeb.Presence, "watch:all")
+      Phoenix.Presence.list(ExBackendWeb.Presence, "browser:all")
       |> Map.to_list()
       |> format_watchers()
 

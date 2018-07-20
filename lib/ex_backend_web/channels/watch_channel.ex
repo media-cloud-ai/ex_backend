@@ -5,7 +5,6 @@ defmodule ExBackendWeb.WatchChannel do
   require Logger
 
   def join("watch:all", message, socket) do
-    IO.inspect message
     send(self(), {:after_join, message})
     {:ok, socket}
   end
@@ -26,6 +25,16 @@ defmodule ExBackendWeb.WatchChannel do
   def handle_in("get", %{"body" => body}, socket) do
     Logger.info("websocket message #{inspect(body)}")
     {:noreply, socket}
+  end
+
+  def handle_in("ls", %{"body" => %{"path" => path}}, socket) do
+    Logger.info("list path #{inspect(path)}")
+
+    ExBackendWeb.Endpoint.broadcast!("browser:all", "file_system", %{
+      body: %{path: path}
+    })
+
+    {:reply, {:ok, %{paths: []}}, socket}
   end
 
   def terminate(_msg, _socket) do
