@@ -7,9 +7,9 @@ stages:
   - build
 
 variables:
-  CONTAINER_LOCAL_IMAGE: backend
+  CONTAINER_LOCAL_IMAGE: ex_backend
   CONTAINER_REGISTRY: registry.ebu.io
-  CONTAINER_RELEASE_IMAGE: registry.ebu.io/vidtext/backend:$CI_COMMIT_SHA
+  CONTAINER_RELEASE_IMAGE: registry.ebu.io/vidtext/ex_backend:$CI_COMMIT_SHA
 
 build:
   stage: build
