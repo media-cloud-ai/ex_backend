@@ -1,0 +1,23 @@
+image: docker:latest
+
+services:
+  - docker:dind
+
+stages:
+  - build
+
+variables:
+  CONTAINER_LOCAL_IMAGE: backend
+  CONTAINER_REGISTRY: registry.ebu.io
+  CONTAINER_RELEASE_IMAGE: registry.ebu.io/vidtext/backend:$CI_COMMIT_SHA
+
+build:
+  stage: build
+  script:
+    - docker build --build-arg CI_COMMIT_SHA=$CI_COMMIT_SHA -t $CONTAINER_LOCAL_IMAGE .
+    - docker login -u dind-runner -p $REGISTRY_PASSWORD $CONTAINER_REGISTRY
+    - docker tag $CONTAINER_LOCAL_IMAGE $CONTAINER_RELEASE_IMAGE
+    - docker push $CONTAINER_RELEASE_IMAGE
+  tags:
+    - dund
+
