@@ -35,15 +35,20 @@ defmodule ExBackend.Accounts.Message do
 
   defp get_url_base() do
     hostname = System.get_env("HOSTNAME") || Application.get_env(:ex_backend, :hostname)
-    port = System.get_env("PORT") || Application.get_env(:ex_backend, :port)
     ssl = System.get_env("SSL") || Application.get_env(:ex_backend, :ssl)
 
     protocol =
-    if ssl == true do
-      "https://"
-    else
-      "http://"
-    end
+      if ssl == true do
+        "https://"
+      else
+        "http://"
+      end
+
+    port =
+      case System.get_env("EXTERNAL_PORT") || Application.get_env(:ex_backend, :external_port) do
+        nil -> ""
+        port -> ":" <> port
+      end
 
     protocol <> hostname <> ":" <> port
   end
