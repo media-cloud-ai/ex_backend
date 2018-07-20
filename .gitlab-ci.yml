@@ -18,6 +18,7 @@ build:
     - docker login -u dind-runner -p $REGISTRY_PASSWORD $CONTAINER_REGISTRY
     - docker tag $CONTAINER_LOCAL_IMAGE $CONTAINER_RELEASE_IMAGE
     - docker push $CONTAINER_RELEASE_IMAGE
+    - echo $CONTAINER_RELEASE_IMAGE
   tags:
     - dind
 
