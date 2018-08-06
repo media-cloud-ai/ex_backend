@@ -27,6 +27,7 @@ export class Step {
   status?: string;
   required?: string[];
   inputs?: Input[];
+  output_extension?: string;
   parameters?: Parameter[];
   jobs?: JobsStatus;
 }
