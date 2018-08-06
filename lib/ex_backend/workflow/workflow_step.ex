@@ -74,10 +74,6 @@ defmodule ExBackend.WorkflowStep do
     ExBackend.Workflow.Step.AudioEncode.launch(workflow)
   end
 
-  defp launch_step(workflow, %{"name" => "audio_extract"} = _step, _step_index) do
-    ExBackend.Workflow.Step.AudioExtract.launch(workflow)
-  end
-
   defp launch_step(workflow, %{"name" => "audio_extraction"} = step, _step_index) do
     ExBackend.Workflow.Step.AudioExtraction.launch(workflow, step)
   end

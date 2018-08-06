@@ -32,14 +32,14 @@ defmodule ExBackend.Workflow.Step.AudioEncode do
     requirements = Requirements.add_required_paths(path)
 
     encoding_options = %{
-      "codec_audio": "libfdk_aac",
-      "profile_audio": "aac_he",
-      "variable_bitrate": 4,
-      "force_overwrite": true,
-      "disable_video": true,
-      "disable_data": true,
-      "audio_sampling_rate": 48000,
-      "audio_channels": 2
+      codec_audio: "libfdk_aac",
+      profile_audio: "aac_he",
+      variable_bitrate: 4,
+      force_overwrite: true,
+      disable_video: true,
+      disable_data: true,
+      audio_sampling_rate: 48000,
+      audio_channels: 2
     }
 
     job_params = %{

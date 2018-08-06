@@ -46,10 +46,10 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
       case Map.get(step, "parameters") do
         nil ->
           %{
-            "codec_audio": "copy",
-            "force_overwrite": true,
-            "disable_video": true,
-            "disable_data": true
+            codec_audio: "copy",
+            force_overwrite: true,
+            disable_video: true,
+            disable_data: true
           }
         options -> options
       end
