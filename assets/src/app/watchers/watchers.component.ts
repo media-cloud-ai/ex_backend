@@ -5,7 +5,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 
 import {WatcherService} from '../services/watcher.service';
 import {WatcherPage} from '../models/page/watcher_page';
-import {Watcher} from '../models/watcher';
 
 @Component({
   selector: 'watchers-component',

@@ -7,34 +7,52 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
 
   @action_name "audio_extraction"
 
-  def launch(workflow) do
-    case get_first_source_file(workflow.jobs) do
-      nil -> Jobs.create_skipped_job(workflow, @action_name)
-      path -> start_extracting_audio(path, workflow)
+  def launch(workflow, step) do
+    case Map.get(step, "inputs") do
+      nil ->
+        case get_first_source_file(workflow.jobs) do
+          nil -> Jobs.create_skipped_job(workflow, @action_name)
+          path -> start_extracting_audio(path, workflow, step)
+        end
+      inputs ->
+        for input <- inputs do
+          start_extracting_audio(Map.get(input, "path"), workflow, step)
+        end
     end
   end
 
-  defp start_extracting_audio(path, workflow) do
+  defp start_extracting_audio(path, workflow, step) do
     work_dir =
       System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir) ||
         "/tmp/ftp_francetv"
 
     filename = Path.basename(path, "-standard1.mp4")
 
+    output_extension =
+      case Map.get(step, "output_extension") do
+        nil -> "-fra.mp4"
+        ext -> ext
+      end
+
     dst_path =
       work_dir <>
         "/" <>
         workflow.reference <>
-        "_" <> Integer.to_string(workflow.id) <> "/" <> filename <> "-fra.mp4"
+        "_" <> Integer.to_string(workflow.id) <> "/" <> filename <> output_extension
 
     requirements = Requirements.add_required_paths(path)
 
-    options = %{
-      "-codec:a": "copy",
-      "-y": true,
-      "-vn": true,
-      "-dn": true
-    }
+    options =
+      case Map.get(step, "parameters") do
+        nil ->
+          %{
+            "codec_audio": "copy",
+            "force_overwrite": true,
+            "disable_video": true,
+            "disable_data": true
+          }
+        options -> options
+      end
 
     job_params = %{
       name: @action_name,

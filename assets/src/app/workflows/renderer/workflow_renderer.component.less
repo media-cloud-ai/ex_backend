@@ -1,0 +1,30 @@
+@import '../../colors';
+
+.line {
+  display: flex;
+  align-items: flex-end;
+  font-family: sans-serif;
+
+  .step {
+    min-height: 32px;
+    min-width: 200px;
+    padding: 10px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    label.active{
+      cursor: pointer;
+    }
+
+    .disabled {
+      color: @grey;
+    }
+
+    .parameter {
+      line-height: 18px;
+      display: inline-flex;
+    }
+  }
+}

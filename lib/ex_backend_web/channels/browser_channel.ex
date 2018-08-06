@@ -29,7 +29,7 @@ defmodule ExBackendWeb.BrowserChannel do
   end
 
   def handle_in("response", payload, socket) do
-    Logger.info("list path #{inspect(payload)}")
+    # Logger.info("list path #{inspect(payload)}")
     ExBackendWeb.Endpoint.broadcast!("watch:all", "pouet", payload)
     {:noreply, socket}
   end

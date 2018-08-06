@@ -3,6 +3,32 @@
 		Ingest
 	</h1>
 
+	<div class="ariane">
+		<span
+			class=path
+			(click)="goTo(0)">
+			<label>
+				<i class="material-icons">
+					home
+				</i>
+				<i class="material-icons forward">
+					arrow_forward_ios
+				</i>
+			</label>
+		</span>
+		<span
+			class=path
+			*ngFor="let folder of full_path; let i = index"
+			(click)="goTo(i + 1)">
+			<label>
+				{{folder}}
+			</label>
+			<i class="material-icons forward">
+				arrow_forward_ios
+			</i>
+		</span>
+	</div>
+
 	<ul *ngIf="entries">
 		<li *ngFor="let entry of entries.entries"
 			(click)="ingest(entry)"

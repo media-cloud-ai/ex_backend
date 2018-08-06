@@ -73,10 +73,12 @@ import {VideoTitleComponent}     from './workflows/video_title.component';
 import {WatchersComponent}       from './watchers/watchers.component';
 import {WorkflowComponent}       from './workflows/workflow.component';
 import {WorkflowDetailsComponent}     from './workflows/details/workflow_details.component';
+import {WorkflowRendererComponent} from './workflows/renderer/workflow_renderer.component';
 import {WorkflowStepDetailsComponent} from './workflows/details/workflow_step_details.component';
 import {WorkflowsComponent}      from './workflows/workflows.component';
 import {WorkersComponent}        from './workers/workers.component';
 
+import {StartIngestDialog} from './ingest/dialogs/start_ingest.component';
 import {JobDetailsDialogComponent} from './jobs/details/job_details_dialog.component';
 import {NewNodeDialogComponent} from './nodes/new_node_dialog.component';
 import {PersonShowDialogComponent} from './persons/show_dialog.component';
@@ -183,6 +185,7 @@ const EX_BACKEND_DATE_FORMATS = {
     PersonsComponent,
     QueuesComponent,
     RightsComponent,
+    StartIngestDialog,
     StepProgressBarComponent,
     UsersComponent,
     VideoTitleComponent,
@@ -192,6 +195,7 @@ const EX_BACKEND_DATE_FORMATS = {
     WorkflowDialogComponent,
     WorkflowComponent,
     WorkflowDetailsComponent,
+    WorkflowRendererComponent,
     WorkflowStepDetailsComponent,
     WorkflowsComponent,
     WorkersComponent,
@@ -221,12 +225,14 @@ const EX_BACKEND_DATE_FORMATS = {
     PersonShowDialogComponent,
     RdfDialogComponent,
     RightsComponent,
+    StartIngestDialog,
     StepProgressBarComponent,
     VideoTitleComponent,
     WatchersComponent,
     WorkflowComponent,
     WorkflowAbortDialogComponent,
     WorkflowDialogComponent,
+    WorkflowRendererComponent,
     WorkflowStepDetailsComponent
   ],
   providers: [

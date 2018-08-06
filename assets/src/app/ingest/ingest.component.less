@@ -4,14 +4,28 @@
 ul {
 	text-decoration: none;
 	list-style: none;
+	padding-bottom: 30px;
 
-	li.file {
+	li {
 		cursor: pointer;
+
+		i {
+			font-size: 20px;
+		}
+
+		i, label {
+			cursor: pointer;
+			color: @blue;
+		}
 	}
 
 	li.file:hover {
 		background-color: @blue;
 		color: @white;
+
+		i, label {
+			color: @white;
+		}
 	}
 }
 
@@ -20,4 +34,24 @@ i {
 	vertical-align: middle;
 }
 
+.ariane {
+	background-color: @lightGrey;
+	display: inline-block;
 
+	.path {
+		display: inline-block;
+		padding: 5px;
+		min-width: 40px;
+		text-align: center;
+		height: 100%;
+		margin: 0;
+		vertical-align: top;
+
+		label {
+			font-weight: bold;
+		}
+		i.forward {
+			color: @grey;
+		}
+	}
+}

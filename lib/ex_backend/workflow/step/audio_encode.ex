@@ -32,14 +32,14 @@ defmodule ExBackend.Workflow.Step.AudioEncode do
     requirements = Requirements.add_required_paths(path)
 
     encoding_options = %{
-      "-codec:a": "libfdk_aac",
-      "-profile:a": "aac_he",
-      "-vbr": 4,
-      "-y": true,
-      "-vn": true,
-      "-dn": true,
-      "-ar": 48000,
-      "-ac": 2
+      "codec_audio": "libfdk_aac",
+      "profile_audio": "aac_he",
+      "variable_bitrate": 4,
+      "force_overwrite": true,
+      "disable_video": true,
+      "disable_data": true,
+      "audio_sampling_rate": 48000,
+      "audio_channels": 2
     }
 
     job_params = %{
@@ -69,7 +69,6 @@ defmodule ExBackend.Workflow.Step.AudioEncode do
       parameters: job.params
     }
 
-    IO.inspect(params)
     JobFFmpegEmitter.publish_json(params)
 
     start_processing_audio(paths, workflow)

@@ -32,16 +32,16 @@ defmodule ExBackend.Workflow.Step.AudioDecode do
     requirements = Requirements.add_required_paths(path)
 
     decoding_options = %{
-      "-codec:a": "libfdk_aac"
+      "codec_audio": "libfdk_aac"
     }
 
     encoding_options = %{
-      "-codec:a": "pcm_s16le",
-      "-y": true,
-      "-vn": true,
-      "-dn": true,
-      "-ar": 48000,
-      "-ac": 2
+      "codec_audio": "pcm_s16le",
+      "force_overwrite": true,
+      "disable_video": true,
+      "disable_data": true,
+      "audio_sampling_rate": 48000,
+      "audio_channels": 2
     }
 
     job_params = %{

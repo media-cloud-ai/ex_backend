@@ -12,8 +12,6 @@ export class WorkflowDialogComponent {
 
   acs_enable: boolean;
   steps: Step[];
-  renderer: WorkflowRenderer;
-  active_steps = {};
 
   constructor(public dialogRef: MatDialogRef<WorkflowDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -148,47 +146,6 @@ export class WorkflowDialogComponent {
         ]
       }
     ]
-
-    this.renderer = new WorkflowRenderer(this.steps);
-    this.updateStepRequirements(this.steps[0]);
-  }
-
-  updateStepRequirements(step: Step) {
-    let step_dependencies = this.steps.filter(s => step.required.some(dependency => dependency == s.name));
-    let can_step_be_enabled = true;
-    for(let dep of step_dependencies) {
-      if(!dep.enable) {
-        can_step_be_enabled = false;
-      }
-    }
-    this.active_steps[step.name] = can_step_be_enabled;
-    if(!can_step_be_enabled) {
-      step.enable = false;
-    }
-
-    let step_children = this.steps.filter(s => s.parent_ids.includes(step.id));
-    for(let child of step_children) {
-      this.updateStepRequirements(child);
-    }
-  }
-
-  updateEnabledSteps(step: Step): void {
-    if(!step.enable) {
-      let step_children = this.steps.filter(s => s.parent_ids.includes(step.id));
-      for(let child of step_children) {
-        if(child.enable && child.parent_ids.length > 1) {
-          // handle multiple parents case
-          let has_enabled_parents = this.steps.some(s => child.parent_ids.includes(s.id) && s.enable);
-          if(has_enabled_parents) {
-            continue;
-          }
-        }
-
-        child.enable = false;
-        this.updateEnabledSteps(child);
-      }
-    }
-    this.updateStepRequirements(step);
   }
 
   onNoClick(): void {

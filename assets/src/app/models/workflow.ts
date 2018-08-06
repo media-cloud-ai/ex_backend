@@ -10,8 +10,13 @@ export class JobsStatus {
 export class Parameter {
   id: string;
   type: string;
+  enable?: boolean;
   default: any;
   value: any;
+}
+
+export class Input {
+  path: string
 }
 
 export class Step {
@@ -21,6 +26,7 @@ export class Step {
   enable: boolean;
   status?: string;
   required?: string[];
+  inputs?: Input[];
   parameters?: Parameter[];
   jobs?: JobsStatus;
 }

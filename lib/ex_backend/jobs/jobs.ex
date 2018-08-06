@@ -141,6 +141,27 @@ defmodule ExBackend.Jobs do
   end
 
   @doc """
+  Creates a job with an error status.
+
+  ## Examples
+
+      iex> create_error_job(workflow, "download_http", "unsupported step")
+      {:ok, "created"}
+
+  """
+  def create_error_job(workflow, action, description) do
+    job_params = %{
+      name: action,
+      workflow_id: workflow.id,
+      params: %{}
+    }
+
+    {:ok, job} = create_job(job_params)
+    Status.set_job_status(job.id, "error", %{message: description})
+    {:ok, "created"}
+  end
+
+  @doc """
   Set skipped status to all queued jobs.
 
   ## Examples

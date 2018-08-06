@@ -195,7 +195,7 @@ defmodule ExBackend.Workflows do
           count
         end
       else
-        Enum.filter(job.status, fn s -> s == status end)
+        Enum.filter(job.status, fn s -> s.state == status end)
         |> length
         |> case do
           0 ->

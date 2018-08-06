@@ -6,7 +6,7 @@
 <amqp-queues *ngIf="right_technician">
 </amqp-queues>
 
-<watchers-component>
+<watchers-component *ngIf="right_technician">
 </watchers-component>
 
 <persons-component *ngIf="right_editor">

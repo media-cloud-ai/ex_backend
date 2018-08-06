@@ -2,7 +2,9 @@
 import {Component, Input} from '@angular/core';
 import {Router} from '@angular/router';
 
+import {ApplicationService} from '../services/application.service';
 import {CatalogService} from '../services/catalog.service';
+import {Application} from '../models/application';
 import {Catalog} from '../models/catalog';
 
 @Component({
@@ -14,9 +16,11 @@ import {Catalog} from '../models/catalog';
 export class VideoTitleComponent {
   @Input() id: string;
 
+  application: Application;
   video: Catalog;
 
   constructor(
+    private applicationService: ApplicationService,
     private router: Router,
     private catalogService: CatalogService,
   ) {}
@@ -26,9 +30,16 @@ export class VideoTitleComponent {
     var page = 0;
     var selectedChannels = undefined;
 
-    this.catalogService.getVideo(this.id)
+    this.applicationService.get()
     .subscribe(response => {
-      this.video = response.data;
+      this.application = response;
+
+      if(this.application.identifier == "subtil") {
+        this.catalogService.getVideo(this.id)
+        .subscribe(response => {
+          this.video = response.data;
+        });
+      }
     });
   }
 

@@ -62,18 +62,6 @@ defmodule ExBackend.WorkflowStep do
     |> ExBackend.Jobs.skip_jobs(step_name)
   end
 
-  defp launch_step(workflow, %{"name" => "download_ftp"} = _step, _step_index) do
-    ExBackend.Workflow.Step.FtpDownload.launch(workflow)
-  end
-
-  defp launch_step(workflow, %{"name" => "download_http"} = _step, _step_index) do
-    ExBackend.Workflow.Step.HttpDownload.launch(workflow)
-  end
-
-  defp launch_step(workflow, %{"name" => "audio_decode"} = _step, _step_index) do
-    ExBackend.Workflow.Step.AudioDecode.launch(workflow)
-  end
-
   defp launch_step(workflow, %{"name" => "acs_prepare_audio"} = _step, _step_index) do
     ExBackend.Workflow.Step.Acs.PrepareAudio.launch(workflow)
   end
@@ -86,12 +74,28 @@ defmodule ExBackend.WorkflowStep do
     ExBackend.Workflow.Step.AudioEncode.launch(workflow)
   end
 
-  defp launch_step(workflow, %{"name" => "ttml_to_mp4"} = _step, _step_index) do
-    ExBackend.Workflow.Step.TtmlToMp4.launch(workflow)
+  defp launch_step(workflow, %{"name" => "audio_extract"} = _step, _step_index) do
+    ExBackend.Workflow.Step.AudioExtract.launch(workflow)
   end
 
-  defp launch_step(workflow, %{"name" => "audio_extraction"} = _step, _step_index) do
-    ExBackend.Workflow.Step.AudioExtraction.launch(workflow)
+  defp launch_step(workflow, %{"name" => "audio_extraction"} = step, _step_index) do
+    ExBackend.Workflow.Step.AudioExtraction.launch(workflow, step)
+  end
+
+  defp launch_step(workflow, %{"name" => "audio_decode"} = _step, _step_index) do
+    ExBackend.Workflow.Step.AudioDecode.launch(workflow)
+  end
+
+  defp launch_step(workflow, %{"name" => "download_ftp"} = _step, _step_index) do
+    ExBackend.Workflow.Step.FtpDownload.launch(workflow)
+  end
+
+  defp launch_step(workflow, %{"name" => "download_http"} = _step, _step_index) do
+    ExBackend.Workflow.Step.HttpDownload.launch(workflow)
+  end
+
+  defp launch_step(workflow, %{"name" => "ttml_to_mp4"} = _step, _step_index) do
+    ExBackend.Workflow.Step.TtmlToMp4.launch(workflow)
   end
 
   defp launch_step(workflow, %{"name" => "set_language"} = step, _step_index) do
@@ -115,8 +119,12 @@ defmodule ExBackend.WorkflowStep do
   end
 
   defp launch_step(workflow, step, _step_index) do
+    step_name = Map.get(step, "name")
+
     Logger.error("unable to match with the step #{inspect(step)} for workflow #{workflow.id}")
-    {:error, "unable to match with the step #{inspect(step)}"}
+    ExBackend.Repo.preload(workflow, :jobs, force: true)
+    |> ExBackend.Jobs.create_error_job(step_name, "unable to start this step")
+    {:error, "unable to match with the step #{step_name}"}
   end
 
   def set_artifacts(workflow) do

@@ -36,13 +36,13 @@ defmodule ExBackend.Workflow.Step.Acs.PrepareAudio do
     requirements = Requirements.add_required_paths(path)
 
     options = %{
-      "-codec:a": "pcm_s16le",
-      "-y": true,
-      "-vn": true,
-      "-dn": true,
-      "-af": "aresample=resampler=soxr:precision=28:dither_method=shibata",
-      "-ar": 16000,
-      "-ac": 1
+      "codec_audio": "pcm_s16le",
+      "force_overwrite": true,
+      "disable_video": true,
+      "disable_data": true,
+      "audio_filters": "aresample=resampler=soxr:precision=28:dither_method=shibata",
+      "audio_sampling_rate": 16000,
+      "audio_channels": 1
     }
 
     job_params = %{

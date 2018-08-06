@@ -99,14 +99,23 @@ export class AuthService {
   }
 
   hasAdministratorRight(): boolean {
+    if(!this.rights){
+      return false;
+    }
     return this.rights.includes("administrator");
   }
 
   hasTechnicianRight(): boolean {
+    if(!this.rights){
+      return false;
+    }
     return this.rights.includes("technician");
   }
 
   hasEditorRight(): boolean {
+    if(!this.rights){
+      return false;
+    }
     return this.rights.includes("editor");
   }
 
