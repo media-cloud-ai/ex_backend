@@ -42,6 +42,7 @@ i {
 	display: inline-block;
 
 	.path {
+		cursor: pointer;
 		display: inline-block;
 		padding: 5px;
 		min-width: 40px;
@@ -52,9 +53,14 @@ i {
 
 		label {
 			font-weight: bold;
+			cursor: pointer;
 		}
 		i.forward {
 			color: @grey;
+			cursor: pointer;
 		}
+	}
+	.path:hover {
+		background-color: @lightBlue;
 	}
 }
