@@ -32,7 +32,7 @@
 	<ul *ngIf="entries">
 		<li *ngFor="let entry of entries.entries"
 			(click)="ingest(entry)"
-			[ngClass]="{'file': entry.is_file }">
+			[ngClass]="{'file': entry.is_file, 'dir': entry.is_dir }">
 			<i class="material-icons"
 				*ngIf="entry.is_dir"
 				>
