@@ -3,6 +3,21 @@
 		Ingest
 	</h1>
 
+	<div class=watchers
+		*ngIf=watchers>
+		<span *ngFor="let watcher of watchers.data">
+			<div *ngFor="let connection of watcher.connections"
+				class="watcher selected">
+				<i class="material-icons">
+					trip_origin
+				</i>
+				<label>
+					{{connection.identifier}}
+				</label>
+			</div>
+		</span>
+	</div>
+
 	<div class="ariane">
 		<span
 			class=path

@@ -113,6 +113,12 @@ export class AppComponent {
         });
       }
 
+      if(this.application && this.application.identifier == "vidtext") {
+        this.left_menu.push({
+          "link": "/watchers",
+          "label": "Watchers"
+        });
+      }
       if(this.right_administrator) {
         this.left_menu.push({
           "link": "/users",

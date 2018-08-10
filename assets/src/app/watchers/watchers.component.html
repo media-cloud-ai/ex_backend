@@ -1,25 +1,47 @@
-
 <span class=watchers>
-  <h3>
+  <h1>
     Watchers
-  </h3>
+  </h1>
   <div *ngIf=watchers>
     <ul>
       <li *ngFor="let watcher of watchers.data">
         <div *ngFor="let connection of watcher.connections">
           <i class="material-icons">
-            link
+            trip_origin
           </i>
-          <label>
-            {{connection.identifier}} is connect with account {{watcher.user.email}} from
-          </label>
-          <span class="date">
-            {{connection.online_at | date: 'd LLL yy'}}
-          </span>
-          <label>at</label>
-          <span class="hour">
-            {{connection.online_at | date: 'H:mm:ss'}}
-          </span>
+          <div class=node>
+            <label>
+              {{connection.identifier}}
+            </label>
+            <div class=info>
+              <span>
+                connected with account {{watcher.user.email}}
+              </span>
+              <span class="date">
+                {{connection.online_at | date: 'd LLL yy'}}
+              </span>
+              <span>at</span>
+              <span class="hour">
+                {{connection.online_at | date: 'H:mm:ss'}}
+              </span>
+            </div>
+            <!-- <div class=actions>
+              <button
+                mat-button
+                color="primary"
+                >
+                <mat-icon>chevron_right</mat-icon>
+                Start watching
+              </button>
+              <button
+                mat-button
+                color="primary"
+                >
+                <mat-icon>chevron_right</mat-icon>
+                Stop watching
+              </button>
+            </div> -->
+          </div>
         </div>
       </li>
     </ul>

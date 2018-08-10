@@ -9,6 +9,7 @@ import {CanDeactivateGuard} from './authentication/can-deactivate-guard.service'
 import {AuthGuard} from './authentication/auth-guard.service';
 import {AuthService} from './authentication/auth.service';
 
+import {CatalogComponent} from './catalog/catalog.component';
 import {ConfirmComponent} from './confirm/confirm.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {IngestComponent} from './ingest/ingest.component';
@@ -17,7 +18,7 @@ import {LoginComponent} from './login/login.component';
 import {PersonComponent} from './persons/person.component';
 import {PersonsComponent} from './persons/persons.component';
 import {UsersComponent} from './users/users.component';
-import {CatalogComponent} from './catalog/catalog.component';
+import {WatchersComponent} from "./watchers/watchers.component";
 import {WorkflowDetailsComponent} from "./workflows/details/workflow_details.component";
 import {WorkflowsComponent} from './workflows/workflows.component';
 import {WorkersComponent} from './workers/workers.component';
@@ -64,6 +65,11 @@ const appRoutes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'watchers',
+    component: WatchersComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'workflows',
     component: WorkflowsComponent,
     canActivate: [AuthGuard]
@@ -98,4 +104,5 @@ const appRoutes: Routes = [
     AuthService
   ]
 })
+
 export class AppRoutingModule {}

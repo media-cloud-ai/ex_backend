@@ -21,7 +21,7 @@ export class IngestComponent {
   connection: any;
   entries: Message;
   full_path = [];
-  // watchers: WatcherPage;
+  watchers: WatcherPage;
 
   constructor(
     private dialog: MatDialog,
@@ -31,10 +31,10 @@ export class IngestComponent {
   ) {}
 
   ngOnInit() {
-    // this.watcherService.getWatchers()
-    // .subscribe(watcherPage => {
-    //   this.watchers = watcherPage;
-    // });
+    this.watcherService.getWatchers()
+    .subscribe(watcherPage => {
+      this.watchers = watcherPage;
+    });
 
     this.socketService.initSocket();
     this.socketService.connectToChannel("watch:all");

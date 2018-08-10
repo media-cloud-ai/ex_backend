@@ -29,8 +29,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
       // console.log("Check URL ", url)
       if(url.startsWith("/catalog") ||
         url.startsWith("/ingest") ||
-        url.startsWith("/workflows") ||
-        url.startsWith("/workers")
+        url.startsWith("/watchers") ||
+        url.startsWith("/workers") ||
+        url.startsWith("/workflows")
         ) {
         if(this.authService.hasTechnicianRight()) {
           return true;

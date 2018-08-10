@@ -1,10 +1,28 @@
+@import '../colors';
 
 .watchers {
   ul {
     list-style: none;
+
+    .node {
+      display: inline-block;
+    }
+
     i {
-      font-size: 1.2em;
-      vertical-align: middle;
+      font-size: 3em;
+      vertical-align: top;
+      color: @blue;
+    }
+
+    label {
+      font-weight: bold;
+      color: @blue;
+      font-size: 1.3em;
+    }
+
+    .info {
+      color: @grey;
+      font-size: 0.8em;
     }
   }
 }
