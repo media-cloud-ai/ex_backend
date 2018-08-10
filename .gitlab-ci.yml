@@ -16,12 +16,11 @@ build:
   script:
     - apk add --no-cache git
     - export IMAGE_TAG=`git describe --always --tags --first-parent`
-    - echo $IMAGE_TAG > VERSION
-    - docker build --build-arg CI_COMMIT_SHA=$CI_COMMIT_SHA -t $CONTAINER_LOCAL_IMAGE .
+    - docker build -t $CONTAINER_LOCAL_IMAGE .
     - docker login -u dind-runner -p $REGISTRY_PASSWORD $CONTAINER_REGISTRY
-    - docker tag $CONTAINER_LOCAL_IMAGE $CONTAINER_RELEASE_IMAGE
-    - docker push $CONTAINER_RELEASE_IMAGE
-    - echo $CONTAINER_RELEASE_IMAGE
+    - docker tag $CONTAINER_LOCAL_IMAGE $CONTAINER_REGISTRY/$CONTAINER_IMAGE_NAME:$IMAGE_TAG
+    - docker push $CONTAINER_REGISTRY/$CONTAINER_IMAGE_NAME:$IMAGE_TAG
+    - echo $CONTAINER_REGISTRY/$CONTAINER_IMAGE_NAME:$IMAGE_TAG
   tags:
     - dind
 
