@@ -9,11 +9,14 @@ stages:
 variables:
   CONTAINER_LOCAL_IMAGE: ex_backend
   CONTAINER_REGISTRY: registry.ebu.io
-  CONTAINER_RELEASE_IMAGE: registry.ebu.io/vidtext/ex_backend:$CI_COMMIT_SHA
+  CONTAINER_IMAGE_NAME: vidtext/ex_backend
 
 build:
   stage: build
   script:
+    - apk add --no-cache git
+    - export IMAGE_TAG=`git describe --always --tags --first-parent`
+    - echo $IMAGE_TAG > VERSION
     - docker build --build-arg CI_COMMIT_SHA=$CI_COMMIT_SHA -t $CONTAINER_LOCAL_IMAGE .
     - docker login -u dind-runner -p $REGISTRY_PASSWORD $CONTAINER_REGISTRY
     - docker tag $CONTAINER_LOCAL_IMAGE $CONTAINER_RELEASE_IMAGE
