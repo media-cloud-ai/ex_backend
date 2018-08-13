@@ -53,11 +53,11 @@ import {CookieService}           from 'ngx-cookie-service';
 import {AppRoutingModule}        from './app-routing.module';
 import {SocketModule}            from './socket.module';
 
-import {CatalogComponent}         from './catalog/catalog.component';
+import {CatalogComponent}        from './catalog/catalog.component';
 import {ConfirmComponent}        from './confirm/confirm.component';
 import {DashboardComponent}      from './dashboard/dashboard.component';
 import {DurationComponent}       from './workflows/details/duration.component';
-import {IngestComponent}           from './ingest/ingest.component';
+import {IngestComponent}         from './ingest/ingest.component';
 import {JobsComponent}           from './jobs/jobs.component';
 import {LinkImportComponent}     from './persons/link_import.component';
 import {LoginComponent}          from './login/login.component';
@@ -65,14 +65,16 @@ import {ParametersComponent}     from './workflows/details/parameters.component'
 import {PersonComponent}         from './persons/person.component';
 import {PersonFormComponent}     from './persons/form.component';
 import {PersonsComponent}        from './persons/persons.component';
+import {PlayerComponent}         from './player/player.component';
 import {RightsComponent}         from './users/rights.component';
 import {QueuesComponent}         from './amqp/queues.component';
 import {StepProgressBarComponent} from './workflows/step_progress_bar.component';
+import {UserComponent}           from './users/user.component';
 import {UsersComponent}          from './users/users.component';
 import {VideoTitleComponent}     from './workflows/video_title.component';
 import {WatchersComponent}       from './watchers/watchers.component';
 import {WorkflowComponent}       from './workflows/workflow.component';
-import {WorkflowDetailsComponent}     from './workflows/details/workflow_details.component';
+import {WorkflowDetailsComponent} from './workflows/details/workflow_details.component';
 import {WorkflowRendererComponent} from './workflows/renderer/workflow_renderer.component';
 import {WorkflowStepDetailsComponent} from './workflows/details/workflow_step_details.component';
 import {WorkflowsComponent}      from './workflows/workflows.component';
@@ -121,6 +123,8 @@ import {ErrorInterceptor}        from './authentication/error.interceptor';
 
 import 'hammerjs/hammer'; // for MatSlideToggleModule
 import * as moment from 'moment';
+import * as dashjs from 'dashjs';
+
 
 const EX_BACKEND_DATE_FORMATS = {
   parse: {
@@ -183,10 +187,12 @@ const EX_BACKEND_DATE_FORMATS = {
     PersonFormComponent,
     PersonShowDialogComponent,
     PersonsComponent,
+    PlayerComponent,
     QueuesComponent,
     RightsComponent,
     StartIngestDialog,
     StepProgressBarComponent,
+    UserComponent,
     UsersComponent,
     VideoTitleComponent,
     RdfDialogComponent,
@@ -227,6 +233,7 @@ const EX_BACKEND_DATE_FORMATS = {
     RightsComponent,
     StartIngestDialog,
     StepProgressBarComponent,
+    UserComponent,
     VideoTitleComponent,
     WatchersComponent,
     WorkflowComponent,

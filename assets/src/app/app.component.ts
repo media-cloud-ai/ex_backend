@@ -118,6 +118,11 @@ export class AppComponent {
           "link": "/watchers",
           "label": "Watchers"
         });
+
+        this.left_menu.push({
+          "link": "/player",
+          "label": "Player"
+        });
       }
       if(this.right_administrator) {
         this.left_menu.push({

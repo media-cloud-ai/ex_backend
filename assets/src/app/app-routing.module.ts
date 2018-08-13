@@ -15,6 +15,7 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import {IngestComponent} from './ingest/ingest.component';
 import {JobsComponent} from './jobs/jobs.component';
 import {LoginComponent} from './login/login.component';
+import {PlayerComponent} from './player/player.component';
 import {PersonComponent} from './persons/person.component';
 import {PersonsComponent} from './persons/persons.component';
 import {UsersComponent} from './users/users.component';
@@ -26,17 +27,27 @@ import {WorkersComponent} from './workers/workers.component';
 const appRoutes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   {
+    path: 'catalog',
+    component: CatalogComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'confirm',
     component: ConfirmComponent
   },
   {
-    path: 'login',
-    component: LoginComponent,
+    path: 'dashboard',
+    component: DashboardComponent,
     canActivate: [AuthGuard]
   },
   {
-    path: 'dashboard',
-    component: DashboardComponent,
+    path: 'ingest',
+    component: IngestComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
     canActivate: [AuthGuard]
   },
   {
@@ -50,23 +61,23 @@ const appRoutes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'player',
+    component: PlayerComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'users',
     component: UsersComponent,
     canActivate: [AuthGuard]
   },
   {
-    path: 'catalog',
-    component: CatalogComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'ingest',
-    component: IngestComponent,
-    canActivate: [AuthGuard]
-  },
-  {
     path: 'watchers',
     component: WatchersComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'workers',
+    component: WorkersComponent,
     canActivate: [AuthGuard]
   },
   {
@@ -77,11 +88,6 @@ const appRoutes: Routes = [
   {
     path: 'workflows/:id',
     component: WorkflowDetailsComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'workers',
-    component: WorkersComponent,
     canActivate: [AuthGuard]
   },
 ];

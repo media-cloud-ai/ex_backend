@@ -56,9 +56,13 @@ defmodule ExBackendWeb.Router do
     end
 
     resources("/persons", PersonController, except: [:new, :edit])
+
     get("/imdb/search/:query", ImdbController, :index)
     get("/imdb/:id", ImdbController, :show)
   end
+
+  get("/stream/manifest.mpd", ExBackendWeb.PlayerController, :manifest)
+  get("/stream/:filename", ExBackendWeb.PlayerController, :index)
 
   scope "/", ExBackendWeb do
     pipe_through(:browser)

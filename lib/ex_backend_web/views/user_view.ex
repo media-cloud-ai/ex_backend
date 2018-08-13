@@ -14,6 +14,6 @@ defmodule ExBackendWeb.UserView do
   end
 
   def render("user.json", %{user: user}) do
-    %{id: user.id, email: user.email, rights: user.rights, confirmed_at: user.confirmed_at}
+    %{id: user.id, email: user.email, rights: user.rights, confirmed_at: user.confirmed_at, inserted_at: user.inserted_at}
   end
 end
