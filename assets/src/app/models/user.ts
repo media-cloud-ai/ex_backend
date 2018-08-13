@@ -9,6 +9,7 @@ export class Confirm {
 
 export class User {
   email: string;
+  inserted_at: string;
   password: string;
   rights: any;
 }
