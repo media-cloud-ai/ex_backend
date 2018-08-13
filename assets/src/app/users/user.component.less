@@ -1,0 +1,31 @@
+@import '../colors';
+
+span.email,
+span.rights {
+  flex: 1;
+}
+
+span.status {
+  flex: 1;
+  .state {
+    color: @white;
+    padding: 4px;
+    border-radius: 3px;
+  }
+
+  .state.enabled {
+    background-color: @green;
+  }
+
+  .state.pending {
+    background-color: @blue;
+  }
+
+  .state.expired {
+    background-color: @red;
+  }
+}
+
+span.actions {
+  width: 100px;
+}

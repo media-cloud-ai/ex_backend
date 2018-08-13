@@ -48,21 +48,7 @@
     *ngFor="let user of users.data"
     class="user"
     >
-    <span class="email">
-      {{user.email}}
-    </span>
-    <span class="rights">
-      <rights-component [user]=user></rights-component>
-    </span>
-    <span class="status">
-      <span class="state enabled" *ngIf="user.confirmed_at">
-        ENABLED
-      </span>
-      <span class="state pending" *ngIf="!user.confirmed_at">
-        PENDING
-      </span>
-    </span>
-    
+    <user-component [user]=user></user-component>
     <span class="actions">
       <button mat-raised-button
         color="warn"

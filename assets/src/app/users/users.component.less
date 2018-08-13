@@ -56,26 +56,9 @@ ul.users {
     background-color: @white;
     display: flex;
 
-    span.email,
-    span.rights {
+    user-component {
+      display: flex;
       flex: 1;
-    }
-
-    span.status {
-      flex: 1;
-      .state {
-        color: @white;
-        padding: 4px;
-        border-radius: 3px;
-      }
-
-      .state.enabled {
-        background-color: @green;
-      }
-
-      .state.pending {
-        background-color: @blue;
-      }
     }
 
     span.actions {
