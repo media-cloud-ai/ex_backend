@@ -19,7 +19,9 @@ defmodule ExBackendWeb.RdfController do
       case Converter.get_rdf(video_id) do
         {:ok, rdf_serialized} ->
           PerfectMemory.publish_rdf(rdf_serialized)
-        _ -> 500
+
+        _ ->
+          500
       end
 
     case response do

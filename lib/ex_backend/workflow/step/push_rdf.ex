@@ -13,6 +13,7 @@ defmodule ExBackend.Workflow.Step.PushRdf do
       workflow_id: workflow.id,
       params: %{}
     }
+
     {:ok, job} = Jobs.create_job(job_params)
 
     try do
@@ -20,20 +21,25 @@ defmodule ExBackend.Workflow.Step.PushRdf do
         {:ok, _} ->
           Jobs.Status.set_job_status(job.id, "completed")
           {:ok, "completed"}
+
         {:error, message} ->
-          Jobs.Status.set_job_status(job.id, "error", %{message: "unable to publish RDF: #{message}"})
+          Jobs.Status.set_job_status(job.id, "error", %{
+            message: "unable to publish RDF: #{message}"
+          })
+
           {:error, message}
       end
     rescue
       error ->
-        Logger.error "publish rdf raised: #{error}"
+        Logger.error("publish rdf raised: #{error}")
         Jobs.Status.set_job_status(job.id, "error", %{message: "unable to publish RDF"})
         {:error, "unable to publish RDF"}
     end
   end
 
   def convert_and_submit(workflow) do
-    r = Converter.get_rdf(workflow.reference) |> IO.inspect
+    r = Converter.get_rdf(workflow.reference) |> IO.inspect()
+
     case r do
       {:ok, rdf} -> PerfectMemory.publish_rdf(rdf)
       {:error, message} -> {:error, message}

@@ -24,10 +24,10 @@ defmodule ExBackendWeb.CatalogController do
   end
 
   def show(conn, params) do
-
     case ExVideoFactory.videos(%{"qid" => params["id"]}) do
       %{total: "1", size: 1, videos: videos} ->
-        render(conn, "show.json", video: videos |> List.first)
+        render(conn, "show.json", video: videos |> List.first())
+
       _ ->
         error(conn, :notfound, 404)
     end

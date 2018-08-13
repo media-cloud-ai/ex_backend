@@ -14,11 +14,14 @@ defmodule ExBackendWeb.WatchChannel do
   end
 
   def handle_info({:after_join, message}, socket) do
-    push socket, "presence_state", Presence.list(socket)
-    {:ok, _} = Presence.track(socket, socket.assigns.user_id, %{
-      online_at: inspect(System.system_time(:seconds)),
-      message: message,
-    })
+    push(socket, "presence_state", Presence.list(socket))
+
+    {:ok, _} =
+      Presence.track(socket, socket.assigns.user_id, %{
+        online_at: inspect(System.system_time(:seconds)),
+        message: message
+      })
+
     {:noreply, socket}
   end
 

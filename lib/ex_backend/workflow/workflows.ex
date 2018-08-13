@@ -51,7 +51,7 @@ defmodule ExBackend.Workflows do
 
     query =
       if status != nil do
-        if not "completed" in status do
+        if not ("completed" in status) do
           from(
             workflow in query,
             left_join: artifact in assoc(workflow, :artifacts),
@@ -182,6 +182,7 @@ defmodule ExBackend.Workflows do
 
   defp count_status(jobs, status, count \\ 0)
   defp count_status([], _status, count), do: count
+
   defp count_status([job | jobs], status, count) do
     count_completed =
       Enum.filter(job.status, fn s -> s.state == "completed" end)
@@ -200,11 +201,11 @@ defmodule ExBackend.Workflows do
         |> case do
           0 ->
             count
+
           _ ->
             count + 1
         end
       end
-
 
     count_status(jobs, status, count)
   end

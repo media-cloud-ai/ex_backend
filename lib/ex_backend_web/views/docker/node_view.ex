@@ -21,7 +21,7 @@ defmodule ExBackendWeb.Docker.NodeView do
       port: node_config.port,
       ssl: %{
         certfile: node_config.certfile,
-        keyfile: node_config.keyfile,
+        keyfile: node_config.keyfile
       },
       inserted_at: node_config.inserted_at,
       updated_at: node_config.updated_at

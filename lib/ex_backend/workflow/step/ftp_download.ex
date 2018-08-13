@@ -23,16 +23,13 @@ defmodule ExBackend.Workflow.Step.FtpDownload do
 
   defp start_download_via_ftp([file | files], first_file, workflow) do
     hostname =
-      System.get_env("AKAMAI_HOSTNAME") ||
-        Application.get_env(:ex_backend, :akamai_hostname)
+      System.get_env("AKAMAI_HOSTNAME") || Application.get_env(:ex_backend, :akamai_hostname)
 
     username =
-      System.get_env("AKAMAI_USERNAME") ||
-        Application.get_env(:ex_backend, :akamai_username)
+      System.get_env("AKAMAI_USERNAME") || Application.get_env(:ex_backend, :akamai_username)
 
     password =
-      System.get_env("AKAMAI_PASSWORD") ||
-        Application.get_env(:ex_backend, :akamai_password)
+      System.get_env("AKAMAI_PASSWORD") || Application.get_env(:ex_backend, :akamai_password)
 
     work_dir =
       System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir) ||

@@ -18,7 +18,7 @@ defmodule ExBackend.Amqp.Supervisor do
   def add_consumer(_queue_name) do
     Logger.warn("#{__MODULE__} add_consumer")
     child_spec = {ExBackend.Amqp.JobFtpCompletedConsumer, {}}
-    DynamicSupervisor.start_child(__MODULE__, child_spec) |> IO.inspect
+    DynamicSupervisor.start_child(__MODULE__, child_spec) |> IO.inspect()
   end
 
   @impl true
@@ -45,8 +45,7 @@ defmodule ExBackend.Amqp.Supervisor do
     username = System.get_env("AMQP_USERNAME") || Application.get_env(:amqp, :username)
     password = System.get_env("AMQP_PASSWORD") || Application.get_env(:amqp, :password)
 
-    virtual_host =
-      System.get_env("AMQP_VHOST") || Application.get_env(:amqp, :virtual_host) || ""
+    virtual_host = System.get_env("AMQP_VHOST") || Application.get_env(:amqp, :virtual_host) || ""
 
     virtual_host =
       case virtual_host do
@@ -60,8 +59,7 @@ defmodule ExBackend.Amqp.Supervisor do
         |> port_format
 
     url =
-      "amqp://" <>
-        username <> ":" <> password <> "@" <> hostname <> ":" <> port <> virtual_host
+      "amqp://" <> username <> ":" <> password <> "@" <> hostname <> ":" <> port <> virtual_host
 
     Logger.warn("#{__MODULE__}: Connecting with url: #{url}")
 
@@ -75,9 +73,7 @@ defmodule ExBackend.Amqp.Supervisor do
         {:ok, %{channel: channel, connection: connection}}
 
       {:error, message} ->
-        Logger.error(
-          "#{__MODULE__}: unable to connect to: #{url}, reason: #{inspect(message)}"
-        )
+        Logger.error("#{__MODULE__}: unable to connect to: #{url}, reason: #{inspect(message)}")
 
         # Reconnection loop
         :timer.sleep(10000)

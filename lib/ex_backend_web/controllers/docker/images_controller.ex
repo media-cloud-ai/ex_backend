@@ -51,9 +51,10 @@ defmodule ExBackendWeb.Docker.ImagesController do
 
   defp build_images(images, environment, volumes, image_list \\ [])
   defp build_images([], _environment, _volumes, image_list), do: image_list
+
   defp build_images([image | images], environment, volumes, image_list) do
     image_environment =
-      if Enum.any?(image.repo_tags, fn(tag) -> String.starts_with?(tag, "ftvsubtil/acs_worker") end) do
+      if Enum.any?(image.repo_tags, fn tag -> String.starts_with?(tag, "ftvsubtil/acs_worker") end) do
         Map.put(environment, :AMQP_QUEUE, "acs")
       else
         environment

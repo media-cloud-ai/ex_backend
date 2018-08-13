@@ -96,8 +96,7 @@ config :amqp,
   username: "guest",
   password: "guest"
 
-config :httpotion,
-  :default_timeout, 60000
+config :httpotion, :default_timeout, 60000
 
 # Finally import the config/prod.secret.exs
 # with the private section for passwords

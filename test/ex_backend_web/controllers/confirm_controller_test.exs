@@ -9,7 +9,15 @@ defmodule ExBackendWeb.ConfirmControllerTest do
   end
 
   test "confirmation succeeds for correct key", %{conn: conn} do
-    conn = get(conn, confirm_path(conn, :index, password: "reallyHard2gue$$", key: gen_key("arthur@example.com")))
+    conn =
+      get(
+        conn,
+        confirm_path(conn, :index,
+          password: "reallyHard2gue$$",
+          key: gen_key("arthur@example.com")
+        )
+      )
+
     assert json_response(conn, 200)["info"]["detail"]
   end
 
@@ -24,12 +32,16 @@ defmodule ExBackendWeb.ConfirmControllerTest do
   end
 
   test "confirmation fails for missing password email", %{conn: conn} do
-    conn = get(conn, confirm_path(conn, :index, password: nil, key: gen_key("arthur@example.com")))
+    conn =
+      get(conn, confirm_path(conn, :index, password: nil, key: gen_key("arthur@example.com")))
+
     assert json_response(conn, 422)["errors"]["password"] == ["can't be blank"]
   end
 
   test "confirmation fails for too short password email", %{conn: conn} do
-    conn = get(conn, confirm_path(conn, :index, password: "short", key: gen_key("arthur@example.com")))
+    conn =
+      get(conn, confirm_path(conn, :index, password: "short", key: gen_key("arthur@example.com")))
+
     assert json_response(conn, 422)["errors"]["password"] == ["The password is too short"]
   end
 end

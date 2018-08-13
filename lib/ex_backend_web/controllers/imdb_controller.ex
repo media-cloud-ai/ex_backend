@@ -17,8 +17,8 @@ defmodule ExBackendWeb.ImdbController do
     body = HTTPoison.get!(url).body
 
     response =
-      String.slice(body, 6 + String.length(query)..-2)
-      |> Poison.decode!
+      String.slice(body, (6 + String.length(query))..-2)
+      |> Poison.decode!()
 
     conn
     |> json(response)

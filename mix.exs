@@ -31,7 +31,7 @@ defmodule ExBackend.Mixfile do
         :runtime_tools,
         :timex,
         :elixir_make,
-        :parse_trans,
+        :parse_trans
       ]
     ]
   end
@@ -63,7 +63,8 @@ defmodule ExBackend.Mixfile do
       {:postgrex, ">= 0.0.0"},
       {:poison, "~> 3.1"},
       {:ranch, "~> 1.5.0", override: true},
-      {:ranch_proxy_protocol, git: "https://github.com/heroku/ranch_proxy_protocol", branch: "master", override: true},
+      {:ranch_proxy_protocol,
+       git: "https://github.com/heroku/ranch_proxy_protocol", branch: "master", override: true},
       {:remote_dockers, "1.3.3"},
       {:timex, "~> 3.2"}
     ]
@@ -103,9 +104,13 @@ defmodule ExBackend.Mixfile do
 
   defp retrieve_version_from_git do
     require Logger
-    Logger.warn "Calling out to `git describe` for the version number. This is slow! You should think about a hook to set the VERSION file"
+
+    Logger.warn(
+      "Calling out to `git describe` for the version number. This is slow! You should think about a hook to set the VERSION file"
+    )
+
     System.cmd("git", ~w{describe --always --tags --first-parent})
     |> elem(0)
-    |> String.trim
+    |> String.trim()
   end
 end

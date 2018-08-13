@@ -41,6 +41,7 @@ defmodule ExBackend.Watchers do
       case Map.get(params, :identifier, nil) || Map.get(params, "identifier", nil) do
         nil ->
           from(watcher in Watcher)
+
         identifier ->
           from(watcher in Watcher, where: watcher.identifier == ^identifier)
       end

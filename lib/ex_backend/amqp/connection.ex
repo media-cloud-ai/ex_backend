@@ -1,5 +1,4 @@
 defmodule ExBackend.Amqp.Connection do
-
   require Logger
 
   use GenServer
@@ -17,7 +16,7 @@ defmodule ExBackend.Amqp.Connection do
   end
 
   def publish_json(queue, message) do
-    publish(queue, message|> Poison.encode!)
+    publish(queue, message |> Poison.encode!())
   end
 
   def init(:ok) do
@@ -60,8 +59,7 @@ defmodule ExBackend.Amqp.Connection do
     username = System.get_env("AMQP_USERNAME") || Application.get_env(:amqp, :username)
     password = System.get_env("AMQP_PASSWORD") || Application.get_env(:amqp, :password)
 
-    virtual_host =
-      System.get_env("AMQP_VHOST") || Application.get_env(:amqp, :virtual_host) || ""
+    virtual_host = System.get_env("AMQP_VHOST") || Application.get_env(:amqp, :virtual_host) || ""
 
     virtual_host =
       case virtual_host do
@@ -75,8 +73,7 @@ defmodule ExBackend.Amqp.Connection do
         |> port_format
 
     url =
-      "amqp://" <>
-        username <> ":" <> password <> "@" <> hostname <> ":" <> port <> virtual_host
+      "amqp://" <> username <> ":" <> password <> "@" <> hostname <> ":" <> port <> virtual_host
 
     Logger.warn("#{__MODULE__}: Connecting with url: #{url}")
 
@@ -90,9 +87,7 @@ defmodule ExBackend.Amqp.Connection do
         {:ok, %{channel: channel, connection: connection}}
 
       {:error, message} ->
-        Logger.error(
-          "#{__MODULE__}: unable to connect to: #{url}, reason: #{inspect(message)}"
-        )
+        Logger.error("#{__MODULE__}: unable to connect to: #{url}, reason: #{inspect(message)}")
 
         # Reconnection loop
         :timer.sleep(10000)

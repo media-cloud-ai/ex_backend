@@ -15,9 +15,7 @@ defmodule ExBackendWeb.AuthCase do
     Accounts.update_password(user, %{password: "reallyHard2gue$$"})
 
     user
-    |> change(%{
-      confirmed_at: DateTime.utc_now(),
-      rights: rights})
+    |> change(%{confirmed_at: DateTime.utc_now(), rights: rights})
     |> Repo.update!()
   end
 

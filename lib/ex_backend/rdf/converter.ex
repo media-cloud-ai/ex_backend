@@ -27,6 +27,7 @@ defmodule ExBackend.Rdf.Converter do
       case workflow do
         nil ->
           ""
+
         _ ->
           artifact =
             workflow
@@ -34,7 +35,9 @@ defmodule ExBackend.Rdf.Converter do
             |> List.first()
 
           case artifact do
-            nil -> ""
+            nil ->
+              ""
+
             _ ->
               artifact
               |> Map.get(:resources, %{})
@@ -61,6 +64,7 @@ defmodule ExBackend.Rdf.Converter do
       |> case do
         nil ->
           %{files: files}
+
         items ->
           items
           |> Map.put(:files, files)
@@ -99,14 +103,16 @@ defmodule ExBackend.Rdf.Converter do
     case HTTPotion.post(url, body: information |> Poison.encode!()) do
       %HTTPotion.ErrorResponse{message: message} ->
         {:error, "unable to convert: #{message}"}
+
       response ->
         {:ok, response.body}
     end
   end
 
   defp has_acs_step([]), do: false
+
   defp has_acs_step([step | steps]) do
-    if Map.get(step,"name") == "acs_synchronize" do
+    if Map.get(step, "name") == "acs_synchronize" do
       true
     else
       has_acs_step(steps)

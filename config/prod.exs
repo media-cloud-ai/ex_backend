@@ -65,8 +65,7 @@ config :ex_backend, ExBackendWeb.Endpoint,
 
 config :logger, level: :debug
 
-config :httpotion,
-  :default_timeout, 60000
+config :httpotion, :default_timeout, 60000
 
 # Configure your database
 config :ex_backend, ExBackend.Repo,

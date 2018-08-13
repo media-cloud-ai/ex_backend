@@ -119,8 +119,7 @@ defmodule ExBackend.Application do
       ExBackend.Migration.CreateWatchers
     )
 
-    root_email =
-      System.get_env("ROOT_EMAIL") || Application.get_env(:ex_backend, :root_email)
+    root_email = System.get_env("ROOT_EMAIL") || Application.get_env(:ex_backend, :root_email)
 
     root_password =
       System.get_env("ROOT_PASSWORD") || Application.get_env(:ex_backend, :root_password)

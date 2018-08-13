@@ -53,8 +53,7 @@ defmodule ExBackend.Nodes do
         limit: ^size
       )
 
-    nodes =
-      Repo.all(query)
+    nodes = Repo.all(query)
 
     %{
       data: nodes,

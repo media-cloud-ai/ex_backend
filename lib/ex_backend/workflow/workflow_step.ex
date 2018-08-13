@@ -30,7 +30,8 @@ defmodule ExBackend.WorkflowStep do
           }"
         )
 
-        status = launch_step(workflow, ExBackend.Map.get_by_key_or_atom(step, :name), step, step_index)
+        status =
+          launch_step(workflow, ExBackend.Map.get_by_key_or_atom(step, :name), step, step_index)
 
         topic = "update_workflow_" <> Integer.to_string(workflow_id)
 
@@ -114,8 +115,10 @@ defmodule ExBackend.WorkflowStep do
 
   defp launch_step(workflow, step_name, step, _step_index) do
     Logger.error("unable to match with the step #{inspect(step)} for workflow #{workflow.id}")
+
     ExBackend.Repo.preload(workflow, :jobs, force: true)
     |> ExBackend.Jobs.create_error_job(step_name, "unable to start this step")
+
     {:error, "unable to match with the step #{step_name}"}
   end
 

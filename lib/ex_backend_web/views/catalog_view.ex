@@ -34,7 +34,7 @@ defmodule ExBackendWeb.CatalogView do
       parent_id: video["parent_id"],
       broadcasted_live: video["broadcasted_live"],
       duration: video["duration"],
-      type: video["type"]["id"],
+      type: video["type"]["id"]
     }
   end
 end

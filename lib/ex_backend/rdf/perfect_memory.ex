@@ -31,7 +31,7 @@ defmodule ExBackend.Rdf.PerfectMemory do
 
     status_code =
       HTTPotion.post(url, body: body |> Poison.encode!(), headers: headers)
-      |> IO.inspect
+      |> IO.inspect()
       |> Map.get(:status_code)
 
     case status_code do

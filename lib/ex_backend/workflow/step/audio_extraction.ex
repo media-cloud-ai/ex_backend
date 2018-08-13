@@ -14,6 +14,7 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
           nil -> Jobs.create_skipped_job(workflow, @action_name)
           path -> start_extracting_audio(path, workflow, step)
         end
+
       inputs ->
         for input <- inputs do
           start_extracting_audio(ExBackend.Map.get_by_key_or_atom(input, :path), workflow, step)
@@ -43,7 +44,7 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
     requirements = Requirements.add_required_paths(path)
 
     options =
-      case  ExBackend.Map.get_by_key_or_atom(step, :parameters) do
+      case ExBackend.Map.get_by_key_or_atom(step, :parameters) do
         nil ->
           %{
             codec_audio: "copy",
@@ -51,7 +52,9 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
             disable_video: true,
             disable_data: true
           }
-        options -> options
+
+        options ->
+          options
       end
 
     job_params = %{

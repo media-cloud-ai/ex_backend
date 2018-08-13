@@ -7,12 +7,13 @@ defmodule ExBackendWeb.BrowserChannel do
   alias ExBackend.WorkflowStep
   alias ExBackend.Workflows.Workflow
 
-  intercept ["reply_info"]
+  intercept(["reply_info"])
 
   def join("browser:all", message, socket) do
     if not Enum.empty?(message) do
       send(self(), {:after_join, message})
     end
+
     {:ok, socket |> assign(:topics, [%{test: "lol"}])}
   end
 
@@ -23,15 +24,17 @@ defmodule ExBackendWeb.BrowserChannel do
       case watchers.total do
         0 ->
           Watchers.create_watcher(message)
+
         _ ->
           watchers.data
-          |> List.first
+          |> List.first()
       end
 
     body = %{
       id: watcher.id,
-      identifier: watcher.identifier,
+      identifier: watcher.identifier
     }
+
     body =
       if watcher.last_event == nil do
         body
@@ -41,7 +44,7 @@ defmodule ExBackendWeb.BrowserChannel do
 
     ExBackendWeb.Endpoint.broadcast!("browser:notification", "creation", body)
     # {:ok, socket}
-    
+
     {:ok, socket |> assign(:topics, [%{test: "lol"}])}
   end
 
@@ -50,11 +53,14 @@ defmodule ExBackendWeb.BrowserChannel do
   end
 
   def handle_info({:after_join, message}, socket) do
-    push socket, "presence_state", Presence.list(socket)
-    {:ok, _} = Presence.track(socket, socket.assigns.user_id, %{
-      online_at: inspect(System.system_time(:seconds)),
-      message: message,
-    })
+    push(socket, "presence_state", Presence.list(socket))
+
+    {:ok, _} =
+      Presence.track(socket, socket.assigns.user_id, %{
+        online_at: inspect(System.system_time(:seconds)),
+        message: message
+      })
+
     {:noreply, socket}
   end
 
@@ -62,6 +68,7 @@ defmodule ExBackendWeb.BrowserChannel do
     Logger.debug("-> IN message for identifier: #{inspect(identifier)}")
 
     watchers = Watchers.list_watchers(%{identifier: identifier})
+
     if watchers.total == 1 do
       watcher =
         watchers
@@ -71,18 +78,20 @@ defmodule ExBackendWeb.BrowserChannel do
       watcher = %{
         id: watcher.id,
         identifier: watcher.identifier,
-        last_event: watcher.last_event,
+        last_event: watcher.last_event
       }
 
       ExBackendWeb.Endpoint.broadcast!("browser:notification", "reply_info", watcher)
     end
+
     {:noreply, socket}
   end
 
   def handle_out("reply_info", payload, %{assigns: %{identifier: identifier}} = socket) do
-    Logger.debug(">- OUT message #{inspect(payload)} // #{inspect identifier}")
+    Logger.debug(">- OUT message #{inspect(payload)} // #{inspect(identifier)}")
+
     if identifier == payload.identifier do
-      push socket, "reply_info", payload
+      push(socket, "reply_info", payload)
     end
 
     {:noreply, socket}
@@ -94,8 +103,11 @@ defmodule ExBackendWeb.BrowserChannel do
     {:noreply, socket}
   end
 
-  def handle_in("new_item", %{"date_time" => date_time, "output_filename" => filename} = _payload,
-    %{assigns: %{identifier: identifier}} = socket) do
+  def handle_in(
+        "new_item",
+        %{"date_time" => date_time, "output_filename" => filename} = _payload,
+        %{assigns: %{identifier: identifier}} = socket
+      ) do
     # Logger.info("new item #{inspect(payload)}")
     watchers = Watchers.list_watchers(%{identifier: identifier})
 
@@ -151,16 +163,17 @@ defmodule ExBackendWeb.BrowserChannel do
             body: %{workflow_id: workflow.id}
           })
 
-          Logger.info("workflow created: #{inspect workflow}")
+          Logger.info("workflow created: #{inspect(workflow)}")
 
-        watcher =
-          watchers
-          |> Map.get(:data)
-          |> List.first()
+          watcher =
+            watchers
+            |> Map.get(:data)
+            |> List.first()
 
-        Watchers.update_watcher(watcher, %{last_event: date_time})
+          Watchers.update_watcher(watcher, %{last_event: date_time})
+
         {:error, changeset} ->
-          Logger.error("unable to start workflow: #{inspect changeset}")
+          Logger.error("unable to start workflow: #{inspect(changeset)}")
       end
     end
 

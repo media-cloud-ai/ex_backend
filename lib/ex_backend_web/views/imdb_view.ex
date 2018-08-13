@@ -9,5 +9,4 @@ defmodule ExBackendWeb.ImdbView do
       picture_url: people.picture_url
     }
   end
-
 end

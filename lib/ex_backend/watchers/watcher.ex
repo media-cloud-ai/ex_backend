@@ -15,7 +15,7 @@ defmodule ExBackend.Watchers.Watcher do
     watcher
     |> cast(attrs, [
       :identifier,
-      :last_event,
+      :last_event
     ])
     |> validate_required([:identifier])
   end

@@ -68,6 +68,7 @@ defmodule ExBackendWeb.Presence do
   information, while maintaining the required `:metas` field from the
   original presence data.
   """
-  use Phoenix.Presence, otp_app: :ex_backend,
-                        pubsub_server: ExBackend.PubSub
+  use Phoenix.Presence,
+    otp_app: :ex_backend,
+    pubsub_server: ExBackend.PubSub
 end

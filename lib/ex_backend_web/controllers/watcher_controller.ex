@@ -21,28 +21,32 @@ defmodule ExBackendWeb.WatcherController do
 
   def format_watchers(watchers, result \\ [])
   def format_watchers([], result), do: result
+
   def format_watchers([head | tail], result) do
     {user_id, %{metas: metas}} = head
     user = Accounts.get(user_id)
 
-    connections = Enum.map(metas, fn(connection) ->
-      date_time =
-        connection.online_at
-        |> String.to_integer
-        |> DateTime.from_unix!
+    connections =
+      Enum.map(metas, fn connection ->
+        date_time =
+          connection.online_at
+          |> String.to_integer()
+          |> DateTime.from_unix!()
 
-      identifier =
-        case connection do
-          %{message: %{"identifier"=> identifier}} ->
-            identifier
-          _ -> nil
-        end
+        identifier =
+          case connection do
+            %{message: %{"identifier" => identifier}} ->
+              identifier
 
-      %{
-        online_at: date_time,
-        identifier: identifier,
-      }
-    end)
+            _ ->
+              nil
+          end
+
+        %{
+          online_at: date_time,
+          identifier: identifier
+        }
+      end)
 
     user_connection = %{
       user: user,

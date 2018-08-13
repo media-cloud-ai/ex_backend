@@ -156,10 +156,10 @@ defmodule ExBackend.Workflow.Step.GenerateDash do
 
   defp build_gpac_parameters([param | params], result) do
     key =
-       ExBackend.Map.get_by_key_or_atom(param, :id)
+      ExBackend.Map.get_by_key_or_atom(param, :id)
       |> convert_gpac_key
 
-    value =  ExBackend.Map.get_by_key_or_atom(param, :value)
+    value = ExBackend.Map.get_by_key_or_atom(param, :value)
 
     result = Map.put(result, key, value)
     build_gpac_parameters(params, result)

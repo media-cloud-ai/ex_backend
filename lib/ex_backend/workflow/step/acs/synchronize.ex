@@ -25,8 +25,7 @@ defmodule ExBackend.Workflow.Step.Acs.Synchronize do
       System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir) ||
         "/tmp/ftp_francetv"
 
-    app_dir =
-      System.get_env("APP_DIR") || Application.get_env(:ex_backend, :appdir) || "/opt/app"
+    app_dir = System.get_env("APP_DIR") || Application.get_env(:ex_backend, :appdir) || "/opt/app"
 
     acs_app = System.get_env("ACS_APP") || Application.get_env(:ex_backend, :acs_app)
 
@@ -138,8 +137,10 @@ defmodule ExBackend.Workflow.Step.Acs.Synchronize do
               paths -> Enum.concat(paths, result)
             end
 
-          case Enum.find(steps, fn(step) -> Map.get(step, "name") == @action_name end) do
-            nil -> paths
+          case Enum.find(steps, fn step -> Map.get(step, "name") == @action_name end) do
+            nil ->
+              paths
+
             step ->
               keep_original =
                 step
