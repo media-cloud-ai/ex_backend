@@ -71,7 +71,7 @@ export class AppComponent {
       this.updateLeftMenu();
     }
 
-    this.applicationService.get()
+    this.applicationService.get_cached_app()
     .subscribe(application => {
       this.application = application;
       this.setTitle(application.label);

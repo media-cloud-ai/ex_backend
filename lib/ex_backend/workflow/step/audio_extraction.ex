@@ -8,7 +8,7 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
   @action_name "audio_extraction"
 
   def launch(workflow, step) do
-    case Map.get(step, "inputs") do
+    case ExBackend.Map.get_by_key_or_atom(step, :inputs) do
       nil ->
         case get_first_source_file(workflow.jobs) do
           nil -> Jobs.create_skipped_job(workflow, @action_name)
@@ -16,7 +16,7 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
         end
       inputs ->
         for input <- inputs do
-          start_extracting_audio(Map.get(input, "path"), workflow, step)
+          start_extracting_audio(ExBackend.Map.get_by_key_or_atom(input, :path), workflow, step)
         end
     end
   end
@@ -29,7 +29,7 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
     filename = Path.basename(path, "-standard1.mp4")
 
     output_extension =
-      case Map.get(step, "output_extension") do
+      case ExBackend.Map.get_by_key_or_atom(step, :output_extension) do
         nil -> "-fra.mp4"
         ext -> ext
       end
@@ -43,7 +43,7 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
     requirements = Requirements.add_required_paths(path)
 
     options =
-      case Map.get(step, "parameters") do
+      case  ExBackend.Map.get_by_key_or_atom(step, :parameters) do
         nil ->
           %{
             codec_audio: "copy",
@@ -102,8 +102,8 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
       case job.name do
         @action_name ->
           job.params
-          |> Map.get("destination", %{})
-          |> Map.get("paths")
+          |> ExBackend.Map.get_by_key_or_atom(:destination, %{})
+          |> ExBackend.Map.get_by_key_or_atom(:paths)
           |> case do
             nil -> result
             paths -> Enum.concat(paths, result)

@@ -30,7 +30,7 @@ export class VideoTitleComponent {
     var page = 0;
     var selectedChannels = undefined;
 
-    this.applicationService.get()
+    this.applicationService.get_cached_app()
     .subscribe(response => {
       this.application = response;
 

@@ -64,7 +64,7 @@ defmodule ExBackend.Workflow.Step.GenerateDash do
         }
 
         options =
-          Map.get(step, "parameters", [])
+          ExBackend.Map.get_by_key_or_atom(step, :parameters, [])
           |> build_gpac_parameters(options)
 
         requirements = Requirements.add_required_paths(source_paths)
@@ -156,10 +156,10 @@ defmodule ExBackend.Workflow.Step.GenerateDash do
 
   defp build_gpac_parameters([param | params], result) do
     key =
-      Map.get(param, "id")
+       ExBackend.Map.get_by_key_or_atom(param, :id)
       |> convert_gpac_key
 
-    value = Map.get(param, "value")
+    value =  ExBackend.Map.get_by_key_or_atom(param, :value)
 
     result = Map.put(result, key, value)
     build_gpac_parameters(params, result)
@@ -210,8 +210,8 @@ defmodule ExBackend.Workflow.Step.GenerateDash do
       case job.name do
         @action_name ->
           job.params
-          |> Map.get("destination", %{})
-          |> Map.get("paths")
+          |> ExBackend.Map.get_by_key_or_atom(:destination, %{})
+          |> ExBackend.Map.get_by_key_or_atom(:paths)
           |> case do
             nil -> result
             paths -> Enum.concat(paths, result)

@@ -16,9 +16,7 @@ defmodule ExBackend.WorkflowStep do
       |> Enum.uniq()
       |> length
 
-    steps =
-      workflow.flow
-      |> Map.get("steps")
+    steps = ExBackend.Map.get_by_key_or_atom(workflow.flow, :steps)
 
     case Enum.at(steps, step_index) do
       nil ->
@@ -32,7 +30,7 @@ defmodule ExBackend.WorkflowStep do
           }"
         )
 
-        status = launch_step(workflow, step, step_index)
+        status = launch_step(workflow, ExBackend.Map.get_by_key_or_atom(step, :name), step, step_index)
 
         topic = "update_workflow_" <> Integer.to_string(workflow_id)
 
@@ -49,74 +47,72 @@ defmodule ExBackend.WorkflowStep do
   end
 
   def skip_step(workflow, step) do
-    step_name = Map.get(step, "name")
+    step_name = ExBackend.Map.get_by_key_or_atom(step, :name)
 
     ExBackend.Repo.preload(workflow, :jobs, force: true)
     |> ExBackend.Jobs.create_skipped_job(step_name)
   end
 
   def skip_step_jobs(workflow, step) do
-    step_name = Map.get(step, "name")
+    step_name = ExBackend.Map.get_by_key_or_atom(step, :name)
 
     ExBackend.Repo.preload(workflow, :jobs, force: true)
     |> ExBackend.Jobs.skip_jobs(step_name)
   end
 
-  defp launch_step(workflow, %{"name" => "acs_prepare_audio"} = _step, _step_index) do
+  defp launch_step(workflow, "acs_prepare_audio", step, _step_index) do
     ExBackend.Workflow.Step.Acs.PrepareAudio.launch(workflow)
   end
 
-  defp launch_step(workflow, %{"name" => "acs_synchronize"} = step, _step_index) do
+  defp launch_step(workflow, "acs_synchronize", step, _step_index) do
     ExBackend.Workflow.Step.Acs.Synchronize.launch(workflow, step)
   end
 
-  defp launch_step(workflow, %{"name" => "audio_encode"} = _step, _step_index) do
+  defp launch_step(workflow, "audio_encode", _step, _step_index) do
     ExBackend.Workflow.Step.AudioEncode.launch(workflow)
   end
 
-  defp launch_step(workflow, %{"name" => "audio_extraction"} = step, _step_index) do
+  defp launch_step(workflow, "audio_extraction", step, _step_index) do
     ExBackend.Workflow.Step.AudioExtraction.launch(workflow, step)
   end
 
-  defp launch_step(workflow, %{"name" => "audio_decode"} = _step, _step_index) do
+  defp launch_step(workflow, "audio_decode", _step, _step_index) do
     ExBackend.Workflow.Step.AudioDecode.launch(workflow)
   end
 
-  defp launch_step(workflow, %{"name" => "download_ftp"} = _step, _step_index) do
+  defp launch_step(workflow, "download_ftp", _step, _step_index) do
     ExBackend.Workflow.Step.FtpDownload.launch(workflow)
   end
 
-  defp launch_step(workflow, %{"name" => "download_http"} = _step, _step_index) do
+  defp launch_step(workflow, "download_http", _step, _step_index) do
     ExBackend.Workflow.Step.HttpDownload.launch(workflow)
   end
 
-  defp launch_step(workflow, %{"name" => "ttml_to_mp4"} = _step, _step_index) do
+  defp launch_step(workflow, "ttml_to_mp4", _step, _step_index) do
     ExBackend.Workflow.Step.TtmlToMp4.launch(workflow)
   end
 
-  defp launch_step(workflow, %{"name" => "set_language"} = step, _step_index) do
+  defp launch_step(workflow, "set_language", step, _step_index) do
     ExBackend.Workflow.Step.SetLanguage.launch(workflow, step)
   end
 
-  defp launch_step(workflow, %{"name" => "generate_dash"} = step, _step_index) do
+  defp launch_step(workflow, "generate_dash", step, _step_index) do
     ExBackend.Workflow.Step.GenerateDash.launch(workflow, step)
   end
 
-  defp launch_step(workflow, %{"name" => "upload_ftp"} = step, _step_index) do
+  defp launch_step(workflow, "upload_ftp", step, _step_index) do
     ExBackend.Workflow.Step.FtpUpload.launch(workflow, step)
   end
 
-  defp launch_step(workflow, %{"name" => "push_rdf"} = _step, _step_index) do
+  defp launch_step(workflow, "push_rdf", _step, _step_index) do
     ExBackend.Workflow.Step.PushRdf.launch(workflow)
   end
 
-  defp launch_step(workflow, %{"name" => "clean_workspace"} = _step, _step_index) do
+  defp launch_step(workflow, "clean_workspace", _step, _step_index) do
     ExBackend.Workflow.Step.CleanWorkspace.launch(workflow)
   end
 
-  defp launch_step(workflow, step, _step_index) do
-    step_name = Map.get(step, "name")
-
+  defp launch_step(workflow, step_name, step, _step_index) do
     Logger.error("unable to match with the step #{inspect(step)} for workflow #{workflow.id}")
     ExBackend.Repo.preload(workflow, :jobs, force: true)
     |> ExBackend.Jobs.create_error_job(step_name, "unable to start this step")
@@ -150,9 +146,9 @@ defmodule ExBackend.WorkflowStep do
       if job.name == "upload_ftp" do
         path =
           job
-          |> Map.get(:params, %{})
-          |> Map.get("destination", %{})
-          |> Map.get("path")
+          |> ExBackend.Map.get_by_key_or_atom(:params, %{})
+          |> ExBackend.Map.get_by_key_or_atom(:destination, %{})
+          |> ExBackend.Map.get_by_key_or_atom(:path)
 
         case path do
           nil -> result

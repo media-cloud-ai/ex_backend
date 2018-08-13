@@ -39,7 +39,7 @@ defmodule ExBackend.Workflows do
     offset = page * size
 
     query =
-      case Map.get(params, :video_id, nil) || Map.get(params, "video_id", nil) do
+      case ExBackend.Map.get_by_key_or_atom(params, :video_id) do
         nil ->
           from(workflow in Workflow)
 

@@ -8,13 +8,25 @@ import {Application} from '../models/application';
 @Injectable()
 export class ApplicationService {
   private applicationUrl = 'app';
+  application = undefined;
 
   constructor(private http: HttpClient) { }
+
+  get_cached_app(): Observable<Application> {
+    if(this.application != undefined){
+      return of(this.application);
+    }
+
+    return this.get();
+  }
 
   get(): Observable<Application> {
     return this.http.get<Application>(this.applicationUrl)
       .pipe(
-        tap(application => this.log('fetched Application')),
+        tap(application => {
+          this.application = application;
+          this.log('fetched Application')
+        }),
         catchError(this.handleError('get', undefined))
       );
   }

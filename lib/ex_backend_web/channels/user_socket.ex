@@ -24,6 +24,12 @@ defmodule ExBackendWeb.UserSocket do
   def connect(params, socket) do
     token = Map.get(params, "userToken")
 
+    socket =
+      case Map.get(params, "identifier") do
+        nil -> socket
+        identifier -> assign(socket, :identifier, identifier)
+      end
+
     case Phauxth.Token.verify(ExBackendWeb.Endpoint, token, 4 * 60 * 60) do
       {:ok, verified_user_id} ->
         {:ok, assign(socket, :user_id, verified_user_id)}
