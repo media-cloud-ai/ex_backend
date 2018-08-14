@@ -71,10 +71,12 @@ export class AppComponent {
       this.updateLeftMenu();
     }
 
-    this.applicationService.get_cached_app()
+    this.applicationService.get()
     .subscribe(application => {
       this.application = application;
-      this.setTitle(application.label);
+      if(application) {
+        this.setTitle(application.label);
+      }
       this.updateLeftMenu();
     });
   }
@@ -120,7 +122,7 @@ export class AppComponent {
         });
 
         this.left_menu.push({
-          "link": "/player",
+          "link": "/player/hoffmann",
           "label": "Player"
         });
       }

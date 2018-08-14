@@ -1,6 +1,15 @@
 
-import {Component} from '@angular/core';
-import {MediaPlayer} from 'dashjs';
+import {Component, HostListener} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+
+import {
+  MediaPlayer,
+  PlaybackTimeUpdatedEvent,
+  MediaPlayerEvents,
+  } from 'dashjs';
+
+import {Observable} from 'rxjs';
+import 'rxjs/add/observable/interval';
 
 @Component({
   selector: 'player-component',
@@ -9,20 +18,89 @@ import {MediaPlayer} from 'dashjs';
 })
 
 export class PlayerComponent {
+  player = MediaPlayer().create();
+  time = 0;
+  timecode = 0;
+  content_id = null;
+  previousISDState = null;
+  tt = null;
+  isd = null;
+
+  sub = null;
+
   constructor(
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit() {
     var videoPlayer = document.querySelector("#videoPlayer");
-    var subtitleRenderingDiv = document.querySelector("#subtitle-rendering-div");
-    var url = "/stream/manifest.mpd";
 
-    // var url = "http://videos-pmd.francetv.fr/innovation/SubTil/6bcd5593-c73b-42e6-91d5-0a0f156ff08a/2018_08_02__18_51_44/manifest.mpd";
-    // var url = "https://dash.akamaized.net/envivio/EnvivioDash3/manifest.mpd";
-    var player = MediaPlayer().create();
-    player.initialize(<HTMLElement>videoPlayer, url, false);
-    player.attachTTMLRenderingDiv(<HTMLDivElement>subtitleRenderingDiv);
+    this.sub = this.route
+      .params.subscribe(params => {
+        this.content_id = params['id'];
 
-    // http://dash.edgesuite.net/akamai/test/caption_test/ElephantsDream/ElephantsDream_en.vtt
+        var url = "/stream/" + this.content_id + "/manifest.mpd";
+
+        this.player.getDebug().setLogToBrowserConsole(false);
+        this.player.initialize(<HTMLElement>videoPlayer, url, false);
+
+        this.player.on(MediaPlayer.events["PLAYBACK_PAUSED"], this.processEvent, this);
+        this.player.on(MediaPlayer.events["PLAYBACK_ENDED"], this.processEvent, this);
+        this.player.on(MediaPlayer.events["PLAYBACK_PLAYING"], this.processEvent, this);
+      });
+
+  }
+
+  ngOnDestroy() {
+    this.stopRefresh()
+  }
+
+  processEvent(event) {
+    if(event.type == "playbackPlaying") {
+      this.startRefresh();
+    }
+    if(event.type == "stopRefresh" || event.type == "playbackEnded") {
+      this.startRefresh();
+      this.getCurrentTime();
+    }
+  }
+
+  startRefresh() {
+    this.sub = Observable.interval(100)
+    .subscribe((val) => {
+      this.getCurrentTime();
+    });
+  }
+
+  stopRefresh() {
+    if(this.sub) {
+      this.sub.unsubscribe();
+    }
+  }
+
+  getCurrentTime() {
+    if(this.player) {
+      this.time = this.player.time();
+      this.timecode = this.player.time() * 1000;
+    }
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  keyDownEvent(event: KeyboardEvent) {
+    if(event.ctrlKey == true && event.code == "Space") {
+      return false;
+    }
+  }
+
+  @HostListener('window:keyup', ['$event'])
+  keyUpEvent(event: KeyboardEvent) {
+    if(event.ctrlKey == true && event.code == "Space") {
+      if(this.player.isPaused()) {
+        this.player.play();
+      } else {
+        this.player.pause()
+      }
+      return false;
+    }
   }
 }

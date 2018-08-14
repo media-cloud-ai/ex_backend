@@ -61,7 +61,7 @@ const appRoutes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'player',
+    path: 'player/:id',
     component: PlayerComponent,
     canActivate: [AuthGuard]
   },

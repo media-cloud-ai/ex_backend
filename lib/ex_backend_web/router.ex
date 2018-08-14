@@ -61,8 +61,8 @@ defmodule ExBackendWeb.Router do
     get("/imdb/:id", ImdbController, :show)
   end
 
-  get("/stream/manifest.mpd", ExBackendWeb.PlayerController, :manifest)
-  get("/stream/:filename", ExBackendWeb.PlayerController, :index)
+  get("/stream/:content/manifest.mpd", ExBackendWeb.PlayerController, :manifest)
+  get("/stream/:content/:filename", ExBackendWeb.PlayerController, :index)
 
   scope "/", ExBackendWeb do
     pipe_through(:browser)

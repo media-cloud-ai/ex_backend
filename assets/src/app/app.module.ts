@@ -69,6 +69,7 @@ import {PlayerComponent}         from './player/player.component';
 import {RightsComponent}         from './users/rights.component';
 import {QueuesComponent}         from './amqp/queues.component';
 import {StepProgressBarComponent} from './workflows/step_progress_bar.component';
+import {SubtitleComponent}       from './player/subtitle.component';
 import {UserComponent}           from './users/user.component';
 import {UsersComponent}          from './users/users.component';
 import {VideoTitleComponent}     from './workflows/video_title.component';
@@ -124,7 +125,6 @@ import {ErrorInterceptor}        from './authentication/error.interceptor';
 import 'hammerjs/hammer'; // for MatSlideToggleModule
 import * as moment from 'moment';
 import * as dashjs from 'dashjs';
-
 
 const EX_BACKEND_DATE_FORMATS = {
   parse: {
@@ -192,6 +192,7 @@ const EX_BACKEND_DATE_FORMATS = {
     RightsComponent,
     StartIngestDialog,
     StepProgressBarComponent,
+    SubtitleComponent,
     UserComponent,
     UsersComponent,
     VideoTitleComponent,
@@ -233,6 +234,7 @@ const EX_BACKEND_DATE_FORMATS = {
     RightsComponent,
     StartIngestDialog,
     StepProgressBarComponent,
+    SubtitleComponent,
     UserComponent,
     VideoTitleComponent,
     WatchersComponent,

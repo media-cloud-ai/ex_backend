@@ -1,0 +1,28 @@
+<div class=subtitle *ngIf="isd && isd.contents">
+  <div *ngFor="let root of isd.contents">
+    <div *ngFor="let body of root.contents">
+      <div *ngFor="let div of body.contents">
+        <div *ngFor="let p of div.contents">
+          <div *ngFor="let item of p.contents">
+            <mat-form-field class="textcontent">
+              <input
+                matInput
+                type="text"
+                placeholder="{{language}}"
+                [(ngModel)]="item.text"
+                >
+            </mat-form-field>
+            <button
+              mat-button
+              color="primary"
+              (click)="changeText(time, 'hum, bienvenue au nom de l\'équipe', item.text)"
+              >
+              <mat-icon>chevron_right</mat-icon>
+              Update
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

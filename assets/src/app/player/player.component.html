@@ -6,5 +6,13 @@
   >
 </video>
 
-<div id="subtitle-rendering-div">
+<div id=timecode>
+  {{ timecode | duration : 'timecode_frame' }}
+</div>
+
+<div>
+  <subtitle-component [content_id]="content_id" [time]="time" language="english"></subtitle-component>
+</div>
+<div>
+  <subtitle-component [content_id]="content_id" [time]="time" language="french"></subtitle-component>
 </div>

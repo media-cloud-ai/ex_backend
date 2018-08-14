@@ -89,7 +89,8 @@ config :ex_backend,
   appdir: "/opt/app",
   acs_app: "./SynchroSubtilTSP_V0.5",
   root_email: "admin@media-io.com",
-  root_password: "admin123"
+  root_password: "admin123",
+  root_dash_content: "/Users/marco/media/"
 
 config :amqp,
   hostname: "localhost",

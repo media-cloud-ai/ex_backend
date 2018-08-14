@@ -34,10 +34,10 @@ export class WorkflowDetailsComponent {
 
   ngOnInit() {
     this.sub = this.route
-    .params.subscribe(params => {
-      this.workflow_id = +params['id'];
-      this.getWorkflow(this.workflow_id);
-    });
+      .params.subscribe(params => {
+        this.workflow_id = +params['id'];
+        this.getWorkflow(this.workflow_id);
+      });
 
     this.socketService.initSocket();
     this.socketService.connectToChannel("notifications:all");
