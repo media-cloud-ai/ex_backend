@@ -34,12 +34,14 @@ defmodule ExBackendWeb.UserControllerTest do
   test "show chosen user's page", %{conn: conn, user: user} do
     conn = get(conn, user_path(conn, :show, user))
 
-    assert json_response(conn, 200)["data"] == %{
-             "id" => user.id,
+    assert %{
+             "id" => user_id,
              "email" => "reg@example.com",
              "confirmed_at" => nil,
-             "rights" => ["administrator"]
-           }
+             "rights" => ["administrator"],
+             "inserted_at" => inserted_at
+           } = json_response(conn, 200)["data"]
+    assert user_id == user.id
   end
 
   test "creates user when data is valid", %{conn: conn} do
