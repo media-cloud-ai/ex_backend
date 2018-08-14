@@ -30,7 +30,8 @@ config :ex_backend,
       certfile: "/path/to/cert.pem",
       keyfile: "/path/to/key.pem"
     ]
-  ]
+  ],
+  root_dash_content: "/tmp/"
 
 config :amqp,
   hostname: "192.168.99.100",
