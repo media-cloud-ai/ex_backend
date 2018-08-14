@@ -29,6 +29,8 @@ RUN mix deps.get && \
     mix release --env=$MIX_ENV && \
     cd assets && \
     yarn && \
+    sed 's/currentTrackIdx: number;/currentTrackIdx: number;}/' node_modules/dashjs/index.d.ts > node_modules/dashjs/index.d.ts && \
+    sed 's/currentTrackIdx: number;/currentTrackIdx: number;}/' node_modules/dashjs/build/typings/index.d.ts > node_modules/dashjs/build/typings/index.d.ts && \
     yarn run release && \
     cd .. && \
     mix phx.digest
