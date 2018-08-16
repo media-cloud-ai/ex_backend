@@ -55,7 +55,7 @@
     "sass-loader": "^7.1.0",
     "standard": "^11.0.1",
     "standardts": "^1.0.0",
-    "style-loader": "^0.21.0",
+    "style-loader": "^0.22.1",
     "to-string-loader": "^1.1.5",
     "ts-loader": "^4.4.2",
     "typescript": "^3.0.1",
