@@ -1,5 +1,5 @@
-import { NodeConfig } from '../node_config';
+import { NodeConfig } from '../node_config'
 
 export class NodeConfigPage {
-  data: NodeConfig[];
+  data: NodeConfig[]
 }

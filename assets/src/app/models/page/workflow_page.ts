@@ -1,10 +1,10 @@
-import { Workflow } from '../workflow';
+import { Workflow } from '../workflow'
 
 export class WorkflowPage {
-  data: Workflow[];
-  total: number;
+  data: Workflow[]
+  total: number
 }
 
 export class WorkflowData {
-  data: Workflow;
+  data: Workflow
 }

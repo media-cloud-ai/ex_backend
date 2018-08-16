@@ -1,7 +1,7 @@
-import {Component, Inject} from '@angular/core';
-import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import {Component, Inject} from '@angular/core'
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material'
 
-import {Step} from '../../models/workflow';
+import {Step} from '../../models/workflow'
 
 @Component({
   selector: 'start-ingest-dialog',
@@ -10,7 +10,7 @@ import {Step} from '../../models/workflow';
 })
 
 export class StartIngestDialog {
-  steps: Step[];
+  steps: Step[]
 
   constructor(
     public dialogRef: MatDialogRef<StartIngestDialog>,
@@ -19,7 +19,7 @@ export class StartIngestDialog {
     this.steps = [
       {
         id: 0,
-        name: "audio_extraction",
+        name: 'audio_extraction',
         enable: true,
         parent_ids:[],
         required: [],
@@ -28,25 +28,25 @@ export class StartIngestDialog {
             path: filename
           }
         ],
-        output_extension: ".wav",
+        output_extension: '.wav',
         parameters : [
           {
-            id: "output_codec_audio",
-            type: "string",
+            id: 'output_codec_audio',
+            type: 'string',
             enable: false,
-            default: "pcm_s24le",
-            value: "pcm_s24le"
+            default: 'pcm_s24le',
+            value: 'pcm_s24le'
           },
           {
-            id: "disable_video",
-            type: "boolean",
+            id: 'disable_video',
+            type: 'boolean',
             enable: false,
             default: true,
             value: true
           },
           {
-            id: "disable_data",
-            type: "boolean",
+            id: 'disable_data',
+            type: 'boolean',
             enable: false,
             default: true,
             value: true
@@ -57,16 +57,16 @@ export class StartIngestDialog {
   }
 
   onNoClick() {
-    this.dialogRef.close();
+    this.dialogRef.close()
   }
 
   onClose() {
-    var steps = [];
-    for(let step of this.steps) {
-      if(step.enable == true) {
-        steps.push(step);
+    var steps = []
+    for (let step of this.steps) {
+      if (step.enable === true) {
+        steps.push(step)
       }
     }
-    this.dialogRef.close(steps);
+    this.dialogRef.close(steps)
   }
 }

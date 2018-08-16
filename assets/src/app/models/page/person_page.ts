@@ -1,11 +1,11 @@
 
-import { Person } from '../person';
+import { Person } from '../person'
 
 export class PersonPage {
-  data: Person[];
-  total: number;
+  data: Person[]
+  total: number
 }
 
 export class PersonData {
-  data: Person;
+  data: Person
 }

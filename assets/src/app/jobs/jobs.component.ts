@@ -1,16 +1,16 @@
 
-import {Component, Input, ViewChild} from '@angular/core';
-import {PageEvent, MatDialog} from '@angular/material';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Component, Input, ViewChild} from '@angular/core'
+import {PageEvent, MatDialog} from '@angular/material'
+import {ActivatedRoute, Router} from '@angular/router'
 
-import {JobService} from '../services/job.service';
-import {WorkflowService} from '../services/workflow.service';
-import {JobPage} from '../models/page/job_page';
-import {Job} from '../models/job';
+import {JobService} from '../services/job.service'
+import {WorkflowService} from '../services/workflow.service'
+import {JobPage} from '../models/page/job_page'
+import {Job} from '../models/job'
 
-import {JobDetailsDialogComponent} from './details/job_details_dialog.component';
+import {JobDetailsDialogComponent} from './details/job_details_dialog.component'
 
-import * as moment from 'moment';
+import * as moment from 'moment'
 
 @Component({
   selector: 'jobs-component',
@@ -19,17 +19,17 @@ import * as moment from 'moment';
 })
 
 export class JobsComponent {
-  length = 1000;
-  pageSize = 10;
-  page = 0;
-  sub = undefined;
-  job_duration_rendering_mode = "human";
+  length = 1000
+  pageSize = 10
+  page = 0
+  sub = undefined
+  job_duration_rendering_mode = 'human'
 
-  @Input() jobType: string;
-  @Input() workflowId: number;
+  @Input() jobType: string
+  @Input() workflowId: number
 
-  pageEvent: PageEvent;
-  jobs: JobPage;
+  pageEvent: PageEvent
+  jobs: JobPage
 
   constructor(
     private jobService: JobService,
@@ -43,59 +43,59 @@ export class JobsComponent {
     this.sub = this.route
       .queryParams
       .subscribe(params => {
-        this.page = 0;
-        this.getJobs(this.page);
-      });
+        this.page = 0
+        this.getJobs(this.page)
+      })
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    this.sub.unsubscribe()
   }
 
   getJobs(index) {
     this.jobService.getJobs(index, 100, this.workflowId, this.jobType)
     .subscribe(jobPage => {
-      this.jobs = jobPage;
-      this.length = jobPage.total;
-    });
+      this.jobs = jobPage
+      this.length = jobPage.total
+    })
   }
 
   eventGetJobs(event) {
-    this.router.navigate(['/jobs'], { queryParams: this.getQueryParamsForPage(event.pageIndex) });
-    this.getJobs(event.pageIndex);
+    this.router.navigate(['/jobs'], { queryParams: this.getQueryParamsForPage(event.pageIndex) })
+    this.getJobs(event.pageIndex)
   }
 
   updateJobs() {
-    this.router.navigate(['/jobs'], { queryParams: this.getQueryParamsForPage(0) });
-    this.getJobs(0);
+    this.router.navigate(['/jobs'], { queryParams: this.getQueryParamsForPage(0) })
+    this.getJobs(0)
   }
 
   getQueryParamsForPage(pageIndex: number): Object {
-    var params = {};
-    if(pageIndex != 0) {
-      params['page'] = pageIndex;
+    var params = {}
+    if (pageIndex !== 0) {
+      params['page'] = pageIndex
     }
-    return params;
+    return params
   }
 
   switchDurationRenderingMode() {
-    if(this.job_duration_rendering_mode == "human") {
-      this.job_duration_rendering_mode = "timecode_ms";
+    if (this.job_duration_rendering_mode === 'human') {
+      this.job_duration_rendering_mode = 'timecode_ms'
     } else {
-      if(this.job_duration_rendering_mode == "timecode_ms") {
-        this.job_duration_rendering_mode = "human";
+      if (this.job_duration_rendering_mode === 'timecode_ms') {
+        this.job_duration_rendering_mode = 'human'
       }
     }
   }
 
   displayJobDetails(job: Job) {
-    this.dialog.open(JobDetailsDialogComponent, { data: job });
+    this.dialog.open(JobDetailsDialogComponent, { data: job })
   }
 
   retryJob(job: Job) {
-    this.workflowService.sendWorkflowEvent(this.workflowId, {event: "retry", job_id: job.id})
+    this.workflowService.sendWorkflowEvent(this.workflowId, {event: 'retry', job_id: job.id})
     .subscribe(response => {
-      console.log(response);
-    });
+      console.log(response)
+    })
   }
 }

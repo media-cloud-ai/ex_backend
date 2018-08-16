@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core'
 /*
  * Usage:
  *   value | dockerImage
@@ -19,13 +19,13 @@ export class DockerImagePipe implements PipeTransform {
       { id: 'ftvsubtil/http_worker', name: 'HTTP Worker' },
       { id: 'postgres', name: 'PostgreSQL' },
       { id: 'rabbitmq', name: 'RabbitMQ' },
-    ];
+    ]
 
     for (var i = allDockerImages.length - 1; i >= 0; i--) {
-      if(allDockerImages[i].id == image_name.split(":")[0]){
-        return allDockerImages[i].name;
+      if (allDockerImages[i].id === image_name.split(':')[0]){
+        return allDockerImages[i].name
       }
     }
-    return image_name;
+    return image_name
   }
 }

@@ -17,7 +17,7 @@ RUN apk update && \
     mix local.rebar --force && \
     mix hex.info && \
     cd /usr/local/bin && \
-    curl -o- -L https://yarnpkg.com/install.sh | sh -s -- --version 1.5.1
+    curl -o- -L https://yarnpkg.com/install.sh | sh -s -- --version 1.9.4
 
 WORKDIR /app
 ENV MIX_ENV prod
@@ -29,6 +29,7 @@ RUN mix deps.get && \
     mix release --env=$MIX_ENV && \
     cd assets && \
     yarn && \
+    yarn run lint && \
     yarn run release && \
     cd .. && \
     mix phx.digest

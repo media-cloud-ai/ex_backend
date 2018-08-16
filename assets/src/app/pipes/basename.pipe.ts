@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core'
 /*
  * Usage:
  *   value | basename
@@ -10,6 +10,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class BasenamePipe implements PipeTransform {
 
   transform(path: string): string {
-    return path.split(/[\\/]/).pop();
+    return path.split(/[\\/]/).pop()
   }
 }

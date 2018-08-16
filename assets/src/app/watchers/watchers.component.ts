@@ -1,10 +1,10 @@
 
-import {Component, ViewChild} from '@angular/core';
-import {MatCheckboxModule, PageEvent} from '@angular/material';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Component, ViewChild} from '@angular/core'
+import {MatCheckboxModule, PageEvent} from '@angular/material'
+import {ActivatedRoute, Router} from '@angular/router'
 
-import {WatcherService} from '../services/watcher.service';
-import {WatcherPage} from '../models/page/watcher_page';
+import {WatcherService} from '../services/watcher.service'
+import {WatcherPage} from '../models/page/watcher_page'
 
 @Component({
   selector: 'watchers-component',
@@ -13,7 +13,7 @@ import {WatcherPage} from '../models/page/watcher_page';
 })
 
 export class WatchersComponent {
-  watchers: WatcherPage;
+  watchers: WatcherPage
 
   constructor(
     private watcherService: WatcherService,
@@ -22,13 +22,13 @@ export class WatchersComponent {
   ) {}
 
   ngOnInit() {
-    this.getWatchers();
+    this.getWatchers()
   }
 
   getWatchers(): void {
     this.watcherService.getWatchers()
     .subscribe(watcherPage => {
-      this.watchers = watcherPage;
-    });
+      this.watchers = watcherPage
+    })
   }
 }

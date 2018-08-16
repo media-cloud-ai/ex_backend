@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core'
 /*
  * Usage:
  *   value | queue
@@ -29,13 +29,13 @@ export class QueuePipe implements PipeTransform {
       { id: 'job_http', name: 'HTTP jobs' },
       { id: 'job_http_error', name: 'HTTP jobs with error status' },
       { id: 'job_http_completed', name: 'HTTP jobs with completed status' },
-    ];
+    ]
 
     for (var i = allQueueNames.length - 1; i >= 0; i--) {
-      if(allQueueNames[i].id == queue){
-        return allQueueNames[i].name;
+      if (allQueueNames[i].id === queue){
+        return allQueueNames[i].name
       }
     }
-    return queue;
+    return queue
   }
 }

@@ -1,6 +1,6 @@
 
-import {Component, Input} from '@angular/core';
-import {Step} from '../../models/workflow';
+import {Component, Input} from '@angular/core'
+import {Step} from '../../models/workflow'
 
 @Component({
   selector: 'workflow-step-details-component',
@@ -9,25 +9,25 @@ import {Step} from '../../models/workflow';
 })
 
 export class WorkflowStepDetailsComponent {
-  details_opened = false;
-  disabled: boolean = true;
+  details_opened = false
+  disabled: boolean = true
 
-  @Input() step: Step;
-  @Input() workflowId: number;
+  @Input() step: Step
+  @Input() workflowId: number
 
   ngOnInit() {
-    if(this.step.parameters) {
-      this.disabled = this.step.parameters.length == 0;
+    if (this.step.parameters) {
+      this.disabled = this.step.parameters.length === 0
     }
 
-    if(this.step.jobs && this.step.jobs.total != undefined && this.disabled) {
-      this.disabled = this.step.jobs.total == 0;
+    if (this.step.jobs && this.step.jobs.total !== undefined && this.disabled) {
+      this.disabled = this.step.jobs.total === 0
     }
   }
 
   toggleStepDetails(): void {
-    if(!this.disabled) {
-      this.details_opened = !this.details_opened;
+    if (!this.disabled) {
+      this.details_opened = !this.details_opened
     }
   }
 }

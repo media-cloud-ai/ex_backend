@@ -1,16 +1,16 @@
 
-import {Component} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {MatDialog} from '@angular/material';
+import {Component} from '@angular/core'
+import {ActivatedRoute, Router} from '@angular/router'
+import {MatDialog} from '@angular/material'
 
-import {ContainerService} from '../services/container.service';
-import {NodeService} from '../services/node.service';
-import {ImageService} from '../services/image.service';
+import {ContainerService} from '../services/container.service'
+import {NodeService} from '../services/node.service'
+import {ImageService} from '../services/image.service'
 import {NewNodeDialogComponent} from '../nodes/new_node_dialog.component'
 
-import {Container} from '../models/container';
-import {NodeConfig} from '../models/node_config';
-import {Image} from '../models/image';
+import {Container} from '../models/container'
+import {NodeConfig} from '../models/node_config'
+import {Image} from '../models/image'
 
 @Component({
   selector: 'workers-component',
@@ -19,12 +19,12 @@ import {Image} from '../models/image';
 })
 
 export class WorkersComponent {
-  containers: Container[];
+  containers: Container[]
 
-  nodes: NodeConfig[];
-  images: Image[];
+  nodes: NodeConfig[]
+  images: Image[]
 
-  selectedWorker: Image;
+  selectedWorker: Image
 
   constructor(
     private containerService: ContainerService,
@@ -39,42 +39,42 @@ export class WorkersComponent {
   ngOnInit() {
     this.imageService.getImages()
     .subscribe(imagePage => {
-      this.images = imagePage.data;
-    });
+      this.images = imagePage.data
+    })
 
-    this.getNodes();
-    this.getContainers();
+    this.getNodes()
+    this.getContainers()
   }
 
   getNodes() {
     this.nodeService.getNodes()
     .subscribe(nodeConfigPage => {
-      this.nodes = nodeConfigPage.data;
-    });
+      this.nodes = nodeConfigPage.data
+    })
   }
 
   addNode() {
-    let dialogRef = this.dialog.open(NewNodeDialogComponent);
+    let dialogRef = this.dialog.open(NewNodeDialogComponent)
 
     dialogRef.afterClosed().subscribe(node => {
-      if(node != undefined) {
-        this.getNodes();
+      if (node !== undefined) {
+        this.getNodes()
       }
-    });
+    })
   }
 
   deleteNode(id: number) {
     this.nodeService.deleteNode(id)
     .subscribe(response => {
-      this.getNodes();
-    });
+      this.getNodes()
+    })
   }
 
   getContainers() {
     this.containerService.getContainers()
     .subscribe(containerPage => {
-      this.containers = containerPage.data;
-    });
+      this.containers = containerPage.data
+    })
   }
 
   addContainer() {
@@ -83,38 +83,38 @@ export class WorkersComponent {
       Date.now().toString(),
       this.selectedWorker.params)
     .subscribe(container => {
-      this.selectedWorker = undefined;
-      this.getContainers();
-    });
+      this.selectedWorker = undefined
+      this.getContainers()
+    })
   }
 
   removeContainer(id: string) {
     this.containerService.removeContainer(id)
     .subscribe(container => {
-      this.getContainers();
-    });
+      this.getContainers()
+    })
   }
 
   startContainer(id: string) {
-    this.containerService.updateContainer(id, "start")
+    this.containerService.updateContainer(id, 'start')
     .subscribe(container => {
       this.getContainers()
-    });
+    })
   }
 
   stopContainer(id: string) {
-    this.containerService.updateContainer(id, "stop")
+    this.containerService.updateContainer(id, 'stop')
     .subscribe(container => {
-      var that = this;
+      var that = this
       that.getContainers()
-    });
+    })
   }
 
   actionContainer(id: string, state: string) {
-    if(state == 'running') {
-      this.stopContainer(id);
+    if (state === 'running') {
+      this.stopContainer(id)
     } else {
-      this.startContainer(id);
+      this.startContainer(id)
     }
   }
 }

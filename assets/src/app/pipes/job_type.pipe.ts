@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core'
 /*
  * Usage:
  *   value | jobType
@@ -26,13 +26,13 @@ export class JobTypePipe implements PipeTransform {
       { id: 'ttml_to_mp4', name: 'TTML to MP4' },
       { id: 'upload_ftp', name: 'FTP upload' },
       { id: 'push_rdf', name: 'Push RDF' },
-    ];
+    ]
 
     for (var i = allJobType.length - 1; i >= 0; i--) {
-      if(allJobType[i].id == jobType){
-        return allJobType[i].name;
+      if (allJobType[i].id === jobType){
+        return allJobType[i].name
       }
     }
-    return jobType;
+    return jobType
   }
 }

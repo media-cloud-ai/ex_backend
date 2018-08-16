@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core'
 import {
   HttpRequest,
   HttpHandler,
@@ -6,11 +6,11 @@ import {
   HttpResponse,
   HttpInterceptor,
   HttpErrorResponse,
-} from '@angular/common/http';
+} from '@angular/common/http'
 
-import { AuthService } from './auth.service';
-import { Observable } from 'rxjs';
-import 'rxjs/add/operator/do';
+import { AuthService } from './auth.service'
+import { Observable } from 'rxjs'
+import 'rxjs/add/operator/do'
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -18,9 +18,9 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).do(event => {}, err => {
-      if (err instanceof HttpErrorResponse && err.status == 401) {
-        this.authService.logout();
+      if (err instanceof HttpErrorResponse && err.status === 401) {
+        this.authService.logout()
       }
-    });
+    })
   }
 }

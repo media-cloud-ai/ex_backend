@@ -1,15 +1,15 @@
 
 export class Info {
-  detail: string;
+  detail: string
 }
 
 export class Confirm {
-  info: Info;
+  info: Info
 }
 
 export class User {
-  email: string;
-  inserted_at: string;
-  password: string;
-  rights: any;
+  email: string
+  inserted_at: string
+  password: string
+  rights: any
 }

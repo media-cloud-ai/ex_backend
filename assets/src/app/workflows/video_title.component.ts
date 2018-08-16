@@ -1,11 +1,11 @@
 
-import {Component, Input} from '@angular/core';
-import {Router} from '@angular/router';
+import {Component, Input} from '@angular/core'
+import {Router} from '@angular/router'
 
-import {ApplicationService} from '../services/application.service';
-import {CatalogService} from '../services/catalog.service';
-import {Application} from '../models/application';
-import {Catalog} from '../models/catalog';
+import {ApplicationService} from '../services/application.service'
+import {CatalogService} from '../services/catalog.service'
+import {Application} from '../models/application'
+import {Catalog} from '../models/catalog'
 
 @Component({
   selector: 'video-title-component',
@@ -14,10 +14,10 @@ import {Catalog} from '../models/catalog';
 })
 
 export class VideoTitleComponent {
-  @Input() id: string;
+  @Input() id: string
 
-  application: Application;
-  video: Catalog;
+  application: Application
+  video: Catalog
 
   constructor(
     private applicationService: ApplicationService,
@@ -26,24 +26,24 @@ export class VideoTitleComponent {
   ) {}
 
   ngOnInit() {
-    var index = 0;
-    var page = 0;
-    var selectedChannels = undefined;
+    var index = 0
+    var page = 0
+    var selectedChannels = undefined
 
     this.applicationService.get_cached_app()
     .subscribe(response => {
-      this.application = response;
+      this.application = response
 
-      if(this.application.identifier == "subtil") {
+      if (this.application.identifier === 'subtil') {
         this.catalogService.getVideo(this.id)
         .subscribe(response => {
-          this.video = response.data;
-        });
+          this.video = response.data
+        })
       }
-    });
+    })
   }
 
   gotoVideo(video_id): void {
-    this.router.navigate(['/catalog'], { queryParams: {video_id: video_id} });
+    this.router.navigate(['/catalog'], { queryParams: {video_id: video_id} })
   }
 }

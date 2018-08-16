@@ -1,7 +1,7 @@
 
-import { User } from '../user';
+import { User } from '../user'
 
 export class UserPage {
-  data: User[];
-  total: number;
+  data: User[]
+  total: number
 }

@@ -1,6 +1,6 @@
-import {Component, Inject} from '@angular/core';
-import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import {Workflow} from '../../models/workflow';
+import {Component, Inject} from '@angular/core'
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material'
+import {Workflow} from '../../models/workflow'
 
 @Component({
   selector: 'workflow_abort_dialog',
@@ -9,25 +9,25 @@ import {Workflow} from '../../models/workflow';
 })
 export class WorkflowAbortDialogComponent {
 
-  workflow: Workflow;
+  workflow: Workflow
 
   constructor(
     public dialogRef: MatDialogRef<WorkflowAbortDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
 
-    console.log(data);
-    this.workflow = data.workflow;
+    console.log(data)
+    this.workflow = data.workflow
   }
 
   forceWorkspaceClean(): boolean {
-    return !this.workflow.flow.steps.some((s) => s.name == "clean_workspace");
+    return !this.workflow.flow.steps.some((s) => s.name === 'clean_workspace')
   }
 
   onNoClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close()
   }
 
   onClose(): void {
-    this.dialogRef.close(this.workflow);
+    this.dialogRef.close(this.workflow)
   }
 }

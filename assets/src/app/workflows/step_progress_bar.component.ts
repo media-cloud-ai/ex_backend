@@ -1,6 +1,6 @@
 
-import {Component, Input} from '@angular/core';
-import {Step} from '../models/workflow';
+import {Component, Input} from '@angular/core'
+import {Step} from '../models/workflow'
 
 @Component({
   selector: 'step-progress-bar-component',
@@ -9,5 +9,5 @@ import {Step} from '../models/workflow';
 })
 
 export class StepProgressBarComponent {
-  @Input() step: Step;
+  @Input() step: Step
 }

@@ -1,29 +1,29 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { Injectable } from '@angular/core'
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http'
+import { Observable, of } from 'rxjs'
+import { catchError, map, tap } from 'rxjs/operators'
 
-import {UserPage} from '../models/page/user_page';
-import {User, Confirm} from '../models/user';
+import {UserPage} from '../models/page/user_page'
+import {User, Confirm} from '../models/user'
 
 @Injectable()
 export class UserService {
-  private usersUrl = 'api/users';
+  private usersUrl = 'api/users'
 
   constructor(private http: HttpClient) { }
 
   getUsers(page: number, per_page: number): Observable<UserPage> {
-    let params = new HttpParams();
-    params = params.append('per_page', per_page.toString());
-    if(page > 0) {
-      params = params.append('page', String(page + 1));
+    let params = new HttpParams()
+    params = params.append('per_page', per_page.toString())
+    if (page > 0) {
+      params = params.append('page', String(page + 1))
     }
 
     return this.http.get<UserPage>(this.usersUrl, {params: params})
       .pipe(
         tap(userPage => this.log('fetched UserPage')),
         catchError(this.handleError('getUsers', undefined))
-      );
+      )
   }
 
   inviteUser(email: string): Observable<User> {
@@ -31,32 +31,32 @@ export class UserService {
       user: {
         email: email
       }
-    };
+    }
     return this.http.post<User>(this.usersUrl, params)
       .pipe(
         tap(userPage => this.log('invite User')),
         catchError(this.handleError('inviteUser', undefined))
-      );
+      )
   }
 
   removeUser(user_id: number): Observable<User> {
-    return this.http.delete<User>(this.usersUrl + "/" + user_id)
+    return this.http.delete<User>(this.usersUrl + '/' + user_id)
       .pipe(
         tap(userPage => this.log('remove User')),
         catchError(this.handleError('removeUser', undefined))
-      );
+      )
   }
 
   confirm(password: string, key: string): Observable<Confirm> {
-    let params = new HttpParams();
-    params = params.append('password', password);
-    params = params.append('key', key);
+    let params = new HttpParams()
+    params = params.append('password', password)
+    params = params.append('key', key)
 
-    return this.http.get<Confirm>("/validate", {params: params})
+    return this.http.get<Confirm>('/validate', {params: params})
       .pipe(
         tap(user => this.log('fetched Confirm User')),
         catchError(this.handleError('confirm', undefined))
-      );
+      )
   }
 
   updateRights(user_id: number, rights: any) {
@@ -65,21 +65,21 @@ export class UserService {
         rights: rights
       }
     }
-    return this.http.put<User>(this.usersUrl + "/" + user_id, params)
+    return this.http.put<User>(this.usersUrl + '/' + user_id, params)
       .pipe(
         tap(userPage => this.log('update Rights')),
         catchError(this.handleError('updateRights', undefined))
-      );
+      )
   }
 
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      this.log(`${operation} failed: ${error.message}`);
-      return of(result as T);
-    };
+      this.log(`${operation} failed: ${error.message}`)
+      return of(result as T)
+    }
   }
 
   private log(message: string) {
-    console.log('UserService: ' + message);
+    console.log('UserService: ' + message)
   }
 }

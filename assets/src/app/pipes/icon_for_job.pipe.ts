@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core'
 /*
  * Usage:
  *   value | iconForJob
@@ -24,13 +24,13 @@ export class IconForJobPipe implements PipeTransform {
       { id: 'ttml_to_mp4', name: 'closed_caption' },
       { id: 'upload_ftp', name: 'file_upload' },
       { id: 'push_rdf', name: 'library_add' },
-    ];
+    ]
 
     for (var i = allJobIcons.length - 1; i >= 0; i--) {
-      if(allJobIcons[i].id == iconForJob){
-        return allJobIcons[i].name;
+      if (allJobIcons[i].id === iconForJob){
+        return allJobIcons[i].name
       }
     }
-    return "settings";
+    return 'settings'
   }
 }

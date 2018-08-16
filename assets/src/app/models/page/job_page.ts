@@ -1,6 +1,6 @@
-import { Job } from '../job';
+import { Job } from '../job'
 
 export class JobPage {
-  data: Job[];
-  total: number;
+  data: Job[]
+  total: number
 }

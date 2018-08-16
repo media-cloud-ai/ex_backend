@@ -1,6 +1,6 @@
 
-import { Image } from '../image';
+import { Image } from '../image'
 
 export class ImagePage {
-  data: Image[];
+  data: Image[]
 }

@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core'
 /*
  * Usage:
  *   value | audioType
@@ -14,13 +14,13 @@ export class AudioTypePipe implements PipeTransform {
       { id: 'francais', name: 'FR' },
       { id: 'audiodescription', name: 'AD' },
       { id: 'version-originale', name: 'VO' },
-    ];
+    ]
 
     for (var i = allTypes.length - 1; i >= 0; i--) {
-      if(allTypes[i].id == audio){
-        return allTypes[i].name;
+      if (allTypes[i].id === audio){
+        return allTypes[i].name
       }
     }
-    return audio;
+    return audio
   }
 }

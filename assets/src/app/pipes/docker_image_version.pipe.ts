@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core'
 /*
  * Usage:
  *   value | dockerImageVersion
@@ -9,16 +9,16 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({name: 'dockerImageVersion'})
 export class DockerImageVersionPipe implements PipeTransform {
   transform(image_name: string): string {
-    var tag = image_name.split(":")[1];
+    var tag = image_name.split(':')[1]
 
-    if(tag == undefined || tag == "latest") {
-      return "Latest"
+    if (tag === undefined || tag === 'latest') {
+      return 'Latest'
     }
     
-    if(tag.startsWith("release-")) {
-      return "v" + tag.replace("release-", "");
+    if (tag.startsWith('release-')) {
+      return 'v' + tag.replace('release-', '')
     }
 
-    return tag;
+    return tag
   }
 }

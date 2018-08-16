@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
+import {Component} from '@angular/core'
 
-import {AmqpService} from '../services/amqp.service';
-import {Queue} from '../models/queue';
+import {AmqpService} from '../services/amqp.service'
+import {Queue} from '../models/queue'
 
 @Component({
   selector: 'amqp-queues',
@@ -11,22 +11,22 @@ import {Queue} from '../models/queue';
 
 export class QueuesComponent {
 
-  queues: Queue[];
+  queues: Queue[]
 
   constructor(
     private amqpService: AmqpService
   ) {}
 
   ngOnInit() {
-    this.getQueues();
+    this.getQueues()
   }
 
   getQueues(): void {
     this.amqpService.getQueues()
     .subscribe(queuePage => {
-      if(queuePage){
-        this.queues = queuePage.queues;
+      if (queuePage){
+        this.queues = queuePage.queues
       }
-    });
+    })
   }
 }

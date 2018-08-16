@@ -1,12 +1,12 @@
 
-import {Component}   from '@angular/core';
+import {Component}   from '@angular/core'
 import {
   NavigationExtras,
   Router,
-} from '@angular/router';
-import {Application} from '../models/application';
-import {ApplicationService} from '../services/application.service';
-import {AuthService} from '../authentication/auth.service';
+} from '@angular/router'
+import {Application} from '../models/application'
+import {ApplicationService} from '../services/application.service'
+import {AuthService} from '../authentication/auth.service'
 
 @Component({
     selector: 'login-component',
@@ -15,10 +15,10 @@ import {AuthService} from '../authentication/auth.service';
 })
 
 export class LoginComponent {
-  username: string;
-  password: string;
-  message: string;
-  application: Application;
+  username: string
+  password: string
+  message: string
+  application: Application
 
   constructor(
     private applicationService: ApplicationService,
@@ -28,29 +28,29 @@ export class LoginComponent {
   ngOnInit() {
     this.applicationService.get()
     .subscribe(response => {
-      this.application = response;
-    });
+      this.application = response
+    })
   }
 
   login() {
     this.authService.login(this.username, this.password)
     .subscribe(response => {
-      this.message = "";
-      if(response && response.access_token) {
-        let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : '/dashboard';
+      this.message = ''
+      if (response && response.access_token) {
+        let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : '/dashboard'
 
         let navigationExtras: NavigationExtras = {
           queryParamsHandling: 'preserve',
           preserveFragment: true
-        };
-        this.router.navigate([redirect], navigationExtras);
+        }
+        this.router.navigate([redirect], navigationExtras)
       } else {
-        this.message = "Bad username and/or password";
+        this.message = 'Bad username and/or password'
       }
-    });
+    })
   }
  
   logout() {
-    this.authService.logout();
+    this.authService.logout()
   }
 }

@@ -1,10 +1,10 @@
-import { Catalog } from '../catalog';
+import { Catalog } from '../catalog'
 
 export class CatalogPage {
-  data: Catalog[];
-  total: number;
+  data: Catalog[]
+  total: number
 }
 
 export class CatalogData {
-  data: Catalog;
+  data: Catalog
 }

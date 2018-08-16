@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core'
 /*
  * Usage:
  *   value | parameterLabel
@@ -23,13 +23,13 @@ export class ParameterLabelPipe implements PipeTransform {
       { id: 'disable_video', name: 'Disable video' },
       { id: 'disable_audio', name: 'Disable audio' },
       { id: 'disable_data', name: 'Disable data' },
-    ];
+    ]
 
     for (var i = allLabels.length - 1; i >= 0; i--) {
-      if(allLabels[i].id == parameterLabel){
-        return allLabels[i].name;
+      if (allLabels[i].id === parameterLabel){
+        return allLabels[i].name
       }
     }
-    return parameterLabel;
+    return parameterLabel
   }
 }

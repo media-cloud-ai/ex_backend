@@ -1,6 +1,6 @@
 
-import {Watcher} from '../watcher';
+import {Watcher} from '../watcher'
 
 export class WatcherPage {
-  data: Watcher[];
+  data: Watcher[]
 }

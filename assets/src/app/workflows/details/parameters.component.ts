@@ -1,6 +1,6 @@
 
-import {Component, Input} from '@angular/core';
-import {Parameter} from '../../models/workflow';
+import {Component, Input} from '@angular/core'
+import {Parameter} from '../../models/workflow'
 
 @Component({
   selector: 'parameters-component',
@@ -9,7 +9,7 @@ import {Parameter} from '../../models/workflow';
 })
 
 export class ParametersComponent {
-  @Input() parameters: Parameter[];
+  @Input() parameters: Parameter[]
 
   constructor(
   ) {}
