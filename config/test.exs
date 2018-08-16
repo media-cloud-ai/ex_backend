@@ -34,7 +34,7 @@ config :ex_backend,
   root_dash_content: "/tmp/"
 
 config :amqp,
-  hostname: "192.168.99.100",
+  hostname: "localhost",
   username: "guest",
   password: "guest"
 
