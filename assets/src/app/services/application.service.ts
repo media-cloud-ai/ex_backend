@@ -7,7 +7,7 @@ import {Application} from '../models/application'
 
 @Injectable()
 export class ApplicationService {
-  private applicationUrl = 'app'
+  private applicationUrl = '/app'
   application = undefined
 
   constructor(private http: HttpClient) { }
