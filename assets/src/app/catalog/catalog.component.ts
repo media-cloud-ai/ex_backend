@@ -200,7 +200,7 @@ export class CatalogComponent {
     if (checked) {
       this.selectedVideos.push(video)
     } else {
-      this.selectedVideos = this.selectedVideos.filter(v => v.id !== = video.id)
+      this.selectedVideos = this.selectedVideos.filter(v => v.id !== video.id)
     }
   }
 
