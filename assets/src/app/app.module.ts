@@ -27,6 +27,7 @@ import {
   MatRadioModule,
   MatSelectModule,
   MatSidenavModule,
+  MatSliderModule,
   MatSlideToggleModule,
   MatTableModule,
   MatToolbarModule
@@ -70,6 +71,7 @@ import {RightsComponent}         from './users/rights.component'
 import {QueuesComponent}         from './amqp/queues.component'
 import {StepProgressBarComponent} from './workflows/step_progress_bar.component'
 import {SubtitleComponent}       from './player/subtitle.component'
+import {TimecodeComponent}       from './player/timecode.component'
 import {UserComponent}           from './users/user.component'
 import {UsersComponent}          from './users/users.component'
 import {VideoTitleComponent}     from './workflows/video_title.component'
@@ -164,6 +166,7 @@ const EX_BACKEND_DATE_FORMATS = {
     MatRadioModule,
     MatSelectModule,
     MatSidenavModule,
+    MatSliderModule,
     MatSlideToggleModule,
     MatStepperModule,
     MatTableModule,
@@ -193,6 +196,7 @@ const EX_BACKEND_DATE_FORMATS = {
     StartIngestDialog,
     StepProgressBarComponent,
     SubtitleComponent,
+    TimecodeComponent,
     UserComponent,
     UsersComponent,
     VideoTitleComponent,
@@ -235,6 +239,7 @@ const EX_BACKEND_DATE_FORMATS = {
     StartIngestDialog,
     StepProgressBarComponent,
     SubtitleComponent,
+    TimecodeComponent,
     UserComponent,
     VideoTitleComponent,
     WatchersComponent,

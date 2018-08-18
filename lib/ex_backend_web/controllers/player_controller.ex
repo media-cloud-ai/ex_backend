@@ -9,7 +9,7 @@ defmodule ExBackendWeb.PlayerController do
   end
 
   def index(conn, %{"content"=> content, "filename" => filename}) do
-    if String.ends_with?(filename, ".ttml") do
+    if String.ends_with?(filename, ".ttml") || String.ends_with?(filename, ".vtt")  do
       root = System.get_env("ROOT_DASH_CONTENT") || Application.get_env(:ex_backend, :root_dash_content)
       send_file(conn, 200, root <> content <> "/" <> filename)
     else

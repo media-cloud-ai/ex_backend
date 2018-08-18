@@ -1,7 +1,8 @@
-require('reflect-metadata')
-require('rxjs')
-require('es7-shim')
-require('zone.js/dist/zone')
+
+import 'reflect-metadata'
+import 'rxjs'
+import 'es7-shim'
+import 'zone.js/dist/zone'
 
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic'
 import { AppModule } from './app/app.module'

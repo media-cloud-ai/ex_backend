@@ -1,13 +1,59 @@
+@import '../colors';
 
 #videoPlayer {
 	width: 500px;
 }
 
-#timecode {
-	font-size: 2em;
-	max-width: 500px;
+.loading {
 	text-align: center;
-	background-color: #000;
-	color: #fff;
-	margin-bottom: 10px;
+	padding-top: 20px;
+	width: 500px;
+
+	span {
+		display: inline-block;
+		vertical-align: middle;
+	}
+	span.text {
+		font-size: 2em;
+		font-weight: bold;
+		padding-left: 15px;
+	}
+}
+
+
+.controls {
+	width: 500px;
+	display: flex;
+
+	#timecode {
+		flex: 1;
+		height: 38px;
+		font-size: 2em;
+		text-align: center;
+		background-color: @blue;
+		color: #fff;
+		margin-bottom: 10px;
+		line-height: 38px;
+	}
+
+	#play_pause {
+		display: inline-block;
+		width: 80px;
+		border: 1px solid @blue;
+		height: 36px;
+
+		button {
+			min-width: 40px;
+			margin: 0;
+			padding: 0;
+			margin-left: 0px !important;
+		}
+	}
+}
+
+#timeline {
+	width: 500px;
+	.mat-slider-thumb {
+		color: #F00 !important;
+	}
 }

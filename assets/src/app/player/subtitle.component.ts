@@ -1,13 +1,7 @@
 
 import {Component, Input, OnChanges, SimpleChange} from '@angular/core'
 import {HttpClient} from '@angular/common/http'
-
-import * as sax from 'sax'
-import {
-  fromXML,
-  generateISD,
-  renderHTML,
-  } from 'imsc'
+import {WebVtt, Cue, Timecode} from 'ts-subtitle'
 
 @Component({
   selector: 'subtitle-component',
@@ -20,24 +14,25 @@ export class SubtitleComponent implements OnChanges {
   @Input() language: string
   @Input() time: number
 
-  original : string
-
-  tt = null
-  isd = null
+  webvtt = new WebVtt()
+  loaded = false
+  cues: Cue[] = []
+  currentCue: Cue
 
   constructor(
     private http: HttpClient,
   ) {}
 
   ngOnInit() {
-    var subtitle_url = '/stream/' + this.content_id + '/' + this.language + '.ttml'
+    // var subtitle_url = '/stream/' + this.content_id + '/' + this.language + '.ttml'
+    var subtitle_url = '/stream/' + this.content_id + '/' + this.language + '.vtt'
     this.http.get(subtitle_url, {responseType: 'text'})
     .subscribe(contents => {
-      this.original = contents
-      this.tt = fromXML(contents.replace(/\r\n/g, '\n'), this.errorHandler)
-      this.refresh(1)
-      console.log(this.tt)
-      this.changeText(this.time, "hum, bienvenue au nom de l'équipe", 'Welcome Dude ;-)')
+      if(this.webvtt.parse(contents)) {
+        this.loaded = true
+        this.cues = this.webvtt.get_cues()
+      }
+      this.refresh(0)
     })
   }
 
@@ -48,51 +43,12 @@ export class SubtitleComponent implements OnChanges {
   }
 
   refresh(time) {
-    if (this.tt){
-      this.isd = generateISD(this.tt, time, this.errorHandler)
-      // console.log(this.isd);
-    }
-  }
-
-  changeText(time: number, old_content: string, new_content: string) {
-    console.log(time, old_content, new_content)
-    var parser = new DOMParser()
-    var xmlDoc = parser.parseFromString(this.original, 'text/xml')
-    var paragraphs = xmlDoc.getElementsByTagName('p')
-    for (var i = 0; i < paragraphs.length; ++i) {
-      // @TODO check if time is between begin and end
-      // console.log(paragraphs[i].getAttribute("begin"));
-      // console.log(paragraphs[i].getAttribute("end"));
-      var spans = paragraphs[i].getElementsByTagName('span')
-      for (var j = 0; j < spans.length; ++j) {
-        if (spans[j].childNodes[0].nodeValue === old_content){
-          spans[j].childNodes[0].nodeValue = new_content
-        }
+    for(var cue of this.cues) {
+      if(cue.start <= time && cue.end >= time) {
+        this.currentCue = cue
+        return
       }
     }
-
-    var serializer = new XMLSerializer()
-    var xml = serializer.serializeToString(xmlDoc)
-    this.tt = fromXML(xml.replace(/\r\n/g, '\n'), this.errorHandler)
-    this.refresh(this.time)
-  }
-
-  errorHandler = {
-    info: function (msg) {
-        console.log('info: ' + msg)
-        return false
-    },
-    warn: function (msg) {
-        console.log('warn: ' + msg)
-        return false
-    },
-    error: function (msg) {
-        console.log('error: ' + msg)
-        return false
-    },
-    fatal: function (msg) {
-        console.log('fatal: ' + msg)
-        return false
-    }
+    this.currentCue = null
   }
 }

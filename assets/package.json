@@ -27,6 +27,7 @@
     "rxjs": "^6.2.2",
     "rxjs-compat": "^6.2.2",
     "sax": "^1.2.4",
+    "ts-subtitle": "^0.0.6",
     "zone.js": "^0.8.20"
   },
   "devDependencies": {

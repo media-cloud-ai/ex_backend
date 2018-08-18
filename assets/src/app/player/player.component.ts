@@ -19,6 +19,7 @@ import 'rxjs/add/observable/interval'
 
 export class PlayerComponent {
   player = MediaPlayer().create()
+  duration = 0
   time = 0
   timecode = 0
   content_id = null
@@ -27,6 +28,7 @@ export class PlayerComponent {
   isd = null
 
   sub = null
+  playing = false
 
   constructor(
     private route: ActivatedRoute,
@@ -47,6 +49,7 @@ export class PlayerComponent {
         this.player.on(MediaPlayer.events['PLAYBACK_PAUSED'], this.processEvent, this)
         this.player.on(MediaPlayer.events['PLAYBACK_ENDED'], this.processEvent, this)
         this.player.on(MediaPlayer.events['PLAYBACK_PLAYING'], this.processEvent, this)
+        this.player.on(MediaPlayer.events['PLAYBACK_METADATA_LOADED'], this.processEvent, this)
       })
 
   }
@@ -56,12 +59,17 @@ export class PlayerComponent {
   }
 
   processEvent(event) {
+    // console.log(event)
+    if (event.type === 'playbackMetaDataLoaded') {
+      this.duration = this.player.duration()
+    }
     if (event.type === 'playbackPlaying') {
       this.startRefresh()
     }
     if (event.type === 'stopRefresh' || event.type === 'playbackEnded') {
       this.startRefresh()
       this.getCurrentTime()
+      this.playing = false
     }
   }
 
@@ -85,6 +93,33 @@ export class PlayerComponent {
     }
   }
 
+  playPauseSwitch() {
+    this.playing = !this.playing
+    if(this.playing) {
+      this.player.play()
+    } else {
+      this.player.pause()
+    }
+  }
+
+  replay(duration: number) {
+    if(this.playing) {
+      this.player.pause()
+    }
+    this.player.seek(duration)
+    this.player.preload()
+    this.player.play()
+    this.playing = true
+  }
+
+  back2seconds() {
+    this.replay(this.player.time() - 2)
+  }
+
+  onSliderChange(event) {
+    this.replay(event.value)
+  }
+
   @HostListener('window:keydown', ['$event'])
   keyDownEvent(event: KeyboardEvent) {
     if (event.ctrlKey === true && event.code === 'Space') {
@@ -94,12 +129,21 @@ export class PlayerComponent {
 
   @HostListener('window:keyup', ['$event'])
   keyUpEvent(event: KeyboardEvent) {
+    // console.log(event)
     if (event.ctrlKey === true && event.code === 'Space') {
-      if (this.player.isPaused()) {
-        this.player.play()
-      } else {
-        this.player.pause()
-      }
+      this.playPauseSwitch()
+      return false
+    }
+    if (event.ctrlKey === true && event.code === 'KeyR') {
+      this.back2seconds()
+      return false
+    }
+    if (event.ctrlKey === true && event.code === 'KeyS') {
+      this.replay(0)
+      return false
+    }
+    if (event.ctrlKey === true && event.code === 'KeyE') {
+      this.replay(this.player.duration() - 0.1)
       return false
     }
   }

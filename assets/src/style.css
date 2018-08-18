@@ -25,3 +25,7 @@
 .mat-raised-button {
   margin-left: 5px !important;
 }
+
+.mat-slider-thumb {
+  transform: scale(0.5) !important;
+}
