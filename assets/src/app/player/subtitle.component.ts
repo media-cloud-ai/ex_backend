@@ -55,7 +55,6 @@ export class SubtitleComponent implements OnChanges {
       if(webvtt.parse(contents)) {
         this.loaded = true
         this.cues = webvtt.get_cues()
-        console.log(this.language, this.cues.length);
         this.refresh(this.time)
       }
     })

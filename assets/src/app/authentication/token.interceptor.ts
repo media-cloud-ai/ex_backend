@@ -13,7 +13,7 @@ import { Observable } from 'rxjs'
 export class TokenInterceptor implements HttpInterceptor {
   constructor(public auth: AuthService) {}
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log(request)
+    // console.log(request)
     if (request.url.startsWith('https://staticftv-a.akamaihd.net')) {
       return next.handle(request)
     }

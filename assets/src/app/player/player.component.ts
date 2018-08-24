@@ -150,11 +150,11 @@ export class PlayerComponent {
       this.back2seconds()
       return false
     }
-    if (event.ctrlKey === true && event.code === 'KeyS') {
+    if (event.ctrlKey === false && event.code === 'Home') {
       this.replay(0)
       return false
     }
-    if (event.ctrlKey === true && event.code === 'KeyE') {
+    if (event.ctrlKey === false && event.code === 'End') {
       this.replay(this.player.duration() - 0.1)
       return false
     }
