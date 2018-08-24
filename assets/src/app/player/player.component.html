@@ -42,6 +42,15 @@
       >
       <mat-icon>help_outline</mat-icon>
     </button>
+    <button
+      class=split
+      [ngClass]="{enable: splitAction}"
+      mat-button
+      color="primary"
+      (click)="switchSplit()"
+      >
+      <mat-icon>call_split</mat-icon>
+    </button>
   </div>
   <div id=timecode>
     {{ timecode | duration : 'timecode_frame' }}
@@ -84,6 +93,7 @@
       [content_id]=content_id
       [time]=time
       [language]=leftLanguage
+      [split]=splitAction
       before=1
       after=1 >
     </subtitle-component>
@@ -106,6 +116,7 @@
       [content_id]=content_id
       [time]=time
       [language]=rightLanguage
+      [split]=splitAction
       before=1
       after=1 >
     </subtitle-component>
@@ -129,13 +140,19 @@
   </div>
   <div class=item>
     <span class=command>
-      <label>Ctrl + r</label>
+      <label>Ctrl + R</label>
     </span>
     <span>Rewind 2 seconds and playing.</span>
   </div>
   <div class=item>
     <span class=command>
-      <label>Ctrl + h</label>
+      <label>Ctrl + C</label>
+    </span>
+    <span>Enable/disable split cue with mouse.</span>
+  </div>
+  <div class=item>
+    <span class=command>
+      <label>Ctrl + H</label>
     </span>
     <span>Show/hide this help.</span>
   </div>

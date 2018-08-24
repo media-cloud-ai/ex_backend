@@ -30,6 +30,7 @@ export class PlayerComponent {
   sub = null
   playing = false
   showHelp = false
+  splitAction = false
 
   leftLanguage = "english"
   rightLanguage = "french"
@@ -64,6 +65,10 @@ export class PlayerComponent {
 
   ngOnDestroy() {
     this.stopRefresh()
+  }
+
+  switchSplit() {
+    this.splitAction = !this.splitAction
   }
 
   switchHelp() {
@@ -160,6 +165,10 @@ export class PlayerComponent {
     }
     if (event.ctrlKey === true && event.code === 'KeyH') {
       this.showHelp = !this.showHelp
+      return false
+    }
+    if (event.ctrlKey === true && event.code === 'KeyC') {
+      this.switchSplit()
       return false
     }
   }

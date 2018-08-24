@@ -21,10 +21,12 @@ export class SubtitleComponent implements OnChanges {
   @Input() time: number = 0
   @Input() before: number = 0
   @Input() after: number = 0
+  @Input() split: boolean = false
 
   loaded = false
   cues: Cue[] = []
   currentCue: Cue
+  currentCueIndex: number
   beforeCues: Cue[] = []
   afterCues: Cue[] = []
 
@@ -66,15 +68,16 @@ export class SubtitleComponent implements OnChanges {
       if(cue.start <= time && cue.end >= time) {
         // console.log(cue);
         this.currentCue = cue
+        this.currentCueIndex = index
 
-        this.beforeCues = [];
+        this.beforeCues = []
         for(var beforeIndex = 1; beforeIndex <= this.before; beforeIndex++) {
           if(index - beforeIndex >= 0) {
             this.beforeCues.push(this.cues[index - beforeIndex])
           }
         }
 
-        this.afterCues = [];
+        this.afterCues = []
         for(var afterIndex = 1; afterIndex <= this.after; afterIndex++) {
           if(index + afterIndex < this.cues.length) {
             this.afterCues.push(this.cues[index + afterIndex])
@@ -85,6 +88,7 @@ export class SubtitleComponent implements OnChanges {
       }
     }
     this.currentCue = null
+    this.currentCueIndex = null
     this.beforeCues = [];
     this.afterCues = [];
     for(var afterIndex = 1; afterIndex <= this.after; afterIndex++) {
@@ -94,17 +98,30 @@ export class SubtitleComponent implements OnChanges {
     }
   }
 
-  cutSubtitle() {
-    console.log("cut !");
-    var selection = window.getSelection();
-    console.log("selection ", selection);
-    var index = 0;
-    console.log(selection.getRangeAt(index))
-    console.log(selection.getRangeAt(index).collapsed)
-    console.log(selection.getRangeAt(index).startOffset)
-    console.log(selection.getRangeAt(index).endOffset)
-    console.log(selection.getRangeAt(index).startContainer )
-    console.log(selection.getRangeAt(index).endContainer )
+  merge(cue: Cue) {
+    var index = this.currentCueIndex + 1
+    cue.content = cue.content + this.cues[index].content
+    cue.end = this.cues[index].end
+
+    this.cues.splice(index, 1)
+    this.refresh(this.time)
+  }
+
+  cutSubtitle(event) {
+    if(this.currentCue && this.split && (event.toElement.selectionStart == event.toElement.selectionEnd)) {
+      let before = this.currentCue.content.substring(0, event.toElement.selectionStart);
+      let after = this.currentCue.content.substring(event.toElement.selectionStart);
+
+      var next = new Cue()
+      next.start = this.time,
+      next.end = this.currentCue.end
+      next.content = after
+
+      this.currentCue.end = this.time
+      this.currentCue.content = before
+      this.cues.splice(this.currentCueIndex + 1, 0, next);
+      this.refresh(this.time)
+    }
   }
 
   @HostListener('window:keydown', ['$event'])
@@ -117,7 +134,7 @@ export class SubtitleComponent implements OnChanges {
   @HostListener('window:keyup', ['$event'])
   keyUpEvent(event: KeyboardEvent) {
     if (event.ctrlKey === true && event.code === 'KeyC') {
-      this.cutSubtitle()
+      // this.cutSubtitle()
       return false
     }
   }

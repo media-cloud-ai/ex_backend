@@ -34,6 +34,14 @@
         >
       </textarea>
     </mat-form-field>
+    <button
+      mat-button
+      class=merge
+      color="primary"
+      (click)="merge(cue)"
+      >
+      <mat-icon>call_merge</mat-icon> Merge
+    </button>
   </div>
 
   <div *ngIf="currentCue">
@@ -51,10 +59,20 @@
       <textarea
         matInput
         type="text"
+        (click)="cutSubtitle($event)"
+        [ngClass]="{split: split}"
         [(ngModel)]="currentCue.content"
         >
       </textarea>
     </mat-form-field>
+    <button
+      mat-button
+      class=merge
+      color="primary"
+      (click)="merge(currentCue)"
+      >
+      <mat-icon>call_merge</mat-icon> Merge
+    </button>
   </div>
 
   <div *ngFor="let cue of afterCues">
