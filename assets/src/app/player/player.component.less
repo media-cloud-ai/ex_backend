@@ -1,5 +1,16 @@
 @import '../colors';
 
+#player,
+.subtitles {
+	text-align: center;
+}
+
+#timeline,
+.controls,
+.loading {
+	margin: auto;
+}
+
 #videoPlayer {
 	width: 500px;
 }
@@ -28,6 +39,7 @@
 		border: 1px solid @grey;
 		border-radius: 4px;
 		padding: 3px;
+		min-width: 40px;
 	}
 }
 
@@ -51,6 +63,7 @@
 .controls {
 	width: 500px;
 	display: flex;
+	margin-bottom: 30px;
 
 	#timecode {
 		flex: 1;
@@ -79,6 +92,11 @@
 
 	#help {
 		width: 40px;
+		button {
+			color: @white;
+			background-color: @blue;
+			border-radius: 0px;
+		}
 	}
 
 	#play_pause {

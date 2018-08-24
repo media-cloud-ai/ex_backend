@@ -1,43 +1,9 @@
 <h1>Player</h1>
-<div>
+<div id=player>
   <video
     id="videoPlayer"
     >
   </video>
-  <div class=help *ngIf=showHelp>
-    <h2>Help</h2>
-
-    <div class=item>
-      <span class=command>
-        <label>Ctrl + s</label>
-      </span>
-      <span>Go to the start of the video.</span>
-    </div>
-    <div class=item>
-      <span class=command>
-        <label>Ctrl + e</label>
-      </span>
-      <span>Go to the end of the video.</span>
-    </div>
-    <div class=item>
-      <span class=command>
-        <label>Ctrl + r</label>
-      </span>
-      <span>Rewind 2 seconds and playing.</span>
-    </div>
-    <div class=item>
-      <span class=command>
-        <label>Ctrl + h</label>
-      </span>
-      <span>Show/hide this help.</span>
-    </div>
-    <div class=item>
-      <span class=command>
-        <label>Ctrl + Space bar</label>
-      </span>
-      <span>Play/pause control.</span>
-    </div>
-  </div>
 </div>
 <div class=loading
   *ngIf="duration == 0">
@@ -53,7 +19,7 @@
   </span>
 </div>
 
-<div>
+<div id=timeline>
   <mat-slider
     *ngIf="duration != 0"
     id=timeline
@@ -144,4 +110,39 @@
       after=1 >
     </subtitle-component>
   </span>
+</div>
+
+<div class=help *ngIf=showHelp>
+  <h2>Help</h2>
+
+  <div class=item>
+    <span class=command>
+      <label>Ctrl + s</label>
+    </span>
+    <span>Go to the start of the video.</span>
+  </div>
+  <div class=item>
+    <span class=command>
+      <label>Ctrl + e</label>
+    </span>
+    <span>Go to the end of the video.</span>
+  </div>
+  <div class=item>
+    <span class=command>
+      <label>Ctrl + r</label>
+    </span>
+    <span>Rewind 2 seconds and playing.</span>
+  </div>
+  <div class=item>
+    <span class=command>
+      <label>Ctrl + h</label>
+    </span>
+    <span>Show/hide this help.</span>
+  </div>
+  <div class=item>
+    <span class=command>
+      <label>Ctrl + Space bar</label>
+    </span>
+    <span>Play/pause control.</span>
+  </div>
 </div>
