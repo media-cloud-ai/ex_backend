@@ -29,6 +29,14 @@ export class PlayerComponent {
 
   sub = null
   playing = false
+  showHelp = false
+
+  leftLanguage = "english"
+  rightLanguage = "french"
+  languages = [
+    "english",
+    "french",
+  ]
 
   constructor(
     private route: ActivatedRoute,
@@ -56,6 +64,10 @@ export class PlayerComponent {
 
   ngOnDestroy() {
     this.stopRefresh()
+  }
+
+  switchHelp() {
+    this.showHelp = !this.showHelp
   }
 
   processEvent(event) {
@@ -144,6 +156,10 @@ export class PlayerComponent {
     }
     if (event.ctrlKey === true && event.code === 'KeyE') {
       this.replay(this.player.duration() - 0.1)
+      return false
+    }
+    if (event.ctrlKey === true && event.code === 'KeyH') {
+      this.showHelp = !this.showHelp
       return false
     }
   }

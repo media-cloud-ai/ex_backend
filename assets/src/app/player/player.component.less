@@ -4,6 +4,33 @@
 	width: 500px;
 }
 
+.help {
+	display: inline-block;
+	padding-left: 20px;
+	vertical-align: top;
+
+	.item {
+		margin-bottom: 5px;
+	}
+
+	h2 {
+		margin-top: 0px;
+	}
+
+	.command {
+		display: inline-block;
+		width: 100px;
+	}
+
+	label {
+		display: inline-block;
+		background-color: @lightGrey;
+		border: 1px solid @grey;
+		border-radius: 4px;
+		padding: 3px;
+	}
+}
+
 .loading {
 	text-align: center;
 	padding-top: 20px;
@@ -36,9 +63,9 @@
 		line-height: 38px;
 	}
 
+	#help,
 	#play_pause {
 		display: inline-block;
-		width: 80px;
 		border: 1px solid @blue;
 		height: 36px;
 
@@ -49,11 +76,35 @@
 			margin-left: 0px !important;
 		}
 	}
+
+	#help {
+		width: 40px;
+	}
+
+	#play_pause {
+		width: 80px;
+	}
 }
 
 #timeline {
 	width: 500px;
 	.mat-slider-thumb {
 		color: #F00 !important;
+	}
+}
+
+.subtitles {
+	.subtitle {
+		display: inline-block;
+		width: 500px;
+		vertical-align: top;
+
+		div {
+			text-align: center;
+		}
+	}
+
+	.subtitle:nth-child(1n+2) {
+		margin-left: 50px
 	}
 }

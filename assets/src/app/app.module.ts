@@ -116,6 +116,7 @@ import {JobDurationPipe}         from './pipes/job_duration.pipe'
 import {JobTypePipe}             from './pipes/job_type.pipe'
 import {JobStatusPipe}           from './pipes/job_status.pipe'
 import {JobStatusIconPipe}       from './pipes/job_status_icon.pipe'
+import {LanguagePipe}            from './pipes/language.pipe'
 import {ParameterLabelPipe}      from './pipes/parameter_label.pipe'
 import {QueuePipe}               from './pipes/queue.pipe'
 import {TextTypePipe}            from './pipes/text_type.pipe'
@@ -221,6 +222,7 @@ const EX_BACKEND_DATE_FORMATS = {
     JobTypePipe,
     JobStatusPipe,
     JobStatusIconPipe,
+    LanguagePipe,
     ParameterLabelPipe,
     QueuePipe,
     TextTypePipe,

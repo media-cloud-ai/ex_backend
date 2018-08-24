@@ -52,6 +52,36 @@ export class StartIngestDialog {
             value: true
           }
         ]
+      },
+      {
+        id: 1,
+        name: 'speech_to_text',
+        enable: true,
+        parent_ids:[0],
+        required: ['speech_to_text'],
+        parameters : [
+          {
+            id: 'mode',
+            type: 'string',
+            enable: false,
+            default: 'conversation',
+            value: 'conversation'
+          },
+          {
+            id: 'language',
+            type: 'string',
+            enable: false,
+            default: 'en-US',
+            value: 'en-US'
+          },
+          {
+            id: 'format',
+            type: 'string',
+            enable: false,
+            default: 'simple',
+            value: 'simple'
+          }
+        ]
       }
     ]
   }

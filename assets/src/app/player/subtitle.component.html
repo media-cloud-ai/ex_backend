@@ -1,22 +1,83 @@
+<div class=loading
+  *ngIf="!loaded">
+  <span>
+    <mat-spinner
+      diameter=50
+      strokeWidth=3
+      color="accent">
+    </mat-spinner>
+  </span>
+  <span class=text>
+    Loading ...
+  </span>
+</div>
 
 
-<div class=subtitle>
-  <div class=times>
-    <timecode-component [time]="currentCue.start"></timecode-component>
-    <span>
-      <i *ngIf=time
-        class="material-icons">
-        arrow_right_alt
-      </i>
-    </span>
-    <timecode-component [time]="currentCue.end"></timecode-component>
+<div class=subtitle
+  *ngIf="loaded">
+  <div *ngFor="let cue of beforeCues">
+    <div class=times>
+      <timecode-component *ngIf="cue.start" [time]="cue.start"></timecode-component>
+      <span>
+        <i class="material-icons">
+          arrow_right_alt
+        </i>
+      </span>
+      <timecode-component *ngIf="cue.end" [time]="cue.end"></timecode-component>
+    </div>
+    <mat-form-field class="textcontent"
+      *ngIf="cue.content" >
+      <textarea
+        matInput
+        type="text"
+        placeholder="{{language}}"
+        [(ngModel)]="cue.content"
+        >
+      </textarea>
+    </mat-form-field>
   </div>
-  <mat-form-field class="textcontent">
-    <input
-      matInput
-      type="text"
-      placeholder="{{language}}"
-      [(ngModel)]="currentCue.content"
-      >
-  </mat-form-field>
+
+  <div *ngIf="currentCue">
+    <div class=times>
+      <timecode-component *ngIf="currentCue.start" [time]="currentCue.start"></timecode-component>
+      <span>
+        <i class="material-icons">
+          arrow_right_alt
+        </i>
+      </span>
+      <timecode-component *ngIf="currentCue.end" [time]="currentCue.end"></timecode-component>
+    </div>
+    <mat-form-field class="textcontent"
+      *ngIf="currentCue.content" >
+      <textarea
+        matInput
+        type="text"
+        placeholder="{{language}}"
+        [(ngModel)]="currentCue.content"
+        >
+      </textarea>
+    </mat-form-field>
+  </div>
+
+  <div *ngFor="let cue of afterCues">
+    <div class=times>
+      <timecode-component *ngIf="cue.start" [time]="cue.start"></timecode-component>
+      <span>
+        <i class="material-icons">
+          arrow_right_alt
+        </i>
+      </span>
+      <timecode-component *ngIf="cue.end" [time]="cue.end"></timecode-component>
+    </div>
+    <mat-form-field class="textcontent"
+      *ngIf="cue.content" >
+      <textarea
+        matInput
+        type="text"
+        placeholder="{{language}}"
+        [(ngModel)]="cue.content"
+        >
+      </textarea>
+    </mat-form-field>
+  </div>
 </div>

@@ -34,7 +34,7 @@ export class TimecodeComponent implements OnChanges {
     this.hours = hours
     this.minutes = minutes
     this.secondes = seconds
-    this.frames = frames
+    this.frames = Math.trunc(frames)
   }
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {

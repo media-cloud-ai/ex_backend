@@ -1,10 +1,44 @@
 <h1>Player</h1>
+<div>
+  <video
+    id="videoPlayer"
+    >
+  </video>
+  <div class=help *ngIf=showHelp>
+    <h2>Help</h2>
 
-<video
-  id="videoPlayer"
-  >
-</video>
-
+    <div class=item>
+      <span class=command>
+        <label>Ctrl + s</label>
+      </span>
+      <span>Go to the start of the video.</span>
+    </div>
+    <div class=item>
+      <span class=command>
+        <label>Ctrl + e</label>
+      </span>
+      <span>Go to the end of the video.</span>
+    </div>
+    <div class=item>
+      <span class=command>
+        <label>Ctrl + r</label>
+      </span>
+      <span>Rewind 2 seconds and playing.</span>
+    </div>
+    <div class=item>
+      <span class=command>
+        <label>Ctrl + h</label>
+      </span>
+      <span>Show/hide this help.</span>
+    </div>
+    <div class=item>
+      <span class=command>
+        <label>Ctrl + Space bar</label>
+      </span>
+      <span>Play/pause control.</span>
+    </div>
+  </div>
+</div>
 <div class=loading
   *ngIf="duration == 0">
   <span>
@@ -34,6 +68,15 @@
 </div>
 <div class="controls"
   *ngIf="duration != 0">
+  <div id=help>
+    <button
+      mat-button
+      color="primary"
+      (click)="switchHelp()"
+      >
+      <mat-icon>help_outline</mat-icon>
+    </button>
+  </div>
   <div id=timecode>
     {{ timecode | duration : 'timecode_frame' }}
   </div>
@@ -50,15 +93,55 @@
       color="primary"
       (click)="playPauseSwitch()"
       >
-      <mat-icon *ngIf=!playing>play_circle_outline</mat-icon>
-      <mat-icon *ngIf=playing>pause_circle_outline</mat-icon>
+    <mat-icon *ngIf=!playing>play_circle_outline</mat-icon>
+    <mat-icon *ngIf=playing>pause_circle_outline</mat-icon>
     </button>
   </div>
 </div>
 
-<div>
-  <subtitle-component [content_id]="content_id" [time]="time" language="english"></subtitle-component>
-</div>
-<div>
-  <subtitle-component [content_id]="content_id" [time]="time" language="french"></subtitle-component>
+<div class=subtitles>
+  <span class=subtitle>
+    <div>
+      <mat-form-field>
+        <mat-select
+          placeholder="Language"
+          [(value)]="leftLanguage">
+          <mat-option
+            *ngFor="let language of languages"
+            [value]="language">
+            {{language | language}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <subtitle-component
+      [content_id]=content_id
+      [time]=time
+      [language]=leftLanguage
+      before=1
+      after=1 >
+    </subtitle-component>
+  </span>
+  <span class=subtitle>
+    <div>
+      <mat-form-field>
+        <mat-select
+          placeholder="Language"
+          [(value)]="rightLanguage">
+          <mat-option
+            *ngFor="let language of languages"
+            [value]="language">
+            {{language | language}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <subtitle-component
+      [content_id]=content_id
+      [time]=time
+      [language]=rightLanguage
+      before=1
+      after=1 >
+    </subtitle-component>
+  </span>
 </div>
