@@ -7,18 +7,22 @@
 		*ngIf=watchers>
 		<span *ngFor="let watcher of watchers.data">
 			<div *ngFor="let connection of watcher.connections"
-				class="watcher selected">
+				class="watcher"
+				[ngClass]="{'selected': connection.identifier === selectedAgent }"
+				(click)="setSelectedAgent(connection.identifier)"
+				>
 				<i class="material-icons">
 					trip_origin
 				</i>
-				<label>
+				<span>
 					{{connection.identifier}}
-				</label>
+				</span>
 			</div>
 		</span>
 	</div>
 
-	<div class="ariane">
+	<div class="ariane"
+		*ngIf='selectedAgent != ""'>
 		<span
 			class=path
 			(click)="goTo(0)">

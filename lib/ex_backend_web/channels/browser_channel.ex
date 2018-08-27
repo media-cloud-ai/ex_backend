@@ -7,7 +7,10 @@ defmodule ExBackendWeb.BrowserChannel do
   alias ExBackend.WorkflowStep
   alias ExBackend.Workflows.Workflow
 
-  intercept(["reply_info"])
+  intercept([
+    "file_system",
+    "reply_info"
+  ])
 
   def join("browser:all", message, socket) do
     if not Enum.empty?(message) do
@@ -43,9 +46,8 @@ defmodule ExBackendWeb.BrowserChannel do
       end
 
     ExBackendWeb.Endpoint.broadcast!("browser:notification", "creation", body)
-    # {:ok, socket}
-
-    {:ok, socket |> assign(:topics, [%{test: "lol"}])}
+    {:ok, socket}
+    # {:ok, socket |> assign(:topics, [%{test: "lol"}])}
   end
 
   def join("browser:" <> _kind, _params, _socket) do
@@ -82,16 +84,6 @@ defmodule ExBackendWeb.BrowserChannel do
       }
 
       ExBackendWeb.Endpoint.broadcast!("browser:notification", "reply_info", watcher)
-    end
-
-    {:noreply, socket}
-  end
-
-  def handle_out("reply_info", payload, %{assigns: %{identifier: identifier}} = socket) do
-    Logger.debug(">- OUT message #{inspect(payload)} // #{inspect(identifier)}")
-
-    if identifier == payload.identifier do
-      push(socket, "reply_info", payload)
     end
 
     {:noreply, socket}
@@ -182,6 +174,26 @@ defmodule ExBackendWeb.BrowserChannel do
 
   def handle_in("new_item", payload, socket) do
     Logger.error("unsupported new item: #{inspect(payload)}")
+    {:noreply, socket}
+  end
+
+  def handle_out("reply_info", payload, %{assigns: %{identifier: identifier}} = socket) do
+    Logger.debug(">- OUT message #{inspect(payload)} // #{inspect(identifier)}")
+
+    if identifier == payload.identifier do
+      push(socket, "reply_info", payload)
+    end
+
+    {:noreply, socket}
+  end
+
+  def handle_out("file_system", payload, %{assigns: %{identifier: identifier}} = socket) do
+    Logger.debug(">- OUT message #{inspect(payload)}")
+
+    if identifier == payload.body.agent do
+      push(socket, "file_system", payload)
+    end
+
     {:noreply, socket}
   end
 end

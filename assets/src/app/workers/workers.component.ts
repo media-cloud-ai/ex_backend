@@ -39,7 +39,9 @@ export class WorkersComponent {
   ngOnInit() {
     this.imageService.getImages()
     .subscribe(imagePage => {
-      this.images = imagePage.data
+      if(imagePage) {
+        this.images = imagePage.data
+      }
     })
 
     this.getNodes()

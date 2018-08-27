@@ -18,6 +18,7 @@ import {StartIngestDialog} from './dialogs/start_ingest.component'
 })
 
 export class IngestComponent {
+  selectedAgent: string = ""
   connection: any
   entries: Message
   full_path = []
@@ -47,8 +48,16 @@ export class IngestComponent {
     this.updateDir()
   }
 
+  setSelectedAgent(identifier: string) {
+    this.selectedAgent = identifier
+    this.full_path = []
+    this.updateDir()
+  }
+
   updateDir() {
-    this.socketService.sendMessage('ls', {'path': this.full_path.join('/')})
+    if(this.selectedAgent !== "") {
+      this.socketService.sendMessage('ls', {'agent': this.selectedAgent, 'path': this.full_path.join('/')})
+    }
   }
 
   goTo(index: number) {

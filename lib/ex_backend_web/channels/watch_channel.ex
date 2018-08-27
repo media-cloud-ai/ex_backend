@@ -30,11 +30,14 @@ defmodule ExBackendWeb.WatchChannel do
     {:noreply, socket}
   end
 
-  def handle_in("ls", %{"body" => %{"path" => path}}, socket) do
-    Logger.info("list path #{inspect(path)}")
+  def handle_in("ls", %{"body" => %{"agent" => agent, "path" => path}}, socket) do
+    Logger.info("list path #{inspect(path)}}")
 
     ExBackendWeb.Endpoint.broadcast!("browser:all", "file_system", %{
-      body: %{path: path}
+      body: %{
+        agent: agent,
+        path: path
+      }
     })
 
     {:reply, {:ok, %{paths: []}}, socket}
