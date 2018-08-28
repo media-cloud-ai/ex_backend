@@ -26,7 +26,8 @@ defmodule ExBackendWeb.BrowserChannel do
     watcher =
       case watchers.total do
         0 ->
-          Watchers.create_watcher(message)
+          {:ok, watcher} = Watchers.create_watcher(message)
+          watcher
 
         _ ->
           watchers.data
