@@ -4,8 +4,12 @@ import { Subject } from 'rxjs'
 
 @Injectable()
 export class MouseMoveService {
-  mouveMoveSource = new Subject<Event>()
+  mouveMoveSource = new Subject<MouseEvent>()
   mouseMoveEvent = this.mouveMoveSource.asObservable()
+
+
+  mouveUpSource = new Subject<Event>()
+  mouseUpEvent = this.mouveUpSource.asObservable()
 
   constructor() { }
 }

@@ -191,7 +191,7 @@ export class PlayerComponent {
   @HostListener('mouseup')
   onMouseup() {
     // if(this.isChangingTimecode) {
-      this.mouseMoveService.mouveMoveSource.next(event)
+      this.mouseMoveService.mouveUpSource.next(event)
     // }
   }
 }

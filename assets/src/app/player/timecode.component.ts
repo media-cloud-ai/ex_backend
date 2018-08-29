@@ -44,15 +44,17 @@ export class TimecodeComponent implements OnChanges {
     this.sub = this.mouseMoveService.mouseMoveEvent.subscribe(
       event => {
         if(me.clicked) {
-          if(event.type === "mouseup") {
-            me.clicked = false
-            me.originalTime = undefined
-            me.isChangingTimecode = false
-          }
-          if(event.type === "mousemove") {
-            me.time = me.originalTime + ((me.origin - event.y) / 25.0)
-            me.update()
-          }
+          me.time = me.originalTime + ((me.origin - event.y) / 25.0)
+          me.update()
+        }
+      })
+
+    this.sub = this.mouseMoveService.mouseUpEvent.subscribe(
+      event => {
+        if(me.clicked) {
+          me.clicked = false
+          me.originalTime = undefined
+          me.isChangingTimecode = false
         }
       })
   }
