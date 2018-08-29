@@ -42,9 +42,4 @@ defmodule ExBackendWeb.WatchChannel do
 
     {:reply, {:ok, %{paths: []}}, socket}
   end
-
-  def terminate(_msg, _socket) do
-    # ExBackendWeb.Endpoint.broadcast!("notifications:all", topic, %{})
-    # IO.inspect msg
-  end
 end

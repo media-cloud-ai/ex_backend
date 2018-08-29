@@ -23,6 +23,7 @@ export class IconForJobPipe implements PipeTransform {
       { id: 'set_language', name: 'speaker_notes' },
       { id: 'speech_to_text', name: 'closed_caption' },
       { id: 'ttml_to_mp4', name: 'closed_caption' },
+      { id: 'upload_file', name: 'cloud_upload' },
       { id: 'upload_ftp', name: 'file_upload' },
       { id: 'push_rdf', name: 'library_add' },
     ]

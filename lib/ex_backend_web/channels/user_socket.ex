@@ -5,6 +5,7 @@ defmodule ExBackendWeb.UserSocket do
   channel("browser:*", ExBackendWeb.BrowserChannel)
   channel("notifications:*", ExBackendWeb.NotificationChannel)
   channel("watch:*", ExBackendWeb.WatchChannel)
+  channel("transfer:*", ExBackendWeb.FileTransferChannel)
 
   ## Transports
   transport(:websocket, Phoenix.Transports.WebSocket)

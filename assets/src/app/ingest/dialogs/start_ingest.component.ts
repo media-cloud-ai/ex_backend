@@ -3,6 +3,11 @@ import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material'
 
 import {Step} from '../../models/workflow'
 
+export class Data {
+  path: string
+  agent: string
+}
+
 @Component({
   selector: 'start-ingest-dialog',
   templateUrl: 'start_ingest.component.html',
@@ -14,18 +19,31 @@ export class StartIngestDialog {
 
   constructor(
     public dialogRef: MatDialogRef<StartIngestDialog>,
-    @Inject(MAT_DIALOG_DATA) public filename: string) {
+    @Inject(MAT_DIALOG_DATA) public data: Data) {
 
     this.steps = [
       {
         id: 0,
-        name: 'audio_extraction',
+        name: 'upload_file',
         enable: true,
         parent_ids:[],
         required: [],
         inputs: [
           {
-            path: filename
+            path: data.path,
+            agent: data.agent
+          }
+        ]
+      },
+      {
+        id: 1,
+        name: 'audio_extraction',
+        enable: true,
+        parent_ids:[0],
+        required: ['upload_file'],
+        inputs: [
+          {
+            path: data.path
           }
         ],
         output_extension: '.wav',
@@ -54,10 +72,10 @@ export class StartIngestDialog {
         ]
       },
       {
-        id: 1,
+        id: 2,
         name: 'speech_to_text',
         enable: true,
-        parent_ids:[0],
+        parent_ids:[1],
         required: ['speech_to_text'],
         parameters : [
           {

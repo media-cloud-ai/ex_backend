@@ -12,22 +12,34 @@
   </span>
 </div>
 
-
 <div class=subtitle
   *ngIf="loaded">
-  <div *ngFor="let cue of beforeCues">
+  <div *ngFor="let i of (before - beforeCues.length) | numberToArray" class=hiddenCue>
+  </div>
+  <div *ngFor="let cue of beforeCues"
+    id=before
+    class="cue"
+    [ngClass]="{disabled: split}">
     <div class=times>
-      <timecode-component *ngIf="cue.start" [time]="cue.start"></timecode-component>
+      <timecode-component
+        *ngIf="cue.start"
+        [time]="cue.start"
+        [isChangingTimecode]=isChangingTimecode>
+      </timecode-component>
       <span>
         <i class="material-icons">
           arrow_right_alt
         </i>
       </span>
-      <timecode-component *ngIf="cue.end" [time]="cue.end"></timecode-component>
+      <timecode-component
+        *ngIf="cue.end"
+        [time]="cue.end"
+        [isChangingTimecode]=isChangingTimecode>
+      </timecode-component>
     </div>
-    <mat-form-field class="textcontent"
-      *ngIf="cue.content" >
+    <mat-form-field class="textcontent">
       <textarea
+        rows=8
         matInput
         type="text"
         [(ngModel)]="cue.content"
@@ -44,7 +56,9 @@
     </button>
   </div>
 
-  <div *ngIf="currentCue">
+  <div *ngIf="!currentCue" class=hiddenCue>
+  </div>
+  <div *ngIf="currentCue" class="cue current">
     <div class=times>
       <timecode-component *ngIf="currentCue.start" [time]="currentCue.start"></timecode-component>
       <span>
@@ -57,6 +71,7 @@
     <mat-form-field class="textcontent"
       *ngIf="currentCue.content" >
       <textarea
+        rows=8
         matInput
         type="text"
         (click)="cutSubtitle($event)"
@@ -75,7 +90,12 @@
     </button>
   </div>
 
-  <div *ngFor="let cue of afterCues">
+  <div *ngFor="let i of (after - afterCues.length) | numberToArray" class=hiddenCue>
+  </div>
+  <div *ngFor="let cue of afterCues"
+    id=after
+    class="cue"
+    [ngClass]="{disabled: split}">
     <div class=times>
       <timecode-component *ngIf="cue.start" [time]="cue.start"></timecode-component>
       <span>
@@ -88,6 +108,7 @@
     <mat-form-field class="textcontent"
       *ngIf="cue.content" >
       <textarea
+        rows=8
         matInput
         type="text"
         [(ngModel)]="cue.content"

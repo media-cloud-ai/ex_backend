@@ -17,6 +17,7 @@ export class Parameter {
 
 export class Input {
   path: string
+  agent?: string
 }
 
 export class Step {

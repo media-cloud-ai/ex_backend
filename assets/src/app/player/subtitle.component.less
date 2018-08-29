@@ -1,3 +1,24 @@
+@import '../colors';
+
+#before.disabled,
+#after.disabled {
+	.times,
+	.textcontent {
+		opacity: 0.6;
+	}
+}
+
+.cue.current {
+	.times,
+	.textcontent {
+		background-color: @lightGreen;
+	}
+}
+
+.cue,
+.hiddenCue {
+	height: 210px;
+}
 
 .subtitle {
 	display: inline-block;

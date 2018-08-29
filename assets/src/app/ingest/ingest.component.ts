@@ -9,7 +9,7 @@ import {WorkflowService} from '../services/workflow.service'
 import {FileEntry, Message} from '../models/message'
 import {WatcherPage} from '../models/page/watcher_page'
 
-import {StartIngestDialog} from './dialogs/start_ingest.component'
+import {StartIngestDialog, Data} from './dialogs/start_ingest.component'
 
 @Component({
   selector: 'ingest-component',
@@ -72,7 +72,10 @@ export class IngestComponent {
     } else {
       let filename = entry.filename
       let path = this.full_path.join('/') + '/' + filename
-      let dialogRef = this.dialog.open(StartIngestDialog, {data: path})
+      let data = new Data()
+      data.path = path
+      data.agent = this.selectedAgent
+      let dialogRef = this.dialog.open(StartIngestDialog, {data: data})
 
       dialogRef.afterClosed().subscribe(steps => {
         if (steps !== undefined) {

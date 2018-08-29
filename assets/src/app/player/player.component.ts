@@ -11,6 +11,8 @@ import {
 import {Observable} from 'rxjs'
 import 'rxjs/add/observable/interval'
 
+import {MouseMoveService} from '../services/mousemove.service'
+
 @Component({
   selector: 'player-component',
   templateUrl: 'player.component.html',
@@ -39,8 +41,11 @@ export class PlayerComponent {
     "french",
   ]
 
+  isChangingTimecode = false
+
   constructor(
     private route: ActivatedRoute,
+    private mouseMoveService: MouseMoveService,
   ) {}
 
   ngOnInit() {
@@ -171,5 +176,22 @@ export class PlayerComponent {
       this.switchSplit()
       return false
     }
+  }
+
+
+  @HostListener('mousemove', ['$event'])
+  onMousemove(event: MouseEvent) {
+    console.log(this.isChangingTimecode)
+    // if(this.isChangingTimecode) {
+      this.mouseMoveService.mouveMoveSource.next(event)
+      return false
+    // }
+  }
+
+  @HostListener('mouseup')
+  onMouseup() {
+    // if(this.isChangingTimecode) {
+      this.mouseMoveService.mouveMoveSource.next(event)
+    // }
   }
 }

@@ -105,6 +105,10 @@ defmodule ExBackend.WorkflowStep do
     ExBackend.Workflow.Step.FtpUpload.launch(workflow, step)
   end
 
+  defp launch_step(workflow, "upload_file", step, _step_index) do
+    ExBackend.Workflow.Step.UploadFile.launch(workflow, step)
+  end
+
   defp launch_step(workflow, "push_rdf", _step, _step_index) do
     ExBackend.Workflow.Step.PushRdf.launch(workflow)
   end

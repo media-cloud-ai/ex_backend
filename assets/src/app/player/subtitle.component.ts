@@ -22,10 +22,11 @@ export class SubtitleComponent implements OnChanges {
   @Input() before: number = 0
   @Input() after: number = 0
   @Input() split: boolean = false
+  @Input() isChangingTimecode: boolean
 
   loaded = false
   cues: Cue[] = []
-  currentCue: Cue
+  currentCue: Cue = new Cue()
   currentCueIndex: number
   beforeCues: Cue[] = []
   afterCues: Cue[] = []

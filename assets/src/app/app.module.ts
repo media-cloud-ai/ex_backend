@@ -88,6 +88,7 @@ import {JobDetailsDialogComponent} from './jobs/details/job_details_dialog.compo
 import {NewNodeDialogComponent} from './nodes/new_node_dialog.component'
 import {PersonShowDialogComponent} from './persons/show_dialog.component'
 import {RdfDialogComponent} from './catalog/rdf/rdf_dialog.component'
+import {TimecodeDialogComponent} from './player/dialog/timecode_dialog.component'
 import {WorkflowAbortDialogComponent} from './workflows/dialogs/workflow_abort_dialog.component'
 import {WorkflowDialogComponent} from './catalog/workflow/workflow_dialog.component'
 
@@ -99,6 +100,7 @@ import {ContainerService}        from './services/container.service'
 import {ImageService}            from './services/image.service'
 import {IMDbService}             from './services/imdb.service'
 import {JobService}              from './services/job.service'
+import {MouseMoveService}        from './services/mousemove.service'
 import {NodeService}             from './services/node.service'
 import {PersonService}           from './services/person.service'
 import {RdfService}              from './services/rdf.service'
@@ -117,6 +119,7 @@ import {JobTypePipe}             from './pipes/job_type.pipe'
 import {JobStatusPipe}           from './pipes/job_status.pipe'
 import {JobStatusIconPipe}       from './pipes/job_status_icon.pipe'
 import {LanguagePipe}            from './pipes/language.pipe'
+import {NumberToArrayPipe}       from './pipes/number_to_array.pipe'
 import {ParameterLabelPipe}      from './pipes/parameter_label.pipe'
 import {QueuePipe}               from './pipes/queue.pipe'
 import {TextTypePipe}            from './pipes/text_type.pipe'
@@ -198,6 +201,7 @@ const EX_BACKEND_DATE_FORMATS = {
     StepProgressBarComponent,
     SubtitleComponent,
     TimecodeComponent,
+    TimecodeDialogComponent,
     UserComponent,
     UsersComponent,
     VideoTitleComponent,
@@ -223,6 +227,7 @@ const EX_BACKEND_DATE_FORMATS = {
     JobStatusPipe,
     JobStatusIconPipe,
     LanguagePipe,
+    NumberToArrayPipe,
     ParameterLabelPipe,
     QueuePipe,
     TextTypePipe,
@@ -242,6 +247,7 @@ const EX_BACKEND_DATE_FORMATS = {
     StepProgressBarComponent,
     SubtitleComponent,
     TimecodeComponent,
+    TimecodeDialogComponent,
     UserComponent,
     VideoTitleComponent,
     WatchersComponent,
@@ -288,6 +294,7 @@ const EX_BACKEND_DATE_FORMATS = {
     ImageService,
     IMDbService,
     JobService,
+    MouseMoveService,
     NodeService,
     PersonService,
     RdfService,
