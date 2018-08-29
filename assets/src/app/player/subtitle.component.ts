@@ -18,7 +18,7 @@ import {WebVtt, Cue, Timecode} from 'ts-subtitle'
 export class SubtitleComponent implements OnChanges {
   @Input() content_id: string
   @Input() language: string
-  @Input() time: number = 0
+  @Input() time: number = 0.0
   @Input() before: number = 0
   @Input() after: number = 0
   @Input() split: boolean = false
@@ -114,13 +114,31 @@ export class SubtitleComponent implements OnChanges {
       let after = this.currentCue.content.substring(event.toElement.selectionStart);
 
       var next = new Cue()
-      next.start = this.time,
+      next.start = this.time
       next.end = this.currentCue.end
       next.content = after
 
       this.currentCue.end = this.time
       this.currentCue.content = before
       this.cues.splice(this.currentCueIndex + 1, 0, next);
+      this.refresh(this.time)
+    }
+  }
+
+  addCue() {
+    if(this.currentCue && this.currentCue.end) {
+      var next = new Cue()
+      next.start = this.currentCue.end
+      next.end = this.currentCue.end + 1.0
+      next.content = ""
+      this.cues.splice(this.currentCueIndex + 1, 0, next);
+      this.refresh(this.time)
+    } else {
+      var next = new Cue()
+      next.start = this.time
+      next.end = this.time + 1.0
+      next.content = ""
+      this.cues.splice(0, 0, next);
       this.refresh(this.time)
     }
   }

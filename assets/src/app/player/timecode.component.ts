@@ -44,7 +44,7 @@ export class TimecodeComponent implements OnChanges {
     this.sub = this.mouseMoveService.mouseMoveEvent.subscribe(
       event => {
         if(me.clicked) {
-          me.time = me.originalTime + ((me.origin - event.y) / 25.0)
+          me.time = Math.max(me.originalTime + ((me.origin - event.y) / 25.0), 0.0)
           me.update()
         }
       })
