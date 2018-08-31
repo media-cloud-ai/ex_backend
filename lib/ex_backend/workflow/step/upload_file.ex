@@ -22,6 +22,7 @@ defmodule ExBackend.Workflow.Step.UploadFile do
       System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
 
     input_filename = Map.get(input, "path") || input.path
+    agent = Map.get(input, "agent") || input.agent
 
     filename = input_filename |> Path.basename
     output_filename = "#{work_dir}/#{workflow.id}/#{filename}"
@@ -32,7 +33,7 @@ defmodule ExBackend.Workflow.Step.UploadFile do
       params: %{
         source: %{
           path: input_filename,
-          agent: Map.get(input, "agent")
+          agent: agent
         },
         destination: %{
           path: output_filename

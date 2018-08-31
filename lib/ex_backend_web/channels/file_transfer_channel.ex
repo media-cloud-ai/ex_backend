@@ -38,7 +38,7 @@ defmodule ExBackendWeb.FileTransferChannel do
 
 
   def handle_out("start", payload, %{assigns: %{identifier: identifier}} = socket) do
-    Logger.info(">- OUT message #{inspect(payload)}")
+    Logger.info(">- OUT #{__MODULE__} start message #{inspect(payload)}")
 
     if identifier == payload.parameters.source.agent do
       push(socket, "start", payload)

@@ -101,7 +101,7 @@ defmodule ExBackendWeb.BrowserChannel do
         %{"date_time" => date_time, "output_filename" => filename} = _payload,
         %{assigns: %{identifier: identifier}} = socket
       ) do
-    # Logger.info("new item #{inspect(payload)}")
+    Logger.info("new item #{identifier} / #{date_time}: #{filename}")
     watchers = Watchers.list_watchers(%{identifier: identifier})
 
     if watchers.total == 1 do
