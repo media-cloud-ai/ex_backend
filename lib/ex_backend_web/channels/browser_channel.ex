@@ -111,9 +111,22 @@ defmodule ExBackendWeb.BrowserChannel do
           steps: [
             %{
               id: 0,
-              name: "audio_extraction",
+              name: "upload_file",
+              enable: true,
               parent_ids: [],
               required: [],
+              inputs: [
+                %{
+                  path: filename,
+                  agent: identifier
+                }
+              ]
+            },
+            %{
+              id: 1,
+              name: "audio_extraction",
+              parent_ids: [0],
+              required: ["upload_file"],
               inputs: [
                 %{
                   path: filename

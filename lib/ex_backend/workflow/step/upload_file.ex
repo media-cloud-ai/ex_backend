@@ -21,7 +21,8 @@ defmodule ExBackend.Workflow.Step.UploadFile do
     work_dir =
       System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
 
-    input_filename = Map.get(input, "path")
+    input_filename = Map.get(input, "path") || input.path
+
     filename = input_filename |> Path.basename
     output_filename = "#{work_dir}/#{workflow.id}/#{filename}"
 
