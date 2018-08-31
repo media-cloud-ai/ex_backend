@@ -16,8 +16,7 @@ defmodule ExBackend.Workflow.Step.SetLanguage do
 
   defp start_setting_languages([path | paths], workflow) do
     work_dir =
-      System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir) ||
-        "/tmp/ftp_francetv"
+      System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
 
     dst_path =
       work_dir <>

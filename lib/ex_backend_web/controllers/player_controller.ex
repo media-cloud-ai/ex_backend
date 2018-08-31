@@ -32,7 +32,7 @@ defmodule ExBackendWeb.PlayerController do
       length = (end_pos |> String.to_integer) - start + 1
       # IO.puts "get from #{start} to #{end_pos}: #{length} bytes"
 
-      {ok, data} = :file.pread(file, start, length)
+      {:ok, data} = :file.pread(file, start, length)
       :file.close(file)
 
       conn

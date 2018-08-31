@@ -80,7 +80,7 @@ config :ex_backend,
   hostname: "localhost",
   port: 4000,
   ssl: false,
-  workdir: "/tmp/ftp_francetv",
+  work_dir: "/tmp/ftp_francetv",
   akamai_video_prefix: "/421959/prod/innovation/testing",
   rdf_converter: [
     hostname: "localhost",

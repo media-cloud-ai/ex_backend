@@ -26,8 +26,7 @@ defmodule ExBackend.Workflow.Step.HttpDownload do
 
   defp start_download_via_http([url | urls], workflow) do
     work_dir =
-      System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir) ||
-        "/tmp/ftp_francetv"
+      System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
 
     filename = Path.basename(url)
 

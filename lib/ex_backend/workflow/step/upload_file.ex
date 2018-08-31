@@ -1,6 +1,5 @@
 defmodule ExBackend.Workflow.Step.UploadFile do
   alias ExBackend.Jobs
-  alias ExBackend.Workflow.Step.Requirements
 
   @action_name "upload_file"
 
@@ -19,16 +18,23 @@ defmodule ExBackend.Workflow.Step.UploadFile do
 
   defp start_upload([], _current_date, _workflow), do: {:ok, "started"}
   defp start_upload([input | inputs], current_date, workflow) do
+    work_dir =
+      System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
+
+    input_filename = Map.get(input, "path")
+    filename = input_filename |> Path.basename
+    output_filename = "#{work_dir}/#{workflow.id}/#{filename}"
+
     job_params = %{
       name: @action_name,
       workflow_id: workflow.id,
       params: %{
         source: %{
-          path: Map.get(input, "path"),
+          path: input_filename,
           agent: Map.get(input, "agent")
         },
         destination: %{
-          path: "/tmp/dude/test.mp4"
+          path: output_filename
         }
       }
     }

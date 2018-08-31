@@ -61,7 +61,7 @@ defmodule ExBackend.WorkflowStep do
     |> ExBackend.Jobs.skip_jobs(step_name)
   end
 
-  defp launch_step(workflow, "acs_prepare_audio", step, _step_index) do
+  defp launch_step(workflow, "acs_prepare_audio", _step, _step_index) do
     ExBackend.Workflow.Step.Acs.PrepareAudio.launch(workflow)
   end
 

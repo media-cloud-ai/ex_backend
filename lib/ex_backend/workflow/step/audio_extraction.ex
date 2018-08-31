@@ -24,8 +24,7 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
 
   defp start_extracting_audio(path, workflow, step) do
     work_dir =
-      System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir) ||
-        "/tmp/ftp_francetv"
+      System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
 
     filename = Path.basename(path, "-standard1.mp4")
 

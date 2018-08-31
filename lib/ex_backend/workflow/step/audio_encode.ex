@@ -18,8 +18,7 @@ defmodule ExBackend.Workflow.Step.AudioEncode do
 
   defp start_processing_audio([path | paths], workflow) do
     work_dir =
-      System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir) ||
-        "/tmp/ftp_francetv"
+      System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
 
     filename = Path.basename(path, ".wav")
 
