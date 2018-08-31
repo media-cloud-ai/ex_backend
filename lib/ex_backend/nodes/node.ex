@@ -7,6 +7,7 @@ defmodule ExBackend.Nodes.Node do
     field(:label, :string)
     field(:hostname, :string)
     field(:port, :integer)
+    field(:cacertfile, :string)
     field(:certfile, :string)
     field(:keyfile, :string)
     timestamps()
@@ -15,7 +16,7 @@ defmodule ExBackend.Nodes.Node do
   @doc false
   def changeset(%Node{} = nnode, attrs) do
     nnode
-    |> cast(attrs, [:label, :hostname, :port, :certfile, :keyfile])
+    |> cast(attrs, [:label, :hostname, :port, :cacertfile, :certfile, :keyfile])
     |> validate_required([:label, :hostname, :port])
   end
 end

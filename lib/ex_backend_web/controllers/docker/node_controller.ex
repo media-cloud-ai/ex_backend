@@ -40,10 +40,17 @@ defmodule ExBackendWeb.Docker.NodeController do
     label = Map.get(config, "label", "")
     hostname = Map.get(config, "hostname")
     port = Map.get(config, "port", 2376)
+    cacertfile =
+      case Map.get(config, "cacertfile") do
+        nil -> nil
+        "" -> nil
+        filename -> filename
+      end
+
     certfile = Map.get(config, "certfile")
     keyfile = Map.get(config, "keyfile")
 
-    node_config = ExBackend.Docker.NodeConfig.build(hostname, port, certfile, keyfile)
+    node_config = ExBackend.Docker.NodeConfig.build(hostname, port, cacertfile, certfile, keyfile)
     node_config = RemoteDockers.NodeConfig.set_label(node_config, label)
 
     try do

@@ -21,6 +21,7 @@ export class NewNodeDialogComponent {
     this.node.label = 'test'
     this.node.port = 2376
     this.node.hostname = 'https://192.168.99.100'
+    this.node.cacertfile = ''
     this.node.certfile = '/Users/marco/.docker/machine/certs/cert.pem'
     this.node.keyfile = '/Users/marco/.docker/machine/certs/key.pem'
     this.node.ssl_enabled = true
@@ -37,6 +38,7 @@ export class NewNodeDialogComponent {
     config.port = this.node.port
 
     if (this.node.ssl_enabled) {
+      config.cacertfile = this.node.cacertfile
       config.certfile = this.node.certfile
       config.keyfile = this.node.keyfile
     }

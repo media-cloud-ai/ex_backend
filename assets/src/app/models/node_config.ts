@@ -5,6 +5,7 @@ export class NodeConfig {
   hostname: string
   port: number
   ssl_enabled: boolean
+  cacertfile?: string
   certfile?: string
   keyfile?: string
 }

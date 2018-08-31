@@ -73,6 +73,15 @@
     <mat-form-field class="search-text-input">
       <input
         matInput
+        placeholder="Certificate Authority file"
+        [(ngModel)]="node.cacertfile"
+        >
+    </mat-form-field>
+  </div>
+  <div *ngIf="node.ssl_enabled">
+    <mat-form-field class="search-text-input">
+      <input
+        matInput
         placeholder="Certificate file"
         [(ngModel)]="node.certfile"
         >

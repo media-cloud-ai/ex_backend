@@ -46,7 +46,7 @@ defmodule ExBackend.Mixfile do
   defp deps do
     [
       {:amqp, "~> 1.0"},
-      {:bcrypt_elixir, "~> 1.0"},
+      {:bcrypt_elixir, "~> 1.1"},
       {:bamboo, github: "media-io/bamboo"},
       {:cowboy, "~> 1.1.2"},
       {:distillery, "~> 1.5"},
@@ -61,11 +61,11 @@ defmodule ExBackend.Mixfile do
       {:phoenix_pubsub, "~> 1.0"},
       {:phauxth, "~> 1.0"},
       {:postgrex, ">= 0.0.0"},
-      {:poison, "~> 3.1"},
+      {:poison, "~> 3.1", override: true},
       {:ranch, "~> 1.5.0", override: true},
       {:ranch_proxy_protocol,
        git: "https://github.com/heroku/ranch_proxy_protocol", branch: "master", override: true},
-      {:remote_dockers, "1.3.3"},
+      {:remote_dockers, "1.3.5"},
       {:timex, "~> 3.2"}
     ]
   end
