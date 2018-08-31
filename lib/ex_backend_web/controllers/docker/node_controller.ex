@@ -1,6 +1,6 @@
 defmodule ExBackendWeb.Docker.NodeController do
   use ExBackendWeb, :controller
-
+  require Logger
   alias ExBackend.Nodes
   alias ExBackend.Nodes.Node
   import ExBackendWeb.Authorize
@@ -50,7 +50,8 @@ defmodule ExBackendWeb.Docker.NodeController do
       conn
       |> json(RemoteDockers.Node.info!(node_config))
     rescue
-      _ ->
+      exception ->
+        Logger.error("#{inspect(exception)}")
         send_resp(conn, :not_found, "unable to connect")
     end
   end
