@@ -61,7 +61,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
                params: %{
                  kind: "generate_dash",
                  options: %{
-                   "-out": "/tmp/ftp_francetv/dash/reference_id_666/manifest.mpd",
+                   "-out": "/data/dash/reference_id_666/manifest.mpd",
                    "-profile": "onDemand",
                    "-rap": true,
                    "-url-template": true,
@@ -131,7 +131,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
                params: %{
                  kind: "generate_dash",
                  options: %{
-                   "-out": "/tmp/ftp_francetv/dash/reference_id_666/manifest.mpd",
+                   "-out": "/data/dash/reference_id_666/manifest.mpd",
                    "-profile": "onDemand",
                    "-rap": true,
                    "-url-template": true,
@@ -211,7 +211,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
                params: %{
                  kind: "generate_dash",
                  options: %{
-                   "-out": "/tmp/ftp_francetv/dash/reference_id_666/manifest.mpd",
+                   "-out": "/data/dash/reference_id_666/manifest.mpd",
                    "-profile": "onDemand",
                    "-rap": true,
                    "-url-template": true,
@@ -293,7 +293,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
                params: %{
                  kind: "generate_dash",
                  options: %{
-                   "-out": "/tmp/ftp_francetv/dash/reference_id_666/manifest.mpd",
+                   "-out": "/data/dash/reference_id_666/manifest.mpd",
                    "-profile": "onDemand",
                    "-rap": true,
                    "-url-template": true,
@@ -383,7 +383,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
                params: %{
                  kind: "generate_dash",
                  options: %{
-                   "-out": "/tmp/ftp_francetv/dash/reference_id_666/manifest.mpd",
+                   "-out": "/data/dash/reference_id_666/manifest.mpd",
                    "-profile": "onDemand",
                    "-rap": true,
                    "-url-template": true,

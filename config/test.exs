@@ -31,7 +31,8 @@ config :ex_backend,
       keyfile: "/path/to/key.pem"
     ]
   ],
-  root_dash_content: "/tmp/"
+  root_dash_content: "/tmp/",
+  work_dir: "/data"
 
 config :amqp,
   hostname: "localhost",
