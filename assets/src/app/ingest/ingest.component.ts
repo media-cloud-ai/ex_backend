@@ -71,9 +71,8 @@ export class IngestComponent {
       this.updateDir()
     } else {
       let filename = entry.filename
-      let path = this.full_path.join('/') + '/' + filename
       let data = new Data()
-      data.path = path
+      data.path = entry.abs_path
       data.agent = this.selectedAgent
       let dialogRef = this.dialog.open(StartIngestDialog, {data: data})
 

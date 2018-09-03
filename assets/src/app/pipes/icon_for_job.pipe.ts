@@ -17,6 +17,7 @@ export class IconForJobPipe implements PipeTransform {
       { id: 'audio_encode', name: 'music_video' },
       { id: 'audio_extraction', name: 'queue_music' },
       { id: 'clean_workspace', name: 'delete_forever' },
+      { id: 'copy', name: 'archive' },
       { id: 'download_ftp', name: 'file_download' },
       { id: 'download_http', name: 'file_download' },
       { id: 'generate_dash', name: 'tv' },

@@ -22,7 +22,7 @@ defmodule ExBackend.WorkflowStep do
       nil ->
         set_artifacts(workflow)
         Logger.warn("#{__MODULE__}: workflow #{workflow_id} is completed")
-
+        {:ok, "completed"}
       step ->
         Logger.warn(
           "#{__MODULE__}: start to process step #{step["name"]} (index #{step_index}) for workflow #{
@@ -111,6 +111,10 @@ defmodule ExBackend.WorkflowStep do
 
   defp launch_step(workflow, "push_rdf", _step, _step_index) do
     ExBackend.Workflow.Step.PushRdf.launch(workflow)
+  end
+
+  defp launch_step(workflow, "copy", step, _step_index) do
+    ExBackend.Workflow.Step.Copy.launch(workflow, step)
   end
 
   defp launch_step(workflow, "clean_workspace", _step, _step_index) do

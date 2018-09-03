@@ -15,4 +15,11 @@ defmodule ExBackend.Amqp.JobFileSystemErrorConsumer do
     Workflows.notification_from_job(job_id)
     Basic.ack(channel, tag)
   end
+
+  def consume(channel, tag, _redelivered, %{"job_id" => job_id, "status" => "error", "message" => description} = payload) do
+    Logger.error("File system error #{inspect(payload)}")
+    Status.set_job_status(job_id, "error", %{message: description})
+    Workflows.notification_from_job(job_id)
+    Basic.ack(channel, tag)
+  end
 end

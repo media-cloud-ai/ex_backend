@@ -15,6 +15,22 @@ defmodule ExBackend.Workflow.Definition.EbuIngest do
         },
         %{
           id: 1,
+          name: "copy",
+          enable: true,
+          parent_ids: [0],
+          required: ["upload_file"],
+          parameters: [
+            %{
+              id: "output_directory",
+              type: "string",
+              enable: false,
+              default: "/archive",
+              value: "/archive"
+            }
+          ]
+        },
+        %{
+          id: 2,
           name: "audio_extraction",
           enable: true,
           parent_ids: [0],

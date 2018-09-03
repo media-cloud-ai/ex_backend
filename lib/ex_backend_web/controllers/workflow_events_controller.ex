@@ -86,6 +86,14 @@ defmodule ExBackendWeb.WorkflowEventsController do
     Amqp.JobAcsEmitter.publish_json(params)
   end
 
+  defp publish("copy", _job_id, _workflow, params) do
+    Amqp.JobFileSystemEmitter.publish_json(params)
+  end
+
+  defp publish("audio_extraction", _job_id, _workflow, params) do
+    Amqp.JobFFmpegEmitter.publish_json(params)
+  end
+
   defp publish("push_rdf", job_id, workflow, _params) do
     ExBackend.Workflow.Step.PushRdf.convert_and_submit(workflow)
     |> case do

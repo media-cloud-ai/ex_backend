@@ -17,6 +17,7 @@ export class JobTypePipe implements PipeTransform {
       { id: 'audio_encode', name: 'ACS: encode audio' },
       { id: 'audio_extraction', name: 'Audio extraction' },
       { id: 'clean_workspace', name: 'Clean workspace' },
+      { id: 'copy', name: 'Archive' },
       { id: 'download_ftp', name: 'FTP download' },
       { id: 'download_http', name: 'HTTP download' },
       { id: 'ftp_order', name: 'FTP transfer' },

@@ -17,8 +17,9 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
 
       inputs ->
         for input <- inputs do
-          start_extracting_audio(ExBackend.Map.get_by_key_or_atom(input, :path), workflow, step)
+          {:ok, "started"} = start_extracting_audio(ExBackend.Map.get_by_key_or_atom(input, :path), workflow, step)
         end
+        {:ok, "started"}
     end
   end
 
@@ -63,7 +64,7 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
         requirements: requirements,
         inputs: [
           %{
-            path: path,
+            path: path |> List.first,
             options: %{}
           }
         ],
@@ -89,8 +90,14 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
   end
 
   defp get_first_source_file(jobs) do
-    ExBackend.Workflow.Step.FtpDownload.get_jobs_destination_paths(jobs)
-    |> Enum.find(fn path -> String.ends_with?(path, "-standard1.mp4") end)
+    ftp_files =
+      ExBackend.Workflow.Step.FtpDownload.get_jobs_destination_paths(jobs)
+      |> Enum.find(fn path -> String.ends_with?(path, "-standard1.mp4") end)
+
+    case ftp_files do
+      nil -> ExBackend.Workflow.Step.UploadFile.get_jobs_destination_paths(jobs)
+      filename -> filename
+    end
   end
 
   @doc """

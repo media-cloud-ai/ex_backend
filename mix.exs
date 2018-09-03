@@ -105,7 +105,7 @@ defmodule ExBackend.Mixfile do
   defp retrieve_version_from_git do
     require Logger
 
-    Logger.warn(
+    Logger.debug(
       "Calling out to `git describe` for the version number. This is slow! You should think about a hook to set the VERSION file"
     )
 

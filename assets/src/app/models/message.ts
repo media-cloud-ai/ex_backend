@@ -8,6 +8,7 @@ export interface Body {
 
 export interface FileEntry {
   filename: string
+  abs_path: string
   is_dir: boolean
   is_file: boolean
 }
