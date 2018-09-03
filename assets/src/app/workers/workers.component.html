@@ -67,6 +67,9 @@
     <span class="id">
       ID
     </span>
+    <span class="name">
+      Name
+    </span>
     <span class="image">
       Image
     </span>
@@ -88,6 +91,9 @@
     >
     <span class="id">
       {{container.id | slice:0:12}}
+    </span>
+    <span class="name">
+      {{container.names[0] | slice:1}}
     </span>
     <span class="image">
       {{container.image | dockerImage}}
