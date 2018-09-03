@@ -46,6 +46,58 @@ defmodule ExBackendWeb.WorkflowController do
     render(conn, "show.json", workflow: workflow)
   end
 
+  def get(conn, params) do
+    steps = %{
+      steps: [
+        %{
+          id: 0,
+          name: "upload_file",
+          enable: true,
+          inputs: [
+            %{
+              path: "#input_filename",
+              agent: "#agent_identifier"
+            }
+          ]
+        },
+        %{
+          id: 1,
+          name: "audio_extraction",
+          enable: true,
+          parent_ids: [0],
+          required: ["upload_file"],
+          output_extension: ".wav",
+          parameters: [
+            %{
+              id: "output_codec_audio",
+              type: "string",
+              enable: false,
+              default: "pcm_s24le",
+              value: "pcm_s24le"
+            },
+            %{
+              id: "disable_video",
+              type: "boolean",
+              enable: false,
+              default: true,
+              value: true
+            },
+            %{
+              id: "disable_data",
+              type: "boolean",
+              enable: false,
+              default: true,
+              value: true
+            }
+          ]
+        }
+      ]
+    }
+
+    conn
+    |> json(steps)
+  end
+
   def update(conn, %{"id" => id, "workflow" => workflow_params}) do
     workflow = Workflows.get_workflow!(id)
 

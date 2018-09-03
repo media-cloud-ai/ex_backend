@@ -8,9 +8,12 @@ export class WorkflowRenderer {
   constructor(steps: Step[]) {
     this.graph = new Array()
 
+    if(steps === undefined) {
+      return
+    }
     for (let step of steps) {
       let child_line_index = 0
-      if (step.parent_ids.length !== 0) {
+      if(step.parent_ids && step.parent_ids.length !== 0) {
         let parents_lines_index = this.graph
           .filter(line => line.filter(s => step.parent_ids.includes(s.id)).length > 0)
           .map(line => this.graph.indexOf(line))
@@ -21,6 +24,10 @@ export class WorkflowRenderer {
         this.graph[child_line_index] = new Array<Step>()
       }
       this.graph[child_line_index].push(step)
+    }
+
+    if(this.graph === undefined) {
+      return
     }
 
     for (var i = 1; i < this.graph.length; ++i) {

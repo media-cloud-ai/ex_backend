@@ -1,6 +1,7 @@
 import {Component, Inject} from '@angular/core'
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material'
 
+import {WorkflowService} from '../../services/workflow.service'
 import {Step} from '../../models/workflow'
 
 export class Data {
@@ -16,92 +17,33 @@ export class Data {
 
 export class StartIngestDialog {
   steps: Step[]
+  workflow_data: Data
 
   constructor(
     public dialogRef: MatDialogRef<StartIngestDialog>,
+    private workflowService: WorkflowService,
     @Inject(MAT_DIALOG_DATA) public data: Data) {
+    this.workflow_data = data
+  }
 
-    this.steps = [
-      {
-        id: 0,
-        name: 'upload_file',
-        enable: true,
-        parent_ids:[],
-        required: [],
-        inputs: [
-          {
-            path: data.path,
-            agent: data.agent
+  ngOnInit() {
+    this.workflowService.getWorkflowDefinition("ebu_ingest").subscribe(workflowDefinition => {
+      this.steps = workflowDefinition.steps
+
+      for(var step of this.steps) {
+        if(step.inputs) {
+          for(var input of step.inputs) {
+            console.log(input)
+            if(input.path) {
+              input.path = this.workflow_data.path
+            }
+            if(input.agent) {
+              input.agent = this.workflow_data.agent
+            }
           }
-        ]
-      },
-      {
-        id: 1,
-        name: 'audio_extraction',
-        enable: true,
-        parent_ids:[0],
-        required: ['upload_file'],
-        inputs: [
-          {
-            path: data.path
-          }
-        ],
-        output_extension: '.wav',
-        parameters : [
-          {
-            id: 'output_codec_audio',
-            type: 'string',
-            enable: false,
-            default: 'pcm_s24le',
-            value: 'pcm_s24le'
-          },
-          {
-            id: 'disable_video',
-            type: 'boolean',
-            enable: false,
-            default: true,
-            value: true
-          },
-          {
-            id: 'disable_data',
-            type: 'boolean',
-            enable: false,
-            default: true,
-            value: true
-          }
-        ]
-      },
-      {
-        id: 2,
-        name: 'speech_to_text',
-        enable: true,
-        parent_ids:[1],
-        required: ['speech_to_text'],
-        parameters : [
-          {
-            id: 'mode',
-            type: 'string',
-            enable: false,
-            default: 'conversation',
-            value: 'conversation'
-          },
-          {
-            id: 'language',
-            type: 'string',
-            enable: false,
-            default: 'en-US',
-            value: 'en-US'
-          },
-          {
-            id: 'format',
-            type: 'string',
-            enable: false,
-            default: 'simple',
-            value: 'simple'
-          }
-        ]
+        }
       }
-    ]
+    });
   }
 
   onNoClick() {

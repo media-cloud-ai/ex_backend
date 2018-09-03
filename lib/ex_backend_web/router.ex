@@ -29,6 +29,8 @@ defmodule ExBackendWeb.Router do
 
     get("/jobs", JobController, :index)
 
+    get("/workflow/:identifier", WorkflowController, :get)
+
     resources("/workflows", WorkflowController, except: [:new, :edit]) do
       post("/events", WorkflowEventsController, :handle)
     end
