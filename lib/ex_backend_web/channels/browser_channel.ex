@@ -105,60 +105,11 @@ defmodule ExBackendWeb.BrowserChannel do
     watchers = Watchers.list_watchers(%{identifier: identifier})
 
     if watchers.total == 1 do
+      steps = ExBackend.Workflow.Definition.EbuIngest.get_definition(identifier, filename)
+
       workflow_params = %{
         reference: filename,
-        flow: %{
-          steps: [
-            %{
-              id: 0,
-              name: "upload_file",
-              enable: true,
-              parent_ids: [],
-              required: [],
-              inputs: [
-                %{
-                  path: filename,
-                  agent: identifier
-                }
-              ]
-            },
-            %{
-              id: 1,
-              name: "audio_extraction",
-              parent_ids: [0],
-              required: ["upload_file"],
-              inputs: [
-                %{
-                  path: filename
-                }
-              ],
-              output_extension: ".wav",
-              parameters: [
-                %{
-                  id: "output_codec_audio",
-                  type: "string",
-                  enable: false,
-                  default: "pcm_s24le",
-                  value: "pcm_s24le"
-                },
-                %{
-                  id: "disable_video",
-                  type: "boolean",
-                  enable: false,
-                  default: true,
-                  value: true
-                },
-                %{
-                  id: "disable_data",
-                  type: "boolean",
-                  enable: false,
-                  default: true,
-                  value: true
-                }
-              ]
-            }
-          ]
-        }
+        flow: steps
       }
 
       case Workflows.create_workflow(workflow_params) do

@@ -33,7 +33,6 @@ export class StartIngestDialog {
       for(var step of this.steps) {
         if(step.inputs) {
           for(var input of step.inputs) {
-            console.log(input)
             if(input.path) {
               input.path = this.workflow_data.path
             }
