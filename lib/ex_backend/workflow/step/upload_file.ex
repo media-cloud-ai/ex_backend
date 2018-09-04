@@ -10,14 +10,14 @@ defmodule ExBackend.Workflow.Step.UploadFile do
 
     case ExBackend.Map.get_by_key_or_atom(step, :inputs) do
       nil ->
-        Jobs.create_skipped_job(workflow, @action_name)
+        Jobs.create_skipped_job(workflow, ExBackend.Map.get_by_key_or_atom(step, :id), @action_name)
       inputs ->
-        start_upload(inputs, current_date, workflow)
+        start_upload(inputs, current_date, step, workflow)
     end
   end
 
-  defp start_upload([], _current_date, _workflow), do: {:ok, "started"}
-  defp start_upload([input | inputs], current_date, workflow) do
+  defp start_upload([], _current_date, _step, _workflow), do: {:ok, "started"}
+  defp start_upload([input | inputs], current_date, step, workflow) do
     work_dir =
       System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
 
@@ -29,6 +29,8 @@ defmodule ExBackend.Workflow.Step.UploadFile do
 
     job_params = %{
       name: @action_name,
+
+      step_id: ExBackend.Map.get_by_key_or_atom(step, :id),
       workflow_id: workflow.id,
       params: %{
         source: %{
@@ -50,7 +52,7 @@ defmodule ExBackend.Workflow.Step.UploadFile do
 
     ExBackendWeb.Endpoint.broadcast!("transfer:upload", "start", params)
 
-    start_upload(inputs, current_date, workflow)
+    start_upload(inputs, current_date, step, workflow)
   end
 
   @doc """

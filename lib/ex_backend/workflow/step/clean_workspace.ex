@@ -6,15 +6,28 @@ defmodule ExBackend.Workflow.Step.CleanWorkspace do
   @action_name "clean_workspace"
 
   def launch(workflow) do
+    workflow
+    |> Map.get(:flow)
+    |> Map.get("steps")
+    |> Enum.filter(fn step ->
+        Map.get(step, "name") == @action_name
+      end)
+    |> Enum.map(fn step ->
+        launch(workflow, step)
+      end)
+  end
+
+  def launch(workflow, step) do
     case get_source_directories(workflow.jobs) do
       [] ->
-        Jobs.create_skipped_job(workflow, @action_name)
+        Jobs.create_skipped_job(workflow, ExBackend.Map.get_by_key_or_atom(step, :id), @action_name)
 
       paths ->
         requirements = Requirements.add_required_paths(paths)
 
         job_params = %{
           name: @action_name,
+          step_id: ExBackend.Map.get_by_key_or_atom(step, :id),
           workflow_id: workflow.id,
           params: %{
             action: "remove",

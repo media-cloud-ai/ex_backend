@@ -5,14 +5,14 @@ defmodule ExBackend.Workflow.Step.FtpUpload do
 
   @action_name "upload_ftp"
 
-  def launch(workflow, _step) do
+  def launch(workflow,step) do
     current_date =
       Timex.now()
       |> Timex.format!("%Y_%m_%d__%H_%M_%S", :strftime)
 
     case ExBackend.Workflow.Step.GenerateDash.get_jobs_destination_paths(workflow.jobs) do
       [] ->
-        Jobs.create_skipped_job(workflow, @action_name)
+        Jobs.create_skipped_job(workflow, ExBackend.Map.get_by_key_or_atom(step, :id), @action_name)
 
       paths ->
         start_upload(paths, current_date, workflow)

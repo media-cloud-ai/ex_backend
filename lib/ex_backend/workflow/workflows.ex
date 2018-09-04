@@ -147,7 +147,10 @@ defmodule ExBackend.Workflows do
 
   defp get_step_status([step | steps], workflow_jobs, result) do
     name = Map.get(step, "name")
-    jobs = Enum.filter(workflow_jobs, fn job -> job.name == name end)
+    step_id = Map.get(step, "id")
+    jobs =
+      workflow_jobs
+      |> Enum.filter(fn job -> job.name == name && job.step_id == step_id end)
 
     completed = count_status(jobs, "completed")
     errors = count_status(jobs, "error")
@@ -185,7 +188,8 @@ defmodule ExBackend.Workflows do
 
   defp count_status([job | jobs], status, count) do
     count_completed =
-      Enum.filter(job.status, fn s -> s.state == "completed" end)
+      job.status
+      |> Enum.filter(fn s -> s.state == "completed" end)
       |> length
 
     count =

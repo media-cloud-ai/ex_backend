@@ -10,7 +10,7 @@ defmodule ExBackend.Workflow.Step.GenerateDash do
   def launch(workflow, step) do
     case build_step_parameters(workflow, step) do
       {:skipped, nil} ->
-        Jobs.create_skipped_job(workflow, @action_name)
+        Jobs.create_skipped_job(workflow, ExBackend.Map.get_by_key_or_atom(step, :id), @action_name)
 
       {:ok, job_params} ->
         {:ok, job} = Jobs.create_job(job_params)

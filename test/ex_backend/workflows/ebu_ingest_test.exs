@@ -2,20 +2,11 @@ defmodule ExBackend.EbuIngestTest do
   use ExBackendWeb.ConnCase
 
   alias ExBackend.Workflows
-  alias ExBackend.Repo
-  alias ExBackend.Workflows.Workflow
   alias ExBackend.WorkflowStep
 
   require Logger
 
   describe "ebu_ingest_workflow" do
-
-
-    def handle_info(
-      {:basic_deliver, payload, %{delivery_tag: tag, redelivered: redelivered}},
-      channel) do
-      IO.inspect(payload)
-    end
 
     def port_format(port) when is_integer(port) do
       Integer.to_string(port)
@@ -100,7 +91,7 @@ defmodule ExBackend.EbuIngestTest do
         |> List.first
 
       ExBackend.Jobs.Status.set_job_status(job.id, "completed")
-      {:ok, "completed"} = WorkflowStep.start_next_step(workflow)
+      {:ok, "started"} = WorkflowStep.start_next_step(workflow)
     end
   end
 end

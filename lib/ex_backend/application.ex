@@ -125,6 +125,18 @@ defmodule ExBackend.Application do
       ExBackend.Migration.AddCacertFileOnNode
     )
 
+    Ecto.Migrator.up(
+      ExBackend.Repo,
+      20_180_904_151_104,
+      ExBackend.Migration.AddStepIdOnJob
+    )
+
+    Ecto.Migrator.up(
+      ExBackend.Repo,
+      20_180_904_151_130,
+      ExBackend.Migration.UpdateStepIdOnJob
+    )
+
     root_email = System.get_env("ROOT_EMAIL") || Application.get_env(:ex_backend, :root_email)
 
     root_password =

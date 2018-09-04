@@ -7,9 +7,9 @@ defmodule ExBackend.JobsTest do
   describe "jobs" do
     alias ExBackend.Jobs.Job
 
-    @valid_attrs %{name: "some name", params: %{}}
-    @update_attrs %{name: "some updated name", params: %{key: "value"}}
-    @invalid_attrs %{name: nil, workflow_id: nil, params: nil}
+    @valid_attrs %{name: "some name", step_id: 0, params: %{}}
+    @update_attrs %{name: "some updated name", step_id: 1, params: %{key: "value"}}
+    @invalid_attrs %{name: nil, step_id: nil, workflow_id: nil, params: nil}
 
     def job_fixture(attrs \\ %{}) do
       workflow = ExBackend.WorkflowsTest.workflow_fixture()

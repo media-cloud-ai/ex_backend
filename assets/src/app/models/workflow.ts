@@ -24,6 +24,8 @@ export class Step {
   id: number
   parent_ids?: number[]
   name: string
+  label?: string
+  icon?: string
   enable: boolean
   status?: string
   required?: string[]

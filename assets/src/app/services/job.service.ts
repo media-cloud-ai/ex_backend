@@ -12,7 +12,7 @@ export class JobService {
 
   constructor(private http: HttpClient) { }
 
-  getJobs(page: number, per_page: number, workflow_id: number, job_type: string): Observable<JobPage> {
+  getJobs(page: number, per_page: number, workflow_id: number, step_id: number, job_type: string): Observable<JobPage> {
     let params = new HttpParams()
     if (per_page !== undefined) {
       params = params.append('size', String(per_page))
@@ -22,6 +22,9 @@ export class JobService {
     }
     if (workflow_id !== undefined) {
       params = params.append('workflow_id', String(workflow_id))
+    }
+    if (step_id !== undefined) {
+      params = params.append('step_id', String(step_id))
     }
     if (job_type !== undefined) {
       params = params.append('job_type', job_type)

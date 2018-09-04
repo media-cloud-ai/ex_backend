@@ -5,7 +5,7 @@ defmodule ExBackend.Workflow.Step.FtpDownload do
 
   @action_name "download_ftp"
 
-  def launch(workflow) do
+  def launch(workflow, step) do
     ftp_paths = ExVideoFactory.get_ftp_paths_for_video_id(workflow.reference)
 
     first_file =
@@ -14,7 +14,7 @@ defmodule ExBackend.Workflow.Step.FtpDownload do
       |> List.first()
 
     case ftp_paths do
-      [] -> Jobs.create_skipped_job(workflow, @action_name)
+      [] -> Jobs.create_skipped_job(workflow, ExBackend.Map.get_by_key_or_atom(step, :id), @action_name)
       _ -> start_download_via_ftp(ftp_paths, first_file, workflow)
     end
   end

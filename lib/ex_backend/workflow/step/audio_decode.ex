@@ -7,9 +7,9 @@ defmodule ExBackend.Workflow.Step.AudioDecode do
 
   @action_name "audio_decode"
 
-  def launch(workflow) do
+  def launch(workflow, step) do
     case get_source_files(workflow.jobs) do
-      [] -> Jobs.create_skipped_job(workflow, @action_name)
+      [] -> Jobs.create_skipped_job(workflow, ExBackend.Map.get_by_key_or_atom(step, :id), @action_name)
       paths -> start_processing_audio(paths, workflow)
     end
   end

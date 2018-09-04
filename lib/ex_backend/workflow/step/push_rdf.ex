@@ -7,9 +7,10 @@ defmodule ExBackend.Workflow.Step.PushRdf do
 
   @action_name "push_rdf"
 
-  def launch(workflow) do
+  def launch(workflow, step) do
     job_params = %{
       name: @action_name,
+      step_id: ExBackend.Map.get_by_key_or_atom(step, :id),
       workflow_id: workflow.id,
       params: %{}
     }

@@ -60,7 +60,7 @@ export class WorkflowDetailsComponent {
         this.renderer = undefined
         return
       }
-
+      console.log(workflow.data)
       this.workflow = workflow.data
       this.renderer = new WorkflowRenderer(this.workflow.flow.steps)
 

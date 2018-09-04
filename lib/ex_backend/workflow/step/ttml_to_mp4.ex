@@ -5,10 +5,10 @@ defmodule ExBackend.Workflow.Step.TtmlToMp4 do
 
   @action_name "ttml_to_mp4"
 
-  def launch(workflow) do
+  def launch(workflow, step) do
     case get_ttml_files(workflow.jobs, Map.get(workflow.flow, "steps", [])) do
       [] ->
-        Jobs.create_skipped_job(workflow, @action_name)
+        Jobs.create_skipped_job(workflow, ExBackend.Map.get_by_key_or_atom(step, :id), @action_name)
 
       paths ->
         start_process(paths, workflow)

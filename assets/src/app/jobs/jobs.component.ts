@@ -26,6 +26,7 @@ export class JobsComponent {
   job_duration_rendering_mode = 'human'
 
   @Input() jobType: string
+  @Input() step_id: number
   @Input() workflowId: number
 
   pageEvent: PageEvent
@@ -53,7 +54,7 @@ export class JobsComponent {
   }
 
   getJobs(index) {
-    this.jobService.getJobs(index, 100, this.workflowId, this.jobType)
+    this.jobService.getJobs(index, 100, this.workflowId, this.step_id, this.jobType)
     .subscribe(jobPage => {
       this.jobs = jobPage
       this.length = jobPage.total

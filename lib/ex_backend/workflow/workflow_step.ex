@@ -12,7 +12,7 @@ defmodule ExBackend.WorkflowStep do
     workflow = ExBackend.Repo.preload(workflow, :jobs, force: true)
 
     step_index =
-      Enum.map(workflow.jobs, fn job -> job.name end)
+      Enum.map(workflow.jobs, fn job -> (job.id |> Integer.to_string) <> job.name end)
       |> Enum.uniq()
       |> length
 
@@ -51,46 +51,46 @@ defmodule ExBackend.WorkflowStep do
     step_name = ExBackend.Map.get_by_key_or_atom(step, :name)
 
     ExBackend.Repo.preload(workflow, :jobs, force: true)
-    |> ExBackend.Jobs.create_skipped_job(step_name)
+    |> ExBackend.Jobs.create_skipped_job(ExBackend.Map.get_by_key_or_atom(step, :id), step_name)
   end
 
   def skip_step_jobs(workflow, step) do
     step_name = ExBackend.Map.get_by_key_or_atom(step, :name)
 
     ExBackend.Repo.preload(workflow, :jobs, force: true)
-    |> ExBackend.Jobs.skip_jobs(step_name)
+    |> ExBackend.Jobs.skip_jobs(ExBackend.Map.get_by_key_or_atom(step, :id), step_name)
   end
 
-  defp launch_step(workflow, "acs_prepare_audio", _step, _step_index) do
-    ExBackend.Workflow.Step.Acs.PrepareAudio.launch(workflow)
+  defp launch_step(workflow, "acs_prepare_audio", step, _step_index) do
+    ExBackend.Workflow.Step.Acs.PrepareAudio.launch(workflow, step)
   end
 
   defp launch_step(workflow, "acs_synchronize", step, _step_index) do
     ExBackend.Workflow.Step.Acs.Synchronize.launch(workflow, step)
   end
 
-  defp launch_step(workflow, "audio_encode", _step, _step_index) do
-    ExBackend.Workflow.Step.AudioEncode.launch(workflow)
+  defp launch_step(workflow, "audio_encode", step, _step_index) do
+    ExBackend.Workflow.Step.AudioEncode.launch(workflow, step)
   end
 
   defp launch_step(workflow, "audio_extraction", step, _step_index) do
     ExBackend.Workflow.Step.AudioExtraction.launch(workflow, step)
   end
 
-  defp launch_step(workflow, "audio_decode", _step, _step_index) do
-    ExBackend.Workflow.Step.AudioDecode.launch(workflow)
+  defp launch_step(workflow, "audio_decode", step, _step_index) do
+    ExBackend.Workflow.Step.AudioDecode.launch(workflow, step)
   end
 
-  defp launch_step(workflow, "download_ftp", _step, _step_index) do
-    ExBackend.Workflow.Step.FtpDownload.launch(workflow)
+  defp launch_step(workflow, "download_ftp", step, _step_index) do
+    ExBackend.Workflow.Step.FtpDownload.launch(workflow, step)
   end
 
-  defp launch_step(workflow, "download_http", _step, _step_index) do
-    ExBackend.Workflow.Step.HttpDownload.launch(workflow)
+  defp launch_step(workflow, "download_http", step, _step_index) do
+    ExBackend.Workflow.Step.HttpDownload.launch(workflow, step)
   end
 
-  defp launch_step(workflow, "ttml_to_mp4", _step, _step_index) do
-    ExBackend.Workflow.Step.TtmlToMp4.launch(workflow)
+  defp launch_step(workflow, "ttml_to_mp4", step, _step_index) do
+    ExBackend.Workflow.Step.TtmlToMp4.launch(workflow, step)
   end
 
   defp launch_step(workflow, "set_language", step, _step_index) do
@@ -109,23 +109,27 @@ defmodule ExBackend.WorkflowStep do
     ExBackend.Workflow.Step.UploadFile.launch(workflow, step)
   end
 
-  defp launch_step(workflow, "push_rdf", _step, _step_index) do
-    ExBackend.Workflow.Step.PushRdf.launch(workflow)
+  defp launch_step(workflow, "push_rdf", step, _step_index) do
+    ExBackend.Workflow.Step.PushRdf.launch(workflow, step)
   end
 
   defp launch_step(workflow, "copy", step, _step_index) do
     ExBackend.Workflow.Step.Copy.launch(workflow, step)
   end
 
-  defp launch_step(workflow, "clean_workspace", _step, _step_index) do
-    ExBackend.Workflow.Step.CleanWorkspace.launch(workflow)
+  defp launch_step(workflow, "clean_workspace", step, _step_index) do
+    ExBackend.Workflow.Step.CleanWorkspace.launch(workflow, step)
   end
 
   defp launch_step(workflow, step_name, step, _step_index) do
     Logger.error("unable to match with the step #{inspect(step)} for workflow #{workflow.id}")
 
     ExBackend.Repo.preload(workflow, :jobs, force: true)
-    |> ExBackend.Jobs.create_error_job(step_name, "unable to start this step")
+    |> ExBackend.Jobs.create_error_job(
+      step_name,
+      ExBackend.Map.get_by_key_or_atom(step, :id),
+      "unable to start this step"
+    )
 
     {:error, "unable to match with the step #{step_name}"}
   end

@@ -6,7 +6,7 @@ defmodule ExBackend.Workflow.Step.HttpDownload do
 
   @action_name "download_http"
 
-  def launch(workflow) do
+  def launch(workflow, step) do
     first_job_state =
       workflow.jobs
       |> List.first()
@@ -16,8 +16,8 @@ defmodule ExBackend.Workflow.Step.HttpDownload do
       |> Map.get(:state)
 
     case {first_job_state, ExVideoFactory.get_http_url_for_ttml(workflow.reference)} do
-      {"skipped", _} -> Jobs.create_skipped_job(workflow, @action_name)
-      {_, []} -> Jobs.create_skipped_job(workflow, @action_name)
+      {"skipped", _} -> Jobs.create_skipped_job(workflow, ExBackend.Map.get_by_key_or_atom(step, :id), @action_name)
+      {_, []} -> Jobs.create_skipped_job(workflow, ExBackend.Map.get_by_key_or_atom(step, :id), @action_name)
       {_, urls} -> start_download_via_http(urls, workflow)
     end
   end

@@ -11,7 +11,7 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
     case ExBackend.Map.get_by_key_or_atom(step, :inputs) do
       nil ->
         case get_first_source_file(workflow.jobs) do
-          nil -> Jobs.create_skipped_job(workflow, @action_name)
+          nil -> Jobs.create_skipped_job(workflow, ExBackend.Map.get_by_key_or_atom(step, :id), @action_name)
           path -> start_extracting_audio(path, workflow, step)
         end
 
@@ -59,6 +59,7 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
 
     job_params = %{
       name: @action_name,
+      step_id: ExBackend.Map.get_by_key_or_atom(step, :id),
       workflow_id: workflow.id,
       params: %{
         requirements: requirements,

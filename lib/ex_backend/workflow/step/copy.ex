@@ -8,13 +8,14 @@ defmodule ExBackend.Workflow.Step.Copy do
   def launch(workflow, step) do
     case get_source_files(workflow.jobs) do
       [] ->
-        Jobs.create_skipped_job(workflow, @action_name)
+        Jobs.create_skipped_job(workflow, ExBackend.Map.get_by_key_or_atom(step, :id), @action_name)
 
       paths ->
         requirements = Requirements.add_required_paths(paths)
 
         job_params = %{
           name: @action_name,
+          step_id: ExBackend.Map.get_by_key_or_atom(step, :id),
           workflow_id: workflow.id,
           params: %{
             action: "copy",
@@ -40,17 +41,6 @@ defmodule ExBackend.Workflow.Step.Copy do
 
   defp get_source_files(jobs) do
     ExBackend.Workflow.Step.UploadFile.get_jobs_destination_paths(jobs)
-  end
-
-  defp get_paths_directory(_paths, directories \\ [])
-  defp get_paths_directory([], directories), do: directories
-
-  defp get_paths_directory(paths, directories) do
-    dir =
-      List.first(paths)
-      |> Path.dirname()
-
-    List.insert_at(directories, -1, dir)
   end
 
   @doc """
