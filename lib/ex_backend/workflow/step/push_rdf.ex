@@ -32,7 +32,7 @@ defmodule ExBackend.Workflow.Step.PushRdf do
       end
     rescue
       error ->
-        Logger.error("publish rdf raised: #{error}")
+        Logger.error("publish rdf raised: #{inspect error}")
         Jobs.Status.set_job_status(job.id, "error", %{message: "unable to publish RDF"})
         {:error, "unable to publish RDF"}
     end

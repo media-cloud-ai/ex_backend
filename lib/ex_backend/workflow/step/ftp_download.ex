@@ -13,15 +13,17 @@ defmodule ExBackend.Workflow.Step.FtpDownload do
       |> Enum.sort()
       |> List.first()
 
+    step_id = ExBackend.Map.get_by_key_or_atom(step, :id)
+
     case ftp_paths do
-      [] -> Jobs.create_skipped_job(workflow, ExBackend.Map.get_by_key_or_atom(step, :id), @action_name)
-      _ -> start_download_via_ftp(ftp_paths, first_file, workflow)
+      [] -> Jobs.create_skipped_job(workflow, step_id, @action_name)
+      _ -> start_download_via_ftp(ftp_paths, step_id, first_file, workflow)
     end
   end
 
-  defp start_download_via_ftp([], _first_file, _workflow), do: {:ok, "started"}
+  defp start_download_via_ftp([], _step_id, _first_file, _workflow), do: {:ok, "started"}
 
-  defp start_download_via_ftp([file | files], first_file, workflow) do
+  defp start_download_via_ftp([file | files], step_id, first_file, workflow) do
     hostname =
       System.get_env("AKAMAI_HOSTNAME") || Application.get_env(:ex_backend, :akamai_hostname)
 
@@ -50,6 +52,7 @@ defmodule ExBackend.Workflow.Step.FtpDownload do
 
     job_params = %{
       name: @action_name,
+      step_id: step_id,
       workflow_id: workflow.id,
       params: %{
         source: %{
@@ -74,7 +77,7 @@ defmodule ExBackend.Workflow.Step.FtpDownload do
 
     JobFtpEmitter.publish_json(params)
 
-    start_download_via_ftp(files, first_file, workflow)
+    start_download_via_ftp(files, step_id, first_file, workflow)
   end
 
   @doc """

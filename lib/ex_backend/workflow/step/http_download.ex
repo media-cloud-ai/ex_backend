@@ -15,16 +15,18 @@ defmodule ExBackend.Workflow.Step.HttpDownload do
       |> List.first()
       |> Map.get(:state)
 
+    step_id = ExBackend.Map.get_by_key_or_atom(step, :id)
+
     case {first_job_state, ExVideoFactory.get_http_url_for_ttml(workflow.reference)} do
-      {"skipped", _} -> Jobs.create_skipped_job(workflow, ExBackend.Map.get_by_key_or_atom(step, :id), @action_name)
-      {_, []} -> Jobs.create_skipped_job(workflow, ExBackend.Map.get_by_key_or_atom(step, :id), @action_name)
-      {_, urls} -> start_download_via_http(urls, workflow)
+      {"skipped", _} -> Jobs.create_skipped_job(workflow, step_id, @action_name)
+      {_, []} -> Jobs.create_skipped_job(workflow, step_id, @action_name)
+      {_, urls} -> start_download_via_http(urls, step_id, workflow)
     end
   end
 
-  defp start_download_via_http([], _workflow), do: {:ok, "started"}
+  defp start_download_via_http([], step_id, _workflow), do: {:ok, "started"}
 
-  defp start_download_via_http([url | urls], workflow) do
+  defp start_download_via_http([url | urls], step_id, workflow) do
     work_dir =
       System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
 
@@ -38,6 +40,7 @@ defmodule ExBackend.Workflow.Step.HttpDownload do
 
     job_params = %{
       name: @action_name,
+      step_id: step_id,
       workflow_id: workflow.id,
       params: %{
         requirements: requirements,
@@ -58,7 +61,7 @@ defmodule ExBackend.Workflow.Step.HttpDownload do
     }
 
     JobHttpEmitter.publish_json(params)
-    start_download_via_http(urls, workflow)
+    start_download_via_http(urls, step_id, workflow)
   end
 
   @doc """

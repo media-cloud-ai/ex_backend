@@ -8,9 +8,11 @@ defmodule ExBackend.Workflow.Step.GenerateDash do
   @action_name "generate_dash"
 
   def launch(workflow, step) do
-    case build_step_parameters(workflow, step) do
+    step_id = ExBackend.Map.get_by_key_or_atom(step, :id)
+
+    case build_step_parameters(workflow, step, step_id) do
       {:skipped, nil} ->
-        Jobs.create_skipped_job(workflow, ExBackend.Map.get_by_key_or_atom(step, :id), @action_name)
+        Jobs.create_skipped_job(workflow, step_id, @action_name)
 
       {:ok, job_params} ->
         {:ok, job} = Jobs.create_job(job_params)
@@ -33,7 +35,7 @@ defmodule ExBackend.Workflow.Step.GenerateDash do
     end
   end
 
-  def build_step_parameters(workflow, step) do
+  def build_step_parameters(workflow, step, step_id) do
     source_file_paths =
       get_source_files(workflow.jobs)
       |> Enum.sort()
@@ -72,6 +74,7 @@ defmodule ExBackend.Workflow.Step.GenerateDash do
           :ok,
           %{
             name: @action_name,
+            step_id: step_id,
             workflow_id: workflow.id,
             params: %{
               kind: @action_name,

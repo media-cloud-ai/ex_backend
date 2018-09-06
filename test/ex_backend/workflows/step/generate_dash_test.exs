@@ -15,10 +15,11 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
     }
 
     step = %{
+      "id" => 0,
       "parameters" => []
     }
 
-    result = GenerateDash.build_step_parameters(workflow, step)
+    result = GenerateDash.build_step_parameters(workflow, step, 0)
     assert result == {:skipped, nil}
   end
 
@@ -40,6 +41,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
     }
 
     step = %{
+      "id" => 0,
       "parameters" => [
         %{
           "id" => "segment_duration",
@@ -52,7 +54,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
       ]
     }
 
-    result = GenerateDash.build_step_parameters(workflow, step)
+    result = GenerateDash.build_step_parameters(workflow, step, 0)
 
     assert result == {
              :ok,
@@ -79,7 +81,8 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
                    ]
                  }
                },
-               workflow_id: 666
+               workflow_id: 666,
+               step_id: 0
              }
            }
   end
@@ -110,6 +113,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
     }
 
     step = %{
+      "id" => 0,
       "parameters" => [
         %{
           "id" => "segment_duration",
@@ -122,7 +126,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
       ]
     }
 
-    result = GenerateDash.build_step_parameters(workflow, step)
+    result = GenerateDash.build_step_parameters(workflow, step, 0)
 
     assert result == {
              :ok,
@@ -151,7 +155,8 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
                    ]
                  }
                },
-               workflow_id: 666
+               workflow_id: 666,
+               step_id: 0
              }
            }
   end
@@ -190,6 +195,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
     }
 
     step = %{
+      "id" => 0,
       "parameters" => [
         %{
           "id" => "segment_duration",
@@ -202,7 +208,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
       ]
     }
 
-    result = GenerateDash.build_step_parameters(workflow, step)
+    result = GenerateDash.build_step_parameters(workflow, step, 0)
 
     assert result == {
              :ok,
@@ -233,7 +239,8 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
                    ]
                  }
                },
-               workflow_id: 666
+               workflow_id: 666,
+               step_id: 0
              }
            }
   end
@@ -272,6 +279,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
     }
 
     step = %{
+      "id" => 0,
       "parameters" => [
         %{
           "id" => "segment_duration",
@@ -284,7 +292,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
       ]
     }
 
-    result = GenerateDash.build_step_parameters(workflow, step)
+    result = GenerateDash.build_step_parameters(workflow, step, 0)
 
     assert result == {
              :ok,
@@ -315,7 +323,8 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
                    ]
                  }
                },
-               workflow_id: 666
+               workflow_id: 666,
+               step_id: 0
              }
            }
   end
@@ -362,6 +371,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
     }
 
     step = %{
+      "id" => 0,
       "parameters" => [
         %{
           "id" => "segment_duration",
@@ -374,7 +384,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
       ]
     }
 
-    result = GenerateDash.build_step_parameters(workflow, step)
+    result = GenerateDash.build_step_parameters(workflow, step, 0)
 
     assert result == {
              :ok,
@@ -407,7 +417,8 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
                    ]
                  }
                },
-               workflow_id: 666
+               workflow_id: 666,
+               step_id: 0
              }
            }
   end

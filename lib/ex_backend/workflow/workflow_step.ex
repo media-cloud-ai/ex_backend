@@ -12,7 +12,7 @@ defmodule ExBackend.WorkflowStep do
     workflow = ExBackend.Repo.preload(workflow, :jobs, force: true)
 
     step_index =
-      Enum.map(workflow.jobs, fn job -> (job.id |> Integer.to_string) <> job.name end)
+      Enum.map(workflow.jobs, fn job -> (job.step_id |> Integer.to_string) <> job.name end)
       |> Enum.uniq()
       |> length
 
