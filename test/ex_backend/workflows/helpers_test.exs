@@ -38,6 +38,8 @@ defmodule ExBackend.HelpersTest do
     for job <- all_jobs do
       ExBackend.Jobs.Status.set_job_status(job.id, "completed")
     end
+
+    all_jobs
   end
 
   def set_gpac_outputs(workflow_id, type, paths) do

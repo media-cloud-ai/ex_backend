@@ -35,7 +35,8 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
   defp start_extracting_audio(path, workflow, step) do
     work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
 
-    filename = Path.basename(path, "-standard1.mp4")
+    filename = Path.basename(path)
+    # Path.basename(path, "-standard1.mp4")
 
     output_extension =
       case ExBackend.Map.get_by_key_or_atom(step, :output_extension) do
@@ -46,8 +47,7 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
     dst_path =
       work_dir <>
         "/" <>
-        workflow.reference <>
-        "_" <> Integer.to_string(workflow.id) <> "/" <> filename <> output_extension
+        Integer.to_string(workflow.id) <> "/" <> filename <> output_extension
 
     requirements = Requirements.add_required_paths(path)
 
