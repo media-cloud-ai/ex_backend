@@ -19,39 +19,26 @@ defmodule ExBackend.EbuIngestTest do
 
       {:ok, workflow} = Workflows.create_workflow(workflow_params)
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+      ExBackend.HelpersTest.check(workflow.id, 1)
+      ExBackend.HelpersTest.check(workflow.id, "upload_file", 1)
+      ExBackend.HelpersTest.complete_jobs(workflow.id, "upload_file")
 
-      upload_job =
-        ExBackend.Jobs.list_jobs(%{
-          "job_type" => "upload_file",
-          "workflow_id" => workflow.id |> Integer.to_string()
-        })
-        |> Map.get(:data)
-        |> List.first()
-
-      ExBackend.Jobs.Status.set_job_status(upload_job.id, "completed")
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+      ExBackend.HelpersTest.check(workflow.id, 2)
+      ExBackend.HelpersTest.check(workflow.id, "copy", 1)
+      ExBackend.HelpersTest.complete_jobs(workflow.id, "copy")
 
-      job =
-        ExBackend.Jobs.list_jobs(%{
-          "job_type" => "copy",
-          "workflow_id" => workflow.id |> Integer.to_string()
-        })
-        |> Map.get(:data)
-        |> List.first()
-
-      ExBackend.Jobs.Status.set_job_status(job.id, "completed")
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+      ExBackend.HelpersTest.check(workflow.id, 3)
+      ExBackend.HelpersTest.check(workflow.id, "audio_extraction", 1)
+      ExBackend.HelpersTest.complete_jobs(workflow.id, "audio_extraction")
 
-      job =
-        ExBackend.Jobs.list_jobs(%{
-          "job_type" => "audio_extraction",
-          "workflow_id" => workflow.id |> Integer.to_string()
-        })
-        |> Map.get(:data)
-        |> List.first()
-
-      ExBackend.Jobs.Status.set_job_status(job.id, "completed")
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+      ExBackend.HelpersTest.check(workflow.id, 4)
+      ExBackend.HelpersTest.check(workflow.id, "audio_extraction", 2)
+      ExBackend.HelpersTest.complete_jobs(workflow.id, "audio_extraction")
+
+      {:ok, "completed"} = WorkflowStep.start_next_step(workflow)
     end
   end
 end
