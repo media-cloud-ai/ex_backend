@@ -41,6 +41,6 @@ before_script:
   - echo -n 0.0.0 > VERSION
 
 scripts:
-  - if [[ $(elixir --version) = *"1.6"* ]]; then mix format --check-formatted; fi
+  - if [[ $(elixir --version) = *"1.7"* ]]; then mix format --check-formatted; fi
   - mix test
   - cd assets && ../yarn && ../yarn run lint && ../yarn run release
