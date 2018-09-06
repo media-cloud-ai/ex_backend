@@ -11,21 +11,29 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
     case ExBackend.Map.get_by_key_or_atom(step, :inputs) do
       nil ->
         case get_first_source_file(workflow.jobs) do
-          nil -> Jobs.create_skipped_job(workflow, ExBackend.Map.get_by_key_or_atom(step, :id), @action_name)
-          path -> start_extracting_audio(path, workflow, step)
+          nil ->
+            Jobs.create_skipped_job(
+              workflow,
+              ExBackend.Map.get_by_key_or_atom(step, :id),
+              @action_name
+            )
+
+          path ->
+            start_extracting_audio(path, workflow, step)
         end
 
       inputs ->
         for input <- inputs do
-          {:ok, "started"} = start_extracting_audio(ExBackend.Map.get_by_key_or_atom(input, :path), workflow, step)
+          {:ok, "started"} =
+            start_extracting_audio(ExBackend.Map.get_by_key_or_atom(input, :path), workflow, step)
         end
+
         {:ok, "started"}
     end
   end
 
   defp start_extracting_audio(path, workflow, step) do
-    work_dir =
-      System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
+    work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
 
     filename = Path.basename(path, "-standard1.mp4")
 

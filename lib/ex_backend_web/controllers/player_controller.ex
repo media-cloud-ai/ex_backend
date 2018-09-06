@@ -3,14 +3,19 @@ defmodule ExBackendWeb.PlayerController do
 
   action_fallback(ExBackendWeb.FallbackController)
 
-  def manifest(conn, %{"content"=> content}) do
-    root = System.get_env("ROOT_DASH_CONTENT") || Application.get_env(:ex_backend, :root_dash_content)
+  def manifest(conn, %{"content" => content}) do
+    root =
+      System.get_env("ROOT_DASH_CONTENT") || Application.get_env(:ex_backend, :root_dash_content)
+
     send_file(conn, 200, root <> content <> "/manifest.mpd")
   end
 
-  def index(conn, %{"content"=> content, "filename" => filename}) do
-    if String.ends_with?(filename, ".ttml") || String.ends_with?(filename, ".vtt")  do
-      root = System.get_env("ROOT_DASH_CONTENT") || Application.get_env(:ex_backend, :root_dash_content)
+  def index(conn, %{"content" => content, "filename" => filename}) do
+    if String.ends_with?(filename, ".ttml") || String.ends_with?(filename, ".vtt") do
+      root =
+        System.get_env("ROOT_DASH_CONTENT") ||
+          Application.get_env(:ex_backend, :root_dash_content)
+
       send_file(conn, 200, root <> content <> "/" <> filename)
     else
       {"range", range} =
@@ -20,16 +25,19 @@ defmodule ExBackendWeb.PlayerController do
       [start_pos, end_pos] =
         range
         |> String.split("=")
-        |> List.last
+        |> List.last()
         |> String.split("-")
 
-      root = System.get_env("ROOT_DASH_CONTENT") || Application.get_env(:ex_backend, :root_dash_content)
+      root =
+        System.get_env("ROOT_DASH_CONTENT") ||
+          Application.get_env(:ex_backend, :root_dash_content)
+
       path = root <> content <> "/" <> filename
       stat = File.stat!(path)
 
       {:ok, file} = :file.open(path, [:read, :binary])
-      start = start_pos |> String.to_integer
-      length = (end_pos |> String.to_integer) - start + 1
+      start = start_pos |> String.to_integer()
+      length = (end_pos |> String.to_integer()) - start + 1
       # IO.puts "get from #{start} to #{end_pos}: #{length} bytes"
 
       {:ok, data} = :file.pread(file, start, length)

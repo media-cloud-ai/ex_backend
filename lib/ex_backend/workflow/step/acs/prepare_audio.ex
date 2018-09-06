@@ -14,8 +14,15 @@ defmodule ExBackend.Workflow.Step.Acs.PrepareAudio do
       subtitle_languages = get_subtitles_languages(workflow.reference)
 
       case get_source_files(workflow.jobs, subtitle_languages) do
-        [] -> Jobs.create_skipped_job(workflow, ExBackend.Map.get_by_key_or_atom(step, :id), @action_name)
-        paths -> start_processing_audio(paths, workflow)
+        [] ->
+          Jobs.create_skipped_job(
+            workflow,
+            ExBackend.Map.get_by_key_or_atom(step, :id),
+            @action_name
+          )
+
+        paths ->
+          start_processing_audio(paths, workflow)
       end
     end
   end

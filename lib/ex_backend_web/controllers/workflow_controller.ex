@@ -47,7 +47,11 @@ defmodule ExBackendWeb.WorkflowController do
   end
 
   def get(conn, %{"identifier" => "ebu_ingest"}) do
-    steps = ExBackend.Workflow.Definition.EbuIngest.get_definition("#agent_identifier", "#input_filename")
+    steps =
+      ExBackend.Workflow.Definition.EbuIngest.get_definition(
+        "#agent_identifier",
+        "#input_filename"
+      )
 
     conn
     |> json(steps)

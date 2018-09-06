@@ -41,6 +41,7 @@ defmodule ExBackendWeb.UserControllerTest do
              "rights" => ["administrator"],
              "inserted_at" => inserted_at
            } = json_response(conn, 200)["data"]
+
     assert user_id == user.id
   end
 

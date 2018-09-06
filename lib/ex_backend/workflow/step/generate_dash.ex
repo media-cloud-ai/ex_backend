@@ -52,8 +52,7 @@ defmodule ExBackend.Workflow.Step.GenerateDash do
           source_track_paths
           |> Enum.map(fn path -> String.replace(path, ~r/\.mp4#.*/, ".mp4") end)
 
-        work_dir =
-          System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
+        work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
 
         options = %{
           "-out":

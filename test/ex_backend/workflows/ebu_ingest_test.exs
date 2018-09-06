@@ -21,24 +21,34 @@ defmodule ExBackend.EbuIngestTest do
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)
 
       upload_job =
-        ExBackend.Jobs.list_jobs(%{"job_type" => "upload_file", "workflow_id" => workflow.id |> Integer.to_string()})
+        ExBackend.Jobs.list_jobs(%{
+          "job_type" => "upload_file",
+          "workflow_id" => workflow.id |> Integer.to_string()
+        })
         |> Map.get(:data)
-        |> List.first
+        |> List.first()
 
       ExBackend.Jobs.Status.set_job_status(upload_job.id, "completed")
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)
 
       job =
-        ExBackend.Jobs.list_jobs(%{"job_type" => "copy", "workflow_id" => workflow.id |> Integer.to_string()})
+        ExBackend.Jobs.list_jobs(%{
+          "job_type" => "copy",
+          "workflow_id" => workflow.id |> Integer.to_string()
+        })
         |> Map.get(:data)
-        |> List.first
+        |> List.first()
 
       ExBackend.Jobs.Status.set_job_status(job.id, "completed")
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+
       job =
-        ExBackend.Jobs.list_jobs(%{"job_type" => "audio_extraction", "workflow_id" => workflow.id |> Integer.to_string()})
+        ExBackend.Jobs.list_jobs(%{
+          "job_type" => "audio_extraction",
+          "workflow_id" => workflow.id |> Integer.to_string()
+        })
         |> Map.get(:data)
-        |> List.first
+        |> List.first()
 
       ExBackend.Jobs.Status.set_job_status(job.id, "completed")
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)

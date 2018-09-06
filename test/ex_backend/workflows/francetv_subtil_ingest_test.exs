@@ -8,7 +8,10 @@ defmodule ExBackend.FrancetvSubtilIngestTest do
 
   def check_count_all_job(workflow_id, total) do
     all_jobs =
-      ExBackend.Jobs.list_jobs(%{"workflow_id" => workflow_id |> Integer.to_string(), "size" => 50})
+      ExBackend.Jobs.list_jobs(%{
+        "workflow_id" => workflow_id |> Integer.to_string(),
+        "size" => 50
+      })
       |> Map.get(:data)
 
     assert length(all_jobs) == total
@@ -16,7 +19,11 @@ defmodule ExBackend.FrancetvSubtilIngestTest do
 
   def check_count_all_job(workflow_id, type, total) do
     all_jobs =
-      ExBackend.Jobs.list_jobs(%{"job_type" => type, "workflow_id" => workflow_id |> Integer.to_string(), "size" => 50})
+      ExBackend.Jobs.list_jobs(%{
+        "job_type" => type,
+        "workflow_id" => workflow_id |> Integer.to_string(),
+        "size" => 50
+      })
       |> Map.get(:data)
 
     assert length(all_jobs) == total
@@ -24,7 +31,11 @@ defmodule ExBackend.FrancetvSubtilIngestTest do
 
   def complete_jobs(workflow_id, type) do
     all_jobs =
-      ExBackend.Jobs.list_jobs(%{"job_type" => type, "workflow_id" => workflow_id |> Integer.to_string(), "size" => 50})
+      ExBackend.Jobs.list_jobs(%{
+        "job_type" => type,
+        "workflow_id" => workflow_id |> Integer.to_string(),
+        "size" => 50
+      })
       |> Map.get(:data)
 
     for job <- all_jobs do
@@ -34,7 +45,11 @@ defmodule ExBackend.FrancetvSubtilIngestTest do
 
   def set_gpac_outputs(workflow_id, type, paths) do
     all_jobs =
-      ExBackend.Jobs.list_jobs(%{"job_type" => type, "workflow_id" => workflow_id |> Integer.to_string(), "size" => 50})
+      ExBackend.Jobs.list_jobs(%{
+        "job_type" => type,
+        "workflow_id" => workflow_id |> Integer.to_string(),
+        "size" => 50
+      })
       |> Map.get(:data)
 
     for job <- all_jobs do
@@ -61,7 +76,10 @@ defmodule ExBackend.FrancetvSubtilIngestTest do
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)
 
       download_jobs =
-        ExBackend.Jobs.list_jobs(%{"job_type" => "download_ftp", "workflow_id" => workflow.id |> Integer.to_string()})
+        ExBackend.Jobs.list_jobs(%{
+          "job_type" => "download_ftp",
+          "workflow_id" => workflow.id |> Integer.to_string()
+        })
         |> Map.get(:data)
 
       assert length(download_jobs) == 1
@@ -112,6 +130,7 @@ defmodule ExBackend.FrancetvSubtilIngestTest do
       check_count_all_job(workflow.id, 13)
       check_count_all_job(workflow.id, "generate_dash", 1)
       complete_jobs(workflow.id, "generate_dash")
+
       set_gpac_outputs(workflow.id, "generate_dash", [
         "/tmp/manifest.mpd",
         "/tmp/video_track.mp4",

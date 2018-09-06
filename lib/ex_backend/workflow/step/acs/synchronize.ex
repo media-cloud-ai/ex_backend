@@ -11,8 +11,15 @@ defmodule ExBackend.Workflow.Step.Acs.Synchronize do
     source_files = get_source_files(workflow.jobs)
 
     case map_size(source_files) do
-      0 -> Jobs.create_skipped_job(workflow, ExBackend.Map.get_by_key_or_atom(step, :id), @action_name)
-      _ -> start_processing_synchro(source_files, workflow, step)
+      0 ->
+        Jobs.create_skipped_job(
+          workflow,
+          ExBackend.Map.get_by_key_or_atom(step, :id),
+          @action_name
+        )
+
+      _ ->
+        start_processing_synchro(source_files, workflow, step)
     end
   end
 

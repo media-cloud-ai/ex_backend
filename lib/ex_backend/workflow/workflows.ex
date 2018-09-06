@@ -148,6 +148,7 @@ defmodule ExBackend.Workflows do
   defp get_step_status([step | steps], workflow_jobs, result) do
     name = Map.get(step, "name")
     step_id = Map.get(step, "id")
+
     jobs =
       workflow_jobs
       |> Enum.filter(fn job -> job.name == name && job.step_id == step_id end)

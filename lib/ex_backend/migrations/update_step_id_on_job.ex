@@ -13,7 +13,7 @@ defmodule ExBackend.Migration.UpdateStepIdOnJob do
         |> Map.get(:flow)
         |> Map.get("steps")
         |> Enum.filter(fn step -> Map.get(step, "name") == job.name end)
-        |> List.first
+        |> List.first()
 
       if step != nil do
         ExBackend.Jobs.update_job(job, %{step_id: Map.get(step, "id")})

@@ -12,7 +12,7 @@ defmodule ExBackend.WorkflowStep do
     workflow = ExBackend.Repo.preload(workflow, :jobs, force: true)
 
     step_index =
-      Enum.map(workflow.jobs, fn job -> (job.step_id |> Integer.to_string) <> job.name end)
+      Enum.map(workflow.jobs, fn job -> (job.step_id |> Integer.to_string()) <> job.name end)
       |> Enum.uniq()
       |> length
 
@@ -23,6 +23,7 @@ defmodule ExBackend.WorkflowStep do
         set_artifacts(workflow)
         Logger.warn("#{__MODULE__}: workflow #{workflow_id} is completed")
         {:ok, "completed"}
+
       step ->
         Logger.warn(
           "#{__MODULE__}: start to process step #{step["name"]} (index #{step_index}) for workflow #{
@@ -31,10 +32,9 @@ defmodule ExBackend.WorkflowStep do
         )
 
         step_name = ExBackend.Map.get_by_key_or_atom(step, :name)
-        status =
-          launch_step(workflow, step_name, step, step_index)
+        status = launch_step(workflow, step_name, step, step_index)
 
-        Logger.info "#{step_name}: #{inspect status}"
+        Logger.info("#{step_name}: #{inspect(status)}")
         topic = "update_workflow_" <> Integer.to_string(workflow_id)
 
         ExBackendWeb.Endpoint.broadcast!("notifications:all", topic, %{

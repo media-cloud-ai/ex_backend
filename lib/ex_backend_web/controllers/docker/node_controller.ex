@@ -40,6 +40,7 @@ defmodule ExBackendWeb.Docker.NodeController do
     label = Map.get(config, "label", "")
     hostname = Map.get(config, "hostname")
     port = Map.get(config, "port", 2376)
+
     cacertfile =
       case Map.get(config, "cacertfile") do
         nil -> nil

@@ -33,8 +33,7 @@ defmodule ExBackend.Workflow.Step.FtpDownload do
     password =
       System.get_env("AKAMAI_PASSWORD") || Application.get_env(:ex_backend, :akamai_password)
 
-    work_dir =
-      System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
+    work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
 
     filename = Path.basename(file)
 

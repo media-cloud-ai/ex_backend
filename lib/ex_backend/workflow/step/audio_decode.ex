@@ -9,16 +9,22 @@ defmodule ExBackend.Workflow.Step.AudioDecode do
 
   def launch(workflow, step) do
     case get_source_files(workflow.jobs) do
-      [] -> Jobs.create_skipped_job(workflow, ExBackend.Map.get_by_key_or_atom(step, :id), @action_name)
-      paths -> start_processing_audio(paths, workflow)
+      [] ->
+        Jobs.create_skipped_job(
+          workflow,
+          ExBackend.Map.get_by_key_or_atom(step, :id),
+          @action_name
+        )
+
+      paths ->
+        start_processing_audio(paths, workflow)
     end
   end
 
   defp start_processing_audio([], _workflow), do: {:ok, "started"}
 
   defp start_processing_audio([path | paths], workflow) do
-    work_dir =
-      System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
+    work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
 
     filename = Path.basename(path, ".mp4")
 

@@ -4,7 +4,7 @@ defmodule ExBackendWeb.FileTransferChannel do
   alias ExBackend.Jobs
 
   intercept([
-    "start",
+    "start"
   ])
 
   def join("transfer:upload", _message, socket) do
@@ -15,12 +15,10 @@ defmodule ExBackendWeb.FileTransferChannel do
     {:error, %{reason: "unknown"}}
   end
 
-
   def handle_in("upload_data", _payload, socket) do
     Logger.info("upload_packet")
     {:noreply, socket}
   end
-
 
   def handle_in("upload_completed", %{"job_id" => job_id}, socket) do
     Logger.warn("upload completed for job id: #{job_id}")
@@ -30,12 +28,10 @@ defmodule ExBackendWeb.FileTransferChannel do
     {:noreply, socket}
   end
 
-
   def handle_in("upload_error", payload, socket) do
-    Logger.info("upload error #{inspect payload}")
+    Logger.info("upload error #{inspect(payload)}")
     {:noreply, socket}
   end
-
 
   def handle_out("start", payload, %{assigns: %{identifier: identifier}} = socket) do
     Logger.info(">- OUT #{__MODULE__} start message #{inspect(payload)}")

@@ -8,7 +8,11 @@ defmodule ExBackend.Workflow.Step.Copy do
   def launch(workflow, step) do
     case get_source_files(workflow.jobs) do
       [] ->
-        Jobs.create_skipped_job(workflow, ExBackend.Map.get_by_key_or_atom(step, :id), @action_name)
+        Jobs.create_skipped_job(
+          workflow,
+          ExBackend.Map.get_by_key_or_atom(step, :id),
+          @action_name
+        )
 
       paths ->
         requirements = Requirements.add_required_paths(paths)

@@ -98,13 +98,13 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilIngest do
               id: "segment_duration",
               type: "number",
               default: 2000,
-              value: 2000,
+              value: 2000
             },
             %{
               id: "fragment_duration",
               type: "number",
               default: 2000,
-              value: 2000,
+              value: 2000
             }
           ]
         },
