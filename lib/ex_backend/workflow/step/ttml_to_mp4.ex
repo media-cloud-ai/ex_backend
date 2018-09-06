@@ -6,23 +6,25 @@ defmodule ExBackend.Workflow.Step.TtmlToMp4 do
   @action_name "ttml_to_mp4"
 
   def launch(workflow, step) do
+    step_id = ExBackend.Map.get_by_key_or_atom(step, :id)
     case get_ttml_files(workflow.jobs, Map.get(workflow.flow, "steps", [])) do
       [] ->
-        Jobs.create_skipped_job(workflow, ExBackend.Map.get_by_key_or_atom(step, :id), @action_name)
+        Jobs.create_skipped_job(workflow, step_id, @action_name)
 
       paths ->
-        start_process(paths, workflow)
+        start_process(paths, workflow, step_id)
     end
   end
 
-  defp start_process([], _workflow), do: {:ok, "started"}
+  defp start_process([], _workflow, _step_id), do: {:ok, "started"}
 
-  defp start_process([path | paths], workflow) do
+  defp start_process([path | paths], workflow, step_id) do
     mp4_path = String.replace(path, ".ttml", ".mp4")
     requirements = Requirements.add_required_paths(path)
 
     job_params = %{
       name: @action_name,
+      step_id: step_id,
       workflow_id: workflow.id,
       params: %{
         kind: @action_name,
@@ -45,7 +47,7 @@ defmodule ExBackend.Workflow.Step.TtmlToMp4 do
 
     JobGpacEmitter.publish_json(params)
 
-    start_process(paths, workflow)
+    start_process(paths, workflow, step_id)
   end
 
   defp get_ttml_files(jobs, steps) do

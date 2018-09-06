@@ -23,6 +23,7 @@ defmodule ExBackend.Workflow.Step.GenerateDash do
         }
 
         JobGpacEmitter.publish_json(params)
+        {:ok, "started"}
 
       something_else ->
         Logger.error(

@@ -65,7 +65,7 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
         requirements: requirements,
         inputs: [
           %{
-            path: path |> List.first,
+            path: path,
             options: %{}
           }
         ],

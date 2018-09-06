@@ -30,9 +30,11 @@ defmodule ExBackend.WorkflowStep do
           }"
         )
 
+        step_name = ExBackend.Map.get_by_key_or_atom(step, :name)
         status =
-          launch_step(workflow, ExBackend.Map.get_by_key_or_atom(step, :name), step, step_index)
+          launch_step(workflow, step_name, step, step_index)
 
+        Logger.info "#{step_name}: #{inspect status}"
         topic = "update_workflow_" <> Integer.to_string(workflow_id)
 
         ExBackendWeb.Endpoint.broadcast!("notifications:all", topic, %{

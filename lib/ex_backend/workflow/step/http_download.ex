@@ -24,7 +24,7 @@ defmodule ExBackend.Workflow.Step.HttpDownload do
     end
   end
 
-  defp start_download_via_http([], step_id, _workflow), do: {:ok, "started"}
+  defp start_download_via_http([], _step_id, _workflow), do: {:ok, "started"}
 
   defp start_download_via_http([url | urls], step_id, workflow) do
     work_dir =

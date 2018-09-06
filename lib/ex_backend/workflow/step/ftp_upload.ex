@@ -10,18 +10,18 @@ defmodule ExBackend.Workflow.Step.FtpUpload do
       Timex.now()
       |> Timex.format!("%Y_%m_%d__%H_%M_%S", :strftime)
 
+    step_id = ExBackend.Map.get_by_key_or_atom(step, :id)
     case ExBackend.Workflow.Step.GenerateDash.get_jobs_destination_paths(workflow.jobs) do
       [] ->
-        Jobs.create_skipped_job(workflow, ExBackend.Map.get_by_key_or_atom(step, :id), @action_name)
-
+        Jobs.create_skipped_job(workflow, step_id, @action_name)
       paths ->
-        start_upload(paths, current_date, workflow)
+        start_upload(paths, current_date, workflow, step_id)
     end
   end
 
-  defp start_upload([], _current_date, _workflow), do: {:ok, "started"}
+  defp start_upload([], _current_date, _workflow, _step_id), do: {:ok, "started"}
 
-  defp start_upload([file | files], current_date, workflow) do
+  defp start_upload([file | files], current_date, workflow, step_id) do
     hostname =
       System.get_env("AKAMAI_VIDEO_HOSTNAME") ||
         Application.get_env(:ex_backend, :akamai_video_hostname)
@@ -42,6 +42,7 @@ defmodule ExBackend.Workflow.Step.FtpUpload do
 
     job_params = %{
       name: @action_name,
+      step_id: step_id,
       workflow_id: workflow.id,
       params: %{
         requirements: requirements,
@@ -68,7 +69,7 @@ defmodule ExBackend.Workflow.Step.FtpUpload do
 
     JobFtpEmitter.publish_json(params)
 
-    start_upload(files, current_date, workflow)
+    start_upload(files, current_date, workflow, step_id)
   end
 
   @doc """

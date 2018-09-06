@@ -6,15 +6,16 @@ defmodule ExBackend.Workflow.Step.SetLanguage do
   @action_name "set_language"
 
   def launch(workflow, step) do
+    step_id = ExBackend.Map.get_by_key_or_atom(step, :id)
     case get_source_files(workflow.jobs) do
-      [] -> Jobs.create_skipped_job(workflow, ExBackend.Map.get_by_key_or_atom(step, :id), @action_name)
-      paths -> start_setting_languages(paths, workflow)
+      [] -> Jobs.create_skipped_job(workflow, step_id, @action_name)
+      paths -> start_setting_languages(paths, workflow, step_id)
     end
   end
 
-  defp start_setting_languages([], _workflow), do: {:ok, "started"}
+  defp start_setting_languages([], _workflow, _step_id), do: {:ok, "started"}
 
-  defp start_setting_languages([path | paths], workflow) do
+  defp start_setting_languages([path | paths], workflow, step_id) do
     work_dir =
       System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
 
@@ -35,6 +36,7 @@ defmodule ExBackend.Workflow.Step.SetLanguage do
 
     job_params = %{
       name: @action_name,
+      step_id: step_id,
       workflow_id: workflow.id,
       params: %{
         kind: @action_name,
@@ -55,7 +57,7 @@ defmodule ExBackend.Workflow.Step.SetLanguage do
 
     JobGpacEmitter.publish_json(params)
 
-    start_setting_languages(paths, workflow)
+    start_setting_languages(paths, workflow, step_id)
   end
 
   defp get_file_language(path, workflow) do
