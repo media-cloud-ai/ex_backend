@@ -8,10 +8,12 @@ defmodule ExBackend.Workflow.Step.SpeechToText do
   @action_name "speech_to_text"
 
   def launch(workflow, step) do
+    step_id = ExBackend.Map.get_by_key_or_atom(step, :id)
     case ExBackend.Map.get_by_key_or_atom(step, :inputs) do
       nil ->
         case get_first_source_file(workflow.jobs, step) do
-          nil -> Jobs.create_skipped_job(workflow, ExBackend.Map.get_by_key_or_atom(step, :id), @action_name)
+          nil -> Jobs.create_skipped_job(workflow, step_id, @action_name)
+          [] -> Jobs.create_skipped_job(workflow, step_id, @action_name)
           paths ->
             paths
             |> Enum.map(fn path -> start_speech_to_text(path, workflow, step) end)
@@ -74,8 +76,12 @@ defmodule ExBackend.Workflow.Step.SpeechToText do
   end
 
   defp get_first_source_file(jobs, step) do
+    parent_ids = ExBackend.Map.get_by_key_or_atom(step, :parent_ids, [])
+
     jobs
-    |> Enum.filter(fn job -> job.step_id in Map.get(step, "parent_ids") end)
+    |> Enum.filter(fn job ->
+      job.step_id in parent_ids
+    end)
     |> Enum.map(fn job ->
       job
       |> Map.get(:params)

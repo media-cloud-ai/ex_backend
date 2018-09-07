@@ -99,6 +99,13 @@ defmodule ExBackend.EbuIngestTest do
                 "value" => 16000
               },
               %{
+                "default" => 1,
+                "enable" => false,
+                "id" => "audio_channels",
+                "type" => "integer",
+                "value" => 1
+              },
+              %{
                 "default" => true,
                 "enable" => false,
                 "id" => "disable_video",
@@ -171,6 +178,11 @@ defmodule ExBackend.EbuIngestTest do
         }
       } == params
 
+      {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+      ExBackend.HelpersTest.check(workflow.id, 5)
+      ExBackend.HelpersTest.check(workflow.id, "speech_to_text", 1)
+      
+      ExBackend.HelpersTest.complete_jobs(workflow.id, "speech_to_text")
       {:ok, "completed"} = WorkflowStep.start_next_step(workflow)
     end
   end
