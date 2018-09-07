@@ -30,6 +30,7 @@ defmodule ExBackend.EbuIngestTest do
       uploaded_file = "/data/" <> (workflow.id |> Integer.to_string) <> "/input_filename.mp4"
       wav_extracted_file = "/data/" <> (workflow.id |> Integer.to_string) <> "/input_filename.mp4.wav"
       audio_dash_file = "/data/" <> (workflow.id |> Integer.to_string) <> "/input_filename.mp4.mp4"
+      webvtt_file = "/data/" <> (workflow.id |> Integer.to_string) <> "/input_filename.mp4.wav.vtt"
 
       assert %{
         "destination" => %{
@@ -181,8 +182,33 @@ defmodule ExBackend.EbuIngestTest do
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)
       ExBackend.HelpersTest.check(workflow.id, 5)
       ExBackend.HelpersTest.check(workflow.id, "speech_to_text", 1)
-      
-      ExBackend.HelpersTest.complete_jobs(workflow.id, "speech_to_text")
+
+      params =
+        ExBackend.HelpersTest.complete_jobs(workflow.id, "speech_to_text")
+        |> List.first
+        |> Map.get(:params)
+
+      assert %{
+        "inputs" => [
+          %{
+            "path" => wav_extracted_file
+          }
+        ],
+        "outputs" => [
+          %{
+            "path" => webvtt_file
+          }
+        ],
+        "requirements" => %{
+          "paths" => [
+            wav_extracted_file
+          ]
+        },
+        "format" => "detailed",
+        "language" => "en-US",
+        "mode" => "conversation"
+      } == params
+
       {:ok, "completed"} = WorkflowStep.start_next_step(workflow)
     end
   end

@@ -36,9 +36,7 @@ defmodule ExBackend.Workflow.Step.SpeechToText do
 
     dst_path =
       work_dir <>
-        "/" <>
-        workflow.reference <>
-        "_" <> Integer.to_string(workflow.id) <> "/" <> path
+        "/" <> Integer.to_string(workflow.id) <> "/" <> (path |> Path.basename) <> ".vtt"
 
     requirements = Requirements.add_required_paths(path)
 
