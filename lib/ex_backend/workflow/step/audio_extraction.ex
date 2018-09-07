@@ -45,9 +45,7 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
       end
 
     dst_path =
-      work_dir <>
-        "/" <>
-        Integer.to_string(workflow.id) <> "/" <> filename <> output_extension
+      work_dir <> "/" <> Integer.to_string(workflow.id) <> "/" <> filename <> output_extension
 
     requirements = Requirements.add_required_paths(path)
 

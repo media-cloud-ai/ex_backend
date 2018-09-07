@@ -9,11 +9,16 @@ defmodule ExBackend.Workflow.Step.SpeechToText do
 
   def launch(workflow, step) do
     step_id = ExBackend.Map.get_by_key_or_atom(step, :id)
+
     case ExBackend.Map.get_by_key_or_atom(step, :inputs) do
       nil ->
         case get_first_source_file(workflow.jobs, step) do
-          nil -> Jobs.create_skipped_job(workflow, step_id, @action_name)
-          [] -> Jobs.create_skipped_job(workflow, step_id, @action_name)
+          nil ->
+            Jobs.create_skipped_job(workflow, step_id, @action_name)
+
+          [] ->
+            Jobs.create_skipped_job(workflow, step_id, @action_name)
+
           paths ->
             paths
             |> Enum.map(fn path -> start_speech_to_text(path, workflow, step) end)
@@ -26,17 +31,17 @@ defmodule ExBackend.Workflow.Step.SpeechToText do
         |> Enum.map(fn input ->
           start_speech_to_text(ExBackend.Map.get_by_key_or_atom(input, :path), workflow, step)
         end)
+
         {:ok, "started"}
     end
   end
 
   defp start_speech_to_text(path, workflow, step) do
-    work_dir =
-      System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
+    work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
 
     dst_path =
       work_dir <>
-        "/" <> Integer.to_string(workflow.id) <> "/" <> (path |> Path.basename) <> ".vtt"
+        "/" <> Integer.to_string(workflow.id) <> "/" <> (path |> Path.basename()) <> ".vtt"
 
     requirements = Requirements.add_required_paths(path)
 
@@ -86,7 +91,7 @@ defmodule ExBackend.Workflow.Step.SpeechToText do
       |> Map.get("outputs")
       |> Enum.map(fn output -> Map.get(output, "path") end)
     end)
-    |> List.flatten
+    |> List.flatten()
   end
 
   @doc """
