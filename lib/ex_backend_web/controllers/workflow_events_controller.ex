@@ -94,6 +94,10 @@ defmodule ExBackendWeb.WorkflowEventsController do
     Amqp.JobFFmpegEmitter.publish_json(params)
   end
 
+  defp publish("speech_to_text", _job_id, _workflow, params) do
+    Amqp.JobSpeechToTextEmitter.publish_json(params)
+  end
+
   defp publish("push_rdf", job_id, workflow, _params) do
     ExBackend.Workflow.Step.PushRdf.convert_and_submit(workflow)
     |> case do

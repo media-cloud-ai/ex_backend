@@ -55,6 +55,13 @@ defmodule ExBackend.Workflow.Definition.EbuIngest do
               value: 16000
             },
             %{
+              id: "audio_channels",
+              type: "integer",
+              enable: false,
+              default: 1,
+              value: 1
+            },
+            %{
               id: "disable_video",
               type: "boolean",
               enable: false,
@@ -99,6 +106,36 @@ defmodule ExBackend.Workflow.Definition.EbuIngest do
               enable: false,
               default: true,
               value: true
+            }
+          ]
+        },
+        %{
+          id: 4,
+          name: "speech_to_text",
+          enable: true,
+          parent_ids: [2],
+          required: ["audio_extraction"],
+          parameters: [
+            %{
+              id: "language",
+              type: "string",
+              enable: false,
+              default: "en-US",
+              value: "en-US"
+            },
+            %{
+              id: "format",
+              type: "string",
+              enable: false,
+              default: "detailed",
+              value: "detailed"
+            },
+            %{
+              id: "mode",
+              type: "string",
+              enable: false,
+              default: "conversation",
+              value: "conversation"
             }
           ]
         }

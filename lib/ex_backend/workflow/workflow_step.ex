@@ -123,6 +123,10 @@ defmodule ExBackend.WorkflowStep do
     ExBackend.Workflow.Step.CleanWorkspace.launch(workflow, step)
   end
 
+  defp launch_step(workflow, "speech_to_text", step, _step_index) do
+    ExBackend.Workflow.Step.SpeechToText.launch(workflow, step)
+  end
+
   defp launch_step(workflow, step_name, step, _step_index) do
     Logger.error("unable to match with the step #{inspect(step)} for workflow #{workflow.id}")
 

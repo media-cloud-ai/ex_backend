@@ -33,6 +33,8 @@ defmodule ExBackend.Application do
       worker(ExBackend.Amqp.JobFFmpegErrorConsumer, []),
       worker(ExBackend.Amqp.JobAcsCompletedConsumer, []),
       worker(ExBackend.Amqp.JobAcsErrorConsumer, []),
+      worker(ExBackend.Amqp.JobSpeechToTextCompletedConsumer, []),
+      worker(ExBackend.Amqp.JobSpeechToTextErrorConsumer, []),
       worker(ExBackend.WorkflowStepManager, [])
     ]
 
