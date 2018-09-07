@@ -31,9 +31,7 @@ defmodule ExBackend.Workflow.Step.HttpDownload do
 
     filename = Path.basename(url)
 
-    dst_path =
-      work_dir <>
-        "/" <> Integer.to_string(workflow.id) <> "/" <> filename
+    dst_path = work_dir <> "/" <> Integer.to_string(workflow.id) <> "/" <> filename
 
     requirements = Requirements.add_required_paths(Path.dirname(dst_path))
 

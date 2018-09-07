@@ -30,13 +30,16 @@ defmodule ExBackend.EbuIngestTest do
       uploaded_file = "/data/" <> (workflow.id |> Integer.to_string()) <> "/input_filename.mp4"
 
       wav_extracted_file =
-        "/data/" <> (workflow.id |> Integer.to_string()) <> "/input_filename.mp4.wav"
+        "/data/" <> (workflow.id |> Integer.to_string()) <> "/2_input_filename.mp4.wav"
 
       audio_dash_file =
-        "/data/" <> (workflow.id |> Integer.to_string()) <> "/input_filename.mp4.mp4"
+        "/data/" <> (workflow.id |> Integer.to_string()) <> "/3_input_filename.mp4.mp4"
+
+      video_dash_file =
+        "/data/" <> (workflow.id |> Integer.to_string()) <> "/4_input_filename.mp4.mp4"
 
       webvtt_file =
-        "/data/" <> (workflow.id |> Integer.to_string()) <> "/input_filename.mp4.wav.vtt"
+        "/data/" <> (workflow.id |> Integer.to_string()) <> "/2_input_filename.mp4.wav.vtt"
 
       assert %{
                "destination" => %{
@@ -188,6 +191,141 @@ defmodule ExBackend.EbuIngestTest do
 
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)
       ExBackend.HelpersTest.check(workflow.id, 5)
+      ExBackend.HelpersTest.check(workflow.id, "audio_extraction", 3)
+
+      params =
+        ExBackend.HelpersTest.complete_jobs(workflow.id, "audio_extraction")
+        |> List.first()
+        |> Map.get(:params)
+
+      assert %{
+               "inputs" => [
+                 %{
+                   "path" => [uploaded_file],
+                   "options" => %{}
+                 }
+               ],
+               "outputs" => [
+                 %{
+                   "path" => video_dash_file,
+                   "options" => [
+                     %{
+                       "default" => "libx264",
+                       "enable" => false,
+                       "id" => "output_codec_video",
+                       "type" => "string",
+                       "value" => "libx264"
+                     },
+                     %{
+                       "default" => "baseline",
+                       "enable" => false,
+                       "id" => "profile_video",
+                       "type" => "string",
+                       "value" => "baseline"
+                     },
+                     %{
+                       "default" => "yuv420p",
+                       "enable" => false,
+                       "id" => "pixel_format",
+                       "type" => "string",
+                       "value" => "yuv420p"
+                     },
+                     %{
+                       "default" => "bt709",
+                       "enable" => false,
+                       "id" => "colorspace",
+                       "type" => "string",
+                       "value" => "bt709"
+                     },
+                     %{
+                       "default" => "bt709",
+                       "enable" => false,
+                       "id" => "color_trc",
+                       "type" => "string",
+                       "value" => "bt709"
+                     },
+                     %{
+                       "default" => "bt709",
+                       "enable" => false,
+                       "id" => "color_primaries",
+                       "type" => "string",
+                       "value" => "bt709"
+                     },
+                     %{
+                       "default" => "5M",
+                       "enable" => false,
+                       "id" => "max_bitrate",
+                       "type" => "string",
+                       "value" => "5M"
+                     },
+                     %{
+                       "default" => "5M",
+                       "enable" => false,
+                       "id" => "buffer_size",
+                       "type" => "string",
+                       "value" => "5M"
+                     },
+                     %{
+                       "default" => "5M",
+                       "enable" => false,
+                       "id" => "rc_init_occupancy",
+                       "type" => "string",
+                       "value" => "5M"
+                     },
+                     %{
+                       "default" => "slow",
+                       "enable" => false,
+                       "id" => "preset",
+                       "type" => "string",
+                       "value" => "slow"
+                     },
+                     %{
+                       "default" => "keyint=50:min-keyint=50:no-scenecut",
+                       "enable" => false,
+                       "id" => "x264-params",
+                       "type" => "string",
+                       "value" => "keyint=50:min-keyint=50:no-scenecut"
+                     },
+                     %{
+                       "default" => "2:2",
+                       "enable" => false,
+                       "id" => "deblock",
+                       "type" => "string",
+                       "value" => "2:2"
+                     },
+                     %{
+                       "default" => false,
+                       "enable" => false,
+                       "id" => "write_timecode",
+                       "type" => "boolean",
+                       "value" => false
+                     },
+                     %{
+                       "default" => true,
+                       "enable" => false,
+                       "id" => "disable_audio",
+                       "type" => "boolean",
+                       "value" => true
+                     },
+                     %{
+                       "default" => true,
+                       "enable" => false,
+                       "id" => "disable_data",
+                       "type" => "boolean",
+                       "value" => true
+                     }
+                   ]
+                 }
+               ],
+               "requirements" => %{
+                 "paths" => [
+                   uploaded_file
+                 ]
+               }
+             } == params
+
+      {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+      ExBackend.HelpersTest.check(workflow.id, 6)
       ExBackend.HelpersTest.check(workflow.id, "speech_to_text", 1)
 
       params =

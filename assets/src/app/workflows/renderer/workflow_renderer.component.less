@@ -2,7 +2,7 @@
 
 .line {
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   font-family: sans-serif;
 
   .step {
@@ -13,18 +13,5 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-
-    label.active{
-      cursor: pointer;
-    }
-
-    .disabled {
-      color: @grey;
-    }
-
-    .parameter {
-      line-height: 18px;
-      display: inline-flex;
-    }
   }
 }

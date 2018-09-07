@@ -1,70 +1,13 @@
 <div *ngIf="renderer">
-<div
-  class="line"
-  *ngFor="let line of renderer.graph"
-  >
-  <span *ngFor="let step of line"
-    class="step"
-    [ngStyle]="{flex: renderer.getStepWeight(step)}"
+  <div
+    class="line"
+    *ngFor="let line of renderer.graph"
     >
-    <span
-      *ngIf="step.name"
-      [ngClass]="{disabled: !step.enable}"
-      title="{{step.name | jobType}}"
+    <span *ngFor="let step of line"
+      class="step"
+      [ngStyle]="{flex: renderer.getStepWeight(step)}"
       >
-      <mat-checkbox class='small'
-        color="primary"
-        [(ngModel)]="step.enable"
-        (change)="updateEnabledSteps(step)"
-        [disabled]=!active_steps[step.name]
-        ></mat-checkbox>
-
-      <mat-icon *ngIf="step.icon">{{step.icon}}</mat-icon>
-      <mat-icon *ngIf="!step.icon">{{step.name | iconForJob}}</mat-icon>
-      <label
-        [ngClass]="{'active': active_steps[step.name]}"
-        (click)="step.enable = !step.enable; updateEnabledSteps(step)">
-        <span *ngIf="step.label">
-          {{step.label}}
-        </span>
-        <span *ngIf="!step.label">
-          {{step.name | jobType}}
-        </span>
-      </label>
-
-      <mat-list dense>
-        <mat-list-item
-          *ngFor="let parameter of step.parameters">
-          <mat-form-field
-            class="parameter"
-            *ngIf="parameter.type != 'boolean'">
-            <input matInput
-              type={{parameter.type}}
-              placeholder="{{parameter.id | parameterLabel}}"
-              [disabled]="!step.enable || !parameter.enable"
-              value={{parameter.value}}
-              [(ngModel)]=parameter.value
-              (change)=toNumber(parameter)>
-          </mat-form-field>
-          <div
-            *ngIf="parameter.type == 'boolean'"
-            class="parameter"
-            [ngClass]="{disabled: !step.enable}"
-            >
-            <mat-checkbox
-            class="small"
-              color="accent"
-              [disabled]="!step.enable || !parameter.enable"
-              [(ngModel)]=parameter.value
-              >
-              {{parameter.id | parameterLabel}}
-            </mat-checkbox>
-          </div>
-        </mat-list-item>
-      </mat-list>
+      <step-renderer [step]=step [active]="active_steps[step.name]"></step-renderer>
     </span>
-    <mat-divider *ngIf="step.name">
-    </mat-divider>
-  </span>
-</div>
+  </div>
 </div>

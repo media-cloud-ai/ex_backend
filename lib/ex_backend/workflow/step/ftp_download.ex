@@ -37,9 +37,7 @@ defmodule ExBackend.Workflow.Step.FtpDownload do
 
     filename = Path.basename(file)
 
-    dst_path =
-      work_dir <>
-        "/" <> Integer.to_string(workflow.id) <> "/" <> filename
+    dst_path = work_dir <> "/" <> Integer.to_string(workflow.id) <> "/" <> filename
 
     requirements =
       if file != first_file do

@@ -29,8 +29,7 @@ defmodule ExBackend.Workflow.Step.AudioDecode do
     filename = Path.basename(path, ".mp4")
 
     dst_path =
-      work_dir <>
-        "/" <> Integer.to_string(workflow.id) <> "/audio/" <> filename <> ".wav"
+      work_dir <> "/" <> Integer.to_string(workflow.id) <> "/audio/" <> filename <> ".wav"
 
     requirements = Requirements.add_required_paths(path)
 

@@ -70,6 +70,7 @@ import {PlayerComponent}         from './player/player.component'
 import {RightsComponent}         from './users/rights.component'
 import {QueuesComponent}         from './amqp/queues.component'
 import {StepProgressBarComponent} from './workflows/step_progress_bar.component'
+import {StepRendererComponent}   from './workflows/renderer/step_renderer.component'
 import {SubtitleComponent}       from './player/subtitle.component'
 import {TimecodeComponent}       from './player/timecode.component'
 import {UserComponent}           from './users/user.component'
@@ -199,6 +200,7 @@ const EX_BACKEND_DATE_FORMATS = {
     RightsComponent,
     StartIngestDialog,
     StepProgressBarComponent,
+    StepRendererComponent,
     SubtitleComponent,
     TimecodeComponent,
     TimecodeDialogComponent,
@@ -245,6 +247,7 @@ const EX_BACKEND_DATE_FORMATS = {
     RightsComponent,
     StartIngestDialog,
     StepProgressBarComponent,
+    StepRendererComponent,
     SubtitleComponent,
     TimecodeComponent,
     TimecodeDialogComponent,

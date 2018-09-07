@@ -55,10 +55,7 @@ defmodule ExBackend.Workflow.Step.GenerateDash do
         work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
 
         options = %{
-          "-out":
-            work_dir <>
-              "/dash/" <>
-              Integer.to_string(workflow.id) <> "/manifest.mpd",
+          "-out": work_dir <> "/dash/" <> Integer.to_string(workflow.id) <> "/manifest.mpd",
           "-profile": "onDemand",
           "-rap": true,
           "-url-template": true

@@ -81,6 +81,7 @@ defmodule ExBackend.Workflow.Definition.EbuIngest do
           id: 3,
           name: "audio_extraction",
           label: "Encode audio for DASH",
+          icon: "volume_up",
           enable: true,
           parent_ids: [0],
           required: ["upload_file"],
@@ -111,6 +112,123 @@ defmodule ExBackend.Workflow.Definition.EbuIngest do
         },
         %{
           id: 4,
+          name: "audio_extraction",
+          label: "Encode video for DASH",
+          icon: "local_movies",
+          enable: true,
+          parent_ids: [0],
+          required: ["upload_file"],
+          output_extension: ".mp4",
+          parameters: [
+            %{
+              id: "output_codec_video",
+              type: "string",
+              enable: false,
+              default: "libx264",
+              value: "libx264"
+            },
+            %{
+              id: "profile_video",
+              type: "string",
+              enable: false,
+              default: "baseline",
+              value: "baseline"
+            },
+            %{
+              id: "pixel_format",
+              type: "string",
+              enable: false,
+              default: "yuv420p",
+              value: "yuv420p"
+            },
+            %{
+              id: "colorspace",
+              type: "string",
+              enable: false,
+              default: "bt709",
+              value: "bt709"
+            },
+            %{
+              id: "color_trc",
+              type: "string",
+              enable: false,
+              default: "bt709",
+              value: "bt709"
+            },
+            %{
+              id: "color_primaries",
+              type: "string",
+              enable: false,
+              default: "bt709",
+              value: "bt709"
+            },
+            %{
+              id: "max_bitrate",
+              type: "string",
+              enable: false,
+              default: "5M",
+              value: "5M"
+            },
+            %{
+              id: "buffer_size",
+              type: "string",
+              enable: false,
+              default: "5M",
+              value: "5M"
+            },
+            %{
+              id: "rc_init_occupancy",
+              type: "string",
+              enable: false,
+              default: "5M",
+              value: "5M"
+            },
+            %{
+              id: "preset",
+              type: "string",
+              enable: false,
+              default: "slow",
+              value: "slow"
+            },
+            %{
+              id: "x264-params",
+              type: "string",
+              enable: false,
+              default: "keyint=50:min-keyint=50:no-scenecut",
+              value: "keyint=50:min-keyint=50:no-scenecut"
+            },
+            %{
+              id: "deblock",
+              type: "string",
+              enable: false,
+              default: "2:2",
+              value: "2:2"
+            },
+            %{
+              id: "write_timecode",
+              type: "boolean",
+              enable: false,
+              default: false,
+              value: false
+            },
+            %{
+              id: "disable_audio",
+              type: "boolean",
+              enable: false,
+              default: true,
+              value: true
+            },
+            %{
+              id: "disable_data",
+              type: "boolean",
+              enable: false,
+              default: true,
+              value: true
+            }
+          ]
+        },
+        %{
+          id: 5,
           name: "speech_to_text",
           enable: true,
           parent_ids: [2],

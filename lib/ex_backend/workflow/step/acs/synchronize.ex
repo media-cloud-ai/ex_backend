@@ -40,9 +40,7 @@ defmodule ExBackend.Workflow.Step.Acs.Synchronize do
       Path.basename(subtitle_path)
       |> String.replace(".ttml", "_synchronized.ttml")
 
-    dst_path =
-      work_dir <>
-        "/" <> Integer.to_string(workflow.id) <> "/acs/" <> filename
+    dst_path = work_dir <> "/" <> Integer.to_string(workflow.id) <> "/acs/" <> filename
 
     exec_dir = app_dir <> "/acs"
 

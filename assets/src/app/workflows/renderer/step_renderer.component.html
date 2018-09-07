@@ -1,0 +1,74 @@
+<span
+  *ngIf="step.name"
+  [ngClass]="{disabled: !step.enable}"
+  title="{{step.name | jobType}}"
+  >
+  <div class="header">
+    <mat-icon *ngIf="step.icon">{{step.icon}}</mat-icon>
+    <mat-icon *ngIf="!step.icon">{{step.name | iconForJob}}</mat-icon>
+    <label
+      [ngClass]="{'active': active}"
+      (click)="step.enable = !step.enable">
+      <span *ngIf="step.label">
+        {{step.label}}
+      </span>
+      <span *ngIf="!step.label">
+        {{step.name | jobType}}
+      </span>
+    </label>
+
+    <mat-slide-toggle
+      class=small
+      color=primary
+      [(ngModel)]="step.enable"
+      [checked]=step.enable
+      [disabled]=!active>
+    </mat-slide-toggle>
+
+    <mat-icon class=more
+      *ngIf="!open_parameters"
+      (click)="open_parameters = !open_parameters"
+      >expand_more
+      </mat-icon>
+
+    <mat-icon class=more
+      *ngIf="open_parameters"
+      (click)="open_parameters = !open_parameters"
+      >expand_less
+      </mat-icon>
+  </div>
+
+  <mat-list dense
+    *ngIf="open_parameters">
+    <mat-list-item
+      *ngFor="let parameter of step.parameters">
+      <mat-form-field
+        class="parameter"
+        *ngIf="parameter.type != 'boolean'">
+        <input matInput
+          type={{parameter.type}}
+          placeholder="{{parameter.id | parameterLabel}}"
+          [disabled]="!step.enable || !parameter.enable"
+          value={{parameter.value}}
+          [(ngModel)]=parameter.value
+          (change)=toNumber(parameter)>
+      </mat-form-field>
+      <div
+        *ngIf="parameter.type == 'boolean'"
+        class="parameter"
+        [ngClass]="{disabled: !step.enable}"
+        >
+        <mat-checkbox
+        class="small"
+          color="accent"
+          [disabled]="!step.enable || !parameter.enable"
+          [(ngModel)]=parameter.value
+          >
+          {{parameter.id | parameterLabel}}
+        </mat-checkbox>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</span>
+<mat-divider *ngIf="step.name">
+</mat-divider>

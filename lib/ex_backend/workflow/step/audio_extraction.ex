@@ -8,31 +8,34 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
   @action_name "audio_extraction"
 
   def launch(workflow, step) do
+    step_id = ExBackend.Map.get_by_key_or_atom(step, :id)
+
     case ExBackend.Map.get_by_key_or_atom(step, :inputs) do
       nil ->
         case get_first_source_file(workflow.jobs) do
           nil ->
-            Jobs.create_skipped_job(
-              workflow,
-              ExBackend.Map.get_by_key_or_atom(step, :id),
-              @action_name
-            )
+            Jobs.create_skipped_job(workflow, step_id, @action_name)
 
           path ->
-            start_extracting_audio(path, workflow, step)
+            start_extracting_audio(path, workflow, step, step_id)
         end
 
       inputs ->
         for input <- inputs do
           {:ok, "started"} =
-            start_extracting_audio(ExBackend.Map.get_by_key_or_atom(input, :path), workflow, step)
+            start_extracting_audio(
+              ExBackend.Map.get_by_key_or_atom(input, :path),
+              workflow,
+              step,
+              step_id
+            )
         end
 
         {:ok, "started"}
     end
   end
 
-  defp start_extracting_audio(path, workflow, step) do
+  defp start_extracting_audio(path, workflow, step, step_id) do
     work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
 
     filename = Path.basename(path)
@@ -45,7 +48,10 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
       end
 
     dst_path =
-      work_dir <> "/" <> Integer.to_string(workflow.id) <> "/" <> filename <> output_extension
+      work_dir <>
+        "/" <>
+        Integer.to_string(workflow.id) <>
+        "/" <> Integer.to_string(step_id) <> "_" <> filename <> output_extension
 
     requirements = Requirements.add_required_paths(path)
 
@@ -65,7 +71,7 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
 
     job_params = %{
       name: @action_name,
-      step_id: ExBackend.Map.get_by_key_or_atom(step, :id),
+      step_id: step_id,
       workflow_id: workflow.id,
       params: %{
         requirements: requirements,

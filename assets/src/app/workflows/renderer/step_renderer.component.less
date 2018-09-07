@@ -1,0 +1,30 @@
+@import '../../colors';
+
+label.active{
+  cursor: pointer;
+}
+
+.disabled {
+  color: @grey;
+}
+
+.parameter {
+  line-height: 18px;
+  display: inline-flex;
+}
+
+.header {
+  display: flex;
+  padding-bottom: 5px;
+
+  label {
+    flex: 1;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.more:hover {
+  cursor: pointer;
+}

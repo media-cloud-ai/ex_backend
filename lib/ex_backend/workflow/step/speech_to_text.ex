@@ -47,28 +47,38 @@ defmodule ExBackend.Workflow.Step.SpeechToText do
 
     params =
       ExBackend.Map.get_by_key_or_atom(step, :parameters)
-      |> Enum.filter(fn param -> ExBackend.Map.get_by_key_or_atom(param, :id) in ["format", "language", "mode"] end)
-      |> Enum.map(fn param -> %{ExBackend.Map.get_by_key_or_atom(param, :id) => ExBackend.Map.get_by_key_or_atom(param, :value)} end)
+      |> Enum.filter(fn param ->
+        ExBackend.Map.get_by_key_or_atom(param, :id) in ["format", "language", "mode"]
+      end)
+      |> Enum.map(fn param ->
+        %{
+          ExBackend.Map.get_by_key_or_atom(param, :id) =>
+            ExBackend.Map.get_by_key_or_atom(param, :value)
+        }
+      end)
       |> Enum.reduce(%{}, fn param, acc -> Map.merge(acc, param) end)
 
     job_params = %{
       name: @action_name,
       step_id: ExBackend.Map.get_by_key_or_atom(step, :id),
       workflow_id: workflow.id,
-      params: Map.merge(params,
-        %{
-          requirements: requirements,
-          inputs: [
-            %{
-              path: path
-            }
-          ],
-          outputs: [
-            %{
-              path: dst_path
-            }
-          ]
-        })
+      params:
+        Map.merge(
+          params,
+          %{
+            requirements: requirements,
+            inputs: [
+              %{
+                path: path
+              }
+            ],
+            outputs: [
+              %{
+                path: dst_path
+              }
+            ]
+          }
+        )
     }
 
     {:ok, job} = Jobs.create_job(job_params)
