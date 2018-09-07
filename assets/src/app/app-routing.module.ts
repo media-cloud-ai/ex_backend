@@ -38,6 +38,7 @@ const appRoutes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
+    // loadChildren: 'app/dashboard/dashboard.module#DashboardModule'
     canActivate: [AuthGuard]
   },
   {
@@ -63,6 +64,7 @@ const appRoutes: Routes = [
   {
     path: 'player/:id',
     component: PlayerComponent,
+    // loadChildren: 'app/player/player.module#PlayerModule'
     canActivate: [AuthGuard]
   },
   {

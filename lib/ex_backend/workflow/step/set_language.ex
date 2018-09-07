@@ -22,8 +22,7 @@ defmodule ExBackend.Workflow.Step.SetLanguage do
     dst_path =
       work_dir <>
         "/" <>
-        workflow.reference <>
-        "_" <> Integer.to_string(workflow.id) <> "/lang/" <> Path.basename(path)
+        Integer.to_string(workflow.id) <> "/lang/" <> Path.basename(path)
 
     language_code = get_file_language(path, workflow)
 

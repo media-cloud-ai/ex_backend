@@ -38,7 +38,7 @@ defmodule ExBackend.Workflow.Step.Acs.PrepareAudio do
 
     dst_path =
       work_dir <>
-        "/" <> workflow.reference <> "_" <> Integer.to_string(workflow.id) <> "/acs/" <> filename
+        "/" <> Integer.to_string(workflow.id) <> "/acs/" <> filename
 
     requirements = Requirements.add_required_paths(path)
 

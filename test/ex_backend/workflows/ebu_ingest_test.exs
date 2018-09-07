@@ -211,7 +211,7 @@ defmodule ExBackend.EbuIngestTest do
                    wav_extracted_file
                  ]
                },
-               "format" => "detailed",
+               "format" => "simple",
                "language" => "en-US",
                "mode" => "conversation"
              } == params

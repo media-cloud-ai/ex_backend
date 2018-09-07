@@ -127,8 +127,8 @@ defmodule ExBackend.Workflow.Definition.EbuIngest do
               id: "format",
               type: "string",
               enable: false,
-              default: "detailed",
-              value: "detailed"
+              default: "simple",
+              value: "simple"
             },
             %{
               id: "mode",

@@ -58,7 +58,7 @@ defmodule ExBackend.Workflow.Step.GenerateDash do
           "-out":
             work_dir <>
               "/dash/" <>
-              workflow.reference <> "_" <> Integer.to_string(workflow.id) <> "/manifest.mpd",
+              Integer.to_string(workflow.id) <> "/manifest.mpd",
           "-profile": "onDemand",
           "-rap": true,
           "-url-template": true

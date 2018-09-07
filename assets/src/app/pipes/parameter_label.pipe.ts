@@ -23,6 +23,13 @@ export class ParameterLabelPipe implements PipeTransform {
       { id: 'disable_video', name: 'Disable video' },
       { id: 'disable_audio', name: 'Disable audio' },
       { id: 'disable_data', name: 'Disable data' },
+      { id: 'audio_sampling_rate', name: 'Audio sampling rate' },
+      { id: 'audio_channels', name: 'Audio channels' },
+
+      { id: 'output_directory', name: 'Output Directory' },
+      { id: 'language', name: 'Language' },
+      { id: 'format', name: 'Format' },
+      { id: 'mode', name: 'Mode' }
     ]
 
     for (var i = allLabels.length - 1; i >= 0; i--) {

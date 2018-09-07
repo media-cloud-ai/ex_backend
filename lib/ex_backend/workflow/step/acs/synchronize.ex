@@ -42,7 +42,7 @@ defmodule ExBackend.Workflow.Step.Acs.Synchronize do
 
     dst_path =
       work_dir <>
-        "/" <> workflow.reference <> "_" <> Integer.to_string(workflow.id) <> "/acs/" <> filename
+        "/" <> Integer.to_string(workflow.id) <> "/acs/" <> filename
 
     exec_dir = app_dir <> "/acs"
 
