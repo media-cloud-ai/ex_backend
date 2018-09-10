@@ -7,16 +7,16 @@ defmodule ExBackendWeb.PlayerController do
     root =
       System.get_env("ROOT_DASH_CONTENT") || Application.get_env(:ex_backend, :root_dash_content)
 
-    send_file(conn, 200, root <> content <> "/manifest.mpd")
+    send_file(conn, 200, Path.join([root, content, "manifest.mpd"]))
   end
 
   def index(conn, %{"content" => content, "filename" => filename}) do
-    if String.ends_with?(filename, ".ttml") || String.ends_with?(filename, ".vtt") do
-      root =
-        System.get_env("ROOT_DASH_CONTENT") ||
-          Application.get_env(:ex_backend, :root_dash_content)
+    root =
+      System.get_env("ROOT_DASH_CONTENT") ||
+        Application.get_env(:ex_backend, :root_dash_content)
 
-      send_file(conn, 200, root <> content <> "/" <> filename)
+    if String.ends_with?(filename, ".ttml") || String.ends_with?(filename, ".vtt") do
+      send_file(conn, 200, Path.join([root, content, filename]))
     else
       {"range", range} =
         conn.req_headers
@@ -28,11 +28,7 @@ defmodule ExBackendWeb.PlayerController do
         |> List.last()
         |> String.split("-")
 
-      root =
-        System.get_env("ROOT_DASH_CONTENT") ||
-          Application.get_env(:ex_backend, :root_dash_content)
-
-      path = root <> content <> "/" <> filename
+      path = Path.join([root, content, filename])
       stat = File.stat!(path)
 
       {:ok, file} = :file.open(path, [:read, :binary])

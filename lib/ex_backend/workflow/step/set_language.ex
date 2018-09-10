@@ -8,7 +8,7 @@ defmodule ExBackend.Workflow.Step.SetLanguage do
   def launch(workflow, step) do
     step_id = ExBackend.Map.get_by_key_or_atom(step, :id)
 
-    case ExBackend.Workflow.Step.Requirements.get_source_files(workflow.jobs, step) do
+    case Requirements.get_source_files(workflow.jobs, step) do
       [] -> Jobs.create_skipped_job(workflow, step_id, @action_name)
       paths -> start_setting_languages(paths, workflow, step, step_id)
     end

@@ -32,7 +32,7 @@ defmodule ExBackend.WorkflowStep do
         )
 
         step_name = ExBackend.Map.get_by_key_or_atom(step, :name)
-        status = launch_step(workflow, step_name, step, step_index)
+        status = launch_step(workflow, step_name, step)
 
         Logger.info("#{step_name}: #{inspect(status)}")
         topic = "update_workflow_" <> Integer.to_string(workflow_id)
@@ -63,71 +63,75 @@ defmodule ExBackend.WorkflowStep do
     |> ExBackend.Jobs.skip_jobs(ExBackend.Map.get_by_key_or_atom(step, :id), step_name)
   end
 
-  defp launch_step(workflow, "acs_prepare_audio", step, _step_index) do
+  defp launch_step(workflow, "acs_prepare_audio", step) do
     ExBackend.Workflow.Step.Acs.PrepareAudio.launch(workflow, step)
   end
 
-  defp launch_step(workflow, "acs_synchronize", step, _step_index) do
+  defp launch_step(workflow, "acs_synchronize", step) do
     ExBackend.Workflow.Step.Acs.Synchronize.launch(workflow, step)
   end
 
-  defp launch_step(workflow, "audio_encode", step, _step_index) do
+  defp launch_step(workflow, "audio_encode", step) do
     ExBackend.Workflow.Step.AudioEncode.launch(workflow, step)
   end
 
-  defp launch_step(workflow, "audio_extraction", step, _step_index) do
+  defp launch_step(workflow, "audio_extraction", step) do
     ExBackend.Workflow.Step.AudioExtraction.launch(workflow, step)
   end
 
-  defp launch_step(workflow, "audio_decode", step, _step_index) do
+  defp launch_step(workflow, "audio_decode", step) do
     ExBackend.Workflow.Step.AudioDecode.launch(workflow, step)
   end
 
-  defp launch_step(workflow, "download_ftp", step, _step_index) do
+  defp launch_step(workflow, "download_ftp", step) do
     ExBackend.Workflow.Step.FtpDownload.launch(workflow, step)
   end
 
-  defp launch_step(workflow, "download_http", step, _step_index) do
+  defp launch_step(workflow, "download_http", step) do
     ExBackend.Workflow.Step.HttpDownload.launch(workflow, step)
   end
 
-  defp launch_step(workflow, "ttml_to_mp4", step, _step_index) do
+  defp launch_step(workflow, "ttml_to_mp4", step) do
     ExBackend.Workflow.Step.TtmlToMp4.launch(workflow, step)
   end
 
-  defp launch_step(workflow, "set_language", step, _step_index) do
+  defp launch_step(workflow, "set_language", step) do
     ExBackend.Workflow.Step.SetLanguage.launch(workflow, step)
   end
 
-  defp launch_step(workflow, "generate_dash", step, _step_index) do
+  defp launch_step(workflow, "generate_dash", step) do
     ExBackend.Workflow.Step.GenerateDash.launch(workflow, step)
   end
 
-  defp launch_step(workflow, "upload_ftp", step, _step_index) do
+  defp launch_step(workflow, "upload_ftp", step) do
     ExBackend.Workflow.Step.FtpUpload.launch(workflow, step)
   end
 
-  defp launch_step(workflow, "upload_file", step, _step_index) do
+  defp launch_step(workflow, "upload_file", step) do
     ExBackend.Workflow.Step.UploadFile.launch(workflow, step)
   end
 
-  defp launch_step(workflow, "push_rdf", step, _step_index) do
+  defp launch_step(workflow, "push_rdf", step) do
     ExBackend.Workflow.Step.PushRdf.launch(workflow, step)
   end
 
-  defp launch_step(workflow, "copy", step, _step_index) do
+  defp launch_step(workflow, "copy", step) do
     ExBackend.Workflow.Step.Copy.launch(workflow, step)
   end
 
-  defp launch_step(workflow, "clean_workspace", step, _step_index) do
+  defp launch_step(workflow, "clean_workspace", step) do
     ExBackend.Workflow.Step.CleanWorkspace.launch(workflow, step)
   end
 
-  defp launch_step(workflow, "speech_to_text", step, _step_index) do
+  defp launch_step(workflow, "speech_to_text", step) do
     ExBackend.Workflow.Step.SpeechToText.launch(workflow, step)
   end
 
-  defp launch_step(workflow, step_name, step, _step_index) do
+  defp launch_step(workflow, "register", step) do
+    ExBackend.Workflow.Step.Register.launch(workflow, step)
+  end
+
+  defp launch_step(workflow, step_name, step) do
     Logger.error("unable to match with the step #{inspect(step)} for workflow #{workflow.id}")
 
     ExBackend.Repo.preload(workflow, :jobs, force: true)

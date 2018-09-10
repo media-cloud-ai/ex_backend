@@ -41,6 +41,24 @@ defmodule ExBackend.EbuIngestTest do
       webvtt_file =
         "/data/" <> (workflow.id |> Integer.to_string()) <> "/2_input_filename.mp4.wav.vtt"
 
+      audio_lang_file =
+        "/data/" <> (workflow.id |> Integer.to_string()) <> "/lang/3_input_filename.mp4-eng.mp4"
+
+      manifest_file =
+        "/data/" <> (workflow.id |> Integer.to_string()) <> "/dash/manifest.mpd"
+
+      stored_subtitle_file =
+        "/dash/" <> (workflow.id |> Integer.to_string()) <> "/2_input_filename.mp4.wav.vtt"
+
+      stored_audio_track_file =
+        "/dash/" <> (workflow.id |> Integer.to_string()) <> "/3_input_filename.mp4-eng_track1_dashinit.mp4"
+
+      stored_video_track_file =
+        "/dash/" <> (workflow.id |> Integer.to_string()) <> "/4_input_filename.mp4-standard5_track1_dashinit.mp4"
+
+      stored_manifest_file =
+        "/dash/" <> (workflow.id |> Integer.to_string()) <> "/manifest.mpd"
+
       assert %{
                "destination" => %{
                  "path" => uploaded_file
@@ -63,11 +81,12 @@ defmodule ExBackend.EbuIngestTest do
       assert %{
                "action" => "copy",
                "parameters" => [
-                 %{"default" => "/archive/#workflow_id",
-                 "enable" => false,
-                 "id" => "output_directory",
-                 "type" => "string",
-                 "value" => "/archive/" <> (workflow.id |> Integer.to_string())
+                 %{
+                  "default" => "/archive/#workflow_id",
+                  "enable" => false,
+                  "id" => "output_directory",
+                  "type" => "string",
+                  "value" => "/archive/" <> (workflow.id |> Integer.to_string())
                  }
                ],
                "requirements" => %{
@@ -364,25 +383,68 @@ defmodule ExBackend.EbuIngestTest do
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)
 
       ExBackend.HelpersTest.check(workflow.id, 7)
-      ExBackend.HelpersTest.check(workflow.id, "set_language", 1)
+      ExBackend.HelpersTest.check(workflow.id, "copy", 2)
 
-      ExBackend.HelpersTest.complete_jobs(workflow.id, "set_language")
-
+      ExBackend.HelpersTest.complete_jobs(workflow.id, "copy")
+      ExBackend.HelpersTest.set_output_files(workflow.id, "copy", [
+        stored_subtitle_file,
+      ])
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)
 
       ExBackend.HelpersTest.check(workflow.id, 8)
+      ExBackend.HelpersTest.check(workflow.id, "register", 1)
+
+      ExBackend.HelpersTest.complete_jobs(workflow.id, "register")
+      {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+
+      ExBackend.HelpersTest.check(workflow.id, 9)
+      ExBackend.HelpersTest.check(workflow.id, "set_language", 1)
+
+      ExBackend.HelpersTest.complete_jobs(workflow.id, "set_language")
+      ExBackend.HelpersTest.set_output_files(workflow.id, "set_language", [audio_lang_file])
+      {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+
+      ExBackend.HelpersTest.check(workflow.id, 10)
       ExBackend.HelpersTest.check(workflow.id, "generate_dash", 1)
 
+      ExBackend.HelpersTest.set_output_files(workflow.id, "generate_dash", [manifest_file])
       ExBackend.HelpersTest.complete_jobs(workflow.id, "generate_dash")
 
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)
 
-      ExBackend.HelpersTest.check(workflow.id, 9)
-      ExBackend.HelpersTest.check(workflow.id, "copy", 2)
+      ExBackend.HelpersTest.check(workflow.id, 11)
+      ExBackend.HelpersTest.check(workflow.id, "copy", 3)
 
+      ExBackend.HelpersTest.set_output_files(workflow.id, "copy", [
+        stored_audio_track_file,
+        stored_video_track_file,
+        stored_manifest_file
+      ])
       ExBackend.HelpersTest.complete_jobs(workflow.id, "copy")
+      {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+
+      ExBackend.HelpersTest.check(workflow.id, 12)
+      ExBackend.HelpersTest.check(workflow.id, "register", 2)
 
       {:ok, "completed"} = WorkflowStep.start_next_step(workflow)
+
+      params =
+        ExBackend.Registeries.list_registeries(%{"workflow_id" => workflow.id, "name" => "master"})
+        |> Map.get(:data)
+        |> List.first
+        |> Map.get(:params)
+
+      assert %{
+          "manifests" => [
+            %{"format" => "dash", "paths" => [stored_manifest_file]}
+          ],
+          "subtitles" => [
+            %{
+              "language" => "eng",
+              "paths" => [stored_subtitle_file]
+            }
+          ]
+        } == params
     end
   end
 end

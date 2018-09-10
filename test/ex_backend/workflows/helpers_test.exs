@@ -42,7 +42,7 @@ defmodule ExBackend.HelpersTest do
     all_jobs
   end
 
-  def set_gpac_outputs(workflow_id, type, paths) do
+  def set_output_files(workflow_id, type, paths) do
     all_jobs =
       ExBackend.Jobs.list_jobs(%{
         "job_type" => type,

@@ -139,6 +139,12 @@ defmodule ExBackend.Application do
       ExBackend.Migration.UpdateStepIdOnJob
     )
 
+    Ecto.Migrator.up(
+      ExBackend.Repo,
+      20_180_910_145_830,
+      ExBackend.Migration.CreateRegistery
+    )
+
     root_email = System.get_env("ROOT_EMAIL") || Application.get_env(:ex_backend, :root_email)
 
     root_password =

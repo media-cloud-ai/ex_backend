@@ -72,7 +72,8 @@ defmodule ExBackend.Workflow.Step.Requirements do
       |> String.replace("#workflow_id", "<%= workflow_id %>")
       |> EEx.eval_string(workflow_id: workflow.id)
 
-    parameter = Map.put(parameter, :value, value)
+    parameter = Map.replace(parameter, "value", value)
+    parameter = Map.replace(parameter, :value, value)
 
     result = List.insert_at(result, -1, parameter)
     parse_parameters(parameters, workflow, result)

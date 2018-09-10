@@ -111,7 +111,6 @@ import {TokenInterceptor}        from './authentication/token.interceptor'
 import {ErrorInterceptor}        from './authentication/error.interceptor'
 
 import 'hammerjs/hammer' // for MatSlideToggleModule
-import * as moment from 'moment'
 
 const EX_BACKEND_DATE_FORMATS = {
   parse: {

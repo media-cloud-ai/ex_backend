@@ -6,7 +6,7 @@ defmodule ExBackend.Workflow.Step.Copy do
   @action_name "copy"
 
   def launch(workflow, step) do
-    case get_source_files(workflow.jobs) do
+    case Requirements.get_source_files(workflow.jobs, step) do
       [] ->
         Jobs.create_skipped_job(
           workflow,
@@ -45,10 +45,6 @@ defmodule ExBackend.Workflow.Step.Copy do
         JobFileSystemEmitter.publish_json(params)
         {:ok, "started"}
     end
-  end
-
-  defp get_source_files(jobs) do
-    ExBackend.Workflow.Step.UploadFile.get_jobs_destination_paths(jobs)
   end
 
   @doc """

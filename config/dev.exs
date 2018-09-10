@@ -90,7 +90,7 @@ config :ex_backend,
   acs_app: "./SynchroSubtilTSP_V0.5",
   root_email: "admin@media-io.com",
   root_password: "admin123",
-  root_dash_content: "/Users/marco/media/"
+  root_dash_content: "/dash"
 
 config :amqp,
   hostname: "localhost",
