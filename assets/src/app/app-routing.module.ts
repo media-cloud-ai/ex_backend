@@ -4,6 +4,7 @@ import {
   RouterModule,
   Routes
 } from '@angular/router'
+import { BrowserModule } from '@angular/platform-browser';
 
 import {CanDeactivateGuard} from './authentication/can-deactivate-guard.service'
 import {AuthGuard} from './authentication/auth-guard.service'
@@ -15,7 +16,6 @@ import {DashboardComponent} from './dashboard/dashboard.component'
 import {IngestComponent} from './ingest/ingest.component'
 import {JobsComponent} from './jobs/jobs.component'
 import {LoginComponent} from './login/login.component'
-import {PlayerComponent} from './player/player.component'
 import {PersonComponent} from './persons/person.component'
 import {PersonsComponent} from './persons/persons.component'
 import {UsersComponent} from './users/users.component'
@@ -23,6 +23,7 @@ import {WatchersComponent} from './watchers/watchers.component'
 import {WorkflowDetailsComponent} from './workflows/details/workflow_details.component'
 import {WorkflowsComponent} from './workflows/workflows.component'
 import {WorkersComponent} from './workers/workers.component'
+import {PlayerModule} from './player/player.module'
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -38,7 +39,6 @@ const appRoutes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    // loadChildren: 'app/dashboard/dashboard.module#DashboardModule'
     canActivate: [AuthGuard]
   },
   {
@@ -63,8 +63,7 @@ const appRoutes: Routes = [
   },
   {
     path: 'player/:id',
-    component: PlayerComponent,
-    // loadChildren: 'app/player/player.module#PlayerModule'
+    loadChildren: () => PlayerModule,
     canActivate: [AuthGuard]
   },
   {
@@ -96,6 +95,7 @@ const appRoutes: Routes = [
 
 @NgModule({
   imports: [
+    BrowserModule,
     RouterModule.forRoot(
       appRoutes,
       {

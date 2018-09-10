@@ -5,9 +5,6 @@ const webpack = require('webpack')
 const config = {
   mode: 'production',
   entry: {
-    'common': [
-      './src/common.ts'
-    ],
     'main': [
       './src/app.ts'
     ],
@@ -20,11 +17,12 @@ const config = {
   },
   output: {
     path: path.resolve(__dirname, path.join('..', 'priv', 'static', 'bundles')),
-    filename: '[name].js'
+    filename: '[name].js',
+    chunkFilename: '[name]-chunk.js',
   },
   resolve: {
     extensions: ['.ts', '.js', '.scss'],
-    modules: ['deps', 'node_modules']
+    modules: ['src', 'node_modules']
   },
   module: {
     rules: [

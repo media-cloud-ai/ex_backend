@@ -66,13 +66,10 @@ import {ParametersComponent}     from './workflows/details/parameters.component'
 import {PersonComponent}         from './persons/person.component'
 import {PersonFormComponent}     from './persons/form.component'
 import {PersonsComponent}        from './persons/persons.component'
-import {PlayerComponent}         from './player/player.component'
 import {RightsComponent}         from './users/rights.component'
 import {QueuesComponent}         from './amqp/queues.component'
 import {StepProgressBarComponent} from './workflows/step_progress_bar.component'
 import {StepRendererComponent}   from './workflows/renderer/step_renderer.component'
-import {SubtitleComponent}       from './player/subtitle.component'
-import {TimecodeComponent}       from './player/timecode.component'
 import {UserComponent}           from './users/user.component'
 import {UsersComponent}          from './users/users.component'
 import {VideoTitleComponent}     from './workflows/video_title.component'
@@ -89,7 +86,6 @@ import {JobDetailsDialogComponent} from './jobs/details/job_details_dialog.compo
 import {NewNodeDialogComponent} from './nodes/new_node_dialog.component'
 import {PersonShowDialogComponent} from './persons/show_dialog.component'
 import {RdfDialogComponent} from './catalog/rdf/rdf_dialog.component'
-import {TimecodeDialogComponent} from './player/dialog/timecode_dialog.component'
 import {WorkflowAbortDialogComponent} from './workflows/dialogs/workflow_abort_dialog.component'
 import {WorkflowDialogComponent} from './catalog/workflow/workflow_dialog.component'
 
@@ -109,29 +105,13 @@ import {UserService}             from './services/user.service'
 import {WatcherService}          from './services/watcher.service'
 import {WorkflowService}         from './services/workflow.service'
 
-import {AudioTypePipe}           from './pipes/audio_type.pipe'
-import {BasenamePipe}            from './pipes/basename.pipe'
-import {DockerImagePipe}         from './pipes/docker_image.pipe'
-import {DockerImageVersionPipe}  from './pipes/docker_image_version.pipe'
-import {DurationPipe}            from './pipes/duration.pipe'
-import {IconForJobPipe}          from './pipes/icon_for_job.pipe'
-import {JobDurationPipe}         from './pipes/job_duration.pipe'
-import {JobTypePipe}             from './pipes/job_type.pipe'
-import {JobStatusPipe}           from './pipes/job_status.pipe'
-import {JobStatusIconPipe}       from './pipes/job_status_icon.pipe'
-import {LanguagePipe}            from './pipes/language.pipe'
-import {NumberToArrayPipe}       from './pipes/number_to_array.pipe'
-import {ParameterLabelPipe}      from './pipes/parameter_label.pipe'
-import {QueuePipe}               from './pipes/queue.pipe'
-import {TextTypePipe}            from './pipes/text_type.pipe'
-import {VideoTypePipe}           from './pipes/video_type.pipe'
+import {PipesModule}            from './pipes/pipes.module'
 
 import {TokenInterceptor}        from './authentication/token.interceptor'
 import {ErrorInterceptor}        from './authentication/error.interceptor'
 
 import 'hammerjs/hammer' // for MatSlideToggleModule
 import * as moment from 'moment'
-import * as dashjs from 'dashjs'
 
 const EX_BACKEND_DATE_FORMATS = {
   parse: {
@@ -176,6 +156,7 @@ const EX_BACKEND_DATE_FORMATS = {
     MatStepperModule,
     MatTableModule,
     MatToolbarModule,
+    PipesModule,
     SocketModule
   ],
   declarations: [
@@ -195,15 +176,11 @@ const EX_BACKEND_DATE_FORMATS = {
     PersonFormComponent,
     PersonShowDialogComponent,
     PersonsComponent,
-    PlayerComponent,
     QueuesComponent,
     RightsComponent,
     StartIngestDialog,
     StepProgressBarComponent,
     StepRendererComponent,
-    SubtitleComponent,
-    TimecodeComponent,
-    TimecodeDialogComponent,
     UserComponent,
     UsersComponent,
     VideoTitleComponent,
@@ -217,23 +194,6 @@ const EX_BACKEND_DATE_FORMATS = {
     WorkflowStepDetailsComponent,
     WorkflowsComponent,
     WorkersComponent,
-
-    AudioTypePipe,
-    BasenamePipe,
-    DockerImagePipe,
-    DockerImageVersionPipe,
-    DurationPipe,
-    IconForJobPipe,
-    JobDurationPipe,
-    JobTypePipe,
-    JobStatusPipe,
-    JobStatusIconPipe,
-    LanguagePipe,
-    NumberToArrayPipe,
-    ParameterLabelPipe,
-    QueuePipe,
-    TextTypePipe,
-    VideoTypePipe,
   ],
   entryComponents: [
     DurationComponent,
@@ -248,9 +208,6 @@ const EX_BACKEND_DATE_FORMATS = {
     StartIngestDialog,
     StepProgressBarComponent,
     StepRendererComponent,
-    SubtitleComponent,
-    TimecodeComponent,
-    TimecodeDialogComponent,
     UserComponent,
     VideoTitleComponent,
     WatchersComponent,
