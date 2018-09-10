@@ -8,16 +8,20 @@ defmodule ExBackend.Workflow.Step.TtmlToMp4 do
   def launch(workflow, step) do
     step_id = ExBackend.Map.get_by_key_or_atom(step, :id)
 
-    case get_ttml_files(workflow.jobs, Map.get(workflow.flow, "steps", [])) do
+    ExBackend.Workflow.Step.Requirements.get_source_files(workflow.jobs, step)
+    |> case do
       [] ->
         Jobs.create_skipped_job(workflow, step_id, @action_name)
-
       paths ->
         start_process(paths, workflow, step_id)
     end
   end
 
   defp start_process([], _workflow, _step_id), do: {:ok, "started"}
+
+  defp start_process([nil | paths], workflow, step_id) do
+    start_process(paths, workflow, step_id)
+  end
 
   defp start_process([path | paths], workflow, step_id) do
     mp4_path = String.replace(path, ".ttml", ".mp4")
@@ -49,16 +53,6 @@ defmodule ExBackend.Workflow.Step.TtmlToMp4 do
     JobGpacEmitter.publish_json(params)
 
     start_process(paths, workflow, step_id)
-  end
-
-  defp get_ttml_files(jobs, steps) do
-    case ExBackend.Workflow.Step.Acs.Synchronize.get_jobs_destination_paths(jobs, steps) do
-      [] ->
-        ExBackend.Workflow.Step.HttpDownload.get_jobs_destination_paths(jobs)
-
-      paths ->
-        paths
-    end
   end
 
   @doc """

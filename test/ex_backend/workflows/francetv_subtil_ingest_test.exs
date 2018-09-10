@@ -18,12 +18,20 @@ defmodule ExBackend.FrancetvSubtilIngestTest do
       }
 
       {:ok, workflow} = Workflows.create_workflow(workflow_params)
-      {:ok, "started"} = WorkflowStep.start_next_step(workflow)
-      ExBackend.HelpersTest.check(workflow.id, 3)
+      {:error, "unable to publish RDF"} = WorkflowStep.start_next_step(workflow)
+      ExBackend.HelpersTest.check(workflow.id, 11)
       ExBackend.HelpersTest.check(workflow.id, "download_ftp", 1)
       ExBackend.HelpersTest.check(workflow.id, "download_http", 1)
-
-      {:error, "unable to publish RDF"} = WorkflowStep.start_next_step(workflow)
+      ExBackend.HelpersTest.check(workflow.id, "audio_extraction", 1)
+      ExBackend.HelpersTest.check(workflow.id, "audio_decode", 1)
+      ExBackend.HelpersTest.check(workflow.id, "acs_prepare_audio", 1)
+      ExBackend.HelpersTest.check(workflow.id, "acs_synchronize", 1)
+      ExBackend.HelpersTest.check(workflow.id, "ttml_to_mp4", 1)
+      ExBackend.HelpersTest.check(workflow.id, "set_language", 1)
+      ExBackend.HelpersTest.check(workflow.id, "generate_dash", 1)
+      ExBackend.HelpersTest.check(workflow.id, "upload_ftp", 1)
+      ExBackend.HelpersTest.check(workflow.id, "push_rdf", 1)
+      ExBackend.HelpersTest.check(workflow.id, "clean_workspace", 0)
     end
 
     test "il etait une fois la vie" do
@@ -57,13 +65,13 @@ defmodule ExBackend.FrancetvSubtilIngestTest do
       ExBackend.HelpersTest.check(workflow.id, 11)
       ExBackend.HelpersTest.check(workflow.id, "ttml_to_mp4", 1)
       ExBackend.HelpersTest.complete_jobs(workflow.id, "ttml_to_mp4")
-      ExBackend.HelpersTest.set_gpac_outputs(workflow.id, "ttml_to_mp4", "subtitle.mp4")
+      ExBackend.HelpersTest.set_gpac_outputs(workflow.id, "ttml_to_mp4", ["subtitle.mp4"])
 
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)
       ExBackend.HelpersTest.check(workflow.id, 12)
       ExBackend.HelpersTest.check(workflow.id, "set_language", 1)
       ExBackend.HelpersTest.complete_jobs(workflow.id, "set_language")
-      ExBackend.HelpersTest.set_gpac_outputs(workflow.id, "set_language", "subtitle-fra.mp4")
+      ExBackend.HelpersTest.set_gpac_outputs(workflow.id, "set_language", ["subtitle-fra.mp4"])
 
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)
       ExBackend.HelpersTest.check(workflow.id, 13)
@@ -113,19 +121,22 @@ defmodule ExBackend.FrancetvSubtilIngestTest do
 
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)
       ExBackend.HelpersTest.check(workflow.id, 11)
+      ExBackend.HelpersTest.check(workflow.id, "audio_decode", 1)
+      ExBackend.HelpersTest.check(workflow.id, "acs_prepare_audio", 1)
+      ExBackend.HelpersTest.check(workflow.id, "acs_synchronize", 1)
       ExBackend.HelpersTest.check(workflow.id, "ttml_to_mp4", 1)
       ExBackend.HelpersTest.complete_jobs(workflow.id, "ttml_to_mp4")
 
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)
-      ExBackend.HelpersTest.check(workflow.id, 13)
+      ExBackend.HelpersTest.check(workflow.id, 12)
       ExBackend.HelpersTest.check(workflow.id, "set_language", 1)
       ExBackend.HelpersTest.complete_jobs(workflow.id, "set_language")
-      ExBackend.HelpersTest.check(workflow.id, "generate_dash", 1)
-      ExBackend.HelpersTest.complete_jobs(workflow.id, "generate_dash")
-      ExBackend.HelpersTest.check(workflow.id, "upload_ftp", 0)
-      ExBackend.HelpersTest.complete_jobs(workflow.id, "upload_ftp")
 
       {:error, "unable to publish RDF"} = WorkflowStep.start_next_step(workflow)
+      ExBackend.HelpersTest.check(workflow.id, 15)
+      ExBackend.HelpersTest.check(workflow.id, "generate_dash", 1)
+      ExBackend.HelpersTest.check(workflow.id, "upload_ftp", 1)
+      ExBackend.HelpersTest.check(workflow.id, "push_rdf", 1)
     end
   end
 end

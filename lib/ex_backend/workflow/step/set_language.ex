@@ -8,21 +8,42 @@ defmodule ExBackend.Workflow.Step.SetLanguage do
   def launch(workflow, step) do
     step_id = ExBackend.Map.get_by_key_or_atom(step, :id)
 
-    case get_source_files(workflow.jobs) do
+    case ExBackend.Workflow.Step.Requirements.get_source_files(workflow.jobs, step) do
       [] -> Jobs.create_skipped_job(workflow, step_id, @action_name)
-      paths -> start_setting_languages(paths, workflow, step_id)
+      paths -> start_setting_languages(paths, workflow, step, step_id)
     end
   end
 
-  defp start_setting_languages([], _workflow, _step_id), do: {:ok, "started"}
+  defp start_setting_languages([], _workflow, step, _step_id), do: {:ok, "started"}
 
-  defp start_setting_languages([path | paths], workflow, step_id) do
+  defp start_setting_languages([nil | paths], workflow, step, step_id) do
+    start_setting_languages(paths, workflow, step, step_id)
+  end
+
+  defp start_setting_languages([path | paths], workflow, step, step_id) do
     work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
 
-    dst_path =
-      work_dir <> "/" <> Integer.to_string(workflow.id) <> "/lang/" <> Path.basename(path)
+    params =
+      ExBackend.Map.get_by_key_or_atom(step, :parameters, [])
+      |> Enum.filter(fn param ->
+        ExBackend.Map.get_by_key_or_atom(param, :id) in ["language"]
+      end)
+      |> Enum.map(fn param ->
+        %{
+          ExBackend.Map.get_by_key_or_atom(param, :id) =>
+            ExBackend.Map.get_by_key_or_atom(param, :value)
+        }
+      end)
+      |> Enum.reduce(%{}, fn param, acc -> Map.merge(acc, param) end)
 
-    language_code = get_file_language(path, workflow)
+    language_code =
+      case params do
+        %{"language"=> language} -> language
+        _ -> get_file_language(path, workflow)
+      end
+
+    dst_path =
+      work_dir <> "/" <> Integer.to_string(workflow.id) <> "/lang/" <> Path.basename(path, ".mp4") <> "-" <> language_code <> ".mp4"
 
     options = %{
       "-lang": language_code,
@@ -54,7 +75,7 @@ defmodule ExBackend.Workflow.Step.SetLanguage do
 
     JobGpacEmitter.publish_json(params)
 
-    start_setting_languages(paths, workflow, step_id)
+    start_setting_languages(paths, workflow, step, step_id)
   end
 
   defp get_file_language(path, workflow) do
@@ -77,42 +98,6 @@ defmodule ExBackend.Workflow.Step.SetLanguage do
         |> Map.get("code")
         |> String.downcase()
     end
-  end
-
-  defp get_source_files(jobs) do
-    audio_files =
-      ExBackend.Workflow.Step.AudioEncode.get_jobs_destination_paths(jobs)
-      |> Enum.filter(fn path -> is_audio_file?(path) end)
-
-    audio_files =
-      ExBackend.Workflow.Step.AudioExtraction.get_jobs_destination_paths(jobs)
-      |> Enum.filter(fn path -> is_audio_file?(path) end)
-      |> Enum.reject(fn path -> is_file_already_in_list?(path, audio_files) end)
-      |> Enum.concat(audio_files)
-
-    audio_files =
-      ExBackend.Workflow.Step.FtpDownload.get_jobs_destination_paths(jobs)
-      |> Enum.filter(fn path -> is_audio_file?(path) end)
-      |> Enum.reject(fn path -> is_file_already_in_list?(path, audio_files) end)
-      |> Enum.concat(audio_files)
-
-    ExBackend.Workflow.Step.TtmlToMp4.get_jobs_destination_paths(jobs)
-    |> Enum.concat(audio_files)
-  end
-
-  defp is_audio_file?(path) do
-    cond do
-      String.ends_with?(path, "-fra.mp4") -> true
-      String.ends_with?(path, "-qaa.mp4") -> true
-      String.ends_with?(path, "-qad.mp4") -> true
-      true -> false
-    end
-  end
-
-  defp is_file_already_in_list?(file_path, paths_list) do
-    Enum.any?(paths_list, fn path ->
-      Path.basename(file_path) == Path.basename(path)
-    end)
   end
 
   @doc """

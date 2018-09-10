@@ -36,7 +36,7 @@ defmodule ExBackend.EbuIngestTest do
         "/data/" <> (workflow.id |> Integer.to_string()) <> "/3_input_filename.mp4.mp4"
 
       video_dash_file =
-        "/data/" <> (workflow.id |> Integer.to_string()) <> "/4_input_filename.mp4.mp4"
+        "/data/" <> (workflow.id |> Integer.to_string()) <> "/4_input_filename.mp4-standard5.mp4"
 
       webvtt_file =
         "/data/" <> (workflow.id |> Integer.to_string()) <> "/2_input_filename.mp4.wav.vtt"
@@ -62,7 +62,14 @@ defmodule ExBackend.EbuIngestTest do
 
       assert %{
                "action" => "copy",
-               "parameters" => nil,
+               "parameters" => [
+                 %{"default" => "/archive/#workflow_id",
+                 "enable" => false,
+                 "id" => "output_directory",
+                 "type" => "string",
+                 "value" => "/archive/" <> (workflow.id |> Integer.to_string())
+                 }
+               ],
                "requirements" => %{
                  "paths" => [
                    uploaded_file
@@ -353,6 +360,27 @@ defmodule ExBackend.EbuIngestTest do
                "language" => "en-US",
                "mode" => "conversation"
              } == params
+
+      {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+
+      ExBackend.HelpersTest.check(workflow.id, 7)
+      ExBackend.HelpersTest.check(workflow.id, "set_language", 1)
+
+      ExBackend.HelpersTest.complete_jobs(workflow.id, "set_language")
+
+      {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+
+      ExBackend.HelpersTest.check(workflow.id, 8)
+      ExBackend.HelpersTest.check(workflow.id, "generate_dash", 1)
+
+      ExBackend.HelpersTest.complete_jobs(workflow.id, "generate_dash")
+
+      {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+
+      ExBackend.HelpersTest.check(workflow.id, 9)
+      ExBackend.HelpersTest.check(workflow.id, "copy", 2)
+
+      ExBackend.HelpersTest.complete_jobs(workflow.id, "copy")
 
       {:ok, "completed"} = WorkflowStep.start_next_step(workflow)
     end

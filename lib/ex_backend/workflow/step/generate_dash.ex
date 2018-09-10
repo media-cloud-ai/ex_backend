@@ -38,7 +38,7 @@ defmodule ExBackend.Workflow.Step.GenerateDash do
 
   def build_step_parameters(workflow, step, step_id) do
     source_file_paths =
-      get_source_files(workflow.jobs)
+      ExBackend.Workflow.Step.Requirements.get_source_files(workflow.jobs, step)
       |> Enum.sort()
 
     formatted_source_paths = get_formatted_source_paths(source_file_paths)
@@ -55,7 +55,7 @@ defmodule ExBackend.Workflow.Step.GenerateDash do
         work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
 
         options = %{
-          "-out": work_dir <> "/dash/" <> Integer.to_string(workflow.id) <> "/manifest.mpd",
+          "-out": work_dir <> "/" <> Integer.to_string(workflow.id) <> "/dash/manifest.mpd",
           "-profile": "onDemand",
           "-rap": true,
           "-url-template": true
@@ -100,6 +100,11 @@ defmodule ExBackend.Workflow.Step.GenerateDash do
           result = List.insert_at(result, -1, audio_path)
           {result, audio_index + 1}
 
+        "eng" ->
+          audio_path = path <> "#audio:id=a" <> Integer.to_string(audio_index)
+          result = List.insert_at(result, -1, audio_path)
+          {result, audio_index + 1}
+
         "qad" ->
           audio_path = path <> "#audio:id=a" <> Integer.to_string(audio_index)
           result = List.insert_at(result, -1, audio_path)
@@ -127,30 +132,6 @@ defmodule ExBackend.Workflow.Step.GenerateDash do
     get_formatted_source_paths(paths, audio_index, result)
   end
 
-  defp get_source_files(jobs) do
-    source_files = ExBackend.Workflow.Step.SetLanguage.get_jobs_destination_paths(jobs)
-
-    source_files =
-      ExBackend.Workflow.Step.AudioExtraction.get_jobs_destination_paths(jobs)
-      |> Enum.reject(fn path -> is_file_already_in_list?(path, source_files) end)
-      |> Enum.concat(source_files)
-
-    source_files =
-      ExBackend.Workflow.Step.TtmlToMp4.get_jobs_destination_paths(jobs)
-      |> Enum.reject(fn path -> is_file_already_in_list?(path, source_files) end)
-      |> Enum.concat(source_files)
-
-    ExBackend.Workflow.Step.FtpDownload.get_jobs_destination_paths(jobs)
-    |> Enum.reject(fn path -> is_file_already_in_list?(path, source_files) end)
-    |> Enum.concat(source_files)
-  end
-
-  defp is_file_already_in_list?(file_path, paths_list) do
-    Enum.any?(paths_list, fn path ->
-      Path.basename(file_path) == Path.basename(path)
-    end)
-  end
-
   defp build_gpac_parameters([], result), do: result
 
   defp build_gpac_parameters([param | params], result) do
@@ -174,6 +155,9 @@ defmodule ExBackend.Workflow.Step.GenerateDash do
     cond do
       String.ends_with?(path, "-fra.mp4") ->
         "fra"
+
+      String.ends_with?(path, "-eng.mp4") ->
+        "eng"
 
       String.ends_with?(path, "-qad.mp4") ->
         "qad"

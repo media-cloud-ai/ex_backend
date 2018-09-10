@@ -20,14 +20,14 @@ defmodule ExBackend.Workflow.Definition.EbuIngest do
           icon: "share",
           enable: true,
           parent_ids: [0],
-          required: ["upload_file"],
+          required: [0],
           parameters: [
             %{
               id: "output_directory",
               type: "string",
               enable: false,
-              default: "/archive",
-              value: "/archive"
+              default: "/archive/#workflow_id",
+              value: "/archive/#workflow_id"
             }
           ]
         },
@@ -37,7 +37,7 @@ defmodule ExBackend.Workflow.Definition.EbuIngest do
           label: "Encode audio for Speech-to-Text",
           enable: true,
           parent_ids: [0],
-          required: ["upload_file"],
+          required: [0],
           output_extension: ".wav",
           parameters: [
             %{
@@ -84,7 +84,7 @@ defmodule ExBackend.Workflow.Definition.EbuIngest do
           icon: "volume_up",
           enable: true,
           parent_ids: [0],
-          required: ["upload_file"],
+          required: [0],
           output_extension: ".mp4",
           parameters: [
             %{
@@ -117,8 +117,8 @@ defmodule ExBackend.Workflow.Definition.EbuIngest do
           icon: "local_movies",
           enable: true,
           parent_ids: [0],
-          required: ["upload_file"],
-          output_extension: ".mp4",
+          required: [0],
+          output_extension: "-standard5.mp4",
           parameters: [
             %{
               id: "output_codec_video",
@@ -232,7 +232,7 @@ defmodule ExBackend.Workflow.Definition.EbuIngest do
           name: "speech_to_text",
           enable: true,
           parent_ids: [2],
-          required: ["audio_extraction"],
+          required: [2],
           parameters: [
             %{
               id: "language",
@@ -256,7 +256,64 @@ defmodule ExBackend.Workflow.Definition.EbuIngest do
               value: "conversation"
             }
           ]
-        }
+        },
+        %{
+          id: 7,
+          name: "set_language",
+          label: "Set language",
+          enable: true,
+          required: [3],
+          parent_ids: [3],
+          parameters: [
+            %{
+              id: "language",
+              type: "string",
+              enable: false,
+              default: "eng",
+              value: "eng"
+            }
+          ]
+        },
+        %{
+          id: 8,
+          name: "generate_dash",
+          label: "Package DASH",
+          enable: true,
+          required: [7, 4],
+          parent_ids: [7, 4],
+          parameters: [
+            %{
+              id: "segment_duration",
+              type: "number",
+              default: 2000,
+              value: 2000
+            },
+            %{
+              id: "fragment_duration",
+              type: "number",
+              default: 2000,
+              value: 2000
+            }
+          ]
+        },
+        %{
+          id: 9,
+          name: "copy",
+          label: "Archive DASH and Subtitle",
+          icon: "archive",
+          enable: true,
+          required: [8, 5],
+          parent_ids: [8, 5],
+          parameters: [
+            %{
+              id: "output_directory",
+              type: "string",
+              enable: false,
+              default: "/dash/#workflow_id",
+              value: "/dash/#workflow_id"
+            }
+          ]
+        },
       ]
     }
   end

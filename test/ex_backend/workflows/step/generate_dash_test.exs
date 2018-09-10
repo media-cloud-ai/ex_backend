@@ -20,7 +20,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
     }
 
     result = GenerateDash.build_step_parameters(workflow, step, 0)
-    assert result == {:skipped, nil}
+    assert {:skipped, nil} == result
   end
 
   test "video only" do
@@ -30,6 +30,8 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
       flow: %{steps: []},
       jobs: [
         %Job{
+          id: 0,
+          step_id: 555,
           name: "download_ftp",
           params: %{
             "destination" => %{
@@ -42,6 +44,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
 
     step = %{
       "id" => 0,
+      "parent_ids" => [555],
       "parameters" => [
         %{
           "id" => "segment_duration",
@@ -56,14 +59,14 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
 
     result = GenerateDash.build_step_parameters(workflow, step, 0)
 
-    assert result == {
+    assert {
              :ok,
              %{
                name: "generate_dash",
                params: %{
                  kind: "generate_dash",
                  options: %{
-                   "-out": "/data/dash/666/manifest.mpd",
+                   "-out": "/data/666/dash/manifest.mpd",
                    "-profile": "onDemand",
                    "-rap": true,
                    "-url-template": true,
@@ -84,7 +87,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
                workflow_id: 666,
                step_id: 0
              }
-           }
+           } == result
   end
 
   test "video with 1 audio" do
@@ -95,6 +98,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
       jobs: [
         %Job{
           name: "download_ftp",
+          step_id: 3,
           params: %{
             "destination" => %{
               "path" => "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4"
@@ -103,6 +107,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
         },
         %Job{
           name: "audio_extraction",
+          step_id: 4,
           params: %{
             "destination" => %{
               "paths" => ["/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4"]
@@ -114,6 +119,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
 
     step = %{
       "id" => 0,
+      "parent_ids" => [3, 4],
       "parameters" => [
         %{
           "id" => "segment_duration",
@@ -128,14 +134,14 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
 
     result = GenerateDash.build_step_parameters(workflow, step, 0)
 
-    assert result == {
+    assert {
              :ok,
              %{
                name: "generate_dash",
                params: %{
                  kind: "generate_dash",
                  options: %{
-                   "-out": "/data/dash/666/manifest.mpd",
+                   "-out": "/data/666/dash/manifest.mpd",
                    "-profile": "onDemand",
                    "-rap": true,
                    "-url-template": true,
@@ -158,7 +164,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
                workflow_id: 666,
                step_id: 0
              }
-           }
+           } == result
   end
 
   test "video with 1 audio and 1 Audio Description" do
@@ -169,6 +175,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
       jobs: [
         %Job{
           name: "download_ftp",
+          step_id: 0,
           params: %{
             "destination" => %{
               "path" => "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4"
@@ -177,6 +184,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
         },
         %Job{
           name: "download_ftp",
+          step_id: 1,
           params: %{
             "destination" => %{
               "path" => "/2018/S12/J7/173535163-5ab81c23a3594-qad.mp4"
@@ -185,6 +193,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
         },
         %Job{
           name: "audio_extraction",
+          step_id: 2,
           params: %{
             "destination" => %{
               "paths" => ["/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4"]
@@ -195,7 +204,8 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
     }
 
     step = %{
-      "id" => 0,
+      "id" => 4,
+      "parent_ids" => [0, 1, 2],
       "parameters" => [
         %{
           "id" => "segment_duration",
@@ -210,14 +220,14 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
 
     result = GenerateDash.build_step_parameters(workflow, step, 0)
 
-    assert result == {
+    assert {
              :ok,
              %{
                name: "generate_dash",
                params: %{
                  kind: "generate_dash",
                  options: %{
-                   "-out": "/data/dash/666/manifest.mpd",
+                   "-out": "/data/666/dash/manifest.mpd",
                    "-profile": "onDemand",
                    "-rap": true,
                    "-url-template": true,
@@ -242,7 +252,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
                workflow_id: 666,
                step_id: 0
              }
-           }
+           } == result
   end
 
   test "video with 1 audio and 1 original version" do
@@ -253,6 +263,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
       jobs: [
         %Job{
           name: "download_ftp",
+          step_id: 0,
           params: %{
             "destination" => %{
               "path" => "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4"
@@ -261,6 +272,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
         },
         %Job{
           name: "download_ftp",
+          step_id: 1,
           params: %{
             "destination" => %{
               "path" => "/2018/S12/J7/173535163-5ab81c23a3594-qaa.mp4"
@@ -269,6 +281,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
         },
         %Job{
           name: "audio_extraction",
+          step_id: 2,
           params: %{
             "destination" => %{
               "paths" => ["/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4"]
@@ -280,6 +293,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
 
     step = %{
       "id" => 0,
+      "parent_ids" => [0, 1, 2],
       "parameters" => [
         %{
           "id" => "segment_duration",
@@ -294,14 +308,14 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
 
     result = GenerateDash.build_step_parameters(workflow, step, 0)
 
-    assert result == {
+    assert {
              :ok,
              %{
                name: "generate_dash",
                params: %{
                  kind: "generate_dash",
                  options: %{
-                   "-out": "/data/dash/666/manifest.mpd",
+                   "-out": "/data/666/dash/manifest.mpd",
                    "-profile": "onDemand",
                    "-rap": true,
                    "-url-template": true,
@@ -326,7 +340,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
                workflow_id: 666,
                step_id: 0
              }
-           }
+           } == result
   end
 
   test "video with 1 audio and 1 original version and 1 audio description" do
@@ -336,6 +350,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
       flow: %{steps: []},
       jobs: [
         %Job{
+          step_id: 0,
           name: "download_ftp",
           params: %{
             "destination" => %{
@@ -344,6 +359,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
           }
         },
         %Job{
+          step_id: 0,
           name: "download_ftp",
           params: %{
             "destination" => %{
@@ -352,6 +368,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
           }
         },
         %Job{
+          step_id: 0,
           name: "download_ftp",
           params: %{
             "destination" => %{
@@ -360,6 +377,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
           }
         },
         %Job{
+          step_id: 1,
           name: "audio_extraction",
           params: %{
             "destination" => %{
@@ -372,6 +390,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
 
     step = %{
       "id" => 0,
+      "parent_ids" => [0, 1],
       "parameters" => [
         %{
           "id" => "segment_duration",
@@ -386,14 +405,14 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
 
     result = GenerateDash.build_step_parameters(workflow, step, 0)
 
-    assert result == {
+    assert {
              :ok,
              %{
                name: "generate_dash",
                params: %{
                  kind: "generate_dash",
                  options: %{
-                   "-out": "/data/dash/666/manifest.mpd",
+                   "-out": "/data/666/dash/manifest.mpd",
                    "-profile": "onDemand",
                    "-rap": true,
                    "-url-template": true,
@@ -420,6 +439,6 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
                workflow_id: 666,
                step_id: 0
              }
-           }
+           } == result
   end
 end

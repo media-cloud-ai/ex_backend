@@ -17,6 +17,10 @@ defmodule ExBackend.Workflow.Step.Copy do
       paths ->
         requirements = Requirements.add_required_paths(paths)
 
+        parameters =
+          ExBackend.Map.get_by_key_or_atom(step, :parameters)
+          |> Requirements.parse_parameters(workflow)
+
         job_params = %{
           name: @action_name,
           step_id: ExBackend.Map.get_by_key_or_atom(step, :id),
@@ -27,7 +31,7 @@ defmodule ExBackend.Workflow.Step.Copy do
             source: %{
               paths: paths
             },
-            parameters: Map.get(step, "parameters")
+            parameters: parameters
           }
         }
 

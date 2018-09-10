@@ -35,7 +35,7 @@ export class WorkflowRendererComponent {
   }
 
   updateStepRequirements(step: Step) {
-    let step_dependencies = this.steps.filter(s => step.required && step.required.some(dependency => dependency === s.name))
+    let step_dependencies = this.steps.filter(s => step.parent_ids && step.parent_ids.some(dependency => dependency === s.id))
     let can_step_be_enabled = true
     for (let dependency of step_dependencies) {
       if (!dependency.enable) {

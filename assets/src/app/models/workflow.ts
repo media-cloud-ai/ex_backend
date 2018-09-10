@@ -28,7 +28,7 @@ export class Step {
   icon?: string
   enable: boolean
   status?: string
-  required?: string[]
+  required?: number[]
   inputs?: Input[]
   output_extension?: string
   parameters?: Parameter[]
