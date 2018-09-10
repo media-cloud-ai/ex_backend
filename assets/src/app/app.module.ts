@@ -66,6 +66,8 @@ import {ParametersComponent}     from './workflows/details/parameters.component'
 import {PersonComponent}         from './persons/person.component'
 import {PersonFormComponent}     from './persons/form.component'
 import {PersonsComponent}        from './persons/persons.component'
+import {RegisteryComponent}      from './registeries/registery.component'
+import {RegisteriesComponent}    from './registeries/registeries.component'
 import {RightsComponent}         from './users/rights.component'
 import {QueuesComponent}         from './amqp/queues.component'
 import {StepProgressBarComponent} from './workflows/step_progress_bar.component'
@@ -101,6 +103,7 @@ import {MouseMoveService}        from './services/mousemove.service'
 import {NodeService}             from './services/node.service'
 import {PersonService}           from './services/person.service'
 import {RdfService}              from './services/rdf.service'
+import {RegisteryService}        from './services/registery.service'
 import {UserService}             from './services/user.service'
 import {WatcherService}          from './services/watcher.service'
 import {WorkflowService}         from './services/workflow.service'
@@ -176,6 +179,8 @@ const EX_BACKEND_DATE_FORMATS = {
     PersonShowDialogComponent,
     PersonsComponent,
     QueuesComponent,
+    RegisteryComponent,
+    RegisteriesComponent,
     RightsComponent,
     StartIngestDialog,
     StepProgressBarComponent,
@@ -203,6 +208,7 @@ const EX_BACKEND_DATE_FORMATS = {
     PersonFormComponent,
     PersonShowDialogComponent,
     RdfDialogComponent,
+    RegisteryComponent,
     RightsComponent,
     StartIngestDialog,
     StepProgressBarComponent,
@@ -257,6 +263,7 @@ const EX_BACKEND_DATE_FORMATS = {
     NodeService,
     PersonService,
     RdfService,
+    RegisteryService,
     Title,
     UserService,
     WatcherService,

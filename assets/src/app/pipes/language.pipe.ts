@@ -11,7 +11,10 @@ export class LanguagePipe implements PipeTransform {
   transform(language: string): string {
     var allLanguages = [
       { id: 'english', name: 'English' },
+      { id: 'eng', name: 'English' },
       { id: 'french', name: 'French' },
+      { id: 'fre', name: 'French' },
+      { id: 'fra', name: 'French' },
     ]
 
     for (var i = allLanguages.length - 1; i >= 0; i--) {

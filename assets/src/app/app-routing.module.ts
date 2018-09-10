@@ -18,6 +18,7 @@ import {JobsComponent} from './jobs/jobs.component'
 import {LoginComponent} from './login/login.component'
 import {PersonComponent} from './persons/person.component'
 import {PersonsComponent} from './persons/persons.component'
+import {RegisteriesComponent} from './registeries/registeries.component'
 import {UsersComponent} from './users/users.component'
 import {WatchersComponent} from './watchers/watchers.component'
 import {WorkflowDetailsComponent} from './workflows/details/workflow_details.component'
@@ -64,6 +65,11 @@ const appRoutes: Routes = [
   {
     path: 'player/:id',
     loadChildren: () => PlayerModule,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'registeries',
+    component: RegisteriesComponent,
     canActivate: [AuthGuard]
   },
   {

@@ -182,16 +182,12 @@ export class PlayerComponent {
   @HostListener('mousemove', ['$event'])
   onMousemove(event: MouseEvent) {
     console.log(this.isChangingTimecode)
-    // if(this.isChangingTimecode) {
-      this.mouseMoveService.mouveMoveSource.next(event)
-      return false
-    // }
+    this.mouseMoveService.mouveMoveSource.next(event)
+    return false
   }
 
   @HostListener('mouseup')
   onMouseup() {
-    // if(this.isChangingTimecode) {
-      this.mouseMoveService.mouveUpSource.next(event)
-    // }
+    this.mouseMoveService.mouveUpSource.next(event)
   }
 }

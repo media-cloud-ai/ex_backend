@@ -20,7 +20,7 @@ defmodule ExBackend.Workflow.Step.Register do
       case register(workflow, step) do
         {:ok, _} ->
           Jobs.Status.set_job_status(job.id, "completed")
-          {:ok, "started"}
+          {:ok, "completed"}
 
         {:error, message} ->
           Jobs.Status.set_job_status(job.id, "error", %{

@@ -97,7 +97,14 @@ export class AppComponent {
             'link': '/ingest',
             'label': 'Ingest'
           })
+          if (this.right_editor) {
+            this.left_menu.push({
+              'link': '/registeries',
+              'label': 'Catalog'
+            })
+          }
         }
+
         this.left_menu.push({
           'link': '/workflows',
           'label': 'Workflows'

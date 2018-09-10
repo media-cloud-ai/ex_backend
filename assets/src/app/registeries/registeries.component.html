@@ -1,0 +1,71 @@
+<h1>
+  Catalog
+</h1>
+
+<div class="search-bar">
+  <div>
+    <mat-form-field class="search-text-input">
+      <input
+        matInput
+        type="text"
+        placeholder="Category"
+        [(ngModel)]="searchInput"
+        (keydown)="updateRegisteries()"
+        >
+        <mat-icon matSuffix
+          class=title_button
+          *ngIf="searchInput != ''"
+          (click)="searchInput = ''; updateRegisteries()" >clear</mat-icon>
+    </mat-form-field>
+  </div>
+</div>
+
+<div *ngIf="loading" class="loading">
+  <span>
+    <mat-spinner
+      diameter=50
+      strokeWidth=3
+      color="accent">
+    </mat-spinner>
+  </span>
+  <span class=text>
+    Loading ...
+  </span>
+</div>
+<ul
+  *ngIf="items && !loading"
+  class="items"
+  [ngClass]="{loading: loading}"
+  >
+  <li *ngIf="items.total == 0" class="notfound">
+    No result found.
+  </li>
+  <li *ngIf="items.total > 0" class="items-header">
+    <span class="category">
+      Category
+    </span>
+    <span class="player">
+    </span>
+    <span class="languages">
+      Languages
+    </span>
+  </li>
+  <li
+    *ngFor="let item of items.data; let i = index"
+    class="item"
+    >
+    <registery-component [item]=item [index]=i>
+    </registery-component>
+  </li>
+</ul>
+
+<mat-paginator
+  class=paginator
+  showFirstLastButtons=true
+  [length]="length"
+  [pageSize]="pageSize"
+  [pageIndex]="page"
+  [pageSizeOptions]="pageSizeOptions"
+  (page)="pageEvent = eventGetRegisteries($event)"
+   *ngIf="!loading">
+</mat-paginator>
