@@ -36,7 +36,7 @@ config :ex_backend,
   akamai_video_prefix: "/test/"
 
 config :amqp,
-  hostname: "192.168.99.100",
+  hostname: "localhost",
   username: "guest",
   password: "guest"
 
