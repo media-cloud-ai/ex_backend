@@ -2,6 +2,7 @@ defmodule ExBackendWeb.Amqp.AmqpController do
   use ExBackendWeb, :controller
 
   import ExBackendWeb.Authorize
+  require Logger
 
   # the following plugs are defined in the controllers/authorize.ex file
   plug(:user_check when action in [:queues, :connections])
@@ -31,11 +32,14 @@ defmodule ExBackendWeb.Amqp.AmqpController do
         15672
         |> port_format
 
-    HTTPotion.get(
-      "http://" <> hostname <> ":" <> port <> "/api/" <> endpoint,
-      basic_auth: {username, password}
-    ).body
-    |> Poison.decode!()
+    url = "http://" <> hostname <> ":" <> port <> "/api/" <> endpoint
+
+    case HTTPotion.get(url, basic_auth: {username, password}) do
+      %HTTPotion.ErrorResponse{message: message} ->
+        Logger.error("Unable to connect to #{url}")
+        %{error: message}
+      response -> Poison.decode!(response.body)
+    end
   end
 
   defp port_format(port) when is_integer(port) do
