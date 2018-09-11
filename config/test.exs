@@ -36,10 +36,9 @@ config :ex_backend,
   akamai_video_prefix: "/test/"
 
 config :amqp,
-  hostname: "192.168.99.100",
+  hostname: "localhost",
   username: "guest",
-  password: "guest",
-  virtual_host: "test"
+  password: "guest"
 
 # Comeonin password hashing test config
 # config :argon2_elixir,
