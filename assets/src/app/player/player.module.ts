@@ -11,6 +11,7 @@ import { TimecodeDialogComponent } from './dialog/timecode_dialog.component'
 
 import {
   MatButtonModule,
+  MatDialogModule,
   MatIconModule,
   MatProgressSpinnerModule,
   MatSelectModule,
@@ -30,6 +31,7 @@ export const ROUTES: Routes = [
     CommonModule,
     FormsModule,
     MatButtonModule,
+    MatDialogModule,
     MatIconModule,
     MatInputModule,
     MatProgressSpinnerModule,

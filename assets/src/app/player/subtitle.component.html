@@ -11,14 +11,22 @@
     Loading ...
   </span>
 </div>
-
-<button
-  mat-raised-button
-  color="primary"
-  (click)="addCue()"
-  >
-  <mat-icon>add</mat-icon> Add Cue
-</button>
+<div>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="addCue()"
+    >
+    <mat-icon>add</mat-icon> Add Cue
+  </button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="save()"
+    >
+    <mat-icon>save</mat-icon> Save
+  </button>
+</div>
 <div class=subtitle
   *ngIf="loaded">
   <div *ngFor="let i of (before - beforeCues.length) | numberToArray" class=hiddenCue>

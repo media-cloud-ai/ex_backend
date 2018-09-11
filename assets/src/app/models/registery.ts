@@ -14,7 +14,7 @@ export class Params {
 }
 
 export class Registery {
-  id: string
+  id: number
   name: string
   inserted_at: string
   workflow_id: number

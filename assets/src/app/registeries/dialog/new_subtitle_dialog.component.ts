@@ -18,7 +18,7 @@ export class NewSubtitleDialogComponent {
   ]
 
   constructor(
-    public dialogRef: MatDialogRef<TimecodeDialogComponent>,
+    public dialogRef: MatDialogRef<NewSubtitleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 

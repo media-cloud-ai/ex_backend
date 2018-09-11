@@ -144,6 +144,13 @@ export class SubtitleComponent implements OnChanges {
     }
   }
 
+  save() {
+    var webvtt = new WebVtt()
+    webvtt.set_cues(this.cues)
+    var content = webvtt.dump()
+    console.log(content)
+  }
+
   @HostListener('window:keydown', ['$event'])
   keyDownEvent(event: KeyboardEvent) {
     if (event.ctrlKey === true && event.code === 'KeyC') {
