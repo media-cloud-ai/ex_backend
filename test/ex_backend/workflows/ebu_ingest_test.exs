@@ -420,8 +420,6 @@ defmodule ExBackend.EbuIngestTest do
       ExBackend.HelpersTest.check(workflow.id, 12)
       ExBackend.HelpersTest.check(workflow.id, "register", 2)
 
-      {:ok, "completed"} = WorkflowStep.start_next_step(workflow)
-
       params =
         ExBackend.Registeries.list_registeries(%{"workflow_id" => workflow.id, "name" => "master"})
         |> Map.get(:data)
