@@ -391,15 +391,9 @@ defmodule ExBackend.EbuIngestTest do
       ])
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)
 
-      ExBackend.HelpersTest.check(workflow.id, 8)
-      ExBackend.HelpersTest.check(workflow.id, "register", 1)
-
-      ExBackend.HelpersTest.complete_jobs(workflow.id, "register")
-      {:ok, "started"} = WorkflowStep.start_next_step(workflow)
-
       ExBackend.HelpersTest.check(workflow.id, 9)
+      ExBackend.HelpersTest.check(workflow.id, "register", 1)
       ExBackend.HelpersTest.check(workflow.id, "set_language", 1)
-
       ExBackend.HelpersTest.complete_jobs(workflow.id, "set_language")
       ExBackend.HelpersTest.set_output_files(workflow.id, "set_language", [audio_lang_file])
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)
@@ -421,7 +415,7 @@ defmodule ExBackend.EbuIngestTest do
         stored_manifest_file
       ])
       ExBackend.HelpersTest.complete_jobs(workflow.id, "copy")
-      {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+      {:ok, "completed"} = WorkflowStep.start_next_step(workflow)
 
       ExBackend.HelpersTest.check(workflow.id, 12)
       ExBackend.HelpersTest.check(workflow.id, "register", 2)
