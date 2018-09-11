@@ -1,0 +1,30 @@
+<h1 mat-dialog-title>Add Subtitle</h1>
+
+<div mat-dialog-content>
+  <mat-form-field>
+    <mat-select
+      placeholder="Language"
+      [(value)]="language">
+      <mat-option
+        *ngFor="let l of languages"
+        [value]="l">
+        {{l.language | language}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">
+    <mat-icon>clear</mat-icon>
+    Cancel
+  </button>
+  <button
+    mat-raised-button
+    (click)="onClose()"
+    color="accent"
+    cdkFocusInitial>
+    <mat-icon>add</mat-icon>
+    Add
+  </button>
+</div>

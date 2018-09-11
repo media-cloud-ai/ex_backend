@@ -1,29 +1,56 @@
-<span class=category>
-  {{item.name}}
-</span>
-<span class=player
-  (click)="play()">
+<div class=root>
+  <span class=category>
+    {{item.name}}
+  </span>
+  <span class=player
+    (click)="play()">
+    <span class=button>
+      <mat-icon *ngIf=!playing class=play>
+        play_circle_outline
+      </mat-icon>
+      <mat-icon *ngIf=playing class=pause>
+        pause_circle_outline
+      </mat-icon>
+    </span>
+    <video
+      class="videoPlayer"
+      >
+    </video>
+  </span>
+  <span class=languages *ngIf="item.params && item.params.subtitles">
+    <span
+      class=language
+      *ngFor="let subtitle of item.params.subtitles">
+      {{subtitle.language | language}}
+      <mat-icon class=icon>
+        delete
+      </mat-icon>
+    </span>
+  </span>
   <span class=actions>
-    <mat-icon *ngIf=!playing class=play>
-      play_circle_outline
-    </mat-icon>
-    <mat-icon *ngIf=playing class=pause>
-      pause_circle_outline
-    </mat-icon>
+    <span>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)=openPlayer(subtitle)
+        >
+        <mat-icon class=icon>
+          edit
+        </mat-icon>
+        Edit
+      </button>
+    </span>
+    <span>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)=addSubtitle()
+        >
+        <mat-icon class=icon>
+          add
+        </mat-icon>
+        Add language
+      </button>
+    </span>
   </span>
-  <video
-    class="videoPlayer"
-    >
-  </video>
-</span>
-<span class=languages *ngIf="item.params && item.params.subtitles">
-  <span
-    (click)=openPlayer(subtitle)
-    class=language
-    *ngFor="let subtitle of item.params.subtitles">
-    {{subtitle.language | language}}
-    <mat-icon class=icon>
-      edit
-    </mat-icon>
-  </span>
-</span>
+</div>

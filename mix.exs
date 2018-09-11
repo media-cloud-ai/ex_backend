@@ -66,7 +66,8 @@ defmodule ExBackend.Mixfile do
       {:ranch_proxy_protocol,
        git: "https://github.com/heroku/ranch_proxy_protocol", branch: "master", override: true},
       {:remote_dockers, "1.3.5"},
-      {:timex, "~> 3.2"}
+      {:timex, "~> 3.2"},
+      {:uuid, "~> 1.1"}
     ]
   end
 

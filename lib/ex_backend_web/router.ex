@@ -52,7 +52,9 @@ defmodule ExBackendWeb.Router do
       post("/rdf", RdfController, :create)
     end
 
-    resources("/registery", RegisteryController, except: [:new, :edit])
+    resources("/registery", RegisteryController, except: [:new, :edit]) do
+      post("/subtitle", RegisteryController, :add_subtitle)
+    end
 
     scope "/amqp", Amqp do
       get("/queues", AmqpController, :queues)

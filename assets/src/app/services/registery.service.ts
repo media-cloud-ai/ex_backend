@@ -36,12 +36,30 @@ export class RegisteryService {
       )
   }
 
-  getRegistery(registery_id: string)
+  getRegistery(registery_id: number)
   : Observable<RegisteryData> {
     return this.http.get<RegisteryData>(this.registeryUrl + '/' + registery_id)
       .pipe(
         tap(registery => this.log('fetched Registery')),
         catchError(this.handleError('getRegistery', undefined))
+      )
+  }
+
+  addSubtitle(registery_id: number, language: string)
+  : Observable<RegisteryData> {
+    return this.http.post<RegisteryData>(this.registeryUrl + '/' + registery_id + "/subtitle", {language: language})
+      .pipe(
+        tap(registery => this.log('fetched Registery')),
+        catchError(this.handleError('addSubtitle', undefined))
+      )
+  }
+
+  saveSubtitle(registery_id: number, language: string, content: string, version: string)
+  : Observable<RegisteryData> {
+    return this.http.post<RegisteryData>(this.registeryUrl + '/' + registery_id + "/subtitle", {language: language})
+      .pipe(
+        tap(registery => this.log('fetched Registery')),
+        catchError(this.handleError('saveSubtitle', undefined))
       )
   }
 

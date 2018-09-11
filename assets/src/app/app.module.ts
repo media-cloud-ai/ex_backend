@@ -86,6 +86,7 @@ import {WorkersComponent}        from './workers/workers.component'
 import {StartIngestDialog} from './ingest/dialogs/start_ingest.component'
 import {JobDetailsDialogComponent} from './jobs/details/job_details_dialog.component'
 import {NewNodeDialogComponent} from './nodes/new_node_dialog.component'
+import {NewSubtitleDialogComponent} from './registeries/dialog/new_subtitle_dialog.component'
 import {PersonShowDialogComponent} from './persons/show_dialog.component'
 import {RdfDialogComponent} from './catalog/rdf/rdf_dialog.component'
 import {WorkflowAbortDialogComponent} from './workflows/dialogs/workflow_abort_dialog.component'
@@ -173,6 +174,7 @@ const EX_BACKEND_DATE_FORMATS = {
     LinkImportComponent,
     LoginComponent,
     NewNodeDialogComponent,
+    NewSubtitleDialogComponent,
     ParametersComponent,
     PersonComponent,
     PersonFormComponent,
@@ -204,6 +206,7 @@ const EX_BACKEND_DATE_FORMATS = {
     JobDetailsDialogComponent,
     LinkImportComponent,
     NewNodeDialogComponent,
+    NewSubtitleDialogComponent,
     ParametersComponent,
     PersonFormComponent,
     PersonShowDialogComponent,

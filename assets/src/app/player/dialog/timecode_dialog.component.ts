@@ -6,6 +6,7 @@ import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material'
   templateUrl: 'timecode_dialog.component.html',
   styleUrls: ['./timecode_dialog.component.less'],
 })
+
 export class TimecodeDialogComponent {
   framerate: number = 25.0
   time : number

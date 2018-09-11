@@ -1,8 +1,12 @@
 
 import {Component, Input} from '@angular/core'
 import {ActivatedRoute, Router} from '@angular/router'
+import {MatDialog} from '@angular/material'
 
 import {Registery} from '../models/registery'
+import {RegisteryService} from '../services/registery.service'
+import {NewSubtitleDialogComponent} from './dialog/new_subtitle_dialog.component'
+
 import {
   MediaPlayer,
   PlaybackTimeUpdatedEvent,
@@ -24,7 +28,9 @@ export class RegisteryComponent {
   htmlPlayer = ""
 
   constructor(
-    private router: Router
+    public dialog: MatDialog,
+    private registeryService: RegisteryService,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -53,5 +59,18 @@ export class RegisteryComponent {
 
   openPlayer() {
     this.router.navigate(['/player/' + this.item.id])
+  }
+
+  addSubtitle() {
+    let dialogRef = this.dialog.open(NewSubtitleDialogComponent, {data: this.item})
+    dialogRef.afterClosed().subscribe(state => {
+      if(state != undefined) {
+        this.registeryService.addSubtitle(this.item.id, state.language)
+        .subscribe(itemData => {
+          console.log(itemData)
+          this.item = itemData.data
+        })
+      }
+    })
   }
 }

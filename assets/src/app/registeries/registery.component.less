@@ -1,5 +1,9 @@
 @import '../colors';
 
+div.root {
+  display: flex;
+}
+
 .category {
   display: inline-block;
   width: 80px;
@@ -10,7 +14,7 @@
   height: 90px;
   display: inline-block;
 
-  .actions {
+  .button {
     position: absolute;
     left: 65px;
     top: 30px;
@@ -25,7 +29,7 @@
 .player:hover {
   cursor: pointer;
 
-  .actions {
+  .button {
     .play {
        opacity: 0.8;
     }
@@ -45,13 +49,27 @@
   margin-left: 10px;
   background-color: @blue;
   color: @white;
-  padding: 3px;
-  padding-right: 5px;
+  margin: 5px;
+  padding: 5px;
   border-radius: 5px;
   display: inline-block;
   vertical-align: middle;
   .icon {
     vertical-align: middle;
+    color: @lighterBlue;
+  }
+
+  .icon:hover {
+    color: @red;
   }
   cursor: pointer;
+}
+
+.languages {
+  flex: 1;
+}
+
+.actions {
+  display: inline-block;
+  width: 300px;
 }
