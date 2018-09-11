@@ -17,14 +17,14 @@ import {WebVtt, Cue, Timecode} from 'ts-subtitle'
 
 export class SubtitleComponent implements OnChanges {
   @Input() content_id: string
-  @Input() language: string
+  @Input() language: any
   @Input() time: number = 0.0
   @Input() before: number = 0
   @Input() after: number = 0
   @Input() split: boolean = false
   @Input() isChangingTimecode: boolean
 
-  loaded = false
+  loaded = true
   cues: Cue[] = []
   currentCue: Cue = new Cue()
   currentCueIndex: number
@@ -40,7 +40,6 @@ export class SubtitleComponent implements OnChanges {
   }
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
-    // console.log(changes)
     if (changes && changes.time) {
       this.refresh(changes.time.currentValue)
     }
@@ -50,17 +49,19 @@ export class SubtitleComponent implements OnChanges {
   }
 
   loadSubtitle(language) {
-    this.loaded = false
-    var subtitle_url = '/stream/' + this.content_id + '/' + language + '.vtt'
-    this.http.get(subtitle_url, {responseType: 'text'})
-    .subscribe(contents => {
-      var webvtt = new WebVtt()
-      if(webvtt.parse(contents)) {
-        this.loaded = true
-        this.cues = webvtt.get_cues()
-        this.refresh(this.time)
-      }
-    })
+    if(language && language.paths) {
+      this.loaded = false
+      var subtitle_url = language.paths[0].replace("/dash", "/stream")
+      this.http.get(subtitle_url, {responseType: 'text'})
+      .subscribe(contents => {
+        var webvtt = new WebVtt()
+        if(webvtt.parse(contents)) {
+          this.loaded = true
+          this.cues = webvtt.get_cues()
+          this.refresh(this.time)
+        }
+      })
+    }
   }
 
   refresh(time) {

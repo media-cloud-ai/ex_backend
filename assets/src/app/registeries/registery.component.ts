@@ -52,6 +52,6 @@ export class RegisteryComponent {
   }
 
   openPlayer() {
-    this.router.navigate(['/player/' + this.item.workflow_id])
+    this.router.navigate(['/player/' + this.item.id])
   }
 }

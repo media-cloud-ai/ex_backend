@@ -26,11 +26,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
 
   checkLogin(url: string): boolean {
     if (this.authService.isLoggedIn) {
-      // console.log("Check URL ", url)
+      console.log("Check URL ", url)
       if (url.startsWith('/catalog') ||
-        url.startsWith('/ingest') ||
-        url.startsWith('/player') ||
-        url.startsWith('/registeries') ||
         url.startsWith('/watchers') ||
         url.startsWith('/workers') ||
         url.startsWith('/workflows')
@@ -52,6 +49,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         }
       }
       if (url.startsWith('/people') ||
+        url.startsWith('/player') ||
+        url.startsWith('/ingest') ||
         url.startsWith('/person') ||
         url.startsWith('/registeries')) {
         if (this.authService.hasEditorRight()) {

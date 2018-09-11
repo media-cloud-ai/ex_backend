@@ -9,7 +9,7 @@ import {IngestResponse} from '../models/ingest_response'
 
 @Injectable()
 export class RegisteryService {
-  private registeryUrl = 'api/registery'
+  private registeryUrl = '/api/registery'
 
   constructor(private http: HttpClient) { }
 

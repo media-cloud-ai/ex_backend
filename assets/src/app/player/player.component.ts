@@ -13,6 +13,9 @@ import 'rxjs/add/observable/interval'
 
 import {MouseMoveService} from '../services/mousemove.service'
 
+import {RegisteryService} from '../services/registery.service'
+import {Registery, Subtitle} from '../models/registery'
+
 @Component({
   selector: 'player-component',
   templateUrl: 'player.component.html',
@@ -34,18 +37,18 @@ export class PlayerComponent {
   showHelp = false
   splitAction = false
 
-  leftLanguage = "english"
-  rightLanguage = "french"
-  languages = [
-    "english",
-    "french",
-  ]
+  item: Registery
+
+  leftLanguage: Subtitle
+  rightLanguage: Subtitle
+  languages : Subtitle[] = []
 
   isChangingTimecode = false
 
   constructor(
     private route: ActivatedRoute,
     private mouseMoveService: MouseMoveService,
+    private registeryService: RegisteryService,
   ) {}
 
   ngOnInit() {
@@ -55,15 +58,26 @@ export class PlayerComponent {
       .params.subscribe(params => {
         this.content_id = params['id']
 
-        var url = '/stream/' + this.content_id + '/manifest.mpd'
+        this.registeryService.getRegistery(this.content_id)
+        .subscribe(item => {
+          this.item = item.data
 
-        this.player.getDebug().setLogToBrowserConsole(false)
-        this.player.initialize(<HTMLElement>videoPlayer, url, false)
+          var url = '/stream/' + this.item.workflow_id + '/manifest.mpd'
+          this.player.getDebug().setLogToBrowserConsole(false)
+          this.player.initialize(<HTMLElement>videoPlayer, url, false)
 
-        this.player.on(MediaPlayer.events['PLAYBACK_PAUSED'], this.processEvent, this)
-        this.player.on(MediaPlayer.events['PLAYBACK_ENDED'], this.processEvent, this)
-        this.player.on(MediaPlayer.events['PLAYBACK_PLAYING'], this.processEvent, this)
-        this.player.on(MediaPlayer.events['PLAYBACK_METADATA_LOADED'], this.processEvent, this)
+          this.player.on(MediaPlayer.events['PLAYBACK_PAUSED'], this.processEvent, this)
+          this.player.on(MediaPlayer.events['PLAYBACK_ENDED'], this.processEvent, this)
+          this.player.on(MediaPlayer.events['PLAYBACK_PLAYING'], this.processEvent, this)
+          this.player.on(MediaPlayer.events['PLAYBACK_METADATA_LOADED'], this.processEvent, this)
+
+          if(this.item.params && this.item.params.subtitles) {
+            this.languages = this.item.params.subtitles
+
+            this.leftLanguage = this.languages[0]
+            this.rightLanguage = this.languages[this.languages.length - 1]
+          }
+        })
       })
 
   }
@@ -177,7 +191,6 @@ export class PlayerComponent {
       return false
     }
   }
-
 
   @HostListener('mousemove', ['$event'])
   onMousemove(event: MouseEvent) {

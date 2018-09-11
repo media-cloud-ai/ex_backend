@@ -82,6 +82,7 @@ export class AppComponent {
   }
 
   updateLeftMenu() {
+    console.log(this.loggedIn);
     if (this.loggedIn) {
       this.left_menu = []
 
@@ -92,19 +93,22 @@ export class AppComponent {
             'label': 'Catalog'
           })
         }
-        if (this.application && this.application.identifier === 'vidtext') {
-          this.left_menu.push({
-            'link': '/ingest',
-            'label': 'Ingest'
-          })
-          if (this.right_editor) {
-            this.left_menu.push({
-              'link': '/registeries',
-              'label': 'Catalog'
-            })
-          }
-        }
+      }
 
+      if (this.application && this.application.identifier === 'vidtext') {
+        this.left_menu.push({
+          'link': '/ingest',
+          'label': 'Ingest'
+        })
+        if (this.right_editor) {
+          this.left_menu.push({
+            'link': '/registeries',
+            'label': 'Catalog'
+          })
+        }
+      }
+
+      if (this.right_technician) {
         this.left_menu.push({
           'link': '/workflows',
           'label': 'Workflows'
@@ -115,23 +119,22 @@ export class AppComponent {
         })
       }
 
-      if (this.right_editor) {
-        this.left_menu.push({
-          'link': '/people',
-          'label': 'People'
-        })
+      if (this.application && this.application.identifier === 'subtil') {
+        if (this.right_editor) {
+          this.left_menu.push({
+            'link': '/people',
+            'label': 'People'
+          })
+        }
       }
 
       if (this.application && this.application.identifier === 'vidtext') {
-        this.left_menu.push({
-          'link': '/watchers',
-          'label': 'Watchers'
-        })
-
-        this.left_menu.push({
-          'link': '/player/hoffmann',
-          'label': 'Player'
-        })
+        if (this.right_technician) {
+          this.left_menu.push({
+            'link': '/watchers',
+            'label': 'Watchers'
+          })
+        }
       }
       if (this.right_administrator) {
         this.left_menu.push({
