@@ -82,7 +82,7 @@ defmodule ExBackend.Workflow.Step.Register do
           workflow_id: workflow_id,
           name: name,
           params: %{
-            "subtitles": [
+            subtitles: [
               %{
                 language: language,
                 paths: paths
@@ -97,7 +97,7 @@ defmodule ExBackend.Workflow.Step.Register do
         params =
           Map.get(item, :params)
           |> Map.merge(%{
-            "subtitles": [
+            subtitles: [
               %{
                 language: language,
                 paths: paths
@@ -124,7 +124,7 @@ defmodule ExBackend.Workflow.Step.Register do
           workflow_id: workflow_id,
           name: name,
           params: %{
-            "manifests": [
+            manifests: [
               %{
                 format: "dash",
                 paths: paths
@@ -139,7 +139,7 @@ defmodule ExBackend.Workflow.Step.Register do
         params =
           Map.get(item, :params)
           |> Map.merge(%{
-            "manifests": [
+            manifests: [
               %{
                 format: "dash",
                 paths: paths
@@ -151,6 +151,7 @@ defmodule ExBackend.Workflow.Step.Register do
           params: params
         })
     end
+
     {:ok, %{}}
   end
 

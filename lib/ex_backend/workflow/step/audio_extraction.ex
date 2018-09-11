@@ -16,8 +16,10 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
         |> case do
           nil ->
             Jobs.create_skipped_job(workflow, step_id, @action_name)
+
           [] ->
             Jobs.create_skipped_job(workflow, step_id, @action_name)
+
           [nil] ->
             Jobs.create_skipped_job(workflow, step_id, @action_name)
 

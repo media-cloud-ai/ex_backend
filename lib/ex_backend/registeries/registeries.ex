@@ -8,7 +8,6 @@ defmodule ExBackend.Registeries do
 
   alias ExBackend.Registeries.Registery
 
-
   defp force_integer(param) when is_bitstring(param) do
     param
     |> String.to_integer()
@@ -73,8 +72,7 @@ defmodule ExBackend.Registeries do
         limit: ^size
       )
 
-    items =
-      Repo.all(query)
+    items = Repo.all(query)
 
     %{
       data: items,

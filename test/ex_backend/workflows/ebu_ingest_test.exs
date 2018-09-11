@@ -44,20 +44,21 @@ defmodule ExBackend.EbuIngestTest do
       audio_lang_file =
         "/data/" <> (workflow.id |> Integer.to_string()) <> "/lang/3_input_filename.mp4-eng.mp4"
 
-      manifest_file =
-        "/data/" <> (workflow.id |> Integer.to_string()) <> "/dash/manifest.mpd"
+      manifest_file = "/data/" <> (workflow.id |> Integer.to_string()) <> "/dash/manifest.mpd"
 
       stored_subtitle_file =
         "/dash/" <> (workflow.id |> Integer.to_string()) <> "/2_input_filename.mp4.wav.vtt"
 
       stored_audio_track_file =
-        "/dash/" <> (workflow.id |> Integer.to_string()) <> "/3_input_filename.mp4-eng_track1_dashinit.mp4"
+        "/dash/" <>
+          (workflow.id |> Integer.to_string()) <> "/3_input_filename.mp4-eng_track1_dashinit.mp4"
 
       stored_video_track_file =
-        "/dash/" <> (workflow.id |> Integer.to_string()) <> "/4_input_filename.mp4-standard5_track1_dashinit.mp4"
+        "/dash/" <>
+          (workflow.id |> Integer.to_string()) <>
+          "/4_input_filename.mp4-standard5_track1_dashinit.mp4"
 
-      stored_manifest_file =
-        "/dash/" <> (workflow.id |> Integer.to_string()) <> "/manifest.mpd"
+      stored_manifest_file = "/dash/" <> (workflow.id |> Integer.to_string()) <> "/manifest.mpd"
 
       assert %{
                "destination" => %{
@@ -82,11 +83,11 @@ defmodule ExBackend.EbuIngestTest do
                "action" => "copy",
                "parameters" => [
                  %{
-                  "default" => "/archive/#workflow_id",
-                  "enable" => false,
-                  "id" => "output_directory",
-                  "type" => "string",
-                  "value" => "/archive/" <> (workflow.id |> Integer.to_string())
+                   "default" => "/archive/#workflow_id",
+                   "enable" => false,
+                   "id" => "output_directory",
+                   "type" => "string",
+                   "value" => "/archive/" <> (workflow.id |> Integer.to_string())
                  }
                ],
                "requirements" => %{
@@ -386,9 +387,11 @@ defmodule ExBackend.EbuIngestTest do
       ExBackend.HelpersTest.check(workflow.id, "copy", 2)
 
       ExBackend.HelpersTest.complete_jobs(workflow.id, "copy")
+
       ExBackend.HelpersTest.set_output_files(workflow.id, "copy", [
-        stored_subtitle_file,
+        stored_subtitle_file
       ])
+
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)
 
       ExBackend.HelpersTest.check(workflow.id, 9)
@@ -414,6 +417,7 @@ defmodule ExBackend.EbuIngestTest do
         stored_video_track_file,
         stored_manifest_file
       ])
+
       ExBackend.HelpersTest.complete_jobs(workflow.id, "copy")
       {:ok, "completed"} = WorkflowStep.start_next_step(workflow)
 
@@ -423,20 +427,20 @@ defmodule ExBackend.EbuIngestTest do
       params =
         ExBackend.Registeries.list_registeries(%{"workflow_id" => workflow.id, "name" => "master"})
         |> Map.get(:data)
-        |> List.first
+        |> List.first()
         |> Map.get(:params)
 
       assert %{
-          "manifests" => [
-            %{"format" => "dash", "paths" => [stored_manifest_file]}
-          ],
-          "subtitles" => [
-            %{
-              "language" => "eng",
-              "paths" => [stored_subtitle_file]
-            }
-          ]
-        } == params
+               "manifests" => [
+                 %{"format" => "dash", "paths" => [stored_manifest_file]}
+               ],
+               "subtitles" => [
+                 %{
+                   "language" => "eng",
+                   "paths" => [stored_subtitle_file]
+                 }
+               ]
+             } == params
     end
   end
 end

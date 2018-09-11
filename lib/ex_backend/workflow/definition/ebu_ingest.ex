@@ -2,6 +2,7 @@ defmodule ExBackend.Workflow.Definition.EbuIngest do
   def get_definition(agent_identifier, input_filename) do
     root_dash_content =
       System.get_env("ROOT_DASH_CONTENT") || Application.get_env(:ex_backend, :root_dash_content)
+
     %{
       steps: [
         %{
@@ -291,28 +292,28 @@ defmodule ExBackend.Workflow.Definition.EbuIngest do
               type: "string",
               enable: false,
               default: ".vtt",
-              value: ".vtt",
+              value: ".vtt"
             },
             %{
               id: "name",
               type: "string",
               enable: false,
               default: "master",
-              value: "master",
+              value: "master"
             },
             %{
               id: "type",
               type: "string",
               enable: false,
               default: "subtitle",
-              value: "subtitle",
+              value: "subtitle"
             },
             %{
               id: "language",
               type: "string",
               enable: false,
               default: "eng",
-              value: "eng",
+              value: "eng"
             }
           ]
         },
@@ -387,24 +388,24 @@ defmodule ExBackend.Workflow.Definition.EbuIngest do
               type: "string",
               enable: false,
               default: ".mpd",
-              value: ".mpd",
+              value: ".mpd"
             },
             %{
               id: "name",
               type: "string",
               enable: false,
               default: "master",
-              value: "master",
+              value: "master"
             },
             %{
               id: "type",
               type: "string",
               enable: false,
               default: "manifest_dash",
-              value: "manifest_dash",
+              value: "manifest_dash"
             }
           ]
-        },
+        }
       ]
     }
   end

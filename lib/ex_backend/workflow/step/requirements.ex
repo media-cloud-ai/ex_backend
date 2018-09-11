@@ -42,8 +42,8 @@ defmodule ExBackend.Workflow.Step.Requirements do
         total ++ [destination_paths]
       end
     end)
-    |> List.flatten
-    |> Enum.uniq
+    |> List.flatten()
+    |> Enum.uniq()
     |> Enum.filter(fn path -> !is_nil(path) end)
   end
 
@@ -66,6 +66,7 @@ defmodule ExBackend.Workflow.Step.Requirements do
 
   def parse_parameters(parameters, workflow, result \\ [])
   def parse_parameters([], _workflow, result), do: result
+
   def parse_parameters([parameter | parameters], workflow, result) do
     value =
       ExBackend.Map.get_by_key_or_atom(parameter, :value)

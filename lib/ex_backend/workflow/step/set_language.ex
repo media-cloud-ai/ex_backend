@@ -38,12 +38,15 @@ defmodule ExBackend.Workflow.Step.SetLanguage do
 
     language_code =
       case params do
-        %{"language"=> language} -> language
+        %{"language" => language} -> language
         _ -> get_file_language(path, workflow)
       end
 
     dst_path =
-      work_dir <> "/" <> Integer.to_string(workflow.id) <> "/lang/" <> Path.basename(path, ".mp4") <> "-" <> language_code <> ".mp4"
+      work_dir <>
+        "/" <>
+        Integer.to_string(workflow.id) <>
+        "/lang/" <> Path.basename(path, ".mp4") <> "-" <> language_code <> ".mp4"
 
     options = %{
       "-lang": language_code,

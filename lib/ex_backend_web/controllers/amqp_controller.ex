@@ -38,7 +38,9 @@ defmodule ExBackendWeb.Amqp.AmqpController do
       %HTTPotion.ErrorResponse{message: message} ->
         Logger.error("Unable to connect to #{url}")
         %{error: message}
-      response -> Poison.decode!(response.body)
+
+      response ->
+        Poison.decode!(response.body)
     end
   end
 

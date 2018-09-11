@@ -8,7 +8,12 @@ defmodule ExBackend.Amqp.JobFileSystemCompletedConsumer do
     consumer: &ExBackend.Amqp.JobFileSystemCompletedConsumer.consume/4
   }
 
-  def consume(channel, tag, _redelivered, %{"job_id" => job_id, "status" => status, "files" => files} = payload) do
+  def consume(
+        channel,
+        tag,
+        _redelivered,
+        %{"job_id" => job_id, "status" => status, "files" => files} = payload
+      ) do
     Logger.warn("receive #{inspect(payload)}")
     Jobs.Status.set_job_status(job_id, status)
 

@@ -12,6 +12,7 @@ defmodule ExBackend.Workflow.Step.TtmlToMp4 do
     |> case do
       [] ->
         Jobs.create_skipped_job(workflow, step_id, @action_name)
+
       paths ->
         start_process(paths, workflow, step_id)
     end
