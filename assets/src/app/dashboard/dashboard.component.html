@@ -3,11 +3,13 @@
 	Dashboard
 </h1>
 
+<div *ngIf="application">
 <amqp-queues *ngIf="right_technician">
 </amqp-queues>
 
 <watchers-component *ngIf="right_technician">
 </watchers-component>
 
-<persons-component *ngIf="right_editor">
+<persons-component *ngIf="right_editor && application.identifier == 'subtil'">
 </persons-component>
+</div>

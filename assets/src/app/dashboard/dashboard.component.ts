@@ -3,6 +3,9 @@ import {Component} from '@angular/core'
 import {AuthService}    from '../authentication/auth.service'
 import {Subscription}   from 'rxjs'
 
+import {ApplicationService} from '../services/application.service'
+import {Application} from '../models/application'
+
 @Component({
     selector: 'dashboard-component',
     templateUrl: 'dashboard.component.html',
@@ -12,11 +15,15 @@ export class DashboardComponent {
   right_administrator: boolean
   right_technician: boolean
   right_editor: boolean
+  application: Application
 
   subIn: Subscription
   subOut: Subscription
 
-  constructor(public authService: AuthService) {}
+  constructor(
+    private applicationService: ApplicationService,
+    public authService: AuthService
+  ) {}
 
   ngOnInit() {
     this.subIn = this.authService.userLoggedIn$.subscribe(
@@ -37,5 +44,10 @@ export class DashboardComponent {
       this.right_technician = this.authService.hasTechnicianRight()
       this.right_editor = this.authService.hasEditorRight()
     }
+
+    this.applicationService.get()
+    .subscribe(application => {
+      this.application = application
+    })
   }
 }
