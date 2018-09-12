@@ -16,7 +16,7 @@ import {WebVtt, Cue, Timecode} from 'ts-subtitle'
 })
 
 export class SubtitleComponent implements OnChanges {
-  @Input() content_id: string
+  @Input() content_id: number
   @Input() language: any
   @Input() time: number = 0.0
   @Input() before: number = 0
@@ -148,7 +148,7 @@ export class SubtitleComponent implements OnChanges {
     var webvtt = new WebVtt()
     webvtt.set_cues(this.cues)
     var content = webvtt.dump()
-    console.log(content)
+    console.log(this.content_id, this.language.language, content)
   }
 
   @HostListener('window:keydown', ['$event'])
