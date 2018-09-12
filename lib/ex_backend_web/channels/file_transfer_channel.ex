@@ -20,7 +20,7 @@ defmodule ExBackendWeb.FileTransferChannel do
     {:noreply, socket}
   end
 
-  def handle_in("upload_completed", %{"job_id" => job_id}, socket) do
+  def handle_in("upload_completed", %{"job_id" => job_id} = payload, socket) do
     Logger.warn("upload completed for job id: #{job_id}")
     Jobs.Status.set_job_status(job_id, "completed")
 
@@ -28,8 +28,10 @@ defmodule ExBackendWeb.FileTransferChannel do
     {:noreply, socket}
   end
 
-  def handle_in("upload_error", payload, socket) do
-    Logger.info("upload error #{inspect(payload)}")
+  def handle_in("upload_error", %{"job_id" => job_id, "message" => description}, socket) do
+    Logger.warn("upload error for job id #{job_id}: #{description}")
+    Jobs.Status.set_job_status(job_id, "error", %{message: description})
+
     {:noreply, socket}
   end
 
