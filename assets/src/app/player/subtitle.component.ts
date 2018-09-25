@@ -68,6 +68,8 @@ export class SubtitleComponent implements OnChanges {
   }
 
   refresh(time) {
+    var initialIndex = 0;
+
     for (var index = 0; index < this.cues.length; index++) {
       var cue = this.cues[index]
       if(cue.start <= time && cue.end >= time) {
@@ -91,14 +93,25 @@ export class SubtitleComponent implements OnChanges {
 
         return
       }
+      if(time >= cue.end) {
+        initialIndex += 1
+      }
     }
+
     this.currentCue = null
     this.currentCueIndex = null
     this.beforeCues = [];
     this.afterCues = [];
+
+    for(var beforeIndex = 1; beforeIndex <= this.before; beforeIndex++) {
+      if(initialIndex - beforeIndex >= 0) {
+        this.beforeCues.push(this.cues[initialIndex - beforeIndex])
+      }
+    }
+
     for(var afterIndex = 0; afterIndex < this.after; afterIndex++) {
-      if(afterIndex < this.cues.length) {
-        this.afterCues.push(this.cues[afterIndex])
+      if(initialIndex + afterIndex < this.cues.length) {
+        this.afterCues.push(this.cues[initialIndex + afterIndex])
       }
     }
   }
