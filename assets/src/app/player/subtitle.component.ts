@@ -9,6 +9,8 @@ import {
 import {HttpClient} from '@angular/common/http'
 import {WebVtt, Cue, Timecode} from 'ts-subtitle'
 
+import {MouseMoveService} from '../services/mousemove.service'
+
 @Component({
   selector: 'subtitle-component',
   templateUrl: 'subtitle.component.html',
@@ -33,6 +35,7 @@ export class SubtitleComponent implements OnChanges {
 
   constructor(
     private http: HttpClient,
+    private mouseMoveService: MouseMoveService,
   ) {}
 
   ngOnInit() {
@@ -164,5 +167,13 @@ export class SubtitleComponent implements OnChanges {
       // this.cutSubtitle()
       return false
     }
+  }
+
+  focus() {
+    this.mouseMoveService.focusSubtitleSource.next()
+  }
+
+  focusOut() {
+    this.mouseMoveService.outFocusSubtitleSource.next()
   }
 }

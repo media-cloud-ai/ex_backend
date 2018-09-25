@@ -32,7 +32,11 @@ export class PlayerComponent {
   tt = null
   isd = null
 
+  countFocused = 0
+
   sub = null
+  subFocus = null
+  subOutFocus = null
   playing = false
   showHelp = false
   splitAction = false
@@ -80,6 +84,16 @@ export class PlayerComponent {
         })
       })
 
+
+    this.subFocus = this.mouseMoveService.focusSubtitleEvent.subscribe(
+      event => {
+        this.countFocused += 1
+      })
+
+    this.subOutFocus = this.mouseMoveService.outFocusSubtitleEvent.subscribe(
+      event => {
+        this.countFocused -= 1
+      })
   }
 
   ngOnDestroy() {
@@ -158,6 +172,11 @@ export class PlayerComponent {
 
   @HostListener('window:keydown', ['$event'])
   keyDownEvent(event: KeyboardEvent) {
+
+    if(this.countFocused == 0 && event.code === 'Space') {
+      event.preventDefault()
+      return true
+    }
     if (event.ctrlKey === true && event.code === 'Space') {
       return false
     }
@@ -166,6 +185,12 @@ export class PlayerComponent {
   @HostListener('window:keyup', ['$event'])
   keyUpEvent(event: KeyboardEvent) {
     // console.log(event)
+
+    if(this.countFocused == 0 && event.code === 'Space') {
+      this.playPauseSwitch()
+      event.preventDefault()
+      return true
+    }
     if (event.ctrlKey === true && event.code === 'Space') {
       this.playPauseSwitch()
       return false
