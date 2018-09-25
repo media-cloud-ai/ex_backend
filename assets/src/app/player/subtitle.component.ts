@@ -96,7 +96,7 @@ export class SubtitleComponent implements OnChanges {
     this.currentCueIndex = null
     this.beforeCues = [];
     this.afterCues = [];
-    for(var afterIndex = 1; afterIndex <= this.after; afterIndex++) {
+    for(var afterIndex = 0; afterIndex < this.after; afterIndex++) {
       if(afterIndex < this.cues.length) {
         this.afterCues.push(this.cues[afterIndex])
       }
