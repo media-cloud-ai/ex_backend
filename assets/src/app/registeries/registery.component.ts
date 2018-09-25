@@ -6,6 +6,7 @@ import {MatDialog} from '@angular/material'
 import {Registery} from '../models/registery'
 import {RegisteryService} from '../services/registery.service'
 import {NewSubtitleDialogComponent} from './dialog/new_subtitle_dialog.component'
+import {DeleteSubtitleDialog} from './dialog/delete_subtitle_dialog.component'
 
 import {
   MediaPlayer,
@@ -67,7 +68,18 @@ export class RegisteryComponent {
       if(state != undefined) {
         this.registeryService.addSubtitle(this.item.id, state.language)
         .subscribe(itemData => {
-          console.log(itemData)
+          this.item = itemData.data
+        })
+      }
+    })
+  }
+
+  deleteSubtitle(index: number) {
+    let dialogRef = this.dialog.open(DeleteSubtitleDialog, {data: this.item})
+    dialogRef.afterClosed().subscribe(state => {
+      if(state === true) {
+        this.registeryService.deleteSubtitle(this.item.id, index)
+        .subscribe(itemData => {
           this.item = itemData.data
         })
       }

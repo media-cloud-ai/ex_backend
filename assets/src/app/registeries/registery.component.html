@@ -20,9 +20,11 @@
   <span class=languages *ngIf="item.params && item.params.subtitles">
     <span
       class=language
-      *ngFor="let subtitle of item.params.subtitles">
+      *ngFor="let subtitle of item.params.subtitles; let i = index">
       {{subtitle.language | language}}
-      <mat-icon class=icon>
+      <mat-icon
+        class=icon
+        (click)="deleteSubtitle(i)">
         delete
       </mat-icon>
     </span>

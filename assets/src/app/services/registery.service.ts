@@ -63,6 +63,15 @@ export class RegisteryService {
       )
   }
 
+  deleteSubtitle(registery_id: number, index: number)
+  : Observable<RegisteryData> {
+    return this.http.delete<RegisteryData>(this.registeryUrl + '/' + registery_id + "/subtitle/" + index)
+      .pipe(
+        tap(registery => this.log('fetched Registery')),
+        catchError(this.handleError('deleteSubtitle', undefined))
+      )
+  }
+
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       this.log(`${operation} failed: ${error.message}`)

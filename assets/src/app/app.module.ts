@@ -83,6 +83,7 @@ import {WorkflowStepDetailsComponent} from './workflows/details/workflow_step_de
 import {WorkflowsComponent}      from './workflows/workflows.component'
 import {WorkersComponent}        from './workers/workers.component'
 
+import {DeleteSubtitleDialog} from './registeries/dialog/delete_subtitle_dialog.component'
 import {StartIngestDialog} from './ingest/dialogs/start_ingest.component'
 import {JobDetailsDialogComponent} from './jobs/details/job_details_dialog.component'
 import {NewNodeDialogComponent} from './nodes/new_node_dialog.component'
@@ -167,6 +168,7 @@ const EX_BACKEND_DATE_FORMATS = {
     CatalogComponent,
     ConfirmComponent,
     DashboardComponent,
+    DeleteSubtitleDialog,
     DurationComponent,
     IngestComponent,
     JobsComponent,
@@ -202,6 +204,7 @@ const EX_BACKEND_DATE_FORMATS = {
     WorkersComponent,
   ],
   entryComponents: [
+    DeleteSubtitleDialog,
     DurationComponent,
     JobDetailsDialogComponent,
     LinkImportComponent,

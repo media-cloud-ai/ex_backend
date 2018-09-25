@@ -45,4 +45,14 @@ defmodule ExBackendWeb.RegisteryController do
     {:ok, item} = Registeries.update_registery(item, %{params: params})
     render(conn, "show.json", item: item)
   end
+
+  def delete_subtitle(conn, %{"index" => index, "registery_id" => registery_id}) do
+    item = Registeries.get_registery!(registery_id)
+    subtitles = List.delete_at(Map.get(item.params, "subtitles"), String.to_integer(index))
+    params = Map.put(item.params, "subtitles", subtitles)
+
+    {:ok, item} = Registeries.update_registery(item, %{params: params})
+
+    render(conn, "show.json", item: item)
+  end
 end
