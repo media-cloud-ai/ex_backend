@@ -24,7 +24,9 @@ defmodule ExBackendWeb.RegisteryController do
   def add_subtitle(conn, %{"language" => language, "registery_id" => registery_id}) do
     item = Registeries.get_registery!(registery_id)
 
-    filename = "/dash/" <> Integer.to_string(item.workflow_id) <> "/" <> UUID.uuid4() <> "_" <> language <> ".vtt"
+    root =
+      System.get_env("ROOT_DASH_CONTENT") || Application.get_env(:ex_backend, :root_dash_content)
+    filename = Path.join([root, Integer.to_string(item.workflow_id), UUID.uuid4() <> "_" <> language <> ".vtt"])
 
     {:ok, file} = File.open filename, [:write]
     IO.binwrite file, "WEBVTT\n\n"
@@ -43,6 +45,36 @@ defmodule ExBackendWeb.RegisteryController do
       |> Map.put("subtitles", subtitles)
 
     {:ok, item} = Registeries.update_registery(item, %{params: params})
+    render(conn, "show.json", item: item)
+  end
+
+  def update_subtitle(conn, %{"index" => index, "registery_id" => registery_id}) do
+    item = Registeries.get_registery!(registery_id)
+
+    {:ok, content, conn} = Plug.Conn.read_body(conn)
+
+    subtitles = Map.get(item.params, "subtitles")
+    subtitle = Enum.at(subtitles, String.to_integer(index))
+
+    version =
+      Plug.Conn.get_req_header(conn, "x-version")
+      |> List.first
+
+    root =
+      System.get_env("ROOT_DASH_CONTENT") || Application.get_env(:ex_backend, :root_dash_content)
+
+    subtitle_filename = Path.join([root, Integer.to_string(item.workflow_id), UUID.uuid4() <> "_" <> Map.get(subtitle, "language") <> ".vtt"])
+    {:ok, file} = File.open subtitle_filename, [:write]
+    :ok = IO.binwrite file, content
+    :ok = File.close file
+
+    subtitles =
+      List.insert_at(subtitles, -1, %{"language" => "eng", "version" => version, "paths" => [subtitle_filename]})
+
+    params = Map.put(item.params, "subtitles", subtitles)
+    {:ok, item} = Registeries.update_registery(item, %{params: params})
+
+
     render(conn, "show.json", item: item)
   end
 

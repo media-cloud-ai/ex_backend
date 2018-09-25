@@ -10,6 +10,9 @@ import {HttpClient} from '@angular/common/http'
 import {WebVtt, Cue, Timecode} from 'ts-subtitle'
 
 import {MouseMoveService} from '../services/mousemove.service'
+import {RegisteryService} from '../services/registery.service'
+
+import {Subtitle} from '../models/registery'
 
 @Component({
   selector: 'subtitle-component',
@@ -19,7 +22,7 @@ import {MouseMoveService} from '../services/mousemove.service'
 
 export class SubtitleComponent implements OnChanges {
   @Input() content_id: number
-  @Input() language: any
+  @Input() language: Subtitle
   @Input() time: number = 0.0
   @Input() before: number = 0
   @Input() after: number = 0
@@ -27,6 +30,7 @@ export class SubtitleComponent implements OnChanges {
   @Input() isChangingTimecode: boolean
 
   loaded = true
+  canSave = false
   cues: Cue[] = []
   currentCue: Cue = new Cue()
   currentCueIndex: number
@@ -36,6 +40,7 @@ export class SubtitleComponent implements OnChanges {
   constructor(
     private http: HttpClient,
     private mouseMoveService: MouseMoveService,
+    private registeryService: RegisteryService,
   ) {}
 
   ngOnInit() {
@@ -51,7 +56,7 @@ export class SubtitleComponent implements OnChanges {
     }
   }
 
-  loadSubtitle(language) {
+  loadSubtitle(language: Subtitle) {
     if(language && language.paths) {
       this.loaded = false
       var subtitle_url = language.paths[0].replace("/dash", "/stream")
@@ -164,7 +169,11 @@ export class SubtitleComponent implements OnChanges {
     var webvtt = new WebVtt()
     webvtt.set_cues(this.cues)
     var content = webvtt.dump()
-    console.log(this.content_id, this.language.language, content)
+
+    this.registeryService.saveSubtitle(this.content_id, this.language.index, content, "v1")
+    .subscribe(response => {
+      this.canSave = false
+    })
   }
 
   @HostListener('window:keydown', ['$event'])
@@ -184,9 +193,18 @@ export class SubtitleComponent implements OnChanges {
 
   focus() {
     this.mouseMoveService.focusSubtitleSource.next()
+    this.canSave = true
   }
 
   focusOut() {
     this.mouseMoveService.outFocusSubtitleSource.next()
+  }
+
+  startTimeChange(event: number, cue: Cue) {
+    cue.start = event
+  }
+
+  endTimeChange(event: number, cue: Cue) {
+    cue.end = event
   }
 }

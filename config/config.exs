@@ -30,7 +30,8 @@ config :logger, :console,
   metadata: [:request_id]
 
 config :mime, :types, %{
-  "application/wasm" => ["wasm"]
+  "application/wasm" => ["wasm"],
+  "text/vtt" => ["webvtt"]
 }
 
 # Import environment specific config. This must remain at the bottom

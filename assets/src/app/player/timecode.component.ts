@@ -1,5 +1,13 @@
 
-import {Component, HostListener, Input, OnChanges, SimpleChange} from '@angular/core'
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  Output,
+  OnChanges,
+  SimpleChange
+} from '@angular/core'
 import {MatDialog} from '@angular/material'
 
 import {Timecode} from 'ts-subtitle'
@@ -18,6 +26,8 @@ export class TimecodeComponent implements OnChanges {
   @Input() time: number
   @Input() framerate: number = 25.0
   @Input() isChangingTimecode: boolean
+
+  @Output() timeChange: EventEmitter<number> = new EventEmitter<number>();
 
   private originalTime: number
 
@@ -69,6 +79,7 @@ export class TimecodeComponent implements OnChanges {
     this.minutes = minutes
     this.secondes = seconds
     this.frames = Math.trunc(frames)
+    this.timeChange.next(this.time)
   }
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {

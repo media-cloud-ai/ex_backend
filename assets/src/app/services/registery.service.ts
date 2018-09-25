@@ -54,9 +54,17 @@ export class RegisteryService {
       )
   }
 
-  saveSubtitle(registery_id: number, language: string, content: string, version: string)
+  saveSubtitle(registery_id: number, subtitle_index: number, content: string, version: string)
   : Observable<RegisteryData> {
-    return this.http.post<RegisteryData>(this.registeryUrl + '/' + registery_id + "/subtitle", {language: language})
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'text/vtt',
+        'x-version': version,
+      })
+    }
+
+    return this.http.put<RegisteryData>(this.registeryUrl + '/' + registery_id + "/subtitle/" + subtitle_index, content, httpOptions)
       .pipe(
         tap(registery => this.log('fetched Registery')),
         catchError(this.handleError('saveSubtitle', undefined))

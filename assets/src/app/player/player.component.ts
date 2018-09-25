@@ -77,6 +77,9 @@ export class PlayerComponent {
 
           if(this.item.params && this.item.params.subtitles) {
             this.languages = this.item.params.subtitles
+            for(var i = 0; i< this.languages.length; ++i) {
+              this.languages[i].index = i;
+            }
 
             this.leftLanguage = this.languages[0]
             this.rightLanguage = this.languages[this.languages.length - 1]

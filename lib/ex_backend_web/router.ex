@@ -54,6 +54,7 @@ defmodule ExBackendWeb.Router do
 
     resources("/registery", RegisteryController, except: [:new, :edit]) do
       post("/subtitle", RegisteryController, :add_subtitle)
+      put("/subtitle/:index", RegisteryController, :update_subtitle)
       delete("/subtitle/:index", RegisteryController, :delete_subtitle)
     end
 

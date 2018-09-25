@@ -5,6 +5,7 @@ export class Manifest {
 
 export class Subtitle {
   language: string
+  index?: number
   paths: string[]
 }
 

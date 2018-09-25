@@ -33,14 +33,12 @@ defmodule ExBackendWeb.PlayerController do
       {:ok, file} = :file.open(path, [:read, :binary])
       start = start_pos |> String.to_integer()
       length = (end_pos |> String.to_integer()) - start + 1
-      # IO.puts "get from #{start} to #{end_pos}: #{length} bytes"
 
       {:ok, data} = :file.pread(file, start, length)
       :file.close(file)
 
       conn
       |> put_resp_header("content-range", "bytes #{start}-#{end_pos}/#{stat.size}")
-      # |> put_resp_header("content-length", "#{stat.size}")
       |> put_resp_header("content-type", "video/mp4")
       |> send_resp(200, data)
     end
