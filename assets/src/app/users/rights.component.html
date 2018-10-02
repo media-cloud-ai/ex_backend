@@ -1,5 +1,5 @@
 
-<span *ngIf="user">
+<span *ngIf="user && application && application.identifier == 'subtil'">
   <span>
     <mat-checkbox
     color="primary"
@@ -25,6 +25,36 @@
     (change)="updateEditorRight($event, user)"
     >
       Editor
+    </mat-checkbox>
+  </span>
+</span>
+
+<span *ngIf="user && application && application.identifier == 'vidtext'">
+  <span>
+    <mat-checkbox
+    color="primary"
+    [(checked)]="administrator && technician"
+    (change)="updateVidtextAdministratorRight($event, user)"
+    >
+      Administrator
+    </mat-checkbox>
+  </span>
+  <span>
+    <mat-checkbox
+    color="primary"
+    [(checked)]="manager"
+    (change)="updateVidtextEditorRight($event, user)"
+    >
+      Editor
+    </mat-checkbox>
+  </span>
+  <span>
+    <mat-checkbox
+    color="primary"
+    [(checked)]="editor"
+    (change)="updateVidtextAuthorRight($event, user)"
+    >
+      Author
     </mat-checkbox>
   </span>
 </span>
