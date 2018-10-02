@@ -34,14 +34,27 @@
 </div>
 <div class="controls"
   *ngIf="duration != 0">
-  <div id=help>
+  <div id=left_buttons>
     <button
       mat-button
       color="primary"
-      (click)="switchHelp()"
+      (click)="playPauseSwitch()"
       >
-      <mat-icon>help_outline</mat-icon>
+      <mat-icon *ngIf=!playing>play_circle_outline</mat-icon>
+      <mat-icon *ngIf=playing>pause_circle_outline</mat-icon>
     </button>
+    <button
+      mat-button
+      color="primary"
+      (click)="back2seconds()"
+      >
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+  </div>
+  <div id=timecode>
+    {{ timecode | duration : 'timecode_frame' }}
+  </div>
+  <div id=right_buttons>
     <button
       class=split
       [ngClass]="{enable: splitAction}"
@@ -51,25 +64,12 @@
       >
       <mat-icon>call_split</mat-icon>
     </button>
-  </div>
-  <div id=timecode>
-    {{ timecode | duration : 'timecode_frame' }}
-  </div>
-  <div id=play_pause>
     <button
       mat-button
       color="primary"
-      (click)="back2seconds()"
+      (click)="switchHelp()"
       >
-      <mat-icon>arrow_back</mat-icon>
-    </button>
-    <button
-      mat-button
-      color="primary"
-      (click)="playPauseSwitch()"
-      >
-    <mat-icon *ngIf=!playing>play_circle_outline</mat-icon>
-    <mat-icon *ngIf=playing>pause_circle_outline</mat-icon>
+      <mat-icon>help_outline</mat-icon>
     </button>
   </div>
 </div>
