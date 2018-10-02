@@ -9,7 +9,7 @@
 }
 
 .cue.current {
-	.times,
+	.head,
 	.textcontent {
 		background-color: rgba(64, 111, 179, 0.16);
 		padding: 5px;
@@ -33,12 +33,24 @@
 	width: 490px;
 }
 
-.times {
-	font-family: monospace;
-	timecode-component {
-		display: inline-block;
-		line-height: 26px;
-		vertical-align: top;
+.head {
+	display: flex;
+
+	.times {
+		flex: 1;
+		font-family: monospace;
+		timecode-component {
+			display: inline-block;
+			line-height: 26px;
+			vertical-align: top;
+		}
+	}
+	.play {
+		color: @grey;
+	}
+	.play:hover {
+		color: @blue;
+		cursor: pointer;
 	}
 }
 

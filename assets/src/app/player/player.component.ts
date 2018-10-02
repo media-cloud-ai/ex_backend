@@ -11,6 +11,7 @@ import {
 import {Observable} from 'rxjs'
 import 'rxjs/add/observable/interval'
 
+import {Cue} from 'ts-subtitle'
 import {MouseMoveService} from '../services/mousemove.service'
 
 import {RegisteryService} from '../services/registery.service'
@@ -171,6 +172,13 @@ export class PlayerComponent {
 
   onSliderChange(event) {
     this.replay(event.value)
+  }
+
+  playSegment(cue) {
+    console.log("play segment...", cue)
+    if(cue) {
+      this.replay(cue.start)
+    }
   }
 
   @HostListener('window:keydown', ['$event'])

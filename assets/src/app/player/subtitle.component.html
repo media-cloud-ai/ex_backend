@@ -36,22 +36,29 @@
     id=before
     class="cue"
     [ngClass]="{disabled: split}">
-    <div class=times>
-      <timecode-component
-        [time]="cue.start"
-        [isChangingTimecode]=isChangingTimecode
-        (timeChange)="startTimeChange($event, currentCue)">
-      </timecode-component>
-      <span>
-        <i class="material-icons">
-          arrow_right_alt
-        </i>
-      </span>
-      <timecode-component
-        [time]="cue.end"
-        [isChangingTimecode]=isChangingTimecode
-        (timeChange)="startTimeChange($event, currentCue)">
-      </timecode-component>
+    <div class=head>
+      <mat-icon
+        class=play
+        (click)=playCue(cue)>
+        play_circle_outline
+      </mat-icon>
+      <div class=times>
+        <timecode-component
+          [time]="cue.start"
+          [isChangingTimecode]=isChangingTimecode
+          (timeChange)="startTimeChange($event, cue)">
+        </timecode-component>
+        <span>
+          <i class="material-icons">
+            arrow_right_alt
+          </i>
+        </span>
+        <timecode-component
+          [time]="cue.end"
+          [isChangingTimecode]=isChangingTimecode
+          (timeChange)="startTimeChange($event, cue)">
+        </timecode-component>
+      </div>
     </div>
     <mat-form-field class="textcontent">
       <textarea
@@ -77,20 +84,27 @@
   <div *ngIf="!currentCue" class=hiddenCue>
   </div>
   <div *ngIf="currentCue" class="cue current">
-    <div class=times>
-      <timecode-component
-        [time]="currentCue.start"
-        (timeChange)="startTimeChange($event, currentCue)">
-      </timecode-component>
-      <span>
-        <i class="material-icons">
-          arrow_right_alt
-        </i>
-      </span>
-      <timecode-component
-        [time]="currentCue.end"
-        (timeChange)="endTimeChange($event, currentCue)">
-      </timecode-component>
+    <div class=head>
+      <mat-icon
+        class=play
+        (click)=playCue(currentCue)>
+        play_circle_outline
+      </mat-icon>
+      <div class=times>
+        <timecode-component
+          [time]="currentCue.start"
+          (timeChange)="startTimeChange($event, currentCue)">
+        </timecode-component>
+        <span>
+          <i class="material-icons">
+            arrow_right_alt
+          </i>
+        </span>
+        <timecode-component
+          [time]="currentCue.end"
+          (timeChange)="endTimeChange($event, currentCue)">
+        </timecode-component>
+      </div>
     </div>
     <mat-form-field class="textcontent">
       <textarea
@@ -121,20 +135,27 @@
     id=after
     class="cue"
     [ngClass]="{disabled: split}">
-    <div class=times>
-      <timecode-component
-        [time]="cue.start"
-        (timeChange)="startTimeChange($event, cue)">
-      </timecode-component>
-      <span>
-        <i class="material-icons">
-          arrow_right_alt
-        </i>
-      </span>
-      <timecode-component
-        [time]="cue.end"
-        (timeChange)="endTimeChange($event, cue)">
-      </timecode-component>
+    <div class=head>
+      <mat-icon
+        class=play
+        (click)=playCue(cue)>
+        play_circle_outline
+      </mat-icon>
+      <div class=times>
+        <timecode-component
+          [time]="cue.start"
+          (timeChange)="startTimeChange($event, cue)">
+        </timecode-component>
+        <span>
+          <i class="material-icons">
+            arrow_right_alt
+          </i>
+        </span>
+        <timecode-component
+          [time]="cue.end"
+          (timeChange)="endTimeChange($event, cue)">
+        </timecode-component>
+      </div>
     </div>
     <mat-form-field class="textcontent">
       <textarea

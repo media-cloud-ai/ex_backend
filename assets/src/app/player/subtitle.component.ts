@@ -1,8 +1,10 @@
 
 import {
   Component,
+  EventEmitter,
   Input,
   OnChanges,
+  Output,
   SimpleChange,
   HostListener
 } from '@angular/core'
@@ -28,6 +30,7 @@ export class SubtitleComponent implements OnChanges {
   @Input() after: number = 0
   @Input() split: boolean = false
   @Input() isChangingTimecode: boolean
+  @Output() playSegment: EventEmitter<Cue> = new EventEmitter<Cue>();
 
   loaded = true
   canSave = false
@@ -77,7 +80,7 @@ export class SubtitleComponent implements OnChanges {
 
     for (var index = 0; index < this.cues.length; index++) {
       var cue = this.cues[index]
-      if(cue.start <= time && cue.end >= time) {
+      if(cue && cue.start <= time && cue.end >= time) {
         // console.log(cue);
         this.currentCue = cue
         this.currentCueIndex = index
@@ -98,7 +101,7 @@ export class SubtitleComponent implements OnChanges {
 
         return
       }
-      if(time >= cue.end) {
+      if(cue && time >= cue.end) {
         initialIndex += 1
       }
     }
@@ -176,6 +179,10 @@ export class SubtitleComponent implements OnChanges {
     })
   }
 
+  playCue(cue: Cue) {
+    this.playSegment.next(cue)
+  }
+
   @HostListener('window:keydown', ['$event'])
   keyDownEvent(event: KeyboardEvent) {
     if (event.ctrlKey === true && event.code === 'KeyC') {
@@ -201,10 +208,14 @@ export class SubtitleComponent implements OnChanges {
   }
 
   startTimeChange(event: number, cue: Cue) {
-    cue.start = event
+    if(cue) {
+      cue.start = event
+    }
   }
 
   endTimeChange(event: number, cue: Cue) {
-    cue.end = event
+    if(cue) {
+      cue.end = event
+    }
   }
 }

@@ -96,7 +96,8 @@
       [split]=splitAction
       before=1
       after=1
-      [isChangingTimecode]=isChangingTimecode>
+      [isChangingTimecode]=isChangingTimecode
+      (playSegment)="playSegment($event)">
     </subtitle-component>
   </span>
   <span class=subtitle>
@@ -120,7 +121,8 @@
       [split]=splitAction
       before=1
       after=1
-      [isChangingTimecode]=isChangingTimecode>
+      [isChangingTimecode]=isChangingTimecode
+      (playSegment)="playSegment($event)">
     </subtitle-component>
   </span>
 </div>
