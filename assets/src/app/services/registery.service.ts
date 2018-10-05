@@ -45,9 +45,9 @@ export class RegisteryService {
       )
   }
 
-  addSubtitle(registery_id: number, language: string)
+  addSubtitle(registery_id: number, language: string, version: string)
   : Observable<RegisteryData> {
-    return this.http.post<RegisteryData>(this.registeryUrl + '/' + registery_id + "/subtitle", {language: language})
+    return this.http.post<RegisteryData>(this.registeryUrl + '/' + registery_id + "/subtitle", {language: language, version: version})
       .pipe(
         tap(registery => this.log('fetched Registery')),
         catchError(this.handleError('addSubtitle', undefined))

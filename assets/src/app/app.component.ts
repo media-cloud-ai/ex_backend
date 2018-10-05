@@ -82,7 +82,7 @@ export class AppComponent {
   }
 
   updateLeftMenu() {
-    console.log(this.loggedIn);
+    // console.log(this.loggedIn);
     if (this.loggedIn) {
       this.left_menu = []
 

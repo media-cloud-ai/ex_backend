@@ -9,6 +9,7 @@ import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material'
 
 export class NewSubtitleDialogComponent {
   language: any
+  version: string
   languages = [
     {language: "eng"},
     {language: "fra"},
@@ -27,6 +28,9 @@ export class NewSubtitleDialogComponent {
   }
 
   onClose(): void {
-    this.dialogRef.close(this.language)
+    this.dialogRef.close({
+      language: this.language.language,
+      version: this.version
+    })
   }
 }

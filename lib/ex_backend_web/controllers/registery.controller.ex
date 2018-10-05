@@ -8,8 +8,8 @@ defmodule ExBackendWeb.RegisteryController do
   action_fallback(ExBackendWeb.FallbackController)
 
   # the following plugs are defined in the controllers/authorize.ex file
-  plug(:user_check when action in [:index, :show, :add_subtitle])
-  plug(:right_editor_check when action in [:index, :show, :add_subtitle])
+  plug(:user_check when action in [:index, :show, :add_subtitle, :update_subtitle])
+  plug(:right_editor_check when action in [:index, :show, :add_subtitle, :update_subtitle])
 
   def index(conn, params) do
     items = Registeries.list_registeries(params)
@@ -21,8 +21,10 @@ defmodule ExBackendWeb.RegisteryController do
     render(conn, "show.json", item: item)
   end
 
-  def add_subtitle(conn, %{"language" => language, "registery_id" => registery_id}) do
+  def add_subtitle(conn, %{"language" => language, "version" => version, "registery_id" => registery_id}) do
     item = Registeries.get_registery!(registery_id)
+
+    %Plug.Conn{assigns: %{current_user: user}} = conn
 
     root =
       System.get_env("ROOT_DASH_CONTENT") || Application.get_env(:ex_backend, :root_dash_content)
@@ -37,6 +39,8 @@ defmodule ExBackendWeb.RegisteryController do
       |> Map.get("subtitles")
       |> List.insert_at(-1, %{
         "language" => language,
+        "version" => version,
+        "user_id" => user.id,
         "paths" => [filename]
       })
 
@@ -50,6 +54,8 @@ defmodule ExBackendWeb.RegisteryController do
 
   def update_subtitle(conn, %{"index" => index, "registery_id" => registery_id}) do
     item = Registeries.get_registery!(registery_id)
+
+    %Plug.Conn{assigns: %{current_user: user}} = conn
 
     {:ok, content, conn} = Plug.Conn.read_body(conn)
 
@@ -69,7 +75,12 @@ defmodule ExBackendWeb.RegisteryController do
     :ok = File.close file
 
     subtitles =
-      List.insert_at(subtitles, -1, %{"language" => "eng", "version" => version, "paths" => [subtitle_filename]})
+      List.insert_at(subtitles, -1, %{
+        "language" => "eng",
+        "version" => version,
+        "user_id" => user.id,
+        "paths" => [subtitle_filename]
+      })
 
     params = Map.put(item.params, "subtitles", subtitles)
     {:ok, item} = Registeries.update_registery(item, %{params: params})

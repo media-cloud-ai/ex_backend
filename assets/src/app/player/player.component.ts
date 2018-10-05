@@ -175,7 +175,7 @@ export class PlayerComponent {
   }
 
   playSegment(cue) {
-    console.log("play segment...", cue)
+    // console.log("play segment...", cue)
     if(cue) {
       this.replay(cue.start)
     }

@@ -17,7 +17,8 @@
     color="primary"
     (click)="addCue()"
     >
-    <mat-icon>add</mat-icon> Add Cue
+    <mat-icon>add</mat-icon>
+    Add Cue
   </button>
   <button
     mat-raised-button
@@ -25,7 +26,8 @@
     [disabled]="!canSave"
     (click)="save()"
     >
-    <mat-icon>save</mat-icon> Save
+    <mat-icon>save</mat-icon>
+    Save
   </button>
 </div>
 <div class=subtitle
@@ -56,7 +58,7 @@
         <timecode-component
           [time]="cue.end"
           [isChangingTimecode]=isChangingTimecode
-          (timeChange)="startTimeChange($event, cue)">
+          (timeChange)="endTimeChange($event, cue)">
         </timecode-component>
       </div>
     </div>

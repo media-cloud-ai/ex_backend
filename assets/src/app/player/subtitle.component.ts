@@ -75,12 +75,12 @@ export class SubtitleComponent implements OnChanges {
     }
   }
 
-  refresh(time) {
+  refresh(currentTime) {
     var initialIndex = 0;
 
     for (var index = 0; index < this.cues.length; index++) {
       var cue = this.cues[index]
-      if(cue && cue.start <= time && cue.end >= time) {
+      if(cue && cue.start <= currentTime && cue.end >= currentTime) {
         // console.log(cue);
         this.currentCue = cue
         this.currentCueIndex = index
@@ -101,7 +101,7 @@ export class SubtitleComponent implements OnChanges {
 
         return
       }
-      if(cue && time >= cue.end) {
+      if(cue && currentTime >= cue.end) {
         initialIndex += 1
       }
     }
@@ -181,21 +181,6 @@ export class SubtitleComponent implements OnChanges {
 
   playCue(cue: Cue) {
     this.playSegment.next(cue)
-  }
-
-  @HostListener('window:keydown', ['$event'])
-  keyDownEvent(event: KeyboardEvent) {
-    if (event.ctrlKey === true && event.code === 'KeyC') {
-      return false
-    }
-  }
-
-  @HostListener('window:keyup', ['$event'])
-  keyUpEvent(event: KeyboardEvent) {
-    if (event.ctrlKey === true && event.code === 'KeyC') {
-      // this.cutSubtitle()
-      return false
-    }
   }
 
   focus() {

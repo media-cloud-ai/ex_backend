@@ -66,7 +66,7 @@ export class RegisteryComponent {
     let dialogRef = this.dialog.open(NewSubtitleDialogComponent, {data: this.item})
     dialogRef.afterClosed().subscribe(state => {
       if(state != undefined) {
-        this.registeryService.addSubtitle(this.item.id, state.language)
+        this.registeryService.addSubtitle(this.item.id, state.language, state.version)
         .subscribe(itemData => {
           this.item = itemData.data
         })

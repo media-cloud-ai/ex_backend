@@ -85,6 +85,7 @@ defmodule ExBackend.Workflow.Step.Register do
             subtitles: [
               %{
                 language: language,
+                version: "Azure STT",
                 paths: paths
               }
             ]
@@ -100,6 +101,7 @@ defmodule ExBackend.Workflow.Step.Register do
             subtitles: [
               %{
                 language: language,
+                version: "Azure STT",
                 paths: paths
               }
             ]

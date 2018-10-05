@@ -79,12 +79,12 @@
     <div>
       <mat-form-field>
         <mat-select
-          placeholder="Language"
+          placeholder="Language / Version"
           [(value)]="leftLanguage">
           <mat-option
             *ngFor="let language of languages"
             [value]="language">
-            {{language.language | language}}
+            {{language.language | language}} / {{language.version}}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -104,12 +104,12 @@
     <div>
       <mat-form-field>
         <mat-select
-          placeholder="Language"
+          placeholder="Language / Version"
           [(value)]="rightLanguage">
           <mat-option
             *ngFor="let language of languages"
             [value]="language">
-            {{language.language | language}}
+            {{language.language | language}} / {{language.version}}
           </mat-option>
         </mat-select>
       </mat-form-field>
