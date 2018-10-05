@@ -18,7 +18,7 @@ defmodule ExBackendWeb.Docker.ImagesController do
       System.get_env("AMQP_VHOST") || Application.get_env(:amqp, :virtual_host) || "/"
 
     mounted_workdir = Application.get_env(:ex_backend, :mounted_workdir, "/data")
-    workdir = Application.get_env(:ex_backend, :workdir)
+    workdir = Application.get_env(:ex_backend, :workdir, "/data")
 
     mounted_appdir = Application.get_env(:ex_backend, :mounted_appdir, "/opt/app")
     appdir = Application.get_env(:ex_backend, :appdir)

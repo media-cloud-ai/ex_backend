@@ -89,7 +89,6 @@ config :ex_backend,
   akamai_username: "akamai_username",
   akamai_password: "akamai_password",
   akamai_video_prefix: "/421959/prod/innovation/SubTil",
-  workdir: "/tmp/ftp_francetv",
   appdir: "/opt/app",
   acs_app: "./SynchroSubtilTSP_V0.6"
 
