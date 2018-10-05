@@ -126,11 +126,11 @@ export class CatalogComponent {
   }
 
   eventGetVideos(event): void {
-    this.router.navigate(['/videos'], { queryParams: this.getQueryParamsForPage(event.pageIndex, event.pageSize) })
+    this.router.navigate(['/catalog'], { queryParams: this.getQueryParamsForPage(event.pageIndex, event.pageSize) })
   }
 
   updateVideos(): void {
-    this.router.navigate(['/videos'], { queryParams: this.getQueryParamsForPage(0) })
+    this.router.navigate(['/catalog'], { queryParams: this.getQueryParamsForPage(0) })
     this.getVideos(0)
   }
 
@@ -273,6 +273,6 @@ export class CatalogComponent {
   }
 
   gotoVideo(video_id): void {
-    this.router.navigate(['/videos'], { queryParams: {video_id: video_id} })
+    this.router.navigate(['/catalog'], { queryParams: {video_id: video_id} })
   }
 }
