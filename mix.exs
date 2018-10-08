@@ -55,7 +55,7 @@ defmodule ExBackend.Mixfile do
       {:gettext, "~> 0.14"},
       {:httpotion, "~> 3.1.0"},
       {:phoenix, "~> 1.3.3"},
-      {:phoenix_ecto, "~> 3.2"},
+      {:phoenix_ecto, "~> 3.4"},
       {:phoenix_html, "~> 2.10"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:phoenix_pubsub, "~> 1.0"},
