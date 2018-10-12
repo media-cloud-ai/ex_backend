@@ -8,6 +8,7 @@ import { PlayerComponent } from './player.component';
 import { SubtitleComponent } from './subtitle.component'
 import { TimecodeComponent } from './timecode.component'
 import { TimecodeDialogComponent } from './dialog/timecode_dialog.component'
+import { SetVersionDialog } from './dialog/set_version_dialog'
 
 import {
   MatButtonModule,
@@ -44,12 +45,14 @@ export const ROUTES: Routes = [
     PlayerComponent,
     SubtitleComponent,
     TimecodeComponent,
-    TimecodeDialogComponent
+    TimecodeDialogComponent,
+    SetVersionDialog,
   ],
   entryComponents: [
     SubtitleComponent,
     TimecodeComponent,
     TimecodeDialogComponent,
+    SetVersionDialog,
   ]
 })
 

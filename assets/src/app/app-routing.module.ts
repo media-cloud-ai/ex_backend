@@ -19,6 +19,7 @@ import {LoginComponent} from './login/login.component'
 import {PersonComponent} from './persons/person.component'
 import {PersonsComponent} from './persons/persons.component'
 import {RegisteriesComponent} from './registeries/registeries.component'
+import {RegisteryDetailComponent} from './registeries/registery_detail.component'
 import {UsersComponent} from './users/users.component'
 import {WatchersComponent} from './watchers/watchers.component'
 import {WorkflowDetailsComponent} from './workflows/details/workflow_details.component'
@@ -70,6 +71,11 @@ const appRoutes: Routes = [
   {
     path: 'registeries',
     component: RegisteriesComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'registeries/:id',
+    component: RegisteryDetailComponent,
     canActivate: [AuthGuard]
   },
   {

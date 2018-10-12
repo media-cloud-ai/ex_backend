@@ -8,6 +8,7 @@ import {
   SimpleChange,
   HostListener
 } from '@angular/core'
+import {MatDialog} from '@angular/material'
 import {HttpClient} from '@angular/common/http'
 import {WebVtt, Cue, Timecode} from 'ts-subtitle'
 
@@ -15,6 +16,7 @@ import {MouseMoveService} from '../services/mousemove.service'
 import {RegisteryService} from '../services/registery.service'
 
 import {Subtitle} from '../models/registery'
+import {SetVersionDialog} from './dialog/set_version_dialog'
 
 @Component({
   selector: 'subtitle-component',
@@ -24,7 +26,7 @@ import {Subtitle} from '../models/registery'
 
 export class SubtitleComponent implements OnChanges {
   @Input() content_id: number
-  @Input() language: Subtitle
+  @Input() subtitle: Subtitle
   @Input() time: number = 0.0
   @Input() before: number = 0
   @Input() after: number = 0
@@ -41,28 +43,29 @@ export class SubtitleComponent implements OnChanges {
   afterCues: Cue[] = []
 
   constructor(
+    public dialog: MatDialog,
     private http: HttpClient,
     private mouseMoveService: MouseMoveService,
     private registeryService: RegisteryService,
   ) {}
 
   ngOnInit() {
-    this.loadSubtitle(this.language)
+    this.loadSubtitle(this.subtitle)
   }
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
     if (changes && changes.time) {
       this.refresh(changes.time.currentValue)
     }
-    if (changes && changes.language) {
-      this.loadSubtitle(changes.language.currentValue)
+    if (changes && changes.subtitle) {
+      this.loadSubtitle(changes.subtitle.currentValue)
     }
   }
 
-  loadSubtitle(language: Subtitle) {
-    if(language && language.paths) {
+  loadSubtitle(subtitle: Subtitle) {
+    if(subtitle && subtitle.path) {
       this.loaded = false
-      var subtitle_url = language.paths[0].replace("/dash", "/stream")
+      var subtitle_url = subtitle.path.replace("/dash", "/stream")
       this.http.get(subtitle_url, {responseType: 'text'})
       .subscribe(contents => {
         var webvtt = new WebVtt()
@@ -173,9 +176,14 @@ export class SubtitleComponent implements OnChanges {
     webvtt.set_cues(this.cues)
     var content = webvtt.dump()
 
-    this.registeryService.saveSubtitle(this.content_id, this.language.index, content, "v1")
-    .subscribe(response => {
-      this.canSave = false
+    let dialogRef = this.dialog.open(SetVersionDialog, {data: this.time})
+    dialogRef.afterClosed().subscribe(newVersion => {
+      if(newVersion !== undefined) {
+        this.registeryService.saveSubtitle(this.content_id, this.subtitle.index, content, newVersion)
+        .subscribe(response => {
+          this.canSave = false
+        })
+      }
     })
   }
 

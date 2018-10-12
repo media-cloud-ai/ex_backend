@@ -72,7 +72,9 @@ defmodule ExBackend.Registeries do
         limit: ^size
       )
 
-    items = Repo.all(query)
+    items =
+      Repo.all(query)
+      |> Repo.preload(:subtitles)
 
     %{
       data: items,
@@ -96,7 +98,10 @@ defmodule ExBackend.Registeries do
       ** (Ecto.NoResultsError)
 
   """
-  def get_registery!(id), do: Repo.get!(Registery, id)
+  def get_registery!(id) do
+    Repo.get!(Registery, id)
+    |> Repo.preload(:subtitles)
+  end
 
   @doc """
   Creates a registery.

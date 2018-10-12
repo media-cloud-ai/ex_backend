@@ -66,12 +66,14 @@ import {ParametersComponent}     from './workflows/details/parameters.component'
 import {PersonComponent}         from './persons/person.component'
 import {PersonFormComponent}     from './persons/form.component'
 import {PersonsComponent}        from './persons/persons.component'
-import {RegisteryComponent}      from './registeries/registery.component'
 import {RegisteriesComponent}    from './registeries/registeries.component'
+import {RegisteryComponent}      from './registeries/registery.component'
+import {RegisteryDetailComponent} from './registeries/registery_detail.component'
 import {RightsComponent}         from './users/rights.component'
 import {QueuesComponent}         from './amqp/queues.component'
 import {StepProgressBarComponent} from './workflows/step_progress_bar.component'
 import {StepRendererComponent}   from './workflows/renderer/step_renderer.component'
+import {SubtitleComponent}       from './registeries/items/subtitle.component'
 import {UserComponent}           from './users/user.component'
 import {UsersComponent}          from './users/users.component'
 import {VideoTitleComponent}     from './workflows/video_title.component'
@@ -185,10 +187,12 @@ const EX_BACKEND_DATE_FORMATS = {
     QueuesComponent,
     RegisteryComponent,
     RegisteriesComponent,
+    RegisteryDetailComponent,
     RightsComponent,
     StartIngestDialog,
     StepProgressBarComponent,
     StepRendererComponent,
+    SubtitleComponent,
     UserComponent,
     UsersComponent,
     VideoTitleComponent,
@@ -215,10 +219,12 @@ const EX_BACKEND_DATE_FORMATS = {
     PersonShowDialogComponent,
     RdfDialogComponent,
     RegisteryComponent,
+    RegisteryDetailComponent,
     RightsComponent,
     StartIngestDialog,
     StepProgressBarComponent,
     StepRendererComponent,
+    SubtitleComponent,
     UserComponent,
     VideoTitleComponent,
     WatchersComponent,

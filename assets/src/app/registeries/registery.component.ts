@@ -85,4 +85,12 @@ export class RegisteryComponent {
       }
     })
   }
+
+  filterLatestVersions(list){
+    return list.filter(x => x.childs.length == 0);
+  }
+
+  showDetails() {
+    this.router.navigate(['/registeries/' + this.item.id])
+  }
 }

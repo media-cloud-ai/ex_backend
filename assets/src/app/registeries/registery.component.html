@@ -20,13 +20,18 @@
   <span class=languages *ngIf="item.params && item.params.subtitles">
     <span
       class=language
-      *ngFor="let subtitle of item.params.subtitles; let i = index">
+      *ngFor="let subtitle of filterLatestVersions(item.params.subtitles); let i = index">
       <span class=information>
         <span class="locale">
           {{subtitle.language | language}}
         </span>
         <span class="version">
           {{subtitle.version}}
+        </span>
+        <span
+           class="creation_date">
+          {{subtitle.inserted_at | date: 'd LLL yy'}}
+          {{subtitle.inserted_at | date: 'H:mm:ss'}}
         </span>
         <span *ngIf="subtitle.user"
            class="email">
@@ -63,6 +68,18 @@
           add
         </mat-icon>
         Add language
+      </button>
+    </span>
+    <span>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)=showDetails()
+        >
+        <mat-icon class=icon>
+          history
+        </mat-icon>
+        Versions
       </button>
     </span>
   </span>

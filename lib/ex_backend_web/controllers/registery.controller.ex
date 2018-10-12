@@ -4,6 +4,7 @@ defmodule ExBackendWeb.RegisteryController do
   import ExBackendWeb.Authorize
 
   alias ExBackend.Registeries
+  alias ExBackend.Subtitles
 
   action_fallback(ExBackendWeb.FallbackController)
 
@@ -34,21 +35,17 @@ defmodule ExBackendWeb.RegisteryController do
     IO.binwrite file, "WEBVTT\n\n"
     File.close file
 
-    subtitles =
-      Map.get(item, :params)
-      |> Map.get("subtitles")
-      |> List.insert_at(-1, %{
-        "language" => language,
-        "version" => version,
-        "user_id" => user.id,
-        "paths" => [filename]
-      })
+    parameters = %{
+      "language" => language,
+      "version" => version,
+      "user_id" => user.id,
+      "registery_id" => registery_id,
+      "path" => filename
+    }
 
-    params =
-      Map.get(item, :params)
-      |> Map.put("subtitles", subtitles)
+    {:ok, _subtitle} = Subtitles.create_subtitle(parameters)
+    item = Registeries.get_registery!(registery_id)
 
-    {:ok, item} = Registeries.update_registery(item, %{params: params})
     render(conn, "show.json", item: item)
   end
 
@@ -59,8 +56,9 @@ defmodule ExBackendWeb.RegisteryController do
 
     {:ok, content, conn} = Plug.Conn.read_body(conn)
 
-    subtitles = Map.get(item.params, "subtitles")
+    subtitles = item.subtitles
     subtitle = Enum.at(subtitles, String.to_integer(index))
+    language = subtitle.language
 
     version =
       Plug.Conn.get_req_header(conn, "x-version")
@@ -69,33 +67,36 @@ defmodule ExBackendWeb.RegisteryController do
     root =
       System.get_env("ROOT_DASH_CONTENT") || Application.get_env(:ex_backend, :root_dash_content)
 
-    subtitle_filename = Path.join([root, Integer.to_string(item.workflow_id), UUID.uuid4() <> "_" <> Map.get(subtitle, "language") <> ".vtt"])
+    subtitle_filename = Path.join([root, Integer.to_string(item.workflow_id), UUID.uuid4() <> "_" <> language <> ".vtt"])
     {:ok, file} = File.open subtitle_filename, [:write]
     :ok = IO.binwrite file, content
     :ok = File.close file
 
-    subtitles =
-      List.insert_at(subtitles, -1, %{
-        "language" => "eng",
-        "version" => version,
-        "user_id" => user.id,
-        "paths" => [subtitle_filename]
-      })
+    parameters = %{
+      "language" => language,
+      "version" => version,
+      "user_id" => user.id,
+      "registery_id" => registery_id,
+      "parent_id" => subtitle.id,
+      "path" => subtitle_filename
+    }
 
-    params = Map.put(item.params, "subtitles", subtitles)
-    {:ok, item} = Registeries.update_registery(item, %{params: params})
-
+    {:ok, _subtitle} = Subtitles.create_subtitle(parameters)
+    item = Registeries.get_registery!(registery_id)
 
     render(conn, "show.json", item: item)
   end
 
   def delete_subtitle(conn, %{"index" => index, "registery_id" => registery_id}) do
     item = Registeries.get_registery!(registery_id)
-    subtitles = List.delete_at(Map.get(item.params, "subtitles"), String.to_integer(index))
-    params = Map.put(item.params, "subtitles", subtitles)
 
-    {:ok, item} = Registeries.update_registery(item, %{params: params})
+    subtitle =
+      item.subtitles
+      |> Enum.at(String.to_integer(index))
 
+    {:ok, _sub} = Subtitles.delete_subtitle(subtitle)
+
+    item = Registeries.get_registery!(registery_id)
     render(conn, "show.json", item: item)
   end
 end

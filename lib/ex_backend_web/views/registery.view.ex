@@ -16,7 +16,10 @@ defmodule ExBackendWeb.RegisteryView do
   end
 
   def render("registery.json", %{registery: item}) do
-    subtitles = load_user(Map.get(item.params, "subtitles"))
+    subtitles =
+      item.subtitles
+      |> render_many(ExBackendWeb.SubtitleView, "subtitle.json")
+
     params = Map.put(item.params, "subtitles", subtitles)
 
     %{

@@ -1,23 +1,15 @@
 @import '../colors';
 
-div.root {
-  display: flex;
-}
-
-.category {
-  display: inline-block;
-  width: 80px;
-}
 
 .player {
   position: relative;
-  height: 90px;
+  height: 180px;
   display: inline-block;
 
   .button {
     position: absolute;
-    left: 65px;
-    top: 30px;
+    left: 130px;
+    top: 70px;
     color: @white;
 
     .pause {
@@ -41,8 +33,19 @@ div.root {
 }
 
 .videoPlayer {
-  width: 150px;
+  width: 300px;
   vertical-align: middle;
+}
+
+.column {
+  display: inline-block;
+  vertical-align: top;
+  border-left: 1px solid #aaa;
+}
+
+.childs,
+.child {
+  display: inline-block;
 }
 
 .language {
@@ -55,6 +58,7 @@ div.root {
   display: inline-block;
   vertical-align: middle;
   min-height: 40px;
+  min-width: 150px;
 
   .icon {
     vertical-align: middle;
@@ -87,9 +91,4 @@ div.root {
 
 .languages {
   flex: 1;
-}
-
-.actions {
-  display: inline-block;
-  width: 400px;
 }

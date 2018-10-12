@@ -59,7 +59,7 @@ export class RegisteriesComponent {
         this.length = undefined
         return
       }
-      console.log(page)
+
       this.items = page
       this.length = page.total
     })

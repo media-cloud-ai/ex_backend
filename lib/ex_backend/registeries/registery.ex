@@ -3,11 +3,13 @@ defmodule ExBackend.Registeries.Registery do
   import Ecto.Changeset
   alias ExBackend.Registeries.Registery
   alias ExBackend.Workflows.Workflow
+  alias ExBackend.Subtitles.Subtitle
 
   schema "registery" do
     field(:name, :string)
     field(:params, :map)
     belongs_to(:workflow, Workflow, foreign_key: :workflow_id)
+    has_many(:subtitles, Subtitle, on_delete: :delete_all)
 
     timestamps()
   end

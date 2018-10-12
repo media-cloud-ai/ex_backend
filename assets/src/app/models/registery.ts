@@ -4,9 +4,13 @@ export class Manifest {
 }
 
 export class Subtitle {
+  id: number
   language: string
   index?: number
-  paths: string[]
+  path: string
+  parent_id?: number
+  childs: number[]
+  sub_childs: Subtitle[]
 }
 
 export class Params {

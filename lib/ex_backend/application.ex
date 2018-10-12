@@ -145,6 +145,18 @@ defmodule ExBackend.Application do
       ExBackend.Migration.CreateRegistery
     )
 
+    Ecto.Migrator.up(
+      ExBackend.Repo,
+      20_181_008_122_930,
+      ExBackend.Migration.CreateSubtitles
+    )
+
+    Ecto.Migrator.up(
+      ExBackend.Repo,
+      20_181_008_133_834,
+      ExBackend.Migration.MoveSubtitlesItems
+    )
+
     root_email = System.get_env("ROOT_EMAIL") || Application.get_env(:ex_backend, :root_email)
 
     root_password =
