@@ -7,7 +7,7 @@ defmodule ExBackend.Migration.CreateSubtitles do
       add(:version, :string)
       add(:path, :string)
       add(:user_id, references(:users, on_delete: :nothing))
-      add(:registery_id, references(:registeries, on_delete: :nothing))
+      add(:registery_id, references(:registery, on_delete: :nothing))
       add(:parent_id, references(:subtitles, on_delete: :nothing))
 
       timestamps()
