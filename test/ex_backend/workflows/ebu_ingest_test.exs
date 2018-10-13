@@ -437,7 +437,8 @@ defmodule ExBackend.EbuIngestTest do
                "subtitles" => [
                  %{
                    "language" => "eng",
-                   "paths" => [stored_subtitle_file]
+                   "paths" => [stored_subtitle_file],
+                   "version" => "Azure STT"
                  }
                ]
              } == params
