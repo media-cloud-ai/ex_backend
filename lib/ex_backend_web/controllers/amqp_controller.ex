@@ -9,17 +9,17 @@ defmodule ExBackendWeb.Amqp.AmqpController do
   plug(:right_technician_check when action in [:queues, :connections])
 
   def queues(conn, _params) do
-    queues = get_amqp_informations("queues")
-
-    conn
-    |> json(%{queues: queues})
+    case get_amqp_informations("queues") do
+      {:ok, queues} -> json(conn, %{status: "ok", queues: queues})
+      {:error, message} -> json(conn, %{status: "error", message: message})
+    end
   end
 
   def connections(conn, _params) do
-    connections = get_amqp_informations("connections")
-
-    conn
-    |> json(%{connections: connections})
+    case get_amqp_informations("connections") do
+      {:ok, connections} -> json(conn, %{status: "ok", connections: connections})
+      {:error, message} -> json(conn, %{status: "error", message: message})
+    end
   end
 
   def get_amqp_informations(endpoint) do
@@ -40,7 +40,7 @@ defmodule ExBackendWeb.Amqp.AmqpController do
         %{error: message}
 
       response ->
-        Poison.decode!(response.body)
+        Poison.decode(response.body)
     end
   end
 
