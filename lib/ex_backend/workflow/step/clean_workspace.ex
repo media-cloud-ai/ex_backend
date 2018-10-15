@@ -7,10 +7,10 @@ defmodule ExBackend.Workflow.Step.CleanWorkspace do
 
   def launch(workflow) do
     workflow
-    |> Map.get(:flow)
-    |> Map.get("steps")
+    |> ExBackend.Map.get_by_key_or_atom(:flow)
+    |> ExBackend.Map.get_by_key_or_atom(:steps)
     |> Enum.filter(fn step ->
-      Map.get(step, "name") == @action_name
+      ExBackend.Map.get_by_key_or_atom(step, :name) == @action_name
     end)
     |> Enum.map(fn step ->
       launch(workflow, step)
