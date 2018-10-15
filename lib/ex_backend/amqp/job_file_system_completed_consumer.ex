@@ -32,10 +32,10 @@ defmodule ExBackend.Amqp.JobFileSystemCompletedConsumer do
   def consume(
         channel,
         tag,
-        _redelivered,
+        redelivered,
         %{"job_id" => job_id, "status" => status} = payload
       ) do
     payload = Map.put(payload, "files", [])
-    consume(channel tag, _redelivered, payload)
+    consume(channel, tag, redelivered, payload)
   end
 end
