@@ -28,4 +28,14 @@ defmodule ExBackend.Amqp.JobFileSystemCompletedConsumer do
     ExBackend.WorkflowStepManager.check_step_status(%{job_id: job_id})
     Basic.ack(channel, tag)
   end
+
+  def consume(
+        channel,
+        tag,
+        _redelivered,
+        %{"job_id" => job_id, "status" => status} = payload
+      ) do
+    payload = Map.put(payload, "files", [])
+    consume(channel tag, _redelivered, payload)
+  end
 end
