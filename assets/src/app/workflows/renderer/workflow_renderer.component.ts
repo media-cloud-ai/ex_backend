@@ -29,46 +29,5 @@ export class WorkflowRendererComponent {
 
   loadSteps() {
     this.renderer = new WorkflowRenderer(this.steps)
-    if(this.steps && this.steps.length > 0) {
-      this.updateStepRequirements(this.steps[0])
-    }
   }
-
-  updateStepRequirements(step: Step) {
-    let step_dependencies = this.steps.filter(s => step.parent_ids && step.parent_ids.some(dependency => dependency === s.id))
-    let can_step_be_enabled = true
-    for (let dependency of step_dependencies) {
-      if (!dependency.enable) {
-        can_step_be_enabled = false
-      }
-    }
-    this.active_steps[step.name] = can_step_be_enabled
-    if (!can_step_be_enabled) {
-      step.enable = false
-    }
-
-    let step_children = this.steps.filter(s => s.parent_ids && s.parent_ids.includes(step.id))
-    for (let child of step_children) {
-      this.updateStepRequirements(child)
-    }
-  }
-
-  // updateEnabledSteps(step: Step): void {
-  //   if (!step.enable) {
-  //     let step_children = this.steps.filter(s => s.parent_ids && s.parent_ids.includes(step.id))
-  //     for (let child of step_children) {
-  //       if (child.enable && child.parent_ids.length > 1) {
-  //         // handle multiple parents case
-  //         let has_enabled_parents = this.steps.some(s => child.parent_ids.includes(s.id) && s.enable)
-  //         if (has_enabled_parents) {
-  //           continue
-  //         }
-  //       }
-
-  //       child.enable = false
-  //       this.updateEnabledSteps(child)
-  //     }
-  //   }
-  //   this.updateStepRequirements(step)
-  // }
 }

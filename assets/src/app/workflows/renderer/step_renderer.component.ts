@@ -10,7 +10,6 @@ import {Step} from '../../models/workflow'
 
 export class StepRendererComponent {
   @Input() step: Step
-  @Input() active: boolean
   open_parameters = false
 
 

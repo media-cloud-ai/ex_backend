@@ -7,7 +7,6 @@
     <mat-icon *ngIf="step.icon">{{step.icon}}</mat-icon>
     <mat-icon *ngIf="!step.icon">{{step.name | iconForJob}}</mat-icon>
     <label
-      [ngClass]="{'active': active}"
       (click)="step.enable = !step.enable">
       <span *ngIf="step.label">
         {{step.label}}
@@ -21,8 +20,7 @@
       class=small
       color=primary
       [(ngModel)]="step.enable"
-      [checked]=step.enable
-      [disabled]=!active>
+      [checked]=step.enable>
     </mat-slide-toggle>
 
     <mat-icon class=more
@@ -59,7 +57,7 @@
         [ngClass]="{disabled: !step.enable}"
         >
         <mat-checkbox
-        class="small"
+          class="small"
           color="accent"
           [disabled]="!step.enable || !parameter.enable"
           [(ngModel)]=parameter.value
@@ -70,5 +68,6 @@
     </mat-list-item>
   </mat-list>
 </span>
+
 <mat-divider *ngIf="step.name">
 </mat-divider>
