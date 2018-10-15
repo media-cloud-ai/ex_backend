@@ -1,8 +1,6 @@
 defmodule ExBackendWeb.RegisteryView do
   use ExBackendWeb, :view
   alias ExBackendWeb.RegisteryView
-  alias ExBackendWeb.UserView
-  alias ExBackend.Accounts
 
   def render("index.json", %{items: %{data: items, total: total}}) do
     %{

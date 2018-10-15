@@ -3,6 +3,7 @@ defmodule ExBackend.FrancetvSubtilIngestTest do
 
   alias ExBackend.Workflows
   alias ExBackend.WorkflowStep
+  alias ExBackend.Rdf.Converter
 
   require Logger
 
@@ -18,7 +19,13 @@ defmodule ExBackend.FrancetvSubtilIngestTest do
       }
 
       {:ok, workflow} = Workflows.create_workflow(workflow_params)
-      {:error, "unable to publish RDF"} = WorkflowStep.start_next_step(workflow)
+      case WorkflowStep.start_next_step(workflow) do
+        {:error, "unable to publish RDF"} -> nil
+        {:error, "unable to convert using http://127.0.0.1:1501/convert: econnrefused"} -> nil
+        {:error, "Missing Perfect Memory endpoint configuration"} -> nil
+        _ -> assert(false)
+      end
+
       ExBackend.HelpersTest.check(workflow.id, 11)
       ExBackend.HelpersTest.check(workflow.id, "download_ftp", 1)
       ExBackend.HelpersTest.check(workflow.id, "download_http", 1)
@@ -89,7 +96,12 @@ defmodule ExBackend.FrancetvSubtilIngestTest do
       ExBackend.HelpersTest.check(workflow.id, "upload_ftp", 3)
       ExBackend.HelpersTest.complete_jobs(workflow.id, "upload_ftp")
 
-      {:error, "unable to publish RDF"} = WorkflowStep.start_next_step(workflow)
+      case WorkflowStep.start_next_step(workflow) do
+        {:error, "unable to publish RDF"} -> nil
+        {:error, "unable to convert using http://127.0.0.1:1501/convert: econnrefused"} -> nil
+        {:error, "Missing Perfect Memory endpoint configuration"} -> nil
+        _ -> assert(false)
+      end
     end
 
     test "il etait une fois la vie with ACS" do
@@ -132,7 +144,12 @@ defmodule ExBackend.FrancetvSubtilIngestTest do
       ExBackend.HelpersTest.check(workflow.id, "set_language", 1)
       ExBackend.HelpersTest.complete_jobs(workflow.id, "set_language")
 
-      {:error, "unable to publish RDF"} = WorkflowStep.start_next_step(workflow)
+      case WorkflowStep.start_next_step(workflow) do
+        {:error, "unable to publish RDF"} -> nil
+        {:error, "unable to convert using http://127.0.0.1:1501/convert: econnrefused"} -> nil
+        {:error, "Missing Perfect Memory endpoint configuration"} -> nil
+        _ -> assert(false)
+      end
       ExBackend.HelpersTest.check(workflow.id, 15)
       ExBackend.HelpersTest.check(workflow.id, "generate_dash", 1)
       ExBackend.HelpersTest.check(workflow.id, "upload_ftp", 1)

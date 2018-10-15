@@ -1,6 +1,7 @@
 defmodule ExBackendWeb.RdfController do
   use ExBackendWeb, :controller
 
+  require Logger
   import ExBackendWeb.Authorize
 
   action_fallback(ExBackendWeb.FallbackController)
@@ -38,12 +39,16 @@ defmodule ExBackendWeb.RdfController do
   end
 
   def show(conn, params) do
-    {:ok, rdf_serialized} =
-      params
-      |> Map.get("catalog_id")
-      |> Converter.get_rdf()
-
-    conn
-    |> json(%{content: rdf_serialized})
+    params
+    |> Map.get("catalog_id")
+    |> Converter.get_rdf()
+    |> case do
+      {:ok, rdf_serialized} -> json(conn, %{content: rdf_serialized})
+      {:error, message} ->
+        Logger.error("#{message}")
+        conn
+        |> put_status(:service_unavailable)
+        |> json(%{message: message})
+    end
   end
 end

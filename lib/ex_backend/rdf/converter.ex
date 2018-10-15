@@ -36,7 +36,24 @@ defmodule ExBackend.Rdf.Converter do
 
           case artifact do
             nil ->
-              ""
+              Enum.filter(workflow.jobs, fn job ->
+                if job.name == "upload_ftp" do
+                  Map.get(job.params, "destination", %{})
+                  |> Map.get("path", "")
+                  |> String.ends_with?("/manifest.mpd")
+                else
+                  false
+                end
+              end)
+              |> case do
+                [] -> ""
+                jobs ->
+                  jobs
+                  |> List.first
+                  |> Map.get(:params)
+                  |> Map.get("destination")
+                  |> Map.get("path")
+              end
 
             _ ->
               artifact
@@ -69,9 +86,6 @@ defmodule ExBackend.Rdf.Converter do
           items
           |> Map.put(:files, files)
       end
-
-    information =
-      information
       |> Map.put(:acs_enabled, acs_enabled |> to_string)
 
     information =
@@ -102,8 +116,7 @@ defmodule ExBackend.Rdf.Converter do
 
     case HTTPotion.post(url, body: information |> Poison.encode!()) do
       %HTTPotion.ErrorResponse{message: message} ->
-        {:error, "unable to convert: #{message}"}
-
+        {:error, "unable to convert using #{url}: #{message}"}
       response ->
         {:ok, response.body}
     end

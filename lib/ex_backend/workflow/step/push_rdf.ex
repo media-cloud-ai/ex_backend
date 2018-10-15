@@ -39,9 +39,8 @@ defmodule ExBackend.Workflow.Step.PushRdf do
   end
 
   def convert_and_submit(workflow) do
-    r = Converter.get_rdf(workflow.reference) |> IO.inspect()
-
-    case r do
+    Converter.get_rdf(workflow.reference)
+    |> case do
       {:ok, rdf} -> PerfectMemory.publish_rdf(rdf)
       {:error, message} -> {:error, message}
     end
