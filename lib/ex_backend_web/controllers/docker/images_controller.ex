@@ -10,12 +10,12 @@ defmodule ExBackendWeb.Docker.ImagesController do
   plug(:right_technician_check when action in [:index])
 
   def index(conn, _params) do
-    hostname = System.get_env("AMQP_HOSTNAME") || Application.get_env(:amqp, :hostname)
-    username = System.get_env("AMQP_USERNAME") || Application.get_env(:amqp, :username)
-    password = System.get_env("AMQP_PASSWORD") || Application.get_env(:amqp, :password)
+    hostname = System.get_env("DOCKER_CONTAINER_AMQP_HOSTNAME") || Application.get_env(:docker_container_amqp, :hostname)
+    username = System.get_env("DOCKER_CONTAINER_AMQP_USERNAME") || Application.get_env(:docker_container_amqp, :username)
+    password = System.get_env("DOCKER_CONTAINER_AMQP_PASSWORD") || Application.get_env(:docker_container_amqp, :password)
 
     virtual_host =
-      System.get_env("AMQP_VHOST") || Application.get_env(:amqp, :virtual_host) || "/"
+      System.get_env("DOCKER_CONTAINER_AMQP_VHOST") || Application.get_env(:docker_container_amqp, :virtual_host) || "/"
 
     mounted_workdir = Application.get_env(:ex_backend, :mounted_workdir, "/data")
     workdir = Application.get_env(:ex_backend, :workdir, "/data")
