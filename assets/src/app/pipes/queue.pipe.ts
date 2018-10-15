@@ -29,6 +29,9 @@ export class QueuePipe implements PipeTransform {
       { id: 'job_http', name: 'HTTP jobs' },
       { id: 'job_http_error', name: 'HTTP jobs with error status' },
       { id: 'job_http_completed', name: 'HTTP jobs with completed status' },
+      { id: 'job_speech_to_text', name: 'Speech To Text jobs' },
+      { id: 'job_speech_to_text_error', name: 'Speech To Text jobs with error status' },
+      { id: 'job_speech_to_text_completed', name: 'Speech To Text jobs with completed status' },
     ]
 
     for (var i = allQueueNames.length - 1; i >= 0; i--) {
