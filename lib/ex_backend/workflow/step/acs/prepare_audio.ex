@@ -31,8 +31,7 @@ defmodule ExBackend.Workflow.Step.Acs.PrepareAudio do
 
   defp start_processing_audio([path | paths], workflow) do
     work_dir =
-      System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir) ||
-        "/tmp/ftp_francetv"
+      System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
 
     filename = Path.basename(path)
 
@@ -41,7 +40,7 @@ defmodule ExBackend.Workflow.Step.Acs.PrepareAudio do
     requirements = Requirements.add_required_paths(path)
 
     options = %{
-      codec_audio: "pcm_s16le",
+      output_codec_audio: "pcm_s16le",
       force_overwrite: true,
       disable_video: true,
       disable_data: true,

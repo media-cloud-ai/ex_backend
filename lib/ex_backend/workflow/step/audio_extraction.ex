@@ -66,7 +66,7 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
       case ExBackend.Map.get_by_key_or_atom(step, :parameters) do
         nil ->
           %{
-            codec_audio: "copy",
+            output_codec_audio: "copy",
             force_overwrite: true,
             disable_video: true,
             disable_data: true

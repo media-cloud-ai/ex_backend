@@ -29,11 +29,9 @@ defmodule ExBackend.Workflow.Step.Acs.Synchronize do
          step
        ) do
     work_dir =
-      System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir) ||
-        "/tmp/ftp_francetv"
+      System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
 
     app_dir = System.get_env("APP_DIR") || Application.get_env(:ex_backend, :appdir) || "/opt/app"
-
     acs_app = System.get_env("ACS_APP") || Application.get_env(:ex_backend, :acs_app)
 
     filename =
