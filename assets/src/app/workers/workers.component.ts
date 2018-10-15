@@ -25,6 +25,7 @@ export class WorkersComponent {
   images: Image[]
 
   selectedWorker: Image
+  selectedNode: NodeConfig
 
   constructor(
     private containerService: ContainerService,
@@ -61,6 +62,7 @@ export class WorkersComponent {
     dialogRef.afterClosed().subscribe(node => {
       if (node !== undefined) {
         this.getNodes()
+        this.getContainers()
       }
     })
   }
@@ -72,8 +74,19 @@ export class WorkersComponent {
     })
   }
 
+  switchSelectedNode(node: NodeConfig) {
+    if(this.selectedNode == node) {
+      this.selectedNode = undefined
+      this.getContainers()
+      return
+    }
+
+    this.selectedNode = node
+    this.getContainers()
+  }
+
   getContainers() {
-    this.containerService.getContainers()
+    this.containerService.getContainers(this.selectedNode)
     .subscribe(containerPage => {
       this.containers = containerPage.data
     })

@@ -11,10 +11,27 @@
     display: inline-block;
     width: 170px;
     margin-right: 10px;
+    cursor: pointer;
+    text-align: right;
 
     label {
       font-weight: bold;
       display: block;
+      cursor: pointer;
+    }
+    label,
+    .hostname,
+    .ssl {
+      text-align: left;
+      display: inline-block;
+      width: 100%;
+    }
+  }
+  .node.selected {
+    background-color: @green;
+    color: @white;
+    label {
+      color: @black;
     }
   }
 }
@@ -84,5 +101,11 @@
   cursor: pointer;
   text-align: right;
   display: inline-block;
-  width: 100%;
 }
+
+.trash:hover {
+  background-color: #FF3719;
+  opacity: 1;
+  color: #fff;
+  border-radius: 4px;
+};

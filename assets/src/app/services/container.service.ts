@@ -15,8 +15,12 @@ export class ContainerService {
 
   constructor(private http: HttpClient) { }
 
-  getContainers(): Observable<ContainerPage> {
+  getContainers(selectedNode: NodeConfig): Observable<ContainerPage> {
     let params = new HttpParams()
+    if(selectedNode !== undefined) {
+      params = params.append('node_id', String(selectedNode.id))
+    }
+
     return this.http.get<ContainerPage>(this.containersUrl, {params: params})
       .pipe(
         tap(containerPage => this.log('fetched ContainerPage')),

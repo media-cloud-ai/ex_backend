@@ -12,8 +12,8 @@ defmodule ExBackendWeb.Docker.ContainersController do
   plug(:user_check when action in [:index, :create, :show, :start, :stop])
   plug(:right_technician_check when action in [:index, :create, :show, :start, :stop])
 
-  def index(conn, _params) do
-    containers = list_all()
+  def index(conn, params) do
+    containers = list_all(params)
     render(conn, "index.json", containers: containers)
   end
 
@@ -97,8 +97,8 @@ defmodule ExBackendWeb.Docker.ContainersController do
     |> Container.list_all!()
   end
 
-  defp list_all() do
-    ExBackend.Nodes.list_nodes()
+  defp list_all(params \\ %{}) do
+    ExBackend.Nodes.list_nodes(params)
     |> Map.get(:data)
     |> Enum.map(fn node_config ->
       list_containers(node_config)

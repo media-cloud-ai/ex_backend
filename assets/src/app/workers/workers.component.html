@@ -3,25 +3,6 @@
   <h1>
     Nodes
   </h1>
-  <ul class=nodes>
-    <li  *ngFor="let node of nodes" class=node>
-      <label>
-        {{node.label}}
-      </label>
-      <span class=hostname>
-        {{node.hostname}}:{{node.port}}
-      </span>
-      <span *ngIf=node.ssl.certfile class="SSL">
-        SSL
-      </span>
-      <span class="trash">
-        <mat-icon
-          (click)="deleteNode(node.id)">
-          delete_forever
-        </mat-icon>
-      </span>
-    </li>
-  </ul>
   <span>
     <button
       mat-raised-button
@@ -32,6 +13,34 @@
       New Node
     </button>
   </span>
+  <ul class=nodes>
+    <li
+      *ngFor="let node of nodes"
+      [ngClass]="{selected: selectedNode == node}"
+      (click)="switchSelectedNode(node)"
+      class=node>
+      <div>
+        <label>
+          {{node.label}}
+        </label>
+        <span
+          class=hostname>
+          {{node.hostname}}:{{node.port}}
+        </span>
+        <span
+          *ngIf=node.ssl.certfile
+          class="ssl">
+          SSL
+        </span>
+      </div>
+      <span class="trash">
+        <mat-icon
+          (click)="deleteNode(node.id)">
+          delete_forever
+        </mat-icon>
+      </span>
+    </li>
+  </ul>
 </div>
 
 <h1>

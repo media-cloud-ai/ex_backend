@@ -37,7 +37,14 @@ defmodule ExBackend.Nodes do
 
     offset = page * size
 
-    query = from(item in Node)
+    query =
+      case ExBackend.Map.get_by_key_or_atom(params, :node_id) do
+        nil ->
+          from(item in Node)
+
+        node_id ->
+          from(item in Node, where: item.id == ^node_id)
+      end
 
     total_query = from(item in query, select: count(item.id))
 
