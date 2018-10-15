@@ -1,6 +1,7 @@
 defmodule ExBackend.Subtitles.Subtitle do
   use Ecto.Schema
   import Ecto.Changeset
+  alias ExBackend.Registeries.Registery
   alias ExBackend.Subtitles.Subtitle
   alias ExBackend.Accounts.User
 

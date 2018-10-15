@@ -14,7 +14,7 @@ defmodule ExBackend.Workflow.Step.SetLanguage do
     end
   end
 
-  defp start_setting_languages([], _workflow, step, _step_id), do: {:ok, "started"}
+  defp start_setting_languages([], _workflow, _step, _step_id), do: {:ok, "started"}
 
   defp start_setting_languages([nil | paths], workflow, step, step_id) do
     start_setting_languages(paths, workflow, step, step_id)

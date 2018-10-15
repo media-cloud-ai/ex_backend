@@ -13,15 +13,13 @@ defmodule ExBackend.Migration.MoveSubtitlesItems do
         user_id = Map.get(item, "user_id", ExBackend.Accounts.list_users() |> Map.get(:data) |> List.first |> Map.get(:id))
         version = Map.get(item, "version", "Generated")
 
-        subtitle =
-          %{
-            language: language,
-            path: path,
-            user_id: user_id,
-            version: version,
-            registery_id: registery.id,
-          } |> ExBackend.Subtitles.create_subtitle()
-
+        %{
+          language: language,
+          path: path,
+          user_id: user_id,
+          version: version,
+          registery_id: registery.id,
+        } |> ExBackend.Subtitles.create_subtitle()
       end)
     end)
   end

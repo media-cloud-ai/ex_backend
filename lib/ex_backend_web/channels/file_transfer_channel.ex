@@ -20,7 +20,7 @@ defmodule ExBackendWeb.FileTransferChannel do
     {:noreply, socket}
   end
 
-  def handle_in("upload_completed", %{"job_id" => job_id} = payload, socket) do
+  def handle_in("upload_completed", %{"job_id" => job_id} = _payload, socket) do
     Logger.warn("upload completed for job id: #{job_id}")
     Jobs.Status.set_job_status(job_id, "completed")
 
