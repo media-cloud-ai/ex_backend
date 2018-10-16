@@ -7,12 +7,11 @@ defmodule ExBackend.Rdf.PerfectMemory do
 
   def publish_rdf(rdf_content) do
     config = Application.get_env(:ex_backend, :perfect_memory_endpoint)
+    hostname = System.get_env("PM_ENDPOINT_HOSTNAME") || Keyword.get(config, :hostname, "")
 
-    if config == nil do
+    if hostname == nil do
       {:error, "Missing Perfect Memory endpoint configuration"}
     else
-      hostname = System.get_env("PM_ENDPOINT_HOSTNAME") || Keyword.get(config, :hostname, "")
-
       url = hostname <> "/v1/requests"
 
       body = %{
