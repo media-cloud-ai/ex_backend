@@ -79,6 +79,10 @@ export class WorkflowsComponent {
           .subscribe((message: Message) => {
             this.getWorkflows(this.page)
           })
+        this.connection = this.socketService.onDeleteWorkflow()
+          .subscribe((message: Message) => {
+            this.getWorkflows(this.page)
+          })
       })
   }
 

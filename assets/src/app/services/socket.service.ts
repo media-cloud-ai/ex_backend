@@ -47,6 +47,12 @@ export class SocketService {
     })
   }
 
+  public onDeleteWorkflow(): Observable<Message> {
+    return new Observable<Message>(observer => {
+      this.channel.on('delete_workflow', (data: Message) => observer.next(data))
+    })
+  }
+
   public onWorkflowUpdate(workflow_id: number): Observable<Message> {
     return new Observable<Message>(observer => {
       this.channel.on('update_workflow_' + workflow_id, (data: Message) => observer.next(data))

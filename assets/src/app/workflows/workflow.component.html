@@ -44,6 +44,16 @@
         Abort
       </button>
     </span>
+    <span
+      class="delete">
+      <button
+        mat-raised-button
+        color="warn"
+        (click)="delete(workflow.id)"
+        >
+        <mat-icon>delete_forever</mat-icon>
+      </button>
+    </span>
   </div>
   <div *ngIf="workflow" class=steps>
     <div

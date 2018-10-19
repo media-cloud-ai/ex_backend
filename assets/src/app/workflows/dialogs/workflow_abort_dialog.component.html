@@ -1,14 +1,25 @@
-<h1 mat-dialog-title *ngIf=workflow>Aborting workflow #{{ workflow.id }}</h1>
+<h1 mat-dialog-title *ngIf="workflow && type == 'abort'">Aborting workflow #{{ workflow.id }}</h1>
+<h1
+  mat-dialog-title
+  *ngIf="workflow && type == 'delete'"
+  class=delete>Delete workflow #{{ workflow.id }}</h1>
 
 <div mat-dialog-content
   *ngIf=workflow
   class="confirm">
-  <div >Do you really want to abort workflow #{{ workflow.id }}?</div>
-  <div *ngIf=forceWorkspaceClean() class="warning">
+  <div *ngIf="type == 'abort'">Do you really want to abort workflow #{{ workflow.id }}?</div>
+  <div *ngIf="type == 'delete'">Do you really want to delete workflow #{{ workflow.id }}?</div>
+  <div *ngIf="type == 'abort' && forceWorkspaceClean()" class="warning">
     <span>
       <mat-icon color="warn">warning</mat-icon>
     </span>
     <span> Aborting will remove the current worflow files.</span>
+  </div>
+  <div *ngIf="type == 'delete'" class="warning">
+    <span>
+      <mat-icon color="warn">warning</mat-icon>
+    </span>
+    <span> Deleting will remove defenitely the current worflow.</span>
   </div>
 </div>
 
@@ -24,6 +35,8 @@
     color="warn"
     cdkFocusInitial>
     <mat-icon>cancel</mat-icon>
-    Yes, abort
+    Yes,
+    <span *ngIf="type == 'abort'">abort</span>
+    <span *ngIf="type == 'delete'">delete</span>
   </button>
 </div>

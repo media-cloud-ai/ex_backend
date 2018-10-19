@@ -10,6 +10,7 @@ import {Workflow} from '../../models/workflow'
 export class WorkflowAbortDialogComponent {
 
   workflow: Workflow
+  type: string
 
   constructor(
     public dialogRef: MatDialogRef<WorkflowAbortDialogComponent>,
@@ -17,6 +18,7 @@ export class WorkflowAbortDialogComponent {
 
     console.log(data)
     this.workflow = data.workflow
+    this.type = data.message
   }
 
   forceWorkspaceClean(): boolean {

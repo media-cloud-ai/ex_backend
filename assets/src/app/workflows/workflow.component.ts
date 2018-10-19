@@ -55,7 +55,10 @@ export class WorkflowComponent {
   }
 
   abort(workflow_id): void {
-    let dialogRef = this.dialog.open(WorkflowAbortDialogComponent, {data: {'workflow': this.workflow}})
+    let dialogRef = this.dialog.open(WorkflowAbortDialogComponent, {data: {
+      'workflow': this.workflow,
+      'message': 'abort'
+    }})
 
     dialogRef.afterClosed().subscribe(workflow => {
       if (workflow !== undefined) {
@@ -66,5 +69,23 @@ export class WorkflowComponent {
         })
       }
     })
+  }
+
+  delete(workflow_id): void {
+    let dialogRef = this.dialog.open(WorkflowAbortDialogComponent, {data: {
+      'workflow': this.workflow,
+      'message': 'delete'
+    }})
+
+    dialogRef.afterClosed().subscribe(workflow => {
+      if (workflow !== undefined) {
+        this.workflowService.sendWorkflowEvent(workflow.id, {event: 'delete'})
+        .subscribe(response => {
+          // if response.status === "ok" {
+          // }
+        })
+      }
+    })
+
   }
 }
