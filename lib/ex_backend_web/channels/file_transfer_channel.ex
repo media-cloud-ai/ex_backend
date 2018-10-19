@@ -35,6 +35,10 @@ defmodule ExBackendWeb.FileTransferChannel do
     {:noreply, socket}
   end
 
+  def handle_in("upload_error", payload, socket) do
+    Logger.warn("upload error: #{inspect payload}")
+  end
+
   def handle_out("start", payload, %{assigns: %{identifier: identifier}} = socket) do
     Logger.info(">- OUT #{__MODULE__} start message #{inspect(payload)}")
 
