@@ -16,6 +16,7 @@ import {DashboardComponent} from './dashboard/dashboard.component'
 import {IngestComponent} from './ingest/ingest.component'
 import {JobsComponent} from './jobs/jobs.component'
 import {LoginComponent} from './login/login.component'
+import {MassiveIngestComponent} from './massive/massive_ingest.component'
 import {PersonComponent} from './persons/person.component'
 import {PersonsComponent} from './persons/persons.component'
 import {RegisteriesComponent} from './registeries/registeries.component'
@@ -32,6 +33,11 @@ const appRoutes: Routes = [
   {
     path: 'catalog',
     component: CatalogComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'massive',
+    component: MassiveIngestComponent,
     canActivate: [AuthGuard]
   },
   {

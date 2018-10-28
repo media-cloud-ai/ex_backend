@@ -93,6 +93,12 @@ export class AppComponent {
             'label': 'Catalog'
           })
         }
+        if (this.application && this.application.identifier === 'subtil') {
+          this.left_menu.push({
+            'link': '/massive',
+            'label': 'Massive Ingest'
+          })
+        }
       }
 
       if (this.application && this.application.identifier === 'vidtext') {
@@ -119,14 +125,14 @@ export class AppComponent {
         })
       }
 
-      if (this.application && this.application.identifier === 'subtil') {
-        if (this.right_editor) {
-          this.left_menu.push({
-            'link': '/people',
-            'label': 'People'
-          })
-        }
-      }
+      // if (this.application && this.application.identifier === 'subtil') {
+      //   if (this.right_editor) {
+      //     this.left_menu.push({
+      //       'link': '/people',
+      //       'label': 'People'
+      //     })
+      //   }
+      // }
 
       if (this.application && this.application.identifier === 'vidtext') {
         if (this.right_technician) {

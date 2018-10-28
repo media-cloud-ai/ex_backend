@@ -88,6 +88,15 @@
       Integral
     </mat-slide-toggle>
   </div>
+  <div>
+    <mat-slide-toggle
+        color="primary"
+        [checked]="live"
+        [(ngModel)]="live"
+        (change)=updateVideos()>
+      Live
+    </mat-slide-toggle>
+  </div>
 </div>
 
 <div *ngIf="loading" class="loading">
@@ -153,7 +162,7 @@
     [ngClass]="{'available': video.available, 'not-available': !video.available}"
     >
     <span class="legacy_id">
-      <a target=_blank href="https://gatewayvf.webservices.francetelevisions.tv/v1/videos?qid={{video.id}}">
+      <a target=_blank href="https://gatewayvf.webservices.francetelevisions.fr/v1/videos?qid={{video.id}}">
         <i class="material-icons">
           code
         </i>

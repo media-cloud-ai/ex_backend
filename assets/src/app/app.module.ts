@@ -23,6 +23,7 @@ import {
   MatListModule,
   MatMenuModule,
   MatPaginatorModule,
+  MatProgressBarModule,
   MatProgressSpinnerModule,
   MatRadioModule,
   MatSelectModule,
@@ -62,6 +63,7 @@ import {IngestComponent}         from './ingest/ingest.component'
 import {JobsComponent}           from './jobs/jobs.component'
 import {LinkImportComponent}     from './persons/link_import.component'
 import {LoginComponent}          from './login/login.component'
+import {MassiveIngestComponent}  from './massive/massive_ingest.component'
 import {ParametersComponent}     from './workflows/details/parameters.component'
 import {PersonComponent}         from './persons/person.component'
 import {PersonFormComponent}     from './persons/form.component'
@@ -153,6 +155,7 @@ const EX_BACKEND_DATE_FORMATS = {
     MatMenuModule,
     MatMomentDateModule,
     MatPaginatorModule,
+    MatProgressBarModule,
     MatProgressSpinnerModule,
     MatRadioModule,
     MatSelectModule,
@@ -177,6 +180,7 @@ const EX_BACKEND_DATE_FORMATS = {
     JobDetailsDialogComponent,
     LinkImportComponent,
     LoginComponent,
+    MassiveIngestComponent,
     NewNodeDialogComponent,
     NewSubtitleDialogComponent,
     ParametersComponent,

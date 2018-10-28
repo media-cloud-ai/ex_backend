@@ -20,6 +20,7 @@ export class CatalogService {
     searchInput: string,
     dateRange: DateRange,
     videoid: string,
+    live: boolean,
     integrale: boolean)
   : Observable<CatalogPage> {
 
@@ -27,6 +28,9 @@ export class CatalogService {
     params = params.append('per_page', per_page.toString())
     if (integrale === true) {
       params = params.append('type.id', 'integrale')
+    }
+    if (live === true) {
+      params = params.append('broadcasted_live', 'true')
     }
     if (channels.length !== 5) {
       for (let entry of channels) {

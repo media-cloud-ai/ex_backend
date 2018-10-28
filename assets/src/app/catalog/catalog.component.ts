@@ -46,6 +46,7 @@ export class CatalogComponent {
     {id: 'france-o', label: 'France Ô'}
   ]
   selectedChannels = []
+  live = false
   integrale = false
 
   dateRange = new DateRange()
@@ -109,6 +110,7 @@ export class CatalogComponent {
       this.searchInput,
       this.dateRange,
       this.videoid,
+      this.live,
       this.integrale)
     .subscribe(videoPage => {
       this.loading = false

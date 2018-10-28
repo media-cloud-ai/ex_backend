@@ -1,0 +1,57 @@
+<h1>
+  Massive Ingest
+</h1>
+<div>
+  <div class=channels_selector>
+    <mat-form-field>
+      <mat-select
+        class="channels-select"
+        placeholder="Channel"
+        [(ngModel)]="selectedChannels"
+        multiple
+        >
+        <mat-option
+          *ngFor="let channel of channels"
+          [value]="channel.id"
+          [ngClass]="channel.id"
+          class="channels-option"
+          >
+          {{ channel.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-slide-toggle
+        color="primary"
+        [checked]="integrale"
+        [(ngModel)]="integrale">
+      Integral
+    </mat-slide-toggle>
+  </div>
+  <div>
+    <mat-slide-toggle
+        color="primary"
+        [checked]="live"
+        [(ngModel)]="live">
+      Live
+    </mat-slide-toggle>
+  </div>
+</div>
+
+<div>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="startIngest()"
+    >
+    <mat-icon>play_circle_filled</mat-icon>
+    Start ingest
+  </button>
+</div>
+
+<mat-progress-bar
+  color="primary"
+  mode="determinate"
+  value="0">
+</mat-progress-bar>
