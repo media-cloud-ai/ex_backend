@@ -1,5 +1,8 @@
 defmodule ExBackend.Repo do
-  use Ecto.Repo, otp_app: :ex_backend
+  use Ecto.Repo,
+    otp_app: :ex_backend,
+    adapter: Ecto.Adapters.Postgres
+
   require Logger
 
   @doc """
