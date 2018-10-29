@@ -69,7 +69,6 @@ config :httpotion, :default_timeout, 60000
 
 # Configure your database
 config :ex_backend, ExBackend.Repo,
-  adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "postgres",
   database: "ex_backend_prod",
@@ -91,6 +90,10 @@ config :ex_backend,
   akamai_video_prefix: "/421959/prod/innovation/SubTil",
   appdir: "/opt/app",
   acs_app: "./SynchroSubtilTSP_V0.6"
+
+config :ex_video_factory,
+  mode: :custom,
+  endpoint: "http://192.168.101.107:8081/api/"
 
 config :amqp,
   hostname: "192.168.101.107",

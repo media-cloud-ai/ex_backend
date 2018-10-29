@@ -11,7 +11,6 @@ config :logger, level: :info
 
 # Configure your database
 config :ex_backend, ExBackend.Repo,
-  adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "postgres",
   database: "ex_backend_test",

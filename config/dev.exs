@@ -59,7 +59,6 @@ config :phoenix, :stacktrace_depth, 20
 
 # Configure your database
 config :ex_backend, ExBackend.Repo,
-  adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "postgres",
   database: "ex_backend_dev",
@@ -98,6 +97,10 @@ config :amqp,
   password: "guest"
 
 config :httpotion, :default_timeout, 60000
+
+config :ex_video_factory,
+  mode: :custom,
+  endpoint: "http://127.0.0.1:4001/api/"
 
 # Finally import the config/prod.secret.exs
 # with the private section for passwords
