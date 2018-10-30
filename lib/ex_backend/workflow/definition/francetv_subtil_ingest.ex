@@ -72,8 +72,8 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilIngest do
         },
         %{
           id: 8,
-          parent_ids: [7],
-          required: [7],
+          parent_ids: [7, 0],
+          required: [7, 0],
           name: "generate_dash",
           enable: true,
           parameters: [

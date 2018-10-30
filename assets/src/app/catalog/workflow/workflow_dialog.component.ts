@@ -86,10 +86,10 @@ export class WorkflowDialogComponent {
         required: [2, 6]
       },{
         id: 8,
-        parent_ids: [7],
+        parent_ids: [7, 0],
         name: 'generate_dash',
         enable: true,
-        required: [7],
+        required: [7, 0],
         parameters : [
           {
             id: 'segment_duration',

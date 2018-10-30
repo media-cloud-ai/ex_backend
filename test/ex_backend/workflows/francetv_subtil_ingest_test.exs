@@ -144,15 +144,31 @@ defmodule ExBackend.FrancetvSubtilIngestTest do
       ExBackend.HelpersTest.check(workflow.id, "set_language", 1)
       ExBackend.HelpersTest.complete_jobs(workflow.id, "set_language")
 
+      {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+      ExBackend.HelpersTest.check(workflow.id, 13)
+      ExBackend.HelpersTest.check(workflow.id, "generate_dash", 1)
+      ExBackend.HelpersTest.complete_jobs(workflow.id, "generate_dash")
+
+      ExBackend.HelpersTest.set_output_files(workflow.id, "generate_dash", [
+        "/tmp/manifest.mpd",
+        "/tmp/video_track.mp4",
+        "/tmp/audio_track.mp4"
+      ])
+
+      {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+      ExBackend.HelpersTest.check(workflow.id, 16)
+      ExBackend.HelpersTest.check(workflow.id, "upload_ftp", 3)
+      ExBackend.HelpersTest.complete_jobs(workflow.id, "upload_ftp")
+
       case WorkflowStep.start_next_step(workflow) do
         {:error, "unable to publish RDF"} -> nil
         {:error, "unable to convert using http://127.0.0.1:1501/convert: econnrefused"} -> nil
         {:error, "Missing Perfect Memory endpoint configuration"} -> nil
-        _ -> assert(false)
+        message ->
+          IO.inspect(message)
+          assert(false)
       end
-      ExBackend.HelpersTest.check(workflow.id, 15)
-      ExBackend.HelpersTest.check(workflow.id, "generate_dash", 1)
-      ExBackend.HelpersTest.check(workflow.id, "upload_ftp", 1)
+      ExBackend.HelpersTest.check(workflow.id, 17)
       ExBackend.HelpersTest.check(workflow.id, "push_rdf", 1)
     end
   end
