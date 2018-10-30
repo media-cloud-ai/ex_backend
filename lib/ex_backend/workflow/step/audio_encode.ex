@@ -8,22 +8,24 @@ defmodule ExBackend.Workflow.Step.AudioEncode do
   @action_name "audio_encode"
 
   def launch(workflow, step) do
+    step_id = ExBackend.Map.get_by_key_or_atom(step, :id)
+
     case get_source_files(workflow.jobs) do
       [] ->
         Jobs.create_skipped_job(
           workflow,
-          ExBackend.Map.get_by_key_or_atom(step, :id),
+          step_id,
           @action_name
         )
 
       paths ->
-        start_processing_audio(paths, workflow)
+        start_processing_audio(paths, workflow, step_id)
     end
   end
 
-  defp start_processing_audio([], _workflow), do: {:ok, "started"}
+  defp start_processing_audio([], _workflow, _step_id), do: {:ok, "started"}
 
-  defp start_processing_audio([path | paths], workflow) do
+  defp start_processing_audio([path | paths], workflow, step_id) do
     work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
 
     filename = Path.basename(path, ".wav")
@@ -46,6 +48,7 @@ defmodule ExBackend.Workflow.Step.AudioEncode do
 
     job_params = %{
       name: @action_name,
+      step_id: step_id,
       workflow_id: workflow.id,
       params: %{
         requirements: requirements,
@@ -73,7 +76,7 @@ defmodule ExBackend.Workflow.Step.AudioEncode do
 
     JobFFmpegEmitter.publish_json(params)
 
-    start_processing_audio(paths, workflow)
+    start_processing_audio(paths, workflow, step_id)
   end
 
   defp get_source_files(jobs) do
