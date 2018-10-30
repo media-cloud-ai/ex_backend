@@ -213,6 +213,11 @@
           <i class="material-icons" title="Rediffusion">launch</i>
         </span>
       </span>
+      <span class="icons perfectmemory" [ngClass]="{disabled: video.manifest_url == undefined}">
+        <a target="_blank" href="https://player-ftv.idfrancetv.perfect-memory.com/nodes/uuid:{{video.id}}">
+          <img src="bundles/images/logo_perfect_memory.png" />
+        </a>
+      </span>
       <span class="icons jarvis" [ngClass]="{disabled: video.manifest_url == undefined}">
         <a target="_blank" href="http://master.player.build.ftven.net/jarvis/?streams={{get_encoded_uri(video.manifest_url)}}">
           <i class="material-icons" title="Visualisation">live_tv</i>
