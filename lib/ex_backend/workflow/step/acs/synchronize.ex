@@ -55,6 +55,7 @@ defmodule ExBackend.Workflow.Step.Acs.Synchronize do
 
     job_params = %{
       name: @action_name,
+      step_id:  ExBackend.Map.get_by_key_or_atom(step, :id),
       workflow_id: workflow.id,
       params: %{
         requirements: requirements,
