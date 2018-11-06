@@ -32,10 +32,8 @@ export class CatalogService {
     if (live === true) {
       params = params.append('broadcasted_live', 'true')
     }
-    if (channels.length !== 5) {
-      for (let entry of channels) {
-        params = params.append('channels[]', entry)
-      }
+    for (let entry of channels) {
+      params = params.append('channels[]', entry)
     }
 
     if (searchInput !== ''){
