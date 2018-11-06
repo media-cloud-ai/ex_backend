@@ -92,7 +92,7 @@ config :ex_backend,
   root_dash_content: "/dash"
 
 config :amqp,
-  hostname: "localhost",
+  hostname: "127.0.0.1",
   username: "guest",
   password: "guest"
 
