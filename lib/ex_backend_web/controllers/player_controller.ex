@@ -31,8 +31,7 @@ defmodule ExBackendWeb.PlayerController do
     |> put_resp_header("Access-Control-Expose-Headers", "Server,range,hdntl,hdnts")
     |> put_resp_header("Access-Control-Max-Age", "86400")
     |> put_resp_header("Content-Type", "video/mp4")
-    |> put_status(200)
-    |> send_resp()
+    |> send_resp(200, "")
   end
 
   def index(conn, %{"content" => content, "filename" => filename}) do
