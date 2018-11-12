@@ -41,7 +41,15 @@ defmodule ExBackendWeb.PlayerController do
 
     if String.ends_with?(filename, ".ttml") || String.ends_with?(filename, ".vtt") do
       Logger.warn("Send file #{path}")
-      send_file(conn, 200, path)
+      conn
+      |> put_resp_header("Accept-Ranges", "bytes")
+      |> put_resp_header("Access-Control-Allow-Credentials", "true, false")
+      |> put_resp_header("Access-Control-Allow-Headers", "origin,range,hdntl,hdnts")
+      |> put_resp_header("Access-Control-Allow-Methods", "GET, OPTIONS")
+      |> put_resp_header("Access-Control-Allow-Origin", "*")
+      |> put_resp_header("Access-Control-Expose-Headers", "Server,range,hdntl,hdnts")
+      |> put_resp_header("Access-Control-Max-Age", "86400")
+      |> send_file(200, path)
     else
       {"range", range} =
         conn.req_headers
