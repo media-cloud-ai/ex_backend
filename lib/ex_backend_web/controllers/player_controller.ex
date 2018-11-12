@@ -16,8 +16,23 @@ defmodule ExBackendWeb.PlayerController do
     |> put_resp_header("Access-Control-Allow-Methods", "GET, OPTIONS")
     |> put_resp_header("Access-Control-Allow-Origin", "*")
     |> put_resp_header("Access-Control-Expose-Headers", "Server,range,hdntl,hdnts")
+    |> put_resp_header("Access-Control-Max-Age", "86400")
     |> put_resp_header("Content-Type", "text/plain")
     |> send_file(200, Path.join([root, content, "manifest.mpd"]))
+  end
+
+  def options(conn, %{"content" => content, "filename" => filename}) do
+    conn
+    |> put_resp_header("Accept-Ranges", "bytes")
+    |> put_resp_header("Access-Control-Allow-Credentials", "true, false")
+    |> put_resp_header("Access-Control-Allow-Headers", "origin,range,hdntl,hdnts")
+    |> put_resp_header("Access-Control-Allow-Methods", "GET, OPTIONS")
+    |> put_resp_header("Access-Control-Allow-Origin", "*")
+    |> put_resp_header("Access-Control-Expose-Headers", "Server,range,hdntl,hdnts")
+    |> put_resp_header("Access-Control-Max-Age", "86400")
+    |> put_resp_header("Content-Type", "video/mp4")
+    |> put_status(200)
+    |> send_resp()
   end
 
   def index(conn, %{"content" => content, "filename" => filename}) do

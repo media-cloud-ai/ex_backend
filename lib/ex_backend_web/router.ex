@@ -71,7 +71,7 @@ defmodule ExBackendWeb.Router do
 
   get("/stream/:content/manifest.mpd", ExBackendWeb.PlayerController, :manifest)
   get("/stream/:content/:filename", ExBackendWeb.PlayerController, :index)
-  options("/stream/:content/:filename", ExBackendWeb.PlayerController, :index)
+  options("/stream/:content/:filename", ExBackendWeb.PlayerController, :options)
 
   scope "/", ExBackendWeb do
     pipe_through(:browser)
