@@ -125,15 +125,6 @@ export class AppComponent {
         })
       }
 
-      // if (this.application && this.application.identifier === 'subtil') {
-      //   if (this.right_editor) {
-      //     this.left_menu.push({
-      //       'link': '/people',
-      //       'label': 'People'
-      //     })
-      //   }
-      // }
-
       if (this.application && this.application.identifier === 'vidtext') {
         if (this.right_technician) {
           this.left_menu.push({
@@ -143,6 +134,10 @@ export class AppComponent {
         }
       }
       if (this.right_administrator) {
+        this.left_menu.push({
+          'link': '/credentials',
+          'label': 'Credentials'
+        })
         this.left_menu.push({
           'link': '/users',
           'label': 'Users'

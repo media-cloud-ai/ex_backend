@@ -1,8 +1,7 @@
 defmodule ExBackend.Workflow.Step.PushRdf do
   alias ExBackend.Jobs
 
-  alias ExBackend.Rdf.Converter
-  alias ExBackend.Rdf.PerfectMemory
+  alias ExBackend.Amqp.JobRdfEmitter
   require Logger
 
   @action_name "push_rdf"
@@ -12,37 +11,19 @@ defmodule ExBackend.Workflow.Step.PushRdf do
       name: @action_name,
       step_id: ExBackend.Map.get_by_key_or_atom(step, :id),
       workflow_id: workflow.id,
-      params: %{}
+      params: %{
+        reference: workflow.reference
+      }
     }
 
     {:ok, job} = Jobs.create_job(job_params)
 
-    try do
-      case convert_and_submit(workflow) do
-        {:ok, _} ->
-          Jobs.Status.set_job_status(job.id, "completed")
-          {:ok, "completed"}
+    params = %{
+      job_id: job.id,
+      parameters: job.params
+    }
 
-        {:error, message} ->
-          Jobs.Status.set_job_status(job.id, "error", %{
-            message: "unable to publish RDF: #{message}"
-          })
-
-          {:error, message}
-      end
-    rescue
-      error ->
-        Logger.error("publish rdf raised: #{inspect(error)}")
-        Jobs.Status.set_job_status(job.id, "error", %{message: "unable to publish RDF"})
-        {:error, "unable to publish RDF"}
-    end
-  end
-
-  def convert_and_submit(workflow) do
-    Converter.get_rdf(workflow.reference)
-    |> case do
-      {:ok, rdf} -> PerfectMemory.publish_rdf(rdf)
-      {:error, message} -> {:error, message}
-    end
+    JobRdfEmitter.publish_json(params)
+    {:ok, "started"}
   end
 end

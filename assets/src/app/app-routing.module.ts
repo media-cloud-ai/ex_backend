@@ -26,6 +26,8 @@ import {WatchersComponent} from './watchers/watchers.component'
 import {WorkflowDetailsComponent} from './workflows/details/workflow_details.component'
 import {WorkflowsComponent} from './workflows/workflows.component'
 import {WorkersComponent} from './workers/workers.component'
+
+import {CredentialsModule} from './credentials/credentials.module'
 import {PlayerModule} from './player/player.module'
 
 const appRoutes: Routes = [
@@ -43,6 +45,11 @@ const appRoutes: Routes = [
   {
     path: 'confirm',
     component: ConfirmComponent
+  },
+  {
+    path: 'credentials',
+    loadChildren: () => CredentialsModule,
+    canActivate: [AuthGuard]
   },
   {
     path: 'dashboard',

@@ -114,18 +114,8 @@ defmodule ExBackendWeb.WorkflowEventsController do
     Amqp.JobSpeechToTextEmitter.publish_json(params)
   end
 
-  defp publish("push_rdf", job_id, workflow, _params) do
-    ExBackend.Workflow.Step.PushRdf.convert_and_submit(workflow)
-    |> case do
-      {:ok, _} ->
-        Jobs.Status.set_job_status(job_id, "completed")
-        {:ok, "completed"}
-
-      {:error, message} ->
-        Jobs.Status.set_job_status(job_id, "error", %{
-          message: "unable to publish RDF: #{message}"
-        })
-    end
+  defp publish("push_rdf", job_id, workflow, params) do
+    Amqp.JobRdfEmitter.publish_json(params)
   end
 
   defp publish(job_name, _job_id, _workflow, _params) do

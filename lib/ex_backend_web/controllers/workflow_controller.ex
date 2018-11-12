@@ -46,12 +46,19 @@ defmodule ExBackendWeb.WorkflowController do
     render(conn, "show.json", workflow: workflow)
   end
 
-  def get(conn, %{"identifier" => "ebu_ingest"}) do
+  def get(conn, %{"identifier" => workflow_identifier}) do
     steps =
-      ExBackend.Workflow.Definition.EbuIngest.get_definition(
-        "#agent_identifier",
-        "#input_filename"
-      )
+      case workflow_identifier do
+        "ebu_ingest" ->
+          ExBackend.Workflow.Definition.EbuIngest.get_definition(
+            "#agent_identifier",
+            "#input_filename"
+          )
+        "francetv_subtil_rdf_ingest" ->
+          ExBackend.Workflow.Definition.FrancetvSubtilRdfIngest.get_definition()
+        "francetv_subtil_dash_ingest" ->
+          ExBackend.Workflow.Definition.FrancetvSubtilDashIngest.get_definition()
+      end
 
     conn
     |> json(steps)

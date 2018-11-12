@@ -4,12 +4,9 @@
 </h1>
 
 <div *ngIf="application">
-<amqp-queues *ngIf="right_technician">
-</amqp-queues>
+  <amqp-queues *ngIf="right_technician">
+  </amqp-queues>
 
-<watchers-component *ngIf="right_technician && application.identifier == 'vidtext'">
-</watchers-component>
-
-<!-- <persons-component *ngIf="right_editor && application.identifier == 'subtil'">
-</persons-component> -->
+  <watchers-component *ngIf="right_technician && application.identifier == 'vidtext'">
+  </watchers-component>
 </div>

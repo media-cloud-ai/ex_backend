@@ -31,6 +31,7 @@ import {
   MatSliderModule,
   MatSlideToggleModule,
   MatTableModule,
+  MatTabsModule,
   MatToolbarModule
   } from '@angular/material'
 
@@ -164,6 +165,7 @@ const EX_BACKEND_DATE_FORMATS = {
     MatSlideToggleModule,
     MatStepperModule,
     MatTableModule,
+    MatTabsModule,
     MatToolbarModule,
     PipesModule,
     SocketModule

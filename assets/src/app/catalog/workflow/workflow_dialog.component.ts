@@ -1,7 +1,10 @@
 import {Component, Inject} from '@angular/core'
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material'
+
 import {Step} from '../../models/workflow'
 import {WorkflowRenderer} from '../../models/workflow_renderer'
+
+import {WorkflowService} from '../../services/workflow.service'
 
 @Component({
   selector: 'workflow_dialog',
@@ -9,120 +12,33 @@ import {WorkflowRenderer} from '../../models/workflow_renderer'
   styleUrls: ['./workflow_dialog.component.less'],
 })
 export class WorkflowDialogComponent {
-
   acs_enable: boolean
-  steps: Step[]
 
-  constructor(public dialogRef: MatDialogRef<WorkflowDialogComponent>,
+  selected_tab = 0
+  rdf_steps: Step[]
+  dash_steps: Step[]
+
+  constructor(
+    public dialogRef: MatDialogRef<WorkflowDialogComponent>,
+    private workflowService: WorkflowService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
     console.log('data:', data)
     this.acs_enable = false
     if (data && !Array.isArray(data)) {
       this.acs_enable = data['broadcasted_live']
     }
-    
-    this.steps = [
-      {
-        id: 0,
-        name: 'download_ftp',
-        enable: true,
-        parent_ids:[],
-        required: []
-      },{
-        id: 1,
-        parent_ids: [0],
-        name: 'download_http',
-        enable: true,
-        required: [0]
-      },{
-        id: 2,
-        parent_ids: [0],
-        name: 'audio_extraction',
-        enable: true,
-        required: [0]
-      },{
-        id: 3,
-        parent_ids: [2],
-        name: 'audio_decode',
-        enable: this.acs_enable,
-        required: [2]
-      },{
-        id: 4,
-        parent_ids: [3],
-        name: 'acs_prepare_audio',
-        enable: this.acs_enable,
-        required: [3]
-      },{
-        id: 5,
-        parent_ids: [4],
-        name: 'acs_synchronize',
-        enable: this.acs_enable,
-        required: [4],
-        parameters : [
-          {
-            id: 'threads_number',
-            type: 'number',
-            default: 8,
-            value: 8
-          },
-          {
-            id: 'keep_original',
-            type: 'boolean',
-            default: false,
-            value: false
-          }
-        ]
-      },{
-        id: 6,
-        parent_ids: [1, 5],
-        name: 'ttml_to_mp4',
-        enable: true,
-        required: [1]
-      },{
-        id: 7,
-        parent_ids: [6],
-        name: 'set_language',
-        enable: true,
-        required: [2, 6]
-      },{
-        id: 8,
-        parent_ids: [7, 0],
-        name: 'generate_dash',
-        enable: true,
-        required: [7, 0],
-        parameters : [
-          {
-            id: 'segment_duration',
-            type: 'number',
-            default: 2000,
-            value: 2000,
-          },{
-            id: 'fragment_duration',
-            type: 'number',
-            default: 2000,
-            value: 2000,
-          }
-        ]
-      },{
-        id: 9,
-        parent_ids: [8],
-        name: 'upload_ftp',
-        enable: true,
-        required: [8]
-      },{
-        id: 10,
-        parent_ids: [9],
-        name: 'push_rdf',
-        enable: true,
-        required: [9]
-      },{
-        id: 11,
-        parent_ids: [10],
-        name: 'clean_workspace',
-        enable: true,
-        required: [0]
-      }
-    ]
+
+    this.workflowService.getWorkflowDefinition("francetv_subtil_rdf_ingest")
+      .subscribe(workflowDefinition => {
+        console.log(workflowDefinition)
+        this.rdf_steps = workflowDefinition.steps
+      })
+
+    this.workflowService.getWorkflowDefinition("francetv_subtil_dash_ingest")
+      .subscribe(workflowDefinition => {
+        console.log(workflowDefinition)
+        this.dash_steps = workflowDefinition.steps
+      })
   }
 
   onNoClick(): void {
@@ -130,8 +46,23 @@ export class WorkflowDialogComponent {
   }
 
   onClose(): void {
+    var src_steps = []
+    switch(this.selected_tab) {
+      case 0: {
+        src_steps = this.rdf_steps
+        break;
+      }
+      case 1: {
+        src_steps = this.dash_steps
+        break;
+      }
+      default: {
+        src_steps = this.rdf_steps
+      }
+    }
+
     var steps = []
-    for (let step of this.steps) {
+    for (let step of src_steps) {
       if (step.enable === true) {
         steps.push(step)
       }
