@@ -20,9 +20,11 @@ defmodule ExBackendWeb.PlayerController do
   def index(conn, %{"content" => content, "filename" => filename}) do
     root =
       System.get_env("ROOT_DASH_CONTENT") || Application.get_env(:ex_backend, :root_dash_content)
+    path = Path.join([root, content, filename])
 
     if String.ends_with?(filename, ".ttml") || String.ends_with?(filename, ".vtt") do
-      send_file(conn, 200, Path.join([root, content, filename]))
+      Logger.warn("Send file #{path}")
+      send_file(conn, 200, path)
     else
       {"range", range} =
         conn.req_headers
@@ -34,13 +36,13 @@ defmodule ExBackendWeb.PlayerController do
         |> List.last()
         |> String.split("-")
 
-      path = Path.join([root, content, filename])
       stat = File.stat!(path)
 
       {:ok, file} = :file.open(path, [:read, :binary])
       start = start_pos |> String.to_integer()
       length = (end_pos |> String.to_integer()) - start + 1
 
+      Logger.warn("Send part of file #{path} (#{start}, #{length})")
       {:ok, data} = :file.pread(file, start, length)
       :file.close(file)
 
