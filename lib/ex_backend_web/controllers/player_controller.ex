@@ -7,7 +7,14 @@ defmodule ExBackendWeb.PlayerController do
     root =
       System.get_env("ROOT_DASH_CONTENT") || Application.get_env(:ex_backend, :root_dash_content)
 
-    send_file(conn, 200, Path.join([root, content, "manifest.mpd"]))
+    conn
+    |> put_resp_header("Accept-Ranges", "bytes")
+    |> put_resp_header("Access-Control-Allow-Credentials", "true, false")
+    |> put_resp_header("Access-Control-Allow-Headers", "origin,range,hdntl,hdnts")
+    |> put_resp_header("Access-Control-Allow-Methods", "GET")
+    |> put_resp_header("Access-Control-Allow-Origin", "*")
+    |> put_resp_header("Access-Control-Expose-Headers", "Server,range,hdntl,hdnts")
+    |> send_file(200, Path.join([root, content, "manifest.mpd"]))
   end
 
   def index(conn, %{"content" => content, "filename" => filename}) do
