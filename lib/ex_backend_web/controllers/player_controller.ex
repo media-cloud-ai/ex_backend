@@ -65,8 +65,15 @@ defmodule ExBackendWeb.PlayerController do
 
       conn
       |> put_resp_header("content-range", "bytes #{start}-#{end_pos}/#{stat.size}")
+      |> put_resp_header("Accept-Ranges", "bytes")
+      |> put_resp_header("Access-Control-Allow-Credentials", "true, false")
+      |> put_resp_header("Access-Control-Allow-Headers", "origin,range,hdntl,hdnts")
+      |> put_resp_header("Access-Control-Allow-Methods", "GET, OPTIONS")
+      |> put_resp_header("Access-Control-Allow-Origin", "*")
+      |> put_resp_header("Access-Control-Expose-Headers", "Server,range,hdntl,hdnts")
+      |> put_resp_header("Access-Control-Max-Age", "86400")
       |> put_resp_header("content-type", "video/mp4")
-      |> send_resp(200, data)
+      |> send_resp(206, data)
     end
   end
 end
