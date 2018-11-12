@@ -3,6 +3,8 @@ defmodule ExBackendWeb.PlayerController do
 
   action_fallback(ExBackendWeb.FallbackController)
 
+  require Logger
+
   def manifest(conn, %{"content" => content}) do
     root =
       System.get_env("ROOT_DASH_CONTENT") || Application.get_env(:ex_backend, :root_dash_content)
