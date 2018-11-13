@@ -67,6 +67,10 @@ defmodule ExBackendWeb.Router do
 
     get("/imdb/search/:query", ImdbController, :index)
     get("/imdb/:id", ImdbController, :show)
+
+
+    resources "/credentials", CredentialController, except: [:new, :edit]
+
   end
 
   get("/stream/:content/manifest.mpd", ExBackendWeb.PlayerController, :manifest)

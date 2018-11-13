@@ -103,6 +103,7 @@ import {AmqpService}             from './services/amqp.service'
 import {ApplicationService}      from './services/application.service'
 import {CatalogService}          from './services/catalog.service'
 import {ContainerService}        from './services/container.service'
+import {CredentialService}       from './services/credential.service'
 import {ImageService}            from './services/image.service'
 import {IMDbService}             from './services/imdb.service'
 import {JobService}              from './services/job.service'
@@ -274,6 +275,7 @@ const EX_BACKEND_DATE_FORMATS = {
     CatalogService,
     ContainerService,
     CookieService,
+    CredentialService,
     ImageService,
     IMDbService,
     JobService,

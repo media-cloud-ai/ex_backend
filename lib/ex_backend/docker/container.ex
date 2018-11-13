@@ -30,10 +30,7 @@ defmodule ExBackend.Docker.Container do
   defp add_env_var([], config), do: config
 
   defp add_env_var([{key, value} | vars], config) do
-    config =
-      config
-      |> ContainerConfig.add_env(key, value)
-
+    config = ContainerConfig.add_env(config, key, value)
     add_env_var(vars, config)
   end
 end

@@ -10,6 +10,7 @@ import {
   MatSelectModule
   } from '@angular/material'
 
+import { CredentialComponent } from './credential.component';
 import { CredentialsComponent } from './credentials.component';
 
 import {PipesModule} from '../pipes/pipes.module'
@@ -30,9 +31,11 @@ export const ROUTES: Routes = [
     RouterModule.forChild(ROUTES)
   ],
   declarations: [
+    CredentialComponent,
     CredentialsComponent,
   ],
   entryComponents: [
+    CredentialComponent,
   ]
 })
 

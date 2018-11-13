@@ -1,0 +1,45 @@
+defmodule ExBackendWeb.CredentialController do
+  use ExBackendWeb, :controller
+
+  import ExBackendWeb.Authorize
+
+  alias ExBackend.Credentials
+  alias ExBackend.Credentials.Credential
+
+  action_fallback(ExBackendWeb.FallbackController)
+
+  # the following plugs are defined in the controllers/authorize.ex file
+  plug(:user_check when action in [:index, :show, :delete])
+  plug(:right_administrator_check when action in [:index, :show, :delete])
+
+  def index(conn, params) do
+    credentials = Credentials.list_credentials(params)
+    render(conn, "index.json", credentials: credentials)
+  end
+
+  def create(conn, credential_params) do
+    case Credentials.create_credential(credential_params) do
+      {:ok, %Credential{} = credential} ->
+        conn
+        |> put_status(:created)
+        |> render("show.json", credential: credential)
+      {:error, changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(ExBackendWeb.ChangesetView, "error.json", changeset: changeset)
+    end
+  end
+
+  def show(conn, %{"id" => id}) do
+    credential = Credentials.get_credential!(id)
+    render(conn, "show.json", credential: credential)
+  end
+
+  def delete(conn, %{"id" => id}) do
+    credential = Credentials.get_credential!(id)
+
+    with {:ok, %Credential{}} <- Credentials.delete_credential(credential) do
+      send_resp(conn, :no_content, "")
+    end
+  end
+end
