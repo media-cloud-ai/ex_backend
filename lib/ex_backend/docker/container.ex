@@ -13,7 +13,7 @@ defmodule ExBackend.Docker.Container do
       Map.get(params, "environment", %{})
       |> Map.to_list()
       |> add_env_var(container_config)
-      |> add_dns_option("192.168.101.103 exchange-manager-api.idfrancetv.perfect-memory.com")
+      |> ContainerConfig.add_dns_option("192.168.101.103 exchange-manager-api.idfrancetv.perfect-memory.com")
 
     container_config
   end
