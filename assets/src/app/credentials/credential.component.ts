@@ -34,6 +34,5 @@ export class CredentialComponent {
     .subscribe(credential => {
       this.deleted.next(this.data)
     })
-    
   }
 }

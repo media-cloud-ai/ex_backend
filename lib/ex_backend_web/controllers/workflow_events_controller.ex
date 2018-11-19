@@ -115,6 +115,11 @@ defmodule ExBackendWeb.WorkflowEventsController do
   end
 
   defp publish("push_rdf", job_id, workflow, params) do
+    IO.inspect(params)
+    params = %{
+      job_id: job_id,
+      parameters: Map.get(params.parameters, "list")
+    }
     Amqp.JobRdfEmitter.publish_json(params)
   end
 

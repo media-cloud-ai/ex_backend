@@ -13,6 +13,9 @@ defmodule ExBackendWeb.Docker.ImagesController do
     hostname = System.get_env("DOCKER_CONTAINER_AMQP_HOSTNAME") || Application.get_env(:docker_container_amqp, :hostname)
     username = System.get_env("DOCKER_CONTAINER_AMQP_USERNAME") || Application.get_env(:docker_container_amqp, :username)
     password = System.get_env("DOCKER_CONTAINER_AMQP_PASSWORD") || Application.get_env(:docker_container_amqp, :password)
+    backend_hostname = System.get_env("DOCKER_CONTAINER_BACKEND_HOSTNAME") || Application.get_env(:docker_container_backend, :hostname)
+    backend_username = System.get_env("DOCKER_CONTAINER_BACKEND_USERNAME") || Application.get_env(:docker_container_backend, :username)
+    backend_password = System.get_env("DOCKER_CONTAINER_BACKEND_PASSWORD") || Application.get_env(:docker_container_backend, :password)
 
     virtual_host =
       System.get_env("DOCKER_CONTAINER_AMQP_VHOST") || Application.get_env(:docker_container_amqp, :virtual_host) || "/"
@@ -38,7 +41,10 @@ defmodule ExBackendWeb.Docker.ImagesController do
       AMQP_HOSTNAME: hostname,
       AMQP_USERNAME: username,
       AMQP_PASSWORD: password,
-      AMQP_VHOST: virtual_host
+      AMQP_VHOST: virtual_host,
+      BACKEND_HOSTNAME: backend_hostname,
+      BACKEND_USERNAME: backend_username,
+      BACKEND_PASSWORD: backend_password,
     }
 
     image_list =
