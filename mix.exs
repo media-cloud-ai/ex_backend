@@ -58,7 +58,7 @@ defmodule ExBackend.Mixfile do
       {:httpotion, "~> 3.1.0"},
       {:lager, "3.6.6", override: true},
       {:phoenix, "~> 1.3.3"},
-      {:phoenix_ecto, "~> 3.4"},
+      {:phoenix_ecto, "~> 3.6"},
       {:phoenix_html, "~> 2.10"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:phoenix_pubsub, "~> 1.0"},
@@ -69,7 +69,7 @@ defmodule ExBackend.Mixfile do
       {:ranch, "~> 1.5.0", override: true},
       {:ranch_proxy_protocol,
        git: "https://github.com/heroku/ranch_proxy_protocol", branch: "master", override: true},
-      {:remote_dockers, "1.3.6"},
+      {:remote_dockers, "1.3.7"},
       {:timex, "~> 3.2"},
       {:uuid, "~> 1.1"}
     ]
