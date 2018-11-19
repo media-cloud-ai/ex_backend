@@ -45,6 +45,9 @@ export class ParameterLabelPipe implements PipeTransform {
       { id: 'language', name: 'Language' },
       { id: 'format', name: 'Format' },
       { id: 'mode', name: 'Mode' },
+
+      { id: 'perfect_memory_username', name: 'Perfect-Memory Username' },
+      { id: 'perfect_memory_password', name: 'Perfect-Memory Password' },
     ]
 
     for (var i = allLabels.length - 1; i >= 0; i--) {

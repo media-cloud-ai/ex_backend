@@ -5,7 +5,27 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilRdfIngest do
         %{
           id: 1,
           name: "push_rdf",
-          enable: true
+          enable: true,
+          parameters: [
+            %{
+              id: "perfect_memory_username",
+              type: "credential",
+              default: "PERFECT_MEMORY_USERNAME",
+              value: "PERFECT_MEMORY_USERNAME"
+            },
+            %{
+              id: "perfect_memory_password",
+              type: "credential",
+              default: "PERFECT_MEMORY_PASSWORD",
+              value: "PERFECT_MEMORY_PASSWORD"
+            },
+            %{
+              id: "perfect_memory_endpoint",
+              type: "credential",
+              default: "PERFECT_MEMORY_ENDPOINT",
+              value: "PERFECT_MEMORY_ENDPOINT"
+            }
+          ]
         }
       ]
     }

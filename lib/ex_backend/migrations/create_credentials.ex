@@ -7,5 +7,7 @@ defmodule ExBackend.Migration.CreateCredentials do
       add(:value, :string)
       timestamps()
     end
+
+    create(unique_index(:credentials, [:key]))
   end
 end

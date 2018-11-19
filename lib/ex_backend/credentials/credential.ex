@@ -13,6 +13,7 @@ defmodule ExBackend.Credentials.Credential do
   def changeset(%Credential{} = credential, attrs) do
     credential
     |> cast(attrs, [:key, :value])
+    |> unique_constraint(:key)
     |> validate_required([:key, :value])
   end
 end

@@ -31,7 +31,7 @@ defmodule ExBackendWeb.CredentialController do
   end
 
   def show(conn, %{"id" => id}) do
-    credential = Credentials.get_credential!(id)
+    credential = Credentials.get_credential_by_key!(id)
     render(conn, "show.json", credential: credential)
   end
 
