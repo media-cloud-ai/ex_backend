@@ -17,6 +17,7 @@ export class DockerImagePipe implements PipeTransform {
       { id: 'ftvsubtil/ftp_worker', name: 'FTP Worker' },
       { id: 'ftvsubtil/gpac_worker', name: 'GPAC Worker' },
       { id: 'ftvsubtil/http_worker', name: 'HTTP Worker' },
+      { id: 'ftvsubtil/rdf_worker', name: 'RDF Worker' },
       { id: 'postgres', name: 'PostgreSQL' },
       { id: 'rabbitmq', name: 'RabbitMQ' },
     ]
