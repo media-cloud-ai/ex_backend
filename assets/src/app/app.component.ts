@@ -2,6 +2,7 @@
 import {Component} from '@angular/core'
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout'
 import {Title} from '@angular/platform-browser'
+import {Router} from '@angular/router'
 import {Subscription} from 'rxjs'
 
 import {AuthService} from './authentication/auth.service'
@@ -35,7 +36,8 @@ export class AppComponent {
     public authService: AuthService,
     private applicationService: ApplicationService,
     public breakpointObserver: BreakpointObserver,
-    private titleService: Title
+    private titleService: Title,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -159,6 +161,10 @@ export class AppComponent {
 
   openRightPanel() {
     this.right_panel_opened = !this.right_panel_opened
+  }
+
+  documentation() {
+    this.router.navigate(['/documentation'])
   }
 
   logout() {

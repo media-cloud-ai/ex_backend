@@ -1,0 +1,41 @@
+@import '../colors';
+
+.routes {
+  padding-bottom: 100px;
+  font-size: 1.3em;
+}
+
+.verb {
+  text-transform: uppercase;
+  display: inline-block;
+  width: 80px;
+  text-align: right;
+  border-radius: 5px;
+  padding: 3px;
+  margin: 3px;
+}
+
+.verb.get {
+  background-color: @green;
+}
+
+.verb.post {
+  background-color: @blue;
+  color: @white;
+}
+
+.verb.delete {
+  background-color: @red;
+  color: @white;
+}
+
+.verb.patch,
+.verb.put,
+.verb.options {
+  background-color: @grey;
+  color: @white;
+}
+
+.path {
+
+}

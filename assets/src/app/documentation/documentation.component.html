@@ -1,0 +1,12 @@
+<h1>API Documentation</h1>
+<div class="routes">
+  <div *ngFor="let route of routes">
+    <span class=verb
+      [ngClass]="route.verb">
+      {{route.verb}}
+    </span>
+    <span class=path>
+      {{route.path}}
+    </span>
+  </div>
+</div>
