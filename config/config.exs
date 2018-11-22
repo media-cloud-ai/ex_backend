@@ -34,6 +34,11 @@ config :mime, :types, %{
   "text/vtt" => ["webvtt"]
 }
 
+config :blue_bird,
+  docs_path: "priv/static/docs",
+  theme: "triple",
+  router: ExBackendWeb.Router
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

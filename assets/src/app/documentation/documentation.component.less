@@ -1,8 +1,19 @@
 @import '../colors';
 
+h3 {
+  color: @blue;
+  margin-left: 92px;
+}
+
 .routes {
   padding-bottom: 100px;
   font-size: 1.3em;
+  .route {
+    .description {
+      margin-left: 92px;
+      padding-bottom: 20px;
+    }
+  }
 }
 
 .verb {
@@ -15,27 +26,39 @@
   margin: 3px;
 }
 
-.verb.get {
+.verb.GET {
   background-color: @green;
 }
 
-.verb.post {
+.verb.POST {
   background-color: @blue;
   color: @white;
 }
 
-.verb.delete {
+.verb.DELETE {
   background-color: @red;
   color: @white;
 }
 
-.verb.patch,
-.verb.put,
-.verb.options {
+.verb.PATCH,
+.verb.PUT,
+.verb.OPTIONS {
   background-color: @grey;
   color: @white;
 }
 
-.path {
+.parameter {
+  margin-left: 92px;
 
+  label {
+    font-weight: bold;
+    display: inline-block;
+    min-width: 100px;
+  }
+  .type {
+    color: @grey;
+  }
+  .required {
+    color: @red;
+  }
 }

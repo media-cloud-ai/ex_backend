@@ -9,7 +9,7 @@ import {DocumentationService} from '../services/documentation.service'
 })
 
 export class DocumentationComponent {
-  routes: any
+  documentation: any
 
   constructor(
     private documentationService: DocumentationService
@@ -18,7 +18,7 @@ export class DocumentationComponent {
   ngOnInit() {
     this.documentationService.getDocumentation()
     .subscribe(response => {
-      this.routes = response
+      this.documentation = response
     })
   }
 }

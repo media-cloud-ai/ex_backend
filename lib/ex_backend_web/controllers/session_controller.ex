@@ -7,6 +7,16 @@ defmodule ExBackendWeb.SessionController do
 
   plug(:guest_check when action in [:create])
 
+
+  api :POST, "/api/sessions" do
+    title "Create a new session"
+    description "Login a user with credentials to get the JWT token"
+
+    parameter :session, :map, [
+      optional: false,
+      description: "Map with required parameters email and password"
+    ]
+  end
   def create(conn, %{"session" => params}) do
     case Login.verify(params, Accounts) do
       {:ok, user} ->

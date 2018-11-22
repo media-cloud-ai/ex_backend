@@ -1,12 +1,36 @@
 <h1>API Documentation</h1>
 <div class="routes">
-  <div *ngFor="let route of routes">
+  <div *ngFor="let route of documentation.routes"
+    class=route>
+    <h3 class=title>
+      {{route.title}}
+    </h3>
+    <div class=description>
+      {{route.description}}
+    </div>
     <span class=verb
-      [ngClass]="route.verb">
-      {{route.verb}}
+      [ngClass]="route.method">
+      {{route.method}}
     </span>
     <span class=path>
       {{route.path}}
     </span>
+    <div class="parameters">
+      <div *ngFor="let param of route.parameters"
+        class=parameter>
+        <label>
+          {{param.name}}
+        </label>
+        <span class=description>
+          {{param.description}}
+        </span>
+        <span class=type>
+          ({{param.type}})
+        </span>
+        <span class=required *ngIf="param.optional === false">
+          Required
+        </span>
+      </div>
+    </div>
   </div>
 </div>

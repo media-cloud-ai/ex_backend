@@ -20,6 +20,7 @@ defmodule ExBackendWeb do
   def controller do
     quote do
       use Phoenix.Controller, namespace: ExBackendWeb
+      use BlueBird.Controller
       import Plug.Conn
       import ExBackendWeb.Router.Helpers
       import ExBackendWeb.Gettext

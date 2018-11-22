@@ -14,6 +14,19 @@ defmodule ExBackend.Mixfile do
     ]
   end
 
+  def blue_bird_info do
+    [
+      host: "https://backend.media-io.com",
+      title: "Media-IO Backend",
+      description: "REST API documentation for the Media-IO backend",
+      contact: [
+        name: "Media-IO",
+        url: "https://media-io.com",
+        email: "contact@media-io.com"
+      ],
+    ]
+  end
+
   # Configuration for the OTP application.
   #
   # Type `mix help compile.app` for more information.
@@ -24,6 +37,7 @@ defmodule ExBackend.Mixfile do
         :amqp,
         :bamboo,
         :bcrypt_elixir,
+        :blue_bird,
         :httpotion,
         :logger,
         :phauxth,
@@ -49,6 +63,7 @@ defmodule ExBackend.Mixfile do
       {:amqp, "~> 1.0"},
       {:bcrypt_elixir, "~> 1.1"},
       {:bamboo, github: "media-io/bamboo"},
+      {:blue_bird, "~> 0.3.8"},
       {:cowboy, "~> 1.1.2"},
       {:distillery, "~> 2.0"},
       {:ecto, "~> 2.2"},
