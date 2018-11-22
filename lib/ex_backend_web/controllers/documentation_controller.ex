@@ -14,9 +14,8 @@ defmodule ExBackendWeb.DocumentationController do
   end
   def index(conn, params) do
     response =
-      BlueBird.Generator.run()
-      |> Map.delete(:contact)
-      |> Map.delete(:license)
+      File.read!("documentation.json")
+      |> Poison.decode!
 
     conn
     |> json(response)

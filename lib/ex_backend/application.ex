@@ -181,7 +181,7 @@ defmodule ExBackend.Application do
       Logger.warn("No root user (re-)created")
     end
 
-    BlueBird.start()
+    # BlueBird.start()
 
     # ExBackend.Amqp.Supervisor.add_consumer("ftp")
     main_supervisor

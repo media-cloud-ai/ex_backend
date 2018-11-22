@@ -48,8 +48,6 @@ defmodule ExBackendWeb.Router do
 
     resources "/catalog", CatalogController, except: [:new, :edit] do
       post("/jobs", JobController, :create)
-      get("/rdf", RdfController, :show)
-      post("/rdf", RdfController, :create)
     end
 
     resources("/registery", RegisteryController, except: [:new, :edit]) do
