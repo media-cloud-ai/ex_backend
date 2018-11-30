@@ -1,6 +1,6 @@
 defmodule ExBackend.Workflow.Step.Copy do
   alias ExBackend.Jobs
-  alias ExBackend.Amqp.JobFileSystemEmitter
+  alias ExBackend.Amqp.CommonEmitter
   alias ExBackend.Workflow.Step.Requirements
 
   @action_name "copy"
@@ -42,8 +42,10 @@ defmodule ExBackend.Workflow.Step.Copy do
           parameters: job.params
         }
 
-        JobFileSystemEmitter.publish_json(params)
-        {:ok, "started"}
+        case CommonEmitter.publish_json("job_file_system", params) do
+          :ok -> {:ok, "started"}
+          _ -> {:error, "unable to publish message"}
+        end
     end
   end
 

@@ -1,7 +1,7 @@
 defmodule ExBackend.Workflow.Step.HttpDownload do
   alias ExBackend.Repo
   alias ExBackend.Jobs
-  alias ExBackend.Amqp.JobHttpEmitter
+  alias ExBackend.Amqp.CommonEmitter
   alias ExBackend.Workflow.Step.Requirements
 
   @action_name "download_http"
@@ -83,7 +83,7 @@ defmodule ExBackend.Workflow.Step.HttpDownload do
       parameters: job.params
     }
 
-    case JobHttpEmitter.publish_json(params) do
+    case CommonEmitter.publish_json("job_http", params) do
       :ok -> start_download(urls, step_id, step, workflow)
       _ -> {:error, "unable to publish message"}
     end

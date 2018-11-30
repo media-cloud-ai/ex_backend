@@ -1,7 +1,7 @@
 defmodule ExBackend.Workflow.Step.PushRdf do
   alias ExBackend.Jobs
 
-  alias ExBackend.Amqp.JobRdfEmitter
+  alias ExBackend.Amqp.CommonEmitter
   require Logger
 
   @action_name "push_rdf"
@@ -29,7 +29,9 @@ defmodule ExBackend.Workflow.Step.PushRdf do
       parameters: job.params.list
     }
 
-    JobRdfEmitter.publish_json(params)
-    {:ok, "started"}
+    case CommonEmitter.publish_json("job_rdf", params) do
+      :ok -> {:ok, "started"}
+      _ -> {:error, "unable to publish message"}
+    end
   end
 end

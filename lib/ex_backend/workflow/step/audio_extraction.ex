@@ -1,6 +1,6 @@
 defmodule ExBackend.Workflow.Step.AudioExtraction do
   alias ExBackend.Jobs
-  alias ExBackend.Amqp.JobFFmpegEmitter
+  alias ExBackend.Amqp.CommonEmitter
   alias ExBackend.Workflow.Step.Requirements
 
   require Logger
@@ -97,9 +97,10 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
       parameters: job.params
     }
 
-    JobFFmpegEmitter.publish_json(params)
-
-    {:ok, "started"}
+    case CommonEmitter.publish_json("job_ffmpeg", params) do
+      :ok -> {:ok, "started"}
+      _ -> {:error, "unable to publish message"}
+    end
   end
 
   defp get_first_source_file(jobs, step) do

@@ -1,6 +1,6 @@
 defmodule ExBackend.Workflow.Step.FtpUpload do
   alias ExBackend.Jobs
-  alias ExBackend.Amqp.JobFtpEmitter
+  alias ExBackend.Amqp.CommonEmitter
   alias ExBackend.Workflow.Step.Requirements
 
   @action_name "upload_ftp"
@@ -69,9 +69,10 @@ defmodule ExBackend.Workflow.Step.FtpUpload do
       parameters: job.params
     }
 
-    JobFtpEmitter.publish_json(params)
-
-    start_upload(files, current_date, workflow, step_id)
+    case CommonEmitter.publish_json("job_ftp", params) do
+      :ok -> start_upload(files, current_date, workflow, step_id)
+      _ -> {:error, "unable to publish message"}
+    end
   end
 
   @doc """

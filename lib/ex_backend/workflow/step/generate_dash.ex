@@ -1,6 +1,6 @@
 defmodule ExBackend.Workflow.Step.GenerateDash do
   alias ExBackend.Jobs
-  alias ExBackend.Amqp.JobGpacEmitter
+  alias ExBackend.Amqp.CommonEmitter
   alias ExBackend.Workflow.Step.Requirements
 
   require Logger
@@ -22,8 +22,10 @@ defmodule ExBackend.Workflow.Step.GenerateDash do
           parameters: job.params
         }
 
-        JobGpacEmitter.publish_json(params)
-        {:ok, "started"}
+        case CommonEmitter.publish_json("job_gpac", params) do
+          :ok -> {:ok, "started"}
+          _ -> {:error, "unable to publish message"}
+        end
 
       something_else ->
         Logger.error(

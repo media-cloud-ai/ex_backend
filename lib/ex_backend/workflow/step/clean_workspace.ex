@@ -1,6 +1,6 @@
 defmodule ExBackend.Workflow.Step.CleanWorkspace do
   alias ExBackend.Jobs
-  alias ExBackend.Amqp.JobFileSystemEmitter
+  alias ExBackend.Amqp.CommonEmitter
   alias ExBackend.Workflow.Step.Requirements
 
   @action_name "clean_workspace"
@@ -44,7 +44,7 @@ defmodule ExBackend.Workflow.Step.CleanWorkspace do
         parameters: job.params
       }
 
-      case JobFileSystemEmitter.publish_json(params) do
+      case CommonEmitter.publish_json("job_file_system", params) do
         :ok -> {:ok, "started"}
         _ -> {:error, "unable to publish message"}
       end

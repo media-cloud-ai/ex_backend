@@ -1,6 +1,6 @@
 defmodule ExBackend.Workflow.Step.SetLanguage do
   alias ExBackend.Jobs
-  alias ExBackend.Amqp.JobGpacEmitter
+  alias ExBackend.Amqp.CommonEmitter
   alias ExBackend.Workflow.Step.Requirements
 
   @action_name "set_language"
@@ -76,9 +76,10 @@ defmodule ExBackend.Workflow.Step.SetLanguage do
       parameters: job.params
     }
 
-    JobGpacEmitter.publish_json(params)
-
-    start_setting_languages(paths, workflow, step, step_id)
+    case CommonEmitter.publish_json("job_gpac", params) do
+      :ok -> start_setting_languages(paths, workflow, step, step_id)
+      _ -> {:error, "unable to publish message"}
+    end
   end
 
   defp get_file_language(path, workflow) do

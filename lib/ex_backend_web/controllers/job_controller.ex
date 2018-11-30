@@ -5,7 +5,7 @@ defmodule ExBackendWeb.JobController do
 
   alias ExBackend.Jobs
   alias ExBackend.Jobs.Job
-  alias ExBackend.Amqp.JobFtpEmitter
+  alias ExBackend.Amqp.CommonEmitter
 
   action_fallback(ExBackendWeb.FallbackController)
 
@@ -26,7 +26,7 @@ defmodule ExBackendWeb.JobController do
           parameters: job.params
         }
 
-        JobFtpEmitter.publish_json(params)
+        CommonEmitter.publish_json("job_ftp", params)
 
         conn
         |> put_status(:created)

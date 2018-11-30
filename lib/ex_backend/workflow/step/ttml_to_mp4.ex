@@ -1,6 +1,6 @@
 defmodule ExBackend.Workflow.Step.TtmlToMp4 do
   alias ExBackend.Jobs
-  alias ExBackend.Amqp.JobGpacEmitter
+  alias ExBackend.Amqp.CommonEmitter
   alias ExBackend.Workflow.Step.Requirements
 
   @action_name "ttml_to_mp4"
@@ -51,9 +51,10 @@ defmodule ExBackend.Workflow.Step.TtmlToMp4 do
       parameters: job.params
     }
 
-    JobGpacEmitter.publish_json(params)
-
-    start_process(paths, workflow, step_id)
+    case CommonEmitter.publish_json("job_gpac", params) do
+      :ok -> start_process(paths, workflow, step_id)
+      _ -> {:error, "unable to publish message"}
+    end
   end
 
   @doc """

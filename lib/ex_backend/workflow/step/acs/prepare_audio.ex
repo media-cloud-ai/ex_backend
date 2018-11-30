@@ -1,6 +1,6 @@
 defmodule ExBackend.Workflow.Step.Acs.PrepareAudio do
   alias ExBackend.Jobs
-  alias ExBackend.Amqp.JobFFmpegEmitter
+  alias ExBackend.Amqp.CommonEmitter
   alias ExBackend.Workflow.Step.Requirements
 
   require Logger
@@ -79,9 +79,10 @@ defmodule ExBackend.Workflow.Step.Acs.PrepareAudio do
       parameters: job.params
     }
 
-    JobFFmpegEmitter.publish_json(params)
-
-    start_processing_audio(paths, workflow, step_id)
+    case CommonEmitter.publish_json("job_ffmpeg", params) do
+      :ok -> start_processing_audio(paths, workflow, step_id)
+      _ -> {:error, "unable to publish message"}
+    end
   end
 
   defp get_subtitles_languages(workflow_reference) do

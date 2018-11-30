@@ -1,6 +1,6 @@
 defmodule ExBackend.Workflow.Step.Acs.Synchronize do
   alias ExBackend.Jobs
-  alias ExBackend.Amqp.JobAcsEmitter
+  alias ExBackend.Amqp.CommonEmitter
   alias ExBackend.Workflow.Step.Requirements
 
   require Logger
@@ -95,7 +95,10 @@ defmodule ExBackend.Workflow.Step.Acs.Synchronize do
       parameters: job.params
     }
 
-    JobAcsEmitter.publish_json(params)
+    case CommonEmitter.publish_json("job_acs", params) do
+      :ok -> {:ok, "started"}
+      _ -> {:error, "unable to publish message"}
+    end
   end
 
   defp get_source_files(jobs) do

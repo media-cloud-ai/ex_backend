@@ -4,7 +4,7 @@ defmodule ExBackendWeb.WorkflowEventsController do
   import ExBackendWeb.Authorize
   alias ExBackend.Workflows
   alias ExBackend.Jobs
-  alias ExBackend.Amqp
+  alias ExBackend.Amqp.CommonEmitter
   require Logger
 
   action_fallback(ExBackendWeb.FallbackController)
@@ -87,35 +87,35 @@ defmodule ExBackendWeb.WorkflowEventsController do
       job_id: job_id,
       parameters: Map.get(params.parameters, "list")
     }
-    Amqp.JobFtpEmitter.publish_json(params)
+    CommonEmitter.publish_json("job_ftp", params)
   end
 
   defp publish("upload_ftp", _job_id, _workflow, params) do
-    Amqp.JobFtpEmitter.publish_json(params)
+    CommonEmitter.publish_json("job_ftp", params)
   end
 
   defp publish("download_http", _job_id, _workflow, params) do
-    Amqp.JobHttpEmitter.publish_json(params)
+    CommonEmitter.publish_json("job_http", params)
   end
 
   defp publish("acs_prepare_audio", _job_id, _workflow, params) do
-    Amqp.JobFFmpegEmitter.publish_json(params)
+    CommonEmitter.publish_json("job_ffmpeg", params)
   end
 
   defp publish("acs_synchronize", _job_id, _workflow, params) do
-    Amqp.JobAcsEmitter.publish_json(params)
+    CommonEmitter.publish_json("job_acs", params)
   end
 
   defp publish("copy", _job_id, _workflow, params) do
-    Amqp.JobFileSystemEmitter.publish_json(params)
+    CommonEmitter.publish_json("job_file_system", params)
   end
 
   defp publish("audio_extraction", _job_id, _workflow, params) do
-    Amqp.JobFFmpegEmitter.publish_json(params)
+    CommonEmitter.publish_json("job_ffmpeg", params)
   end
 
   defp publish("speech_to_text", _job_id, _workflow, params) do
-    Amqp.JobSpeechToTextEmitter.publish_json(params)
+    CommonEmitter.publish_json("job_speech_to_text", params)
   end
 
   defp publish("push_rdf", job_id, _workflow, params) do
@@ -123,7 +123,7 @@ defmodule ExBackendWeb.WorkflowEventsController do
       job_id: job_id,
       parameters: Map.get(params.parameters, "list")
     }
-    Amqp.JobRdfEmitter.publish_json(params)
+    CommonEmitter.publish_json("job_rdf", params)
   end
 
   defp publish(job_name, _job_id, _workflow, _params) do
