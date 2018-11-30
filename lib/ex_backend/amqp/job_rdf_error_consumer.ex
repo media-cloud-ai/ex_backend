@@ -17,5 +17,6 @@ defmodule ExBackend.Amqp.JobRdfErrorConsumer do
 
   def consume(channel, tag, _redelivered, payload) do
     Logger.error("RDF error, payload: #{inspect(payload)}")
+    Basic.ack(channel, tag)
   end
 end

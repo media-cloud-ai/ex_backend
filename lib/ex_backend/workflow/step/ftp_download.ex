@@ -6,24 +6,38 @@ defmodule ExBackend.Workflow.Step.FtpDownload do
   @action_name "download_ftp"
 
   def launch(workflow, step) do
-    ftp_paths = ExVideoFactory.get_ftp_paths_for_video_id(workflow.reference)
+    inputs =
+      ExBackend.Map.get_by_key_or_atom(step, :parameters, [])
+      |> Enum.filter(fn param ->
+        ExBackend.Map.get_by_key_or_atom(param, :id) == "source_paths"
+      end)
+      |> Enum.map(fn param ->
+        ExBackend.Map.get_by_key_or_atom(param, :value)
+      end)
+
+    source_paths =
+      case inputs do
+        [] -> ExVideoFactory.get_ftp_paths_for_video_id(workflow.reference)
+        [paths] -> paths
+        _ -> raise("unable to create FTP download job: missing input paths")
+      end
 
     first_file =
-      ftp_paths
+      source_paths
       |> Enum.sort()
       |> List.first()
 
     step_id = ExBackend.Map.get_by_key_or_atom(step, :id)
 
-    case ftp_paths do
+    case source_paths do
       [] -> Jobs.create_skipped_job(workflow, step_id, @action_name)
-      _ -> start_download_via_ftp(ftp_paths, step, step_id, first_file, workflow)
+      _ -> start_download(source_paths, step, step_id, first_file, workflow)
     end
   end
 
-  defp start_download_via_ftp([], _step, _step_id, _first_file, _workflow), do: {:ok, "started"}
+  defp start_download([], _step, _step_id, _first_file, _workflow), do: {:ok, "started"}
 
-  defp start_download_via_ftp([file | files], step, step_id, first_file, workflow) do
+  defp start_download([file | files], step, step_id, first_file, workflow) do
     work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
 
     filename = Path.basename(file)
@@ -73,7 +87,7 @@ defmodule ExBackend.Workflow.Step.FtpDownload do
 
     JobFtpEmitter.publish_json(params)
 
-    start_download_via_ftp(files, step, step_id, first_file, workflow)
+    start_download(files, step, step_id, first_file, workflow)
   end
 
   @doc """

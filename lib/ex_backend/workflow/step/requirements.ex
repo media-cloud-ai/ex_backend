@@ -22,6 +22,11 @@ defmodule ExBackend.Workflow.Step.Requirements do
         ExBackend.Map.get_by_key_or_atom(job.params, :destination, %{})
         |> ExBackend.Map.get_by_key_or_atom(:paths, [])
 
+      new_destination_path =
+        ExBackend.Map.get_by_key_or_atom(job.params, :list, [])
+        |> Enum.filter(fn param -> ExBackend.Map.get_by_key_or_atom(param, :id) == "destination_path" end)
+        |> Enum.map(fn param -> ExBackend.Map.get_by_key_or_atom(param, :value) end)
+
       total =
         if is_list(output_paths) do
           output_paths
@@ -36,10 +41,17 @@ defmodule ExBackend.Workflow.Step.Requirements do
           total ++ [destination_path]
         end
 
-      if is_list(destination_paths) do
-        total ++ destination_paths
+      total =
+        if is_list(destination_paths) do
+          total ++ destination_paths
+        else
+          total ++ [destination_paths]
+        end
+
+      if is_list(new_destination_path) do
+        total ++ new_destination_path
       else
-        total ++ [destination_paths]
+        total ++ [new_destination_path]
       end
     end)
     |> List.flatten()
@@ -73,8 +85,11 @@ defmodule ExBackend.Workflow.Step.Requirements do
       |> String.replace("#workflow_id", "<%= workflow_id %>")
       |> EEx.eval_string(workflow_id: workflow.id)
 
-    parameter = Map.replace(parameter, "value", value)
-    parameter = Map.replace(parameter, :value, value)
+    parameter =
+      parameter
+      |> Map.delete("value")
+      |> Map.delete(:value)
+      |> Map.put(:value, value)
 
     result = List.insert_at(result, -1, parameter)
     parse_parameters(parameters, workflow, result)

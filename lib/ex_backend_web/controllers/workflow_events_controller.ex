@@ -118,7 +118,7 @@ defmodule ExBackendWeb.WorkflowEventsController do
     Amqp.JobSpeechToTextEmitter.publish_json(params)
   end
 
-  defp publish("push_rdf", job_id, workflow, params) do
+  defp publish("push_rdf", job_id, _workflow, params) do
     params = %{
       job_id: job_id,
       parameters: Map.get(params.parameters, "list")

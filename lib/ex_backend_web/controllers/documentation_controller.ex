@@ -12,7 +12,7 @@ defmodule ExBackendWeb.DocumentationController do
     title "Get API documentation"
     description "Retrieve all endpoint and parameters"
   end
-  def index(conn, params) do
+  def index(conn, _params) do
     response =
       File.read!("documentation.json")
       |> Poison.decode!

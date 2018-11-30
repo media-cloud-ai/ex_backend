@@ -21,7 +21,7 @@ defmodule ExBackendWeb.PlayerController do
     |> send_file(200, Path.join([root, content, "manifest.mpd"]))
   end
 
-  def options(conn, %{"content" => content, "filename" => filename}) do
+  def options(conn, %{"content" => _content, "filename" => _filename}) do
     conn
     |> put_resp_header("Accept-Ranges", "bytes")
     |> put_resp_header("Access-Control-Allow-Credentials", "true, false")

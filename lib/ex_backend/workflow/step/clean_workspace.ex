@@ -18,83 +18,69 @@ defmodule ExBackend.Workflow.Step.CleanWorkspace do
   end
 
   def launch(workflow, step) do
-    case get_source_directories(workflow.jobs) do
-      [] ->
-        Jobs.create_skipped_job(
-          workflow,
-          ExBackend.Map.get_by_key_or_atom(step, :id),
-          @action_name
-        )
+    if has_local_folder(workflow.jobs) do
+      work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
+      dst_path = work_dir <> "/" <> Integer.to_string(workflow.id)
 
-      paths ->
-        requirements = Requirements.add_required_paths(paths)
+      requirements = Requirements.add_required_paths([dst_path])
 
-        job_params = %{
-          name: @action_name,
-          step_id: ExBackend.Map.get_by_key_or_atom(step, :id),
-          workflow_id: workflow.id,
-          params: %{
-            action: "remove",
-            requirements: requirements,
-            source: %{
-              paths: paths
-            }
+      job_params = %{
+        name: @action_name,
+        step_id: ExBackend.Map.get_by_key_or_atom(step, :id),
+        workflow_id: workflow.id,
+        params: %{
+          action: "remove",
+          requirements: requirements,
+          source: %{
+            paths: [dst_path]
           }
         }
+      }
 
-        {:ok, job} = Jobs.create_job(job_params)
+      {:ok, job} = Jobs.create_job(job_params)
 
-        params = %{
-          job_id: job.id,
-          parameters: job.params
-        }
+      params = %{
+        job_id: job.id,
+        parameters: job.params
+      }
 
-        JobFileSystemEmitter.publish_json(params)
+      case JobFileSystemEmitter.publish_json(params) do
+        :ok -> {:ok, "started"}
+        _ -> {:error, "unable to publish message"}
+      end
+    else
+      Jobs.create_skipped_job(
+        workflow,
+        ExBackend.Map.get_by_key_or_atom(step, :id),
+        @action_name
+      )
     end
   end
 
-  defp get_source_directories(jobs) do
-    directories =
-      ExBackend.Workflow.Step.GenerateDash.get_jobs_destination_paths(jobs)
-      |> get_paths_directory()
-
-    ExBackend.Workflow.Step.FtpDownload.get_jobs_destination_paths(jobs)
-    |> get_paths_directory(directories)
-  end
-
-  defp get_paths_directory(_paths, directories \\ [])
-  defp get_paths_directory([], directories), do: directories
-
-  defp get_paths_directory(paths, directories) do
-    dir =
-      List.first(paths)
-      |> Path.dirname()
-
-    List.insert_at(directories, -1, dir)
-  end
-
   @doc """
-  Returns the list of destination paths of this workflow step
+  Returns true if any job have a destination_path (which means it use storage to process workflow)
   """
-  def get_jobs_destination_paths(_jobs, result \\ [])
-  def get_jobs_destination_paths([], result), do: result
+  def has_local_folder([]), do: false
+  def has_local_folder([job | jobs]) do
+    destinations =
+      job.params
+      |> Map.get("destination", %{})
+      |> Map.get("paths")
 
-  def get_jobs_destination_paths([job | jobs], result) do
-    result =
-      case job.name do
-        @action_name ->
-          job.params
-          |> Map.get("destination", %{})
-          |> Map.get("paths")
-          |> case do
-            nil -> result
-            paths -> Enum.concat(paths, result)
-          end
+    destination_paths =
+      job.params
+      |> Map.get("list", [])
+      |> Enum.filter(fn param ->
+        ExBackend.Map.get_by_key_or_atom(param, :id) == "destination_path"
+      end)
+      |> Enum.map(fn param ->
+        ExBackend.Map.get_by_key_or_atom(param, :value)
+      end)
 
-        _ ->
-          result
-      end
-
-    get_jobs_destination_paths(jobs, result)
+    if destinations == nil && destination_paths == [] do
+      has_local_folder(jobs)
+    else
+      true
+    end
   end
 end

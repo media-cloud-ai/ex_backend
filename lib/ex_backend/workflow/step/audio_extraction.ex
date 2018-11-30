@@ -12,19 +12,12 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
 
     case ExBackend.Map.get_by_key_or_atom(step, :inputs) do
       nil ->
-        get_first_source_file(workflow.jobs)
+        get_first_source_file(workflow.jobs, step)
         |> case do
-          nil ->
-            Jobs.create_skipped_job(workflow, step_id, @action_name)
-
-          [] ->
-            Jobs.create_skipped_job(workflow, step_id, @action_name)
-
-          [nil] ->
-            Jobs.create_skipped_job(workflow, step_id, @action_name)
-
-          path ->
-            start_extracting_audio(path, workflow, step, step_id)
+          nil -> Jobs.create_skipped_job(workflow, step_id, @action_name)
+          [] -> Jobs.create_skipped_job(workflow, step_id, @action_name)
+          [nil] -> Jobs.create_skipped_job(workflow, step_id, @action_name)
+          path -> start_extracting_audio(path, workflow, step, step_id)
         end
 
       inputs ->
@@ -109,9 +102,9 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
     {:ok, "started"}
   end
 
-  defp get_first_source_file(jobs) do
+  defp get_first_source_file(jobs, step) do
     ftp_files =
-      ExBackend.Workflow.Step.FtpDownload.get_jobs_destination_paths(jobs)
+      ExBackend.Workflow.Step.Requirements.get_source_files(jobs, step)
       |> Enum.find(fn path -> String.ends_with?(path, "-standard1.mp4") end)
 
     case ftp_files do
