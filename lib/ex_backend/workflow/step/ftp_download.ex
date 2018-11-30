@@ -17,22 +17,13 @@ defmodule ExBackend.Workflow.Step.FtpDownload do
 
     case ftp_paths do
       [] -> Jobs.create_skipped_job(workflow, step_id, @action_name)
-      _ -> start_download_via_ftp(ftp_paths, step_id, first_file, workflow)
+      _ -> start_download_via_ftp(ftp_paths, step, step_id, first_file, workflow)
     end
   end
 
-  defp start_download_via_ftp([], _step_id, _first_file, _workflow), do: {:ok, "started"}
+  defp start_download_via_ftp([], _step, _step_id, _first_file, _workflow), do: {:ok, "started"}
 
-  defp start_download_via_ftp([file | files], step_id, first_file, workflow) do
-    hostname =
-      System.get_env("AKAMAI_HOSTNAME") || Application.get_env(:ex_backend, :akamai_hostname)
-
-    username =
-      System.get_env("AKAMAI_USERNAME") || Application.get_env(:ex_backend, :akamai_username)
-
-    password =
-      System.get_env("AKAMAI_PASSWORD") || Application.get_env(:ex_backend, :akamai_password)
-
+  defp start_download_via_ftp([file | files], step, step_id, first_file, workflow) do
     work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
 
     filename = Path.basename(file)
@@ -47,34 +38,42 @@ defmodule ExBackend.Workflow.Step.FtpDownload do
         %{}
       end
 
+    parameters =
+      Map.get(step, "parameters", []) ++ [
+        %{
+          "id" => "source_path",
+          "type" => "string",
+          "value" => file
+        },
+        %{
+          "id" => "destination_path",
+          "type" => "string",
+          "value" => dst_path
+        },
+        %{
+          "id" => "requirements",
+          "type" => "requirements",
+          "value" => requirements
+        }
+      ]
+
     job_params = %{
       name: @action_name,
       step_id: step_id,
       workflow_id: workflow.id,
-      params: %{
-        source: %{
-          path: file,
-          hostname: hostname,
-          username: username,
-          password: password
-        },
-        requirements: requirements,
-        destination: %{
-          path: dst_path
-        }
-      }
+      params: %{ list: parameters }
     }
 
     {:ok, job} = Jobs.create_job(job_params)
 
     params = %{
       job_id: job.id,
-      parameters: job.params
+      parameters: job.params.list
     }
 
     JobFtpEmitter.publish_json(params)
 
-    start_download_via_ftp(files, step_id, first_file, workflow)
+    start_download_via_ftp(files, step, step_id, first_file, workflow)
   end
 
   @doc """

@@ -6,6 +6,7 @@
 /assets/node_modules
 /priv/static
 /log
+documentation.json
 erl_crash.dump
 *.ez
 *.beam

@@ -8,7 +8,7 @@ defmodule ExBackend.Workflow.Step.PushRdf do
 
   def launch(workflow, step) do
     parameters =
-      Map.get(step, "parameters")
+      Map.get(step, "parameters", [])
       |> List.insert_at(-1, %{
         "id" => "reference",
         "type" => "string",

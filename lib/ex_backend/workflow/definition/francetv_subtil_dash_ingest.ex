@@ -5,7 +5,27 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilDashIngest do
         %{
           id: 0,
           name: "download_ftp",
-          enable: true
+          enable: true,
+          parameters: [
+            %{
+              id: "source_hostname",
+              type: "credential",
+              default: "AKAMAI_REPLAY_HOSTNAME",
+              value: "AKAMAI_REPLAY_HOSTNAME"
+            },
+            %{
+              id: "source_username",
+              type: "credential",
+              default: "AKAMAI_REPLAY_USERNAME",
+              value: "AKAMAI_REPLAY_USERNAME"
+            },
+            %{
+              id: "source_password",
+              type: "credential",
+              default: "AKAMAI_REPLAY_PASSWORD",
+              value: "AKAMAI_REPLAY_PASSWORD"
+            }
+          ]
         },
         %{
           id: 1,

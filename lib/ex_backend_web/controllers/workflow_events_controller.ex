@@ -82,7 +82,11 @@ defmodule ExBackendWeb.WorkflowEventsController do
     skip_remaining_steps(steps, workflow)
   end
 
-  defp publish("download_ftp", _job_id, _workflow, params) do
+  defp publish("download_ftp", job_id, _workflow, params) do
+    params = %{
+      job_id: job_id,
+      parameters: Map.get(params.parameters, "list")
+    }
     Amqp.JobFtpEmitter.publish_json(params)
   end
 
@@ -115,7 +119,6 @@ defmodule ExBackendWeb.WorkflowEventsController do
   end
 
   defp publish("push_rdf", job_id, workflow, params) do
-    IO.inspect(params)
     params = %{
       job_id: job_id,
       parameters: Map.get(params.parameters, "list")
