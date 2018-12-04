@@ -64,7 +64,7 @@ defmodule ExBackend.WorkflowStep do
   end
 
   defp launch_step(workflow, "acs_synchronize", step) do
-    ExBackend.Workflow.Step.Acs.Synchronize.launch(workflow, step)
+    ExBackend.Workflow.Step.AcsSynchronize.launch(workflow, step)
   end
 
   defp launch_step(workflow, "audio_extraction", step) do

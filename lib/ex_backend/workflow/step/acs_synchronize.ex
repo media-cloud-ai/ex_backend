@@ -1,4 +1,4 @@
-defmodule ExBackend.Workflow.Step.Acs.Synchronize do
+defmodule ExBackend.Workflow.Step.AcsSynchronize do
   alias ExBackend.Jobs
   alias ExBackend.Amqp.CommonEmitter
   alias ExBackend.Workflow.Step.Requirements
