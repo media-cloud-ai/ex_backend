@@ -44,3 +44,10 @@ scripts:
   - if [[ $(elixir --version) = *"1.7"* ]]; then mix format --check-formatted; fi
   - mix test
   - cd assets && ../yarn && ../yarn run lint && ../yarn run release
+
+notifications:
+  slack:
+    secure: lEnXJessDb7IkXaFox81yd2EqWWu7jIDczHZQY8ueIaaeJkb1GJdYZabEPAgFM6Y+ES0jPPXC+G/GkDbtRVLWi1TK687Dsb0uO4qdJm46S2QDZ6SjJvj7xT18qJDl2oqm9Ad8fWorpZUY4K0beDyZ9RQaP/6Fu9FMdq1JqvQrq9Pm2KI1LKoqRK/0YDkQ83zA/T8liIbELceFU8nGq2KG8aPGcfC4nlqJ1TyaGmuMHuGydXAL2I8wGZg+ydY8FUXgrxgFA4yC2G94NgLldcxps+WgLmcM2GqlKQLt+mlxUGdnnMLQ+J37eAzzS0mYdZPfnP01nIGoJGDHTobwPGo7fgG/3us/orb2R4UqoKa2KGEyujAXCRrn5c40+CMwxO5Epyguf9O3Og6ffx9hRs/1Z6izVOY+2AE1g4fEf7rvKhumHBrlAoMGv/27s/VDjpOg60lajALM9jvcCB19s5fCWVJEn8yIm49rd22xUmb9qc1xiEFZz2NZDJHGfMYUa4sY2fjQg5mmm8DjuGvr7cvmfByMHMBhXSayRTj+cbR/5ebKuIH2cZRmqkkeptkIaeyBBsL4WD/OJ1zK2sbEiH0hEy+IuzjNT/MPz7RbYYWjuHFvl0NIwNRZzcJ9nP5FkhfYGXRHtfbo/+ZN57q6kHwiTvU+t+OzoNMHPaIvMSw16M=
+  email:
+    recipients:
+    - maarnaud@media-io.com
