@@ -10,8 +10,8 @@ defmodule ExBackendWeb.WorkflowController do
   action_fallback(ExBackendWeb.FallbackController)
 
   # the following plugs are defined in the controllers/authorize.ex file
-  plug(:user_check when action in [:index, :show, :update, :delete])
-  plug(:right_technician_check when action in [:index, :show, :update, :delete])
+  plug(:user_check when action in [:index, :create, :show, :update, :delete])
+  plug(:right_technician_check when action in [:index, :create, :show, :update, :delete])
 
   def index(conn, params) do
     workflows = Workflows.list_workflows(params)
@@ -38,6 +38,40 @@ defmodule ExBackendWeb.WorkflowController do
     end
   end
 
+  def create_specific(conn, %{"identifier" => "acs", "reference" => reference, "ttml_path" => ttml_path, "mp4_path" => mp4_path}) do
+
+    steps = ExBackend.Workflow.Definition.FrancetvSubtilAcs.get_definition(mp4_path, ttml_path)
+
+    workflow_params = %{
+      reference: reference,
+      flow: steps
+    }
+
+    {:ok, workflow} = Workflows.create_workflow(workflow_params)
+    {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+
+    conn
+    |> json(%{
+      "status": "started"
+    })
+  end
+
+  def create_specific(conn, %{"identifier" => "acs"}) do
+    conn
+    |> json(%{
+      "status": "error",
+      "message": "missing parameters to start this workflow"
+    })
+  end
+
+  def create_specific(conn, _params) do
+    conn
+    |> json(%{
+      "status": "error",
+      "message": "unknown workflow identifier"
+    })
+  end
+
   def show(conn, %{"id" => id}) do
     workflow =
       Workflows.get_workflow!(id)
@@ -58,6 +92,8 @@ defmodule ExBackendWeb.WorkflowController do
           ExBackend.Workflow.Definition.FrancetvSubtilRdfIngest.get_definition()
         "francetv_subtil_dash_ingest" ->
           ExBackend.Workflow.Definition.FrancetvSubtilDashIngest.get_definition()
+        "francetv_subtil_acs" ->
+          ExBackend.Workflow.Definition.FrancetvSubtilAcs.get_definition("Source mp4 path", "Source ttml path")
       end
 
     conn

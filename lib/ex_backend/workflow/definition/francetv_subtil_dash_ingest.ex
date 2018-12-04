@@ -39,7 +39,39 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilDashIngest do
           parent_ids: [0],
           required: [0],
           name: "audio_extraction",
-          enable: true
+          enable: true,
+          parameters: [
+            %{
+              "id" => "input_filter",
+              "type" => "filter",
+              "default" => "standard1.mp4",
+              "value" => %{ends_with: "standard1.mp4"},
+            },
+            %{
+              "id" => "output_codec_audio",
+              "type" => "string",
+              "default" => "copy",
+              "value" => "copy"
+            },
+            %{
+              "id" => "force_overwrite",
+              "type" => "boolean",
+              "default" => true,
+              "value" => true
+            },
+            %{
+              "id" => "disable_video",
+              "type" => "boolean",
+              "default" => true,
+              "value" => true
+            },
+            %{
+              "id" => "disable_data",
+              "type" => "boolean",
+              "default" => true,
+              "value" => true
+            }
+          ]
         },
         %{
           id: 3,

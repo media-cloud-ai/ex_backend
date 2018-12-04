@@ -35,7 +35,7 @@ defmodule ExBackend.Workflow.Step.Copy do
             },
             %{
               "id" => "source_paths",
-              "type" => "array",
+              "type" => "paths",
               "value" => paths
             }
           ]

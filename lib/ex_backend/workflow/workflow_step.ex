@@ -63,24 +63,12 @@ defmodule ExBackend.WorkflowStep do
     |> ExBackend.Jobs.skip_jobs(ExBackend.Map.get_by_key_or_atom(step, :id), step_name)
   end
 
-  defp launch_step(workflow, "acs_prepare_audio", step) do
-    ExBackend.Workflow.Step.Acs.PrepareAudio.launch(workflow, step)
-  end
-
   defp launch_step(workflow, "acs_synchronize", step) do
     ExBackend.Workflow.Step.Acs.Synchronize.launch(workflow, step)
   end
 
-  defp launch_step(workflow, "audio_encode", step) do
-    ExBackend.Workflow.Step.AudioEncode.launch(workflow, step)
-  end
-
   defp launch_step(workflow, "audio_extraction", step) do
     ExBackend.Workflow.Step.AudioExtraction.launch(workflow, step)
-  end
-
-  defp launch_step(workflow, "audio_decode", step) do
-    ExBackend.Workflow.Step.AudioDecode.launch(workflow, step)
   end
 
   defp launch_step(workflow, "download_ftp", step) do

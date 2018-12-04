@@ -2,61 +2,74 @@ defmodule ExBackend.Workflow.Step.Requirements do
   def get_source_files(jobs, step) do
     parent_ids = ExBackend.Map.get_by_key_or_atom(step, :parent_ids, [])
 
-    jobs
-    |> Enum.filter(fn job -> job.step_id in parent_ids end)
-    |> Enum.map(fn job ->
-      output_paths =
-        ExBackend.Map.get_by_key_or_atom(job.params, :outputs, [])
-        |> Enum.reduce([], fn output, acc ->
-          case ExBackend.Map.get_by_key_or_atom(output, :path) do
-            nil -> acc
-            path -> acc ++ [path]
+    input_filter =
+      ExBackend.Map.get_by_key_or_atom(step, :parameters, [])
+      |> Enum.filter(fn param -> ExBackend.Map.get_by_key_or_atom(param, :id) == "input_filter" end)
+      |> Enum.map(fn param -> ExBackend.Map.get_by_key_or_atom(param, :value) end)
+
+    paths =
+      jobs
+      |> Enum.filter(fn job -> job.step_id in parent_ids end)
+      |> Enum.map(fn job ->
+        output_paths =
+          ExBackend.Map.get_by_key_or_atom(job.params, :outputs, [])
+          |> Enum.reduce([], fn output, acc ->
+            case ExBackend.Map.get_by_key_or_atom(output, :path) do
+              nil -> acc
+              path -> acc ++ [path]
+            end
+          end)
+
+        destination_path =
+          ExBackend.Map.get_by_key_or_atom(job.params, :destination, %{})
+          |> ExBackend.Map.get_by_key_or_atom(:path)
+
+        destination_paths =
+          ExBackend.Map.get_by_key_or_atom(job.params, :destination, %{})
+          |> ExBackend.Map.get_by_key_or_atom(:paths, [])
+
+        new_destination_path =
+          ExBackend.Map.get_by_key_or_atom(job.params, :list, [])
+          |> Enum.filter(fn param -> ExBackend.Map.get_by_key_or_atom(param, :id) == "destination_path" end)
+          |> Enum.map(fn param -> ExBackend.Map.get_by_key_or_atom(param, :value) end)
+
+        total =
+          if is_list(output_paths) do
+            output_paths
+          else
+            [output_paths]
           end
-        end)
 
-      destination_path =
-        ExBackend.Map.get_by_key_or_atom(job.params, :destination, %{})
-        |> ExBackend.Map.get_by_key_or_atom(:path)
+        total =
+          if is_list(destination_path) do
+            total ++ destination_path
+          else
+            total ++ [destination_path]
+          end
 
-      destination_paths =
-        ExBackend.Map.get_by_key_or_atom(job.params, :destination, %{})
-        |> ExBackend.Map.get_by_key_or_atom(:paths, [])
+        total =
+          if is_list(destination_paths) do
+            total ++ destination_paths
+          else
+            total ++ [destination_paths]
+          end
 
-      new_destination_path =
-        ExBackend.Map.get_by_key_or_atom(job.params, :list, [])
-        |> Enum.filter(fn param -> ExBackend.Map.get_by_key_or_atom(param, :id) == "destination_path" end)
-        |> Enum.map(fn param -> ExBackend.Map.get_by_key_or_atom(param, :value) end)
-
-      total =
-        if is_list(output_paths) do
-          output_paths
+        if is_list(new_destination_path) do
+          total ++ new_destination_path
         else
-          [output_paths]
+          total ++ [new_destination_path]
         end
-
-      total =
-        if is_list(destination_path) do
-          total ++ destination_path
-        else
-          total ++ [destination_path]
-        end
-
-      total =
-        if is_list(destination_paths) do
-          total ++ destination_paths
-        else
-          total ++ [destination_paths]
-        end
-
-      if is_list(new_destination_path) do
-        total ++ new_destination_path
-      else
-        total ++ [new_destination_path]
-      end
-    end)
-    |> List.flatten()
-    |> Enum.uniq()
-    |> Enum.filter(fn path -> !is_nil(path) end)
+      end)
+      |> List.flatten()
+      |> Enum.uniq()
+      |> Enum.filter(fn path -> !is_nil(path) end)
+    
+    case input_filter do
+      [%{ends_with: ends_with}] ->
+        paths
+        |> Enum.filter(fn path -> String.ends_with?(path, ends_with) end)
+      _ -> paths
+    end
   end
 
   def add_required_paths(path, requirements \\ %{})

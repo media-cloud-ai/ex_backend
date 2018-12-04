@@ -53,7 +53,7 @@ defmodule ExBackend.Workflow.Step.FtpDownload do
       end
 
     parameters =
-      Map.get(step, "parameters", []) ++ [
+      ExBackend.Map.get_by_key_or_atom(step, :parameters, []) ++ [
         %{
           "id" => "source_path",
           "type" => "string",

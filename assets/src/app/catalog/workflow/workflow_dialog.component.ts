@@ -17,6 +17,7 @@ export class WorkflowDialogComponent {
   selected_tab = 0
   rdf_steps: Step[]
   dash_steps: Step[]
+  acs_steps: Step[]
 
   constructor(
     public dialogRef: MatDialogRef<WorkflowDialogComponent>,
@@ -39,6 +40,12 @@ export class WorkflowDialogComponent {
         console.log(workflowDefinition)
         this.dash_steps = workflowDefinition.steps
       })
+
+    this.workflowService.getWorkflowDefinition("francetv_subtil_acs")
+      .subscribe(workflowDefinition => {
+        console.log(workflowDefinition)
+        this.acs_steps = workflowDefinition.steps
+      })
   }
 
   onNoClick(): void {
@@ -54,6 +61,10 @@ export class WorkflowDialogComponent {
       }
       case 1: {
         src_steps = this.dash_steps
+        break;
+      }
+      case 2: {
+        src_steps = this.acs_steps
         break;
       }
       default: {

@@ -8,26 +8,17 @@ defmodule ExBackend.Workflow.Step.Acs.Synchronize do
   @action_name "acs_synchronize"
 
   def launch(workflow, step) do
-    source_files = get_source_files(workflow.jobs)
+    step_id = ExBackend.Map.get_by_key_or_atom(step, :id)
 
-    case map_size(source_files) do
-      0 ->
-        Jobs.create_skipped_job(
-          workflow,
-          ExBackend.Map.get_by_key_or_atom(step, :id),
-          @action_name
-        )
-
+    case Requirements.get_source_files(workflow.jobs, step) do
+      [audio_path, subtitle_path] ->
+        start_processing_synchro(audio_path, subtitle_path, workflow, step, step_id)
       _ ->
-        start_processing_synchro(source_files, workflow, step)
+        Jobs.create_skipped_job(workflow, step_id, @action_name)
     end
   end
 
-  defp start_processing_synchro(
-         %{audio_path: audio_path, subtitle_path: subtitle_path},
-         workflow,
-         step
-       ) do
+  defp start_processing_synchro(audio_path, subtitle_path, workflow, step, step_id) do
     work_dir =
       System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
 
@@ -38,144 +29,63 @@ defmodule ExBackend.Workflow.Step.Acs.Synchronize do
       Path.basename(subtitle_path)
       |> String.replace(".ttml", "_synchronized.ttml")
 
-    dst_path = work_dir <> "/" <> Integer.to_string(workflow.id) <> "/acs/" <> filename
+    dst_path = work_dir <> "/" <> Integer.to_string(workflow.id) <> "/" <> filename
 
     exec_dir = app_dir <> "/acs"
 
     requirements = Requirements.add_required_paths([audio_path, subtitle_path])
 
-    threads_number =
-      Map.get(step, "parameters", [])
-      |> Enum.find(fn param -> Map.get(param, "id") == "threads_number" end)
-      |> case do
-        nil -> 8
-        threads_param -> Map.get(threads_param, "value")
-      end
-      |> Integer.to_string()
+    parameters =
+      ExBackend.Map.get_by_key_or_atom(step, :parameters) ++ [
+        %{
+          "id" => "source_paths",
+          "type" => "paths",
+          "value" => [audio_path, subtitle_path]
+        },
+        %{
+          "id" => "destination_path",
+          "type" => "string",
+          "value" => dst_path
+        },
+        %{
+          "id" => "requirements",
+          "type" => "requirements",
+          "value" => requirements
+        },
+        %{
+          "id" => "program",
+          "type" => "string",
+          "value" => acs_app
+        },
+        %{
+          "id" => "exec_dir",
+          "type" => "string",
+          "value" => exec_dir
+        },
+        %{
+          "id" => "libraries",
+          "type" => "paths",
+          "value" => [exec_dir]
+        }
+      ]
 
     job_params = %{
       name: @action_name,
-      step_id:  ExBackend.Map.get_by_key_or_atom(step, :id),
+      step_id: step_id,
       workflow_id: workflow.id,
-      params: %{
-        requirements: requirements,
-        program: acs_app,
-        exec_dir: exec_dir,
-        libraries: [
-          exec_dir
-        ],
-        inputs: [
-          %{
-            path: audio_path,
-            options: %{}
-          },
-          %{
-            path: subtitle_path,
-            options: %{}
-          }
-        ],
-        outputs: [
-          %{
-            path: dst_path,
-            options: %{}
-          },
-          %{
-            options: %{
-              threads_number => true
-            }
-          }
-        ]
-      }
+      params: %{list: parameters}
     }
 
     {:ok, job} = Jobs.create_job(job_params)
 
     params = %{
       job_id: job.id,
-      parameters: job.params
+      parameters: job.params.list
     }
 
     case CommonEmitter.publish_json("job_acs", params) do
       :ok -> {:ok, "started"}
       _ -> {:error, "unable to publish message"}
     end
-  end
-
-  defp get_source_files(jobs) do
-    audio_path =
-      ExBackend.Workflow.Step.Acs.PrepareAudio.get_jobs_destination_paths(jobs)
-      |> List.first()
-
-    subtitle_path =
-      ExBackend.Workflow.Step.HttpDownload.get_jobs_destination_paths(jobs)
-      |> List.first()
-
-    cond do
-      is_nil(audio_path) ->
-        %{}
-
-      is_nil(subtitle_path) ->
-        %{}
-
-      true ->
-        %{
-          audio_path: audio_path,
-          subtitle_path: subtitle_path
-        }
-    end
-  end
-
-  @doc """
-  Returns the list of destination paths of this workflow step
-  """
-  def get_jobs_destination_paths(_jobs, steps, result \\ [])
-  def get_jobs_destination_paths([], _steps, result), do: result
-
-  def get_jobs_destination_paths([job | jobs], steps, result) do
-    result =
-      case job.name do
-        @action_name ->
-          paths =
-            job.params
-            |> Map.get("destination", %{})
-            |> Map.get("paths")
-            |> case do
-              nil -> result
-              paths -> Enum.concat(paths, result)
-            end
-
-          case Enum.find(steps, fn step -> Map.get(step, "name") == @action_name end) do
-            nil ->
-              paths
-
-            step ->
-              keep_original =
-                step
-                |> Map.get("parameters", [])
-                |> Enum.any?(fn param ->
-                  Map.get(param, "id") == "keep_original" && Map.get(param, "value") == true
-                end)
-
-              if keep_original do
-                job.params
-                |> Map.get("inputs", [])
-                |> Enum.find(fn input ->
-                  Map.get(input, "path", "")
-                  |> String.ends_with?(".ttml")
-                end)
-                |> case do
-                  nil -> paths
-                  input -> List.insert_at(paths, -1, Map.get(input, "path"))
-                end
-              else
-                paths
-              end
-          end
-
-        _ ->
-          result
-      end
-
-    get_jobs_destination_paths(jobs, steps, result)
   end
 end

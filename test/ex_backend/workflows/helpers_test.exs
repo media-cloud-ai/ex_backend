@@ -80,20 +80,28 @@ defmodule ExBackend.HelpersTest do
     when is_bitstring(id) and is_bitstring(value) do
     true
   end
-  defp validate_parameter(%{"id" => id, "type" => type, "value" => value})
-    when is_bitstring(id) and is_bitstring(type) and is_map(value) do
-    true
-  end
-  defp validate_parameter(%{"id" => id, "type" => type, "value" => value})
-    when is_bitstring(id) and is_bitstring(type) and is_list(value) do
-    true
-  end
   defp validate_parameter(%{"id" => id, "type" => "boolean", "value" => value})
     when is_bitstring(id) and is_boolean(value) do
     true
   end
   defp validate_parameter(%{"id" => id, "type" => "integer", "value" => value})
     when is_bitstring(id) and is_integer(value) do
+    true
+  end
+  defp validate_parameter(%{"id" => id, "type" => "requirements", "value" => %{"paths" => paths}})
+    when is_bitstring(id) and is_list(paths) do
+    true
+  end
+  defp validate_parameter(%{"id" => id, "type" => "requirements", "value" => %{}})
+    when is_bitstring(id) do
+    true
+  end
+  defp validate_parameter(%{"id" => id, "type" => "paths", "value" => paths})
+    when is_bitstring(id) and is_list(paths) do
+    true
+  end
+  defp validate_parameter(%{"id" => id, "type" => "filter", "value" => %{"ends_with" => ends_with}})
+    when is_bitstring(id) and is_bitstring(ends_with) do
     true
   end
   defp validate_parameter(param) do

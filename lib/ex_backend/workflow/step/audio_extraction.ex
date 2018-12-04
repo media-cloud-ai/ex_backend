@@ -12,7 +12,7 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
 
     case ExBackend.Map.get_by_key_or_atom(step, :inputs) do
       nil ->
-        get_first_source_file(workflow.jobs, step)
+        Requirements.get_source_files(workflow.jobs, step)
         |> case do
           nil -> Jobs.create_skipped_job(workflow, step_id, @action_name)
           [] -> Jobs.create_skipped_job(workflow, step_id, @action_name)
@@ -32,6 +32,14 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
         end
 
         {:ok, "started"}
+    end
+  end
+
+  defp start_extracting_audio([], _workflow, _step, _step_id), do: {:ok, "started"}
+  defp start_extracting_audio([path | paths], workflow, step, step_id) do
+    case start_extracting_audio(path, workflow, step, step_id) do
+      {:ok, "started"} -> start_extracting_audio(paths, workflow, step, step_id)
+      {:error, message} -> {:error, message}
     end
   end
 
@@ -70,26 +78,6 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
           "id" => "requirements",
           "type" => "requirements",
           "value" => requirements
-        },
-        %{
-          "id" => "output_codec_audio",
-          "type" => "string",
-          "value" => "copy"
-        },
-        %{
-          "id" => "force_overwrite",
-          "type" => "boolean",
-          "value" => true
-        },
-        %{
-          "id" => "disable_video",
-          "type" => "boolean",
-          "value" => true
-        },
-        %{
-          "id" => "disable_data",
-          "type" => "boolean",
-          "value" => true
         }
       ]
 
@@ -111,41 +99,5 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
       :ok -> {:ok, "started"}
       _ -> {:error, "unable to publish message"}
     end
-  end
-
-  defp get_first_source_file(jobs, step) do
-    ftp_files =
-      ExBackend.Workflow.Step.Requirements.get_source_files(jobs, step)
-      |> Enum.find(fn path -> String.ends_with?(path, "-standard1.mp4") end)
-
-    case ftp_files do
-      nil -> ExBackend.Workflow.Step.UploadFile.get_jobs_destination_paths(jobs)
-      filename -> filename
-    end
-  end
-
-  @doc """
-  Returns the list of destination paths of this workflow step
-  """
-  def get_jobs_destination_paths(_jobs, result \\ [])
-  def get_jobs_destination_paths([], result), do: result
-
-  def get_jobs_destination_paths([job | jobs], result) do
-    result =
-      case job.name do
-        @action_name ->
-          job.params
-          |> ExBackend.Map.get_by_key_or_atom(:destination, %{})
-          |> ExBackend.Map.get_by_key_or_atom(:paths)
-          |> case do
-            nil -> result
-            paths -> Enum.concat(paths, result)
-          end
-
-        _ ->
-          result
-      end
-
-    get_jobs_destination_paths(jobs, result)
   end
 end

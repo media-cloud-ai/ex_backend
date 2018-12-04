@@ -53,23 +53,33 @@ defmodule ExBackend.FrancetvSubtilAcsTest do
 
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)
       ExBackend.HelpersTest.check(workflow.id, 2)
+      ExBackend.HelpersTest.check(workflow.id, "audio_extraction", 1)
+      ExBackend.HelpersTest.complete_jobs(workflow.id, "audio_extraction")
+
+      {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+      ExBackend.HelpersTest.check(workflow.id, 3)
       ExBackend.HelpersTest.check(workflow.id, "download_http", 1)
       ExBackend.HelpersTest.complete_jobs(workflow.id, "download_http")
 
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)
-      ExBackend.HelpersTest.check(workflow.id, 3)
+      ExBackend.HelpersTest.check(workflow.id, 4)
+      ExBackend.HelpersTest.check(workflow.id, "acs_synchronize", 1)
+      ExBackend.HelpersTest.complete_jobs(workflow.id, "acs_synchronize")
+
+      {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+      ExBackend.HelpersTest.check(workflow.id, 5)
       ExBackend.HelpersTest.check(workflow.id, "push_rdf", 1)
       ExBackend.HelpersTest.complete_jobs(workflow.id, "push_rdf")
 
       {:ok, "started"} =  WorkflowStep.start_next_step(workflow)
-      ExBackend.HelpersTest.check(workflow.id, 4)
+      ExBackend.HelpersTest.check(workflow.id, 6)
       ExBackend.HelpersTest.check(workflow.id, "download_ftp", 1)
       ExBackend.HelpersTest.check(workflow.id, "download_http", 1)
       ExBackend.HelpersTest.check(workflow.id, "push_rdf", 1)
       ExBackend.HelpersTest.check(workflow.id, "clean_workspace", 1)
 
       {:ok, "completed"} =  WorkflowStep.start_next_step(workflow)
-      ExBackend.HelpersTest.check(workflow.id, 4)
+      ExBackend.HelpersTest.check(workflow.id, 6)
     end
   end
 end
