@@ -48,32 +48,44 @@ defmodule ExBackend.Workflow.Step.SetLanguage do
         Integer.to_string(workflow.id) <>
         "/lang/" <> Path.basename(path, ".mp4") <> "-" <> language_code <> ".mp4"
 
-    options = %{
-      "-lang": language_code,
-      "-out": dst_path
-    }
-
     requirements = Requirements.add_required_paths(path)
+
+    parameters =
+      ExBackend.Map.get_by_key_or_atom(step, :parameters, []) ++ [
+        %{
+          "id" => "action",
+          "type" => "string",
+          "value" => @action_name
+        },
+        %{
+          "id" => "source_path",
+          "type" => "string",
+          "value" => path
+        },
+        %{
+          "id" => "destination_path",
+          "type" => "string",
+          "value" => dst_path
+        },
+        %{
+          "id" => "requirements",
+          "type" => "requirements",
+          "value" => requirements
+        }
+      ]
 
     job_params = %{
       name: @action_name,
       step_id: step_id,
       workflow_id: workflow.id,
-      params: %{
-        kind: @action_name,
-        requirements: requirements,
-        source: %{
-          path: path
-        },
-        options: options
-      }
+      params: %{list: parameters}
     }
 
     {:ok, job} = Jobs.create_job(job_params)
 
     params = %{
       job_id: job.id,
-      parameters: job.params
+      parameters: job.params.list
     }
 
     case CommonEmitter.publish_json("job_gpac", params) do

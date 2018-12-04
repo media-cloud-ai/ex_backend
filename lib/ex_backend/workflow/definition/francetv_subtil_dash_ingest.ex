@@ -64,13 +64,13 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilDashIngest do
           parameters: [
             %{
               id: "segment_duration",
-              type: "number",
+              type: "integer",
               default: 2000,
               value: 2000
             },
             %{
               id: "fragment_duration",
-              type: "number",
+              type: "integer",
               default: 2000,
               value: 2000
             }
@@ -81,7 +81,33 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilDashIngest do
           parent_ids: [5],
           required: [5],
           name: "upload_ftp",
-          enable: true
+          enable: true,
+          parameters: [
+            %{
+              id: "destination_hostname",
+              type: "credential",
+              default: "AKAMAI_VIDEO_HOSTNAME",
+              value: "AKAMAI_VIDEO_HOSTNAME"
+            },
+            %{
+              id: "destination_username",
+              type: "credential",
+              default: "AKAMAI_VIDEO_USERNAME",
+              value: "AKAMAI_VIDEO_USERNAME"
+            },
+            %{
+              id: "destination_password",
+              type: "credential",
+              default: "AKAMAI_VIDEO_PASSWORD",
+              value: "AKAMAI_VIDEO_PASSWORD"
+            },
+            %{
+              id: "destination_prefix",
+              type: "credential",
+              default: "AKAMAI_VIDEO_PREFIX",
+              value: "AKAMAI_VIDEO_PREFIX"
+            }
+          ]
         },
         %{
           id: 7,

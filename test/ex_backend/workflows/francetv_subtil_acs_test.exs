@@ -7,6 +7,32 @@ defmodule ExBackend.FrancetvSubtilAcsTest do
 
   require Logger
 
+  setup do
+    channel = ExBackend.HelpersTest.get_amqp_connection()
+    on_exit fn ->
+      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get channel, "job_ftp"
+      AMQP.Basic.ack(channel, delivery_tag)
+      assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
+      {:empty, %{cluster_id: ""}} = AMQP.Basic.get channel, "job_ftp"
+
+      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get channel, "job_http"
+      AMQP.Basic.ack(channel, delivery_tag)
+      assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
+      {:empty, %{cluster_id: ""}} = AMQP.Basic.get channel, "job_http"
+
+      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get channel, "job_rdf"
+      AMQP.Basic.ack(channel, delivery_tag)
+      assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
+      {:empty, %{cluster_id: ""}} = AMQP.Basic.get channel, "job_rdf"
+
+      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get channel, "job_file_system"
+      AMQP.Basic.ack(channel, delivery_tag)
+      assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
+      {:empty, %{cluster_id: ""}} = AMQP.Basic.get channel, "job_file_system"
+    end
+    :ok
+  end
+
   describe "francetv_subtil_acs_workflow" do
     test "bad id" do
       steps = ExBackend.Workflow.Definition.FrancetvSubtilAcs.get_definition(

@@ -80,7 +80,7 @@ defmodule ExBackend.Workflow.Step.HttpDownload do
 
     params = %{
       job_id: job.id,
-      parameters: job.params
+      parameters: job.params.list
     }
 
     case CommonEmitter.publish_json("job_http", params) do

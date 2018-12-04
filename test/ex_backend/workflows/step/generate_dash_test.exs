@@ -64,25 +64,49 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
              %{
                name: "generate_dash",
                params: %{
-                 kind: "generate_dash",
-                 options: %{
-                   "-out": "/data/666/dash/manifest.mpd",
-                   "-profile": "onDemand",
-                   "-rap": true,
-                   "-url-template": true,
-                   "-dash": 20000,
-                   "-frag": 60000
-                 },
-                 requirements: %{
-                   paths: [
-                     "/2018/S12/J7/173535163-5ab81c23a3594-standard3.mp4"
-                   ]
-                 },
-                 source: %{
-                   paths: [
-                     "/2018/S12/J7/173535163-5ab81c23a3594-standard3.mp4#video:id=v3"
-                   ]
-                 }
+                 list: [
+                  %{
+                    "id" => "segment_duration",
+                    "value" => 20000
+                  }, %{
+                    "id" => "fragment_duration",
+                    "value" => 60000
+                  }, %{
+                    "id" => "action",
+                    "type" => "string",
+                    "value" => "generate_dash"
+                  }, %{
+                    "id" => "source_paths",
+                    "type" => "string",
+                    "value" => [
+                      "/2018/S12/J7/173535163-5ab81c23a3594-standard3.mp4#video:id=v3"
+                    ]
+                  }, %{
+                    "id" => "destination_path",
+                    "type" => "string",
+                    "value" => "/data/666/dash/manifest.mpd"
+                  }, %{
+                    "id" => "requirements",
+                    "type" => "requirements",
+                    "value" => %{
+                      paths: [
+                        "/2018/S12/J7/173535163-5ab81c23a3594-standard3.mp4"
+                      ]
+                    }
+                  }, %{
+                    "id" => "profile",
+                    "type" => "string",
+                    "value" => "onDemand"
+                  }, %{
+                    "id" => "rap",
+                    "type" => "boolean",
+                    "value" => true
+                  }, %{
+                    "id" => "url_template",
+                    "type" => "boolean",
+                    "value" => true
+                  }
+                 ]
                },
                workflow_id: 666,
                step_id: 0
@@ -139,27 +163,51 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
              %{
                name: "generate_dash",
                params: %{
-                 kind: "generate_dash",
-                 options: %{
-                   "-out": "/data/666/dash/manifest.mpd",
-                   "-profile": "onDemand",
-                   "-rap": true,
-                   "-url-template": true,
-                   "-dash": 20000,
-                   "-frag": 60000
-                 },
-                 requirements: %{
-                   paths: [
-                     "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4",
-                     "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4"
-                   ]
-                 },
-                 source: %{
-                   paths: [
-                     "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4#audio:id=a1",
-                     "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4#video:id=v5"
-                   ]
-                 }
+                 list: [
+                  %{
+                    "id" => "segment_duration",
+                    "value" => 20000
+                  }, %{
+                    "id" => "fragment_duration",
+                    "value" => 60000
+                  }, %{
+                    "id" => "action",
+                    "type" => "string",
+                    "value" => "generate_dash"
+                  }, %{
+                    "id" => "source_paths",
+                    "type" => "string",
+                    "value" => [
+                      "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4#audio:id=a1",
+                      "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4#video:id=v5"
+                    ]
+                  }, %{
+                    "id" => "destination_path",
+                    "type" => "string",
+                    "value" => "/data/666/dash/manifest.mpd"
+                  }, %{
+                    "id" => "requirements",
+                    "type" => "requirements",
+                    "value" => %{
+                      paths: [
+                        "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4",
+                        "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4"
+                      ]
+                    }
+                  }, %{
+                    "id" => "profile",
+                    "type" => "string",
+                    "value" => "onDemand"
+                  }, %{
+                    "id" => "rap",
+                    "type" => "boolean",
+                    "value" => true
+                  }, %{
+                    "id" => "url_template",
+                    "type" => "boolean",
+                    "value" => true
+                  }
+                 ]
                },
                workflow_id: 666,
                step_id: 0
@@ -225,29 +273,53 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
              %{
                name: "generate_dash",
                params: %{
-                 kind: "generate_dash",
-                 options: %{
-                   "-out": "/data/666/dash/manifest.mpd",
-                   "-profile": "onDemand",
-                   "-rap": true,
-                   "-url-template": true,
-                   "-dash": 20000,
-                   "-frag": 60000
-                 },
-                 requirements: %{
-                   paths: [
-                     "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4",
-                     "/2018/S12/J7/173535163-5ab81c23a3594-qad.mp4",
-                     "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4"
-                   ]
-                 },
-                 source: %{
-                   paths: [
-                     "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4#audio:id=a1",
-                     "/2018/S12/J7/173535163-5ab81c23a3594-qad.mp4#audio:id=a2",
-                     "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4#video:id=v5"
-                   ]
-                 }
+                 list: [
+                  %{
+                    "id" => "segment_duration",
+                    "value" => 20000
+                  }, %{
+                    "id" => "fragment_duration",
+                    "value" => 60000
+                  }, %{
+                    "id" => "action",
+                    "type" => "string",
+                    "value" => "generate_dash"
+                  }, %{
+                    "id" => "source_paths",
+                    "type" => "string",
+                    "value" => [
+                      "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4#audio:id=a1",
+                      "/2018/S12/J7/173535163-5ab81c23a3594-qad.mp4#audio:id=a2",
+                      "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4#video:id=v5"
+                    ]
+                  }, %{
+                    "id" => "destination_path",
+                    "type" => "string",
+                    "value" => "/data/666/dash/manifest.mpd"
+                  }, %{
+                    "id" => "requirements",
+                    "type" => "requirements",
+                    "value" => %{
+                      paths: [
+                        "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4",
+                        "/2018/S12/J7/173535163-5ab81c23a3594-qad.mp4",
+                        "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4"
+                      ]
+                    }
+                  }, %{
+                    "id" => "profile",
+                    "type" => "string",
+                    "value" => "onDemand"
+                  }, %{
+                    "id" => "rap",
+                    "type" => "boolean",
+                    "value" => true
+                  }, %{
+                    "id" => "url_template",
+                    "type" => "boolean",
+                    "value" => true
+                  }
+                ]
                },
                workflow_id: 666,
                step_id: 0
@@ -313,29 +385,49 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
              %{
                name: "generate_dash",
                params: %{
-                 kind: "generate_dash",
-                 options: %{
-                   "-out": "/data/666/dash/manifest.mpd",
-                   "-profile": "onDemand",
-                   "-rap": true,
-                   "-url-template": true,
-                   "-dash": 20000,
-                   "-frag": 60000
-                 },
-                 requirements: %{
-                   paths: [
-                     "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4",
-                     "/2018/S12/J7/173535163-5ab81c23a3594-qaa.mp4",
-                     "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4"
-                   ]
-                 },
-                 source: %{
-                   paths: [
-                     "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4#audio:id=a1",
-                     "/2018/S12/J7/173535163-5ab81c23a3594-qaa.mp4#audio:id=a2",
-                     "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4#video:id=v5"
-                   ]
-                 }
+                 list: [
+                  %{
+                    "id" => "segment_duration",
+                    "value" => 20000
+                  }, %{
+                    "id" => "fragment_duration",
+                    "value" => 60000
+                  }, %{
+                    "id" => "action",
+                    "type" => "string",
+                    "value" => "generate_dash"
+                  }, %{
+                    "id" => "source_paths",
+                    "type" => "string",
+                    "value" => ["/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4#audio:id=a1", "/2018/S12/J7/173535163-5ab81c23a3594-qaa.mp4#audio:id=a2", "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4#video:id=v5"]
+                  }, %{
+                    "id" => "destination_path",
+                    "type" => "string",
+                    "value" => "/data/666/dash/manifest.mpd"
+                  }, %{
+                    "id" => "requirements",
+                    "type" => "requirements",
+                    "value" => %{
+                      paths: [
+                        "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4",
+                        "/2018/S12/J7/173535163-5ab81c23a3594-qaa.mp4",
+                        "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4"
+                      ]
+                    }
+                  }, %{
+                    "id" => "profile",
+                    "type" => "string",
+                    "value" => "onDemand"
+                  }, %{
+                    "id" => "rap",
+                    "type" => "boolean",
+                    "value" => true
+                  }, %{
+                    "id" => "url_template",
+                    "type" => "boolean",
+                    "value" => true
+                  }
+                ]
                },
                workflow_id: 666,
                step_id: 0
@@ -410,31 +502,55 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
              %{
                name: "generate_dash",
                params: %{
-                 kind: "generate_dash",
-                 options: %{
-                   "-out": "/data/666/dash/manifest.mpd",
-                   "-profile": "onDemand",
-                   "-rap": true,
-                   "-url-template": true,
-                   "-dash": 20000,
-                   "-frag": 60000
-                 },
-                 requirements: %{
-                   paths: [
-                     "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4",
-                     "/2018/S12/J7/173535163-5ab81c23a3594-qaa.mp4",
-                     "/2018/S12/J7/173535163-5ab81c23a3594-qad.mp4",
-                     "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4"
-                   ]
-                 },
-                 source: %{
-                   paths: [
-                     "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4#audio:id=a1",
-                     "/2018/S12/J7/173535163-5ab81c23a3594-qaa.mp4#audio:id=a2",
-                     "/2018/S12/J7/173535163-5ab81c23a3594-qad.mp4#audio:id=a3",
-                     "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4#video:id=v5"
-                   ]
-                 }
+                 list: [
+                  %{
+                    "id" => "segment_duration",
+                    "value" => 20000
+                  }, %{
+                    "id" => "fragment_duration",
+                    "value" => 60000
+                  }, %{
+                    "id" => "action",
+                    "type" => "string",
+                    "value" => "generate_dash"
+                  }, %{
+                    "id" => "source_paths",
+                    "type" => "string",
+                    "value" => [
+                      "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4#audio:id=a1",
+                      "/2018/S12/J7/173535163-5ab81c23a3594-qaa.mp4#audio:id=a2",
+                      "/2018/S12/J7/173535163-5ab81c23a3594-qad.mp4#audio:id=a3",
+                      "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4#video:id=v5"
+                    ]
+                  }, %{
+                    "id" => "destination_path",
+                    "type" => "string",
+                    "value" => "/data/666/dash/manifest.mpd"
+                  }, %{
+                    "id" => "requirements",
+                    "type" => "requirements",
+                    "value" => %{
+                      paths: [
+                        "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4",
+                        "/2018/S12/J7/173535163-5ab81c23a3594-qaa.mp4",
+                        "/2018/S12/J7/173535163-5ab81c23a3594-qad.mp4",
+                        "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4"
+                      ]
+                    }
+                  }, %{
+                    "id" => "profile",
+                    "type" => "string",
+                    "value" => "onDemand"
+                  }, %{
+                    "id" => "rap",
+                    "type" => "boolean",
+                    "value" => true
+                  }, %{
+                    "id" => "url_template",
+                    "type" => "boolean",
+                    "value" => true
+                  }
+                ]
                },
                workflow_id: 666,
                step_id: 0

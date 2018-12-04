@@ -17,60 +17,51 @@ defmodule ExBackend.Workflow.Step.FtpUpload do
         Jobs.create_skipped_job(workflow, step_id, @action_name)
 
       paths ->
-        start_upload(paths, current_date, workflow, step_id)
+        start_upload(paths, current_date, workflow, step, step_id)
     end
   end
 
-  defp start_upload([], _current_date, _workflow, _step_id), do: {:ok, "started"}
+  defp start_upload([], _current_date, _workflow, step, _step_id), do: {:ok, "started"}
 
-  defp start_upload([file | files], current_date, workflow, step_id) do
-    hostname =
-      System.get_env("AKAMAI_VIDEO_HOSTNAME") ||
-        Application.get_env(:ex_backend, :akamai_video_hostname)
-
-    username =
-      System.get_env("AKAMAI_VIDEO_USERNAME") ||
-        Application.get_env(:ex_backend, :akamai_video_username)
-
-    password =
-      System.get_env("AKAMAI_VIDEO_PASSWORD") ||
-        Application.get_env(:ex_backend, :akamai_video_password)
-
-    prefix =
-      System.get_env("AKAMAI_VIDEO_PREFIX") ||
-        Application.get_env(:ex_backend, :akamai_video_prefix)
-
+  defp start_upload([file | files], current_date, workflow, step, step_id) do
     requirements = Requirements.add_required_paths(file)
+    dst_path = workflow.reference <> "/" <> current_date <> "/" <> (file |> Path.basename())
+
+    parameters =
+      ExBackend.Map.get_by_key_or_atom(step, :parameters, []) ++ [
+        %{
+          "id" => "source_path",
+          "type" => "string",
+          "value" => file
+        },
+        %{
+          "id" => "destination_path",
+          "type" => "string",
+          "value" => dst_path
+        },
+        %{
+          "id" => "requirements",
+          "type" => "requirements",
+          "value" => requirements
+        }
+      ]
 
     job_params = %{
       name: @action_name,
       step_id: step_id,
       workflow_id: workflow.id,
-      params: %{
-        requirements: requirements,
-        source: %{
-          path: file
-        },
-        destination: %{
-          path:
-            prefix <>
-              "/" <> workflow.reference <> "/" <> current_date <> "/" <> (file |> Path.basename()),
-          hostname: hostname,
-          username: username,
-          password: password
-        }
-      }
+      params: %{ list: parameters }
     }
 
     {:ok, job} = Jobs.create_job(job_params)
 
     params = %{
       job_id: job.id,
-      parameters: job.params
+      parameters: job.params.list
     }
 
     case CommonEmitter.publish_json("job_ftp", params) do
-      :ok -> start_upload(files, current_date, workflow, step_id)
+      :ok -> start_upload(files, current_date, workflow, step, step_id)
       _ -> {:error, "unable to publish message"}
     end
   end

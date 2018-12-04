@@ -14,45 +14,62 @@ defmodule ExBackend.Workflow.Step.TtmlToMp4 do
         Jobs.create_skipped_job(workflow, step_id, @action_name)
 
       paths ->
-        start_process(paths, workflow, step_id)
+        start_process(paths, workflow, step, step_id)
     end
   end
 
-  defp start_process([], _workflow, _step_id), do: {:ok, "started"}
+  defp start_process([], _workflow, _step, _step_id), do: {:ok, "started"}
 
-  defp start_process([nil | paths], workflow, step_id) do
-    start_process(paths, workflow, step_id)
+  defp start_process([nil | paths], workflow, step, step_id) do
+    start_process(paths, workflow, step, step_id)
   end
 
-  defp start_process([path | paths], workflow, step_id) do
+  defp start_process([path | paths], workflow, step, step_id) do
     mp4_path = String.replace(path, ".ttml", ".mp4")
     requirements = Requirements.add_required_paths(path)
+
+
+    parameters =
+      ExBackend.Map.get_by_key_or_atom(step, :parameters, []) ++ [
+        %{
+          "id" => "action",
+          "type" => "string",
+          "value" => @action_name
+        },
+        %{
+          "id" => "source_path",
+          "type" => "string",
+          "value" => path
+        },
+        %{
+          "id" => "destination_path",
+          "type" => "string",
+          "value" => mp4_path
+        },
+        %{
+          "id" => "requirements",
+          "type" => "requirements",
+          "value" => requirements
+        }
+      ]
+
 
     job_params = %{
       name: @action_name,
       step_id: step_id,
       workflow_id: workflow.id,
-      params: %{
-        kind: @action_name,
-        requirements: requirements,
-        source: %{
-          path: path
-        },
-        destination: %{
-          path: mp4_path
-        }
-      }
+      params: %{list: parameters}
     }
 
     {:ok, job} = Jobs.create_job(job_params)
 
     params = %{
       job_id: job.id,
-      parameters: job.params
+      parameters: job.params.list
     }
 
     case CommonEmitter.publish_json("job_gpac", params) do
-      :ok -> start_process(paths, workflow, step_id)
+      :ok -> start_process(paths, workflow, step, step_id)
       _ -> {:error, "unable to publish message"}
     end
   end

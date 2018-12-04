@@ -29,11 +29,23 @@ defmodule ExBackend.Workflow.Step.CleanWorkspace do
         step_id: ExBackend.Map.get_by_key_or_atom(step, :id),
         workflow_id: workflow.id,
         params: %{
-          action: "remove",
-          requirements: requirements,
-          source: %{
-            paths: [dst_path]
-          }
+          list: [
+            %{
+              "id" => "action",
+              "type" => "string",
+              "value" => "remove"
+            },
+            %{
+              "id" => "requirements",
+              "type" => "requirements",
+              "value" => requirements
+            },
+            %{
+              "id" => "source_path",
+              "type" => "string",
+              "value" => dst_path
+            }
+          ]
         }
       }
 
@@ -41,7 +53,7 @@ defmodule ExBackend.Workflow.Step.CleanWorkspace do
 
       params = %{
         job_id: job.id,
-        parameters: job.params
+        parameters: job.params.list
       }
 
       case CommonEmitter.publish_json("job_file_system", params) do

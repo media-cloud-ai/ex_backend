@@ -19,7 +19,7 @@ defmodule ExBackend.Workflow.Step.GenerateDash do
 
         params = %{
           job_id: job.id,
-          parameters: job.params
+          parameters: job.params.list
         }
 
         case CommonEmitter.publish_json("job_gpac", params) do
@@ -56,18 +56,48 @@ defmodule ExBackend.Workflow.Step.GenerateDash do
 
         work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
 
-        options = %{
-          "-out": work_dir <> "/" <> Integer.to_string(workflow.id) <> "/dash/manifest.mpd",
-          "-profile": "onDemand",
-          "-rap": true,
-          "-url-template": true
-        }
-
-        options =
-          ExBackend.Map.get_by_key_or_atom(step, :parameters, [])
-          |> build_gpac_parameters(options)
+        dst_path = work_dir <> "/" <> Integer.to_string(workflow.id) <> "/dash/manifest.mpd"
 
         requirements = Requirements.add_required_paths(source_paths)
+
+        parameters =
+          ExBackend.Map.get_by_key_or_atom(step, :parameters, []) ++ [
+            %{
+              "id" => "action",
+              "type" => "string",
+              "value" => @action_name
+            },
+            %{
+              "id" => "source_paths",
+              "type" => "string",
+              "value" => source_track_paths
+            },
+            %{
+              "id" => "destination_path",
+              "type" => "string",
+              "value" => dst_path
+            },
+            %{
+              "id" => "requirements",
+              "type" => "requirements",
+              "value" => requirements
+            },
+            %{
+              "id" => "profile",
+              "type" => "string",
+              "value" => "onDemand"
+            },
+            %{
+              "id" => "rap",
+              "type" => "boolean",
+              "value" => true
+            },
+            %{
+              "id" => "url_template",
+              "type" => "boolean",
+              "value" => true
+            }
+          ]
 
         {
           :ok,
@@ -75,14 +105,7 @@ defmodule ExBackend.Workflow.Step.GenerateDash do
             name: @action_name,
             step_id: step_id,
             workflow_id: workflow.id,
-            params: %{
-              kind: @action_name,
-              requirements: requirements,
-              source: %{
-                paths: source_track_paths
-              },
-              options: options
-            }
+            params: %{list: parameters}
           }
         }
     end
@@ -135,21 +158,6 @@ defmodule ExBackend.Workflow.Step.GenerateDash do
   end
 
   defp build_gpac_parameters([], result), do: result
-
-  defp build_gpac_parameters([param | params], result) do
-    key =
-      ExBackend.Map.get_by_key_or_atom(param, :id)
-      |> convert_gpac_key
-
-    value = ExBackend.Map.get_by_key_or_atom(param, :value)
-
-    result = Map.put(result, key, value)
-    build_gpac_parameters(params, result)
-  end
-
-  defp convert_gpac_key("segment_duration"), do: :"-dash"
-  defp convert_gpac_key("fragment_duration"), do: :"-frag"
-  defp convert_gpac_key(_), do: nil
 
   defp get_quality(nil), do: nil
 

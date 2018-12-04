@@ -39,7 +39,6 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
     work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
 
     filename = Path.basename(path)
-    # Path.basename(path, "-standard1.mp4")
 
     output_extension =
       case ExBackend.Map.get_by_key_or_atom(step, :output_extension) do
@@ -55,46 +54,57 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
 
     requirements = Requirements.add_required_paths(path)
 
-    options =
-      case ExBackend.Map.get_by_key_or_atom(step, :parameters) do
-        nil ->
-          %{
-            output_codec_audio: "copy",
-            force_overwrite: true,
-            disable_video: true,
-            disable_data: true
-          }
-
-        options ->
-          options
-      end
+    parameters =
+      ExBackend.Map.get_by_key_or_atom(step, :parameters, []) ++ [
+        %{
+          "id" => "source_path",
+          "type" => "string",
+          "value" => path
+        },
+        %{
+          "id" => "destination_path",
+          "type" => "string",
+          "value" => dst_path
+        },
+        %{
+          "id" => "requirements",
+          "type" => "requirements",
+          "value" => requirements
+        },
+        %{
+          "id" => "output_codec_audio",
+          "type" => "string",
+          "value" => "copy"
+        },
+        %{
+          "id" => "force_overwrite",
+          "type" => "boolean",
+          "value" => true
+        },
+        %{
+          "id" => "disable_video",
+          "type" => "boolean",
+          "value" => true
+        },
+        %{
+          "id" => "disable_data",
+          "type" => "boolean",
+          "value" => true
+        }
+      ]
 
     job_params = %{
       name: @action_name,
       step_id: step_id,
       workflow_id: workflow.id,
-      params: %{
-        requirements: requirements,
-        inputs: [
-          %{
-            path: path,
-            options: %{}
-          }
-        ],
-        outputs: [
-          %{
-            path: dst_path,
-            options: options
-          }
-        ]
-      }
+      params: %{list: parameters}
     }
 
     {:ok, job} = Jobs.create_job(job_params)
 
     params = %{
       job_id: job.id,
-      parameters: job.params
+      parameters: job.params.list
     }
 
     case CommonEmitter.publish_json("job_ffmpeg", params) do
