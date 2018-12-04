@@ -39,9 +39,8 @@ defmodule ExBackendWeb.WorkflowEventsController do
 
         params = %{
           job_id: job.id,
-          parameters: job.params
+          parameters: Map.get(job.params, "list", [])
         }
-
         publish(job.name, job.id, workflow, params)
         send_resp(conn, :ok, "")
 
@@ -82,11 +81,7 @@ defmodule ExBackendWeb.WorkflowEventsController do
     skip_remaining_steps(steps, workflow)
   end
 
-  defp publish("download_ftp", job_id, _workflow, params) do
-    params = %{
-      job_id: job_id,
-      parameters: Map.get(params.parameters, "list")
-    }
+  defp publish("download_ftp", _job_id, _workflow, params) do
     CommonEmitter.publish_json("job_ftp", params)
   end
 
@@ -118,11 +113,7 @@ defmodule ExBackendWeb.WorkflowEventsController do
     CommonEmitter.publish_json("job_speech_to_text", params)
   end
 
-  defp publish("push_rdf", job_id, _workflow, params) do
-    params = %{
-      job_id: job_id,
-      parameters: Map.get(params.parameters, "list")
-    }
+  defp publish("push_rdf", _job_id, _workflow, params) do
     CommonEmitter.publish_json("job_rdf", params)
   end
 

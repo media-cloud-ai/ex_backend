@@ -42,6 +42,13 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilAcs do
           enable: true,
           parameters: [
             %{
+              id: "output_extension",
+              type: "string",
+              enable: false,
+              default: ".wav",
+              value: ".wav"
+            },
+            %{
               id: "output_codec_audio",
               type: "string",
               enable: false,
@@ -67,7 +74,7 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilAcs do
               type: "string",
               enable: false,
               default: "aresample=resampler=soxr:precision=28:dither_method=shibata",
-              value: "aresample=resampler=soxr:precision=28:dither_method=shibata"
+              value: "aresample=precision=28:dither_method=shibata"
             },
             %{
               id: "disable_video",

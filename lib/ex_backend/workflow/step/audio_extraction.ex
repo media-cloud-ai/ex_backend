@@ -49,9 +49,12 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
     filename = Path.basename(path)
 
     output_extension =
-      case ExBackend.Map.get_by_key_or_atom(step, :output_extension) do
-        nil -> "-fra.mp4"
-        ext -> ext
+      ExBackend.Map.get_by_key_or_atom(step, :parameters)
+      |> Enum.filter(fn param -> ExBackend.Map.get_by_key_or_atom(param, :id) == "output_extension" end)
+      |> Enum.map(fn param -> ExBackend.Map.get_by_key_or_atom(param, :value) end)
+      |> case do
+        [ext] -> ext
+        _ -> "-fra.mp4"
       end
 
     dst_path =
