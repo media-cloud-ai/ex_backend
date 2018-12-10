@@ -23,7 +23,7 @@ defmodule ExBackend.Mixfile do
         name: "Media-IO",
         url: "https://media-io.com",
         email: "contact@media-io.com"
-      ],
+      ]
     ]
   end
 
@@ -84,7 +84,7 @@ defmodule ExBackend.Mixfile do
       {:ranch, "~> 1.5.0", override: true},
       {:ranch_proxy_protocol,
        git: "https://github.com/heroku/ranch_proxy_protocol", branch: "master", override: true},
-      {:remote_dockers, "1.3.8"},
+      {:remote_dockers, "1.3.9"},
       {:timex, "~> 3.2"},
       {:uuid, "~> 1.1"}
     ]
