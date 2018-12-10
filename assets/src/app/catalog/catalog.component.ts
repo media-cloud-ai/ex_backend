@@ -75,7 +75,7 @@ export class CatalogComponent {
         if (channels && !Array.isArray(channels)){
           channels = [channels]
         }
-        this.selectedChannels = channels || this.getChannelIDsList()
+        this.selectedChannels = channels || []
         this.searchInput = params['search'] || ''
         if (params['broadcasted_after']) {
           this.dateRange.setStartDate(moment(params['broadcasted_after'], 'YYYY-MM-DD'))
@@ -145,7 +145,7 @@ export class CatalogComponent {
   getQueryParamsForPage(pageIndex: number, pageSize: number = undefined): Object {
     var params = {}
 
-    if (this.selectedChannels.length !== this.channels.length) {
+    if (this.selectedChannels.length !== 0) {
       params['channels'] = this.selectedChannels
     }
     if (pageIndex !== 0) {
