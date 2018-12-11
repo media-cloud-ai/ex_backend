@@ -31,7 +31,7 @@ defmodule ExBackendWeb.WorkflowEventsController do
 
         conn
         |> put_status(:ok)
-        |> json(%{"status": "ok"})
+        |> json(%{status: "ok"})
 
       %{"event" => "retry", "job_id" => job_id} ->
         Logger.warn("retry job #{job_id}")
@@ -41,13 +41,24 @@ defmodule ExBackendWeb.WorkflowEventsController do
           job_id: job.id,
           parameters: Map.get(job.params, "list", [])
         }
-        publish(job.name, job.id, workflow, params)
-        send_resp(conn, :ok, "")
+
+        case publish(job.name, job.id, workflow, params) do
+          :ok ->
+            conn
+            |> put_status(:ok)
+            |> json(%{status: "ok"})
+
+          _ ->
+            conn
+            |> put_status(:ok)
+            |> json(%{status: "error", message: "unable to publish message"})
+        end
 
       %{"event" => "delete"} ->
         for job <- workflow.jobs do
           Jobs.delete_job(job)
         end
+
         Workflows.delete_workflow(workflow)
 
         ExBackendWeb.Endpoint.broadcast!("notifications:all", "delete_workflow", %{
@@ -56,7 +67,7 @@ defmodule ExBackendWeb.WorkflowEventsController do
 
         conn
         |> put_status(:ok)
-        |> json(%{"status": "ok"})
+        |> json(%{status: "ok"})
 
       _ ->
         send_resp(conn, 422, "event is not supported")

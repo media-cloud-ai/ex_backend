@@ -38,8 +38,20 @@ defmodule ExBackendWeb.WorkflowController do
     end
   end
 
-  def create_specific(conn, %{"identifier" => "acs", "reference" => reference, "ttml_path" => ttml_path, "mp4_path" => mp4_path}) do
-
+  api :POST, "/api/workflow/:identifier" do
+    title("Create a new workflow with a specific template")
+    description("Start a new worklow. The identifier will select the base of the template.")
+    parameter(:identifier, :bitstring, description: "Identifier of the workflow (one of [acs])")
+    parameter(:reference, :bitstring, description: "UUID of the Reference Media")
+    parameter(:ttml_path, :bitstring, description: "URL to the TTML")
+    parameter(:mp4_path, :bitstring, description: "Path to the MP4 to retrieve the audio")
+  end
+  def create_specific(conn, %{
+        "identifier" => "acs",
+        "reference" => reference,
+        "ttml_path" => ttml_path,
+        "mp4_path" => mp4_path
+      }) do
     steps = ExBackend.Workflow.Definition.FrancetvSubtilAcs.get_definition(mp4_path, ttml_path)
 
     workflow_params = %{
@@ -52,23 +64,25 @@ defmodule ExBackendWeb.WorkflowController do
 
     conn
     |> json(%{
-      "status": "started"
+      status: "started"
     })
   end
 
-  def create_specific(conn, %{"identifier" => "acs"}) do
+  def create_specific(conn, %{"identifier" => "acs"} = params) do
+    IO.inspect(params)
+
     conn
     |> json(%{
-      "status": "error",
-      "message": "missing parameters to start this workflow"
+      status: "error",
+      message: "missing parameters to start this workflow"
     })
   end
 
   def create_specific(conn, _params) do
     conn
     |> json(%{
-      "status": "error",
-      "message": "unknown workflow identifier"
+      status: "error",
+      message: "unknown workflow identifier"
     })
   end
 
@@ -88,12 +102,18 @@ defmodule ExBackendWeb.WorkflowController do
             "#agent_identifier",
             "#input_filename"
           )
+
         "francetv_subtil_rdf_ingest" ->
           ExBackend.Workflow.Definition.FrancetvSubtilRdfIngest.get_definition()
+
         "francetv_subtil_dash_ingest" ->
           ExBackend.Workflow.Definition.FrancetvSubtilDashIngest.get_definition()
+
         "francetv_subtil_acs" ->
-          ExBackend.Workflow.Definition.FrancetvSubtilAcs.get_definition("Source mp4 path", "Source ttml path")
+          ExBackend.Workflow.Definition.FrancetvSubtilAcs.get_definition(
+            "Source mp4 path",
+            "Source ttml path"
+          )
       end
 
     conn

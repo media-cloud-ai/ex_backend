@@ -126,15 +126,50 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilAcs do
         },
         %{
           id: 4,
+          name: "upload_ftp",
+          enable: true,
           parent_ids: [3],
           required: [3],
-          name: "push_rdf",
-          enable: true
+          parameters: [
+            %{
+              id: "destination_hostname",
+              type: "credential",
+              default: "AKAMAI_REPLAY_HOSTNAME",
+              value: "AKAMAI_REPLAY_HOSTNAME"
+            },
+            %{
+              id: "destination_username",
+              type: "credential",
+              default: "AKAMAI_REPLAY_USERNAME",
+              value: "AKAMAI_REPLAY_USERNAME"
+            },
+            %{
+              id: "destination_password",
+              type: "credential",
+              default: "AKAMAI_REPLAY_PASSWORD",
+              value: "AKAMAI_REPLAY_PASSWORD"
+            }
+          ]
         },
         %{
           id: 5,
           parent_ids: [4],
           required: [4],
+          name: "push_rdf",
+          enable: true,
+          parameters: [
+            %{
+              id: "order",
+              type: "string",
+              default: "publish_ttml",
+              value: "publish_ttml"
+            }
+          ]
+        },
+        %{
+          id: 6,
+          parent_ids: [5],
+          required: [5],
           name: "clean_workspace",
           enable: true
         }

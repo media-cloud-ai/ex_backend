@@ -12,7 +12,7 @@ defmodule ExBackend.Workflow.Step.FtpUpload do
 
     step_id = ExBackend.Map.get_by_key_or_atom(step, :id)
 
-    case ExBackend.Workflow.Step.GenerateDash.get_jobs_destination_paths(workflow.jobs) do
+    case Requirements.get_source_files(workflow.jobs, step) do
       [] ->
         Jobs.create_skipped_job(workflow, step_id, @action_name)
 
@@ -28,29 +28,30 @@ defmodule ExBackend.Workflow.Step.FtpUpload do
     dst_path = workflow.reference <> "/" <> current_date <> "/" <> (file |> Path.basename())
 
     parameters =
-      ExBackend.Map.get_by_key_or_atom(step, :parameters, []) ++ [
-        %{
-          "id" => "source_path",
-          "type" => "string",
-          "value" => file
-        },
-        %{
-          "id" => "destination_path",
-          "type" => "string",
-          "value" => dst_path
-        },
-        %{
-          "id" => "requirements",
-          "type" => "requirements",
-          "value" => requirements
-        }
-      ]
+      ExBackend.Map.get_by_key_or_atom(step, :parameters, []) ++
+        [
+          %{
+            "id" => "source_path",
+            "type" => "string",
+            "value" => file
+          },
+          %{
+            "id" => "destination_path",
+            "type" => "string",
+            "value" => dst_path
+          },
+          %{
+            "id" => "requirements",
+            "type" => "requirements",
+            "value" => requirements
+          }
+        ]
 
     job_params = %{
       name: @action_name,
       step_id: step_id,
       workflow_id: workflow.id,
-      params: %{ list: parameters }
+      params: %{list: parameters}
     }
 
     {:ok, job} = Jobs.create_job(job_params)

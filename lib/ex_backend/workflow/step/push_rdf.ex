@@ -2,24 +2,34 @@ defmodule ExBackend.Workflow.Step.PushRdf do
   alias ExBackend.Jobs
 
   alias ExBackend.Amqp.CommonEmitter
+  alias ExBackend.Workflow.Step.Requirements
   require Logger
 
   @action_name "push_rdf"
 
   def launch(workflow, step) do
+    sources = Requirements.get_source_files(workflow.jobs, step)
+
     parameters =
-      Map.get(step, "parameters", [])
-      |> List.insert_at(-1, %{
-        "id" => "reference",
-        "type" => "string",
-        "value" => workflow.reference
-      })
+      Map.get(step, "parameters", []) ++
+        [
+          %{
+            "id" => "reference",
+            "type" => "string",
+            "value" => workflow.reference
+          },
+          %{
+            "id" => "input_paths",
+            "type" => "string",
+            "value" => sources
+          }
+        ]
 
     job_params = %{
       name: @action_name,
       step_id: ExBackend.Map.get_by_key_or_atom(step, :id),
       workflow_id: workflow.id,
-      params: %{ list: parameters }
+      params: %{list: parameters}
     }
 
     {:ok, job} = Jobs.create_job(job_params)

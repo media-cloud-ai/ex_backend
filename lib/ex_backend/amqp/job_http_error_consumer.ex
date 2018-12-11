@@ -9,7 +9,12 @@ defmodule ExBackend.Amqp.JobHttpErrorConsumer do
     consumer: &ExBackend.Amqp.JobHttpErrorConsumer.consume/4
   }
 
-  def consume(channel, tag, _redelivered, %{"job_id" => job_id, "error" => description} = payload) do
+  def consume(
+        channel,
+        tag,
+        _redelivered,
+        %{"job_id" => job_id, "status" => "error", "message" => description} = payload
+      ) do
     Logger.error("HTTP error #{inspect(payload)}")
     Status.set_job_status(job_id, "error", %{message: description})
     Workflows.notification_from_job(job_id)
