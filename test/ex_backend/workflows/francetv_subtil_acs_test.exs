@@ -24,6 +24,16 @@ defmodule ExBackend.FrancetvSubtilAcsTest do
       assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
       {:empty, %{cluster_id: ""}} = AMQP.Basic.get(channel, "job_http")
 
+      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get(channel, "job_ffmpeg")
+      AMQP.Basic.ack(channel, delivery_tag)
+      assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
+      {:empty, %{cluster_id: ""}} = AMQP.Basic.get(channel, "job_ffmpeg")
+
+      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get(channel, "job_acs")
+      AMQP.Basic.ack(channel, delivery_tag)
+      assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
+      {:empty, %{cluster_id: ""}} = AMQP.Basic.get(channel, "job_acs")
+
       {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get(channel, "job_rdf")
       AMQP.Basic.ack(channel, delivery_tag)
       assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))

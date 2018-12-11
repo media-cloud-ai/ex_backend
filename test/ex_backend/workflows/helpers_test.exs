@@ -45,6 +45,7 @@ defmodule ExBackend.HelpersTest do
     {:ok, channel} = AMQP.Channel.open(connection)
 
 
+    AMQP.Queue.declare(channel, "job_acs", durable: false)
     AMQP.Queue.declare(channel, "job_ftp", durable: false)
     AMQP.Queue.declare(channel, "job_http", durable: false)
     AMQP.Queue.declare(channel, "job_gpac", durable: false)
@@ -53,6 +54,7 @@ defmodule ExBackend.HelpersTest do
     AMQP.Queue.declare(channel, "job_file_system", durable: false)
     AMQP.Queue.declare(channel, "job_speech_to_text", durable: false)
 
+    clean_queue(channel, "job_acs")
     clean_queue(channel, "job_ftp")
     clean_queue(channel, "job_http")
     clean_queue(channel, "job_gpac")
