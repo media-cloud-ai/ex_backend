@@ -20,7 +20,7 @@ defmodule ExBackend.Workflow.Step.PushRdf do
           },
           %{
             "id" => "input_paths",
-            "type" => "string",
+            "type" => "paths",
             "value" => sources
           }
         ]

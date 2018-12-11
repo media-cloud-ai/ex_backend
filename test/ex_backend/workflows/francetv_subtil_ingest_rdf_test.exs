@@ -19,7 +19,7 @@ defmodule ExBackend.FrancetvSubtilIngestRdfTest do
 
   describe "francetv_subtil_ingest_dash_workflow" do
     test "il etait une fois la vie" do
-      steps = ExBackend.Workflow.Definition.FrancetvSubtilDashIngest.get_definition()
+      steps = ExBackend.Workflow.Definition.FrancetvSubtilRdfIngest.get_definition()
 
       workflow_params = %{
         reference: "99787afd-ba2d-410f-b03e-66cf2efb3ed5",
