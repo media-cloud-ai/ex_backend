@@ -31,6 +31,12 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilAcs do
               type: "credential",
               default: "AKAMAI_REPLAY_PASSWORD",
               value: "AKAMAI_REPLAY_PASSWORD"
+            },
+            %{
+              id: "source_prefix",
+              type: "string",
+              default: "/343079/http",
+              value: "/343079/http"
             }
           ]
         },
@@ -148,6 +154,12 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilAcs do
               type: "credential",
               default: "AKAMAI_REPLAY_PASSWORD",
               value: "AKAMAI_REPLAY_PASSWORD"
+            },
+            %{
+              id: "destination_prefix",
+              type: "string",
+              default: "/421959/prod/innovation/Subtil/",
+              value: "/421959/prod/innovation/Subtil/"
             }
           ]
         },
