@@ -140,20 +140,20 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilAcs do
             %{
               id: "destination_hostname",
               type: "credential",
-              default: "AKAMAI_REPLAY_HOSTNAME",
-              value: "AKAMAI_REPLAY_HOSTNAME"
+              default: "AKAMAI_VIDEO_HOSTNAME",
+              value: "AKAMAI_VIDEO_HOSTNAME"
             },
             %{
               id: "destination_username",
               type: "credential",
-              default: "AKAMAI_REPLAY_USERNAME",
-              value: "AKAMAI_REPLAY_USERNAME"
+              default: "AKAMAI_VIDEO_USERNAME",
+              value: "AKAMAI_VIDEO_USERNAME"
             },
             %{
               id: "destination_password",
               type: "credential",
-              default: "AKAMAI_REPLAY_PASSWORD",
-              value: "AKAMAI_REPLAY_PASSWORD"
+              default: "AKAMAI_VIDEO_PASSWORD",
+              value: "AKAMAI_VIDEO_PASSWORD"
             },
             %{
               id: "destination_prefix",
