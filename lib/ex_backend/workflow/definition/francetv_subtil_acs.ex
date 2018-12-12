@@ -158,8 +158,8 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilAcs do
             %{
               id: "destination_prefix",
               type: "string",
-              default: "/421959/prod/innovation/Subtil/",
-              value: "/421959/prod/innovation/Subtil/"
+              default: "/421959/prod/innovation/SubTil/",
+              value: "/421959/prod/innovation/SubTil/"
             }
           ]
         },
