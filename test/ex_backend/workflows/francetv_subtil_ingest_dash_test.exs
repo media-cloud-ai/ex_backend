@@ -84,7 +84,15 @@ defmodule ExBackend.FrancetvSubtilIngestDashTest do
 
   describe "francetv_subtil_ingest_dash_workflow" do
     test "il etait une fois la vie" do
-      steps = ExBackend.Workflow.Definition.FrancetvSubtilDashIngest.get_definition()
+      source_paths = [
+        "/streaming-adaptatif_france-dom-tom/2018/S49/J7/195355542-5c0cf635d0b53-standard1.mp4",
+        "/streaming-adaptatif_france-dom-tom/2018/S49/J7/195355542-5c0cf635d0b53-standard2.mp4",
+        "/streaming-adaptatif_france-dom-tom/2018/S49/J7/195355542-5c0cf635d0b53-standard3.mp4",
+        "/streaming-adaptatif_france-dom-tom/2018/S49/J7/195355542-5c0cf635d0b53-standard4.mp4",
+        "/streaming-adaptatif_france-dom-tom/2018/S49/J7/195355542-5c0cf635d0b53-standard5.mp4"
+      ]
+
+      steps = ExBackend.Workflow.Definition.FrancetvSubtilDashIngest.get_definition(source_paths)
 
       workflow_params = %{
         reference: "99787afd-ba2d-410f-b03e-66cf2efb3ed5",

@@ -26,7 +26,9 @@ defmodule ExBackend.FrancetvSubtilIngestDashBadTest do
 
   describe "francetv_subtil_ingest_dash_bad_workflow" do
     test "bad id" do
-      steps = ExBackend.Workflow.Definition.FrancetvSubtilDashIngest.get_definition()
+      source_paths = []
+
+      steps = ExBackend.Workflow.Definition.FrancetvSubtilDashIngest.get_definition(source_paths)
 
       workflow_params = %{
         reference: "bad_movie_id",
