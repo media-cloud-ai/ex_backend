@@ -1,5 +1,5 @@
 defmodule ExBackend.Workflow.Definition.FrancetvSubtilDashIngest do
-  def get_definition() do
+  def get_definition(source_mp4_paths) do
     %{
       steps: [
         %{
@@ -7,6 +7,13 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilDashIngest do
           name: "download_ftp",
           enable: true,
           parameters: [
+            %{
+              id: "source_paths",
+              type: "paths",
+              enable: true,
+              default: source_mp4_paths,
+              value: source_mp4_paths
+            },
             %{
               id: "source_hostname",
               type: "credential",
@@ -24,6 +31,12 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilDashIngest do
               type: "credential",
               default: "AKAMAI_REPLAY_PASSWORD",
               value: "AKAMAI_REPLAY_PASSWORD"
+            },
+            %{
+              id: "source_prefix",
+              type: "string",
+              default: "/343079/http",
+              value: "/343079/http"
             }
           ]
         },

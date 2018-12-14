@@ -73,6 +73,27 @@ defmodule ExBackendWeb.WorkflowController do
     })
   end
 
+  def create_specific(conn, %{
+        "identifier" => "ingest-dash",
+        "reference" => reference,
+        "mp4_paths" => mp4_paths
+      }) do
+    steps = ExBackend.Workflow.Definition.FrancetvSubtilDashIngest.get_definition(mp4_paths)
+
+    workflow_params = %{
+      reference: reference,
+      flow: steps
+    }
+
+    {:ok, workflow} = Workflows.create_workflow(workflow_params)
+    {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+
+    conn
+    |> json(%{
+      status: "started"
+    })
+  end
+
   def create_specific(conn, %{"identifier" => "acs"} = params) do
     IO.inspect(params)
 
