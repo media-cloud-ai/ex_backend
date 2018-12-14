@@ -25,3 +25,15 @@
 .mat-slider-thumb {
   transform: scale(0.5) !important;
 }
+
+pre.code {
+  color: #fff;
+  background-color: #696f74;
+  padding: 3px;
+  border-radius: 8px;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+}

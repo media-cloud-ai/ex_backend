@@ -1,5 +1,6 @@
 <h1>API Documentation</h1>
-<div class="routes">
+<div class="routes"
+  *ngIf="documentation">
   <div *ngFor="let route of documentation.routes"
     class=route>
     <h3 class=title>
@@ -7,7 +8,7 @@
     </h3>
     <div class=description>
       <mat-icon>notes</mat-icon>
-      {{route.description}}
+      <span [innerHTML]="route.description"></span>
     </div>
     <span class=verb
       [ngClass]="route.method">

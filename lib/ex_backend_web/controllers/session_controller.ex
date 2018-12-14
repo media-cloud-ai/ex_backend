@@ -10,7 +10,10 @@ defmodule ExBackendWeb.SessionController do
 
   api :POST, "/api/sessions" do
     title "Create a new session"
-    description "Login a user with credentials to get the JWT token"
+    description "Login a user with credentials to get the JWT token<br/>
+    <h4>To get the token:</h4>
+    <pre class=code>MIO_TOKEN=`curl -H \"Content-Type: application/json\" -d '{\"session\": {\"email\": \"user@media-io.com\", \"password\": \"secret_password\"} }' http://localhost:4000/api/sessions | jq -r \".access_token\"`</pre>
+    "
 
     parameter :session, :map, [
       optional: false,
