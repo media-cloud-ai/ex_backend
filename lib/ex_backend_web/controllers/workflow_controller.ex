@@ -10,8 +10,8 @@ defmodule ExBackendWeb.WorkflowController do
   action_fallback(ExBackendWeb.FallbackController)
 
   # the following plugs are defined in the controllers/authorize.ex file
-  plug(:user_check when action in [:index, :create, :show, :update, :delete])
-  plug(:right_technician_check when action in [:index, :create, :show, :update, :delete])
+  plug(:user_check when action in [:index, :create, :create_specific, :show, :update, :delete])
+  plug(:right_technician_check when action in [:index, :create, :create_specific, :show, :update, :delete])
 
   def index(conn, params) do
     workflows = Workflows.list_workflows(params)
