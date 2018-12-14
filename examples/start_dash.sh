@@ -1,0 +1,4 @@
+
+HOSTNAME=http://localhost:4000
+MIO_TOKEN=`curl -H "Content-Type: application/json" -d '{"session": {"email": "admin@media-io.com", "password": "admin123"} }' $HOSTNAME/api/sessions | jq -r ".access_token"`
+curl -H "Authorization: $MIO_TOKEN" -H "Content-Type: application/json" -d '{"reference": "488d0f5a-6b06-4bf6-a9be-aa024edf4d1b", "mp4_paths": ["/streaming-adaptatif_france-dom-tom/2018/S49/J7/195355542-5c0cf635d0b53-standard1.mp4", "/streaming-adaptatif_france-dom-tom/2018/S49/J7/195355542-5c0cf635d0b53-standard2.mp4", "/streaming-adaptatif_france-dom-tom/2018/S49/J7/195355542-5c0cf635d0b53-standard3.mp4", "/streaming-adaptatif_france-dom-tom/2018/S49/J7/195355542-5c0cf635d0b53-standard4.mp4", "/streaming-adaptatif_france-dom-tom/2018/S49/J7/195355542-5c0cf635d0b53-standard5.mp4"]}' $HOSTNAME/api/workflow/ingest-dash
