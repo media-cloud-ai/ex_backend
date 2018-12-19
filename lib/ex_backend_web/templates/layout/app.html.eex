@@ -10,6 +10,43 @@
     <link href=https://fonts.googleapis.com/icon?family=Material+Icons rel="stylesheet">
     <script src="<%= static_path(@conn, "/bundles/style.js") %>"></script>
     <link rel="icon" type="image/png" href="/bundles/images/mediaio_logo.png" />
+
+    <style type="text/css">
+      body {margin: 0px !important;}
+
+      .logo_img {
+        animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+      }
+
+      .content {
+        text-align: center;
+        display: flex;
+        height: 100vh;
+        padding: 0px;
+      }
+      .wrapper {
+        margin-top: 20vh;
+      }
+
+      .content .logo {
+        flex: 1;
+        box-shadow: 1px 1px 5px 0 #3965ac;
+        background-color: #3965ac;
+      }
+      .content .loading {
+        flex: 2;
+        margin: auto;
+      }
+
+      @keyframes lds-roller {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
   </head>
 
   <body>

@@ -1,1 +1,14 @@
-<app-component></app-component>
+<app-component>
+  <div class=content>
+    <div class=logo>
+      <div class=wrapper>
+        <img class=logo_img src="/bundles/images/mediaio_logo.png">
+      </div>
+    </div>
+    <div class=loading>
+      <h1>
+        Loading ...
+      </h1>
+    </div>
+  </div>
+</app-component>
