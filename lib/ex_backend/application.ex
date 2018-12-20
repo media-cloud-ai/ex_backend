@@ -23,6 +23,8 @@ defmodule ExBackend.Application do
 
       worker(ExBackend.Amqp.JobAcsCompletedConsumer, []),
       worker(ExBackend.Amqp.JobAcsErrorConsumer, []),
+      worker(ExBackend.Amqp.JobDashManifestCompletedConsumer, []),
+      worker(ExBackend.Amqp.JobDashManifestErrorConsumer, []),
       worker(ExBackend.Amqp.JobFFmpegCompletedConsumer, []),
       worker(ExBackend.Amqp.JobFFmpegErrorConsumer, []),
       worker(ExBackend.Amqp.JobFileSystemCompletedConsumer, []),

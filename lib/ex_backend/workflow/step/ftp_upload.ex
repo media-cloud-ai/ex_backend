@@ -21,7 +21,7 @@ defmodule ExBackend.Workflow.Step.FtpUpload do
     end
   end
 
-  defp start_upload([], _current_date, _workflow, step, _step_id), do: {:ok, "started"}
+  defp start_upload([], _current_date, _workflow, _step, _step_id), do: {:ok, "started"}
 
   defp start_upload([file | files], current_date, workflow, step, step_id) do
     requirements = Requirements.add_required_paths(file)
@@ -65,30 +65,5 @@ defmodule ExBackend.Workflow.Step.FtpUpload do
       :ok -> start_upload(files, current_date, workflow, step, step_id)
       _ -> {:error, "unable to publish message"}
     end
-  end
-
-  @doc """
-  Returns the list of destination paths of this workflow step
-  """
-  def get_jobs_destination_paths(_jobs, result \\ [])
-  def get_jobs_destination_paths([], result), do: result
-
-  def get_jobs_destination_paths([job | jobs], result) do
-    result =
-      case job.name do
-        @action_name ->
-          job.params
-          |> Map.get("destination", %{})
-          |> Map.get("path")
-          |> case do
-            nil -> result
-            path -> List.insert_at(result, -1, path)
-          end
-
-        _ ->
-          result
-      end
-
-    get_jobs_destination_paths(jobs, result)
   end
 end

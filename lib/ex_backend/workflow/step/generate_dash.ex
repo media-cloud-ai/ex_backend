@@ -158,8 +158,6 @@ defmodule ExBackend.Workflow.Step.GenerateDash do
     get_formatted_source_paths(paths, audio_index, result)
   end
 
-  defp build_gpac_parameters([], result), do: result
-
   defp get_quality(nil), do: nil
 
   defp get_quality(path) do

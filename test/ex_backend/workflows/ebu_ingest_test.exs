@@ -85,7 +85,7 @@ defmodule ExBackend.EbuIngestTest do
       manifest_file = "/data/" <> (workflow.id |> Integer.to_string()) <> "/dash/manifest.mpd"
 
       stored_subtitle_file =
-        "/dash/" <> (workflow.id |> Integer.to_string()) <> "/2_input_filename.mp4.wav.vtt"
+        "/tmp//" <> (workflow.id |> Integer.to_string()) <> "/2_input_filename.mp4-fra.mp4.vtt"
 
       stored_audio_track_file =
         "/dash/" <>
@@ -96,7 +96,7 @@ defmodule ExBackend.EbuIngestTest do
           (workflow.id |> Integer.to_string()) <>
           "/4_input_filename.mp4-standard5_track1_dashinit.mp4"
 
-      stored_manifest_file = "/dash/" <> (workflow.id |> Integer.to_string()) <> "/manifest.mpd"
+      stored_manifest_file = "/tmp//" <> (workflow.id |> Integer.to_string()) <> "/manifest.mpd"
 
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)
       ExBackend.HelpersTest.check(workflow.id, 2)
@@ -136,10 +136,6 @@ defmodule ExBackend.EbuIngestTest do
 
       ExBackend.HelpersTest.complete_jobs(workflow.id, "copy")
 
-      ExBackend.HelpersTest.set_output_files(workflow.id, "copy", [
-        stored_subtitle_file
-      ])
-
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)
 
       ExBackend.HelpersTest.check(workflow.id, 9)
@@ -159,12 +155,6 @@ defmodule ExBackend.EbuIngestTest do
 
       ExBackend.HelpersTest.check(workflow.id, 11)
       ExBackend.HelpersTest.check(workflow.id, "copy", 3)
-
-      ExBackend.HelpersTest.set_output_files(workflow.id, "copy", [
-        stored_audio_track_file,
-        stored_video_track_file,
-        stored_manifest_file
-      ])
 
       ExBackend.HelpersTest.complete_jobs(workflow.id, "copy")
       {:ok, "completed"} = WorkflowStep.start_next_step(workflow)

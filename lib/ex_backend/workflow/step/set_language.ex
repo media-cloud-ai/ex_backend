@@ -71,6 +71,11 @@ defmodule ExBackend.Workflow.Step.SetLanguage do
           "id" => "requirements",
           "type" => "requirements",
           "value" => requirements
+        },
+        %{
+          "id" => "language_code",
+          "type" => "string",
+          "value" => language_code
         }
       ]
 
@@ -114,30 +119,5 @@ defmodule ExBackend.Workflow.Step.SetLanguage do
         |> Map.get("code")
         |> String.downcase()
     end
-  end
-
-  @doc """
-  Returns the list of destination paths of this workflow step
-  """
-  def get_jobs_destination_paths(_jobs, result \\ [])
-  def get_jobs_destination_paths([], result), do: result
-
-  def get_jobs_destination_paths([job | jobs], result) do
-    result =
-      case job.name do
-        @action_name ->
-          job.params
-          |> Map.get("destination", %{})
-          |> Map.get("paths")
-          |> case do
-            nil -> result
-            path -> List.insert_at(result, -1, path)
-          end
-
-        _ ->
-          result
-      end
-
-    get_jobs_destination_paths(jobs, result)
   end
 end

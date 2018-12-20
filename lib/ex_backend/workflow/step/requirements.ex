@@ -63,9 +63,12 @@ defmodule ExBackend.Workflow.Step.Requirements do
       |> List.flatten()
       |> Enum.uniq()
       |> Enum.filter(fn path -> !is_nil(path) end)
-    
+
     case input_filter do
       [%{ends_with: ends_with}] ->
+        paths
+        |> Enum.filter(fn path -> String.ends_with?(path, ends_with) end)
+      [%{"ends_with" => ends_with}] ->
         paths
         |> Enum.filter(fn path -> String.ends_with?(path, ends_with) end)
       _ -> paths
@@ -93,10 +96,16 @@ defmodule ExBackend.Workflow.Step.Requirements do
   def parse_parameters([], _workflow, result), do: result
 
   def parse_parameters([parameter | parameters], workflow, result) do
+    work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
+
     value =
       ExBackend.Map.get_by_key_or_atom(parameter, :value)
       |> String.replace("#workflow_id", "<%= workflow_id %>")
-      |> EEx.eval_string(workflow_id: workflow.id)
+      |> String.replace("#work_dir", "<%= work_dir %>")
+      |> EEx.eval_string([
+        workflow_id: workflow.id,
+        work_dir: work_dir
+      ])
 
     parameter =
       parameter

@@ -3,7 +3,6 @@ defmodule ExBackend.FrancetvSubtilAcsTest do
 
   alias ExBackend.Workflows
   alias ExBackend.WorkflowStep
-  alias ExBackend.Rdf.Converter
 
   require Logger
 

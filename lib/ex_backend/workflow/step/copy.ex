@@ -6,83 +6,77 @@ defmodule ExBackend.Workflow.Step.Copy do
   @action_name "copy"
 
   def launch(workflow, step) do
+    step_id = ExBackend.Map.get_by_key_or_atom(step, :id)
+
     case Requirements.get_source_files(workflow.jobs, step) do
       [] ->
         Jobs.create_skipped_job(
           workflow,
-          ExBackend.Map.get_by_key_or_atom(step, :id),
+          step_id,
           @action_name
         )
 
       paths ->
-        requirements = Requirements.add_required_paths(paths)
-
-        parameters =
-          ExBackend.Map.get_by_key_or_atom(step, :parameters)
-          |> Requirements.parse_parameters(workflow)
-
-        parameters =
-          parameters ++ [
-            %{
-              "id" => "action",
-              "type" => "string",
-              "value" => @action_name
-            },
-            %{
-              "id" => "requirements",
-              "type" => "requirements",
-              "value" => requirements
-            },
-            %{
-              "id" => "source_paths",
-              "type" => "paths",
-              "value" => paths
-            }
-          ]
-
-        job_params = %{
-          name: @action_name,
-          step_id: ExBackend.Map.get_by_key_or_atom(step, :id),
-          workflow_id: workflow.id,
-          params: %{list: parameters}
-        }
-
-        {:ok, job} = Jobs.create_job(job_params)
-
-        params = %{
-          job_id: job.id,
-          parameters: job.params.list
-        }
-
-        case CommonEmitter.publish_json("job_file_system", params) do
-          :ok -> {:ok, "started"}
-          _ -> {:error, "unable to publish message"}
-        end
+        start_to_process_files(paths, workflow, step, step_id)
     end
   end
 
-  @doc """
-  Returns the list of destination paths of this workflow step
-  """
-  def get_jobs_destination_paths(_jobs, result \\ [])
-  def get_jobs_destination_paths([], result), do: result
+  def start_to_process_files([], _workflow, _step, _step_id), do: {:ok, "started"}
+  def start_to_process_files([path | paths], workflow, step, step_id) do
+    requirements = Requirements.add_required_paths(path)
 
-  def get_jobs_destination_paths([job | jobs], result) do
-    result =
-      case job.name do
-        @action_name ->
-          job.params
-          |> Map.get("destination", %{})
-          |> Map.get("paths")
-          |> case do
-            nil -> result
-            paths -> Enum.concat(paths, result)
-          end
+    parameters =
+      ExBackend.Map.get_by_key_or_atom(step, :parameters)
+      |> Requirements.parse_parameters(workflow)
 
-        _ ->
-          result
-      end
+    output_directory =
+      parameters
+      |> Enum.filter(fn param -> ExBackend.Map.get_by_key_or_atom(param, :id) == "output_directory" end)
+      |> Enum.map(fn param -> ExBackend.Map.get_by_key_or_atom(param, :value) end)
 
-    get_jobs_destination_paths(jobs, result)
+    destination_path = Path.join(output_directory, Path.basename(path))
+
+    parameters =
+      parameters ++ [
+        %{
+          "id" => "action",
+          "type" => "string",
+          "value" => @action_name
+        },
+        %{
+          "id" => "requirements",
+          "type" => "requirements",
+          "value" => requirements
+        },
+        %{
+          "id" => "source_paths",
+          "type" => "paths",
+          "value" => [path]
+        },
+        %{
+          "id" => "destination_path",
+          "type" => "string",
+          "value" => destination_path
+        }
+      ]
+
+    job_params = %{
+      name: @action_name,
+      step_id: ExBackend.Map.get_by_key_or_atom(step, :id),
+      workflow_id: workflow.id,
+      params: %{list: parameters}
+    }
+
+    {:ok, job} = Jobs.create_job(job_params)
+
+    params = %{
+      job_id: job.id,
+      parameters: job.params.list
+    }
+
+    case CommonEmitter.publish_json("job_file_system", params) do
+      :ok -> start_to_process_files(paths, workflow, step, step_id)
+      _ -> {:error, "unable to publish message"}
+    end
   end
 end

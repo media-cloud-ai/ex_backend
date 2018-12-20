@@ -128,6 +128,18 @@ defmodule ExBackendWeb.WorkflowEventsController do
     CommonEmitter.publish_json("job_rdf", params)
   end
 
+  defp publish("set_language", _job_id, _workflow, params) do
+    CommonEmitter.publish_json("job_gpac", params)
+  end
+
+  defp publish("ttml_to_mp4", _job_id, _workflow, params) do
+    CommonEmitter.publish_json("job_gpac", params)
+  end
+
+  defp publish("generate_dash", _job_id, _workflow, params) do
+    CommonEmitter.publish_json("job_gpac", params)
+  end
+
   defp publish(job_name, _job_id, _workflow, _params) do
     Logger.error("unable to restart job for #{job_name}")
   end

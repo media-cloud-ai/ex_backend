@@ -100,29 +100,4 @@ defmodule ExBackend.Workflow.Step.SpeechToText do
     end)
     |> List.flatten()
   end
-
-  @doc """
-  Returns the list of destination paths of this workflow step
-  """
-  def get_jobs_destination_paths(_jobs, result \\ [])
-  def get_jobs_destination_paths([], result), do: result
-
-  def get_jobs_destination_paths([job | jobs], result) do
-    result =
-      case job.name do
-        @action_name ->
-          job.params
-          |> ExBackend.Map.get_by_key_or_atom(:destination, %{})
-          |> ExBackend.Map.get_by_key_or_atom(:paths)
-          |> case do
-            nil -> result
-            paths -> Enum.concat(paths, result)
-          end
-
-        _ ->
-          result
-      end
-
-    get_jobs_destination_paths(jobs, result)
-  end
 end

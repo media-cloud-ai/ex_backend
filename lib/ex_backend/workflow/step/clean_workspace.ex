@@ -41,9 +41,9 @@ defmodule ExBackend.Workflow.Step.CleanWorkspace do
               "value" => requirements
             },
             %{
-              "id" => "source_path",
-              "type" => "string",
-              "value" => dst_path
+              "id" => "source_paths",
+              "type" => "paths",
+              "value" => [dst_path]
             }
           ]
         }

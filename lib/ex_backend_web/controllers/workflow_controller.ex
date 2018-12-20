@@ -76,9 +76,10 @@ defmodule ExBackendWeb.WorkflowController do
   def create_specific(conn, %{
         "identifier" => "ingest-dash",
         "reference" => reference,
+        "ttml_path" => ttml_path,
         "mp4_paths" => mp4_paths
       }) do
-    steps = ExBackend.Workflow.Definition.FrancetvSubtilDashIngest.get_definition(mp4_paths)
+    steps = ExBackend.Workflow.Definition.FrancetvSubtilDashIngest.get_definition(mp4_paths, ttml_path)
 
     workflow_params = %{
       reference: reference,
@@ -133,12 +134,15 @@ defmodule ExBackendWeb.WorkflowController do
           ExBackend.Workflow.Definition.FrancetvSubtilRdfIngest.get_definition()
 
         "francetv_subtil_dash_ingest" ->
-          ExBackend.Workflow.Definition.FrancetvSubtilDashIngest.get_definition()
+          ExBackend.Workflow.Definition.FrancetvSubtilDashIngest.get_definition(
+            "#mp4_paths",
+            "#ttml_path"
+          )
 
         "francetv_subtil_acs" ->
           ExBackend.Workflow.Definition.FrancetvSubtilAcs.get_definition(
-            "Source mp4 path",
-            "Source ttml path"
+            "#source_mp4_path",
+            "#source_ttml_path"
           )
       end
 

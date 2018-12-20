@@ -71,6 +71,10 @@ defmodule ExBackend.WorkflowStep do
     ExBackend.Workflow.Step.AudioExtraction.launch(workflow, step)
   end
 
+  defp launch_step(workflow, "dash_manifest", step) do
+    ExBackend.Workflow.Step.DashManifest.launch(workflow, step)
+  end
+
   defp launch_step(workflow, "download_ftp", step) do
     ExBackend.Workflow.Step.FtpDownload.launch(workflow, step)
   end

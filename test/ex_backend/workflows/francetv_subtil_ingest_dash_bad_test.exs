@@ -27,8 +27,8 @@ defmodule ExBackend.FrancetvSubtilIngestDashBadTest do
   describe "francetv_subtil_ingest_dash_bad_workflow" do
     test "bad id" do
       source_paths = []
-
-      steps = ExBackend.Workflow.Definition.FrancetvSubtilDashIngest.get_definition(source_paths)
+      ttml_path = "https://staticftv-a.akamaihd.net/sous-titres/2018/12/09/195355542-5c0cf635d0b53-1544353508.ttml"
+      steps = ExBackend.Workflow.Definition.FrancetvSubtilDashIngest.get_definition(source_paths, ttml_path)
 
       workflow_params = %{
         reference: "bad_movie_id",
@@ -39,12 +39,11 @@ defmodule ExBackend.FrancetvSubtilIngestDashBadTest do
 
 
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)
-      ExBackend.HelpersTest.check(workflow.id, 8)
+      ExBackend.HelpersTest.check(workflow.id, 9)
 
       ExBackend.HelpersTest.check(workflow.id, "download_ftp", 1)
       ExBackend.HelpersTest.check(workflow.id, "download_http", 1)
       ExBackend.HelpersTest.check(workflow.id, "audio_extraction", 1)
-      ExBackend.HelpersTest.check(workflow.id, "ttml_to_mp4", 1)
       ExBackend.HelpersTest.check(workflow.id, "set_language", 1)
       ExBackend.HelpersTest.check(workflow.id, "generate_dash", 1)
       ExBackend.HelpersTest.check(workflow.id, "upload_ftp", 1)
@@ -53,11 +52,10 @@ defmodule ExBackend.FrancetvSubtilIngestDashBadTest do
 
       {:ok, "completed"} =  WorkflowStep.start_next_step(workflow)
 
-      ExBackend.HelpersTest.check(workflow.id, 9)
+      ExBackend.HelpersTest.check(workflow.id, 10)
       ExBackend.HelpersTest.check(workflow.id, "download_ftp", 1)
       ExBackend.HelpersTest.check(workflow.id, "download_http", 1)
       ExBackend.HelpersTest.check(workflow.id, "audio_extraction", 1)
-      ExBackend.HelpersTest.check(workflow.id, "ttml_to_mp4", 1)
       ExBackend.HelpersTest.check(workflow.id, "set_language", 1)
       ExBackend.HelpersTest.check(workflow.id, "generate_dash", 1)
       ExBackend.HelpersTest.check(workflow.id, "upload_ftp", 1)

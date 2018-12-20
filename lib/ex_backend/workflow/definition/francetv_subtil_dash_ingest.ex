@@ -1,5 +1,5 @@
 defmodule ExBackend.Workflow.Definition.FrancetvSubtilDashIngest do
-  def get_definition(source_mp4_paths) do
+  def get_definition(source_mp4_paths, source_ttml_path) do
     %{
       steps: [
         %{
@@ -44,20 +44,14 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilDashIngest do
           id: 1,
           parent_ids: [0],
           required: [0],
-          name: "download_http",
-          enable: true
-        },
-        %{
-          id: 2,
-          parent_ids: [0],
-          required: [0],
+          label: "Extract audio track",
           name: "audio_extraction",
           enable: true,
           parameters: [
             %{
               "id" => "input_filter",
               "type" => "filter",
-              "default" => "standard1.mp4",
+              "default" => %{ends_with: "standard1.mp4"},
               "value" => %{ends_with: "standard1.mp4"},
             },
             %{
@@ -87,23 +81,17 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilDashIngest do
           ]
         },
         %{
-          id: 3,
-          parent_ids: [1, 2],
+          id: 2,
+          parent_ids: [1],
           required: [1],
-          name: "ttml_to_mp4",
-          enable: true
-        },
-        %{
-          id: 4,
-          parent_ids: [3],
-          required: [2, 3],
+          label: "Set language of the audio track",
           name: "set_language",
           enable: true
         },
         %{
-          id: 5,
-          parent_ids: [4, 0],
-          required: [4, 0],
+          id: 3,
+          parent_ids: [2, 0],
+          required: [2, 0],
           name: "generate_dash",
           enable: true,
           parameters: [
@@ -118,13 +106,90 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilDashIngest do
               type: "integer",
               default: 2000,
               value: 2000
+            },
+            %{
+              id: "profile",
+              type: "string",
+              default: "onDemand",
+              value: "onDemand"
+            },
+            %{
+              id: "rap",
+              type: "boolean",
+              default: true,
+              value: true
+            },
+            %{
+              id: "url_template",
+              type: "boolean",
+              default: true,
+              value: true
+            }
+          ]
+        },
+        %{
+          id: 4,
+          parent_ids: [3],
+          required: [3],
+          label: "Download TTML subtitle with HTTP",
+          name: "download_http",
+          enable: true,
+          parameters: [
+            %{
+              id: "source_paths",
+              type: "paths",
+              enable: true,
+              default: [source_ttml_path],
+              value: [source_ttml_path]
+            }
+          ]
+        },
+        %{
+          id: 5,
+          parent_ids: [4],
+          required: [4],
+          label: "Copy TTML subtitle",
+          icon: "file_copy",
+          name: "copy",
+          enable: true,
+          parameters: [
+            %{
+              id: "output_directory",
+              type: "string",
+              enable: true,
+              default: "#work_dir/#workflow_id/dash",
+              value: "#work_dir/#workflow_id/dash"
             }
           ]
         },
         %{
           id: 6,
-          parent_ids: [5],
-          required: [5],
+          parent_ids: [3, 5],
+          required: [3, 5],
+          label: "Insert subtitle track",
+          icon: "subtitles",
+          name: "dash_manifest",
+          enable: true,
+          parameters: [
+            %{
+              id: "ttml_language",
+              type: "string",
+              enable: true,
+              default: "fra",
+              value: "fra"
+            },%{
+              id: "ttml_role",
+              type: "string",
+              enable: true,
+              default: "subtitle",
+              value: "subtitle"
+            }
+          ]
+        },
+        %{
+          id: 7,
+          parent_ids: [3, 5],
+          required: [3, 5],
           name: "upload_ftp",
           enable: true,
           parameters: [
@@ -148,23 +213,24 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilDashIngest do
             },
             %{
               id: "destination_prefix",
-              type: "credential",
-              default: "AKAMAI_VIDEO_PREFIX",
-              value: "AKAMAI_VIDEO_PREFIX"
+              type: "string",
+              default: "/421959/prod/innovation/SubTil",
+              value: "/421959/prod/innovation/SubTil"
             }
           ]
+        },
+        %{
+          id: 6,
+          parent_ids: [5],
+          required: [5],
+          label: "Add DASH reference to the related Editorial Object",
+          name: "push_rdf",
+          enable: true
         },
         %{
           id: 7,
           parent_ids: [6],
           required: [6],
-          name: "push_rdf",
-          enable: true
-        },
-        %{
-          id: 8,
-          parent_ids: [7],
-          required: [0],
           name: "clean_workspace",
           enable: true
         }
