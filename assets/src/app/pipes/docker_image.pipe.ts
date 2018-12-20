@@ -12,6 +12,7 @@ export class DockerImagePipe implements PipeTransform {
     var allDockerImages = [
       { id: 'ftvsubtil/backend', name: 'Backend' },
       { id: 'ftvsubtil/acs_worker', name: 'ACS Worker' },
+      { id: 'ftvsubtil/dash_manifest_worker', name: 'DASH Manifest Worker' },
       { id: 'ftvsubtil/ffmpeg_worker', name: 'FFmpeg Worker' },
       { id: 'ftvsubtil/file_system_worker', name: 'File System Worker' },
       { id: 'ftvsubtil/ftp_worker', name: 'FTP Worker' },

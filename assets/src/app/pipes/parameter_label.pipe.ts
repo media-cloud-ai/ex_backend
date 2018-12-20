@@ -18,6 +18,8 @@ export class ParameterLabelPipe implements PipeTransform {
       { id: 'threads_number', name: 'Threads number' },
       { id: 'keep_original', name: 'Keep original' },
 
+      { id: 'input_filter', name: 'Input filter' },
+
       { id: 'input_codec_audio', name: 'Audio input codec' },
       { id: 'output_codec_audio', name: 'Audio output codec' },
       { id: 'input_codec_video', name: 'Video input codec' },
@@ -28,6 +30,7 @@ export class ParameterLabelPipe implements PipeTransform {
       { id: 'audio_sampling_rate', name: 'Audio sampling rate' },
       { id: 'audio_channels', name: 'Audio channels' },
 
+      { id: 'force_overwrite', name: 'Force Overwrite' },
       { id: 'profile_video', name: 'Video profile' },
       { id: 'pixel_format', name: 'Pixel Format' },
       { id: 'colorspace', name: 'Colorspace' },
