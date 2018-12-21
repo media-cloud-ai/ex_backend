@@ -214,23 +214,26 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilDashIngest do
             %{
               id: "destination_prefix",
               type: "string",
-              default: "/421959/prod/innovation/SubTil",
-              value: "/421959/prod/innovation/SubTil"
+              default: "/421959/prod/innovation/SubTil/",
+              value: "/421959/prod/innovation/SubTil/"
             }
           ]
         },
+        # %{
+        #   id: 6,
+        #   parent_ids: [5],
+        #   required: [5],
+        #   label: "Add DASH reference to the related Editorial Object",
+        #   name: "push_rdf",
+        #   enable: true
+        # },
         %{
+          # id: 7,
+          # parent_ids: [6],
+          # required: [6],
           id: 6,
           parent_ids: [5],
           required: [5],
-          label: "Add DASH reference to the related Editorial Object",
-          name: "push_rdf",
-          enable: true
-        },
-        %{
-          id: 7,
-          parent_ids: [6],
-          required: [6],
           name: "clean_workspace",
           enable: true
         }
