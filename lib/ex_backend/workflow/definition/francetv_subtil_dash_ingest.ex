@@ -196,26 +196,26 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilDashIngest do
             %{
               id: "destination_hostname",
               type: "credential",
-              default: "AKAMAI_VIDEO_HOSTNAME",
-              value: "AKAMAI_VIDEO_HOSTNAME"
+              default: "FTP_FRANCETV_STUDIO_HOSTNAME",
+              value: "FTP_FRANCETV_STUDIO_HOSTNAME"
             },
             %{
               id: "destination_username",
               type: "credential",
-              default: "AKAMAI_VIDEO_USERNAME",
-              value: "AKAMAI_VIDEO_USERNAME"
+              default: "FTP_FRANCETV_STUDIO_USERNAME",
+              value: "FTP_FRANCETV_STUDIO_USERNAME"
             },
             %{
               id: "destination_password",
               type: "credential",
-              default: "AKAMAI_VIDEO_PASSWORD",
-              value: "AKAMAI_VIDEO_PASSWORD"
+              default: "FTP_FRANCETV_STUDIO_PASSWORD",
+              value: "FTP_FRANCETV_STUDIO_PASSWORD"
             },
             %{
               id: "destination_prefix",
               type: "string",
-              default: "/421959/prod/innovation/SubTil/",
-              value: "/421959/prod/innovation/SubTil/"
+              default: "/home/SubTil/",
+              value: "/home/SubTil/"
             }
           ]
         },
