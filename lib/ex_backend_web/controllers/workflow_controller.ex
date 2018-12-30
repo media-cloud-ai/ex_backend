@@ -105,6 +105,16 @@ defmodule ExBackendWeb.WorkflowController do
     })
   end
 
+  def create_specific(conn, %{"identifier" => "ingest-dash"} = params) do
+    IO.inspect(params)
+
+    conn
+    |> json(%{
+      status: "error",
+      message: "missing parameters to start this workflow"
+    })
+  end
+
   def create_specific(conn, _params) do
     conn
     |> json(%{
