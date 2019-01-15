@@ -196,44 +196,54 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilDashIngest do
             %{
               id: "destination_hostname",
               type: "credential",
-              default: "FTP_FRANCETV_STUDIO_HOSTNAME",
-              value: "FTP_FRANCETV_STUDIO_HOSTNAME"
+              default: "AKAMAI_VIDEO_HOSTNAME",
+              value: "AKAMAI_VIDEO_HOSTNAME"
             },
             %{
               id: "destination_username",
               type: "credential",
-              default: "FTP_FRANCETV_STUDIO_USERNAME",
-              value: "FTP_FRANCETV_STUDIO_USERNAME"
+              default: "AKAMAI_VIDEO_USERNAME",
+              value: "AKAMAI_VIDEO_USERNAME"
             },
             %{
               id: "destination_password",
               type: "credential",
-              default: "FTP_FRANCETV_STUDIO_PASSWORD",
-              value: "FTP_FRANCETV_STUDIO_PASSWORD"
+              default: "AKAMAI_VIDEO_PASSWORD",
+              value: "AKAMAI_VIDEO_PASSWORD"
             },
             %{
               id: "destination_prefix",
               type: "string",
-              default: "/home/SubTil/",
-              value: "/home/SubTil/"
+              default: "/421959/prod/innovation/SubTil/",
+              value: "/421959/prod/innovation/SubTil/"
             }
           ]
         },
-        # %{
-        #   id: 6,
-        #   parent_ids: [5],
-        #   required: [5],
-        #   label: "Add DASH reference to the related Editorial Object",
-        #   name: "push_rdf",
-        #   enable: true
-        # },
         %{
-          # id: 7,
-          # parent_ids: [6],
-          # required: [6],
           id: 6,
-          parent_ids: [5],
-          required: [5],
+          parent_ids: [7],
+          required: [7],
+          label: "Add DASH reference to the related Editorial Object",
+          name: "push_rdf",
+          enable: true,
+          parameters: [
+            %{
+              id: "destination_hostname",
+              type: "credential",
+              default: "FTP_FRANCETV_STUDIO_HOSTNAME",
+              value: "FTP_FRANCETV_STUDIO_HOSTNAME"
+            },
+            %{
+              "id": "order",
+              "type": "string",
+              "value": "publish_dash_and_ttml"
+            }
+          ]
+        },
+        %{
+          id: 7,
+          parent_ids: [6],
+          required: [6],
           name: "clean_workspace",
           enable: true
         }

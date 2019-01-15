@@ -27,6 +27,11 @@ defmodule ExBackend.Workflow.Step.DashManifest do
               "value" => manifest_path
             },
             %{
+              "id" => "destination_path",
+              "type" => "string",
+              "value" => manifest_path
+            },
+            %{
               "id" => "ttml_path",
               "type" => "string",
               "value" => ttml_path

@@ -50,14 +50,16 @@ defmodule ExBackendWeb.WorkflowController do
     parameter(:reference, :bitstring, description: "UUID of the Reference Media")
     parameter(:ttml_path, :bitstring, description: "URL to the TTML")
     parameter(:mp4_path, :bitstring, description: "Path to the MP4 to retrieve the audio")
+    parameter(:dash_manifest_url, :bitstring, description: "(Optional) HTTP URL to the Manifest DASH")
   end
   def create_specific(conn, %{
         "identifier" => "acs",
         "reference" => reference,
         "ttml_path" => ttml_path,
         "mp4_path" => mp4_path
-      }) do
-    steps = ExBackend.Workflow.Definition.FrancetvSubtilAcs.get_definition(mp4_path, ttml_path)
+      } = params) do
+    dash_manifest_url = Map.get(params, "dash_manifest_url")
+    steps = ExBackend.Workflow.Definition.FrancetvSubtilAcs.get_definition(mp4_path, ttml_path, dash_manifest_url)
 
     workflow_params = %{
       reference: reference,
@@ -152,7 +154,8 @@ defmodule ExBackendWeb.WorkflowController do
         "francetv_subtil_acs" ->
           ExBackend.Workflow.Definition.FrancetvSubtilAcs.get_definition(
             "#source_mp4_path",
-            "#source_ttml_path"
+            "#source_ttml_path",
+            nil
           )
       end
 
