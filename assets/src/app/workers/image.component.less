@@ -1,10 +1,15 @@
 @import '../colors';
 
-.header {
-  font-weight: bold;
+.image {
+  margin-bottom: 5px;
 }
 
-.header {
+.image:nth-child(2n) {
+  background-color: @lightGrey;
+}
+
+.header,
+.image {
   display: flex;
   .name {
     flex: 1;

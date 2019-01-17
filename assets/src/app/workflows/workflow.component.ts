@@ -86,6 +86,5 @@ export class WorkflowComponent {
         })
       }
     })
-
   }
 }

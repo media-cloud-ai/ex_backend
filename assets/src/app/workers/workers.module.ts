@@ -4,7 +4,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 import { WorkersComponent } from './workers.component';
+import { ImageComponent } from './image.component';
 import { ImagesComponent } from './images.component';
+
 import {
   MatButtonModule,
   MatCheckboxModule,
@@ -44,9 +46,11 @@ export const ROUTES: Routes = [
   ],
   declarations: [
     WorkersComponent,
+    ImageComponent,
     ImagesComponent,
   ],
   entryComponents: [
+    ImageComponent
   ]
 })
 
