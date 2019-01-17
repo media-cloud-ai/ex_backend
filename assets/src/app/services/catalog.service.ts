@@ -9,7 +9,7 @@ import {IngestResponse} from '../models/ingest_response'
 
 @Injectable()
 export class CatalogService {
-  private catalogUrl = 'api/catalog'
+  private catalogUrl = '/api/catalog'
 
   constructor(private http: HttpClient) { }
 

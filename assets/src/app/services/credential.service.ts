@@ -9,7 +9,7 @@ import { CredentialPage } from '../models/page/credential_page'
 
 @Injectable()
 export class CredentialService {
-  private credentialsUrl = 'api/credentials'
+  private credentialsUrl = '/api/credentials'
 
   constructor(private http: HttpClient) { }
 

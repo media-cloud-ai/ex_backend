@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import {AudioTypePipe}           from './audio_type.pipe';
 import {BasenamePipe}            from './basename.pipe';
+import {BytesPipe}               from './bytes.pipe';
 import {DockerImagePipe}         from './docker_image.pipe';
 import {DockerImageVersionPipe}  from './docker_image_version.pipe';
 import {DurationPipe}            from './duration.pipe';
@@ -26,6 +27,7 @@ import {VideoTypePipe}           from './video_type.pipe'
   declarations: [
     AudioTypePipe,
     BasenamePipe,
+    BytesPipe,
     DockerImagePipe,
     DockerImageVersionPipe,
     DurationPipe,
@@ -44,6 +46,7 @@ import {VideoTypePipe}           from './video_type.pipe'
   exports: [
     AudioTypePipe,
     BasenamePipe,
+    BytesPipe,
     DockerImagePipe,
     DockerImageVersionPipe,
     DurationPipe,

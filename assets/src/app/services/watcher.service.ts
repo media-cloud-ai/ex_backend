@@ -8,7 +8,7 @@ import {Watcher} from '../models/watcher'
 
 @Injectable()
 export class WatcherService {
-  private watchersUrl = 'api/watchers'
+  private watchersUrl = '/api/watchers'
 
   constructor(private http: HttpClient) { }
 

@@ -7,7 +7,7 @@ import {QueuePage} from '../models/page/queue_page'
 
 @Injectable()
 export class AmqpService {
-  private queuesUrl = 'api/amqp/queues'
+  private queuesUrl = '/api/amqp/queues'
 
   constructor(private http: HttpClient) { }
 

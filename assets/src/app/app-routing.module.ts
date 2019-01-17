@@ -25,11 +25,11 @@ import {UsersComponent} from './users/users.component'
 import {WatchersComponent} from './watchers/watchers.component'
 import {WorkflowDetailsComponent} from './workflows/details/workflow_details.component'
 import {WorkflowsComponent} from './workflows/workflows.component'
-import {WorkersComponent} from './workers/workers.component'
 
 import {CredentialsModule} from './credentials/credentials.module'
 import {DocumentationModule} from './documentation/documentation.module'
 import {PlayerModule} from './player/player.module'
+import {WorkersModule} from './workers/workers.module'
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -108,7 +108,7 @@ const appRoutes: Routes = [
   },
   {
     path: 'workers',
-    component: WorkersComponent,
+    loadChildren: () => WorkersModule,
     canActivate: [AuthGuard]
   },
   {

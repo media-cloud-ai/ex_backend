@@ -17,7 +17,6 @@
     <li
       *ngFor="let node of nodes"
       [ngClass]="{selected: selectedNode == node}"
-      (click)="switchSelectedNode(node)"
       class=node>
       <div>
         <label>
@@ -33,12 +32,39 @@
           SSL
         </span>
       </div>
-      <span class="trash">
-        <mat-icon
-          (click)="deleteNode(node.id)">
-          delete_forever
-        </mat-icon>
-      </span>
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="switchSelectedNode(node)"
+        *ngIf="selectedNode != node"
+        >
+        <i class="material-icons">check_box_outline_blank</i>
+        Select
+      </button>
+      <button
+        mat-raised-button
+        (click)="switchSelectedNode(node)"
+        *ngIf="selectedNode == node"
+        >
+        <i class="material-icons">check_box</i>
+        Unselect
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="showImages(node)"
+        >
+        <i class="material-icons">burst_mode</i>
+        Images
+      </button>
+      <button
+        mat-raised-button
+        color="warn"
+        (click)="deleteNode(node.id)"
+        >
+        <i class="material-icons">delete_forever</i>
+        Remove
+      </button>
     </li>
   </ul>
 </div>

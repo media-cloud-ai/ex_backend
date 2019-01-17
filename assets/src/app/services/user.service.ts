@@ -8,7 +8,7 @@ import {User, Confirm} from '../models/user'
 
 @Injectable()
 export class UserService {
-  private usersUrl = 'api/users'
+  private usersUrl = '/api/users'
 
   constructor(private http: HttpClient) { }
 

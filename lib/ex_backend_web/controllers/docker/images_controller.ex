@@ -6,10 +6,10 @@ defmodule ExBackendWeb.Docker.ImagesController do
   alias RemoteDockers.Image
 
   # the following plugs are defined in the controllers/authorize.ex file
-  plug(:user_check when action in [:index])
-  plug(:right_technician_check when action in [:index])
+  plug(:user_check when action in [:index, :delete])
+  plug(:right_technician_check when action in [:index, :delete])
 
-  def index(conn, _params) do
+  def index(conn, params) do
     hostname = System.get_env("DOCKER_CONTAINER_AMQP_HOSTNAME") || Application.get_env(:docker_container_amqp, :hostname)
     username = System.get_env("DOCKER_CONTAINER_AMQP_USERNAME") || Application.get_env(:docker_container_amqp, :username)
     password = System.get_env("DOCKER_CONTAINER_AMQP_PASSWORD") || Application.get_env(:docker_container_amqp, :password)
@@ -48,11 +48,46 @@ defmodule ExBackendWeb.Docker.ImagesController do
     }
 
     image_list =
-      list_all()
+      list_all(params)
       |> build_images(environment, volumes)
 
     conn
     |> json(%{data: image_list})
+  end
+
+  def update(conn, %{"id" => id, "node_id" => node_id}) do
+    image =
+      list_all(%{"node_id" => node_id})
+      |> Enum.filter(fn image ->
+          image.id == id
+        end)
+      |> List.first()
+
+    tag =
+      image.repo_tags
+      |> List.first()
+
+    response = Image.pull!(image.node_config, tag)
+
+    conn
+    |> json(%{data: response})
+  end
+
+  def delete(conn, %{"id" => id, "node_id" => node_id}) do
+    image =
+      list_all(%{"node_id" => node_id})
+      |> Enum.filter(fn image ->
+          image.id == id
+        end)
+      |> List.first()
+
+    try do
+      Image.delete!(image)
+      send_resp(conn, :no_content, "")
+    rescue
+      e ->
+        send_resp(conn, :forbidden, e.message)
+    end
   end
 
   defp build_images(images, environment, volumes, image_list \\ [])
@@ -72,8 +107,9 @@ defmodule ExBackendWeb.Docker.ImagesController do
         label: image.node_config.label
       },
       node_id: image.node_id,
+      size: image.size,
       params: %{
-        image: image.repo_tags |> List.first(),
+        image: get_tag(image.repo_tags),
         environment: image_environment,
         volumes: volumes
       }
@@ -83,15 +119,33 @@ defmodule ExBackendWeb.Docker.ImagesController do
     build_images(images, environment, volumes, image_list)
   end
 
+  defp get_tag([]), do: ""
+  defp get_tag(tags) do
+    List.first(tags)
+  end
+
   defp list_images(%Node{} = node_config) do
     node_config
     |> ExBackend.Docker.NodeConfig.to_node_config()
     |> Image.list_all!()
   end
 
-  defp list_all() do
+  defp list_all(params) do
+    node_id =
+      Map.get(params, "node_id")
+      |> case do
+        nil -> nil
+        node_id -> force_integer(node_id)
+      end
+
     ExBackend.Nodes.list_nodes()
     |> Map.get(:data)
+    |> Enum.filter(fn node ->
+      case node_id do
+        nil -> true
+        _ -> node_id == node.id
+      end
+      end)
     |> Enum.map(fn node_config ->
       list_images(node_config)
       |> Enum.map(fn image ->
@@ -100,5 +154,14 @@ defmodule ExBackendWeb.Docker.ImagesController do
       end)
     end)
     |> Enum.concat()
+  end
+
+  defp force_integer(param) when is_bitstring(param) do
+    param
+    |> String.to_integer()
+  end
+
+  defp force_integer(param) do
+    param
   end
 end

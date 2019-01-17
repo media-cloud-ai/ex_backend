@@ -1,0 +1,39 @@
+@import '../colors';
+
+.header {
+  font-weight: bold;
+}
+
+.image {
+  margin-bottom: 5px;
+}
+
+.image:nth-child(2n) {
+  background-color: @lightGrey;
+}
+
+.header,
+.image {
+  display: flex;
+  .name {
+    flex: 1;
+    line-height: 35px;
+  }
+  .version {
+    flex: 0.5;
+    line-height: 35px;
+  }
+  .identifier {
+    flex: 0.5;
+    line-height: 35px;
+  }
+  .size {
+    flex: 0.5;
+    line-height: 35px;
+    text-align: right;
+  }
+  .action {
+    display: inline-block;
+    width: 250px;
+  }
+}

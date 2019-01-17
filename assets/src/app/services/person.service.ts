@@ -12,7 +12,7 @@ import {Person} from '../models/person'
 
 @Injectable()
 export class PersonService {
-  private personsUrl = 'api/persons'
+  private personsUrl = '/api/persons'
 
   constructor(private http: HttpClient) { }
 

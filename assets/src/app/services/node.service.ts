@@ -9,8 +9,8 @@ import { NodeConfig } from '../models/node_config'
 
 @Injectable()
 export class NodeService {
-  private nodesUrl = 'api/docker/nodes'
-  private testUrl = 'api/docker/test'
+  private nodesUrl = '/api/docker/nodes'
+  private testUrl = '/api/docker/test'
   constructor(private http: HttpClient) { }
 
   getNodes(): Observable<NodeConfigPage> {

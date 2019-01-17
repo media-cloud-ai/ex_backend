@@ -11,7 +11,7 @@ import { ImageParameters } from '../models/image'
 
 @Injectable()
 export class ContainerService {
-  private containersUrl = 'api/docker/containers'
+  private containersUrl = '/api/docker/containers'
 
   constructor(private http: HttpClient) { }
 

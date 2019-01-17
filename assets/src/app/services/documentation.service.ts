@@ -8,7 +8,7 @@ import { DocumentationPage } from '../models/page/documentation_page'
 
 @Injectable()
 export class DocumentationService {
-  private imagesUrl = 'api/documentation'
+  private imagesUrl = '/api/documentation'
 
   constructor(private http: HttpClient) { }
 

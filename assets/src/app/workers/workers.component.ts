@@ -85,6 +85,10 @@ export class WorkersComponent {
     this.getContainers()
   }
 
+  showImages(node: NodeConfig) {
+    this.router.navigate(['/workers/' + node.id.toString()])
+  }
+
   getContainers() {
     this.containerService.getContainers(this.selectedNode)
     .subscribe(containerPage => {
