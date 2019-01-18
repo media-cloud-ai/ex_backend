@@ -52,7 +52,8 @@ defmodule ExBackend.FrancetvSubtilAcsTest do
       steps =
         ExBackend.Workflow.Definition.FrancetvSubtilAcs.get_definition(
           "ftp://source/path.mp4",
-          "http://static/source/path.ttml"
+          "http://static/source/path.ttml",
+          nil
         )
 
       workflow_params = %{
