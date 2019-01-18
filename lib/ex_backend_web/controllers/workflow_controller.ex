@@ -46,7 +46,7 @@ defmodule ExBackendWeb.WorkflowController do
     ")
 
 
-    parameter(:identifier, :bitstring, description: "Identifier of the workflow (one of [acs])")
+    parameter(:identifier, :bitstring, description: "Identifier of the workflow (one of [acs, ingest-dash])")
     parameter(:reference, :bitstring, description: "UUID of the Reference Media")
     parameter(:ttml_path, :bitstring, description: "URL to the TTML")
     parameter(:mp4_path, :bitstring, description: "Path to the MP4 to retrieve the audio")
