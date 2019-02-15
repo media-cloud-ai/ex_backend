@@ -101,6 +101,7 @@ defmodule ExBackendWeb.WorkflowController do
     IO.inspect(params)
 
     conn
+    |> put_status(:unprocessable_entity)
     |> json(%{
       status: "error",
       message: "missing parameters to start this workflow"
@@ -111,6 +112,7 @@ defmodule ExBackendWeb.WorkflowController do
     IO.inspect(params)
 
     conn
+    |> put_status(:unprocessable_entity)
     |> json(%{
       status: "error",
       message: "missing parameters to start this workflow"
@@ -119,6 +121,7 @@ defmodule ExBackendWeb.WorkflowController do
 
   def create_specific(conn, _params) do
     conn
+    |> put_status(:unprocessable_entity)
     |> json(%{
       status: "error",
       message: "unknown workflow identifier"
