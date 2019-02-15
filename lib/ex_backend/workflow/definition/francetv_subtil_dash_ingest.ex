@@ -237,6 +237,11 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilDashIngest do
               "id": "order",
               "type": "string",
               "value": "publish_dash_and_ttml"
+            },
+            %{
+              id: "perfect_memory_event_name",
+              type: "string",
+              value: "push_ttml_and_dash"
             }
           ]
         },

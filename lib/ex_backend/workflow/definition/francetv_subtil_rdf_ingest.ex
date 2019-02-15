@@ -24,6 +24,11 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilRdfIngest do
               type: "credential",
               default: "PERFECT_MEMORY_ENDPOINT",
               value: "PERFECT_MEMORY_ENDPOINT"
+            },
+            %{
+              id: "perfect_memory_event_name",
+              type: "string",
+              value: "push_rdf_infos"
             }
           ]
         }
