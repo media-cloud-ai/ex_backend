@@ -1,4 +1,63 @@
 defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
+
+  def get_output_filename_base(video_id) do
+    video =
+      ExVideoFactory.videos(%{"qid" => video_id})
+      |> Map.get(:videos)
+      |> List.first
+
+    {title, _} =
+      Map.get(video, "title")
+      |> String.normalize(:nfd)
+      |> String.replace(~r/[^A-z\s]/u, "")
+      |> String.replace(~r/\s/, "-")
+      |> String.split_at(47)
+
+    {additional_title, _} =
+      Map.get(video, "additional_title")
+      |> String.normalize(:nfd)
+      |> String.replace(~r/[^A-z\s]/u, "")
+      |> String.replace(~r/\s/, "-")
+      |> String.split_at(47)
+
+    broadcasted_at = Map.get(video, "broadcasted_at")
+
+    {:ok, date} =
+      broadcasted_at
+      |> Timex.parse("%Y-%m-%dT%H:%M:%S", :strftime)
+
+    {:ok, broadcasted_at} = Timex.format(date, "%Y%m%d_%H%M", :strftime)
+
+    channel =
+      Map.get(video, "channel")
+      |> Map.get("id")
+      |> format_channel()
+
+    "#{channel}_#{broadcasted_at}_#{title}_#{additional_title}"
+  end
+
+  defp format_channel("france-2") do
+    "F2"
+  end
+  defp format_channel("france-3") do
+    "F3"
+  end
+  defp format_channel("france-4") do
+    "F4"
+  end
+  defp format_channel("france-5") do
+    "F5"
+  end
+  defp format_channel("france-o") do
+    "FO"
+  end
+  defp format_channel("france-info") do
+    "FI"
+  end
+  defp format_channel(_) do
+    "XX"
+  end
+
   def get_definition(source_mp4_paths, source_ttml_path) do
     %{
       steps: [

@@ -104,6 +104,9 @@ defmodule ExBackendWeb.WorkflowController do
         "reference" => reference
       }) do
 
+    ExBackend.Workflow.Definition.FtvStudioRosetta.get_output_filename_base(reference)
+    |> IO.inspect
+
     mp4_paths =
       ExVideoFactory.get_ftp_paths_for_video_id(reference)
       |> Enum.filter(fn path -> String.contains?(path, "-standard5.mp4") end)
@@ -120,13 +123,14 @@ defmodule ExBackendWeb.WorkflowController do
       flow: steps
     }
 
-    {:ok, workflow} = Workflows.create_workflow(workflow_params)
-    {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+    # {:ok, workflow} = Workflows.create_workflow(workflow_params)
+    # {:ok, "started"} = WorkflowStep.start_next_step(workflow)
 
     conn
     |> json(%{
       status: "started",
-      workflow_id: workflow.id
+      # workflow_id: workflow.id,
+      workflow_params: workflow_params
     })
   end
 
