@@ -10,38 +10,13 @@ defmodule ExBackend.FrancetvSubtilAcsTest do
     channel = ExBackend.HelpersTest.get_amqp_connection()
 
     on_exit(fn ->
-      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get(channel, "job_ftp")
-      AMQP.Basic.ack(channel, delivery_tag)
-      assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
-      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get(channel, "job_ftp")
-      AMQP.Basic.ack(channel, delivery_tag)
-      assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
-      {:empty, %{cluster_id: ""}} = AMQP.Basic.get(channel, "job_ftp")
 
-      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get(channel, "job_http")
-      AMQP.Basic.ack(channel, delivery_tag)
-      assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
-      {:empty, %{cluster_id: ""}} = AMQP.Basic.get(channel, "job_http")
-
-      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get(channel, "job_ffmpeg")
-      AMQP.Basic.ack(channel, delivery_tag)
-      assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
-      {:empty, %{cluster_id: ""}} = AMQP.Basic.get(channel, "job_ffmpeg")
-
-      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get(channel, "job_acs")
-      AMQP.Basic.ack(channel, delivery_tag)
-      assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
-      {:empty, %{cluster_id: ""}} = AMQP.Basic.get(channel, "job_acs")
-
-      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get(channel, "job_rdf")
-      AMQP.Basic.ack(channel, delivery_tag)
-      assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
-      {:empty, %{cluster_id: ""}} = AMQP.Basic.get(channel, "job_rdf")
-
-      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get(channel, "job_file_system")
-      AMQP.Basic.ack(channel, delivery_tag)
-      assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
-      {:empty, %{cluster_id: ""}} = AMQP.Basic.get(channel, "job_file_system")
+      ExBackend.HelpersTest.consume_messages(channel, "job_ftp", 2)
+      ExBackend.HelpersTest.consume_messages(channel, "job_http", 1)
+      ExBackend.HelpersTest.consume_messages(channel, "job_ffmpeg", 1)
+      ExBackend.HelpersTest.consume_messages(channel, "job_acs", 1)
+      ExBackend.HelpersTest.consume_messages(channel, "job_rdf", 1)
+      ExBackend.HelpersTest.consume_messages(channel, "job_file_system", 1)
     end)
 
     :ok

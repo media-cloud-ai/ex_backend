@@ -15,11 +15,7 @@ defmodule ExBackend.FrancetvSubtilIngestDashBadTest do
       {:empty, %{cluster_id: ""}} = AMQP.Basic.get channel, "job_ffmpeg"
       {:empty, %{cluster_id: ""}} = AMQP.Basic.get channel, "job_gpac"
 
-      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get channel, "job_rdf"
-      AMQP.Basic.ack(channel, delivery_tag)
-      assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
-      {:empty, %{cluster_id: ""}} = AMQP.Basic.get channel, "job_rdf"
-
+      ExBackend.HelpersTest.consume_messages(channel, "job_rdf", 1)
     end
     :ok
   end

@@ -169,4 +169,16 @@ defmodule ExBackend.HelpersTest do
       ExBackend.Jobs.update_job(job, %{params: params})
     end
   end
+
+  def consume_messages(channel, queue, count) do
+    list =
+      Enum.map(1..count, fn _x ->
+        {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get(channel, queue)
+        AMQP.Basic.ack(channel, delivery_tag)
+        assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
+        payload |> Poison.decode!
+      end)
+    {:empty, %{cluster_id: ""}} = AMQP.Basic.get(channel, queue)
+    list
+  end
 end

@@ -31,6 +31,15 @@
         [steps]=acs_steps>
       </workflow-renderer-component>
     </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">sync</mat-icon>
+        Rosetta
+      </ng-template>
+      <workflow-renderer-component
+        [steps]=rosetta_steps>
+      </workflow-renderer-component>
+    </mat-tab>
   </mat-tab-group>
 
   <div mat-dialog-actions>

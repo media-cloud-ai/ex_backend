@@ -18,6 +18,7 @@ export class WorkflowDialogComponent {
   rdf_steps: Step[]
   dash_steps: Step[]
   acs_steps: Step[]
+  rosetta_steps: Step[]
 
   constructor(
     public dialogRef: MatDialogRef<WorkflowDialogComponent>,
@@ -31,20 +32,23 @@ export class WorkflowDialogComponent {
 
     this.workflowService.getWorkflowDefinition("francetv_subtil_rdf_ingest")
       .subscribe(workflowDefinition => {
-        console.log(workflowDefinition)
         this.rdf_steps = workflowDefinition.steps
       })
 
     this.workflowService.getWorkflowDefinition("francetv_subtil_dash_ingest")
       .subscribe(workflowDefinition => {
-        console.log(workflowDefinition)
         this.dash_steps = workflowDefinition.steps
       })
 
     this.workflowService.getWorkflowDefinition("francetv_subtil_acs")
       .subscribe(workflowDefinition => {
-        console.log(workflowDefinition)
         this.acs_steps = workflowDefinition.steps
+      })
+
+    this.workflowService.getWorkflowDefinition("ftv_studio_rosetta")
+      .subscribe(workflowDefinition => {
+        console.log(workflowDefinition)
+        this.rosetta_steps = workflowDefinition.steps
       })
   }
 
@@ -65,6 +69,10 @@ export class WorkflowDialogComponent {
       }
       case 2: {
         src_steps = this.acs_steps
+        break;
+      }
+      case 3: {
+        src_steps = this.rosetta_steps
         break;
       }
       default: {
