@@ -2,6 +2,7 @@ defmodule ExBackend.Workflow.Step.FtpUpload do
   alias ExBackend.Jobs
   alias ExBackend.Amqp.CommonEmitter
   alias ExBackend.Workflow.Step.Requirements
+  require Logger
 
   @action_name "upload_ftp"
 
@@ -25,7 +26,26 @@ defmodule ExBackend.Workflow.Step.FtpUpload do
 
   defp start_upload([file | files], current_date, workflow, step, step_id) do
     requirements = Requirements.add_required_paths(file)
-    dst_path = workflow.reference <> "/" <> current_date <> "/" <> (file |> Path.basename())
+    destination_pattern =
+      ExBackend.Map.get_by_key_or_atom(step, :parameters, [])
+      |> Enum.filter(fn param ->
+        ExBackend.Map.get_by_key_or_atom(param, :id) == "destination_pattern"
+      end)
+      |> Enum.map(fn param ->
+        ExBackend.Map.get_by_key_or_atom(param, :value)
+      end)
+
+    dst_path =
+      case destination_pattern do
+        [] -> workflow.reference <> "/" <> current_date <> "/" <> (file |> Path.basename())
+        [pattern] ->
+          pattern
+          |> String.replace("#input_extension", "<%= input_extension %>")
+          |> EEx.eval_string([
+            workflow_id: workflow.id,
+            input_extension: Path.extname(file)
+          ])
+      end
 
     parameters =
       ExBackend.Map.get_by_key_or_atom(step, :parameters, []) ++

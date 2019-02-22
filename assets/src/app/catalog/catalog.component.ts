@@ -215,7 +215,12 @@ export class CatalogComponent {
   }
 
   start_process(video): void {
-    let dialogRef = this.dialog.open(WorkflowDialogComponent, {data: {'broadcasted_live': video.broadcasted_live}})
+    let dialogRef = this.dialog.open(WorkflowDialogComponent, {
+      data: {
+        'broadcasted_live': video.broadcasted_live,
+        'reference': video.id
+      }
+    })
 
     dialogRef.afterClosed().subscribe(steps => {
       if (steps !== undefined) {

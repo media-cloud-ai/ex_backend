@@ -30,22 +30,22 @@ export class WorkflowDialogComponent {
       this.acs_enable = data['broadcasted_live']
     }
 
-    this.workflowService.getWorkflowDefinition("francetv_subtil_rdf_ingest")
+    this.workflowService.getWorkflowDefinition("francetv_subtil_rdf_ingest", data['reference'])
       .subscribe(workflowDefinition => {
         this.rdf_steps = workflowDefinition.steps
       })
 
-    this.workflowService.getWorkflowDefinition("francetv_subtil_dash_ingest")
+    this.workflowService.getWorkflowDefinition("francetv_subtil_dash_ingest", data['reference'])
       .subscribe(workflowDefinition => {
         this.dash_steps = workflowDefinition.steps
       })
 
-    this.workflowService.getWorkflowDefinition("francetv_subtil_acs")
+    this.workflowService.getWorkflowDefinition("francetv_subtil_acs", data['reference'])
       .subscribe(workflowDefinition => {
         this.acs_steps = workflowDefinition.steps
       })
 
-    this.workflowService.getWorkflowDefinition("ftv_studio_rosetta")
+    this.workflowService.getWorkflowDefinition("ftv_studio_rosetta", data['reference'])
       .subscribe(workflowDefinition => {
         console.log(workflowDefinition)
         this.rosetta_steps = workflowDefinition.steps

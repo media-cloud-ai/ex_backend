@@ -36,8 +36,11 @@ export class WorkflowService {
       )
   }
 
-  getWorkflowDefinition(workflow_identifier: string): Observable<Flow> {
-    return this.http.get<Flow>(this.workflowUrl  + '/' + workflow_identifier)
+  getWorkflowDefinition(workflow_identifier: string, reference: string): Observable<Flow> {
+    let params = new HttpParams()
+    params = params.append('reference', reference)
+
+    return this.http.get<Flow>(this.workflowUrl  + '/' + workflow_identifier, {params: params})
       .pipe(
         tap(workflowPage => this.log('fetched Workflow')),
         catchError(this.handleError('getWorkflow', undefined))

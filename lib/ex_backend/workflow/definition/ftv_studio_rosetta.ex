@@ -7,14 +7,21 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
       |> List.first
 
     {title, _} =
-      Map.get(video, "title")
+      case Map.get(video, "title") do
+        nil -> ""
+        value -> value
+      end
       |> String.normalize(:nfd)
       |> String.replace(~r/[^A-z\s]/u, "")
       |> String.replace(~r/\s/, "-")
       |> String.split_at(47)
 
     {additional_title, _} =
-      Map.get(video, "additional_title")
+      case Map.get(video, "additional_title") do
+        nil -> ""
+        value -> value
+      end
+      |> IO.inspect
       |> String.normalize(:nfd)
       |> String.replace(~r/[^A-z\s]/u, "")
       |> String.replace(~r/\s/, "-")
@@ -29,11 +36,15 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
     {:ok, broadcasted_at} = Timex.format(date, "%Y%m%d_%H%M", :strftime)
 
     channel =
-      Map.get(video, "channel")
-      |> Map.get("id")
-      |> format_channel()
+      case Map.get(video, "channel") do
+        nil -> "XX"
+        value ->
+          value
+          |> Map.get("id")
+          |> format_channel()
+      end
 
-    "#{channel}_#{broadcasted_at}_#{title}_#{additional_title}"
+    "#{channel}/#{title}/#{broadcasted_at}/#{channel}_#{broadcasted_at}_#{title}_#{additional_title}#input_extension"
   end
 
   defp format_channel("france-2") do
@@ -58,7 +69,7 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
     "XX"
   end
 
-  def get_definition(source_mp4_paths, source_ttml_path) do
+  def get_definition(source_mp4_paths, source_ttml_path, upload_pattern) do
     %{
       steps: [
         %{
@@ -145,6 +156,12 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
               type: "string",
               default: "/home/Rosetta/",
               value: "/home/Rosetta/"
+            },
+            %{
+              id: "destination_pattern",
+              type: "string",
+              default: upload_pattern,
+              value: upload_pattern
             },
             %{
               id: "ssl",

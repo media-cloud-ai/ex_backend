@@ -23,10 +23,8 @@ defmodule ExBackend.FtvStudioRosettaTest do
 
       assert String.starts_with?(Enum.at(destination_paths, 0), "/data/")
       assert String.ends_with?(Enum.at(destination_paths, 0), "/path.mp4")
-      assert String.starts_with?(Enum.at(destination_paths, 1), "666/")
-      assert String.ends_with?(Enum.at(destination_paths, 1), "/path.mp4")
-      assert String.starts_with?(Enum.at(destination_paths, 2), "666/")
-      assert String.ends_with?(Enum.at(destination_paths, 2), "/path.ttml")
+      assert Enum.at(destination_paths, 1) == "F2/Un-jour-un-destin/20190220_2243/F2_20190220_2243_Un-jour-un-destin_Karl-Lagerfeld-etre-et-paraitre.mp4"
+      assert Enum.at(destination_paths, 2) == "F2/Un-jour-un-destin/20190220_2243/F2_20190220_2243_Un-jour-un-destin_Karl-Lagerfeld-etre-et-paraitre.ttml"
 
       ExBackend.HelpersTest.consume_messages(channel, "job_http", 1)
       ExBackend.HelpersTest.consume_messages(channel, "job_file_system", 1)
@@ -37,10 +35,13 @@ defmodule ExBackend.FtvStudioRosettaTest do
 
   describe "francetv_subtil_acs_workflow" do
     test "bad id" do
+      output_pattern = "F2/Un-jour-un-destin/20190220_2243/F2_20190220_2243_Un-jour-un-destin_Karl-Lagerfeld-etre-et-paraitre#input_extension"
+
       steps =
         ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition(
           ["ftp://source/path.mp4"],
-          "http://static/source/path.ttml"
+          "http://static/source/path.ttml",
+          output_pattern
         )
 
       workflow_params = %{

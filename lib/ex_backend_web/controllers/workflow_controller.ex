@@ -104,8 +104,8 @@ defmodule ExBackendWeb.WorkflowController do
         "reference" => reference
       }) do
 
-    ExBackend.Workflow.Definition.FtvStudioRosetta.get_output_filename_base(reference)
-    |> IO.inspect
+    upload_pattern =
+      ExBackend.Workflow.Definition.FtvStudioRosetta.get_output_filename_base(reference)
 
     mp4_paths =
       ExVideoFactory.get_ftp_paths_for_video_id(reference)
@@ -116,21 +116,20 @@ defmodule ExBackendWeb.WorkflowController do
       ExVideoFactory.get_http_url_for_ttml(reference)
       |> List.first
 
-    steps = ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition(mp4_paths, ttml_path)
+    steps = ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition(mp4_paths, ttml_path, upload_pattern)
 
     workflow_params = %{
       reference: reference,
       flow: steps
     }
 
-    # {:ok, workflow} = Workflows.create_workflow(workflow_params)
-    # {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+    {:ok, workflow} = Workflows.create_workflow(workflow_params)
+    {:ok, "started"} = WorkflowStep.start_next_step(workflow)
 
     conn
     |> json(%{
       status: "started",
-      # workflow_id: workflow.id,
-      workflow_params: workflow_params
+      workflow_id: workflow.id
     })
   end
 
@@ -184,7 +183,7 @@ defmodule ExBackendWeb.WorkflowController do
     render(conn, "show.json", workflow: workflow)
   end
 
-  def get(conn, %{"identifier" => workflow_identifier}) do
+  def get(conn, %{"identifier" => workflow_identifier, "reference" => reference}) do
     steps =
       case workflow_identifier do
         "ebu_ingest" ->
@@ -209,10 +208,22 @@ defmodule ExBackendWeb.WorkflowController do
             nil
           )
         "ftv_studio_rosetta" ->
+          upload_pattern =
+            ExBackend.Workflow.Definition.FtvStudioRosetta.get_output_filename_base(reference)
+
+          mp4_paths =
+            ExVideoFactory.get_ftp_paths_for_video_id(reference)
+            |> Enum.filter(fn path -> String.contains?(path, "-standard5.mp4") end)
+            |> Enum.map(fn path -> String.replace(path, "/343079/http", "") end)
+
+          ttml_path =
+            ExVideoFactory.get_http_url_for_ttml(reference)
+            |> List.first
+
           ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition(
-            "#source_mp4_paths",
-            "#source_ttml_path"
-          )
+            mp4_paths,
+            ttml_path,
+            upload_pattern)
       end
 
     conn
