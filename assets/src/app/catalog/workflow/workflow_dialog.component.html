@@ -31,7 +31,7 @@
         [steps]=acs_steps>
       </workflow-renderer-component>
     </mat-tab>
-    <mat-tab>
+    <mat-tab *ngIf="ftvstudio">
       <ng-template mat-tab-label>
         <mat-icon class="tab-icon">sync</mat-icon>
         Rosetta

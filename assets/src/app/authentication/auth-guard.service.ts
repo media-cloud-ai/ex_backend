@@ -28,10 +28,19 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     if (this.authService.isLoggedIn) {
       // console.log("Check URL ", url)
       if (url.startsWith('/catalog') ||
-        url.startsWith('/massive') ||
-        url.startsWith('/watchers') ||
-        url.startsWith('/workers') ||
         url.startsWith('/workflows')
+        ) {
+        if (this.authService.hasTechnicianRight() ||
+          this.authService.hasFtvStudioRight()) {
+          return true
+        } else {
+          this.router.navigate(['/dashboard'])
+          return false
+        }
+      }
+      if (url.startsWith('/massive') ||
+        url.startsWith('/watchers') ||
+        url.startsWith('/workers')
         ) {
         if (this.authService.hasTechnicianRight()) {
           return true

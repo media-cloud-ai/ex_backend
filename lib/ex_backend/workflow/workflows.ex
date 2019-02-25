@@ -331,4 +331,26 @@ defmodule ExBackend.Workflows do
 
     researched >= total
   end
+
+
+  def get_workflow_history(%{scale: scale}) do
+    Enum.map(0..99,
+      fn index ->
+        %{
+          total: query_total(scale, -index, -index-1),
+        }
+      end
+    )
+  end
+
+  defp query_total(scale, delta_min, delta_max) do
+    Repo.aggregate(
+      from(
+        workflow in Workflow,
+        where: workflow.inserted_at > datetime_add(^NaiveDateTime.utc_now, ^delta_max, ^scale) and
+          workflow.inserted_at < datetime_add(^NaiveDateTime.utc_now, ^delta_min, ^scale),
+        ),
+      :count, :id
+    )
+  end
 end

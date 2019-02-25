@@ -4,7 +4,7 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http'
 import { Observable, of } from 'rxjs'
 import { catchError, map, tap } from 'rxjs/operators'
 
-import {WorkflowPage, WorkflowData} from '../models/page/workflow_page'
+import {WorkflowPage, WorkflowData, WorkflowHistory} from '../models/page/workflow_page'
 import {Flow, Step, Workflow, WorkflowEvent} from '../models/workflow'
 
 @Injectable()
@@ -68,6 +68,14 @@ export class WorkflowService {
       .pipe(
         tap(workflowPage => this.log('aborted Workflow')),
         catchError(this.handleError('abortWorkflow', undefined))
+      )
+  }
+
+  getWorkflowStatistics(scale: string): Observable<WorkflowHistory> {
+    return this.http.get<Workflow>(this.workflowsUrl + '/statistics')
+      .pipe(
+        tap(workflowPage => this.log('statistics Workflow')),
+        catchError(this.handleError('getWorkflowStatistics', undefined))
       )
   }
 

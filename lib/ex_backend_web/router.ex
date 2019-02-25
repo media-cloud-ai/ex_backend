@@ -32,6 +32,7 @@ defmodule ExBackendWeb.Router do
     get("/workflow/:identifier", WorkflowController, :get)
     post("/workflow/:identifier", WorkflowController, :create_specific)
 
+    get("/workflows/statistics", WorkflowController, :statistics)
     resources("/workflows", WorkflowController, except: [:new, :edit]) do
       post("/events", WorkflowEventsController, :handle)
     end

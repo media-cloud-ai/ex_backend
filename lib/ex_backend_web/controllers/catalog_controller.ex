@@ -9,7 +9,7 @@ defmodule ExBackendWeb.CatalogController do
 
   # the following plugs are defined in the controllers/authorize.ex file
   plug(:user_check when action in [:index])
-  plug(:right_technician_check when action in [:index])
+  plug(:right_technician_or_ftvstudio_check when action in [:index, :show, :search_workflow])
 
   def index(conn, params) do
     response = ExVideoFactory.videos(params)

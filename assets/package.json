@@ -13,6 +13,8 @@
     "@angular/platform-browser": "^7.0.2",
     "@angular/platform-browser-dynamic": "^7.0.2",
     "@angular/router": "^7.0.2",
+    "@types/canvasjs": "^1.9.5",
+    "canvasjs": "^1.8.1",
     "dashjs": "https://github.com/Dash-Industry-Forum/dash.js.git#16be8f8",
     "es7-shim": "6.0.0",
     "hammerjs": "^2.0.8",

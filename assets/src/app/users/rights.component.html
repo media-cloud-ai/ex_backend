@@ -27,6 +27,15 @@
       Editor
     </mat-checkbox>
   </span>
+  <span>
+    <mat-checkbox
+    color="primary"
+    [(checked)]="ftvstudio"
+    (change)="updateFtvStudioRight($event, user)"
+    >
+      FranceTV Studio
+    </mat-checkbox>
+  </span>
 </span>
 
 <span *ngIf="user && application && application.identifier == 'vidtext'">

@@ -11,7 +11,7 @@ defmodule ExBackendWeb.WorkflowController do
 
   # the following plugs are defined in the controllers/authorize.ex file
   plug(:user_check when action in [:index, :create, :create_specific, :show, :update, :delete])
-  plug(:right_technician_check when action in [:index, :create, :create_specific, :show, :update, :delete])
+  plug(:right_technician_or_ftvstudio_check when action in [:index, :create, :create_specific, :show, :update, :delete])
 
   def index(conn, params) do
     workflows = Workflows.list_workflows(params)
@@ -233,6 +233,16 @@ defmodule ExBackendWeb.WorkflowController do
   def get(conn, _params) do
     conn
     |> json(%{})
+  end
+
+  def statistics(conn, params) do
+    scale = Map.get(params, "scale", "hour")
+    stats = ExBackend.Workflows.get_workflow_history(%{scale: scale})
+
+    conn
+    |> json(%{
+      data: stats
+    })
   end
 
   def update(conn, %{"id" => id, "workflow" => workflow_params}) do

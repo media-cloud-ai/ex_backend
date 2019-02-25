@@ -4,6 +4,7 @@ import {MatDialog, MatCheckboxModule, PageEvent} from '@angular/material'
 import {ActivatedRoute, Router} from '@angular/router'
 import {FormControl} from '@angular/forms'
 
+import {AuthService} from '../authentication/auth.service'
 import {RdfService} from '../services/rdf.service'
 import {CatalogService} from '../services/catalog.service'
 import {WorkflowService} from '../services/workflow.service'
@@ -23,6 +24,9 @@ import * as moment from 'moment'
 })
 
 export class CatalogComponent {
+  technician : boolean
+  ftvstudio : boolean
+
   length = 1000
 
   pageSize = 10
@@ -57,6 +61,7 @@ export class CatalogComponent {
   selectedVideos = []
 
   constructor(
+    public authService: AuthService,
     private rdfService: RdfService,
     private catalogService: CatalogService,
     private workflowService: WorkflowService,
@@ -66,6 +71,9 @@ export class CatalogComponent {
   ) {}
 
   ngOnInit() {
+    this.technician = this.authService.hasTechnicianRight()
+    this.ftvstudio = this.authService.hasFtvStudioRight()
+
     this.sub = this.route
       .queryParams
       .subscribe(params => {
@@ -197,7 +205,7 @@ export class CatalogComponent {
     this.updateVideos()
   }
 
-  selectVideo(video, checked): void {
+  selectVideo(video, checked) {
     video.selected = checked
     if (checked) {
       this.selectedVideos.push(video)
@@ -206,7 +214,7 @@ export class CatalogComponent {
     }
   }
 
-  selectAllVideos(event): void {
+  selectAllVideos(event) {
     for (let video of this.videos.data) {
       if (video.available) {
         this.selectVideo(video, event.checked)
@@ -214,7 +222,7 @@ export class CatalogComponent {
     }
   }
 
-  start_process(video): void {
+  start_process(video) {
     let dialogRef = this.dialog.open(WorkflowDialogComponent, {
       data: {
         'broadcasted_live': video.broadcasted_live,
@@ -232,7 +240,17 @@ export class CatalogComponent {
     })
   }
 
-  start_all_process(): void {
+  start_ftvstudio_ingest(video) {
+    this.workflowService.getWorkflowDefinition("ftv_studio_rosetta", video.id)
+      .subscribe(workflowDefinition => {
+        this.workflowService.createWorkflow({reference: video.id, flow: {steps: workflowDefinition.steps}})
+          .subscribe(response => {
+            console.log(response)
+          })
+      })
+  }
+
+  start_all_process() {
     let dialogRef = this.dialog.open(WorkflowDialogComponent, {})
 
     dialogRef.afterClosed().subscribe(steps => {

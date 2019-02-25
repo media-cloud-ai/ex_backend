@@ -3,7 +3,10 @@ import {Component} from '@angular/core'
 import {AuthService}    from '../authentication/auth.service'
 import {Subscription}   from 'rxjs'
 
+import * as CanvasJS from 'canvasjs/dist/canvasjs.min.js';
+
 import {ApplicationService} from '../services/application.service'
+import {WorkflowService} from '../services/workflow.service'
 import {Application} from '../models/application'
 
 @Component({
@@ -22,6 +25,7 @@ export class DashboardComponent {
 
   constructor(
     private applicationService: ApplicationService,
+    private workflowService: WorkflowService,
     public authService: AuthService
   ) {}
 
@@ -48,6 +52,41 @@ export class DashboardComponent {
     this.applicationService.get()
     .subscribe(application => {
       this.application = application
+    })
+
+    this.workflowService.getWorkflowStatistics()
+    .subscribe(stats => {
+      const len = stats.data.length
+
+      const total = stats.data.map((item, index) => {
+        item['y'] = item['total']
+        item['x'] = -(len - index)
+        return item
+      });
+
+      let chart = new CanvasJS.Chart("chartContainer", {
+        // animationEnabled: true,
+        // exportEnabled: false,
+        // zoomEnabled: true,
+        // title: {
+        //   text: "Workflow history"
+        // },
+        data: [
+          {
+            type: 'line',
+            name: "Total",
+            dataPoints: total
+          },
+          // {
+          //   type: 'line',
+          //   name: "Error",
+          //   dataPoints: [ {y: 6}, {y: 5}, {y: 8}, {y: 8}, {y: 5}, {y: 5}, {y: 4} ]
+          // }
+        ]
+        options: {}
+      });
+        
+      chart.render();
     })
   }
 }

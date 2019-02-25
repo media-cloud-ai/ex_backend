@@ -21,6 +21,7 @@ export class RightsComponent {
   technician: boolean
   manager: boolean
   editor: boolean
+  ftvstudio: boolean
 
   application: Application
 
@@ -35,6 +36,7 @@ export class RightsComponent {
       this.technician = this.user.rights.includes('technician')
       this.manager = this.user.rights.includes('manager')
       this.editor = this.user.rights.includes('editor')
+      this.ftvstudio = this.user.rights.includes('ftvstudio')
     }
 
     this.applicationService.get()
@@ -53,6 +55,10 @@ export class RightsComponent {
 
   updateEditorRight(event, user): void {
     this.updateRight(event, user, ['editor'])
+  }
+
+  updateFtvStudioRight(event, user): void {
+    this.updateRight(event, user, ['ftvstudio'])
   }
 
   updateVidtextAdministratorRight(event, user): void {

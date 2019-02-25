@@ -8,3 +8,11 @@ export class WorkflowPage {
 export class WorkflowData {
   data: Workflow
 }
+
+export class WorkflowHistory {
+  data: WorkflowHistoryStep[]
+}
+
+export class WorkflowHistoryStep {
+  total: number
+}

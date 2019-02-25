@@ -3,7 +3,11 @@
 	Dashboard
 </h1>
 
+<h3>Workflow history</h3>
+<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+
 <div *ngIf="application">
+
   <amqp-queues *ngIf="right_technician">
   </amqp-queues>
 

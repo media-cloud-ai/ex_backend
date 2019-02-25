@@ -119,6 +119,13 @@ export class AuthService {
     return this.rights.includes('editor')
   }
 
+  hasFtvStudioRight(): boolean {
+    if (!this.rights){
+      return false
+    }
+    return this.rights.includes('ftvstudio')
+  }
+
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error)

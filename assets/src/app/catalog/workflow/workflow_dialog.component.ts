@@ -4,6 +4,7 @@ import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material'
 import {Step} from '../../models/workflow'
 import {WorkflowRenderer} from '../../models/workflow_renderer'
 
+import {AuthService} from '../../authentication/auth.service'
 import {WorkflowService} from '../../services/workflow.service'
 
 @Component({
@@ -13,6 +14,7 @@ import {WorkflowService} from '../../services/workflow.service'
 })
 export class WorkflowDialogComponent {
   acs_enable: boolean
+  ftvstudio : boolean
 
   selected_tab = 0
   rdf_steps: Step[]
@@ -21,6 +23,7 @@ export class WorkflowDialogComponent {
   rosetta_steps: Step[]
 
   constructor(
+    public authService: AuthService,
     public dialogRef: MatDialogRef<WorkflowDialogComponent>,
     private workflowService: WorkflowService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -51,7 +54,11 @@ export class WorkflowDialogComponent {
         this.rosetta_steps = workflowDefinition.steps
       })
   }
-
+  
+  ngOnInit() {
+    this.ftvstudio = this.authService.hasFtvStudioRight()
+  }
+  
   onNoClick(): void {
     this.dialogRef.close()
   }
