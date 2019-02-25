@@ -54,7 +54,7 @@ export class DashboardComponent {
       this.application = application
     })
 
-    this.workflowService.getWorkflowStatistics()
+    this.workflowService.getWorkflowStatistics("hour")
     .subscribe(stats => {
       const len = stats.data.length
 
