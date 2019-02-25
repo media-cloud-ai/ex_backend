@@ -154,8 +154,8 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
             %{
               id: "destination_prefix",
               type: "string",
-              default: "/home/Rosetta/",
-              value: "/home/Rosetta/"
+              default: "/mnt/rosetta/",
+              value: "/mnt/rosetta/"
             },
             %{
               id: "destination_pattern",
@@ -166,8 +166,8 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
             %{
               id: "ssl",
               type: "boolean",
-              default: true,
-              value: true
+              default: false,
+              value: false
             }
           ]
         },
