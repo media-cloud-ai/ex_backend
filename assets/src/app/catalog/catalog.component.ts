@@ -246,9 +246,13 @@ export class CatalogComponent {
       .subscribe(workflowDefinition => {
         this.workflowService.createWorkflow({reference: video.id, flow: {steps: workflowDefinition.steps}})
           .subscribe(response => {
-            this.snackBar.open("Rosetta ingest started for \"" + video.title + "\"", "Ok", {
-              duration: 2000,
+            let snackBarRef = this.snackBar.open("Rosetta ingest started for \"" + video.title + "\"", "Show workflow", {
+              duration: 4000,
             })
+
+            snackBarRef.onAction().subscribe(() => {
+              this.router.navigate(['/workflows/' +  response.data.id])
+            });
           })
       })
   }
