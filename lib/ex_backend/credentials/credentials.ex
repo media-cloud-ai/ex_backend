@@ -32,7 +32,7 @@ defmodule ExBackend.Credentials do
       |> force_integer
 
     size =
-      Map.get(params, "size", 10)
+      Map.get(params, "size", 100)
       |> force_integer
 
     offset = page * size
