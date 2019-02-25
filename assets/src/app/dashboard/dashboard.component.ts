@@ -56,11 +56,9 @@ export class DashboardComponent {
 
     this.workflowService.getWorkflowStatistics("hour")
     .subscribe(stats => {
-      const len = stats.data.length
-
       const total = stats.data.map((item, index) => {
         item['y'] = item['total']
-        item['x'] = -(len - index)
+        item['x'] = -index
         return item
       });
 

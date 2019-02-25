@@ -30,6 +30,7 @@ import {
   MatSidenavModule,
   MatSliderModule,
   MatSlideToggleModule,
+  MatSnackBarModule,
   MatTableModule,
   MatTabsModule,
   MatToolbarModule
@@ -165,6 +166,7 @@ const EX_BACKEND_DATE_FORMATS = {
     MatSidenavModule,
     MatSliderModule,
     MatSlideToggleModule,
+    MatSnackBarModule,
     MatStepperModule,
     MatTableModule,
     MatTabsModule,

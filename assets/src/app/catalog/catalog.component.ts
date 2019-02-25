@@ -1,6 +1,6 @@
 
 import {Component, ViewChild} from '@angular/core'
-import {MatDialog, MatCheckboxModule, PageEvent} from '@angular/material'
+import {MatDialog, MatCheckboxModule, MatSnackBar, PageEvent} from '@angular/material'
 import {ActivatedRoute, Router} from '@angular/router'
 import {FormControl} from '@angular/forms'
 
@@ -65,6 +65,7 @@ export class CatalogComponent {
     private rdfService: RdfService,
     private catalogService: CatalogService,
     private workflowService: WorkflowService,
+    private snackBar: MatSnackBar,
     private route: ActivatedRoute,
     private router: Router,
     public dialog: MatDialog
@@ -245,7 +246,9 @@ export class CatalogComponent {
       .subscribe(workflowDefinition => {
         this.workflowService.createWorkflow({reference: video.id, flow: {steps: workflowDefinition.steps}})
           .subscribe(response => {
-            console.log(response)
+            this.snackBar.open("Rosetta ingest started for \"" + video.title + "\"", "Ok", {
+              duration: 2000,
+            })
           })
       })
   }
