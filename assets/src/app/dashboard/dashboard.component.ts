@@ -82,7 +82,7 @@ export class DashboardComponent {
           //   name: "Error",
           //   dataPoints: [ {y: 6}, {y: 5}, {y: 8}, {y: 8}, {y: 5}, {y: 5}, {y: 4} ]
           // }
-        ]
+        ],
         options: {}
       });
         
