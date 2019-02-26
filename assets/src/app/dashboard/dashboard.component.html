@@ -1,10 +1,30 @@
 
 <h1>
-	Dashboard
+  Dashboard
 </h1>
 
 <h3>Workflow history</h3>
 <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+
+<div class=scale_selector>
+  <mat-form-field>
+    <mat-select
+      class="scale-select"
+      placeholder="Scale"
+      [(ngModel)]="selectedScale"
+      (selectionChange)="updateScale()"
+      >
+      <mat-option
+        *ngFor="let scale of scales"
+        [value]="scale.id"
+        [ngClass]="scale.id"
+        class="scale-option"
+        >
+        {{ scale.label }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
 
 <div *ngIf="application">
 

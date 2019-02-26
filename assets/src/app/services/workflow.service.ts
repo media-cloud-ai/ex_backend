@@ -72,7 +72,10 @@ export class WorkflowService {
   }
 
   getWorkflowStatistics(scale: string): Observable<WorkflowHistory> {
-    return this.http.get<Workflow>(this.workflowsUrl + '/statistics')
+    let params = new HttpParams()
+    params = params.append('scale', scale)
+
+    return this.http.get<Workflow>(this.workflowsUrl + '/statistics', {params: params})
       .pipe(
         tap(workflowPage => this.log('statistics Workflow')),
         catchError(this.handleError('getWorkflowStatistics', undefined))

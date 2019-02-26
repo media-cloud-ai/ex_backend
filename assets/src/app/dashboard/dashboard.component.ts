@@ -12,6 +12,7 @@ import {Application} from '../models/application'
 @Component({
     selector: 'dashboard-component',
     templateUrl: 'dashboard.component.html',
+    styleUrls: ['./dashboard.component.less'],
 })
 
 export class DashboardComponent {
@@ -22,6 +23,22 @@ export class DashboardComponent {
 
   subIn: Subscription
   subOut: Subscription
+
+  selectedScale: string = "hour"
+  scales = [
+    {
+      id: "minute",
+      label: "Minutes"
+    },
+    {
+      id: "hour",
+      label: "Hours"
+    },
+    {
+      id: "day",
+      label: "Days"
+    }
+  ]
 
   constructor(
     private applicationService: ApplicationService,
@@ -54,7 +71,15 @@ export class DashboardComponent {
       this.application = application
     })
 
-    this.workflowService.getWorkflowStatistics("hour")
+    this.renderChart("hour")
+  }
+
+  updateScale(event) {
+    this.renderChart(this.selectedScale)
+  }
+
+  renderChart(scale) {
+    this.workflowService.getWorkflowStatistics(scale)
     .subscribe(stats => {
       const total = stats.data.map((item, index) => {
         item['y'] = item['total']
@@ -69,6 +94,7 @@ export class DashboardComponent {
         // title: {
         //   text: "Workflow history"
         // },
+        backgroundColor: "#ffffff00",
         data: [
           {
             type: 'line',

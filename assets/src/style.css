@@ -37,3 +37,7 @@ pre.code {
   white-space: -pre-wrap;
   white-space: -o-pre-wrap;
 }
+ 
+.canvasjs-chart-credit {
+  display: none !important;
+}
