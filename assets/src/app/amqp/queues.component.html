@@ -10,7 +10,10 @@
         Name
       </span>
       <span class="messages">
-        Messages
+        Queued messages
+      </span>
+      <span class="messages">
+        Processing
       </span>
       <span class="consumers">
         Consumers
@@ -23,7 +26,11 @@
       </span>
       <span class=messages
         [ngClass]="{'empty': queue.messages == 0 }">
-        {{queue.messages}}
+        {{queue.messages - queue.messages_unacknowledged}}
+      </span>
+      <span class=messages
+        [ngClass]="{'processing': queue.messages_unacknowledged == 0 }">
+        {{queue.messages_unacknowledged}}
       </span>
       <span class=consumers
         [ngClass]="{'none': queue.consumers == 0 }">
