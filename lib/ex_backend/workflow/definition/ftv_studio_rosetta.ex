@@ -21,7 +21,6 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
         nil -> ""
         value -> value
       end
-      |> IO.inspect
       |> String.normalize(:nfd)
       |> String.replace(~r/[^A-z\s]/u, "")
       |> String.replace(~r/\s/, "-")
@@ -70,6 +69,12 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
   end
 
   def get_definition(source_mp4_paths, source_ttml_path, upload_pattern) do
+    source_ttml_paths =
+      case source_ttml_path do
+        nil -> []
+        path -> [path]
+      end
+
     %{
       steps: [
         %{
@@ -121,8 +126,8 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
               id: "source_paths",
               type: "paths",
               enable: true,
-              default: [source_ttml_path],
-              value: [source_ttml_path]
+              default: source_ttml_paths,
+              value: source_ttml_paths
             }
           ]
         },
