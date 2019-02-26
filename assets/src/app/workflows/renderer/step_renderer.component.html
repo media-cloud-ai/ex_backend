@@ -64,6 +64,16 @@
           [(ngModel)]='parameter.value'> -->
       </mat-form-field>
       <div
+        class="parameter"
+        *ngIf="parameter.type == 'paths'">
+        <label>
+          {{parameter.id | parameterLabel}}
+        </label>
+        <div class=value>
+          {{parameter.value | json}}
+        </div>
+      </div>
+      <div
         *ngIf="parameter.type == 'boolean'"
         class="parameter"
         [ngClass]="{disabled: !step.enable}"

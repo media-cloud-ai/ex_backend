@@ -22,6 +22,16 @@
             {{parameter.value | json}}
           </div>
         </div>
+        <mat-form-field
+          class="parameter"
+          *ngIf="parameter.type == 'paths'">
+          <label>
+            {{parameter.id | parameterLabel}}
+          </label>
+          <div class=value>
+            {{parameter.value | json}}
+          </div>
+        </mat-form-field>
         <div
           *ngIf="parameter.type == 'boolean'"
           class="parameter disabled">

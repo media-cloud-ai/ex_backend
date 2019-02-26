@@ -11,6 +11,18 @@ export class ParameterLabelPipe implements PipeTransform {
 
   transform(parameterLabel: string): string {
     var allLabels = [
+      { id: 'source_paths', name: 'Source Paths' },
+      { id: 'source_hostname', name: 'Source Hostname' },
+      { id: 'source_username', name: 'Source Username' },
+      { id: 'source_password', name: 'Source Password' },
+      { id: 'source_prefix', name: 'Source Prefix' },
+      { id: 'destination_paths', name: 'Destination Paths' },
+      { id: 'destination_hostname', name: 'Destination Hostname' },
+      { id: 'destination_username', name: 'Destination Username' },
+      { id: 'destination_password', name: 'Destination Password' },
+      { id: 'destination_prefix', name: 'Destination Prefix' },
+      { id: 'destination_pattern', name: 'Destination Pattern' },
+
       { id: 'segment_duration', name: 'Segment Duration' },
       { id: 'fragment_duration', name: 'Fragment Duration' },
       { id: 'audio_track', name: 'Audio track' },
