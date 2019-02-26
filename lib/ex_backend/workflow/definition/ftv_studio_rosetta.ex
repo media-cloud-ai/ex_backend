@@ -43,7 +43,7 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
           |> format_channel()
       end
 
-    "#{channel}/#{title}/#{broadcasted_at}/#{channel}_#{broadcasted_at}_#{title}_#{additional_title}#input_extension"
+    "#{channel}/#{title}/#{channel}_#{broadcasted_at}_#{title}_#{additional_title}#input_extension"
   end
 
   defp format_channel("france-2") do
