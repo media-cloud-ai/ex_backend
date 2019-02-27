@@ -27,14 +27,17 @@
         (selectionChange)="updateVideos()"
         multiple
         >
-        <mat-option
-          *ngFor="let channel of channels"
-          [value]="channel.id"
-          [ngClass]="channel.id"
-          class="channels-option"
-          >
+        <mat-optgroup
+          *ngFor="let channelGroup of allChannels"
+          [label]="channelGroup.label">
+          <mat-option
+            *ngFor="let channel of channelGroup.list"
+            [value]="channel.id"
+            [ngClass]="channel.id"
+            class="channels-option">
           {{ channel.label }}
-        </mat-option>
+          </mat-option>
+        </mat-optgroup>
       </mat-select>
     </mat-form-field>
   </div>
