@@ -246,7 +246,7 @@ export class CatalogComponent {
   start_ftvstudio_ingest(video) {
     this.workflowService.getWorkflowDefinition("ftv_studio_rosetta", video.id)
       .subscribe(workflowDefinition => {
-        workflowDefinition.reference = video.id
+        workflowDefinition.reference = video.iddsqf
         this.workflowService.createWorkflow(workflowDefinition)
           .subscribe(response => {
             let snackBarRef = this.snackBar.open("Rosetta ingest started for \"" + video.title + "\"", "Show workflow", {
