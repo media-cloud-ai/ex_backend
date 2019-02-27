@@ -101,11 +101,11 @@ defmodule ExBackend.Application do
       ExBackend.Migration.AddUserRight
     )
 
-    Ecto.Migrator.up(
-      ExBackend.Repo,
-      20_180_424_161_800,
-      ExBackend.Migration.WorkflowSteps
-    )
+    # Ecto.Migrator.up(
+    #   ExBackend.Repo,
+    #   20_180_424_161_800,
+    #   ExBackend.Migration.WorkflowSteps
+    # )
 
     Ecto.Migrator.up(
       ExBackend.Repo,
