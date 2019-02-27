@@ -96,14 +96,14 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilRdfIngest do
               %{
                 id: "destination_prefix",
                 type: "string",
-                default: "/home/Rosetta/",
-                value: "/home/Rosetta/"
+                default: "/mnt/data/",
+                value: "/mnt/data/"
               },
               %{
                 id: "ssl",
                 type: "boolean",
-                default: true,
-                value: true
+                default: false,
+                value: false
               }
             ]
           },
