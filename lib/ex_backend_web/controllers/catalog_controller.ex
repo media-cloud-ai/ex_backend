@@ -43,7 +43,14 @@ defmodule ExBackendWeb.CatalogController do
       Workflows.list_workflows(%{video_id: video_id})
       |> Map.get(:total)
 
-    video = Map.put(video, "workflows_count", total)
+    rosetta_count =
+      Workflows.list_workflows(%{video_id: video_id, identifier: "FranceTV Studio Ingest Rosetta"})
+      |> Map.get(:total)
+
+    video =
+      video
+      |> Map.put("workflows_count", total)
+      |> Map.put("rosetta_count", rosetta_count)
 
     url = Catalog.get_manifest_url(video_id)
     video = Map.put(video, "workflows_count", total)

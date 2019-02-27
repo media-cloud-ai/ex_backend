@@ -24,15 +24,11 @@ defmodule ExBackend.FrancetvSubtilIngestDashBadTest do
     test "bad id" do
       source_paths = []
       ttml_path = "https://staticftv-a.akamaihd.net/sous-titres/2018/12/09/195355542-5c0cf635d0b53-1544353508.ttml"
-      steps = ExBackend.Workflow.Definition.FrancetvSubtilDashIngest.get_definition(source_paths, ttml_path)
-
-      workflow_params = %{
-        reference: "bad_movie_id",
-        flow: steps
-      }
+      workflow_params =
+        ExBackend.Workflow.Definition.FrancetvSubtilDashIngest.get_definition(source_paths, ttml_path)
+        |> Map.put(:reference, "bad_movie_id")
 
       {:ok, workflow} = Workflows.create_workflow(workflow_params)
-
 
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)
       ExBackend.HelpersTest.check(workflow.id, 9)

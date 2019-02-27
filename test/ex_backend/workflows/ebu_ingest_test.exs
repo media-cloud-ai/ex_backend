@@ -51,12 +51,9 @@ defmodule ExBackend.EbuIngestTest do
     test "test ebu ingest workflow" do
       filename = "/data/input_filename.mp4"
 
-      steps = ExBackend.Workflow.Definition.EbuIngest.get_definition("identifier", filename)
-
-      workflow_params = %{
-        reference: filename,
-        flow: steps
-      }
+      workflow_params =
+        ExBackend.Workflow.Definition.EbuIngest.get_definition("identifier", filename)
+        |> Map.put(:reference, filename)
 
       {:ok, workflow} = Workflows.create_workflow(workflow_params)
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)

@@ -47,7 +47,8 @@ export class CatalogComponent {
     {id: 'france-3', label: 'France 3'},
     {id: 'france-4', label: 'France 4'},
     {id: 'france-5', label: 'France 5'},
-    {id: 'france-o', label: 'France Ô'}
+    {id: 'france-o', label: 'France Ô'},
+    {id: 'franceinfo', label: 'France Info'},
   ]
   selectedChannels = []
   live = false
@@ -231,9 +232,10 @@ export class CatalogComponent {
       }
     })
 
-    dialogRef.afterClosed().subscribe(steps => {
-      if (steps !== undefined) {
-        this.workflowService.createWorkflow({reference: video.id, flow: {steps: steps}})
+    dialogRef.afterClosed().subscribe(workflow => {
+      if (workflow !== undefined) {
+        workflow.reference = video.id
+        this.workflowService.createWorkflow(workflow)
         .subscribe(response => {
           console.log(response)
         })
@@ -244,7 +246,8 @@ export class CatalogComponent {
   start_ftvstudio_ingest(video) {
     this.workflowService.getWorkflowDefinition("ftv_studio_rosetta", video.id)
       .subscribe(workflowDefinition => {
-        this.workflowService.createWorkflow({reference: video.id, flow: {steps: workflowDefinition.steps}})
+        workflowDefinition.reference = video.id
+        this.workflowService.createWorkflow(workflowDefinition)
           .subscribe(response => {
             let snackBarRef = this.snackBar.open("Rosetta ingest started for \"" + video.title + "\"", "Show workflow", {
               duration: 4000,
@@ -260,10 +263,11 @@ export class CatalogComponent {
   start_all_process() {
     let dialogRef = this.dialog.open(WorkflowDialogComponent, {})
 
-    dialogRef.afterClosed().subscribe(steps => {
-      if (steps !== undefined) {
+    dialogRef.afterClosed().subscribe(workflow => {
+      if (workflow !== undefined) {
         for (let video of this.selectedVideos) {
-          this.workflowService.createWorkflow({reference: video.id, flow: {steps: steps}})
+          workflow.reference = video.id
+          this.workflowService.createWorkflow(workflow)
           .subscribe(response => {
             console.log(response)
           })

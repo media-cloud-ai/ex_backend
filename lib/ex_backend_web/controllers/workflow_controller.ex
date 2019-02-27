@@ -184,7 +184,7 @@ defmodule ExBackendWeb.WorkflowController do
   end
 
   def get(conn, %{"identifier" => workflow_identifier, "reference" => reference}) do
-    steps =
+    workflow =
       case workflow_identifier do
         "ebu_ingest" ->
           ExBackend.Workflow.Definition.EbuIngest.get_definition(
@@ -193,7 +193,20 @@ defmodule ExBackendWeb.WorkflowController do
           )
 
         "francetv_subtil_rdf_ingest" ->
-          ExBackend.Workflow.Definition.FrancetvSubtilRdfIngest.get_definition()
+          mp4_paths =
+            ExVideoFactory.get_ftp_paths_for_video_id(reference)
+            |> Enum.filter(fn path ->
+              String.contains?(path, "-standard5.mp4") ||
+              String.contains?(path, "-qad.mp4") ||
+              String.contains?(path, "-qaa.mp4")
+            end)
+            |> Enum.map(fn path -> String.replace(path, "/343079/http", "") end)
+
+          ttml_path =
+            ExVideoFactory.get_http_url_for_ttml(reference)
+            |> List.first
+
+          ExBackend.Workflow.Definition.FrancetvSubtilRdfIngest.get_definition(mp4_paths, ttml_path)
 
         "francetv_subtil_dash_ingest" ->
           ExBackend.Workflow.Definition.FrancetvSubtilDashIngest.get_definition(
@@ -227,7 +240,7 @@ defmodule ExBackendWeb.WorkflowController do
       end
 
     conn
-    |> json(steps)
+    |> json(workflow)
   end
 
   def get(conn, _params) do

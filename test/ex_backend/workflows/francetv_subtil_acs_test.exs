@@ -24,17 +24,13 @@ defmodule ExBackend.FrancetvSubtilAcsTest do
 
   describe "francetv_subtil_acs_workflow" do
     test "bad id" do
-      steps =
+      workflow_params =
         ExBackend.Workflow.Definition.FrancetvSubtilAcs.get_definition(
           "ftp://source/path.mp4",
           "http://static/source/path.ttml",
           nil
         )
-
-      workflow_params = %{
-        reference: "666",
-        flow: steps
-      }
+        |> Map.put(:reference, "666")
 
       {:ok, workflow} = Workflows.create_workflow(workflow_params)
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)

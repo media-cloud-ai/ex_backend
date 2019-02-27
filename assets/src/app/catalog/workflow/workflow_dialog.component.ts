@@ -1,7 +1,7 @@
 import {Component, Inject} from '@angular/core'
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material'
 
-import {Step} from '../../models/workflow'
+import {Step, Workflow} from '../../models/workflow'
 import {WorkflowRenderer} from '../../models/workflow_renderer'
 
 import {AuthService} from '../../authentication/auth.service'
@@ -17,10 +17,10 @@ export class WorkflowDialogComponent {
   ftvstudio : boolean
 
   selected_tab = 0
-  rdf_steps: Step[]
-  dash_steps: Step[]
-  acs_steps: Step[]
-  rosetta_steps: Step[]
+  rdf_workflow: Workflow
+  dash_workflow: Workflow
+  acs_workflow: Workflow
+  rosetta_workflow: Workflow
 
   constructor(
     public authService: AuthService,
@@ -35,23 +35,23 @@ export class WorkflowDialogComponent {
 
     this.workflowService.getWorkflowDefinition("francetv_subtil_rdf_ingest", data['reference'])
       .subscribe(workflowDefinition => {
-        this.rdf_steps = workflowDefinition.steps
+        this.rdf_workflow = workflowDefinition
       })
 
     this.workflowService.getWorkflowDefinition("francetv_subtil_dash_ingest", data['reference'])
       .subscribe(workflowDefinition => {
-        this.dash_steps = workflowDefinition.steps
+        this.dash_workflow = workflowDefinition
       })
 
     this.workflowService.getWorkflowDefinition("francetv_subtil_acs", data['reference'])
       .subscribe(workflowDefinition => {
-        this.acs_steps = workflowDefinition.steps
+        this.acs_workflow = workflowDefinition
       })
 
     this.workflowService.getWorkflowDefinition("ftv_studio_rosetta", data['reference'])
       .subscribe(workflowDefinition => {
         console.log(workflowDefinition)
-        this.rosetta_steps = workflowDefinition.steps
+        this.rosetta_workflow = workflowDefinition
       })
   }
   
@@ -64,36 +64,30 @@ export class WorkflowDialogComponent {
   }
 
   onClose(): void {
-    var src_steps = []
+    var workflow = undefined
     switch(this.selected_tab) {
       case 0: {
-        src_steps = this.rdf_steps
+        workflow = this.rdf_workflow
         break;
       }
       case 1: {
-        src_steps = this.dash_steps
+        workflow = this.dash_workflow
         break;
       }
       case 2: {
-        src_steps = this.acs_steps
+        workflow = this.acs_workflow
         break;
       }
       case 3: {
-        src_steps = this.rosetta_steps
+        workflow = this.rosetta_workflow
         break;
       }
       default: {
-        src_steps = this.rdf_steps
+        workflow = this.rdf_workflow
       }
     }
 
-    var steps = []
-    for (let step of src_steps) {
-      if (step.enable === true) {
-        steps.push(step)
-      }
-    }
-    this.dialogRef.close(steps)
+    this.dialogRef.close(workflow)
   }
 
   toNumber(param): void  {

@@ -45,7 +45,12 @@ export class Artifact {
 
 export class Workflow {
   id?: number
-  reference: string
+  identifier?: string
+  version_major?: string
+  version_minor?: string
+  version_micro?: string
+  tags?: string[]
+  reference?: string
   created_at?: string
   artifacts?: Artifact
   flow: Flow

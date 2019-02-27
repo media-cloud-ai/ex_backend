@@ -95,7 +95,7 @@ defmodule ExBackendWeb.Docker.ImagesController do
 
   defp build_images([image | images], environment, volumes, image_list) do
     image_environment =
-      if Enum.any?(image.repo_tags, fn tag -> String.starts_with?(tag, "ftvsubtil/acs_worker") end) do
+      if image.repo_tags && Enum.any?(image.repo_tags, fn tag -> String.starts_with?(tag, "ftvsubtil/acs_worker") end) do
         Map.put(environment, :AMQP_QUEUE, "acs")
       else
         environment
@@ -119,6 +119,7 @@ defmodule ExBackendWeb.Docker.ImagesController do
     build_images(images, environment, volumes, image_list)
   end
 
+  defp get_tag(nil), do: "Unknown"
   defp get_tag([]), do: ""
   defp get_tag(tags) do
     List.first(tags)

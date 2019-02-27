@@ -16,6 +16,11 @@ defmodule ExBackendWeb.WorkflowView do
   def render("workflow.json", %{workflow: workflow}) do
     result = %{
       id: workflow.id,
+      identifier: workflow.identifier,
+      version_major: workflow.version_major,
+      version_minor: workflow.version_minor,
+      version_micro: workflow.version_micro,
+      tags: workflow.tags,
       reference: workflow.reference,
       flow: workflow.flow,
       created_at: workflow.inserted_at

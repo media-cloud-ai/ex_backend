@@ -131,10 +131,10 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilAcs do
       }
     ]
 
-    case dash_manifest_url do
-      nil ->
-        %{
-          steps: common_steps ++ [
+    steps = 
+      case dash_manifest_url do
+        nil ->
+          [
             %{
               id: 4,
               name: "upload_ftp",
@@ -200,10 +200,8 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilAcs do
               enable: true
             }
           ]
-        }
-      _ ->
-        %{
-          steps: common_steps ++ [
+        _ ->
+          [
             %{
               id: 5,
               parent_ids: [4],
@@ -312,7 +310,17 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilAcs do
               enable: true
             }
           ]
-        }
-    end
+      end
+
+    %{
+      identifier: "FranceTélévisions ACS",
+      version_major: 0,
+      version_minor: 0,
+      version_micro: 0,
+      tags: ["francetélévisions", "acs"],
+      flow: %{
+        steps: common_steps ++ steps
+      }
+    }
   end
 end

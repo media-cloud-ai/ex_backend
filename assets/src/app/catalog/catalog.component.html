@@ -205,7 +205,10 @@
         </span>
       </span>
       <span class="icons live">
-        <i *ngIf="video.broadcasted_live" title="Diffusé en direct">Direct</i>
+        <i *ngIf="video.broadcasted_live" title="Broadcasted live">Live</i>
+      </span>
+      <span class="icons rosetta">
+        <i *ngIf="video.rosetta_count > 0" title="Delivered to Rosetta">Delivered</i>
       </span>
       <span class="icons parent">
         <span *ngIf="video.parent_id" (click)="gotoVideo(video.parent_id)">

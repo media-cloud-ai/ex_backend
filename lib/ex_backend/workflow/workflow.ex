@@ -6,6 +6,11 @@ defmodule ExBackend.Workflows.Workflow do
   alias ExBackend.Artifacts.Artifact
 
   schema "workflow" do
+    field(:identifier, :string)
+    field(:version_major, :integer)
+    field(:version_minor, :integer)
+    field(:version_micro, :integer)
+    field(:tags, {:array, :string}, default: [])
     field(:reference, :string)
     field(:flow, :map)
     has_many(:jobs, Job, on_delete: :delete_all)
@@ -17,7 +22,22 @@ defmodule ExBackend.Workflows.Workflow do
   @doc false
   def changeset(%Workflow{} = workflow, attrs) do
     workflow
-    |> cast(attrs, [:reference, :flow])
-    |> validate_required([:reference, :flow])
+    |> cast(attrs, [
+      :identifier,
+      :version_major,
+      :version_minor,
+      :version_micro,
+      :tags,
+      :reference,
+      :flow
+    ])
+    |> validate_required([
+      :identifier,
+      :version_major,
+      :version_minor,
+      :version_micro,
+      :reference,
+      :flow
+    ])
   end
 end

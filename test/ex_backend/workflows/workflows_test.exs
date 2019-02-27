@@ -7,7 +7,7 @@ defmodule ExBackend.WorkflowsTest do
   describe "workflows" do
     alias ExBackend.Workflows.Workflow
 
-    @valid_attrs %{reference: "some id", flow: %{steps: []}}
+    @valid_attrs %{identifier: "id", version_major: 6, version_minor: 5, version_micro: 4, reference: "some id", flow: %{steps: []}}
     @update_attrs %{reference: "some updated id", flow: %{steps: [%{action: "something"}]}}
     @invalid_attrs %{reference: nil, flow: nil}
 

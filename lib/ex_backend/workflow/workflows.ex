@@ -47,6 +47,32 @@ defmodule ExBackend.Workflows do
           from(workflow in Workflow, where: workflow.reference == ^video_id)
       end
 
+    query =
+      case ExBackend.Map.get_by_key_or_atom(params, :identifier) do
+        nil -> query
+        identifier ->
+          from(workflow in query, where: workflow.identifier == ^identifier)
+      end
+
+    query =
+      case ExBackend.Map.get_by_key_or_atom(params, :version_major) do
+        nil -> query
+        version_major ->
+          from(workflow in query, where: workflow.version_major == ^version_major)
+      end
+    query =
+      case ExBackend.Map.get_by_key_or_atom(params, :version_minor) do
+        nil -> query
+        version_minor ->
+          from(workflow in query, where: workflow.version_minor == ^version_minor)
+      end
+    query =
+      case ExBackend.Map.get_by_key_or_atom(params, :version_micro) do
+        nil -> query
+        version_micro ->
+          from(workflow in query, where: workflow.version_micro == ^version_micro)
+      end
+
     status = Map.get(params, "state")
 
     query =

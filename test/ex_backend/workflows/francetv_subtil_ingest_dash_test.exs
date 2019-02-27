@@ -33,12 +33,9 @@ defmodule ExBackend.FrancetvSubtilIngestDashTest do
 
       ttml_path = "https://staticftv-a.akamaihd.net/sous-titres/2018/12/09/195355542-5c0cf635d0b53-1544353508.ttml"
 
-      steps = ExBackend.Workflow.Definition.FrancetvSubtilDashIngest.get_definition(source_paths, ttml_path)
-
-      workflow_params = %{
-        reference: "99787afd-ba2d-410f-b03e-66cf2efb3ed5",
-        flow: steps
-      }
+      workflow_params =
+        ExBackend.Workflow.Definition.FrancetvSubtilDashIngest.get_definition(source_paths, ttml_path)
+        |> Map.put(:reference, "99787afd-ba2d-410f-b03e-66cf2efb3ed5")
 
       {:ok, workflow} = Workflows.create_workflow(workflow_params)
 

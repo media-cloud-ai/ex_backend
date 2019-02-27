@@ -28,6 +28,7 @@ defmodule ExBackendWeb.CatalogView do
       creation: video["created_at"],
       broadcasted_at: video["broadcasted_at"],
       workflows_count: video["workflows_count"],
+      rosetta_count: video["rosetta_count"],
       audio_tracks: video["audio_tracks"],
       text_tracks: video["text_tracks"],
       manifest_url: video["manifest_url"],

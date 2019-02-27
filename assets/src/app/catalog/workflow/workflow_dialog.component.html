@@ -9,7 +9,8 @@
         Ingest RDF
       </ng-template>
       <workflow-renderer-component
-        [steps]=rdf_steps>
+        *ngIf="rdf_workflow && rdf_workflow.flow"
+        [steps]=rdf_workflow.flow.steps>
       </workflow-renderer-component>
     </mat-tab>
 
@@ -19,7 +20,8 @@
         Ingest DASH
       </ng-template>
       <workflow-renderer-component
-        [steps]=dash_steps>
+        *ngIf="dash_workflow && dash_workflow.flow"
+        [steps]=dash_workflow.flow.steps>
       </workflow-renderer-component>
     </mat-tab>
     <mat-tab>
@@ -28,7 +30,8 @@
         ACS
       </ng-template>
       <workflow-renderer-component
-        [steps]=acs_steps>
+        *ngIf="acs_workflow && acs_workflow.flow"
+        [steps]=acs_workflow.flow.steps>
       </workflow-renderer-component>
     </mat-tab>
     <mat-tab *ngIf="ftvstudio">
@@ -37,7 +40,8 @@
         Rosetta
       </ng-template>
       <workflow-renderer-component
-        [steps]=rosetta_steps>
+        *ngIf="rosetta_workflow && rosetta_workflow.flow"
+        [steps]=rosetta_workflow.flow.steps>
       </workflow-renderer-component>
     </mat-tab>
   </mat-tab-group>
