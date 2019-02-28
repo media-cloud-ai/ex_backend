@@ -6,7 +6,7 @@ stages:
 variables:
   CONTAINER_LOCAL_IMAGE: ex_subtil_backend
   CONTAINER_REGISTRY: registry.gitlab.com
-  CONTAINER_IMAGE_NAME: mediaio/ex_subtil_backend
+  CONTAINER_IMAGE_NAME: ftvsubtil/ex_subtil_backend
 
 before_script:
   - docker info
