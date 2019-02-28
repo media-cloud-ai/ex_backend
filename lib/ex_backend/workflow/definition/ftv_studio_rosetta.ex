@@ -26,13 +26,9 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
       |> String.replace(~r/\s/, "-")
       |> String.split_at(47)
 
-    broadcasted_at = Map.get(video, "broadcasted_at")
-
-    {:ok, date} =
-      broadcasted_at
-      |> Timex.parse("%Y-%m-%dT%H:%M:%S", :strftime)
-
-    {:ok, broadcasted_at} = Timex.format(date, "%Y%m%d_%H%M", :strftime)
+    broadcasted_at =
+      Map.get(video, "broadcasted_at")
+      |> format_broadcasted_at()
 
     channel =
       case Map.get(video, "channel") do
@@ -44,6 +40,16 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
       end
 
     "#{channel}/#{title}/#{channel}_#{broadcasted_at}_#{title}_#{additional_title}#input_extension"
+  end
+
+  defp format_broadcasted_at(nil) do
+    "00000000_0000"
+  end
+
+  defp format_broadcasted_at(date) do
+    {:ok, date_object} = Timex.parse(date, "%Y-%m-%dT%H:%M:%S", :strftime)
+    {:ok, broadcasted_at} = Timex.format(date_object, "%Y%m%d_%H%M", :strftime)
+    broadcasted_at
   end
 
   defp format_channel("france-2") do

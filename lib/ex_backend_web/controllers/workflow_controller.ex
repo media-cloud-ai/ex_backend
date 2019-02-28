@@ -116,19 +116,48 @@ defmodule ExBackendWeb.WorkflowController do
       ExVideoFactory.get_http_url_for_ttml(reference)
       |> List.first
 
-    steps = ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition(mp4_paths, ttml_path, upload_pattern)
-
-    workflow_params = %{
-      reference: reference,
-      flow: steps
-    }
+    workflow_params =
+      ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition(mp4_paths, ttml_path, upload_pattern)
+      |> Map.put(:reference, reference)
 
     {:ok, workflow} = Workflows.create_workflow(workflow_params)
-    {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+    {:ok, response_status} = WorkflowStep.start_next_step(workflow)
 
     conn
     |> json(%{
-      status: "started",
+      status: response_status,
+      workflow_id: workflow.id
+    })
+  end
+
+  def create_specific(conn, %{
+        "identifier" => "ingest-subtil",
+        "reference" => reference
+      }) do
+
+    mp4_paths =
+      ExVideoFactory.get_ftp_paths_for_video_id(reference)
+      |> Enum.filter(fn path ->
+        String.contains?(path, "-standard5.mp4") ||
+        String.contains?(path, "-qad.mp4") ||
+        String.contains?(path, "-qaa.mp4")
+      end)
+      |> Enum.map(fn path -> String.replace(path, "/343079/http", "") end)
+
+    ttml_path =
+      ExVideoFactory.get_http_url_for_ttml(reference)
+      |> List.first
+
+    workflow_params =
+      ExBackend.Workflow.Definition.FrancetvSubtilRdfIngest.get_definition(mp4_paths, ttml_path)
+      |> Map.put(:reference, reference)
+
+    {:ok, workflow} = Workflows.create_workflow(workflow_params)
+    {:ok, response_status} = WorkflowStep.start_next_step(workflow)
+
+    conn
+    |> json(%{
+      status: response_status,
       workflow_id: workflow.id
     })
   end
@@ -152,6 +181,17 @@ defmodule ExBackendWeb.WorkflowController do
     |> json(%{
       status: "error",
       message: "missing parameters to start ingest-dash workflow"
+    })
+  end
+
+  def create_specific(conn, %{"identifier" => "ingest-subtil"} = params) do
+    IO.inspect(params)
+
+    conn
+    |> put_status(:unprocessable_entity)
+    |> json(%{
+      status: "error",
+      message: "missing parameters to start ingest-subtil workflow"
     })
   end
 
