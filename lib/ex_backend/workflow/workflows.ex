@@ -80,8 +80,9 @@ defmodule ExBackend.Workflows do
         if not ("completed" in status) do
           from(
             workflow in query,
-            left_join: artifact in assoc(workflow, :artifacts),
-            where: is_nil(artifact.id)
+            join: jobs in assoc(workflow, :jobs),
+            join: status in assoc(jobs, :status),
+            where: status.state in ^status,
           )
         else
           if status == ["completed"] do
