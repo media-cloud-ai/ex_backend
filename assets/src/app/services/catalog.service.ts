@@ -21,7 +21,8 @@ export class CatalogService {
     dateRange: DateRange,
     videoid: string,
     live: boolean,
-    integrale: boolean)
+    integrale: boolean,
+    selectedOrder: string)
   : Observable<CatalogPage> {
 
     let params = new HttpParams()
@@ -41,7 +42,11 @@ export class CatalogService {
     }
     if (videoid.length === 36){
       params = params.append('qid', videoid)
+    } else {
+      // disable sort order on ID research
+      params = params.append('sort', selectedOrder)
     }
+
     if (page > 0) {
       params = params.append('page', String(page + 1))
     }
@@ -51,8 +56,6 @@ export class CatalogService {
     if (dateRange.getEnd() !== undefined){
       params = params.append('broadcasted_before', dateRange.getEnd().format())
     }
-
-    params = params.append('sort', '-broadcasted_at')
 
     return this.http.get<CatalogPage>(this.catalogUrl, {params: params})
       .pipe(

@@ -82,6 +82,28 @@
           (click)="videoid = ''; updateVideos()" >clear</mat-icon>
     </mat-form-field>
   </div>
+  <div class=channels_selector>
+    <mat-form-field>
+      <mat-select
+        class="order-select"
+        placeholder="Order by"
+        [(ngModel)]="selectedOrder"
+        (selectionChange)="updateVideos()"
+        >
+        <mat-optgroup
+          *ngFor="let orderGroup of allOrders"
+          [label]="orderGroup.label">
+          <mat-option
+            *ngFor="let order of orderGroup.list"
+            [value]="order.id"
+            [ngClass]="order.id"
+            class="order-option">
+          {{ order.label }}
+          </mat-option>
+        </mat-optgroup>
+      </mat-select>
+    </mat-form-field>
+  </div>
   <div>
     <mat-slide-toggle
         color="primary"

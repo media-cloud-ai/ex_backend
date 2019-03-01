@@ -100,7 +100,27 @@ export class CatalogComponent {
     }
   ]
 
+  allOrders = [
+    {
+      label: "Ascending",
+      list: [
+        {id: 'broadcasted_at', label: 'Asc Broadcasting At'},
+        {id: 'created_at', label: 'Asc Created At'},
+        {id: 'updated_at', label: 'Asc Updated At'},
+      ]
+    }
+    {
+      label: "Descending",
+      list: [
+        {id: '-broadcasted_at', label: 'Desc Broadcasting At'},
+        {id: '-created_at', label: 'Desc Created At'},
+        {id: '-updated_at', label: 'Desc Updated At'},
+      ]
+    }
+  ]
+
   selectedChannels = []
+  selectedOrder = '-broadcasted_at'
   live = false
   integrale = false
 
@@ -163,7 +183,8 @@ export class CatalogComponent {
       this.dateRange,
       this.videoid,
       this.live,
-      this.integrale)
+      this.integrale,
+      this.selectedOrder)
     .subscribe(videoPage => {
       this.loading = false
       this.selectedVideos = []
