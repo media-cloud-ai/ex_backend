@@ -11,7 +11,7 @@ defmodule ExBackend.Workflow.Step.PushRdf do
     sources = Requirements.get_source_files(workflow.jobs, step)
 
     parameters =
-      Map.get(step, "parameters", []) ++
+      ExBackend.Map.get_by_key_or_atom(step, :parameters, []) ++
         [
           %{
             "id" => "reference",
