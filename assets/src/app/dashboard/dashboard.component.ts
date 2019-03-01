@@ -81,11 +81,42 @@ export class DashboardComponent {
   renderChart(scale) {
     this.workflowService.getWorkflowStatistics(scale)
     .subscribe(stats => {
-      const total = stats.data.map((item, index) => {
-        item['y'] = item['total']
-        item['x'] = -index
-        return item
-      });
+      var totalData = []
+      var rosettaData = []
+      var rdfData = []
+      var dashData = []
+      var acsData = []
+
+      let suffix = "h"
+      if(this.selectedScale == "minute") {
+        suffix = "m"
+      }
+      if(this.selectedScale == "day") {
+        suffix = "d"
+      }
+
+      for(var index = 0; index < stats.data.length; ++index) {
+        totalData.push({
+          x: -index,
+          y: stats.data[index]['total']
+        })
+        rosettaData.push({
+          x: -index,
+          y: stats.data[index]['rosetta']
+        })
+        rdfData.push({
+          x: -index,
+          y: stats.data[index]['ingest_rdf']
+        })
+        dashData.push({
+          x: -index,
+          y: stats.data[index]['ingest_dash']
+        })
+        acsData.push({
+          x: -index,
+          y: stats.data[index]['process_acs']
+        })
+      }
 
       let chart = new CanvasJS.Chart("chartContainer", {
         // animationEnabled: true,
@@ -94,19 +125,48 @@ export class DashboardComponent {
         // title: {
         //   text: "Workflow history"
         // },
+
+        // legend: {
+        //   horizontalAlign: "left", // "center" , "right"
+        //   verticalAlign: "center",  // "top" , "bottom"
+        //   fontSize: 15
+        // },
         backgroundColor: "#ffffff00",
         data: [
           {
             type: 'line',
             name: "Total",
-            dataPoints: total
+            toolTipContent: "<b>{name}</b>: {y}",
+            dataPoints: totalData
           },
-          // {
-          //   type: 'line',
-          //   name: "Error",
-          //   dataPoints: [ {y: 6}, {y: 5}, {y: 8}, {y: 8}, {y: 5}, {y: 5}, {y: 4} ]
-          // }
+          {
+            type: 'line',
+            name: "Rosetta",
+            toolTipContent: "<b>{name}</b>: {y}",
+            dataPoints: rosettaData
+          },
+          {
+            type: 'line',
+            name: "Ingest RDF",
+            toolTipContent: "<b>{name}</b>: {y}",
+            dataPoints: rdfData
+          },
+          {
+            type: 'line',
+            name: "DASH Ingest",
+            toolTipContent: "<b>{name}</b>: {y}",
+            dataPoints: dashData
+          },
+          {
+            type: 'line',
+            name: "ACS Process",
+            toolTipContent: "<b>{name}</b>: {y}",
+            dataPoints: acsData
+          },
         ],
+        axisX: {
+            suffix: suffix
+        },
         options: {}
       });
         

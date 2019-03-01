@@ -361,10 +361,14 @@ defmodule ExBackend.Workflows do
 
 
   def get_workflow_history(%{scale: scale}) do
-    Enum.map(0..99,
+    Enum.map(0..49,
       fn index ->
         %{
           total: query_total(scale, -index, -index-1),
+          rosetta: query_by_identifier(scale, -index, -index-1, "FranceTV Studio Ingest Rosetta"),
+          ingest_rdf: query_by_identifier(scale, -index, -index-1, "FranceTélévisions Rdf Ingest"),
+          ingest_dash: query_by_identifier(scale, -index, -index-1, "FranceTélévisions Dash Ingest"),
+          process_acs: query_by_identifier(scale, -index, -index-1, "FranceTélévisions ACS"),
         }
       end
     )
@@ -375,6 +379,19 @@ defmodule ExBackend.Workflows do
       from(
         workflow in Workflow,
         where: workflow.inserted_at > datetime_add(^NaiveDateTime.utc_now, ^delta_max, ^scale) and
+          workflow.inserted_at < datetime_add(^NaiveDateTime.utc_now, ^delta_min, ^scale),
+        ),
+      :count, :id
+    )
+  end
+
+  defp query_by_identifier(scale, delta_min, delta_max, identifier) do
+    Repo.aggregate(
+      from(
+        workflow in Workflow,
+        where:
+          workflow.identifier == ^identifier and
+          workflow.inserted_at > datetime_add(^NaiveDateTime.utc_now, ^delta_max, ^scale) and
           workflow.inserted_at < datetime_add(^NaiveDateTime.utc_now, ^delta_min, ^scale),
         ),
       :count, :id
