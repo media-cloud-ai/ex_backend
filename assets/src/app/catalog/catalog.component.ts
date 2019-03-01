@@ -108,7 +108,7 @@ export class CatalogComponent {
         {id: 'created_at', label: 'Asc Created At'},
         {id: 'updated_at', label: 'Asc Updated At'},
       ]
-    }
+    },
     {
       label: "Descending",
       list: [
