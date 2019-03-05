@@ -11,8 +11,8 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
         nil -> ""
         value -> value
       end
-      |> String.normalize(:nfd)
-      |> String.replace(~r/[^A-z\s]/u, "")
+      |> :unicode.characters_to_nfd_binary
+      |> String.replace(~r/[^A-z0-9-\s]/u, "")
       |> String.replace(~r/\s/, "-")
       |> String.split_at(47)
 
@@ -21,8 +21,8 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
         nil -> ""
         value -> value
       end
-      |> String.normalize(:nfd)
-      |> String.replace(~r/[^A-z\s]/u, "")
+      |> :unicode.characters_to_nfd_binary
+      |> String.replace(~r/[^A-z0-9-\s]/u, "")
       |> String.replace(~r/\s/, "-")
       |> String.split_at(47)
 
