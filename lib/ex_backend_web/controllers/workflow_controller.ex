@@ -59,12 +59,9 @@ defmodule ExBackendWeb.WorkflowController do
         "mp4_path" => mp4_path
       } = params) do
     dash_manifest_url = Map.get(params, "dash_manifest_url")
-    steps = ExBackend.Workflow.Definition.FrancetvSubtilAcs.get_definition(mp4_path, ttml_path, dash_manifest_url)
-
-    workflow_params = %{
-      reference: reference,
-      flow: steps
-    }
+    workflow_params =
+      ExBackend.Workflow.Definition.FrancetvSubtilAcs.get_definition(mp4_path, ttml_path, dash_manifest_url)
+      |> Map.put(:reference, reference)
 
     {:ok, workflow} = Workflows.create_workflow(workflow_params)
     {:ok, "started"} = WorkflowStep.start_next_step(workflow)
@@ -82,12 +79,9 @@ defmodule ExBackendWeb.WorkflowController do
         "ttml_path" => ttml_path,
         "mp4_paths" => mp4_paths
       }) do
-    steps = ExBackend.Workflow.Definition.FrancetvSubtilDashIngest.get_definition(mp4_paths, ttml_path)
-
-    workflow_params = %{
-      reference: reference,
-      flow: steps
-    }
+    workflow_params =
+      ExBackend.Workflow.Definition.FrancetvSubtilDashIngest.get_definition(mp4_paths, ttml_path)
+      |> Map.put(:reference, reference)
 
     {:ok, workflow} = Workflows.create_workflow(workflow_params)
     {:ok, "started"} = WorkflowStep.start_next_step(workflow)
