@@ -2,13 +2,13 @@
   <div class=loading_content>
     <div class=logo>
       <div class=wrapper>
-        <img class=logo_img src="/bundles/images/mediaio_logo.png">
+        <p class="loading-text">
+          Loading ...
+        </p>
+        <img class=logo_img src="/bundles/images/media-io.animated.svg">
       </div>
     </div>
     <div class=loading>
-      <h1>
-        Loading ...
-      </h1>
     </div>
   </div>
 </app-component>
