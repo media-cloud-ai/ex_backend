@@ -3,24 +3,42 @@
 </h1>
 
 <div class=search>
-    <mat-form-field>
-      <mat-select
-        class="status-select"
-        placeholder="Status"
-        [(ngModel)]="selectedStatus"
-        (selectionChange)="updateSearchStatus()"
-        multiple
+  <mat-form-field>
+    <mat-select
+      class="status-select"
+      placeholder="Status"
+      [(ngModel)]="selectedStatus"
+      (selectionChange)="updateSearchStatus()"
+      multiple
+      >
+      <mat-option
+        *ngFor="let state of status"
+        [value]="state.id"
+        [ngClass]="state.id"
+        class="state-option"
         >
-        <mat-option
-          *ngFor="let state of status"
-          [value]="state.id"
-          [ngClass]="state.id"
-          class="state-option"
-          >
-          {{ state.label }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+        {{ state.label }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select
+      class="status-select"
+      placeholder="Workflows"
+      [(ngModel)]="selectedWorkflows"
+      (selectionChange)="updateSearchWorkflows()"
+      multiple
+      >
+      <mat-option
+        *ngFor="let workflow_id of workflow_ids"
+        [value]="workflow_id.id"
+        [ngClass]="workflow_id.id"
+        class="workflow-option"
+        >
+        {{ workflow_id.label }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 </div>
 
 <ul *ngIf="workflows" class="workflows">

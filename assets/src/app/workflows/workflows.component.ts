@@ -36,10 +36,24 @@ export class WorkflowsComponent {
     'processing',
   ]
 
+  selectedWorkflows = [
+    'FranceTV Studio Ingest Rosetta',
+    'FranceTélévisions Rdf Ingest',
+    'FranceTélévisions ACS',
+    'FranceTélévisions Dash Ingest',
+  ]
+
   status = [
     {id: 'completed', label: 'Completed'},
     {id: 'error', label: 'Error'},
     {id: 'processing', label: 'Processing'},
+  ]
+
+  workflow_ids = [
+    {id: 'FranceTV Studio Ingest Rosetta', label: 'FranceTV Studio Ingest Rosetta'},
+    {id: 'FranceTélévisions Rdf Ingest', label: 'FranceTélévisions Rdf Ingest'},
+    {id: 'FranceTélévisions ACS', label: 'FranceTélévisions ACS'},
+    {id: 'FranceTélévisions Dash Ingest', label: 'FranceTélévisions Dash Ingest'},
   ]
 
   pageEvent: PageEvent
@@ -69,7 +83,13 @@ export class WorkflowsComponent {
         if (status) {
           this.selectedStatus = status
         }
-
+        var workflows = params['workflows[]']
+        if (workflows && !Array.isArray(workflows)){
+          workflows = [workflows]
+        }
+        if (workflows) {
+          this.selectedWorkflows = workflows
+        }
         this.getWorkflows(this.page)
 
         this.socketService.initSocket()
@@ -92,7 +112,7 @@ export class WorkflowsComponent {
     }
   }
 
-  getWorkflows(index): void {
+  getWorkflows(index) {
     for (let connection of this.connections) {
       connection.unsubscribe()
     }
@@ -101,7 +121,8 @@ export class WorkflowsComponent {
       index,
       this.pageSize,
       this.video_id,
-      this.selectedStatus)
+      this.selectedStatus,
+      this.selectedWorkflows)
     .subscribe(workflowPage => {
       if (workflowPage === undefined) {
         this.length = undefined
@@ -121,18 +142,18 @@ export class WorkflowsComponent {
     })
   }
 
-  eventGetWorkflows(event): void {
+  eventGetWorkflows(event) {
     this.pageSize = event.pageSize
     this.router.navigate(['/workflows'], { queryParams: this.getQueryParamsForPage(event.pageIndex, event.pageSize) })
     this.getWorkflows(event.pageIndex)
   }
 
-  updateWorkflows(): void {
+  updateWorkflows() {
     this.router.navigate(['/workflows'], { queryParams: this.getQueryParamsForPage(0) })
     this.getWorkflows(0)
   }
 
-  updateSearchStatus(workflow_id): void {
+  updateSearchStatus(workflow_id) {
     this.router.navigate(['/workflows'], {
       queryParams: this.getQueryParamsForPage(
         this.page,
@@ -141,7 +162,16 @@ export class WorkflowsComponent {
     this.getWorkflows(0)
   }
 
-  updateWorkflow(workflow_id): void {
+  updateSearchWorkflows() {
+    this.router.navigate(['/workflows'], {
+      queryParams: this.getQueryParamsForPage(
+        this.page,
+        this.pageSize)
+    })
+    this.getWorkflows(0)
+  }
+
+  updateWorkflow(workflow_id) {
     this.workflowService.getWorkflow(workflow_id)
     .subscribe(workflowData => {
       for (let i = 0; i < this.workflows.data.length; i++) {
@@ -170,8 +200,11 @@ export class WorkflowsComponent {
     if (this.video_id !== '') {
       params['video_id'] = this.video_id
     }
-    if (this.selectedStatus !== ['error', 'processing']) {
+    if (this.selectedStatus.length != 3) {
       params['status[]'] = this.selectedStatus
+    }
+    if (this.selectedWorkflows.length !== 4) {
+      params['workflows[]'] = this.selectedWorkflows
     }
 
     return params

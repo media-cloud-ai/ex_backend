@@ -99,6 +99,18 @@ defmodule ExBackend.Workflows do
         query
       end
 
+    workflow_ids = Map.get(params, "workflow_ids")
+
+    query =
+      if workflow_ids != nil do
+        from(
+          workflow in query,
+          where: workflow.identifier in ^workflow_ids,
+        )
+      else
+        query
+      end
+
     total_query = from(item in query, select: count(item.id))
 
     total =
