@@ -18,7 +18,7 @@ defmodule ExBackendWeb.WatchChannel do
 
     {:ok, _} =
       Presence.track(socket, socket.assigns.user_id, %{
-        online_at: inspect(System.system_time(:seconds)),
+        online_at: inspect(System.system_time(:second)),
         message: message
       })
 
