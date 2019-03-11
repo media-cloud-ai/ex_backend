@@ -29,6 +29,7 @@ export class WorkflowsComponent {
   video_id: string
   page = 0
   sub = undefined
+  loading = true
 
   selectedStatus = [
     'completed',
@@ -116,7 +117,7 @@ export class WorkflowsComponent {
     for (let connection of this.connections) {
       connection.unsubscribe()
     }
-
+    this.loading = true
     this.workflowService.getWorkflows(
       index,
       this.pageSize,
@@ -132,7 +133,7 @@ export class WorkflowsComponent {
 
       this.workflows = workflowPage
       this.length = workflowPage.total
-
+      this.loading = false
       for (let workflow of this.workflows.data) {
         var connection = this.socketService.onWorkflowUpdate(workflow.id)
           .subscribe((message: Message) => {

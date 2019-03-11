@@ -41,7 +41,15 @@
   </mat-form-field>
 </div>
 
-<ul *ngIf="workflows" class="workflows">
+<div *ngIf="loading" class="loading">
+  <span>
+    <img src="/bundles/images/media-io.animated.svg" width="50px" height="50px" />
+  </span>
+  <span class=text>
+    Loading ...
+  </span>
+</div>
+<ul *ngIf="workflows && !loading" class="workflows">
   <li *ngIf="workflows.total == 0"
      class="notfound">
     No workflow found.
@@ -61,5 +69,6 @@
   [pageSize]="pageSize"
   [pageIndex]="page"
   [pageSizeOptions]="pageSizeOptions"
-  (page)="pageEvent = eventGetWorkflows($event)">
+  (page)="pageEvent = eventGetWorkflows($event)"
+  *ngIf="workflows && !loading" >
 </mat-paginator>
