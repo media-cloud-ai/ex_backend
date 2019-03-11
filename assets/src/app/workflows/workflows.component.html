@@ -39,6 +39,13 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
+  <mat-slide-toggle
+    color="primary"
+    [checked]="detailed"
+    [(ngModel)]="detailed"
+    (change)="updateSearchStatus()">
+    Detailed all
+  </mat-slide-toggle>
 </div>
 
 <div *ngIf="loading" class="loading">
@@ -58,7 +65,7 @@
     *ngFor="let workflow of workflows.data"
     class="workflow"
     >
-    <workflow-component [workflow]=workflow></workflow-component>
+    <workflow-component [workflow]=workflow [detailed]=detailed></workflow-component>
   </li>
 </ul>
 

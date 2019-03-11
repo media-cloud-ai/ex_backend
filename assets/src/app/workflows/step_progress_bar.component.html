@@ -1,22 +1,60 @@
-<div class="progress">
+<div class="progress"
+  [ngClass]="{detailed: detailed}">
   <span
     class="skipped"
     title="{{step.name | jobType}}: skipped"
     [ngStyle]="{'flex': step.jobs.skipped}">
+    <span
+      *ngIf="step.jobs.skipped && detailed">
+      {{step.name | jobType}}
+    </span>
   </span>
   <span
     class="completed"
     title="{{step.name | jobType}}: completed"
     [ngStyle]="{'flex': step.jobs.completed}">
+    <span
+      *ngIf="step.jobs.completed && detailed">
+      {{step.name | jobType}} ({{step.jobs.completed}}/{{step.jobs.total}})
+    </span>
   </span>
   <span
     class="error"
     title="{{step.name | jobType}}: error"
     [ngStyle]="{'flex': step.jobs.errors}">
+    <span
+      *ngIf="step.jobs.errors && detailed">
+      {{step.name | jobType}} ({{step.jobs.errors}}/{{step.jobs.total}})
+    </span>
+    <button
+      mat-flat-button
+      color="warn"
+      *ngIf="step.jobs.errors && detailed"
+      (click)="retry(step)"
+      class=retry>
+      <mat-icon>sync</mat-icon>
+      Retry
+    </button>
   </span>
   <span
     class="queued"
     title="{{step.name | jobType}}: queued"
     [ngStyle]="{'flex': step.jobs.queued}">
+    <span
+      *ngIf="step.jobs.queued && detailed">
+      {{step.name | jobType}} ({{step.jobs.queued}}/{{step.jobs.total}})
+    </span>
+  </span>
+  <span
+    class="future"
+    *ngIf="
+      !step.jobs.queued &&
+      !step.jobs.errors &&
+      !step.jobs.completed &&
+      !step.jobs.skipped &&
+      detailed">
+    <span>
+      {{step.name | jobType}}
+    </span>
   </span>
 </div>

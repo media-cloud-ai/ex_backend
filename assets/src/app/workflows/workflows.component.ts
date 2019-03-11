@@ -30,6 +30,7 @@ export class WorkflowsComponent {
   page = 0
   sub = undefined
   loading = true
+  detailed = false
 
   selectedStatus = [
     'completed',
@@ -77,6 +78,8 @@ export class WorkflowsComponent {
         this.page = +params['page'] || 0
         this.pageSize = +params['per_page'] || 10
         this.video_id = params['video_id']
+        this.detailed = 'detailed' in params
+
         var status = params['status[]']
         if (status && !Array.isArray(status)){
           status = [status]
@@ -154,7 +157,7 @@ export class WorkflowsComponent {
     this.getWorkflows(0)
   }
 
-  updateSearchStatus(workflow_id) {
+  updateSearchStatus() {
     this.router.navigate(['/workflows'], {
       queryParams: this.getQueryParamsForPage(
         this.page,
@@ -206,6 +209,9 @@ export class WorkflowsComponent {
     }
     if (this.selectedWorkflows.length !== 4) {
       params['workflows[]'] = this.selectedWorkflows
+    }
+    if (this.detailed) {
+      params['detailed'] = true
     }
 
     return params

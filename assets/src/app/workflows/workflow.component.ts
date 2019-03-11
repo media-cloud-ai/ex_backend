@@ -15,6 +15,7 @@ import {WorkflowAbortDialogComponent} from './dialogs/workflow_abort_dialog.comp
 
 export class WorkflowComponent {
   @Input() workflow: Workflow
+  @Input() detailed = false
   can_abort: boolean
 
   constructor(
@@ -28,6 +29,10 @@ export class WorkflowComponent {
     if (this.can_abort && this.workflow.flow.steps.some((s) => s.name === 'clean_workspace' && s['status'] !== 'queued')) {
       this.can_abort = false
     }
+  }
+
+  switchDetailed() {
+    this.detailed = !this.detailed
   }
 
   gotoVideo(video_id): void {

@@ -11,6 +11,11 @@
   }
 
   .reference {
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    vertical-align: middle;
     flex: 1;
     padding: 0px 4px;
 
@@ -85,4 +90,10 @@
 .delete button {
   min-width: 60px;
   width: 60px;
+}
+
+i.open,
+i.close {
+  padding-top: 5px;
+  cursor: pointer;
 }

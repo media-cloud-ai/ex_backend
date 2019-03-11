@@ -7,6 +7,7 @@
   background-color: @lightGrey;
   text-align: center;
   border-right: 2px solid @white;
+  cursor: pointer;
 
   .skipped {
     background-color: @grey;
@@ -20,4 +21,19 @@
   .error {
     background-color: @red;
   }
+}
+
+.progress.detailed {
+  height: 36px;
+  line-height: 36px;
+  .skipped,
+  .error {
+    color: #fff;
+  }
+}
+
+.future {
+  text-align: center;
+  display: inline-block;
+  width: 100%;
 }

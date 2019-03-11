@@ -1,5 +1,16 @@
 <div class="workflow">
   <div *ngIf="workflow" class="info">
+    <i class="material-icons open"
+      *ngIf=!detailed
+      (click)=switchDetailed()>
+      expand_more
+    </i>
+    <i class="material-icons close"
+      *ngIf=detailed
+      (click)=switchDetailed()>
+      expand_less
+    </i>
+
     <span class="identifier">#{{ workflow.id }}</span>
     <span class="reference">
       <video-title-component [id]=workflow.reference></video-title-component>
@@ -59,7 +70,11 @@
     <div
       *ngFor="let step of workflow.flow.steps"
       class="step {{step.name}} {{step.status}}">
-      <step-progress-bar-component [step]=step></step-progress-bar-component>
+      <step-progress-bar-component
+        [step]=step
+        [workflow]=workflow
+        [detailed]=detailed>
+      </step-progress-bar-component>
     </div>
   </div>
 </div>
