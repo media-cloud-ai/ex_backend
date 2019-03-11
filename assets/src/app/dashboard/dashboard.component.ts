@@ -40,6 +40,8 @@ export class DashboardComponent {
     }
   ]
 
+  loading = true
+
   constructor(
     private applicationService: ApplicationService,
     private workflowService: WorkflowService,
@@ -79,6 +81,7 @@ export class DashboardComponent {
   }
 
   renderChart(scale) {
+    this.loading = true
     this.workflowService.getWorkflowStatistics(scale)
     .subscribe(stats => {
       var totalData = []
@@ -117,6 +120,8 @@ export class DashboardComponent {
           y: stats.data[index]['process_acs']
         })
       }
+
+      this.loading = false
 
       let chart = new CanvasJS.Chart("chartContainer", {
         // animationEnabled: true,
@@ -168,9 +173,9 @@ export class DashboardComponent {
             suffix: suffix
         },
         options: {}
-      });
-        
-      chart.render();
+      })
+
+      chart.render()
     })
   }
 }
