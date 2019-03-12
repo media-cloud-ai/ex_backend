@@ -11,8 +11,12 @@ defmodule ExBackend.Workflow.Step.AcsSynchronize do
     step_id = ExBackend.Map.get_by_key_or_atom(step, :id)
 
     case Requirements.get_source_files(workflow.jobs, step) do
-      [audio_path, subtitle_path] ->
-        start_processing_synchro(audio_path, subtitle_path, workflow, step, step_id)
+      [path1, path2] ->
+        if String.ends_with?(path1, ".mp4") do
+          start_processing_synchro(path1, path2, workflow, step, step_id)
+        else
+          start_processing_synchro(path2, path1, workflow, step, step_id)
+        end
       _ ->
         Jobs.create_skipped_job(workflow, step_id, @action_name)
     end
