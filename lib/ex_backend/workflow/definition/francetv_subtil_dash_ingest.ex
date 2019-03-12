@@ -234,15 +234,27 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilDashIngest do
             enable: true,
             parameters: [
               %{
-                id: "destination_hostname",
+                id: "perfect_memory_username",
                 type: "credential",
-                default: "FTP_FRANCETV_STUDIO_HOSTNAME",
-                value: "FTP_FRANCETV_STUDIO_HOSTNAME"
+                default: "PERFECT_MEMORY_USERNAME",
+                value: "PERFECT_MEMORY_USERNAME"
               },
               %{
-                "id": "order",
-                "type": "string",
-                "value": "publish_dash_and_ttml"
+                id: "perfect_memory_password",
+                type: "credential",
+                default: "PERFECT_MEMORY_PASSWORD",
+                value: "PERFECT_MEMORY_PASSWORD"
+              },
+              %{
+                id: "perfect_memory_endpoint",
+                type: "credential",
+                default: "PERFECT_MEMORY_ENDPOINT",
+                value: "PERFECT_MEMORY_ENDPOINT"
+              },
+              %{
+                id: "perfect_memory_event_name",
+                type: "string",
+                value: "publish_dash_and_ttml"
               },
               %{
                 id: "perfect_memory_event_name",
