@@ -100,14 +100,6 @@ export class AppComponent {
           })
         }
       }
-      if (this.right_technician) {
-        if (this.application && this.application.identifier === 'subtil') {
-          this.left_menu.push({
-            'link': '/massive',
-            'label': 'Massive Ingest'
-          })
-        }
-      }
 
       if (this.application && this.application.identifier === 'vidtext') {
         this.left_menu.push({

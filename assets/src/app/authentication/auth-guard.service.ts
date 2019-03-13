@@ -38,8 +38,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
           return false
         }
       }
-      if (url.startsWith('/massive') ||
-        url.startsWith('/watchers') ||
+      if (url.startsWith('/watchers') ||
         url.startsWith('/workers')
         ) {
         if (this.authService.hasTechnicianRight()) {
