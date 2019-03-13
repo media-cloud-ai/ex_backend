@@ -24,6 +24,21 @@ export class DashboardComponent {
   subIn: Subscription
   subOut: Subscription
 
+  selectedWorkflows = [
+    'total',
+    'rosetta',
+    'rdf_ingest',
+    'acs',
+    'dash_ingest',
+  ]
+  workflows = [
+    {id: 'total', label: 'Total'},
+    {id: 'rosetta', label: 'FranceTV Studio Ingest Rosetta'},
+    {id: 'rdf_ingest', label: 'FranceTélévisions Rdf Ingest'},
+    {id: 'acs', label: 'FranceTélévisions ACS'},
+    {id: 'dash_ingest', label: 'FranceTélévisions Dash Ingest'},
+  ]
+  
   selectedScale: string = "hour"
   scales = [
     {
@@ -73,16 +88,20 @@ export class DashboardComponent {
       this.application = application
     })
 
-    this.renderChart("hour")
+    this.renderChart()
   }
 
-  updateScale(event) {
-    this.renderChart(this.selectedScale)
+  updateWorkflows() {
+    this.renderChart()
   }
 
-  renderChart(scale) {
+  updateScale() {
+    this.renderChart()
+  }
+
+  renderChart() {
     this.loading = true
-    this.workflowService.getWorkflowStatistics(scale)
+    this.workflowService.getWorkflowStatistics(this.selectedScale)
     .subscribe(stats => {
       var totalData = []
       var rosettaData = []
@@ -121,6 +140,48 @@ export class DashboardComponent {
         })
       }
 
+      let data = []
+      if(this.selectedWorkflows.includes('total')) {
+        data.push({
+          type: 'line',
+          name: "Total",
+          toolTipContent: "<b>{name}</b>: {y}",
+          dataPoints: totalData
+        })
+      }
+      if(this.selectedWorkflows.includes('rosetta')) {
+        data.push({
+          type: 'line',
+          name: "Rosetta",
+          toolTipContent: "<b>{name}</b>: {y}",
+          dataPoints: rosettaData
+        })
+      }
+      if(this.selectedWorkflows.includes('rdf_ingest')) {
+        data.push({
+          type: 'line',
+          name: "Ingest RDF",
+          toolTipContent: "<b>{name}</b>: {y}",
+          dataPoints: rdfData
+        })
+      }
+      if(this.selectedWorkflows.includes('acs')) {
+        data.push({
+          type: 'line',
+          name: "ACS Process",
+          toolTipContent: "<b>{name}</b>: {y}",
+          dataPoints: acsData
+        })
+      }
+      if(this.selectedWorkflows.includes('dash_ingest')) {
+        data.push({
+          type: 'line',
+          name: "DASH Ingest",
+          toolTipContent: "<b>{name}</b>: {y}",
+          dataPoints: dashData
+        })
+      }
+
       this.loading = false
 
       let chart = new CanvasJS.Chart("chartContainer", {
@@ -137,38 +198,38 @@ export class DashboardComponent {
         //   fontSize: 15
         // },
         backgroundColor: "#ffffff00",
-        data: [
-          {
-            type: 'line',
-            name: "Total",
-            toolTipContent: "<b>{name}</b>: {y}",
-            dataPoints: totalData
-          },
-          {
-            type: 'line',
-            name: "Rosetta",
-            toolTipContent: "<b>{name}</b>: {y}",
-            dataPoints: rosettaData
-          },
-          {
-            type: 'line',
-            name: "Ingest RDF",
-            toolTipContent: "<b>{name}</b>: {y}",
-            dataPoints: rdfData
-          },
-          {
-            type: 'line',
-            name: "DASH Ingest",
-            toolTipContent: "<b>{name}</b>: {y}",
-            dataPoints: dashData
-          },
-          {
-            type: 'line',
-            name: "ACS Process",
-            toolTipContent: "<b>{name}</b>: {y}",
-            dataPoints: acsData
-          },
-        ],
+        data: data,//[
+        //   {
+        //     type: 'line',
+        //     name: "Total",
+        //     toolTipContent: "<b>{name}</b>: {y}",
+        //     dataPoints: totalData
+        //   },
+        //   {
+        //     type: 'line',
+        //     name: "Rosetta",
+        //     toolTipContent: "<b>{name}</b>: {y}",
+        //     dataPoints: rosettaData
+        //   },
+        //   {
+        //     type: 'line',
+        //     name: "Ingest RDF",
+        //     toolTipContent: "<b>{name}</b>: {y}",
+        //     dataPoints: rdfData
+        //   },
+        //   {
+        //     type: 'line',
+        //     name: "DASH Ingest",
+        //     toolTipContent: "<b>{name}</b>: {y}",
+        //     dataPoints: dashData
+        //   },
+        //   {
+        //     type: 'line',
+        //     name: "ACS Process",
+        //     toolTipContent: "<b>{name}</b>: {y}",
+        //     dataPoints: acsData
+        //   },
+        // ],
         axisX: {
             suffix: suffix
         },

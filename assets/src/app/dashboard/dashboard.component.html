@@ -13,10 +13,25 @@
   </span>
 </div>
 
-<div class=scale_selector>
+<div class=selectors>
   <mat-form-field>
     <mat-select
-      class="scale-select"
+      placeholder="Workflows"
+      [(ngModel)]="selectedWorkflows"
+      (selectionChange)="updateWorkflows()"
+      multiple
+      >
+      <mat-option
+        *ngFor="let workflow of workflows"
+        [value]="workflow.id"
+        [ngClass]="workflow.id"
+        >
+        {{ workflow.label }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select
       placeholder="Scale"
       [(ngModel)]="selectedScale"
       (selectionChange)="updateScale()"
@@ -25,7 +40,6 @@
         *ngFor="let scale of scales"
         [value]="scale.id"
         [ngClass]="scale.id"
-        class="scale-option"
         >
         {{ scale.label }}
       </mat-option>
