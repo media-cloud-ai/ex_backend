@@ -1,4 +1,5 @@
 import {Component} from '@angular/core'
+import {interval}   from 'rxjs'
 
 import {AmqpService} from '../services/amqp.service'
 import {Queue} from '../models/queue'
@@ -19,13 +20,26 @@ export class QueuesComponent {
 
   ngOnInit() {
     this.getQueues()
+
+    const updater = interval(5000);
+    updater.subscribe(n =>
+      this.getQueues()
+    );
   }
 
   getQueues(): void {
     this.amqpService.getQueues()
     .subscribe(queuePage => {
       if (queuePage){
-        this.queues = queuePage.queues
+        var all_queues = []
+        queuePage.queues.forEach(function(queue){
+          if(queue.messages_unacknowledged > 0 || (queue.messages - queue.messages_unacknowledged) > 0) {
+            // console.log(queue)
+            all_queues.push(queue)
+          }
+        })
+
+        this.queues = all_queues
       }
     })
   }
