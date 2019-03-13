@@ -199,6 +199,11 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilAcs do
                   value: "publish_dash_and_ttml"
                 },
                 %{
+                  id: "perfect_memory_event_name",
+                  type: "string",
+                  value: "push_ttml_and_dash"
+                },
+                %{
                   id: "path",
                   type: "string",
                   value: "/421959/prod/innovation/SubTil/"
@@ -320,6 +325,11 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilAcs do
                   type: "credential",
                   default: "PERFECT_MEMORY_ENDPOINT",
                   value: "PERFECT_MEMORY_ENDPOINT"
+                },
+                %{
+                  id: "perfect_memory_event_name",
+                  type: "string",
+                  value: "push_ttml_and_dash"
                 },
                 %{
                   id: "order",
