@@ -194,7 +194,7 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilAcs do
                   value: "PERFECT_MEMORY_ENDPOINT"
                 },
                 %{
-                  id: "perfect_memory_event_name",
+                  id: "order",
                   type: "string",
                   value: "publish_dash_and_ttml"
                 },
@@ -322,7 +322,7 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilAcs do
                   value: "PERFECT_MEMORY_ENDPOINT"
                 },
                 %{
-                  id: "perfect_memory_event_name",
+                  id: "order",
                   type: "string",
                   value: "publish_dash_and_ttml"
                 },
