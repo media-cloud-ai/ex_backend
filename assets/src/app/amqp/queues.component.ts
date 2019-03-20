@@ -1,5 +1,5 @@
 import {Component} from '@angular/core'
-import {interval}   from 'rxjs'
+import {interval, Subscription}   from 'rxjs'
 
 import {AmqpService} from '../services/amqp.service'
 import {Queue} from '../models/queue'
@@ -13,6 +13,7 @@ import {Queue} from '../models/queue'
 export class QueuesComponent {
 
   queues: Queue[]
+  updaterSub: Subscription
 
   constructor(
     private amqpService: AmqpService
@@ -22,9 +23,13 @@ export class QueuesComponent {
     this.getQueues()
 
     const updater = interval(5000);
-    updater.subscribe(n =>
+    this.updaterSub = updater.subscribe(n =>
       this.getQueues()
     );
+  }
+
+  ngOnDestroy() {
+    this.updaterSub.unsubscribe()
   }
 
   getQueues(): void {
