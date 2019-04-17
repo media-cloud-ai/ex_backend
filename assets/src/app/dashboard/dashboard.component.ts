@@ -38,7 +38,7 @@ export class DashboardComponent {
     {id: 'rdf_ingest', label: 'FranceTélévisions Rdf Ingest'},
     {id: 'acs', label: 'FranceTélévisions ACS'},
     {id: 'dash_ingest', label: 'FranceTélévisions Dash Ingest'},
-    {id: 'errors', label: 'Failed workflows'},
+    {id: 'errors', label: 'Errors'},
   ]
   
   selectedScale: string = "hour"
@@ -191,7 +191,7 @@ export class DashboardComponent {
       if(this.selectedWorkflows.includes('errors')) {
         data.push({
           type: 'line',
-          name: "Failed",
+          name: "Errors",
           toolTipContent: "<b>{name}</b>: {y}",
           dataPoints: errorsData
         })

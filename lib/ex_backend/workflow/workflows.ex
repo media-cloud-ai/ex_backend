@@ -8,6 +8,7 @@ defmodule ExBackend.Workflows do
 
   alias ExBackend.Workflows.Workflow
   alias ExBackend.Jobs
+  alias ExBackend.Jobs.Status
 
   defp force_integer(param) when is_bitstring(param) do
     param
@@ -414,13 +415,11 @@ defmodule ExBackend.Workflows do
   defp query_by_status(scale, delta_min, delta_max, status) do
     Repo.aggregate(
       from(
-        workflow in Workflow,
-        join: jobs in assoc(workflow, :jobs),
-        join: status in assoc(jobs, :status),
+        status in Status,
         where:
           status.state == ^status and
-          workflow.inserted_at > datetime_add(^NaiveDateTime.utc_now, ^delta_max, ^scale) and
-          workflow.inserted_at < datetime_add(^NaiveDateTime.utc_now, ^delta_min, ^scale),
+          status.inserted_at > datetime_add(^NaiveDateTime.utc_now, ^delta_max, ^scale) and
+          status.inserted_at < datetime_add(^NaiveDateTime.utc_now, ^delta_min, ^scale),
         ),
       :count, :id
     )
