@@ -8,6 +8,7 @@ defmodule ExBackend.Workflows do
 
   alias ExBackend.Workflows.Workflow
   alias ExBackend.Jobs
+  alias ExBackend.Jobs.Status
 
   defp force_integer(param) when is_bitstring(param) do
     param
@@ -381,6 +382,7 @@ defmodule ExBackend.Workflows do
           ingest_rdf: query_by_identifier(scale, -index, -index-1, "FranceTélévisions Rdf Ingest"),
           ingest_dash: query_by_identifier(scale, -index, -index-1, "FranceTélévisions Dash Ingest"),
           process_acs: query_by_identifier(scale, -index, -index-1, "FranceTélévisions ACS"),
+          errors: query_by_status(scale, -index, -index-1, "error"),
         }
       end
     )
@@ -405,6 +407,19 @@ defmodule ExBackend.Workflows do
           workflow.identifier == ^identifier and
           workflow.inserted_at > datetime_add(^NaiveDateTime.utc_now, ^delta_max, ^scale) and
           workflow.inserted_at < datetime_add(^NaiveDateTime.utc_now, ^delta_min, ^scale),
+        ),
+      :count, :id
+    )
+  end
+
+  defp query_by_status(scale, delta_min, delta_max, status) do
+    Repo.aggregate(
+      from(
+        status in Status,
+        where:
+          status.state == ^status and
+          status.inserted_at > datetime_add(^NaiveDateTime.utc_now, ^delta_max, ^scale) and
+          status.inserted_at < datetime_add(^NaiveDateTime.utc_now, ^delta_min, ^scale),
         ),
       :count, :id
     )

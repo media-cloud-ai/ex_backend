@@ -30,6 +30,7 @@ export class DashboardComponent {
     'rdf_ingest',
     'acs',
     'dash_ingest',
+    'errors',
   ]
   workflows = [
     {id: 'total', label: 'Total'},
@@ -37,6 +38,7 @@ export class DashboardComponent {
     {id: 'rdf_ingest', label: 'FranceTélévisions Rdf Ingest'},
     {id: 'acs', label: 'FranceTélévisions ACS'},
     {id: 'dash_ingest', label: 'FranceTélévisions Dash Ingest'},
+    {id: 'errors', label: 'Errors'},
   ]
   
   selectedScale: string = "hour"
@@ -108,6 +110,7 @@ export class DashboardComponent {
       var rdfData = []
       var dashData = []
       var acsData = []
+      var errorsData = []
 
       let suffix = "h"
       if(this.selectedScale == "minute") {
@@ -137,6 +140,10 @@ export class DashboardComponent {
         acsData.push({
           x: -index,
           y: stats.data[index]['process_acs']
+        })
+        errorsData.push({
+          x: -index,
+          y: stats.data[index]['errors']
         })
       }
 
@@ -179,6 +186,14 @@ export class DashboardComponent {
           name: "DASH Ingest",
           toolTipContent: "<b>{name}</b>: {y}",
           dataPoints: dashData
+        })
+      }
+      if(this.selectedWorkflows.includes('errors')) {
+        data.push({
+          type: 'line',
+          name: "Errors",
+          toolTipContent: "<b>{name}</b>: {y}",
+          dataPoints: errorsData
         })
       }
 
