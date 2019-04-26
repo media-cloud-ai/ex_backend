@@ -76,17 +76,39 @@ defmodule ExBackend.Workflows do
 
     status = Map.get(params, "state")
 
+    completed_status = ["completed"]
     query =
       if status != nil do
         if not ("completed" in status) do
-          from(
-            workflow in query,
-            join: jobs in assoc(workflow, :jobs),
-            join: status in assoc(jobs, :status),
-            where: status.state in ^status,
-          )
+          if "error" in status do
+            completed_jobs_to_exclude =
+              from(
+                workflow in query,
+                join: job in assoc(workflow, :jobs),
+                join: status in assoc(job, :status),
+                where: status.state in ^completed_status,
+                group_by: workflow.id,
+              )
+
+            from(
+              workflow in query,
+              join: job in assoc(workflow, :jobs),
+              join: status in assoc(job, :status),
+              where: status.state in ^status,
+              group_by: workflow.id,
+              except: ^completed_jobs_to_exclude,
+            )
+
+          else
+            from(
+              workflow in query,
+              join: jobs in assoc(workflow, :jobs),
+              join: status in assoc(jobs, :status),
+              where: status.state in ^status,
+            )
+          end
         else
-          if status == ["completed"] do
+          if status == completed_status do
             from(
               workflow in query,
               left_join: artifact in assoc(workflow, :artifacts),
@@ -112,7 +134,7 @@ defmodule ExBackend.Workflows do
         query
       end
 
-    total_query = from(item in query, select: count(item.id))
+    total_query = from(item in subquery(query), select: count(item.id))
 
     total =
       Repo.all(total_query)
@@ -120,7 +142,7 @@ defmodule ExBackend.Workflows do
 
     query =
       from(
-        workflow in query,
+        workflow in subquery(query),
         order_by: [desc: :inserted_at],
         offset: ^offset,
         limit: ^size
