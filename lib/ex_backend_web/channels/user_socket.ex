@@ -10,10 +10,6 @@ defmodule ExBackendWeb.UserSocket do
   channel("watch:*", ExBackendWeb.WatchChannel)
   channel("transfer:*", ExBackendWeb.FileTransferChannel)
 
-  ## Transports
-  transport(:websocket, Phoenix.Transports.WebSocket)
-  # transport :longpoll, Phoenix.Transports.LongPoll
-
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
   # verification, you can put default assigns into
@@ -34,7 +30,7 @@ defmodule ExBackendWeb.UserSocket do
         identifier -> assign(socket, :identifier, identifier)
       end
 
-    case Phauxth.Token.verify(ExBackendWeb.Endpoint, token, 4 * 60 * 60) do
+    case ExBackendWeb.Auth.Token.verify(token, 4 * 60 * 60) do
       {:ok, verified_user_id} ->
         {:ok, assign(socket, :user_id, verified_user_id)}
 

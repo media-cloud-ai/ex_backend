@@ -17,9 +17,7 @@ config :ex_backend, ExBackendWeb.Endpoint,
   pubsub: [name: ExBackend.PubSub, adapter: Phoenix.PubSub.PG2]
 
 # Phauxth authentication configuration
-config :phauxth,
-  token_salt: "KBPzeh/8",
-  endpoint: ExBackendWeb.Endpoint
+config :phauxth, endpoint: ExBackendWeb.Endpoint
 
 # Mailer configuration
 config :ex_backend, ExBackend.Mailer, adapter: Bamboo.LocalAdapter

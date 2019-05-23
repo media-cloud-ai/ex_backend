@@ -17,12 +17,12 @@ defmodule ExBackendWeb.UserController do
   end
 
   def create(conn, %{"user" => %{"email" => email} = user_params}) do
-    key = Phauxth.Token.sign(conn, %{"email" => email})
+    token = ExBackendWeb.Auth.Token.sign(%{"email" => email})
 
     with {:ok, user} <- Accounts.create_user(user_params) do
       Log.info(%Log{user: user.id, message: "user created"})
 
-      Accounts.Message.confirm_request(email, key)
+      Accounts.Message.confirm_request(email, token)
 
       conn
       |> put_status(:created)

@@ -87,7 +87,7 @@ defmodule ExBackend.Workflows do
                 join: job in assoc(workflow, :jobs),
                 join: status in assoc(job, :status),
                 where: status.state in ^completed_status,
-                group_by: workflow.id,
+                group_by: workflow.id
               )
 
             from(
@@ -96,7 +96,7 @@ defmodule ExBackend.Workflows do
               join: status in assoc(job, :status),
               where: status.state in ^status,
               group_by: workflow.id,
-              except: ^completed_jobs_to_exclude,
+              except: ^completed_jobs_to_exclude
             )
 
           else
@@ -104,7 +104,7 @@ defmodule ExBackend.Workflows do
               workflow in query,
               join: jobs in assoc(workflow, :jobs),
               join: status in assoc(jobs, :status),
-              where: status.state in ^status,
+              where: status.state in ^status
             )
           end
         else
@@ -128,7 +128,7 @@ defmodule ExBackend.Workflows do
       if workflow_ids != nil do
         from(
           workflow in query,
-          where: workflow.identifier in ^workflow_ids,
+          where: workflow.identifier in ^workflow_ids
         )
       else
         query
@@ -415,7 +415,7 @@ defmodule ExBackend.Workflows do
       from(
         workflow in Workflow,
         where: workflow.inserted_at > datetime_add(^NaiveDateTime.utc_now, ^delta_max, ^scale) and
-          workflow.inserted_at < datetime_add(^NaiveDateTime.utc_now, ^delta_min, ^scale),
+          workflow.inserted_at < datetime_add(^NaiveDateTime.utc_now, ^delta_min, ^scale)
         ),
       :count, :id
     )
@@ -428,7 +428,7 @@ defmodule ExBackend.Workflows do
         where:
           workflow.identifier == ^identifier and
           workflow.inserted_at > datetime_add(^NaiveDateTime.utc_now, ^delta_max, ^scale) and
-          workflow.inserted_at < datetime_add(^NaiveDateTime.utc_now, ^delta_min, ^scale),
+          workflow.inserted_at < datetime_add(^NaiveDateTime.utc_now, ^delta_min, ^scale)
         ),
       :count, :id
     )
@@ -441,7 +441,7 @@ defmodule ExBackend.Workflows do
         where:
           status.state == ^status and
           status.inserted_at > datetime_add(^NaiveDateTime.utc_now, ^delta_max, ^scale) and
-          status.inserted_at < datetime_add(^NaiveDateTime.utc_now, ^delta_min, ^scale),
+          status.inserted_at < datetime_add(^NaiveDateTime.utc_now, ^delta_min, ^scale)
         ),
       :count, :id
     )

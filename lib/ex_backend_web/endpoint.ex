@@ -1,7 +1,9 @@
 defmodule ExBackendWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :ex_backend
 
-  socket("/socket", ExBackendWeb.UserSocket)
+  socket("/socket", ExBackendWeb.UserSocket,
+    websocket: true, longpoll: false
+  )
 
   # Serve at "/" the static files from "priv/static" directory.
   #

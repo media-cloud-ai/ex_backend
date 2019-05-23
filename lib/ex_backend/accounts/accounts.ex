@@ -70,11 +70,11 @@ defmodule ExBackend.Accounts do
     |> Repo.update()
   end
 
-  def create_password_reset(endpoint, attrs) do
+  def create_password_reset(attrs) do
     with %User{} = user <- get_by(attrs) do
       change(user, %{reset_sent_at: DateTime.utc_now()}) |> Repo.update()
       Log.info(%Log{user: user.id, message: "password reset requested"})
-      Phauxth.Token.sign(endpoint, attrs)
+      user
     end
   end
 

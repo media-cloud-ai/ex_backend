@@ -3,8 +3,10 @@ defmodule ExBackendWeb.PasswordResetController do
   alias ExBackend.Accounts
 
   def create(conn, %{"password_reset" => %{"email" => email}}) do
-    key = Accounts.create_password_reset(ExBackendWeb.Endpoint, %{"email" => email})
-    Accounts.Message.reset_request(email, key)
+    user = Accounts.create_password_reset(%{"email" => email})
+    token = ExBackendWeb.Auth.Token.sign(%{"email" => user.email})
+
+    Accounts.Message.reset_request(email, token)
     message = "Check your inbox for instructions on how to reset your password"
 
     conn
@@ -13,7 +15,7 @@ defmodule ExBackendWeb.PasswordResetController do
   end
 
   def update(conn, %{"password_reset" => params}) do
-    case Phauxth.Confirm.verify(params, Accounts, mode: :pass_reset) do
+    case ExBackendWeb.Auth.Token.verify(params, mode: :pass_reset) do
       {:ok, user} ->
         Accounts.update_password(user, params) |> update_password(conn, params)
 

@@ -2,8 +2,6 @@ defmodule ExBackendWeb.SessionController do
   use ExBackendWeb, :controller
 
   import ExBackendWeb.Authorize
-  alias ExBackend.Accounts
-  alias Phauxth.Confirm.Login
 
   plug(:guest_check when action in [:create])
 
@@ -21,9 +19,9 @@ defmodule ExBackendWeb.SessionController do
     ]
   end
   def create(conn, %{"session" => params}) do
-    case Login.verify(params, Accounts) do
+    case ExBackendWeb.Auth.Token.verify(params) do
       {:ok, user} ->
-        token = Phauxth.Token.sign(conn, user.id)
+        token = ExBackendWeb.Auth.Token.sign(conn, %{"email" => user.email})
         render(conn, "info.json", %{info: token, user: user})
 
       {:error, _message} ->
