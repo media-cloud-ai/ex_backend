@@ -109,10 +109,17 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilRdfIngest do
           },
           %{
             id: 3,
+            parent_ids: [2],
+            required: [2],
+            name: "clean_workspace",
+            enable: true
+          },
+          %{
+            id: 4,
             name: "push_rdf",
             enable: true,
             parent_ids: [2],
-            required: [2],
+            required: [3],
             parameters: [
               %{
                 id: "perfect_memory_username",
@@ -138,13 +145,6 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilRdfIngest do
                 value: "push_rdf_infos"
               }
             ]
-          },
-          %{
-            id: 4,
-            parent_ids: [3],
-            required: [3],
-            name: "clean_workspace",
-            enable: true
           }
         ]
       }
