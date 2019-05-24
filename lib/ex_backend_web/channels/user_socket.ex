@@ -30,9 +30,9 @@ defmodule ExBackendWeb.UserSocket do
         identifier -> assign(socket, :identifier, identifier)
       end
 
-    case ExBackendWeb.Auth.Token.verify(token, 4 * 60 * 60) do
-      {:ok, verified_user_id} ->
-        {:ok, assign(socket, :user_id, verified_user_id)}
+    case ExBackendWeb.Auth.Token.verify(%{"key" => token}) do
+      {:ok, verified_user} ->
+        {:ok, assign(socket, :user_id, verified_user.id)}
 
       _ ->
         :error

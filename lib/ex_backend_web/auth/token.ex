@@ -15,6 +15,7 @@ defmodule ExBackendWeb.Auth.Token do
 
   @impl true
   def verify(token, opts \\ [])
+
   @impl true
   def verify(%{"key" => token}, opts) do
     opts = Keyword.put(opts, :max_age, 86400)
@@ -27,10 +28,13 @@ defmodule ExBackendWeb.Auth.Token do
         {:error, message}
     end
   end
+
   @impl true
   def verify(%{"password" => _password} = params, opts) do
+    opts = Keyword.put(opts, :max_age, 86400)
     ExBackend.Accounts.LoginConfirm.authenticate(params, opts)
   end
+
   @impl true
   def verify(token, opts) do
     Token.verify(Endpoint, @token_salt, token, opts)
