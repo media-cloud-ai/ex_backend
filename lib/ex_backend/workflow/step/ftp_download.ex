@@ -53,29 +53,30 @@ defmodule ExBackend.Workflow.Step.FtpDownload do
       end
 
     parameters =
-      ExBackend.Map.get_by_key_or_atom(step, :parameters, []) ++ [
-        %{
-          "id" => "source_path",
-          "type" => "string",
-          "value" => file
-        },
-        %{
-          "id" => "destination_path",
-          "type" => "string",
-          "value" => dst_path
-        },
-        %{
-          "id" => "requirements",
-          "type" => "requirements",
-          "value" => requirements
-        }
-      ]
+      ExBackend.Map.get_by_key_or_atom(step, :parameters, []) ++
+        [
+          %{
+            "id" => "source_path",
+            "type" => "string",
+            "value" => file
+          },
+          %{
+            "id" => "destination_path",
+            "type" => "string",
+            "value" => dst_path
+          },
+          %{
+            "id" => "requirements",
+            "type" => "requirements",
+            "value" => requirements
+          }
+        ]
 
     job_params = %{
       name: @action_name,
       step_id: step_id,
       workflow_id: workflow.id,
-      params: %{ list: parameters }
+      params: %{list: parameters}
     }
 
     {:ok, job} = Jobs.create_job(job_params)

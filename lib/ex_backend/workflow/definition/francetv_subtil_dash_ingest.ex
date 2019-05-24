@@ -58,7 +58,7 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilDashIngest do
                 "id" => "input_filter",
                 "type" => "filter",
                 "default" => %{ends_with: "standard1.mp4"},
-                "value" => %{ends_with: "standard1.mp4"},
+                "value" => %{ends_with: "standard1.mp4"}
               },
               %{
                 "id" => "output_codec_audio",
@@ -183,7 +183,8 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilDashIngest do
                 enable: true,
                 default: "fra",
                 value: "fra"
-              },%{
+              },
+              %{
                 id: "ttml_role",
                 type: "string",
                 enable: true,

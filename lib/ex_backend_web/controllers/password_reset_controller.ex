@@ -6,10 +6,12 @@ defmodule ExBackendWeb.PasswordResetController do
     case Accounts.create_password_reset(%{"email" => email}) do
       nil ->
         message = "unable to found user based on email address"
+
         put_status(conn, :unprocessable_entity)
         |> put_view(ExBackendWeb.PasswordResetView)
         |> render("error.json", error: message)
-      user -> 
+
+      user ->
         token = ExBackendWeb.Auth.Token.sign(%{"email" => user.email})
 
         Accounts.Message.reset_request(email, token)
@@ -28,6 +30,7 @@ defmodule ExBackendWeb.PasswordResetController do
         put_status(conn, :unprocessable_entity)
         |> put_view(ExBackendWeb.PasswordResetView)
         |> render("error.json", error: "unable to found user in the database")
+
       {:ok, user} ->
         user
         |> Accounts.update_password(params)

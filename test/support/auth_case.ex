@@ -29,6 +29,7 @@ defmodule ExBackendWeb.AuthCase do
   def add_token_conn(conn, user) do
     user_token = ExBackendWeb.Auth.Token.sign(%{"email" => user.email})
     IO.inspect(user_token)
+
     conn
     |> put_req_header("accept", "application/json")
     |> put_req_header("authorization", user_token)

@@ -46,23 +46,24 @@ defmodule ExBackend.Workflow.Step.SpeechToText do
     requirements = Requirements.add_required_paths(path)
 
     parameters =
-      ExBackend.Map.get_by_key_or_atom(step, :parameters, []) ++ [
-        %{
-          "id" => "source_path",
-          "type" => "string",
-          "value" => path
-        },
-        %{
-          "id" => "destination_path",
-          "type" => "string",
-          "value" => dst_path
-        },
-        %{
-          "id" => "requirements",
-          "type" => "requirements",
-          "value" => requirements
-        }
-      ]
+      ExBackend.Map.get_by_key_or_atom(step, :parameters, []) ++
+        [
+          %{
+            "id" => "source_path",
+            "type" => "string",
+            "value" => path
+          },
+          %{
+            "id" => "destination_path",
+            "type" => "string",
+            "value" => dst_path
+          },
+          %{
+            "id" => "requirements",
+            "type" => "requirements",
+            "value" => requirements
+          }
+        ]
 
     job_params = %{
       name: @action_name,
@@ -95,7 +96,9 @@ defmodule ExBackend.Workflow.Step.SpeechToText do
       job
       |> Map.get(:params, %{})
       |> Map.get("list", [])
-      |> Enum.filter(fn param -> ExBackend.Map.get_by_key_or_atom(param, :id) == "destination_path" end)
+      |> Enum.filter(fn param ->
+        ExBackend.Map.get_by_key_or_atom(param, :id) == "destination_path"
+      end)
       |> Enum.map(fn param -> ExBackend.Map.get_by_key_or_atom(param, :value) end)
     end)
     |> List.flatten()

@@ -12,11 +12,13 @@ defmodule ExBackend.HelpersTest do
   end
 
   defp clean_queue(channel, queue) do
-    case AMQP.Basic.get channel, queue do
+    case AMQP.Basic.get(channel, queue) do
       {:ok, _, %{delivery_tag: delivery_tag}} ->
         AMQP.Basic.ack(channel, delivery_tag)
         clean_queue(channel, queue)
-      _ -> :ok
+
+      _ ->
+        :ok
     end
   end
 
@@ -25,8 +27,7 @@ defmodule ExBackend.HelpersTest do
     username = System.get_env("AMQP_USERNAME") || Application.get_env(:amqp, :username)
     password = System.get_env("AMQP_PASSWORD") || Application.get_env(:amqp, :password)
 
-    virtual_host =
-      System.get_env("AMQP_VHOST") || Application.get_env(:amqp, :virtual_host) || ""
+    virtual_host = System.get_env("AMQP_VHOST") || Application.get_env(:amqp, :virtual_host) || ""
 
     virtual_host =
       case virtual_host do
@@ -39,11 +40,11 @@ defmodule ExBackend.HelpersTest do
         5672
         |> port_format
 
-    url = "amqp://" <> username <> ":" <> password <> "@" <> hostname <> ":" <> port <> virtual_host
+    url =
+      "amqp://" <> username <> ":" <> password <> "@" <> hostname <> ":" <> port <> virtual_host
 
     {:ok, connection} = AMQP.Connection.open(url)
     {:ok, channel} = AMQP.Channel.open(connection)
-
 
     AMQP.Queue.declare(channel, "job_acs", durable: false)
     AMQP.Queue.declare(channel, "job_dash_manifest", durable: false)
@@ -69,45 +70,58 @@ defmodule ExBackend.HelpersTest do
   end
 
   def validate_message_format(%{"job_id" => job_id, "parameters" => parameters})
-    when is_integer(job_id) and is_list(parameters) do
+      when is_integer(job_id) and is_list(parameters) do
     Enum.map(parameters, fn parameter -> validate_parameter(parameter) end)
     |> Enum.filter(fn x -> x == false end)
     |> length == 0
   end
+
   def validate_message_format(_), do: false
 
   defp validate_parameter(%{"id" => id, "type" => "string", "value" => value})
-    when is_bitstring(id) and is_bitstring(value) do
+       when is_bitstring(id) and is_bitstring(value) do
     true
   end
+
   defp validate_parameter(%{"id" => id, "type" => "credential", "value" => value})
-    when is_bitstring(id) and is_bitstring(value) do
+       when is_bitstring(id) and is_bitstring(value) do
     true
   end
+
   defp validate_parameter(%{"id" => id, "type" => "boolean", "value" => value})
-    when is_bitstring(id) and is_boolean(value) do
+       when is_bitstring(id) and is_boolean(value) do
     true
   end
+
   defp validate_parameter(%{"id" => id, "type" => "integer", "value" => value})
-    when is_bitstring(id) and is_integer(value) do
+       when is_bitstring(id) and is_integer(value) do
     true
   end
+
   defp validate_parameter(%{"id" => id, "type" => "requirements", "value" => %{"paths" => paths}})
-    when is_bitstring(id) and is_list(paths) do
+       when is_bitstring(id) and is_list(paths) do
     true
   end
+
   defp validate_parameter(%{"id" => id, "type" => "requirements", "value" => %{}})
-    when is_bitstring(id) do
+       when is_bitstring(id) do
     true
   end
+
   defp validate_parameter(%{"id" => id, "type" => "paths", "value" => paths})
-    when is_bitstring(id) and is_list(paths) do
+       when is_bitstring(id) and is_list(paths) do
     true
   end
-  defp validate_parameter(%{"id" => id, "type" => "filter", "value" => %{"ends_with" => ends_with}})
-    when is_bitstring(id) and is_bitstring(ends_with) do
+
+  defp validate_parameter(%{
+         "id" => id,
+         "type" => "filter",
+         "value" => %{"ends_with" => ends_with}
+       })
+       when is_bitstring(id) and is_bitstring(ends_with) do
     true
   end
+
   defp validate_parameter(param) do
     IO.inspect(param)
     false
@@ -176,8 +190,9 @@ defmodule ExBackend.HelpersTest do
         {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get(channel, queue)
         AMQP.Basic.ack(channel, delivery_tag)
         assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
-        payload |> Poison.decode!
+        payload |> Poison.decode!()
       end)
+
     {:empty, %{cluster_id: ""}} = AMQP.Basic.get(channel, queue)
     list
   end

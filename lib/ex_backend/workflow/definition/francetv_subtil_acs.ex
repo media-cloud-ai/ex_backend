@@ -131,7 +131,7 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilAcs do
       }
     ]
 
-    steps = 
+    steps =
       case dash_manifest_url do
         nil ->
           [
@@ -218,6 +218,7 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilAcs do
               enable: true
             }
           ]
+
         _ ->
           [
             %{
@@ -250,17 +251,20 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilAcs do
                   type: "string",
                   enable: true,
                   value: "fra"
-                },%{
+                },
+                %{
                   id: "ttml_role",
                   type: "string",
                   enable: true,
                   value: "subtitle"
-                },%{
+                },
+                %{
                   id: "replace",
                   type: "boolean",
                   enable: true,
                   value: true
-                },%{
+                },
+                %{
                   id: "reference_url",
                   type: "string",
                   enable: true,

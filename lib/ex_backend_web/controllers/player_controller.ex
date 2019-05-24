@@ -37,10 +37,12 @@ defmodule ExBackendWeb.PlayerController do
   def index(conn, %{"content" => content, "filename" => filename}) do
     root =
       System.get_env("ROOT_DASH_CONTENT") || Application.get_env(:ex_backend, :root_dash_content)
+
     path = Path.join([root, content, filename])
 
     if String.ends_with?(filename, ".ttml") || String.ends_with?(filename, ".vtt") do
       Logger.warn("Send file #{path}")
+
       conn
       |> put_resp_header("Accept-Ranges", "bytes")
       |> put_resp_header("Access-Control-Allow-Credentials", "true, false")

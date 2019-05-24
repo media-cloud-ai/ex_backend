@@ -62,8 +62,7 @@ defmodule ExBackend.Credentials do
         limit: ^size
       )
 
-    credentials =
-      Repo.all(query)
+    credentials = Repo.all(query)
 
     %{
       data: credentials,

@@ -10,7 +10,14 @@ defmodule ExBackend.Migration.MoveSubtitlesItems do
       |> Enum.map(fn item ->
         language = Map.get(item, "language")
         path = Map.get(item, "paths") |> List.first()
-        user_id = Map.get(item, "user_id", ExBackend.Accounts.list_users() |> Map.get(:data) |> List.first |> Map.get(:id))
+
+        user_id =
+          Map.get(
+            item,
+            "user_id",
+            ExBackend.Accounts.list_users() |> Map.get(:data) |> List.first() |> Map.get(:id)
+          )
+
         version = Map.get(item, "version", "Generated")
 
         %{
@@ -18,8 +25,9 @@ defmodule ExBackend.Migration.MoveSubtitlesItems do
           path: path,
           user_id: user_id,
           version: version,
-          registery_id: registery.id,
-        } |> ExBackend.Subtitles.create_subtitle()
+          registery_id: registery.id
+        }
+        |> ExBackend.Subtitles.create_subtitle()
       end)
     end)
   end

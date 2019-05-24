@@ -26,6 +26,7 @@ defmodule ExBackend.Workflow.Step.FtpUpload do
 
   defp start_upload([file | files], current_date, workflow, step, step_id) do
     requirements = Requirements.add_required_paths(file)
+
     destination_pattern =
       ExBackend.Map.get_by_key_or_atom(step, :parameters, [])
       |> Enum.filter(fn param ->
@@ -37,14 +38,16 @@ defmodule ExBackend.Workflow.Step.FtpUpload do
 
     dst_path =
       case destination_pattern do
-        [] -> workflow.reference <> "/" <> current_date <> "/" <> (file |> Path.basename())
+        [] ->
+          workflow.reference <> "/" <> current_date <> "/" <> (file |> Path.basename())
+
         [pattern] ->
           pattern
           |> String.replace("#input_extension", "<%= input_extension %>")
-          |> EEx.eval_string([
+          |> EEx.eval_string(
             workflow_id: workflow.id,
             input_extension: Path.extname(file)
-          ])
+          )
       end
 
     parameters =

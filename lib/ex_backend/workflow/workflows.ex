@@ -50,26 +50,36 @@ defmodule ExBackend.Workflows do
 
     query =
       case ExBackend.Map.get_by_key_or_atom(params, :identifier) do
-        nil -> query
+        nil ->
+          query
+
         identifier ->
           from(workflow in query, where: workflow.identifier == ^identifier)
       end
 
     query =
       case ExBackend.Map.get_by_key_or_atom(params, :version_major) do
-        nil -> query
+        nil ->
+          query
+
         version_major ->
           from(workflow in query, where: workflow.version_major == ^version_major)
       end
+
     query =
       case ExBackend.Map.get_by_key_or_atom(params, :version_minor) do
-        nil -> query
+        nil ->
+          query
+
         version_minor ->
           from(workflow in query, where: workflow.version_minor == ^version_minor)
       end
+
     query =
       case ExBackend.Map.get_by_key_or_atom(params, :version_micro) do
-        nil -> query
+        nil ->
+          query
+
         version_micro ->
           from(workflow in query, where: workflow.version_micro == ^version_micro)
       end
@@ -77,6 +87,7 @@ defmodule ExBackend.Workflows do
     status = Map.get(params, "state")
 
     completed_status = ["completed"]
+
     query =
       if status != nil do
         if not ("completed" in status) do
@@ -98,7 +109,6 @@ defmodule ExBackend.Workflows do
               group_by: workflow.id,
               except: ^completed_jobs_to_exclude
             )
-
           else
             from(
               workflow in query,
@@ -394,17 +404,20 @@ defmodule ExBackend.Workflows do
     researched >= total
   end
 
-
   def get_workflow_history(%{scale: scale}) do
-    Enum.map(0..49,
+    Enum.map(
+      0..49,
       fn index ->
         %{
-          total: query_total(scale, -index, -index-1),
-          rosetta: query_by_identifier(scale, -index, -index-1, "FranceTV Studio Ingest Rosetta"),
-          ingest_rdf: query_by_identifier(scale, -index, -index-1, "FranceTélévisions Rdf Ingest"),
-          ingest_dash: query_by_identifier(scale, -index, -index-1, "FranceTélévisions Dash Ingest"),
-          process_acs: query_by_identifier(scale, -index, -index-1, "FranceTélévisions ACS"),
-          errors: query_by_status(scale, -index, -index-1, "error"),
+          total: query_total(scale, -index, -index - 1),
+          rosetta:
+            query_by_identifier(scale, -index, -index - 1, "FranceTV Studio Ingest Rosetta"),
+          ingest_rdf:
+            query_by_identifier(scale, -index, -index - 1, "FranceTélévisions Rdf Ingest"),
+          ingest_dash:
+            query_by_identifier(scale, -index, -index - 1, "FranceTélévisions Dash Ingest"),
+          process_acs: query_by_identifier(scale, -index, -index - 1, "FranceTélévisions ACS"),
+          errors: query_by_status(scale, -index, -index - 1, "error")
         }
       end
     )
@@ -414,10 +427,12 @@ defmodule ExBackend.Workflows do
     Repo.aggregate(
       from(
         workflow in Workflow,
-        where: workflow.inserted_at > datetime_add(^NaiveDateTime.utc_now, ^delta_max, ^scale) and
-          workflow.inserted_at < datetime_add(^NaiveDateTime.utc_now, ^delta_min, ^scale)
-        ),
-      :count, :id
+        where:
+          workflow.inserted_at > datetime_add(^NaiveDateTime.utc_now(), ^delta_max, ^scale) and
+            workflow.inserted_at < datetime_add(^NaiveDateTime.utc_now(), ^delta_min, ^scale)
+      ),
+      :count,
+      :id
     )
   end
 
@@ -427,10 +442,11 @@ defmodule ExBackend.Workflows do
         workflow in Workflow,
         where:
           workflow.identifier == ^identifier and
-          workflow.inserted_at > datetime_add(^NaiveDateTime.utc_now, ^delta_max, ^scale) and
-          workflow.inserted_at < datetime_add(^NaiveDateTime.utc_now, ^delta_min, ^scale)
-        ),
-      :count, :id
+            workflow.inserted_at > datetime_add(^NaiveDateTime.utc_now(), ^delta_max, ^scale) and
+            workflow.inserted_at < datetime_add(^NaiveDateTime.utc_now(), ^delta_min, ^scale)
+      ),
+      :count,
+      :id
     )
   end
 
@@ -440,10 +456,11 @@ defmodule ExBackend.Workflows do
         status in Status,
         where:
           status.state == ^status and
-          status.inserted_at > datetime_add(^NaiveDateTime.utc_now, ^delta_max, ^scale) and
-          status.inserted_at < datetime_add(^NaiveDateTime.utc_now, ^delta_min, ^scale)
-        ),
-      :count, :id
+            status.inserted_at > datetime_add(^NaiveDateTime.utc_now(), ^delta_max, ^scale) and
+            status.inserted_at < datetime_add(^NaiveDateTime.utc_now(), ^delta_min, ^scale)
+      ),
+      :count,
+      :id
     )
   end
 end

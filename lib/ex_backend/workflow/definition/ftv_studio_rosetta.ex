@@ -1,17 +1,16 @@
 defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
-
   def get_output_filename_base(video_id) do
     video =
       ExVideoFactory.videos(%{"qid" => video_id})
       |> Map.get(:videos)
-      |> List.first
+      |> List.first()
 
     {title, _} =
       case Map.get(video, "title") do
         nil -> ""
         value -> value
       end
-      |> :unicode.characters_to_nfd_binary
+      |> :unicode.characters_to_nfd_binary()
       |> String.replace(~r/[^A-z0-9-\s]/u, "")
       |> String.replace(~r/\s/, "-")
       |> String.split_at(47)
@@ -21,7 +20,7 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
         nil -> ""
         value -> value
       end
-      |> :unicode.characters_to_nfd_binary
+      |> :unicode.characters_to_nfd_binary()
       |> String.replace(~r/[^A-z0-9-\s]/u, "")
       |> String.replace(~r/\s/, "-")
       |> String.split_at(47)
@@ -32,7 +31,9 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
 
     channel =
       case Map.get(video, "channel") do
-        nil -> "XX"
+        nil ->
+          "XX"
+
         value ->
           value
           |> Map.get("id")
@@ -55,21 +56,27 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
   defp format_channel("france-2") do
     "F2"
   end
+
   defp format_channel("france-3") do
     "F3"
   end
+
   defp format_channel("france-4") do
     "F4"
   end
+
   defp format_channel("france-5") do
     "F5"
   end
+
   defp format_channel("france-o") do
     "FO"
   end
+
   defp format_channel("france-info") do
     "FI"
   end
+
   defp format_channel(_) do
     "XX"
   end
@@ -194,7 +201,7 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
             required: [2],
             name: "clean_workspace",
             enable: true
-          },
+          }
         ]
       }
     }

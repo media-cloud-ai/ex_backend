@@ -28,31 +28,30 @@ defmodule ExBackend.Workflow.Step.TtmlToMp4 do
     mp4_path = String.replace(path, ".ttml", ".mp4")
     requirements = Requirements.add_required_paths(path)
 
-
     parameters =
-      ExBackend.Map.get_by_key_or_atom(step, :parameters, []) ++ [
-        %{
-          "id" => "action",
-          "type" => "string",
-          "value" => @action_name
-        },
-        %{
-          "id" => "source_path",
-          "type" => "string",
-          "value" => path
-        },
-        %{
-          "id" => "destination_path",
-          "type" => "string",
-          "value" => mp4_path
-        },
-        %{
-          "id" => "requirements",
-          "type" => "requirements",
-          "value" => requirements
-        }
-      ]
-
+      ExBackend.Map.get_by_key_or_atom(step, :parameters, []) ++
+        [
+          %{
+            "id" => "action",
+            "type" => "string",
+            "value" => @action_name
+          },
+          %{
+            "id" => "source_path",
+            "type" => "string",
+            "value" => path
+          },
+          %{
+            "id" => "destination_path",
+            "type" => "string",
+            "value" => mp4_path
+          },
+          %{
+            "id" => "requirements",
+            "type" => "requirements",
+            "value" => requirements
+          }
+        ]
 
     job_params = %{
       name: @action_name,

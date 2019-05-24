@@ -100,9 +100,9 @@ defmodule ExBackendWeb.Authorize do
         %Plug.Conn{assigns: %{current_user: current_user}} = conn,
         _opts
       ) do
-    (Enum.member?(current_user.rights, "technician") and conn)
-    || (Enum.member?(current_user.rights, "ftvstudio") and conn)
-    || error(conn, :forbidden, 403)
+    (Enum.member?(current_user.rights, "technician") and conn) ||
+      (Enum.member?(current_user.rights, "ftvstudio") and conn) ||
+      error(conn, :forbidden, 403)
   end
 
   def error(conn, status, code) do

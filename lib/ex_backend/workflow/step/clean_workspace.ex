@@ -73,6 +73,7 @@ defmodule ExBackend.Workflow.Step.CleanWorkspace do
   Returns true if any job have a destination_path (which means it use storage to process workflow)
   """
   def has_local_folder([]), do: false
+
   def has_local_folder([job | jobs]) do
     destinations =
       job.params

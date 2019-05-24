@@ -51,33 +51,34 @@ defmodule ExBackend.Workflow.Step.SetLanguage do
     requirements = Requirements.add_required_paths(path)
 
     parameters =
-      ExBackend.Map.get_by_key_or_atom(step, :parameters, []) ++ [
-        %{
-          "id" => "action",
-          "type" => "string",
-          "value" => @action_name
-        },
-        %{
-          "id" => "source_path",
-          "type" => "string",
-          "value" => path
-        },
-        %{
-          "id" => "destination_path",
-          "type" => "string",
-          "value" => dst_path
-        },
-        %{
-          "id" => "requirements",
-          "type" => "requirements",
-          "value" => requirements
-        },
-        %{
-          "id" => "language_code",
-          "type" => "string",
-          "value" => language_code
-        }
-      ]
+      ExBackend.Map.get_by_key_or_atom(step, :parameters, []) ++
+        [
+          %{
+            "id" => "action",
+            "type" => "string",
+            "value" => @action_name
+          },
+          %{
+            "id" => "source_path",
+            "type" => "string",
+            "value" => path
+          },
+          %{
+            "id" => "destination_path",
+            "type" => "string",
+            "value" => dst_path
+          },
+          %{
+            "id" => "requirements",
+            "type" => "requirements",
+            "value" => requirements
+          },
+          %{
+            "id" => "language_code",
+            "type" => "string",
+            "value" => language_code
+          }
+        ]
 
     job_params = %{
       name: @action_name,

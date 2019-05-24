@@ -13,7 +13,10 @@ defmodule ExBackend.Docker.Container do
       Map.get(params, "environment", %{})
       |> Map.to_list()
       |> add_env_var(container_config)
-      |> ContainerConfig.add_extra_host("exchange-manager-api.idfrancetv.perfect-memory.com", "192.168.101.103")
+      |> ContainerConfig.add_extra_host(
+        "exchange-manager-api.idfrancetv.perfect-memory.com",
+        "192.168.101.103"
+      )
 
     container_config
   end

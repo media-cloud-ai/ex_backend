@@ -9,13 +9,14 @@ defmodule ExBackendWeb.DocumentationController do
   plug(:user_check when action in [:index])
 
   api :GET, "/api/documentation" do
-    title "Get API documentation"
-    description "Retrieve all endpoint and parameters"
+    title("Get API documentation")
+    description("Retrieve all endpoint and parameters")
   end
+
   def index(conn, _params) do
     response =
       File.read!("documentation.json")
-      |> Poison.decode!
+      |> Poison.decode!()
 
     conn
     |> json(response)

@@ -8,42 +8,46 @@ defmodule ExBackend.EbuIngestTest do
 
   setup do
     channel = ExBackend.HelpersTest.get_amqp_connection()
-    on_exit fn ->
-      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get channel, "job_speech_to_text"
-      AMQP.Basic.ack(channel, delivery_tag)
-      assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
-      {:empty, %{cluster_id: ""}} = AMQP.Basic.get channel, "job_speech_to_text"
 
-      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get channel, "job_gpac"
-      AMQP.Basic.ack(channel, delivery_tag)
-      assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
-      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get channel, "job_gpac"
-      AMQP.Basic.ack(channel, delivery_tag)
-      assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
-      {:empty, %{cluster_id: ""}} = AMQP.Basic.get channel, "job_gpac"
+    on_exit(fn ->
+      {:ok, payload, %{delivery_tag: delivery_tag}} =
+        AMQP.Basic.get(channel, "job_speech_to_text")
 
-      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get channel, "job_ffmpeg"
       AMQP.Basic.ack(channel, delivery_tag)
       assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
-      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get channel, "job_ffmpeg"
-      AMQP.Basic.ack(channel, delivery_tag)
-      assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
-      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get channel, "job_ffmpeg"
-      AMQP.Basic.ack(channel, delivery_tag)
-      assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
-      {:empty, %{cluster_id: ""}} = AMQP.Basic.get channel, "job_ffmpeg"
+      {:empty, %{cluster_id: ""}} = AMQP.Basic.get(channel, "job_speech_to_text")
 
-      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get channel, "job_file_system"
+      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get(channel, "job_gpac")
       AMQP.Basic.ack(channel, delivery_tag)
       assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
-      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get channel, "job_file_system"
+      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get(channel, "job_gpac")
       AMQP.Basic.ack(channel, delivery_tag)
       assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
-      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get channel, "job_file_system"
+      {:empty, %{cluster_id: ""}} = AMQP.Basic.get(channel, "job_gpac")
+
+      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get(channel, "job_ffmpeg")
       AMQP.Basic.ack(channel, delivery_tag)
       assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
-      {:empty, %{cluster_id: ""}} = AMQP.Basic.get channel, "job_file_system"
-    end
+      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get(channel, "job_ffmpeg")
+      AMQP.Basic.ack(channel, delivery_tag)
+      assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
+      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get(channel, "job_ffmpeg")
+      AMQP.Basic.ack(channel, delivery_tag)
+      assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
+      {:empty, %{cluster_id: ""}} = AMQP.Basic.get(channel, "job_ffmpeg")
+
+      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get(channel, "job_file_system")
+      AMQP.Basic.ack(channel, delivery_tag)
+      assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
+      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get(channel, "job_file_system")
+      AMQP.Basic.ack(channel, delivery_tag)
+      assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
+      {:ok, payload, %{delivery_tag: delivery_tag}} = AMQP.Basic.get(channel, "job_file_system")
+      AMQP.Basic.ack(channel, delivery_tag)
+      assert ExBackend.HelpersTest.validate_message_format(Poison.decode!(payload))
+      {:empty, %{cluster_id: ""}} = AMQP.Basic.get(channel, "job_file_system")
+    end)
+
     :ok
   end
 
@@ -118,7 +122,6 @@ defmodule ExBackend.EbuIngestTest do
       ExBackend.HelpersTest.check(workflow.id, "audio_extraction", 3)
 
       ExBackend.HelpersTest.complete_jobs(workflow.id, "audio_extraction")
-
 
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)
       ExBackend.HelpersTest.check(workflow.id, 6)

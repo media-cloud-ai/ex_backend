@@ -41,6 +41,7 @@ defmodule ExBackend.Workflow.Step.HttpDownload do
   end
 
   defp start_download([], _step_id, _step, _workflow), do: {:ok, "started"}
+
   defp start_download([url | urls], step_id, step, workflow) do
     work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
 
@@ -51,29 +52,30 @@ defmodule ExBackend.Workflow.Step.HttpDownload do
     requirements = Requirements.add_required_paths(Path.dirname(dst_path))
 
     parameters =
-      Map.get(step, "parameters", []) ++ [
-        %{
-          "id" => "source_path",
-          "type" => "string",
-          "value" => url
-        },
-        %{
-          "id" => "destination_path",
-          "type" => "string",
-          "value" => dst_path
-        },
-        %{
-          "id" => "requirements",
-          "type" => "requirements",
-          "value" => requirements
-        }
-      ]
+      Map.get(step, "parameters", []) ++
+        [
+          %{
+            "id" => "source_path",
+            "type" => "string",
+            "value" => url
+          },
+          %{
+            "id" => "destination_path",
+            "type" => "string",
+            "value" => dst_path
+          },
+          %{
+            "id" => "requirements",
+            "type" => "requirements",
+            "value" => requirements
+          }
+        ]
 
     job_params = %{
       name: @action_name,
       step_id: step_id,
       workflow_id: workflow.id,
-      params:  %{ list: parameters }
+      params: %{list: parameters}
     }
 
     {:ok, job} = Jobs.create_job(job_params)

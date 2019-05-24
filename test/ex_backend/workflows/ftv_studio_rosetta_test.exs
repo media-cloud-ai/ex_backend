@@ -10,7 +10,7 @@ defmodule ExBackend.FtvStudioRosettaTest do
     channel = ExBackend.HelpersTest.get_amqp_connection()
 
     on_exit(fn ->
-      destination_paths = 
+      destination_paths =
         ExBackend.HelpersTest.consume_messages(channel, "job_ftp", 3)
         |> Enum.map(fn job ->
           Map.get(job, "parameters")
@@ -18,13 +18,17 @@ defmodule ExBackend.FtvStudioRosettaTest do
           |> Enum.map(fn p ->
             Map.get(p, "value")
           end)
-          |> List.first
+          |> List.first()
         end)
 
       assert String.starts_with?(Enum.at(destination_paths, 0), "/data/")
       assert String.ends_with?(Enum.at(destination_paths, 0), "/path.mp4")
-      assert Enum.at(destination_paths, 1) == "F2/Un-jour-un-destin/20190220_2243/F2_20190220_2243_Un-jour-un-destin_Karl-Lagerfeld-etre-et-paraitre.mp4"
-      assert Enum.at(destination_paths, 2) == "F2/Un-jour-un-destin/20190220_2243/F2_20190220_2243_Un-jour-un-destin_Karl-Lagerfeld-etre-et-paraitre.ttml"
+
+      assert Enum.at(destination_paths, 1) ==
+               "F2/Un-jour-un-destin/20190220_2243/F2_20190220_2243_Un-jour-un-destin_Karl-Lagerfeld-etre-et-paraitre.mp4"
+
+      assert Enum.at(destination_paths, 2) ==
+               "F2/Un-jour-un-destin/20190220_2243/F2_20190220_2243_Un-jour-un-destin_Karl-Lagerfeld-etre-et-paraitre.ttml"
 
       ExBackend.HelpersTest.consume_messages(channel, "job_http", 1)
       ExBackend.HelpersTest.consume_messages(channel, "job_file_system", 1)
@@ -35,7 +39,8 @@ defmodule ExBackend.FtvStudioRosettaTest do
 
   describe "francetv_studio_rosetta_workflow" do
     test "bad id" do
-      output_pattern = "F2/Un-jour-un-destin/20190220_2243/F2_20190220_2243_Un-jour-un-destin_Karl-Lagerfeld-etre-et-paraitre#input_extension"
+      output_pattern =
+        "F2/Un-jour-un-destin/20190220_2243/F2_20190220_2243_Un-jour-un-destin_Karl-Lagerfeld-etre-et-paraitre#input_extension"
 
       workflow_params =
         ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition(

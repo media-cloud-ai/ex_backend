@@ -36,6 +36,7 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
   end
 
   defp start_extracting_audio([], _workflow, _step, _step_id), do: {:ok, "started"}
+
   defp start_extracting_audio([path | paths], workflow, step, step_id) do
     case start_extracting_audio(path, workflow, step, step_id) do
       {:ok, "started"} -> start_extracting_audio(paths, workflow, step, step_id)
@@ -50,7 +51,9 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
 
     output_extension =
       ExBackend.Map.get_by_key_or_atom(step, :parameters)
-      |> Enum.filter(fn param -> ExBackend.Map.get_by_key_or_atom(param, :id) == "output_extension" end)
+      |> Enum.filter(fn param ->
+        ExBackend.Map.get_by_key_or_atom(param, :id) == "output_extension"
+      end)
       |> Enum.map(fn param -> ExBackend.Map.get_by_key_or_atom(param, :value) end)
       |> case do
         [ext] -> ext
@@ -66,23 +69,24 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
     requirements = Requirements.add_required_paths(path)
 
     parameters =
-      ExBackend.Map.get_by_key_or_atom(step, :parameters, []) ++ [
-        %{
-          "id" => "source_path",
-          "type" => "string",
-          "value" => path
-        },
-        %{
-          "id" => "destination_path",
-          "type" => "string",
-          "value" => dst_path
-        },
-        %{
-          "id" => "requirements",
-          "type" => "requirements",
-          "value" => requirements
-        }
-      ]
+      ExBackend.Map.get_by_key_or_atom(step, :parameters, []) ++
+        [
+          %{
+            "id" => "source_path",
+            "type" => "string",
+            "value" => path
+          },
+          %{
+            "id" => "destination_path",
+            "type" => "string",
+            "value" => dst_path
+          },
+          %{
+            "id" => "requirements",
+            "type" => "requirements",
+            "value" => requirements
+          }
+        ]
 
     job_params = %{
       name: @action_name,

@@ -11,7 +11,11 @@ defmodule ExBackendWeb.WorkflowController do
 
   # the following plugs are defined in the controllers/authorize.ex file
   plug(:user_check when action in [:index, :create, :create_specific, :show, :update, :delete])
-  plug(:right_technician_or_ftvstudio_check when action in [:index, :create, :create_specific, :show, :update, :delete])
+
+  plug(
+    :right_technician_or_ftvstudio_check
+    when action in [:index, :create, :create_specific, :show, :update, :delete]
+  )
 
   def index(conn, params) do
     workflows = Workflows.list_workflows(params)
@@ -45,22 +49,36 @@ defmodule ExBackendWeb.WorkflowController do
     <pre class=code>curl -H \"Authorization: $MIO_TOKEN\" -H \"Content-Type: application/json\" -d '{\"reference\": \"d953ffd8-53a4-49ed-9312-c1ba78bdd5f4\", \"mp4_path\": \"/streaming-adaptatif/2018/S50/J1/194377135-5c0dfc6eb3420-standard1.mp4\", \"ttml_path\": \"https://staticftv-a.akamaihd.net/sous-titres/2018/12/10/194377135-5c0dfc6eb3420-1544422463.ttml\"}' https://backend.media-io.com/api/workflow/acs</pre>
     ")
 
+    parameter(:identifier, :bitstring,
+      description: "Identifier of the workflow (one of [acs, ingest-dash])"
+    )
 
-    parameter(:identifier, :bitstring, description: "Identifier of the workflow (one of [acs, ingest-dash])")
     parameter(:reference, :bitstring, description: "UUID of the Reference Media")
     parameter(:ttml_path, :bitstring, description: "URL to the TTML")
     parameter(:mp4_path, :bitstring, description: "Path to the MP4 to retrieve the audio")
-    parameter(:dash_manifest_url, :bitstring, description: "(Optional) HTTP URL to the Manifest DASH")
+
+    parameter(:dash_manifest_url, :bitstring,
+      description: "(Optional) HTTP URL to the Manifest DASH"
+    )
   end
-  def create_specific(conn, %{
-        "identifier" => "acs",
-        "reference" => reference,
-        "ttml_path" => ttml_path,
-        "mp4_path" => mp4_path
-      } = params) do
+
+  def create_specific(
+        conn,
+        %{
+          "identifier" => "acs",
+          "reference" => reference,
+          "ttml_path" => ttml_path,
+          "mp4_path" => mp4_path
+        } = params
+      ) do
     dash_manifest_url = Map.get(params, "dash_manifest_url")
+
     workflow_params =
-      ExBackend.Workflow.Definition.FrancetvSubtilAcs.get_definition(mp4_path, ttml_path, dash_manifest_url)
+      ExBackend.Workflow.Definition.FrancetvSubtilAcs.get_definition(
+        mp4_path,
+        ttml_path,
+        dash_manifest_url
+      )
       |> Map.put(:reference, reference)
 
     {:ok, workflow} = Workflows.create_workflow(workflow_params)
@@ -97,7 +115,6 @@ defmodule ExBackendWeb.WorkflowController do
         "identifier" => "ingest-rosetta",
         "reference" => reference
       }) do
-
     upload_pattern =
       ExBackend.Workflow.Definition.FtvStudioRosetta.get_output_filename_base(reference)
 
@@ -108,10 +125,14 @@ defmodule ExBackendWeb.WorkflowController do
 
     ttml_path =
       ExVideoFactory.get_http_url_for_ttml(reference)
-      |> List.first
+      |> List.first()
 
     workflow_params =
-      ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition(mp4_paths, ttml_path, upload_pattern)
+      ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition(
+        mp4_paths,
+        ttml_path,
+        upload_pattern
+      )
       |> Map.put(:reference, reference)
 
     {:ok, workflow} = Workflows.create_workflow(workflow_params)
@@ -128,19 +149,18 @@ defmodule ExBackendWeb.WorkflowController do
         "identifier" => "ingest-subtil",
         "reference" => reference
       }) do
-
     mp4_paths =
       ExVideoFactory.get_ftp_paths_for_video_id(reference)
       |> Enum.filter(fn path ->
         String.contains?(path, "-standard5.mp4") ||
-        String.contains?(path, "-qad.mp4") ||
-        String.contains?(path, "-qaa.mp4")
+          String.contains?(path, "-qad.mp4") ||
+          String.contains?(path, "-qaa.mp4")
       end)
       |> Enum.map(fn path -> String.replace(path, "/343079/http", "") end)
 
     ttml_path =
       ExVideoFactory.get_http_url_for_ttml(reference)
-      |> List.first
+      |> List.first()
 
     workflow_params =
       ExBackend.Workflow.Definition.FrancetvSubtilRdfIngest.get_definition(mp4_paths, ttml_path)
@@ -231,16 +251,19 @@ defmodule ExBackendWeb.WorkflowController do
             ExVideoFactory.get_ftp_paths_for_video_id(reference)
             |> Enum.filter(fn path ->
               String.contains?(path, "-standard5.mp4") ||
-              String.contains?(path, "-qad.mp4") ||
-              String.contains?(path, "-qaa.mp4")
+                String.contains?(path, "-qad.mp4") ||
+                String.contains?(path, "-qaa.mp4")
             end)
             |> Enum.map(fn path -> String.replace(path, "/343079/http", "") end)
 
           ttml_path =
             ExVideoFactory.get_http_url_for_ttml(reference)
-            |> List.first
+            |> List.first()
 
-          ExBackend.Workflow.Definition.FrancetvSubtilRdfIngest.get_definition(mp4_paths, ttml_path)
+          ExBackend.Workflow.Definition.FrancetvSubtilRdfIngest.get_definition(
+            mp4_paths,
+            ttml_path
+          )
 
         "francetv_subtil_dash_ingest" ->
           ExBackend.Workflow.Definition.FrancetvSubtilDashIngest.get_definition(
@@ -254,6 +277,7 @@ defmodule ExBackendWeb.WorkflowController do
             "#source_ttml_path",
             nil
           )
+
         "ftv_studio_rosetta" ->
           upload_pattern =
             ExBackend.Workflow.Definition.FtvStudioRosetta.get_output_filename_base(reference)
@@ -265,12 +289,13 @@ defmodule ExBackendWeb.WorkflowController do
 
           ttml_path =
             ExVideoFactory.get_http_url_for_ttml(reference)
-            |> List.first
+            |> List.first()
 
           ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition(
             mp4_paths,
             ttml_path,
-            upload_pattern)
+            upload_pattern
+          )
       end
 
     conn

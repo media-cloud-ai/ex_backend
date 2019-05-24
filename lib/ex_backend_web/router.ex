@@ -36,6 +36,7 @@ defmodule ExBackendWeb.Router do
     post("/workflow/:identifier", WorkflowController, :create_specific)
 
     get("/workflows/statistics", WorkflowController, :statistics)
+
     resources("/workflows", WorkflowController, except: [:new, :edit]) do
       post("/events", WorkflowEventsController, :handle)
     end
@@ -71,9 +72,9 @@ defmodule ExBackendWeb.Router do
     get("/imdb/search/:query", ImdbController, :index)
     get("/imdb/:id", ImdbController, :show)
 
-    resources "/credentials", CredentialController, except: [:new, :edit]
+    resources("/credentials", CredentialController, except: [:new, :edit])
 
-    get "/documentation", DocumentationController, :index
+    get("/documentation", DocumentationController, :index)
   end
 
   get("/stream/:content/manifest.mpd", ExBackendWeb.PlayerController, :manifest)

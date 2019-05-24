@@ -8,12 +8,13 @@ defmodule ExBackend.FrancetvSubtilIngestRdfTest do
   setup do
     channel = ExBackend.HelpersTest.get_amqp_connection()
 
-    on_exit fn ->
+    on_exit(fn ->
       ExBackend.HelpersTest.consume_messages(channel, "job_ftp", 3)
       ExBackend.HelpersTest.consume_messages(channel, "job_http", 1)
       ExBackend.HelpersTest.consume_messages(channel, "job_rdf", 1)
       ExBackend.HelpersTest.consume_messages(channel, "job_file_system", 1)
-    end
+    end)
+
     :ok
   end
 
@@ -27,8 +28,6 @@ defmodule ExBackend.FrancetvSubtilIngestRdfTest do
         |> Map.put(:reference, "99787afd-ba2d-410f-b03e-66cf2efb3ed5")
 
       {:ok, workflow} = Workflows.create_workflow(workflow_params)
-
-
 
       {:ok, workflow} = Workflows.create_workflow(workflow_params)
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)

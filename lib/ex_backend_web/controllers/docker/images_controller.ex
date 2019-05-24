@@ -10,15 +10,33 @@ defmodule ExBackendWeb.Docker.ImagesController do
   plug(:right_technician_check when action in [:index, :delete])
 
   def index(conn, params) do
-    hostname = System.get_env("DOCKER_CONTAINER_AMQP_HOSTNAME") || Application.get_env(:docker_container_amqp, :hostname)
-    username = System.get_env("DOCKER_CONTAINER_AMQP_USERNAME") || Application.get_env(:docker_container_amqp, :username)
-    password = System.get_env("DOCKER_CONTAINER_AMQP_PASSWORD") || Application.get_env(:docker_container_amqp, :password)
-    backend_hostname = System.get_env("DOCKER_CONTAINER_BACKEND_HOSTNAME") || Application.get_env(:docker_container_backend, :hostname)
-    backend_username = System.get_env("DOCKER_CONTAINER_BACKEND_USERNAME") || Application.get_env(:docker_container_backend, :username)
-    backend_password = System.get_env("DOCKER_CONTAINER_BACKEND_PASSWORD") || Application.get_env(:docker_container_backend, :password)
+    hostname =
+      System.get_env("DOCKER_CONTAINER_AMQP_HOSTNAME") ||
+        Application.get_env(:docker_container_amqp, :hostname)
+
+    username =
+      System.get_env("DOCKER_CONTAINER_AMQP_USERNAME") ||
+        Application.get_env(:docker_container_amqp, :username)
+
+    password =
+      System.get_env("DOCKER_CONTAINER_AMQP_PASSWORD") ||
+        Application.get_env(:docker_container_amqp, :password)
+
+    backend_hostname =
+      System.get_env("DOCKER_CONTAINER_BACKEND_HOSTNAME") ||
+        Application.get_env(:docker_container_backend, :hostname)
+
+    backend_username =
+      System.get_env("DOCKER_CONTAINER_BACKEND_USERNAME") ||
+        Application.get_env(:docker_container_backend, :username)
+
+    backend_password =
+      System.get_env("DOCKER_CONTAINER_BACKEND_PASSWORD") ||
+        Application.get_env(:docker_container_backend, :password)
 
     virtual_host =
-      System.get_env("DOCKER_CONTAINER_AMQP_VHOST") || Application.get_env(:docker_container_amqp, :virtual_host) || "/"
+      System.get_env("DOCKER_CONTAINER_AMQP_VHOST") ||
+        Application.get_env(:docker_container_amqp, :virtual_host) || "/"
 
     mounted_workdir = Application.get_env(:ex_backend, :mounted_workdir, "/data")
     workdir = Application.get_env(:ex_backend, :workdir, "/data")
@@ -44,7 +62,7 @@ defmodule ExBackendWeb.Docker.ImagesController do
       AMQP_VHOST: virtual_host,
       BACKEND_HOSTNAME: backend_hostname,
       BACKEND_USERNAME: backend_username,
-      BACKEND_PASSWORD: backend_password,
+      BACKEND_PASSWORD: backend_password
     }
 
     image_list =
@@ -59,8 +77,8 @@ defmodule ExBackendWeb.Docker.ImagesController do
     image =
       list_all(%{"node_id" => node_id})
       |> Enum.filter(fn image ->
-          image.id == id
-        end)
+        image.id == id
+      end)
       |> List.first()
 
     tag =
@@ -77,8 +95,8 @@ defmodule ExBackendWeb.Docker.ImagesController do
     image =
       list_all(%{"node_id" => node_id})
       |> Enum.filter(fn image ->
-          image.id == id
-        end)
+        image.id == id
+      end)
       |> List.first()
 
     try do
@@ -95,7 +113,10 @@ defmodule ExBackendWeb.Docker.ImagesController do
 
   defp build_images([image | images], environment, volumes, image_list) do
     image_environment =
-      if image.repo_tags && Enum.any?(image.repo_tags, fn tag -> String.starts_with?(tag, "ftvsubtil/acs_worker") end) do
+      if image.repo_tags &&
+           Enum.any?(image.repo_tags, fn tag ->
+             String.starts_with?(tag, "ftvsubtil/acs_worker")
+           end) do
         Map.put(environment, :AMQP_QUEUE, "acs")
       else
         environment
@@ -121,6 +142,7 @@ defmodule ExBackendWeb.Docker.ImagesController do
 
   defp get_tag(nil), do: "Unknown"
   defp get_tag([]), do: ""
+
   defp get_tag(tags) do
     List.first(tags)
   end
@@ -146,7 +168,7 @@ defmodule ExBackendWeb.Docker.ImagesController do
         nil -> true
         _ -> node_id == node.id
       end
-      end)
+    end)
     |> Enum.map(fn node_config ->
       list_images(node_config)
       |> Enum.map(fn image ->

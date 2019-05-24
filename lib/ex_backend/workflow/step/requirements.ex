@@ -4,7 +4,9 @@ defmodule ExBackend.Workflow.Step.Requirements do
 
     input_filter =
       ExBackend.Map.get_by_key_or_atom(step, :parameters, [])
-      |> Enum.filter(fn param -> ExBackend.Map.get_by_key_or_atom(param, :id) == "input_filter" end)
+      |> Enum.filter(fn param ->
+        ExBackend.Map.get_by_key_or_atom(param, :id) == "input_filter"
+      end)
       |> Enum.map(fn param -> ExBackend.Map.get_by_key_or_atom(param, :value) end)
 
     paths =
@@ -30,7 +32,9 @@ defmodule ExBackend.Workflow.Step.Requirements do
 
         new_destination_path =
           ExBackend.Map.get_by_key_or_atom(job.params, :list, [])
-          |> Enum.filter(fn param -> ExBackend.Map.get_by_key_or_atom(param, :id) == "destination_path" end)
+          |> Enum.filter(fn param ->
+            ExBackend.Map.get_by_key_or_atom(param, :id) == "destination_path"
+          end)
           |> Enum.map(fn param -> ExBackend.Map.get_by_key_or_atom(param, :value) end)
 
         total =
@@ -68,10 +72,13 @@ defmodule ExBackend.Workflow.Step.Requirements do
       [%{ends_with: ends_with}] ->
         paths
         |> Enum.filter(fn path -> String.ends_with?(path, ends_with) end)
+
       [%{"ends_with" => ends_with}] ->
         paths
         |> Enum.filter(fn path -> String.ends_with?(path, ends_with) end)
-      _ -> paths
+
+      _ ->
+        paths
     end
   end
 
@@ -102,10 +109,10 @@ defmodule ExBackend.Workflow.Step.Requirements do
       ExBackend.Map.get_by_key_or_atom(parameter, :value)
       |> String.replace("#workflow_id", "<%= workflow_id %>")
       |> String.replace("#work_dir", "<%= work_dir %>")
-      |> EEx.eval_string([
+      |> EEx.eval_string(
         workflow_id: workflow.id,
         work_dir: work_dir
-      ])
+      )
 
     parameter =
       parameter

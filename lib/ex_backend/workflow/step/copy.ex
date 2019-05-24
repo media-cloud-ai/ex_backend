@@ -22,6 +22,7 @@ defmodule ExBackend.Workflow.Step.Copy do
   end
 
   def start_to_process_files([], _workflow, _step, _step_id), do: {:ok, "started"}
+
   def start_to_process_files([path | paths], workflow, step, step_id) do
     requirements = Requirements.add_required_paths(path)
 
@@ -31,34 +32,37 @@ defmodule ExBackend.Workflow.Step.Copy do
 
     output_directory =
       parameters
-      |> Enum.filter(fn param -> ExBackend.Map.get_by_key_or_atom(param, :id) == "output_directory" end)
+      |> Enum.filter(fn param ->
+        ExBackend.Map.get_by_key_or_atom(param, :id) == "output_directory"
+      end)
       |> Enum.map(fn param -> ExBackend.Map.get_by_key_or_atom(param, :value) end)
 
     destination_path = Path.join(output_directory, Path.basename(path))
 
     parameters =
-      parameters ++ [
-        %{
-          "id" => "action",
-          "type" => "string",
-          "value" => @action_name
-        },
-        %{
-          "id" => "requirements",
-          "type" => "requirements",
-          "value" => requirements
-        },
-        %{
-          "id" => "source_paths",
-          "type" => "paths",
-          "value" => [path]
-        },
-        %{
-          "id" => "destination_path",
-          "type" => "string",
-          "value" => destination_path
-        }
-      ]
+      parameters ++
+        [
+          %{
+            "id" => "action",
+            "type" => "string",
+            "value" => @action_name
+          },
+          %{
+            "id" => "requirements",
+            "type" => "requirements",
+            "value" => requirements
+          },
+          %{
+            "id" => "source_paths",
+            "type" => "paths",
+            "value" => [path]
+          },
+          %{
+            "id" => "destination_path",
+            "type" => "string",
+            "value" => destination_path
+          }
+        ]
 
     job_params = %{
       name: @action_name,

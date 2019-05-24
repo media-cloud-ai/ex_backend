@@ -8,7 +8,13 @@ defmodule ExBackend.Amqp.JobRdfErrorConsumer do
     queue: "job_rdf_error",
     consumer: &ExBackend.Amqp.JobRdfErrorConsumer.consume/4
   }
-  def consume(channel, tag, _redelivered, %{"job_id" => job_id, "message" => description} = payload) do
+
+  def consume(
+        channel,
+        tag,
+        _redelivered,
+        %{"job_id" => job_id, "message" => description} = payload
+      ) do
     Logger.error("RDF error: #{inspect(payload)}")
     Status.set_job_status(job_id, "error", %{message: description})
     Workflows.notification_from_job(job_id)

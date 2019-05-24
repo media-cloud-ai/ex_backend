@@ -13,9 +13,10 @@ defmodule ExBackendWeb.SubtitleView do
   def render("subtitle.json", %{subtitle: subtitle}) do
     subtitle = ExBackend.Repo.preload(subtitle, [:user, :childs])
 
-    childs = Enum.map(subtitle.childs, fn child ->
-      child.id
-    end)
+    childs =
+      Enum.map(subtitle.childs, fn child ->
+        child.id
+      end)
 
     %{
       id: subtitle.id,
@@ -28,7 +29,7 @@ defmodule ExBackendWeb.SubtitleView do
       inserted_at: subtitle.inserted_at,
       user: %{
         id: subtitle.user.id,
-        email: subtitle.user.email,
+        email: subtitle.user.email
       }
     }
   end

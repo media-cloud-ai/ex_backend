@@ -8,6 +8,7 @@ defmodule ExBackendWeb.ConfirmController do
     case ExBackendWeb.Auth.Token.verify(params) do
       {:ok, nil} ->
         error(conn, :unauthorized, 401)
+
       {:ok, user} ->
         case Accounts.update_password(user, params) do
           {:ok, user} ->

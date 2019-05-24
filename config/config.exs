@@ -23,7 +23,6 @@ config :phauxth,
   token_module: ExBackendWeb.Auth.Token,
   crypto_module: Bcrypt
 
-
 # Mailer configuration
 config :ex_backend, ExBackend.Mailer, adapter: Bamboo.LocalAdapter
 

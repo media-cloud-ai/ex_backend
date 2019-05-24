@@ -22,18 +22,28 @@ defmodule ExBackendWeb.RegisteryController do
     render(conn, "show.json", item: item)
   end
 
-  def add_subtitle(conn, %{"language" => language, "version" => version, "registery_id" => registery_id}) do
+  def add_subtitle(conn, %{
+        "language" => language,
+        "version" => version,
+        "registery_id" => registery_id
+      }) do
     item = Registeries.get_registery!(registery_id)
 
     %Plug.Conn{assigns: %{current_user: user}} = conn
 
     root =
       System.get_env("ROOT_DASH_CONTENT") || Application.get_env(:ex_backend, :root_dash_content)
-    filename = Path.join([root, Integer.to_string(item.workflow_id), UUID.uuid4() <> "_" <> language <> ".vtt"])
 
-    {:ok, file} = File.open filename, [:write]
-    IO.binwrite file, "WEBVTT\n\n"
-    File.close file
+    filename =
+      Path.join([
+        root,
+        Integer.to_string(item.workflow_id),
+        UUID.uuid4() <> "_" <> language <> ".vtt"
+      ])
+
+    {:ok, file} = File.open(filename, [:write])
+    IO.binwrite(file, "WEBVTT\n\n")
+    File.close(file)
 
     parameters = %{
       "language" => language,
@@ -62,15 +72,21 @@ defmodule ExBackendWeb.RegisteryController do
 
     version =
       Plug.Conn.get_req_header(conn, "x-version")
-      |> List.first
+      |> List.first()
 
     root =
       System.get_env("ROOT_DASH_CONTENT") || Application.get_env(:ex_backend, :root_dash_content)
 
-    subtitle_filename = Path.join([root, Integer.to_string(item.workflow_id), UUID.uuid4() <> "_" <> language <> ".vtt"])
-    {:ok, file} = File.open subtitle_filename, [:write]
-    :ok = IO.binwrite file, content
-    :ok = File.close file
+    subtitle_filename =
+      Path.join([
+        root,
+        Integer.to_string(item.workflow_id),
+        UUID.uuid4() <> "_" <> language <> ".vtt"
+      ])
+
+    {:ok, file} = File.open(subtitle_filename, [:write])
+    :ok = IO.binwrite(file, content)
+    :ok = File.close(file)
 
     parameters = %{
       "language" => language,

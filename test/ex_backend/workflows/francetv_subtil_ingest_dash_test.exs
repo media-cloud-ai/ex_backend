@@ -31,10 +31,14 @@ defmodule ExBackend.FrancetvSubtilIngestDashTest do
         "/streaming-adaptatif_france-dom-tom/2018/S49/J7/195355542-5c0cf635d0b53-standard5.mp4"
       ]
 
-      ttml_path = "https://staticftv-a.akamaihd.net/sous-titres/2018/12/09/195355542-5c0cf635d0b53-1544353508.ttml"
+      ttml_path =
+        "https://staticftv-a.akamaihd.net/sous-titres/2018/12/09/195355542-5c0cf635d0b53-1544353508.ttml"
 
       workflow_params =
-        ExBackend.Workflow.Definition.FrancetvSubtilDashIngest.get_definition(source_paths, ttml_path)
+        ExBackend.Workflow.Definition.FrancetvSubtilDashIngest.get_definition(
+          source_paths,
+          ttml_path
+        )
         |> Map.put(:reference, "99787afd-ba2d-410f-b03e-66cf2efb3ed5")
 
       {:ok, workflow} = Workflows.create_workflow(workflow_params)
@@ -64,6 +68,7 @@ defmodule ExBackend.FrancetvSubtilIngestDashTest do
         "/tmp/video_track.mp4",
         "/tmp/audio_track.mp4"
       ])
+
       ExBackend.HelpersTest.complete_jobs(workflow.id, "generate_dash")
 
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)

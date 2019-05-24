@@ -10,7 +10,6 @@ defmodule ExBackend.FrancetvSubtilAcsTest do
     channel = ExBackend.HelpersTest.get_amqp_connection()
 
     on_exit(fn ->
-
       ExBackend.HelpersTest.consume_messages(channel, "job_ftp", 2)
       ExBackend.HelpersTest.consume_messages(channel, "job_http", 1)
       ExBackend.HelpersTest.consume_messages(channel, "job_ffmpeg", 1)

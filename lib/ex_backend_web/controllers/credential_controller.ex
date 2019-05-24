@@ -13,13 +13,14 @@ defmodule ExBackendWeb.CredentialController do
   plug(:right_administrator_check when action in [:index, :show, :delete])
 
   api :GET, "/api/credentials" do
-    title "List all Credentials"
-    description "Retrieve all credentials"
+    title("List all Credentials")
+    description("Retrieve all credentials")
 
-    parameter :page, :integer, [optional: true, description: "Index of the page"]
-    parameter :size, :integer, [optional: true, description: "Size per page"]
-    parameter :key, :string, [description: "Search by key"]
+    parameter(:page, :integer, optional: true, description: "Index of the page")
+    parameter(:size, :integer, optional: true, description: "Size per page")
+    parameter(:key, :string, description: "Search by key")
   end
+
   def index(conn, params) do
     credentials = Credentials.list_credentials(params)
     render(conn, "index.json", credentials: credentials)
@@ -31,6 +32,7 @@ defmodule ExBackendWeb.CredentialController do
         conn
         |> put_status(:created)
         |> render("show.json", credential: credential)
+
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)

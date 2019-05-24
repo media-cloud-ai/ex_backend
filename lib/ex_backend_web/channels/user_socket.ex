@@ -1,8 +1,9 @@
 defmodule ExBackendWeb.UserSocket do
-  use Phoenix.Socket, check_origin: [
-    "https://backend.media-io.com",
-    "https://subtitles.ebu.io",
-  ]
+  use Phoenix.Socket,
+    check_origin: [
+      "https://backend.media-io.com",
+      "https://subtitles.ebu.io"
+    ]
 
   ## Channels
   channel("browser:*", ExBackendWeb.BrowserChannel)
