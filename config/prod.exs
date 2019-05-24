@@ -69,6 +69,7 @@ config :httpotion, :default_timeout, 60000
 
 # Configure your database
 config :ex_backend, ExBackend.Repo,
+  migration_timestamps: [type: :naive_datetime_usec],
   username: "postgres",
   password: "postgres",
   database: "ex_backend_prod",

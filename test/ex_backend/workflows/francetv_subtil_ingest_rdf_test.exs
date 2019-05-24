@@ -48,7 +48,7 @@ defmodule ExBackend.FrancetvSubtilIngestRdfTest do
 
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)
       ExBackend.HelpersTest.check(workflow.id, 5)
-      ExBackend.HelpersTest.check(workflow.id, "push_rdf", 1)
+      ExBackend.HelpersTest.check(workflow.id, "clean_workspace", 1)
 
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)
       ExBackend.HelpersTest.check(workflow.id, 6)

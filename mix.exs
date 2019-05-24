@@ -66,6 +66,7 @@ defmodule ExBackend.Mixfile do
       {:bcrypt_elixir, "~> 2.0"},
       {:bamboo, "~> 1.2"},
       {:blue_bird, "~> 0.4.1"},
+      {:comeonin, "~> 5.1"},
       {:cowboy, "~> 2.6"},
       {:distillery, "~> 2.0"},
       {:ecto, "~> 3.1"},

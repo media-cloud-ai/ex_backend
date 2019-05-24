@@ -11,6 +11,7 @@ config :logger, level: :info
 
 # Configure your database
 config :ex_backend, ExBackend.Repo,
+  migration_timestamps: [type: :naive_datetime_usec],
   username: "postgres",
   password: "postgres",
   database: "ex_backend_test",
@@ -38,7 +39,8 @@ config :ex_backend,
 config :amqp,
   hostname: "localhost",
   username: "guest",
-  password: "guest"
+  password: "guest",
+  virtual_host: "test"
 
 # Comeonin password hashing test config
 # config :argon2_elixir,

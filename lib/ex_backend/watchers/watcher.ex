@@ -5,7 +5,7 @@ defmodule ExBackend.Watchers.Watcher do
 
   schema "watchers" do
     field(:identifier, :string)
-    field(:last_event, :utc_datetime)
+    field(:last_event, :utc_datetime_usec)
 
     timestamps()
   end

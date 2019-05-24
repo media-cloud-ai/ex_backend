@@ -5,7 +5,9 @@ defmodule ExBackendWeb.ConfirmController do
   alias ExBackend.Accounts
 
   def index(conn, params) do
-    case Phauxth.Confirm.verify(params, Accounts) do
+    case ExBackendWeb.Auth.Token.verify(params) do
+      {:ok, nil} ->
+        error(conn, :unauthorized, 401)
       {:ok, user} ->
         case Accounts.update_password(user, params) do
           {:ok, user} ->

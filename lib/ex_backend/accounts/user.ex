@@ -8,8 +8,8 @@ defmodule ExBackend.Accounts.User do
     field(:password, :string, virtual: true)
     field(:password_hash, :string)
     field(:rights, {:array, :string}, default: ["administrator"])
-    field(:confirmed_at, :utc_datetime)
-    field(:reset_sent_at, :utc_datetime)
+    field(:confirmed_at, :utc_datetime_usec)
+    field(:reset_sent_at, :utc_datetime_usec)
 
     timestamps()
   end

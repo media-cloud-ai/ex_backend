@@ -21,11 +21,15 @@ defmodule ExBackendWeb.SessionController do
   def create(conn, %{"session" => params}) do
     case ExBackendWeb.Auth.Token.verify(params) do
       {:ok, user} ->
-        token = ExBackendWeb.Auth.Token.sign(conn, %{"email" => user.email})
+        token = ExBackendWeb.Auth.Token.sign(%{"email" => user.email})
         render(conn, "info.json", %{info: token, user: user})
 
       {:error, _message} ->
         error(conn, :unauthorized, 401)
     end
+  end
+
+  def create(conn, _) do
+    error(conn, :unauthorized, 401)
   end
 end

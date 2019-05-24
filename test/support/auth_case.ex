@@ -27,14 +27,14 @@ defmodule ExBackendWeb.AuthCase do
   end
 
   def add_token_conn(conn, user) do
-    user_token = Phauxth.Token.sign(ExBackendWeb.Endpoint, user.id)
-
+    user_token = ExBackendWeb.Auth.Token.sign(%{"email" => user.email})
+    IO.inspect(user_token)
     conn
     |> put_req_header("accept", "application/json")
     |> put_req_header("authorization", user_token)
   end
 
   def gen_key(email) do
-    Phauxth.Token.sign(ExBackendWeb.Endpoint, %{"email" => email})
+    ExBackendWeb.Auth.Token.sign(%{"email" => email})
   end
 end
