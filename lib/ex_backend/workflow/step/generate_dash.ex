@@ -70,7 +70,7 @@ defmodule ExBackend.Workflow.Step.GenerateDash do
               },
               %{
                 "id" => "source_paths",
-                "type" => "paths",
+                "type" => "array_of_strings",
                 "value" => source_track_paths
               },
               %{

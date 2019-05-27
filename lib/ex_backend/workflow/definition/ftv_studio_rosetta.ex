@@ -103,7 +103,7 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
             parameters: [
               %{
                 id: "source_paths",
-                type: "paths",
+                type: "array_of_strings",
                 enable: true,
                 default: source_mp4_paths,
                 value: source_mp4_paths
@@ -128,9 +128,15 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
               },
               %{
                 id: "source_prefix",
-                type: "string",
-                default: "/343079/http",
-                value: "/343079/http"
+                type: "credential",
+                default: "AKAMAI_REPLAY_PREFIX",
+                value: "AKAMAI_REPLAY_PREFIX"
+              },
+              %{
+                id: "source_ssl",
+                type: "credential",
+                default: "AKAMAI_REPLAY_SSL",
+                value: "AKAMAI_REPLAY_SSL"
               }
             ]
           },
@@ -143,7 +149,7 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
             parameters: [
               %{
                 id: "source_paths",
-                type: "paths",
+                type: "array_of_strings",
                 enable: true,
                 default: source_ttml_paths,
                 value: source_ttml_paths
@@ -177,9 +183,9 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
               },
               %{
                 id: "destination_prefix",
-                type: "string",
-                default: "/mnt/rosetta/",
-                value: "/mnt/rosetta/"
+                type: "credential",
+                default: "FTP_ROSETTA_PREFIX",
+                value: "FTP_ROSETTA_PREFIX"
               },
               %{
                 id: "destination_pattern",
@@ -189,9 +195,9 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
               },
               %{
                 id: "ssl",
-                type: "boolean",
-                default: false,
-                value: false
+                type: "credential",
+                default: "FTP_ROSETTA_SSL",
+                value: "FTP_ROSETTA_SSL"
               }
             ]
           },
@@ -201,6 +207,23 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
             required: [2],
             name: "clean_workspace",
             enable: true
+          },
+          %{
+            id: 4,
+            parent_ids: [2],
+            required: [3],
+            name: "send_notification",
+            label: "Send notification",
+            icon: "notification_important",
+            enable: true,
+            parameters: [
+              %{
+                id: "endpoint",
+                type: "string",
+                default: "https://demo.media-io.com/mockup/francetv",
+                value: "https://demo.media-io.com/mockup/francetv"
+              },
+            ]
           }
         ]
       }

@@ -42,7 +42,7 @@ defmodule ExBackend.Workflow.Step.CleanWorkspace do
             },
             %{
               "id" => "source_paths",
-              "type" => "paths",
+              "type" => "array_of_strings",
               "value" => [dst_path]
             }
           ]

@@ -44,7 +44,7 @@ defmodule ExBackend.Workflow.Step.AcsSynchronize do
         [
           %{
             "id" => "source_paths",
-            "type" => "paths",
+            "type" => "array_of_strings",
             "value" => [audio_path, subtitle_path]
           },
           %{
@@ -69,7 +69,7 @@ defmodule ExBackend.Workflow.Step.AcsSynchronize do
           },
           %{
             "id" => "libraries",
-            "type" => "paths",
+            "type" => "array_of_strings",
             "value" => [exec_dir]
           }
         ]
