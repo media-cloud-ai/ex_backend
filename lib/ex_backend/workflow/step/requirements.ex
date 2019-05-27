@@ -123,4 +123,39 @@ defmodule ExBackend.Workflow.Step.Requirements do
     result = List.insert_at(result, -1, parameter)
     parse_parameters(parameters, workflow, result)
   end
+
+  def get_parameter([], _key), do: nil
+  def get_parameter([parameter | parameters], key) do
+    if ExBackend.Map.get_by_key_or_atom(parameter, :id) == key do
+      ExBackend.Map.get_by_key_or_atom(parameter, :value,
+        ExBackend.Map.get_by_key_or_atom(parameter, :default)
+      )
+    else
+      get_parameter(parameters, key)
+    end
+  end
+
+  def get_workflow_step(workflow, job_id) do
+    job = get_job(workflow.jobs, job_id)
+    get_step(workflow.flow.steps, ExBackend.Map.get_by_key_or_atom(job, :step_id))
+  end
+
+  defp get_job([], _job_id), do: nil
+  defp get_job([job | jobs], job_id) do
+    if ExBackend.Map.get_by_key_or_atom(job, :id) == job_id do
+      job
+    else
+      get_job(jobs, job_id)
+    end
+  end
+
+  defp get_step(_, nil), do: nil
+  defp get_step([], _step_id), do: nil
+  defp get_step([step | steps], step_id) do
+    if ExBackend.Map.get_by_key_or_atom(step, :id) == step_id do
+      step
+    else
+      get_step(steps, step_id)
+    end
+  end
 end
