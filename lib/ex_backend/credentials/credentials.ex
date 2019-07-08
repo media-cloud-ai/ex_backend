@@ -105,6 +105,22 @@ defmodule ExBackend.Credentials do
   def get_credential_by_key!(key), do: Repo.get_by!(Credential, key: key)
 
   @doc """
+  Gets a single credential by Key.
+
+  Raises `Ecto.NoResultsError` if the Credential Key does not exist.
+
+  ## Examples
+
+      iex> get_credential_by_key("MY_KEY")
+      %Credential{}
+
+      iex> get_credential_by_key("BAD_KEY")
+      nil
+
+  """
+  def get_credential_by_key(key), do: Repo.get_by(Credential, key: key)
+
+  @doc """
   Creates a credential.
 
   ## Examples
