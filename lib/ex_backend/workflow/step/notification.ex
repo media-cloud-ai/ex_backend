@@ -70,41 +70,60 @@ defmodule ExBackend.Workflow.Step.Notification do
             ExBackend.Map.get_by_key_or_atom(source_information, :channel)
             |> ExBackend.Map.get_by_key_or_atom(:id)
 
-          step = Requirements.get_workflow_step(workflow, job_id)
+          case Requirements.get_workflow_step(workflow, job_id) do
+            nil -> {:skipped, "skip notification"}
+            step ->
+              %{
+                ttml_path: ttml_path,
+                mp4_path: mp4_path
+              } = Requirements.get_source_files(workflow.jobs, step)
+                  |> split_mp4_and_ttml
+              
+              body = %{
+                title: title,
+                additional_title: additional_title,
+                duration: duration,
+                expected_duration: expected_duration,
+                expected_at: expected_at,
+                broadcasted_at: broadcasted_at,
+                legacy_id: legacy_id,
+                oscar_id: oscar_id,
+                aedra_id: aedra_id,
+                plurimedia_broadcast_id: plurimedia_broadcast_id,
+                plurimedia_collection_ids: plurimedia_collection_ids,
+                plurimedia_program_id: plurimedia_program_id,
+                ftvcut_id: ftvcut_id,
+                channel: channel,
+                ttml_path: ttml_path,
+                mp4_path: mp4_path,
+              }
 
-          %{
-            ttml_path: ttml_path,
-            mp4_path: mp4_path
-          } = Requirements.get_source_files(workflow.jobs, step)
-              |> split_mp4_and_ttml
+              endpoint = Requirements.get_parameter(parameters, "endpoint")
+              token = Requirements.get_parameter(parameters, "token")
+              headers = [
+                {"Content-Type", "application/json"}
+              ]
 
-          body = %{
-            title: title,
-            additional_title: additional_title,
-            duration: duration,
-            expected_duration: expected_duration,
-            expected_at: expected_at,
-            broadcasted_at: broadcasted_at,
-            legacy_id: legacy_id,
-            oscar_id: oscar_id,
-            aedra_id: aedra_id,
-            plurimedia_broadcast_id: plurimedia_broadcast_id,
-            plurimedia_collection_ids: plurimedia_collection_ids,
-            plurimedia_program_id: plurimedia_program_id,
-            ftvcut_id: ftvcut_id,
-            channel: channel,
-            ttml_path: ttml_path,
-            mp4_path: mp4_path,
-          }
+              headers =
+                case token do
+                  nil -> headers
+                  token ->
+                    headers
+                    |> Keyword.put_new(:Authorization, "Bearer " <> token)
+                end
 
-          endpoint = Requirements.get_parameter(parameters, "endpoint")
-
-          case HTTPotion.post(endpoint, [body: body |> Jason.encode!, headers: ["Content-Type": "application/json"]]) do
-            %HTTPotion.Response{status_code: 200} ->
-              {:ok, "completed"}
-            response ->
-              Logger.error('unable to notify #{endpoint}: #{inspect response}')
-              {:error, "unable to notify: #{endpoint}"}
+              if oscar_id && ttml_path && mp4_path do
+                case HTTPotion.post(endpoint, [body: body |> Jason.encode!, headers: headers]) do
+                  %HTTPotion.Response{status_code: 200} ->
+                    {:ok, "completed"}
+                  response ->
+                    Logger.error('unable to notify #{endpoint}: #{inspect response}')
+                    {:error, "unable to notify: #{endpoint}"}
+                end
+              else
+                Logger.info("skip notification")
+                {:skipped, "skip notification"}
+              end
           end
         _ -> {:error, "unable to get video metadata on FranceTélévisions SI"}
       end
@@ -114,6 +133,10 @@ defmodule ExBackend.Workflow.Step.Notification do
         Jobs.Status.set_job_status(job_id, "completed")
         Workflows.notification_from_job(job_id)
         {:ok, "completed"}
+      {:skipped, _} -> 
+        Jobs.Status.set_job_status(job_id, "skipped")
+        Workflows.notification_from_job(job_id)
+        {:ok, "skipped"}
       {:error, message} ->
         Jobs.Status.set_job_status(job_id, "error", %{
             message: message
