@@ -39,6 +39,28 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
+
+  <mat-form-field class="search-text-input">
+    <input
+      matInput
+      type="date"
+      placeholder="After date"
+      name=after_date
+      [(ngModel)]="after_date"
+      (ngModelChange)="updateSearchWorkflows()"
+      >
+  </mat-form-field>
+  <mat-form-field class="search-text-input">
+    <input
+      matInput
+      type="date"
+      placeholder="Before date"
+      name=before_date
+      [(ngModel)]="before_date"
+      (ngModelChange)="updateSearchWorkflows()"
+      >
+  </mat-form-field>
+
   <mat-slide-toggle
     color="primary"
     [checked]="detailed"

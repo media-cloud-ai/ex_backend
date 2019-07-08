@@ -219,9 +219,15 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
             parameters: [
               %{
                 id: "endpoint",
-                type: "string",
-                default: "https://demo.media-io.com/mockup/francetv",
-                value: "https://demo.media-io.com/mockup/francetv"
+                type: "credential",
+                default: "ATTESOR_FTVACCESS_ENDPOINT",
+                value: "ATTESOR_FTVACCESS_ENDPOINT"
+              },
+              %{
+                id: "token",
+                type: "credential",
+                default: "ATTESOR_FTVACCESS_TOKEN",
+                value: "ATTESOR_FTVACCESS_TOKEN"
               },
             ]
           }

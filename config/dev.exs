@@ -89,7 +89,15 @@ config :ex_backend,
   acs_app: "./SynchroSubtilTSP_V0.5",
   root_email: "admin@media-io.com",
   root_password: "admin123",
-  root_dash_content: "/dash"
+  root_dash_content: "/Users/marco/dash",
+  mounted_appdir: "/Users/marco/app",
+  mounted_workdir: "/Users/marco/data",
+  docker_container_backend_hostname: "http://127.0.0.1:4000/api",
+  docker_container_backend_username: "admin@media-io.com",
+  docker_container_backend_password: "admin123",
+  docker_container_amqp_hostname: "127.0.0.1",
+  docker_container_amqp_username: "guest",
+  docker_container_amqp_password: "guest"
 
 config :amqp,
   hostname: "127.0.0.1",

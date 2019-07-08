@@ -140,6 +140,10 @@ defmodule ExBackendWeb.WorkflowEventsController do
     CommonEmitter.publish_json("job_gpac", params)
   end
 
+  defp publish("send_notification", job_id, workflow, params) do
+    ExBackend.Workflow.Step.Notification.process_notification(workflow, job_id, params.parameters)
+  end
+
   defp publish(job_name, _job_id, _workflow, _params) do
     Logger.error("unable to restart job for #{job_name}")
   end

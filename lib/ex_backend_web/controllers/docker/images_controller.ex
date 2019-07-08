@@ -10,33 +10,37 @@ defmodule ExBackendWeb.Docker.ImagesController do
   plug(:right_technician_check when action in [:index, :delete])
 
   def index(conn, params) do
-    hostname =
+    amqp_hostname =
       System.get_env("DOCKER_CONTAINER_AMQP_HOSTNAME") ||
-        Application.get_env(:docker_container_amqp, :hostname)
+        Application.get_env(:ex_backend, :docker_container_amqp_hostname)
 
-    username =
+    amqp_username =
       System.get_env("DOCKER_CONTAINER_AMQP_USERNAME") ||
-        Application.get_env(:docker_container_amqp, :username)
+        Application.get_env(:ex_backend, :docker_container_amqp_username)
 
-    password =
+    amqp_password =
       System.get_env("DOCKER_CONTAINER_AMQP_PASSWORD") ||
-        Application.get_env(:docker_container_amqp, :password)
+        Application.get_env(:ex_backend, :docker_container_amqp_password)
+
+    amqp_port =
+      System.get_env("DOCKER_CONTAINER_AMQP_PORT") ||
+        Application.get_env(:ex_backend, :docker_container_amqp_port) || "5672"
+
+    amqp_virtual_host =
+      System.get_env("DOCKER_CONTAINER_AMQP_VHOST") ||
+        Application.get_env(:ex_backend, :docker_container_amqp_virtual_host) || "/"
 
     backend_hostname =
       System.get_env("DOCKER_CONTAINER_BACKEND_HOSTNAME") ||
-        Application.get_env(:docker_container_backend, :hostname)
+        Application.get_env(:ex_backend, :docker_container_backend_hostname)
 
     backend_username =
       System.get_env("DOCKER_CONTAINER_BACKEND_USERNAME") ||
-        Application.get_env(:docker_container_backend, :username)
+        Application.get_env(:ex_backend, :docker_container_backend_username)
 
     backend_password =
       System.get_env("DOCKER_CONTAINER_BACKEND_PASSWORD") ||
-        Application.get_env(:docker_container_backend, :password)
-
-    virtual_host =
-      System.get_env("DOCKER_CONTAINER_AMQP_VHOST") ||
-        Application.get_env(:docker_container_amqp, :virtual_host) || "/"
+        Application.get_env(:ex_backend, :docker_container_backend_password)
 
     mounted_workdir = Application.get_env(:ex_backend, :mounted_workdir, "/data")
     workdir = Application.get_env(:ex_backend, :workdir, "/data")
@@ -56,10 +60,11 @@ defmodule ExBackendWeb.Docker.ImagesController do
     ]
 
     environment = %{
-      AMQP_HOSTNAME: hostname,
-      AMQP_USERNAME: username,
-      AMQP_PASSWORD: password,
-      AMQP_VHOST: virtual_host,
+      AMQP_HOSTNAME: amqp_hostname,
+      AMQP_PORT: amqp_port,
+      AMQP_USERNAME: amqp_username,
+      AMQP_PASSWORD: amqp_password,
+      AMQP_VHOST: amqp_virtual_host,
       BACKEND_HOSTNAME: backend_hostname,
       BACKEND_USERNAME: backend_username,
       BACKEND_PASSWORD: backend_password
