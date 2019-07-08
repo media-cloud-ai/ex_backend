@@ -1,4 +1,6 @@
 defmodule ExBackend.Workflow.Step.Requirements do
+  alias ExBackend.Credentials
+
   def get_source_files(jobs, step) do
     parent_ids = ExBackend.Map.get_by_key_or_atom(step, :parent_ids, [])
 
@@ -127,17 +129,30 @@ defmodule ExBackend.Workflow.Step.Requirements do
   def get_parameter([], _key), do: nil
   def get_parameter([parameter | parameters], key) do
     if ExBackend.Map.get_by_key_or_atom(parameter, :id) == key do
-      ExBackend.Map.get_by_key_or_atom(parameter, :value,
-        ExBackend.Map.get_by_key_or_atom(parameter, :default)
-      )
+      value =
+        ExBackend.Map.get_by_key_or_atom(parameter, :value,
+          ExBackend.Map.get_by_key_or_atom(parameter, :default)
+        )
+
+      case ExBackend.Map.get_by_key_or_atom(parameter, :type) do
+        "credential" ->
+          case Credentials.get_credential_by_key(value) do
+            nil -> nil
+            credential -> credential.value
+          end
+        _ -> value
+      end
     else
       get_parameter(parameters, key)
     end
   end
 
   def get_workflow_step(workflow, job_id) do
-    job = get_job(workflow.jobs, job_id)
-    get_step(workflow.flow.steps, ExBackend.Map.get_by_key_or_atom(job, :step_id))
+    case get_job(workflow.jobs, job_id) do
+      nil -> nil
+      job ->
+        get_step(workflow.flow.steps, ExBackend.Map.get_by_key_or_atom(job, :step_id))
+    end
   end
 
   defp get_job([], _job_id), do: nil
