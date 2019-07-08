@@ -27,6 +27,8 @@ export class WorkflowsComponent {
     100
   ]
   video_id: string
+  after_date: undefined
+  before_date: undefined
   page = 0
   sub = undefined
   loading = true
@@ -117,6 +119,7 @@ export class WorkflowsComponent {
   }
 
   getWorkflows(index) {
+    console.log("get WFs")
     for (let connection of this.connections) {
       connection.unsubscribe()
     }
@@ -126,7 +129,9 @@ export class WorkflowsComponent {
       this.pageSize,
       this.video_id,
       this.selectedStatus,
-      this.selectedWorkflows)
+      this.selectedWorkflows,
+      this.after_date,
+      this.before_date)
     .subscribe(workflowPage => {
       if (workflowPage === undefined) {
         this.length = undefined

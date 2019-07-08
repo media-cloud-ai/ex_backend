@@ -84,6 +84,26 @@ defmodule ExBackend.Workflows do
           from(workflow in query, where: workflow.version_micro == ^version_micro)
       end
 
+    query =
+      case ExBackend.Map.get_by_key_or_atom(params, :before_date) do
+        nil ->
+          query
+
+        before_date ->
+          before_date = Date.from_iso8601!(before_date)
+          from(workflow in query, where: fragment("?::date", workflow.inserted_at) <= ^before_date)
+      end
+
+    query =
+      case ExBackend.Map.get_by_key_or_atom(params, :after_date) do
+        nil ->
+          query
+
+        after_date ->
+          after_date = Date.from_iso8601!(after_date)
+          from(workflow in query, where: fragment("?::date", workflow.inserted_at) >= ^after_date)
+      end
+
     status = Map.get(params, "state")
 
     completed_status = ["completed"]
