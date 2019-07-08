@@ -136,11 +136,11 @@ defmodule ExBackendWeb.WorkflowController do
       |> Map.put(:reference, reference)
 
     {:ok, workflow} = Workflows.create_workflow(workflow_params)
-    {:ok, response_status} = WorkflowStep.start_next_step(workflow)
+    WorkflowStep.start_next_step(workflow)
 
     conn
     |> json(%{
-      status: response_status,
+      status: "processing",
       workflow_id: workflow.id
     })
   end
