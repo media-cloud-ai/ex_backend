@@ -10,6 +10,10 @@ defmodule ExBackendWeb.Docker.ImagesController do
   plug(:right_technician_check when action in [:index, :delete])
 
   def index(conn, params) do
+    amqp_tls =
+      System.get_env("DOCKER_CONTAINER_AMQP_TLS") ||
+        Application.get_env(:ex_backend, :docker_container_amqp_tls)
+
     amqp_hostname =
       System.get_env("DOCKER_CONTAINER_AMQP_HOSTNAME") ||
         Application.get_env(:ex_backend, :docker_container_amqp_hostname)
@@ -60,6 +64,7 @@ defmodule ExBackendWeb.Docker.ImagesController do
     ]
 
     environment = %{
+      AMQP_TLS: amqp_tls,
       AMQP_HOSTNAME: amqp_hostname,
       AMQP_PORT: amqp_port,
       AMQP_USERNAME: amqp_username,

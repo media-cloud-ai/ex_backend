@@ -95,6 +95,7 @@ config :ex_backend,
   docker_container_backend_hostname: "http://127.0.0.1:4000/api",
   docker_container_backend_username: "admin@media-io.com",
   docker_container_backend_password: "admin123",
+  docker_container_amqp_tls: "false",
   docker_container_amqp_hostname: "127.0.0.1",
   docker_container_amqp_username: "guest",
   docker_container_amqp_password: "guest"
