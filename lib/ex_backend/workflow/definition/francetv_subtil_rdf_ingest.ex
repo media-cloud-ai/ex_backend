@@ -21,7 +21,7 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilRdfIngest do
             parameters: [
               %{
                 id: "source_paths",
-                type: "paths",
+                type: "array_of_strings",
                 enable: true,
                 default: source_mp4_paths,
                 value: source_mp4_paths
@@ -61,7 +61,7 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilRdfIngest do
             parameters: [
               %{
                 id: "source_paths",
-                type: "paths",
+                type: "array_of_strings",
                 enable: true,
                 default: source_ttml_paths,
                 value: source_ttml_paths

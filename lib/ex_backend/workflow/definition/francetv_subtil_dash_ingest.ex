@@ -15,7 +15,7 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilDashIngest do
             parameters: [
               %{
                 id: "source_paths",
-                type: "paths",
+                type: "array_of_strings",
                 enable: true,
                 default: source_mp4_paths,
                 value: source_mp4_paths
@@ -143,7 +143,7 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilDashIngest do
             parameters: [
               %{
                 id: "source_paths",
-                type: "paths",
+                type: "array_of_strings",
                 enable: true,
                 default: [source_ttml_path],
                 value: [source_ttml_path]
