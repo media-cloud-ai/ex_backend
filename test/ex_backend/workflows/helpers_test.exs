@@ -108,7 +108,7 @@ defmodule ExBackend.HelpersTest do
     true
   end
 
-  defp validate_parameter(%{"id" => id, "type" => "paths", "value" => paths})
+  defp validate_parameter(%{"id" => id, "type" => "array_of_strings", "value" => paths})
        when is_bitstring(id) and is_list(paths) do
     true
   end

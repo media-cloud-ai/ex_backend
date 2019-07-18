@@ -80,7 +80,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
                    },
                    %{
                      "id" => "source_paths",
-                     "type" => "paths",
+                     "type" => "array_of_strings",
                      "value" => [
                        "/2018/S12/J7/173535163-5ab81c23a3594-standard3.mp4#video:id=v3"
                      ]
@@ -187,7 +187,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
                    },
                    %{
                      "id" => "source_paths",
-                     "type" => "paths",
+                     "type" => "array_of_strings",
                      "value" => [
                        "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4#audio:id=a1",
                        "/2018/S12/J7/173535163-5ab81c23a3594-standard1.mp4#video:id=v5"
@@ -305,7 +305,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
                    },
                    %{
                      "id" => "source_paths",
-                     "type" => "paths",
+                     "type" => "array_of_strings",
                      "value" => [
                        "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4#audio:id=a1",
                        "/2018/S12/J7/173535163-5ab81c23a3594-qad.mp4#audio:id=a2",
@@ -425,7 +425,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
                    },
                    %{
                      "id" => "source_paths",
-                     "type" => "paths",
+                     "type" => "array_of_strings",
                      "value" => [
                        "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4#audio:id=a1",
                        "/2018/S12/J7/173535163-5ab81c23a3594-qaa.mp4#audio:id=a2",
@@ -554,7 +554,7 @@ defmodule ExBackend.Workflow.Step.GenerateDashTest do
                    },
                    %{
                      "id" => "source_paths",
-                     "type" => "paths",
+                     "type" => "array_of_strings",
                      "value" => [
                        "/2018/S12/J7/173535163-5ab81c23a3594-fra.mp4#audio:id=a1",
                        "/2018/S12/J7/173535163-5ab81c23a3594-qaa.mp4#audio:id=a2",
