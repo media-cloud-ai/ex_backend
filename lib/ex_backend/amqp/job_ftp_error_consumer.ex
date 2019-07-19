@@ -22,7 +22,7 @@ defmodule ExBackend.Amqp.JobFtpErrorConsumer do
         _redelivered,
         %{
           "job_id" => job_id,
-          "parameters" => %{"id" => "message", "type" => "string", "value" => description},
+          "parameters" => [%{"id" => "message", "type" => "string", "value" => description}],
           "status" => "error"
         } = payload
       ) do
