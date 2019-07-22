@@ -112,7 +112,7 @@ defmodule ExBackend.Workflow.Step.Notification do
                     |> Keyword.put_new(:Authorization, "Bearer " <> token)
                 end
 
-              if oscar_id && ttml_path && mp4_path do
+              if legacy_id && ttml_path && mp4_path do
                 case HTTPotion.post(endpoint, [body: body |> Jason.encode!, headers: headers]) do
                   %HTTPotion.Response{status_code: 200} ->
                     {:ok, "completed"}
