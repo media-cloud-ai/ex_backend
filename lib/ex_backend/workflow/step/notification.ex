@@ -53,6 +53,7 @@ defmodule ExBackend.Workflow.Step.Notification do
             |> Jason.decode!
             |> List.first
 
+          id = ExBackend.Map.get_by_key_or_atom(source_information, :id)
           title = ExBackend.Map.get_by_key_or_atom(source_information, :title)
           additional_title = ExBackend.Map.get_by_key_or_atom(source_information, :additional_title)
           duration = ExBackend.Map.get_by_key_or_atom(source_information, :duration)
@@ -80,6 +81,7 @@ defmodule ExBackend.Workflow.Step.Notification do
                   |> split_mp4_and_ttml
               
               body = %{
+                id: id,
                 title: title,
                 additional_title: additional_title,
                 duration: duration,
