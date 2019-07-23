@@ -39,7 +39,7 @@ defmodule ExBackendWeb.WorkflowEventsController do
 
         params = %{
           job_id: job.id,
-          parameters: Map.get(job.params, "list", [])
+          parameters: job.parameters
         }
 
         case publish(job.name, job.id, workflow, params) do

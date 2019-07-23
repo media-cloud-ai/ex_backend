@@ -69,17 +69,14 @@ defmodule ExBackend.Workflow.Step.SpeechToText do
       name: @action_name,
       step_id: ExBackend.Map.get_by_key_or_atom(step, :id),
       workflow_id: workflow.id,
-      params: %{list: parameters}
+      parameters: parameters
     }
 
     {:ok, job} = Jobs.create_job(job_params)
 
-    params = %{
-      job_id: job.id,
-      parameters: job.params.list
-    }
+    message = Jobs.get_message(job)
 
-    case CommonEmitter.publish_json("job_speech_to_text", params) do
+    case CommonEmitter.publish_json("job_speech_to_text", message) do
       :ok -> {:ok, "started"}
       _ -> {:error, "unable to publish message"}
     end

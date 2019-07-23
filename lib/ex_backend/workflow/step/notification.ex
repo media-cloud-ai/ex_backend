@@ -15,7 +15,7 @@ defmodule ExBackend.Workflow.Step.Notification do
       name: @action_name,
       step_id: ExBackend.Map.get_by_key_or_atom(step, :id),
       workflow_id: workflow.id,
-      params: %{list: parameters}
+      parameters: parameters
     }
 
     {:ok, job} = Jobs.create_job(job_params)

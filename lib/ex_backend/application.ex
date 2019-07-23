@@ -187,6 +187,25 @@ defmodule ExBackend.Application do
       ExBackend.Migration.AddParametersOnWorkflow
     )
 
+    Ecto.Migrator.up(
+      ExBackend.Repo,
+      20_190_723_153_700,
+      ExBackend.Migration.AddParametersOnJob
+    )
+
+    Ecto.Migrator.up(
+      ExBackend.Repo,
+      20_190_723_161_500,
+      ExBackend.Migration.MoveParamsToParametersOnJob
+    )
+
+    Ecto.Migrator.up(
+      ExBackend.Repo,
+      20_190_723_162_000,
+      ExBackend.Migration.RemoveParamsFromJob
+    )
+
+
     root_email = System.get_env("ROOT_EMAIL") || Application.get_env(:ex_backend, :root_email)
 
     root_password =

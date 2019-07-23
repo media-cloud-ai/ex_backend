@@ -15,42 +15,23 @@ defmodule ExBackend.Workflow.Step.Requirements do
       jobs
       |> Enum.filter(fn job -> job.step_id in parent_ids end)
       |> Enum.map(fn job ->
-        output_paths =
-          ExBackend.Map.get_by_key_or_atom(job.params, :outputs, [])
-          |> Enum.reduce([], fn output, acc ->
-            case ExBackend.Map.get_by_key_or_atom(output, :path) do
-              nil -> acc
-              path -> acc ++ [path]
-            end
-          end)
 
         destination_path =
-          ExBackend.Map.get_by_key_or_atom(job.params, :destination, %{})
-          |> ExBackend.Map.get_by_key_or_atom(:path)
-
-        destination_paths =
-          ExBackend.Map.get_by_key_or_atom(job.params, :destination, %{})
-          |> ExBackend.Map.get_by_key_or_atom(:paths, [])
-
-        new_destination_path =
-          ExBackend.Map.get_by_key_or_atom(job.params, :list, [])
+          job.parameters
           |> Enum.filter(fn param ->
             ExBackend.Map.get_by_key_or_atom(param, :id) == "destination_path"
           end)
           |> Enum.map(fn param -> ExBackend.Map.get_by_key_or_atom(param, :value) end)
 
-        new_destination_paths =
-          ExBackend.Map.get_by_key_or_atom(job.params, :list, [])
+        destination_paths =
+          job.parameters
           |> Enum.filter(fn param ->
             ExBackend.Map.get_by_key_or_atom(param, :id) == "destination_paths"
           end)
           |> Enum.map(fn param -> ExBackend.Map.get_by_key_or_atom(param, :value) end)
 
-        add_items([], output_paths)
-        |> add_items(destination_path)
+        add_items([], destination_path)
         |> add_items(destination_paths)
-        |> add_items(new_destination_path)
-        |> add_items(new_destination_paths)
       end)
       |> List.flatten()
       |> Enum.uniq()

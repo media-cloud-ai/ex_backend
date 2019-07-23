@@ -142,7 +142,7 @@ defmodule ExBackend.Jobs do
       name: action,
       step_id: step_id,
       workflow_id: workflow.id,
-      params: %{}
+      parameters: []
     }
 
     {:ok, job} = create_job(job_params)
@@ -164,7 +164,7 @@ defmodule ExBackend.Jobs do
       name: action,
       step_id: step_id,
       workflow_id: workflow.id,
-      params: %{}
+      parameters: []
     }
 
     {:ok, job} = create_job(job_params)
@@ -240,5 +240,21 @@ defmodule ExBackend.Jobs do
   """
   def change_job(%Job{} = job) do
     Job.changeset(job, %{})
+  end
+
+  @doc """
+  Returns a formatted message for AMQP orders.
+
+  ## Examples
+
+      iex> get_message(job)
+      %{job_id: 123, parameters: [{id: "input", type: "string", value: "/path/to/input"}]}
+
+  """
+  def get_message(%Job{} = job) do
+    %{
+      job_id: job.id,
+      parameters: job.parameters
+    }
   end
 end

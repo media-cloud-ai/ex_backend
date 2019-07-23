@@ -175,9 +175,12 @@ defmodule ExBackend.WorkflowStep do
       if job.name == "upload_ftp" do
         path =
           job
-          |> ExBackend.Map.get_by_key_or_atom(:params, %{})
-          |> ExBackend.Map.get_by_key_or_atom(:destination, %{})
-          |> ExBackend.Map.get_by_key_or_atom(:path)
+          |> ExBackend.Map.get_by_key_or_atom(:parameters, [])
+          |> Enum.find(fn param -> ExBackend.Map.get_by_key_or_atom(param, :id) == "destination_path" end)
+          |> case do
+            nil -> nil
+            param -> ExBackend.Map.get_by_key_or_atom(param, :value)
+          end
 
         case path do
           nil -> result

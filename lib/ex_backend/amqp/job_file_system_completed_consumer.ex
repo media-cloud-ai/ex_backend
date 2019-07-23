@@ -12,18 +12,10 @@ defmodule ExBackend.Amqp.JobFileSystemCompletedConsumer do
         channel,
         tag,
         _redelivered,
-        %{"job_id" => job_id, "status" => status, "files" => files} = payload
+        %{"job_id" => job_id, "status" => status, "files" => _files} = payload
       ) do
     Logger.warn("receive #{inspect(payload)}")
     Jobs.Status.set_job_status(job_id, status)
-
-    job = Jobs.get_job!(job_id)
-
-    params =
-      job.params
-      |> Map.put(:destination, %{paths: files})
-
-    Jobs.update_job(job, %{params: params})
 
     ExBackend.WorkflowStepManager.check_step_status(%{job_id: job_id})
     Basic.ack(channel, tag)

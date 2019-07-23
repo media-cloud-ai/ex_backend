@@ -23,7 +23,7 @@ defmodule ExBackendWeb.JobController do
       {:ok, %Job{} = job} ->
         params = %{
           job_id: job.id,
-          parameters: job.params
+          parameters: job.parameters
         }
 
         CommonEmitter.publish_json("job_ftp", params)

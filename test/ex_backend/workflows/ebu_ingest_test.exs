@@ -88,15 +88,6 @@ defmodule ExBackend.EbuIngestTest do
       stored_subtitle_file =
         "/tmp//" <> (workflow.id |> Integer.to_string()) <> "/2_input_filename.mp4-fra.mp4.vtt"
 
-      stored_audio_track_file =
-        "/dash/" <>
-          (workflow.id |> Integer.to_string()) <> "/3_input_filename.mp4-eng_track1_dashinit.mp4"
-
-      stored_video_track_file =
-        "/dash/" <>
-          (workflow.id |> Integer.to_string()) <>
-          "/4_input_filename.mp4-standard5_track1_dashinit.mp4"
-
       stored_manifest_file = "/tmp//" <> (workflow.id |> Integer.to_string()) <> "/manifest.mpd"
 
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)
