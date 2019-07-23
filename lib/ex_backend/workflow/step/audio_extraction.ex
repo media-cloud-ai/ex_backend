@@ -72,14 +72,14 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
       ExBackend.Map.get_by_key_or_atom(step, :parameters, []) ++
         [
           %{
-            "id" => "source_path",
-            "type" => "string",
-            "value" => path
+            "id" => "source_paths",
+            "type" => "array_of_strings",
+            "value" => [path]
           },
           %{
-            "id" => "destination_path",
-            "type" => "string",
-            "value" => dst_path
+            "id" => "destination_paths",
+            "type" => "array_of_strings",
+            "value" => [dst_path]
           },
           %{
             "id" => "requirements",

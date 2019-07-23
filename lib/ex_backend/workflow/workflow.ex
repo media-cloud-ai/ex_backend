@@ -13,6 +13,7 @@ defmodule ExBackend.Workflows.Workflow do
     field(:tags, {:array, :string}, default: [])
     field(:reference, :string)
     field(:flow, :map)
+    field(:parameters, {:array, :map}, default: [])
     has_many(:jobs, Job, on_delete: :delete_all)
     has_many(:artifacts, Artifact, on_delete: :delete_all)
 
@@ -28,6 +29,7 @@ defmodule ExBackend.Workflows.Workflow do
       :version_minor,
       :version_micro,
       :tags,
+      :parameters,
       :reference,
       :flow
     ])

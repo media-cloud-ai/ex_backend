@@ -21,6 +21,8 @@ export class IconForJobPipe implements PipeTransform {
       { id: 'download_ftp', name: 'file_download' },
       { id: 'download_http', name: 'file_download' },
       { id: 'generate_dash', name: 'tv' },
+      { id: 'ism_extraction', name: 'queue_music' },
+      { id: 'ism_manifest', name: 'assignment'},
       { id: 'set_language', name: 'speaker_notes' },
       { id: 'speech_to_text', name: 'closed_caption' },
       { id: 'ttml_to_mp4', name: 'closed_caption' },

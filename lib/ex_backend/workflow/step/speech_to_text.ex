@@ -12,7 +12,7 @@ defmodule ExBackend.Workflow.Step.SpeechToText do
 
     case ExBackend.Map.get_by_key_or_atom(step, :inputs) do
       nil ->
-        case get_first_source_file(workflow.jobs, step) do
+        case  Requirements.get_source_files(workflow.jobs, step) do
           nil ->
             Jobs.create_skipped_job(workflow, step_id, @action_name)
 
@@ -83,24 +83,5 @@ defmodule ExBackend.Workflow.Step.SpeechToText do
       :ok -> {:ok, "started"}
       _ -> {:error, "unable to publish message"}
     end
-  end
-
-  defp get_first_source_file(jobs, step) do
-    parent_ids = ExBackend.Map.get_by_key_or_atom(step, :parent_ids, [])
-
-    jobs
-    |> Enum.filter(fn job ->
-      job.step_id in parent_ids
-    end)
-    |> Enum.map(fn job ->
-      job
-      |> Map.get(:params, %{})
-      |> Map.get("list", [])
-      |> Enum.filter(fn param ->
-        ExBackend.Map.get_by_key_or_atom(param, :id) == "destination_path"
-      end)
-      |> Enum.map(fn param -> ExBackend.Map.get_by_key_or_atom(param, :value) end)
-    end)
-    |> List.flatten()
   end
 end
