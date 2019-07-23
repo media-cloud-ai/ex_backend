@@ -29,7 +29,7 @@ export class CredentialsComponent {
   listCredentials() {
     this.credentialService.getCredentials()
     .subscribe(credentialPage => {
-      this.credentials = credentialPage.data
+      this.credentials = credentialPage.data.sort((a, b) => (a.key > b.key) ? 1 : ((b.key > a.key) ? -1 : 0));
     })
   }
 
