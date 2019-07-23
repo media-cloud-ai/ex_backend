@@ -7,9 +7,9 @@ defmodule ExBackend.JobsTest do
   describe "jobs" do
     alias ExBackend.Jobs.Job
 
-    @valid_attrs %{name: "some name", step_id: 0, params: %{}}
-    @update_attrs %{name: "some updated name", step_id: 1, params: %{key: "value"}}
-    @invalid_attrs %{name: nil, step_id: nil, workflow_id: nil, params: nil}
+    @valid_attrs %{name: "some name", step_id: 0, parameters: []}
+    @update_attrs %{name: "some updated name", step_id: 1, parameters: [%{key: "value"}]}
+    @invalid_attrs %{name: nil, step_id: nil, workflow_id: nil, parameters: nil}
 
     def job_fixture(attrs \\ %{}) do
       workflow = ExBackend.WorkflowsTest.workflow_fixture()
@@ -48,7 +48,7 @@ defmodule ExBackend.JobsTest do
 
       assert {:ok, %Job{} = job} = Jobs.create_job(params)
       assert job.name == "some name"
-      assert job.params == %{}
+      assert job.parameters == []
     end
 
     test "create_job/1 with invalid data returns error changeset" do
@@ -60,7 +60,7 @@ defmodule ExBackend.JobsTest do
       assert {:ok, job} = Jobs.update_job(job, @update_attrs)
       assert %Job{} = job
       assert job.name == "some updated name"
-      assert job.params == %{key: "value"}
+      assert job.parameters == [%{key: "value"}]
     end
 
     test "update_job/2 with invalid data returns error changeset" do

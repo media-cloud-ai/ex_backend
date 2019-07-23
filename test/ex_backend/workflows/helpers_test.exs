@@ -177,10 +177,15 @@ defmodule ExBackend.HelpersTest do
 
     for job <- all_jobs do
       params =
-        job.params
-        |> Map.put(:destination, %{paths: paths})
+        job.parameters ++ [
+          %{
+            "id" => "destination_paths",
+            "type" => "array_of_strings",
+            "value" => paths
+          }
+        ]
 
-      ExBackend.Jobs.update_job(job, %{params: params})
+      ExBackend.Jobs.update_job(job, %{parameters: params})
     end
   end
 

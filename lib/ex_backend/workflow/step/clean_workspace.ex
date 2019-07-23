@@ -28,35 +28,30 @@ defmodule ExBackend.Workflow.Step.CleanWorkspace do
         name: @action_name,
         step_id: ExBackend.Map.get_by_key_or_atom(step, :id),
         workflow_id: workflow.id,
-        params: %{
-          list: [
-            %{
-              "id" => "action",
-              "type" => "string",
-              "value" => "remove"
-            },
-            %{
-              "id" => "requirements",
-              "type" => "requirements",
-              "value" => requirements
-            },
-            %{
-              "id" => "source_paths",
-              "type" => "array_of_strings",
-              "value" => [dst_path]
-            }
-          ]
-        }
+        parameters: [
+          %{
+            "id" => "action",
+            "type" => "string",
+            "value" => "remove"
+          },
+          %{
+            "id" => "requirements",
+            "type" => "requirements",
+            "value" => requirements
+          },
+          %{
+            "id" => "source_paths",
+            "type" => "array_of_strings",
+            "value" => [dst_path]
+          }
+        ]
       }
 
       {:ok, job} = Jobs.create_job(job_params)
 
-      params = %{
-        job_id: job.id,
-        parameters: job.params.list
-      }
+      message = Jobs.get_message(job)
 
-      case CommonEmitter.publish_json("job_file_system", params) do
+      case CommonEmitter.publish_json("job_file_system", message) do
         :ok -> {:ok, "started"}
         _ -> {:error, "unable to publish message"}
       end
@@ -75,14 +70,8 @@ defmodule ExBackend.Workflow.Step.CleanWorkspace do
   def has_local_folder([]), do: false
 
   def has_local_folder([job | jobs]) do
-    destinations =
-      job.params
-      |> Map.get("destination", %{})
-      |> Map.get("paths")
-
     destination_paths =
-      job.params
-      |> Map.get("list", [])
+      job.parameters
       |> Enum.filter(fn param ->
         ExBackend.Map.get_by_key_or_atom(param, :id) == "destination_path"
       end)
@@ -90,7 +79,7 @@ defmodule ExBackend.Workflow.Step.CleanWorkspace do
         ExBackend.Map.get_by_key_or_atom(param, :value)
       end)
 
-    if destinations == nil && destination_paths == [] do
+    if destination_paths == nil || destination_paths == [] do
       has_local_folder(jobs)
     else
       true

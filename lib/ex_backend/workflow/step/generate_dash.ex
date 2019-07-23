@@ -17,12 +17,9 @@ defmodule ExBackend.Workflow.Step.GenerateDash do
       {:ok, job_params} ->
         {:ok, job} = Jobs.create_job(job_params)
 
-        params = %{
-          job_id: job.id,
-          parameters: job.params.list
-        }
+        message = Jobs.get_message(job)
 
-        case CommonEmitter.publish_json("job_gpac", params) do
+        case CommonEmitter.publish_json("job_gpac", message) do
           :ok -> {:ok, "started"}
           _ -> {:error, "unable to publish message"}
         end
@@ -106,7 +103,7 @@ defmodule ExBackend.Workflow.Step.GenerateDash do
             name: @action_name,
             step_id: step_id,
             workflow_id: workflow.id,
-            params: %{list: parameters}
+            parameters: parameters
           }
         }
     end

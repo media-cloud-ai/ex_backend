@@ -42,11 +42,16 @@ defmodule ExBackend.Amqp.JobIsmManifestCompletedConsumer do
 
     Logger.warn("Set as destination files: #{inspect(files)}")
 
-    params =
-      job.params
-      |> Map.put(:destination, %{paths: files})
+    parameters =
+      job.parameters ++ [
+        %{
+          "id" => "destination_paths",
+          "type" => "array_of_strings",
+          "value" => files
+        }
+      ]
 
-    Jobs.update_job(job, %{params: params})
+    Jobs.update_job(job, %{parameters: parameters})
 
     ExBackend.WorkflowStepManager.check_step_status(%{job_id: job_id})
     Basic.ack(channel, tag)

@@ -28,7 +28,7 @@ defmodule ExBackend.FrancetvSubtilIngestRdfTest do
         )
         |> Map.put(:reference, "99787afd-ba2d-410f-b03e-66cf2efb3ed5")
 
-      {:ok, workflow} = Workflows.create_workflow(workflow_params)
+      {:ok, _workflow} = Workflows.create_workflow(workflow_params)
 
       {:ok, workflow} = Workflows.create_workflow(workflow_params)
       {:ok, "started"} = WorkflowStep.start_next_step(workflow)

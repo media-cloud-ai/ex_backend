@@ -35,7 +35,7 @@ defmodule ExBackendWeb.JobView do
         workflow_id: job.workflow_id,
         name: job.name,
         step_id: job.step_id,
-        params: job.params,
+        params: job.parameters,
         status: status,
         inserted_at: job.inserted_at,
         updated_at: job.updated_at

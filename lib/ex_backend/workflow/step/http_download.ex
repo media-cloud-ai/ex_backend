@@ -75,17 +75,14 @@ defmodule ExBackend.Workflow.Step.HttpDownload do
       name: @action_name,
       step_id: step_id,
       workflow_id: workflow.id,
-      params: %{list: parameters}
+      parameters: parameters
     }
 
     {:ok, job} = Jobs.create_job(job_params)
 
-    params = %{
-      job_id: job.id,
-      parameters: job.params.list
-    }
+    message = Jobs.get_message(job)
 
-    case CommonEmitter.publish_json("job_http", params) do
+    case CommonEmitter.publish_json("job_http", message) do
       :ok -> start_download(urls, step_id, step, workflow)
       _ -> {:error, "unable to publish message"}
     end

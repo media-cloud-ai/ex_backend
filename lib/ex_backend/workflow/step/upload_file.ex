@@ -32,11 +32,36 @@ defmodule ExBackend.Workflow.Step.UploadFile do
     filename = input_filename |> Path.basename()
     output_filename = "#{work_dir}/#{workflow.id}/#{filename}"
 
+    parameters = [
+      %{
+        "id" => "source_path",
+        "type" => "string",
+        "value" => input_filename
+      },
+      %{
+        "id" => "source_agent",
+        "type" => "string",
+        "value" => agent
+      },
+      %{
+        "id" => "destination_path",
+        "type" => "string",
+        "value" => output_filename
+      }
+    ]
+
     job_params = %{
       name: @action_name,
       step_id: ExBackend.Map.get_by_key_or_atom(step, :id),
       workflow_id: workflow.id,
-      params: %{
+      parameters: parameters
+    }
+
+    {:ok, job} = Jobs.create_job(job_params)
+
+    params = %{
+      job_id: job.id,
+      parameters: %{
         source: %{
           path: input_filename,
           agent: agent
@@ -45,13 +70,6 @@ defmodule ExBackend.Workflow.Step.UploadFile do
           path: output_filename
         }
       }
-    }
-
-    {:ok, job} = Jobs.create_job(job_params)
-
-    params = %{
-      job_id: job.id,
-      parameters: job.params
     }
 
     ExBackendWeb.Endpoint.broadcast!("transfer:upload", "start", params)
