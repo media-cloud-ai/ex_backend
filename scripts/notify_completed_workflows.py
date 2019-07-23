@@ -76,6 +76,7 @@ def get_workflows(token, page):
 		metadata = metadata[0]
 
 		payload = {
+			'id': metadata['id'],
 			'title': metadata['title'],
 			'additional_title': metadata['additional_title'],
 			'duration': metadata['duration'],
@@ -97,7 +98,11 @@ def get_workflows(token, page):
 		notification_endpoint = get_parameter_value(token, 'ATTESOR_FTVACCESS_ENDPOINT')
 		notification_token = get_parameter_value(token, 'ATTESOR_FTVACCESS_TOKEN')
 
-		headers = {'Authorisation': 'Bearer {}'.format(notification_token)}
+		headers = {
+			'Authorization': 'Bearer {}'.format(notification_token),
+			'Content-Type': "application/json",
+			'X-Requested-With': "XMLHttpRequest"
+		}
 
 		if(args.simulate):
 			print('notification body: {}'.format(json.dumps(payload)))
