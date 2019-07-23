@@ -44,10 +44,11 @@ defmodule ExBackend.FtvStudioRosettaTest do
         "F2/Un-jour-un-destin/20190220_2243/F2_20190220_2243_Un-jour-un-destin_Karl-Lagerfeld-etre-et-paraitre#input_extension"
 
       workflow_params =
-        ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition(
+        ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition_for_akamai_input(
           ["ftp://source/path.mp4"],
           "http://static/source/path.ttml",
-          output_pattern
+          output_pattern,
+          "/prefix"
         )
         |> Map.put(:reference, "39984e00-055c-4aa8-902c-1d6cab12d2da")
 

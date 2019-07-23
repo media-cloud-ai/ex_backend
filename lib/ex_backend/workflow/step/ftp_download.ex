@@ -15,6 +15,20 @@ defmodule ExBackend.Workflow.Step.FtpDownload do
         ExBackend.Map.get_by_key_or_atom(param, :value)
       end)
 
+    step_id = ExBackend.Map.get_by_key_or_atom(step, :id)
+
+    inputs =
+      case inputs do
+        [] ->
+          case Requirements.get_source_files(workflow.jobs, step) do
+            [] ->
+              Jobs.create_skipped_job(workflow, step_id, @action_name)
+            paths ->
+              [paths]
+          end
+        _ -> inputs
+      end
+
     source_paths =
       case inputs do
         [] -> ExVideoFactory.get_ftp_paths_for_video_id(workflow.reference)
@@ -26,8 +40,6 @@ defmodule ExBackend.Workflow.Step.FtpDownload do
       source_paths
       |> Enum.sort()
       |> List.first()
-
-    step_id = ExBackend.Map.get_by_key_or_atom(step, :id)
 
     case source_paths do
       [] -> Jobs.create_skipped_job(workflow, step_id, @action_name)

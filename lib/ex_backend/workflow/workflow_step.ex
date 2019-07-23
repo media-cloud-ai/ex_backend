@@ -127,6 +127,14 @@ defmodule ExBackend.WorkflowStep do
     ExBackend.Workflow.Step.Notification.launch(workflow, step)
   end
 
+  defp launch_step(workflow, "ism_manifest", step) do
+    ExBackend.Workflow.Step.IsmManifest.launch(workflow, step)
+  end
+
+  defp launch_step(workflow, "ism_extraction", step) do
+    ExBackend.Workflow.Step.IsmExtraction.launch(workflow, step)
+  end
+
   defp launch_step(workflow, step_name, step) do
     Logger.error("unable to match with the step #{inspect(step)} for workflow #{workflow.id}")
 

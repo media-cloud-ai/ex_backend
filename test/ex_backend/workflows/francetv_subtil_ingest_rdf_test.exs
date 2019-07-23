@@ -21,9 +21,10 @@ defmodule ExBackend.FrancetvSubtilIngestRdfTest do
   describe "francetv_subtil_ingest_dash_workflow" do
     test "il etait une fois la vie" do
       workflow_params =
-        ExBackend.Workflow.Definition.FrancetvSubtilRdfIngest.get_definition(
+        ExBackend.Workflow.Definition.FrancetvSubtilRdfIngest.get_definition_for_akamai_input(
           ["ftp://source/path.mp4"],
-          "http://static/source/path.ttml"
+          "http://static/source/path.ttml",
+          "/prefix"
         )
         |> Map.put(:reference, "99787afd-ba2d-410f-b03e-66cf2efb3ed5")
 

@@ -39,32 +39,18 @@ defmodule ExBackend.Workflow.Step.Requirements do
           end)
           |> Enum.map(fn param -> ExBackend.Map.get_by_key_or_atom(param, :value) end)
 
-        total =
-          if is_list(output_paths) do
-            output_paths
-          else
-            [output_paths]
-          end
+        new_destination_paths =
+          ExBackend.Map.get_by_key_or_atom(job.params, :list, [])
+          |> Enum.filter(fn param ->
+            ExBackend.Map.get_by_key_or_atom(param, :id) == "destination_paths"
+          end)
+          |> Enum.map(fn param -> ExBackend.Map.get_by_key_or_atom(param, :value) end)
 
-        total =
-          if is_list(destination_path) do
-            total ++ destination_path
-          else
-            total ++ [destination_path]
-          end
-
-        total =
-          if is_list(destination_paths) do
-            total ++ destination_paths
-          else
-            total ++ [destination_paths]
-          end
-
-        if is_list(new_destination_path) do
-          total ++ new_destination_path
-        else
-          total ++ [new_destination_path]
-        end
+        add_items([], output_paths)
+        |> add_items(destination_path)
+        |> add_items(destination_paths)
+        |> add_items(new_destination_path)
+        |> add_items(new_destination_paths)
       end)
       |> List.flatten()
       |> Enum.uniq()
@@ -82,6 +68,14 @@ defmodule ExBackend.Workflow.Step.Requirements do
       _ ->
         paths
     end
+  end
+
+  defp add_items(list, items) when is_list(items) do
+    list ++ items
+  end
+
+  defp add_items(list, items) do
+    list ++ [items]
   end
 
   def add_required_paths(path, requirements \\ %{})

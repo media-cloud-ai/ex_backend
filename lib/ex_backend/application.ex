@@ -35,6 +35,8 @@ defmodule ExBackend.Application do
       worker(ExBackend.Amqp.JobGpacErrorConsumer, []),
       worker(ExBackend.Amqp.JobHttpCompletedConsumer, []),
       worker(ExBackend.Amqp.JobHttpErrorConsumer, []),
+      worker(ExBackend.Amqp.JobIsmManifestCompletedConsumer, []),
+      worker(ExBackend.Amqp.JobIsmManifestErrorConsumer, []),
       worker(ExBackend.Amqp.JobRdfCompletedConsumer, []),
       worker(ExBackend.Amqp.JobRdfErrorConsumer, []),
       worker(ExBackend.Amqp.JobSpeechToTextCompletedConsumer, []),
@@ -177,6 +179,12 @@ defmodule ExBackend.Application do
       ExBackend.Repo,
       20_190_708_132_200,
       ExBackend.Migration.UpdateCredentialValueLength
+    )
+
+    Ecto.Migrator.up(
+      ExBackend.Repo,
+      20_190_723_091_304,
+      ExBackend.Migration.AddParametersOnWorkflow
     )
 
     root_email = System.get_env("ROOT_EMAIL") || Application.get_env(:ex_backend, :root_email)

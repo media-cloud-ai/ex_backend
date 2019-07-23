@@ -23,6 +23,8 @@ export class JobTypePipe implements PipeTransform {
       { id: 'ftp_order', name: 'FTP transfer' },
       { id: 'generate_dash', name: 'Generate DASH' },
       { id: 'gpac_dash', name: 'DASH generation' },
+      { id: 'ism_extraction', name: 'ISM extraction' },
+      { id: 'ism_manifest', name: 'ISM manifest'},
       { id: 'set_language', name: 'Language setting' },
       { id: 'speech_to_text', name: 'Speech to Text' },
       { id: 'ttml_to_mp4', name: 'TTML to MP4' },

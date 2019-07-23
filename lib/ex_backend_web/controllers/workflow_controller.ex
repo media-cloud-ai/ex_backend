@@ -115,24 +115,9 @@ defmodule ExBackendWeb.WorkflowController do
         "identifier" => "ingest-rosetta",
         "reference" => reference
       }) do
-    upload_pattern =
-      ExBackend.Workflow.Definition.FtvStudioRosetta.get_output_filename_base(reference)
-
-    mp4_paths =
-      ExVideoFactory.get_ftp_paths_for_video_id(reference)
-      |> Enum.filter(fn path -> String.contains?(path, "-standard5.mp4") end)
-      |> Enum.map(fn path -> String.replace(path, "/343079/http", "") end)
-
-    ttml_path =
-      ExVideoFactory.get_http_url_for_ttml(reference)
-      |> List.first()
-
     workflow_params =
-      ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition(
-        mp4_paths,
-        ttml_path,
-        upload_pattern
-      )
+      ExVideoFactory.get_ftp_paths_for_video_id(reference)
+      |> get_workflow_definition_for_source("ftv_studio_rosetta", reference)
       |> Map.put(:reference, reference)
 
     {:ok, workflow} = Workflows.create_workflow(workflow_params)
@@ -149,21 +134,9 @@ defmodule ExBackendWeb.WorkflowController do
         "identifier" => "ingest-subtil",
         "reference" => reference
       }) do
-    mp4_paths =
-      ExVideoFactory.get_ftp_paths_for_video_id(reference)
-      |> Enum.filter(fn path ->
-        String.contains?(path, "-standard5.mp4") ||
-          String.contains?(path, "-qad.mp4") ||
-          String.contains?(path, "-qaa.mp4")
-      end)
-      |> Enum.map(fn path -> String.replace(path, "/343079/http", "") end)
-
-    ttml_path =
-      ExVideoFactory.get_http_url_for_ttml(reference)
-      |> List.first()
-
     workflow_params =
-      ExBackend.Workflow.Definition.FrancetvSubtilRdfIngest.get_definition(mp4_paths, ttml_path)
+      ExVideoFactory.get_ftp_paths_for_video_id(reference)
+      |> get_workflow_definition_for_source("francetv_subtil_rdf_ingest", reference)
       |> Map.put(:reference, reference)
 
     {:ok, workflow} = Workflows.create_workflow(workflow_params)
@@ -247,23 +220,8 @@ defmodule ExBackendWeb.WorkflowController do
           )
 
         "francetv_subtil_rdf_ingest" ->
-          mp4_paths =
-            ExVideoFactory.get_ftp_paths_for_video_id(reference)
-            |> Enum.filter(fn path ->
-              String.contains?(path, "-standard5.mp4") ||
-                String.contains?(path, "-qad.mp4") ||
-                String.contains?(path, "-qaa.mp4")
-            end)
-            |> Enum.map(fn path -> String.replace(path, "/343079/http", "") end)
-
-          ttml_path =
-            ExVideoFactory.get_http_url_for_ttml(reference)
-            |> List.first()
-
-          ExBackend.Workflow.Definition.FrancetvSubtilRdfIngest.get_definition(
-            mp4_paths,
-            ttml_path
-          )
+          ExVideoFactory.get_ftp_paths_for_video_id(reference)
+          |> get_workflow_definition_for_source("francetv_subtil_rdf_ingest", reference)
 
         "francetv_subtil_dash_ingest" ->
           ExBackend.Workflow.Definition.FrancetvSubtilDashIngest.get_definition(
@@ -279,23 +237,8 @@ defmodule ExBackendWeb.WorkflowController do
           )
 
         "ftv_studio_rosetta" ->
-          upload_pattern =
-            ExBackend.Workflow.Definition.FtvStudioRosetta.get_output_filename_base(reference)
-
-          mp4_paths =
-            ExVideoFactory.get_ftp_paths_for_video_id(reference)
-            |> Enum.filter(fn path -> String.contains?(path, "-standard5.mp4") end)
-            |> Enum.map(fn path -> String.replace(path, "/343079/http", "") end)
-
-          ttml_path =
-            ExVideoFactory.get_http_url_for_ttml(reference)
-            |> List.first()
-
-          ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition(
-            mp4_paths,
-            ttml_path,
-            upload_pattern
-          )
+          ExVideoFactory.get_ftp_paths_for_video_id(reference)
+          |> get_workflow_definition_for_source("ftv_studio_rosetta", reference)
       end
 
     conn
@@ -330,6 +273,67 @@ defmodule ExBackendWeb.WorkflowController do
 
     with {:ok, %Workflow{}} <- Workflows.delete_workflow(workflow) do
       send_resp(conn, :no_content, "")
+    end
+  end
+
+  defp get_workflow_definition_for_source(source_paths, workflow_id, workflow_reference) do
+    case workflow_id do
+      "francetv_subtil_rdf_ingest" ->
+          case Enum.find(source_paths, fn path -> String.ends_with?(path, ".ism") end) do
+            nil ->
+              prefix = "/343079/http"
+              mp4_paths =
+                source_paths
+                |> Enum.filter(fn path ->
+                  String.contains?(path, "-standard5.mp4") ||
+                    String.contains?(path, "-qad.mp4") ||
+                    String.contains?(path, "-qaa.mp4")
+                end)
+                |> Enum.map(fn path -> String.replace(path, prefix, "") end)
+
+              ttml_path =
+                ExVideoFactory.get_http_url_for_ttml(workflow_reference)
+                |> List.first()
+
+              ExBackend.Workflow.Definition.FrancetvSubtilRdfIngest.get_definition_for_akamai_input(mp4_paths, ttml_path, prefix)
+
+            manifest_path ->
+              source_paths =
+                [manifest_path]
+                |> Enum.map(fn path -> String.replace_prefix(path, "/", "") end)
+
+              prefix = Path.dirname(manifest_path)
+
+              ExBackend.Workflow.Definition.FrancetvSubtilRdfIngest.get_definition_for_aws_input(source_paths, prefix)
+          end
+
+      "ftv_studio_rosetta" ->
+          upload_pattern =
+            ExBackend.Workflow.Definition.FtvStudioRosetta.get_output_filename_base(workflow_reference)
+
+          case Enum.find(source_paths, fn path -> String.ends_with?(path, ".ism") end) do
+            nil ->
+              prefix = "/343079/http"
+              mp4_paths =
+                source_paths
+                |> Enum.filter(fn path -> String.contains?(path, "-standard5.mp4") end)
+                |> Enum.map(fn path -> String.replace(path, prefix, "") end)
+
+              ttml_path =
+                ExVideoFactory.get_http_url_for_ttml(workflow_reference)
+                |> List.first()
+
+              ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition_for_akamai_input(mp4_paths, ttml_path, upload_pattern, prefix)
+
+            manifest_path ->
+              source_paths =
+                [manifest_path]
+                |> Enum.map(fn path -> String.replace_prefix(path, "/", "") end)
+
+              prefix = Path.dirname(manifest_path)
+
+              ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition_for_aws_input(source_paths, upload_pattern, prefix)
+          end
     end
   end
 end
