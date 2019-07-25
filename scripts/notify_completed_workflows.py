@@ -44,7 +44,7 @@ def get_parameter_value(token, key):
 
 def get_workflows(token, page):
 	params = {
-		'size': 100,
+		'size': 5000,
 		'after_date': args.date,
 		'before_date': args.date,
 		'page': page,
