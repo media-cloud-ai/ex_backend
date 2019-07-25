@@ -122,21 +122,8 @@ defmodule ExBackend.Workflow.Step.Requirements do
     end
   end
 
-  def get_workflow_step(workflow, job_id) do
-    case get_job(workflow.jobs, job_id) do
-      nil -> nil
-      job ->
-        get_step(workflow.flow.steps, ExBackend.Map.get_by_key_or_atom(job, :step_id))
-    end
-  end
-
-  defp get_job([], _job_id), do: nil
-  defp get_job([job | jobs], job_id) do
-    if ExBackend.Map.get_by_key_or_atom(job, :id) == job_id do
-      job
-    else
-      get_job(jobs, job_id)
-    end
+  def get_workflow_step(workflow, job) do
+    get_step(workflow.flow.steps, ExBackend.Map.get_by_key_or_atom(job, :step_id))
   end
 
   defp get_step(_, nil), do: nil

@@ -21,7 +21,7 @@ defmodule ExBackend.Workflow.Step.Notification do
     {:ok, job} = Jobs.create_job(job_params)
 
     try do
-      case process_notification(workflow, job.id, parameters) do
+      case process_notification(workflow, job, parameters) do
         {:ok, _} ->
           Jobs.Status.set_job_status(job.id, "completed")
           {:ok, "completed"}
@@ -43,7 +43,7 @@ defmodule ExBackend.Workflow.Step.Notification do
     end
   end
 
-  def process_notification(workflow, job_id, parameters) do
+  def process_notification(workflow, job, parameters) do
 
     status =
       case HTTPotion.get("https://gatewayvf.webservices.francetelevisions.fr/v1/videos?qid=" <> workflow.reference, headers: [accept: "*/*"]) do
@@ -71,7 +71,7 @@ defmodule ExBackend.Workflow.Step.Notification do
             ExBackend.Map.get_by_key_or_atom(source_information, :channel)
             |> ExBackend.Map.get_by_key_or_atom(:id)
 
-          case Requirements.get_workflow_step(workflow, job_id) do
+          case Requirements.get_workflow_step(workflow, job) do
             nil -> {:skipped, "skip notification"}
             step ->
               %{
@@ -132,18 +132,18 @@ defmodule ExBackend.Workflow.Step.Notification do
 
     case status do
       {:ok, _} -> 
-        Jobs.Status.set_job_status(job_id, "completed")
-        Workflows.notification_from_job(job_id)
+        Jobs.Status.set_job_status(job.id, "completed")
+        Workflows.notification_from_job(job.id)
         {:ok, "completed"}
       {:skipped, _} -> 
-        Jobs.Status.set_job_status(job_id, "skipped")
-        Workflows.notification_from_job(job_id)
+        Jobs.Status.set_job_status(job.id, "skipped")
+        Workflows.notification_from_job(job.id)
         {:ok, "skipped"}
       {:error, message} ->
-        Jobs.Status.set_job_status(job_id, "error", %{
+        Jobs.Status.set_job_status(job.id, "error", %{
             message: message
           })
-        Workflows.notification_from_job(job_id)
+        Workflows.notification_from_job(job.id)
         {:error, message}
     end
   end

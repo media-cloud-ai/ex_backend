@@ -40,6 +40,23 @@ defmodule ExBackend.FtvStudioRosettaTest do
 
   describe "francetv_studio_rosetta_workflow" do
     test "bad id" do
+      case ExBackend.Credentials.get_credential_by_key("ATTESOR_FTVACCESS_ENDPOINT") do
+        nil ->
+          ExBackend.Credentials.create_credential(%{
+            key: "ATTESOR_FTVACCESS_ENDPOINT",
+            value: "https://demo.media-io.com/mockup/francetv"
+          })
+        _ -> nil
+      end
+      case ExBackend.Credentials.get_credential_by_key("ATTESOR_FTVACCESS_TOKEN") do
+        nil ->
+          ExBackend.Credentials.create_credential(%{
+            key: "ATTESOR_FTVACCESS_TOKEN",
+            value: "my_personal_token"
+          })
+        _ -> nil
+      end
+
       output_pattern =
         "F2/Un-jour-un-destin/20190220_2243/F2_20190220_2243_Un-jour-un-destin_Karl-Lagerfeld-etre-et-paraitre#input_extension"
 
@@ -78,7 +95,19 @@ defmodule ExBackend.FtvStudioRosettaTest do
       ExBackend.HelpersTest.check(workflow.id, "download_ftp", 2)
       ExBackend.HelpersTest.check(workflow.id, "upload_ftp", 2)
       ExBackend.HelpersTest.check(workflow.id, "clean_workspace", 1)
-      ExBackend.HelpersTest.check(workflow.id, "send_notification", 1)
+
+      notification_status =
+        ExBackend.Jobs.list_jobs(%{
+          "job_type" => "send_notification",
+          "workflow_id" => workflow.id |> Integer.to_string(),
+          "size" => 1
+        })
+        |> Map.get(:data)
+        |> List.first
+        |> Map.get(:status)
+        |> Enum.map(fn status -> status.state end)
+
+      assert(notification_status == ["completed", "completed"])
       ExBackend.HelpersTest.check(workflow.id, 6)
     end
   end
