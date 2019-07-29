@@ -149,6 +149,25 @@ defmodule ExBackendWeb.WorkflowController do
     })
   end
 
+  def create_specific(conn, %{
+        "identifier" => "ftv_acs_standalone",
+        "reference" => reference
+      }) do
+    workflow_params =
+      ExVideoFactory.get_ftp_paths_for_video_id(reference)
+      |> get_workflow_definition_for_source("ftv_acs_standalone", reference)
+      |> Map.put(:reference, reference)
+
+    {:ok, workflow} = Workflows.create_workflow(workflow_params)
+    {:ok, response_status} = WorkflowStep.start_next_step(workflow)
+
+    conn
+    |> json(%{
+      status: response_status,
+      workflow_id: workflow.id
+    })
+  end
+
   def create_specific(conn, %{"identifier" => "acs"} = params) do
     IO.inspect(params)
 
@@ -239,6 +258,10 @@ defmodule ExBackendWeb.WorkflowController do
         "ftv_studio_rosetta" ->
           ExVideoFactory.get_ftp_paths_for_video_id(reference)
           |> get_workflow_definition_for_source("ftv_studio_rosetta", reference)
+
+        "ftv_acs_standalone" ->
+          ExVideoFactory.get_ftp_paths_for_video_id(reference)
+          |> get_workflow_definition_for_source("ftv_acs_standalone", reference)
       end
 
     conn
@@ -333,6 +356,31 @@ defmodule ExBackendWeb.WorkflowController do
               prefix = Path.dirname(manifest_path)
 
               ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition_for_aws_input(source_paths, upload_pattern, prefix)
+          end
+
+        "ftv_acs_standalone" ->
+          case Enum.find(source_paths, fn path -> String.ends_with?(path, ".ism") end) do
+            nil ->
+              prefix = "/343079/http"
+              mp4_paths =
+                source_paths
+                |> Enum.filter(fn path -> String.contains?(path, "-standard1.mp4") end)
+                |> Enum.map(fn path -> String.replace(path, prefix, "") end)
+
+              ttml_path =
+                ExVideoFactory.get_http_url_for_ttml(workflow_reference)
+                |> List.first()
+
+              ExBackend.Workflow.Definition.FrancetvAcs.get_definition_for_akamai_input(mp4_paths, ttml_path, prefix)
+
+            manifest_path ->
+              source_paths =
+                [manifest_path]
+                |> Enum.map(fn path -> String.replace_prefix(path, "/", "") end)
+
+              prefix = Path.dirname(manifest_path)
+
+              ExBackend.Workflow.Definition.FrancetvAcs.get_definition_for_aws_input(source_paths, prefix)
           end
     end
   end
