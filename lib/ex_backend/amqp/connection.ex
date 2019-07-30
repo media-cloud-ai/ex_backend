@@ -33,14 +33,14 @@ defmodule ExBackend.Amqp.Connection do
 
   def handle_cast({:publish, queue, message}, conn) do
     Logger.warn("#{__MODULE__}: publish message on queue: #{queue}")
-    AMQP.Queue.declare(conn.channel, queue, durable: false)
+    # AMQP.Queue.declare(conn.channel, queue, durable: false)
     AMQP.Basic.publish(conn.channel, "", queue, message)
     {:noreply, conn}
   end
 
   def handle_cast({:consume, queue, _callback}, conn) do
     Logger.warn("#{__MODULE__}: consume messages on queue: #{queue}")
-    AMQP.Queue.declare(conn.channel, queue, durable: false)
+    # AMQP.Queue.declare(conn.channel, queue, durable: false)
     {:ok, _consumer_tag} = AMQP.Basic.consume(conn, queue)
     {:noreply, conn}
   end
