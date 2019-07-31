@@ -42,7 +42,7 @@ defmodule ExBackendWeb.WorkflowEventsController do
           parameters: job.parameters
         }
 
-        case publish(job.name, job.id, workflow, params) do
+        case publish(job.name, job, workflow, params) do
           :ok ->
             conn
             |> put_status(:ok)
@@ -92,59 +92,59 @@ defmodule ExBackendWeb.WorkflowEventsController do
     skip_remaining_steps(steps, workflow)
   end
 
-  defp publish("download_ftp", _job_id, _workflow, params) do
+  defp publish("download_ftp", _job, _workflow, params) do
     CommonEmitter.publish_json("job_ftp", params)
   end
 
-  defp publish("upload_ftp", _job_id, _workflow, params) do
+  defp publish("upload_ftp", _job, _workflow, params) do
     CommonEmitter.publish_json("job_ftp", params)
   end
 
-  defp publish("download_http", _job_id, _workflow, params) do
+  defp publish("download_http", _job, _workflow, params) do
     CommonEmitter.publish_json("job_http", params)
   end
 
-  defp publish("acs_prepare_audio", _job_id, _workflow, params) do
+  defp publish("acs_prepare_audio", _job, _workflow, params) do
     CommonEmitter.publish_json("job_ffmpeg", params)
   end
 
-  defp publish("acs_synchronize", _job_id, _workflow, params) do
+  defp publish("acs_synchronize", _job, _workflow, params) do
     CommonEmitter.publish_json("job_acs", params)
   end
 
-  defp publish("copy", _job_id, _workflow, params) do
+  defp publish("copy", _job, _workflow, params) do
     CommonEmitter.publish_json("job_file_system", params)
   end
 
-  defp publish("audio_extraction", _job_id, _workflow, params) do
+  defp publish("audio_extraction", _job, _workflow, params) do
     CommonEmitter.publish_json("job_ffmpeg", params)
   end
 
-  defp publish("speech_to_text", _job_id, _workflow, params) do
+  defp publish("speech_to_text", _job, _workflow, params) do
     CommonEmitter.publish_json("job_speech_to_text", params)
   end
 
-  defp publish("push_rdf", _job_id, _workflow, params) do
+  defp publish("push_rdf", _job, _workflow, params) do
     CommonEmitter.publish_json("job_rdf", params)
   end
 
-  defp publish("set_language", _job_id, _workflow, params) do
+  defp publish("set_language", _job, _workflow, params) do
     CommonEmitter.publish_json("job_gpac", params)
   end
 
-  defp publish("ttml_to_mp4", _job_id, _workflow, params) do
+  defp publish("ttml_to_mp4", _job, _workflow, params) do
     CommonEmitter.publish_json("job_gpac", params)
   end
 
-  defp publish("generate_dash", _job_id, _workflow, params) do
+  defp publish("generate_dash", _job, _workflow, params) do
     CommonEmitter.publish_json("job_gpac", params)
   end
 
-  defp publish("send_notification", job_id, workflow, params) do
-    ExBackend.Workflow.Step.Notification.process_notification(workflow, job_id, params.parameters)
+  defp publish("send_notification", job, workflow, params) do
+    ExBackend.Workflow.Step.Notification.process_notification(workflow, job, params.parameters)
   end
 
-  defp publish(job_name, _job_id, _workflow, _params) do
+  defp publish(job_name, _job, _workflow, _params) do
     Logger.error("unable to restart job for #{job_name}")
   end
 end
