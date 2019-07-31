@@ -1,4 +1,6 @@
 
+import { Parameter } from './workflow'
+
 export class Protocol {
   username: string
   path: string
@@ -13,6 +15,6 @@ export class Job {
   id: string
   name: string
   inserted_at: string
-  params: object
+  params: Parameter[]
   status: Status[]
 }
