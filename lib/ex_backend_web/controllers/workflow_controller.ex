@@ -151,12 +151,19 @@ defmodule ExBackendWeb.WorkflowController do
 
   def create_specific(conn, %{
         "identifier" => "ftv_acs_standalone",
-        "reference" => reference
+        "reference" => reference,
+        "audio_url" => audio_url,
+        "ttml_url" => ttml_url,
+        "dest_url" => destination_url
       }) do
+
+    audio_url = URI.decode(audio_url)
+    ttml_url = URI.decode(ttml_url)
+    destination_url = URI.decode(destination_url)
+
     workflow_params =
-      ExVideoFactory.get_ftp_paths_for_video_id(reference)
-      |> get_workflow_definition_for_source("ftv_acs_standalone", reference)
-      |> Map.put(:reference, reference)
+        ExBackend.Workflow.Definition.FrancetvAcs.get_definition(audio_url, ttml_url, destination_url)
+        |> Map.put(:reference, reference)
 
     {:ok, workflow} = Workflows.create_workflow(workflow_params)
     {:ok, response_status} = WorkflowStep.start_next_step(workflow)
@@ -229,6 +236,24 @@ defmodule ExBackendWeb.WorkflowController do
     render(conn, "show.json", workflow: workflow)
   end
 
+  def get(conn, %{
+        "identifier" => "ftv_acs_standalone",
+        "audio_url" => audio_url,
+        "ttml_url" => ttml_url,
+        "dest_url" => destination_url
+      }) do
+
+    audio_url = URI.decode(audio_url)
+    ttml_url = URI.decode(ttml_url)
+    destination_url = URI.decode(destination_url)
+
+    workflow =
+        ExBackend.Workflow.Definition.FrancetvAcs.get_definition(audio_url, ttml_url, destination_url)
+
+    conn
+    |> json(workflow)
+  end
+
   def get(conn, %{"identifier" => workflow_identifier, "reference" => reference}) do
     workflow =
       case workflow_identifier do
@@ -258,10 +283,6 @@ defmodule ExBackendWeb.WorkflowController do
         "ftv_studio_rosetta" ->
           ExVideoFactory.get_ftp_paths_for_video_id(reference)
           |> get_workflow_definition_for_source("ftv_studio_rosetta", reference)
-
-        "ftv_acs_standalone" ->
-          ExVideoFactory.get_ftp_paths_for_video_id(reference)
-          |> get_workflow_definition_for_source("ftv_acs_standalone", reference)
       end
 
     conn
@@ -357,31 +378,6 @@ defmodule ExBackendWeb.WorkflowController do
 
               ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition_for_aws_input(source_paths, upload_pattern, prefix)
           end
-
-        "ftv_acs_standalone" ->
-          case Enum.find(source_paths, fn path -> String.ends_with?(path, ".ism") end) do
-            nil ->
-              prefix = "/343079/http"
-              mp4_paths =
-                source_paths
-                |> Enum.filter(fn path -> String.contains?(path, "-standard1.mp4") end)
-                |> Enum.map(fn path -> String.replace(path, prefix, "") end)
-
-              ttml_path =
-                ExVideoFactory.get_http_url_for_ttml(workflow_reference)
-                |> List.first()
-
-              ExBackend.Workflow.Definition.FrancetvAcs.get_definition_for_akamai_input(mp4_paths, ttml_path, prefix)
-
-            manifest_path ->
-              source_paths =
-                [manifest_path]
-                |> Enum.map(fn path -> String.replace_prefix(path, "/", "") end)
-
-              prefix = Path.dirname(manifest_path)
-
-              ExBackend.Workflow.Definition.FrancetvAcs.get_definition_for_aws_input(source_paths, prefix)
-          end
-    end
+   end
   end
 end

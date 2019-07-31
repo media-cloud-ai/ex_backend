@@ -44,9 +44,11 @@ defmodule ExBackend.Workflow.Step.FtpUpload do
         [pattern] ->
           pattern
           |> String.replace("#input_extension", "<%= input_extension %>")
+          |> String.replace("#input_filename", "<%= input_filename %>")
           |> EEx.eval_string(
             workflow_id: workflow.id,
-            input_extension: Path.extname(file)
+            input_extension: Path.extname(file),
+            input_filename: Path.basename(file)
           )
       end
 
