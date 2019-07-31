@@ -123,7 +123,10 @@ defmodule ExBackend.Workflow.Step.Requirements do
   end
 
   def get_workflow_step(workflow, job) do
-    get_step(workflow.flow.steps, ExBackend.Map.get_by_key_or_atom(job, :step_id))
+    get_step(
+      ExBackend.Map.get_by_key_or_atom(workflow.flow, :steps),
+      ExBackend.Map.get_by_key_or_atom(job, :step_id)
+    )
   end
 
   defp get_step(_, nil), do: nil
