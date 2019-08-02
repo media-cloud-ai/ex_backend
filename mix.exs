@@ -85,7 +85,7 @@ defmodule ExBackend.Mixfile do
       {:phauxth, "~> 2.2"},
       {:plug, "~> 1.8.0"},
       {:plug_cowboy, "~> 2.0"},
-      {:postgrex, "~> 0.14.0"},
+      {:postgrex, "~> 0.15.0"},
       {:ranch, "~> 1.7.1"},
       {:remote_dockers, "1.4.0"},
       {:timex, "~> 3.2"},
