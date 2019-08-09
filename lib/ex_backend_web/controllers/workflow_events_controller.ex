@@ -146,5 +146,6 @@ defmodule ExBackendWeb.WorkflowEventsController do
 
   defp publish(job_name, _job, _workflow, _params) do
     Logger.error("unable to restart job for #{job_name}")
+    :error
   end
 end
