@@ -92,6 +92,14 @@ export class AppComponent {
     if (this.loggedIn) {
       this.left_menu = []
 
+      if (this.right_editor) {
+        if (this.application && this.application.identifier === 'subtil') {
+          this.left_menu.push({
+            'link': '/orders',
+            'label': 'Orders'
+          })
+        }
+      }
       if (this.right_technician || this.right_ftvstudio) {
         if (this.application && this.application.identifier === 'subtil') {
           this.left_menu.push({

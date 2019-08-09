@@ -1,0 +1,25 @@
+<h1>New Order</h1>
+
+<div class=inputs>
+  <div class=dropzone>
+    <span>
+      <mat-icon>movie_filter</mat-icon>
+      Upload movie (MP4) file
+    </span>
+    <form data-filetypes="pdf" action="https://www6.sejda.com/api/files/upload" enctype="multipart/form-data" method="post" id="fileUploadForm">
+      <input value="O4PNA" name="uplid" type="hidden" id="uplid">
+      <input accept=".mp4" title="Upload" data-scope="task-file" name="file" type="file" data-allows-drop="true" class="fileupload">
+    </form>
+  </div>
+
+  <div class=dropzone>
+    <span>
+      <mat-icon>subtitles</mat-icon>
+      Upload TTML file
+    </span>
+    <form data-filetypes="pdf" action="https://www6.sejda.com/api/files/upload" enctype="multipart/form-data" method="post" id="fileUploadForm">
+      <input value="O4PNA" name="uplid" type="hidden" id="uplid">
+      <input accept=".ttml" title="Upload" data-scope="task-file" name="file" type="file" data-allows-drop="true" class="fileupload">
+    </form>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+@import '../colors';
+
+.mat-icon {
+  vertical-align: middle;
+}
+
+.dropzone {
+  margin-left: 20px;
+  background-color: @green;
+  color: #fff;
+  border-color: @green;
+  outline: none;
+  position: relative;
+  padding: 12px;
+  font-size: 1.3em;
+  border-radius: 7px;
+  float: left;
+
+  input {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    opacity: 0;
+    -ms-filter: "alpha(opacity=0)";
+    font-size: 200px;
+    direction: ltr;
+    cursor: pointer;
+  }
+}
+
+
+.inputs :nth-child(1) {
+  margin-left: 0px;
+}
