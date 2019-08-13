@@ -62,7 +62,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         url.startsWith('/player') ||
         url.startsWith('/ingest') ||
         url.startsWith('/person') ||
-        url.startsWith('/registeries')) {
+        url.startsWith('/registeries') ||
+        url.startsWith('/orders')) {
         if (this.authService.hasEditorRight()) {
           return true
         } else {

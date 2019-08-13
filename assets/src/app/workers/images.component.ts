@@ -1,6 +1,6 @@
 
 import {Component} from '@angular/core'
-import {ActivatedRoute, Router} from '@angular/router'
+import {ActivatedRoute} from '@angular/router'
 import {MatDialog} from '@angular/material'
 
 import {ContainerService} from '../services/container.service'
@@ -26,8 +26,9 @@ export class ImagesComponent {
   constructor(
     private route: ActivatedRoute,
     private imageService: ImageService,
-  ) {
+  ) {}
 
+  ngOnInit() {
     this.sub = this.route
       .params.subscribe(params => {
         this.worker_id = +params['id']

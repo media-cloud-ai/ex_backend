@@ -27,6 +27,7 @@ import {WorkflowsComponent} from './workflows/workflows.component'
 
 import {CredentialsModule} from './credentials/credentials.module'
 import {DocumentationModule} from './documentation/documentation.module'
+import {OrderModule} from './order/order.module'
 import {PlayerModule} from './player/player.module'
 import {WorkersModule} from './workers/workers.module'
 
@@ -63,6 +64,11 @@ const appRoutes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'orders',
+    loadChildren: () => OrderModule,
     canActivate: [AuthGuard]
   },
   {

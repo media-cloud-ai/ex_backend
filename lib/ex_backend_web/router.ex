@@ -75,6 +75,9 @@ defmodule ExBackendWeb.Router do
     resources("/credentials", CredentialController, except: [:new, :edit])
 
     get("/documentation", DocumentationController, :index)
+
+    get("/s3_config", S3Controller, :config)
+    get("/s3_signer", S3Controller, :signer)
   end
 
   get("/stream/:content/manifest.mpd", ExBackendWeb.PlayerController, :manifest)

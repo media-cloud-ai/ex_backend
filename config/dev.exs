@@ -98,7 +98,8 @@ config :ex_backend,
   docker_container_amqp_tls: "false",
   docker_container_amqp_hostname: "127.0.0.1",
   docker_container_amqp_username: "guest",
-  docker_container_amqp_password: "guest"
+  docker_container_amqp_password: "guest",
+  aws_secret_key: "Kw39X75DwLFfSe36"
 
 config :amqp,
   hostname: "127.0.0.1",
