@@ -88,6 +88,7 @@ defmodule ExBackend.Mixfile do
       {:postgrex, "~> 0.14.0"},
       {:ranch, "~> 1.7.1"},
       {:remote_dockers, "1.4.0"},
+      {:sigaws, "~> 0.7.2"},
       {:timex, "~> 3.2"},
       {:uuid, "~> 1.1"}
     ]

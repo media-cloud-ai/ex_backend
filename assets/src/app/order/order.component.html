@@ -2,24 +2,24 @@
 
 <div class=inputs>
   <div class=dropzone>
-    <span>
-      <mat-icon>movie_filter</mat-icon>
-      Upload movie (MP4) file
-    </span>
-    <form data-filetypes="pdf" action="https://www6.sejda.com/api/files/upload" enctype="multipart/form-data" method="post" id="fileUploadForm">
-      <input value="O4PNA" name="uplid" type="hidden" id="uplid">
-      <input accept=".mp4" title="Upload" data-scope="task-file" name="file" type="file" data-allows-drop="true" class="fileupload">
-    </form>
+    <mat-form-field>
+      <ngx-mat-file-input [(ngModel)]="mp4_file" placeholder="MP4 video file" [accept]="'.mp4'"></ngx-mat-file-input>
+      <mat-icon matSuffix>folder</mat-icon>
+    </mat-form-field>
   </div>
-
   <div class=dropzone>
-    <span>
-      <mat-icon>subtitles</mat-icon>
-      Upload TTML file
-    </span>
-    <form data-filetypes="pdf" action="https://www6.sejda.com/api/files/upload" enctype="multipart/form-data" method="post" id="fileUploadForm">
-      <input value="O4PNA" name="uplid" type="hidden" id="uplid">
-      <input accept=".ttml" title="Upload" data-scope="task-file" name="file" type="file" data-allows-drop="true" class="fileupload">
-    </form>
-  </div>
+    <mat-form-field>
+      <ngx-mat-file-input [(ngModel)]="ttml_file" placeholder="TTML file" [accept]="'.ttml'"></ngx-mat-file-input>
+      <mat-icon matSuffix>folder</mat-icon>
+    </mat-form-field>
 </div>
+
+
+<button
+  mat-raised-button
+  color="accent"
+  (click)="upload()"
+  >
+  <i class="material-icons">cloud_upload</i>
+  Upload
+</button>
