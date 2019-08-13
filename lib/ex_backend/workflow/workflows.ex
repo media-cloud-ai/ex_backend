@@ -436,8 +436,12 @@ defmodule ExBackend.Workflows do
             query_by_identifier(scale, -index, -index - 1, "FranceTélévisions Rdf Ingest"),
           ingest_dash:
             query_by_identifier(scale, -index, -index - 1, "FranceTélévisions Dash Ingest"),
-          process_acs: query_by_identifier(scale, -index, -index - 1, "FranceTélévisions ACS"),
-          errors: query_by_status(scale, -index, -index - 1, "error")
+          process_acs:
+            query_by_identifier(scale, -index, -index - 1, "FranceTélévisions ACS"),
+          process_acs_standalone:
+            query_by_identifier(scale, -index, -index - 1, "FranceTélévisions ACS (standalone)"),
+          errors:
+            query_by_status(scale, -index, -index - 1, "error")
         }
       end
     )

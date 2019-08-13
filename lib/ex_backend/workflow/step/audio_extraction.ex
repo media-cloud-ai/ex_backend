@@ -69,7 +69,11 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
     requirements = Requirements.add_required_paths(path)
 
     parameters =
-      ExBackend.Map.get_by_key_or_atom(step, :parameters, []) ++
+      ExBackend.Map.get_by_key_or_atom(step, :parameters, [])
+      |> Enum.filter(fn param ->
+        ExBackend.Map.get_by_key_or_atom(param, :id) != "output_extension"
+      end)
+      |> Enum.concat(
         [
           %{
             "id" => "source_paths",
@@ -87,6 +91,7 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
             "value" => requirements
           }
         ]
+      )
 
     job_params = %{
       name: @action_name,

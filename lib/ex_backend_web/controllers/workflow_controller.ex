@@ -149,6 +149,32 @@ defmodule ExBackendWeb.WorkflowController do
     })
   end
 
+  def create_specific(conn, %{
+        "identifier" => "ftv_acs_standalone",
+        "reference" => reference,
+        "audio_url" => audio_url,
+        "ttml_url" => ttml_url,
+        "dest_url" => destination_url
+      }) do
+
+    audio_url = URI.decode(audio_url)
+    ttml_url = URI.decode(ttml_url)
+    destination_url = URI.decode(destination_url)
+
+    workflow_params =
+        ExBackend.Workflow.Definition.FrancetvAcs.get_definition(audio_url, ttml_url, destination_url)
+        |> Map.put(:reference, reference)
+
+    {:ok, workflow} = Workflows.create_workflow(workflow_params)
+    {:ok, response_status} = WorkflowStep.start_next_step(workflow)
+
+    conn
+    |> json(%{
+      status: response_status,
+      workflow_id: workflow.id
+    })
+  end
+
   def create_specific(conn, %{"identifier" => "acs"} = params) do
     IO.inspect(params)
 
@@ -208,6 +234,24 @@ defmodule ExBackendWeb.WorkflowController do
       |> ExBackend.Repo.preload(:jobs)
 
     render(conn, "show.json", workflow: workflow)
+  end
+
+  def get(conn, %{
+        "identifier" => "ftv_acs_standalone",
+        "audio_url" => audio_url,
+        "ttml_url" => ttml_url,
+        "dest_url" => destination_url
+      }) do
+
+    audio_url = URI.decode(audio_url)
+    ttml_url = URI.decode(ttml_url)
+    destination_url = URI.decode(destination_url)
+
+    workflow =
+        ExBackend.Workflow.Definition.FrancetvAcs.get_definition(audio_url, ttml_url, destination_url)
+
+    conn
+    |> json(workflow)
   end
 
   def get(conn, %{"identifier" => workflow_identifier, "reference" => reference}) do
@@ -334,6 +378,6 @@ defmodule ExBackendWeb.WorkflowController do
 
               ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition_for_aws_input(source_paths, upload_pattern, prefix)
           end
-    end
+   end
   end
 end
