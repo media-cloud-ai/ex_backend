@@ -14,28 +14,7 @@ defmodule ExBackend.Workflow.Step.Requirements do
     paths =
       jobs
       |> Enum.filter(fn job -> job.step_id in parent_ids end)
-      |> Enum.map(fn job ->
-
-        destination_path =
-          job.parameters
-          |> Enum.filter(fn param ->
-            ExBackend.Map.get_by_key_or_atom(param, :id) == "destination_path"
-          end)
-          |> Enum.map(fn param -> ExBackend.Map.get_by_key_or_atom(param, :value) end)
-
-        destination_paths =
-          job.parameters
-          |> Enum.filter(fn param ->
-            ExBackend.Map.get_by_key_or_atom(param, :id) == "destination_paths"
-          end)
-          |> Enum.map(fn param -> ExBackend.Map.get_by_key_or_atom(param, :value) end)
-
-        add_items([], destination_path)
-        |> add_items(destination_paths)
-      end)
-      |> List.flatten()
-      |> Enum.uniq()
-      |> Enum.filter(fn path -> !is_nil(path) end)
+      |> get_jobs_destination_paths
 
     case input_filter do
       [%{ends_with: ends_with}] ->
@@ -49,6 +28,35 @@ defmodule ExBackend.Workflow.Step.Requirements do
       _ ->
         paths
     end
+  end
+
+  defp get_jobs_destination_paths(jobs) do
+    jobs
+    |> Enum.map(fn job ->
+      get_job_destination_paths(job)
+    end)
+    |> List.flatten()
+    |> Enum.uniq()
+    |> Enum.filter(fn path -> !is_nil(path) end)
+  end
+
+  defp get_job_destination_paths(job) do
+    destination_path =
+      job.parameters
+      |> Enum.filter(fn param ->
+        ExBackend.Map.get_by_key_or_atom(param, :id) == "destination_path"
+      end)
+      |> Enum.map(fn param -> ExBackend.Map.get_by_key_or_atom(param, :value) end)
+
+    destination_paths =
+      job.parameters
+      |> Enum.filter(fn param ->
+        ExBackend.Map.get_by_key_or_atom(param, :id) == "destination_paths"
+      end)
+      |> Enum.map(fn param -> ExBackend.Map.get_by_key_or_atom(param, :value) end)
+
+    add_items([], destination_path)
+    |> add_items(destination_paths)
   end
 
   defp add_items(list, items) when is_list(items) do
