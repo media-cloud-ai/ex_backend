@@ -66,7 +66,7 @@ defmodule ExBackend.Workflow.Step.AudioExtraction do
         Integer.to_string(workflow.id) <>
         "/" <> Integer.to_string(step_id) <> "_" <> filename <> output_extension
 
-    requirements = Requirements.add_required_paths(path)
+    requirements = Requirements.new_required_paths(path)
 
     parameters =
       ExBackend.Map.get_by_key_or_atom(step, :parameters, [])

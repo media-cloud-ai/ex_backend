@@ -79,7 +79,7 @@ defmodule ExBackend.Workflow.Step.Requirements do
     |> get_jobs_destination_paths
   end
 
-  def add_required_paths(path) do
+  def new_required_paths(path) do
     add_required_paths(%{}, path)
   end
 

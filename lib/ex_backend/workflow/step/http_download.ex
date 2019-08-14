@@ -49,7 +49,7 @@ defmodule ExBackend.Workflow.Step.HttpDownload do
 
     dst_path = work_dir <> "/" <> Integer.to_string(workflow.id) <> "/" <> filename
 
-    requirements = Requirements.add_required_paths(Path.dirname(dst_path))
+    requirements = Requirements.new_required_paths(Path.dirname(dst_path))
 
     parameters =
       Map.get(step, "parameters", []) ++

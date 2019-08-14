@@ -24,7 +24,7 @@ defmodule ExBackend.Workflow.Step.Copy do
   def start_to_process_files([], _workflow, _step, _step_id), do: {:ok, "started"}
 
   def start_to_process_files([path | paths], workflow, step, step_id) do
-    requirements = Requirements.add_required_paths(path)
+    requirements = Requirements.new_required_paths(path)
 
     parameters =
       ExBackend.Map.get_by_key_or_atom(step, :parameters)

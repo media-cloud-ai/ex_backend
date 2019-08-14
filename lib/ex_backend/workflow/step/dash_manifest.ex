@@ -20,7 +20,7 @@ defmodule ExBackend.Workflow.Step.DashManifest do
         manifest_path =
           Enum.filter(paths, fn path -> String.ends_with?(path, ".mpd") end) |> List.last()
 
-        requirements = Requirements.add_required_paths([ttml_path, manifest_path])
+        requirements = Requirements.new_required_paths([ttml_path, manifest_path])
 
         parameters =
           ExBackend.Map.get_by_key_or_atom(step, :parameters, []) ++

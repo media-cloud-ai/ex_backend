@@ -62,7 +62,7 @@ defmodule ExBackend.Workflow.Step.IsmExtraction do
         "/" <> filename <> output_extension
 
     requirements =
-      Requirements.add_required_paths(video_path)
+      Requirements.new_required_paths(video_path)
       |> Requirements.add_required_paths(audio_path)
 
     parameters =

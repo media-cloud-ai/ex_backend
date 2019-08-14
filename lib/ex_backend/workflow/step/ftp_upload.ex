@@ -25,7 +25,7 @@ defmodule ExBackend.Workflow.Step.FtpUpload do
   defp start_upload([], _current_date, _workflow, _step, _step_id), do: {:ok, "started"}
 
   defp start_upload([file | files], current_date, workflow, step, step_id) do
-    requirements = Requirements.add_required_paths(file)
+    requirements = Requirements.new_required_paths(file)
 
     destination_pattern =
       ExBackend.Map.get_by_key_or_atom(step, :parameters, [])

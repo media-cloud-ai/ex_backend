@@ -37,7 +37,7 @@ defmodule ExBackend.Workflow.Step.AcsSynchronize do
 
     exec_dir = app_dir <> "/acs"
 
-    requirements = Requirements.add_required_paths([audio_path, subtitle_path])
+    requirements = Requirements.new_required_paths([audio_path, subtitle_path])
 
     parameters =
       ExBackend.Map.get_by_key_or_atom(step, :parameters) ++
