@@ -67,6 +67,18 @@ defmodule ExBackend.Workflow.Step.Requirements do
     list ++ [items]
   end
 
+  def get_step_requirements(jobs, step) do
+    %{paths: get_required_paths(jobs, step)}
+  end
+
+  def get_required_paths(jobs, step) do
+    required_ids = ExBackend.Map.get_by_key_or_atom(step, :required, [])
+
+    jobs
+    |> Enum.filter(fn job -> job.step_id in required_ids end)
+    |> get_jobs_destination_paths
+  end
+
   def add_required_paths(path, requirements \\ %{})
 
   def add_required_paths(paths, requirements) when is_list(paths) do
