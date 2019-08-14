@@ -56,14 +56,16 @@ defmodule ExBackend.Workflow.Step.FtpDownload do
 
     dst_path = work_dir <> "/" <> Integer.to_string(workflow.id) <> "/" <> filename
 
-    requirements = Requirements.get_step_requirements(workflow.jobs, step)
-    requirements =
+    required_paths =
       if file != first_file do
         (Path.dirname(dst_path) <> "/" <> Path.basename(first_file))
-        |> Requirements.add_required_paths(requirements)
       else
-        requirements
+        []
       end
+
+    requirements =
+      Requirements.get_step_requirements(workflow.jobs, step)
+      |> Requirements.add_required_paths(required_paths)
 
     parameters =
       ExBackend.Map.get_by_key_or_atom(step, :parameters, []) ++

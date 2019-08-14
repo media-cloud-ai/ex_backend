@@ -79,21 +79,23 @@ defmodule ExBackend.Workflow.Step.Requirements do
     |> get_jobs_destination_paths
   end
 
-  def add_required_paths(path, requirements \\ %{})
+  def add_required_paths(path) do
+    add_required_paths(%{}, path)
+  end
 
-  def add_required_paths(paths, requirements) when is_list(paths) do
+  def add_required_paths(requirements, paths) when is_list(paths) do
     Map.update(requirements, :paths, paths, fn cur_paths ->
       Enum.concat(cur_paths, paths)
       |> Enum.uniq()
     end)
   end
 
-  def add_required_paths(path, requirements) do
+  def add_required_paths(requirements, path) do
     paths =
       Map.get(requirements, :paths, [])
       |> List.insert_at(-1, path)
 
-    add_required_paths(paths, requirements)
+    add_required_paths(requirements, paths)
   end
 
   def parse_parameters(parameters, workflow, result \\ [])
