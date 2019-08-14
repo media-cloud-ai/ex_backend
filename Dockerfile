@@ -25,8 +25,8 @@ ENV PATH /root/.yarn/bin:/root/.config/yarn/global/node_modules/.bin:$PATH
 ADD . .
 
 RUN mix deps.get && \
-    mix release.init && \
-    mix release --env=$MIX_ENV && \
+    mix compile && \
+    mix distillery.release --env=$MIX_ENV && \
     mix generate_documentation && \
     cd assets && \
     yarn && \
