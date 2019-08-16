@@ -103,9 +103,7 @@ defmodule ExBackend.Workflow.Definition.FrancetvAcs do
   end
 
   defp get_pre_process_steps(audio_url, next_step_id) do
-    extension =
-      String.split(audio_url, ".", trim: true)
-      |> List.last
+    extension = Path.extname(audio_url)
 
     common_parameters = [
         %{

@@ -14,12 +14,28 @@
     </mat-form-field>
 </div>
 
-
 <button
   mat-raised-button
   color="accent"
   (click)="upload()"
+  [disabled]="!mp4_file && !ttml_file"
   >
   <i class="material-icons">cloud_upload</i>
-  Upload
+  Upload and start workflow
 </button>
+
+<div class=progress>
+  <div>
+    {{mp4_percent_uploaded | number: '1.0-0'}} % of MP4 uploaded
+    <mat-progress-bar
+      [value]="mp4_percent_uploaded">
+    </mat-progress-bar>
+  </div>
+
+  <div>
+    {{ttml_percent_uploaded | number: '1.0-0'}} % of TTML uploaded
+    <mat-progress-bar
+      [value]="ttml_percent_uploaded">
+    </mat-progress-bar>
+  </div>
+</div>

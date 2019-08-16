@@ -1,10 +1,10 @@
 defmodule ExBackendWeb.S3Controller do
   use ExBackendWeb, :controller
 
-  import ExBackendWeb.Authorize
+  # import ExBackendWeb.Authorize
 
-  alias ExBackend.Registeries
-  alias ExBackend.Subtitles
+  # alias ExBackend.Registeries
+  # alias ExBackend.Subtitles
 
   action_fallback(ExBackendWeb.FallbackController)
 
@@ -12,9 +12,17 @@ defmodule ExBackendWeb.S3Controller do
   # plug(:user_check when action in [:index])
   # plug(:right_editor_check when action in [:index])
 
-  def config(conn, params) do
-    config = %{}
-    
+  def config(conn, _params) do
+    url = System.get_env("AWS_URL") || Application.get_env(:ex_backend, :aws_url)
+    access_key = System.get_env("AWS_ACCESS_KEY") || Application.get_env(:ex_backend, :aws_access_key)
+    region = System.get_env("AWS_REGION") || Application.get_env(:ex_backend, :aws_region)
+
+    config = %{
+      url: url,
+      access_key: access_key,
+      region: region
+    }
+
     json(conn, config)
   end
 
