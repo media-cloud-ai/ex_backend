@@ -68,7 +68,7 @@ defmodule ExBackend.Mixfile do
       {:blue_bird, "~> 0.4.1"},
       {:comeonin, "~> 5.1"},
       {:cowboy, "~> 2.6"},
-      {:distillery, "~> 2.0"},
+      {:distillery, "~> 2.1"},
       {:ecto, "~> 3.1"},
       {:ecto_sql, "~> 3.1"},
       {:ex_imdb_sniffer, "~> 0.1.1"},

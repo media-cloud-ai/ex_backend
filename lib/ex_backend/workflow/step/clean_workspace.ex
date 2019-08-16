@@ -22,7 +22,7 @@ defmodule ExBackend.Workflow.Step.CleanWorkspace do
       work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
       dst_path = work_dir <> "/" <> Integer.to_string(workflow.id)
 
-      requirements = Requirements.add_required_paths([dst_path])
+      requirements = Requirements.new_required_paths([dst_path])
 
       job_params = %{
         name: @action_name,

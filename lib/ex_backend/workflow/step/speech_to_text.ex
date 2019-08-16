@@ -43,7 +43,7 @@ defmodule ExBackend.Workflow.Step.SpeechToText do
       work_dir <>
         "/" <> Integer.to_string(workflow.id) <> "/" <> (path |> Path.basename()) <> ".vtt"
 
-    requirements = Requirements.add_required_paths(path)
+    requirements = Requirements.new_required_paths(path)
 
     parameters =
       ExBackend.Map.get_by_key_or_atom(step, :parameters, []) ++

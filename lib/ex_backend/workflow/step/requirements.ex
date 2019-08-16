@@ -14,28 +14,7 @@ defmodule ExBackend.Workflow.Step.Requirements do
     paths =
       jobs
       |> Enum.filter(fn job -> job.step_id in parent_ids end)
-      |> Enum.map(fn job ->
-
-        destination_path =
-          job.parameters
-          |> Enum.filter(fn param ->
-            ExBackend.Map.get_by_key_or_atom(param, :id) == "destination_path"
-          end)
-          |> Enum.map(fn param -> ExBackend.Map.get_by_key_or_atom(param, :value) end)
-
-        destination_paths =
-          job.parameters
-          |> Enum.filter(fn param ->
-            ExBackend.Map.get_by_key_or_atom(param, :id) == "destination_paths"
-          end)
-          |> Enum.map(fn param -> ExBackend.Map.get_by_key_or_atom(param, :value) end)
-
-        add_items([], destination_path)
-        |> add_items(destination_paths)
-      end)
-      |> List.flatten()
-      |> Enum.uniq()
-      |> Enum.filter(fn path -> !is_nil(path) end)
+      |> get_jobs_destination_paths
 
     case input_filter do
       [%{ends_with: ends_with}] ->
@@ -51,6 +30,35 @@ defmodule ExBackend.Workflow.Step.Requirements do
     end
   end
 
+  defp get_jobs_destination_paths(jobs) do
+    jobs
+    |> Enum.map(fn job ->
+      get_job_destination_paths(job)
+    end)
+    |> List.flatten()
+    |> Enum.uniq()
+    |> Enum.filter(fn path -> !is_nil(path) end)
+  end
+
+  defp get_job_destination_paths(job) do
+    destination_path =
+      job.parameters
+      |> Enum.filter(fn param ->
+        ExBackend.Map.get_by_key_or_atom(param, :id) == "destination_path"
+      end)
+      |> Enum.map(fn param -> ExBackend.Map.get_by_key_or_atom(param, :value) end)
+
+    destination_paths =
+      job.parameters
+      |> Enum.filter(fn param ->
+        ExBackend.Map.get_by_key_or_atom(param, :id) == "destination_paths"
+      end)
+      |> Enum.map(fn param -> ExBackend.Map.get_by_key_or_atom(param, :value) end)
+
+    add_items([], destination_path)
+    |> add_items(destination_paths)
+  end
+
   defp add_items(list, items) when is_list(items) do
     list ++ items
   end
@@ -59,21 +67,35 @@ defmodule ExBackend.Workflow.Step.Requirements do
     list ++ [items]
   end
 
-  def add_required_paths(path, requirements \\ %{})
+  def get_step_requirements(jobs, step) do
+    %{paths: get_required_paths(jobs, step)}
+  end
 
-  def add_required_paths(paths, requirements) when is_list(paths) do
+  def get_required_paths(jobs, step) do
+    required_ids = ExBackend.Map.get_by_key_or_atom(step, :required, [])
+
+    jobs
+    |> Enum.filter(fn job -> job.step_id in required_ids end)
+    |> get_jobs_destination_paths
+  end
+
+  def new_required_paths(path) do
+    add_required_paths(%{}, path)
+  end
+
+  def add_required_paths(requirements, paths) when is_list(paths) do
     Map.update(requirements, :paths, paths, fn cur_paths ->
       Enum.concat(cur_paths, paths)
       |> Enum.uniq()
     end)
   end
 
-  def add_required_paths(path, requirements) do
+  def add_required_paths(requirements, path) do
     paths =
       Map.get(requirements, :paths, [])
       |> List.insert_at(-1, path)
 
-    add_required_paths(paths, requirements)
+    add_required_paths(requirements, paths)
   end
 
   def parse_parameters(parameters, workflow, result \\ [])

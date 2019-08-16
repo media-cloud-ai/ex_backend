@@ -53,7 +53,7 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilRdfIngest do
         id: 2,
         name: "download_ftp",
         parent_ids: [1],
-        required: [1],
+        required: [0],
         enable: true,
         parameters: [
           %{

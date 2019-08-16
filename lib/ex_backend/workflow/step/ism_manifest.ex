@@ -27,7 +27,7 @@ defmodule ExBackend.Workflow.Step.IsmManifest do
   end
 
   def analyse_ism_manifest(workflow, step, step_id, manifest_path) do
-    requirements = Requirements.add_required_paths([manifest_path])
+    requirements = Requirements.new_required_paths([manifest_path])
 
     parameters =
       ExBackend.Map.get_by_key_or_atom(step, :parameters, []) ++

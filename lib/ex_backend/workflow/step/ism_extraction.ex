@@ -61,8 +61,9 @@ defmodule ExBackend.Workflow.Step.IsmExtraction do
         Integer.to_string(workflow.id) <>
         "/" <> filename <> output_extension
 
-    requirements = Requirements.add_required_paths(video_path)
-    requirements = Requirements.add_required_paths(audio_path, requirements)
+    requirements =
+      Requirements.new_required_paths(video_path)
+      |> Requirements.add_required_paths(audio_path)
 
     parameters =
       ExBackend.Map.get_by_key_or_atom(step, :parameters, []) ++

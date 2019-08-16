@@ -48,7 +48,7 @@ defmodule ExBackend.Workflow.Step.SetLanguage do
         Integer.to_string(workflow.id) <>
         "/lang/" <> Path.basename(path, ".mp4") <> "-" <> language_code <> ".mp4"
 
-    requirements = Requirements.add_required_paths(path)
+    requirements = Requirements.new_required_paths(path)
 
     parameters =
       ExBackend.Map.get_by_key_or_atom(step, :parameters, []) ++

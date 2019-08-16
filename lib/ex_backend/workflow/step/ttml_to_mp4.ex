@@ -26,7 +26,7 @@ defmodule ExBackend.Workflow.Step.TtmlToMp4 do
 
   defp start_process([path | paths], workflow, step, step_id) do
     mp4_path = String.replace(path, ".ttml", ".mp4")
-    requirements = Requirements.add_required_paths(path)
+    requirements = Requirements.new_required_paths(path)
 
     parameters =
       ExBackend.Map.get_by_key_or_atom(step, :parameters, []) ++

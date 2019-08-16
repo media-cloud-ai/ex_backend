@@ -55,7 +55,7 @@ defmodule ExBackend.Workflow.Step.GenerateDash do
 
         dst_path = work_dir <> "/" <> Integer.to_string(workflow.id) <> "/dash/manifest.mpd"
 
-        requirements = Requirements.add_required_paths(source_paths)
+        requirements = Requirements.new_required_paths(source_paths)
 
         parameters =
           ExBackend.Map.get_by_key_or_atom(step, :parameters, []) ++
