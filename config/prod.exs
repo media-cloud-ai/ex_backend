@@ -94,7 +94,7 @@ config :ex_backend,
 
 config :ex_video_factory,
   mode: :custom,
-  endpoint: "http://192.168.101.107:8081/api/"
+  endpoint: {:system, "VIDEO_FACTORY_ENDPOINT"}
 
 config :amqp,
   hostname: "192.168.101.107",
