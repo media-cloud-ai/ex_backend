@@ -40,7 +40,7 @@ config :amqp,
   hostname: "localhost",
   username: "guest",
   password: "guest",
-  virtual_host: "/"
+  virtual_host: ""
 
 # Comeonin password hashing test config
 # config :argon2_elixir,
