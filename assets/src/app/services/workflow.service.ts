@@ -52,7 +52,21 @@ export class WorkflowService {
     return this.http.get<Workflow>(this.workflowUrl  + '/' + workflow_identifier, {params: params})
       .pipe(
         tap(workflowPage => this.log('fetched Workflow')),
-        catchError(this.handleError('getWorkflow', undefined))
+        catchError(this.handleError('getWorkflowDefinition', undefined))
+      )
+  }
+
+  getStandaloneWorkflowDefinition(workflow_identifier: string, audio_url: string, ttml_url: string, destination_url: string) {
+    let params = new HttpParams()
+    params = params.append('reference', destination_url)
+    params = params.append('audio_url', audio_url)
+    params = params.append('ttml_url', ttml_url)
+    params = params.append('destination_url', destination_url)
+
+    return this.http.get<Workflow>(this.workflowUrl  + '/' + workflow_identifier, {params: params})
+      .pipe(
+        tap(workflowPage => this.log('fetched Workflow')),
+        catchError(this.handleError('getWorkflowDefinition', undefined))
       )
   }
 

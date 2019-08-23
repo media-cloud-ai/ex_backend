@@ -30,6 +30,7 @@ export class DashboardComponent {
     'rdf_ingest',
     'acs',
     'dash_ingest',
+    'acs_standalone',
     'errors',
   ]
   workflows = [
@@ -38,6 +39,7 @@ export class DashboardComponent {
     {id: 'rdf_ingest', label: 'FranceTélévisions Rdf Ingest'},
     {id: 'acs', label: 'FranceTélévisions ACS'},
     {id: 'dash_ingest', label: 'FranceTélévisions Dash Ingest'},
+    {id: 'acs_standalone', label: 'FranceTélévisions ACS (standalone)'},
     {id: 'errors', label: 'Errors'},
   ]
   
@@ -110,6 +112,7 @@ export class DashboardComponent {
       var rdfData = []
       var dashData = []
       var acsData = []
+      var acsStandaloneData = []
       var errorsData = []
 
       let suffix = "h"
@@ -140,6 +143,10 @@ export class DashboardComponent {
         acsData.push({
           x: -index,
           y: stats.data[index]['process_acs']
+        })
+        acsStandaloneData.push({
+          x: -index,
+          y: stats.data[index]['process_acs_standalone']
         })
         errorsData.push({
           x: -index,
@@ -186,6 +193,14 @@ export class DashboardComponent {
           name: "DASH Ingest",
           toolTipContent: "<b>{name}</b>: {y}",
           dataPoints: dashData
+        })
+      }
+      if(this.selectedWorkflows.includes('acs_standalone')) {
+        data.push({
+          type: 'line',
+          name: "FranceTélévisions ACS (standalone)",
+          toolTipContent: "<b>{name}</b>: {y}",
+          dataPoints: acsStandaloneData
         })
       }
       if(this.selectedWorkflows.includes('errors')) {

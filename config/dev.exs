@@ -65,6 +65,10 @@ config :ex_backend, ExBackend.Repo,
   hostname: "localhost",
   pool_size: 10
 
+config :ex_backend, ExBackend.Mailer,
+  adapter: Bamboo.SendGridAdapter,
+  api_key: {:system, "SENDGRID_API_KEY"}
+
 config :ex_backend,
   # app_identifier: "vidtext",
   # app_label: "VidText",
@@ -98,8 +102,7 @@ config :ex_backend,
   docker_container_amqp_tls: "false",
   docker_container_amqp_hostname: "127.0.0.1",
   docker_container_amqp_username: "guest",
-  docker_container_amqp_password: "guest",
-  aws_secret_key: "Kw39X75DwLFfSe36"
+  docker_container_amqp_password: "guest"
 
 config :amqp,
   hostname: "127.0.0.1",

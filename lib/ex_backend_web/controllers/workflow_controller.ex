@@ -14,7 +14,7 @@ defmodule ExBackendWeb.WorkflowController do
 
   plug(
     :right_technician_or_ftvstudio_check
-    when action in [:index, :create, :create_specific, :show, :update, :delete]
+    when action in [:index, :show, :update, :delete]
   )
 
   def index(conn, params) do
@@ -23,6 +23,7 @@ defmodule ExBackendWeb.WorkflowController do
   end
 
   def create(conn, %{"workflow" => workflow_params}) do
+    IO.inspect(workflow_params)
     case Workflows.create_workflow(workflow_params) do
       {:ok, %Workflow{} = workflow} ->
         WorkflowStep.start_next_step(workflow)
@@ -150,11 +151,11 @@ defmodule ExBackendWeb.WorkflowController do
   end
 
   def create_specific(conn, %{
-        "identifier" => "ftv_acs_standalone",
+        "identifier" => "ftv-acs-standalone",
         "reference" => reference,
         "audio_url" => audio_url,
         "ttml_url" => ttml_url,
-        "dest_url" => destination_url
+        "destination_url" => destination_url
       }) do
 
     audio_url = URI.decode(audio_url)
@@ -175,7 +176,7 @@ defmodule ExBackendWeb.WorkflowController do
     })
   end
 
-  def create_specific(conn, %{"identifier" => "acs"} = params) do
+  def create_specific(conn, %{"identifier" => "ftv-acs-standalone"} = params) do
     IO.inspect(params)
 
     conn
@@ -236,25 +237,7 @@ defmodule ExBackendWeb.WorkflowController do
     render(conn, "show.json", workflow: workflow)
   end
 
-  def get(conn, %{
-        "identifier" => "ftv_acs_standalone",
-        "audio_url" => audio_url,
-        "ttml_url" => ttml_url,
-        "dest_url" => destination_url
-      }) do
-
-    audio_url = URI.decode(audio_url)
-    ttml_url = URI.decode(ttml_url)
-    destination_url = URI.decode(destination_url)
-
-    workflow =
-        ExBackend.Workflow.Definition.FrancetvAcs.get_definition(audio_url, ttml_url, destination_url)
-
-    conn
-    |> json(workflow)
-  end
-
-  def get(conn, %{"identifier" => workflow_identifier, "reference" => reference}) do
+  def get(conn, %{"identifier" => workflow_identifier} = params) do
     workflow =
       case workflow_identifier do
         "ebu_ingest" ->
@@ -264,6 +247,7 @@ defmodule ExBackendWeb.WorkflowController do
           )
 
         "francetv_subtil_rdf_ingest" ->
+          reference = Map.get(params, "reference")
           ExVideoFactory.get_ftp_paths_for_video_id(reference)
           |> get_workflow_definition_for_source("francetv_subtil_rdf_ingest", reference)
 
@@ -281,8 +265,20 @@ defmodule ExBackendWeb.WorkflowController do
           )
 
         "ftv_studio_rosetta" ->
+          reference = Map.get(params, "reference")
           ExVideoFactory.get_ftp_paths_for_video_id(reference)
           |> get_workflow_definition_for_source("ftv_studio_rosetta", reference)
+
+        "ftv_acs_standalone" ->
+          audio_url = Map.get(params, "audio_url")
+          ttml_url = Map.get(params, "ttml_url")
+          destination_url = Map.get(params, "destination_url")
+
+          ExBackend.Workflow.Definition.FrancetvAcs.get_definition(
+            audio_url,
+            ttml_url,
+            destination_url
+          )
       end
 
     conn
