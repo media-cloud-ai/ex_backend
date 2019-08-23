@@ -45,6 +45,7 @@ export class WorkflowsComponent {
     'FranceTélévisions Rdf Ingest',
     'FranceTélévisions ACS',
     'FranceTélévisions Dash Ingest',
+    'FranceTélévisions ACS (standalone)',
   ]
 
   status = [
@@ -58,6 +59,7 @@ export class WorkflowsComponent {
     {id: 'FranceTélévisions Rdf Ingest', label: 'FranceTélévisions Rdf Ingest'},
     {id: 'FranceTélévisions ACS', label: 'FranceTélévisions ACS'},
     {id: 'FranceTélévisions Dash Ingest', label: 'FranceTélévisions Dash Ingest'},
+    {id: 'FranceTélévisions ACS (standalone)', label: 'FranceTélévisions ACS (standalone)'},
   ]
 
   pageEvent: PageEvent

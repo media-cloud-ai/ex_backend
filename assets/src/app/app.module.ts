@@ -114,6 +114,7 @@ import {NodeService}             from './services/node.service'
 import {PersonService}           from './services/person.service'
 import {RdfService}              from './services/rdf.service'
 import {RegisteryService}        from './services/registery.service'
+import {S3Service}               from './services/s3.service'
 import {UserService}             from './services/user.service'
 import {WatcherService}          from './services/watcher.service'
 import {WorkflowService}         from './services/workflow.service'
@@ -288,6 +289,7 @@ const EX_BACKEND_DATE_FORMATS = {
     PersonService,
     RdfService,
     RegisteryService,
+    S3Service,
     Title,
     UserService,
     WatcherService,

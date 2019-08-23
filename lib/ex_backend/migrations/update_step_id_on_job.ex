@@ -4,7 +4,7 @@ defmodule ExBackend.Migration.UpdateStepIdOnJob do
   alias ExBackend.Repo
 
   def change do
-    Repo.all(ExBackend.Jobs.Job)
+    Repo.all(ExBackend.Jobs.OldJob)
     |> Repo.preload(:workflow)
     |> Enum.map(fn job ->
       step =

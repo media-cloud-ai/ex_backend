@@ -1,7 +1,11 @@
 
 import {Component} from '@angular/core'
 import {ActivatedRoute} from '@angular/router'
+
+import {S3Configuration} from '../models/s3'
+
 import {WorkflowService} from '../services/workflow.service'
+import {S3Service} from '../services/s3.service'
 
 let Evaporate = require('evaporate');
 let crypto = require('crypto');
@@ -20,9 +24,11 @@ export class OrderComponent {
   mp4_percent_uploaded = 0
   ttml_percent_uploaded = 0
   completed = 0
+  s3_configuration: S3Configuration
 
   constructor(
     private route: ActivatedRoute,
+    private s3Service: S3Service,
     private workflowService: WorkflowService
   ) {}
 
@@ -34,6 +40,11 @@ export class OrderComponent {
         } else {
           this.order_id = params['id']
         }
+      })
+
+    this.s3Service.getConfiguration()
+      .subscribe(s3_configuration => {
+        this.s3_configuration = s3_configuration
       })
   }
 
@@ -47,9 +58,9 @@ export class OrderComponent {
 
     var config = {
       signerUrl: '/api/s3_signer',
-      aws_key: 'mediaio',
+      aws_key: this.s3_configuration.access_key,
       bucket: 'subtil',
-      aws_url: 'https://s3.media-io.com',
+      aws_url: this.s3_configuration.url,
       computeContentMd5: true,
       cryptoMd5Method: function (data) {
         console.log(data, crypto.createHash('md5'))
@@ -110,8 +121,19 @@ export class OrderComponent {
   }
 
   launch_workflow(mp4_filename, ttml_filename) {
-    var output_url = "s3://s3.media-io.com/subtil/output.ttml"
-    this.workflowService.getStandaloneWorkflowDefinition("ftv_acs_standalone", mp4_filename, ttml_filename, output_url)
+    var params = new Array(
+      "credential_aws_secret_key=MEDIAIO_BUCKET_SUBTIL",
+      "credential_aws_secret_key=MEDIAIO_BUCKET_SUBTIL",
+      "hostname=" + this.s3_configuration.url,
+      "region=" + this.s3_configuration.region,
+    ); 
+
+
+    var source_mp4_url = "s3://" + this.s3_configuration.bucket + "/" + mp4_filename + "?" + params.join("&")
+    var source_ttml_url = "s3://" + this.s3_configuration.bucket + "/" + ttml_filename + "?" + params.join("&")
+    var output_url = "s3://" + this.s3_configuration.bucket + "/output.ttml?" + params.join("&")
+
+    this.workflowService.getStandaloneWorkflowDefinition("ftv_acs_standalone", source_mp4_url, source_ttml_url, output_url)
       .subscribe(workflowDefinition => {
         workflowDefinition['reference'] = output_url
 

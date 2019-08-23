@@ -16,11 +16,13 @@ defmodule ExBackendWeb.S3Controller do
     url = System.get_env("AWS_URL") || Application.get_env(:ex_backend, :aws_url)
     access_key = System.get_env("AWS_ACCESS_KEY") || Application.get_env(:ex_backend, :aws_access_key)
     region = System.get_env("AWS_REGION") || Application.get_env(:ex_backend, :aws_region)
+    bucket = System.get_env("AWS_BUCKET") || Application.get_env(:ex_backend, :aws_bucket)
 
     config = %{
       url: url,
       access_key: access_key,
-      region: region
+      region: region,
+      bucket: bucket,
     }
 
     json(conn, config)
