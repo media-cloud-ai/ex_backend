@@ -10,7 +10,7 @@ defmodule ExBackend.Jobs.OldJob do
     field(:step_id, :integer)
     field(:params, {:array, :map}, default: [])
     belongs_to(:workflow, Workflow, foreign_key: :workflow_id)
-    has_many(:status, Status, on_delete: :delete_all)
+    # has_many(:status, Status, on_delete: :delete_all)
 
     timestamps()
   end
