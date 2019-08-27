@@ -30,6 +30,9 @@ RUN mix deps.get && \
     mix generate_documentation && \
     cd assets && \
     yarn && \
+    yarn add --force node-sass && \
+    yarn add node-gyp && \
+    yarn add bcrypt && \
     yarn run lint && \
     yarn run release && \
     cd .. && \
@@ -45,6 +48,9 @@ RUN apk update && \
 COPY --from=ex_builder /app/_build/prod/rel/ex_backend .
 COPY --from=ex_builder /app/priv/static static/
 COPY --from=ex_builder /app/documentation.json .
-RUN backend="$(ls -1 lib/ | grep ex_backend)" && mv static lib/$backend/priv/
+
+RUN backend="$(ls -1 lib/ | grep ex_backend)" && \
+    rm -rf lib/$backend/priv/static/ && \
+    mv static/ lib/$backend/priv/
 
 CMD ["./bin/ex_backend", "foreground"]
