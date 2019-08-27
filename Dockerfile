@@ -29,7 +29,7 @@ RUN mix deps.get && \
     mix distillery.release --env=$MIX_ENV && \
     mix generate_documentation && \
     cd assets && \
-    yarn && \
+    yarn install --network-timeout 1000000 && \
     yarn add --force node-sass && \
     yarn add node-gyp && \
     yarn add bcrypt && \
