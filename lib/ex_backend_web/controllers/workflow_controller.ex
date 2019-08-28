@@ -258,9 +258,19 @@ defmodule ExBackendWeb.WorkflowController do
           )
 
         "francetv_subtil_acs" ->
+          workflow_reference = Map.get(params, "reference")
+
+          source_mp4_path =
+            ExVideoFactory.get_ftp_paths_for_video_id(workflow_reference)
+            |> Enum.filter(fn path -> String.contains?(path, "-standard5.mp4") end)
+            |> List.first
+          source_ttml_path =
+            ExVideoFactory.get_http_url_for_ttml(workflow_reference)
+            |> List.first()
+
           ExBackend.Workflow.Definition.FrancetvSubtilAcs.get_definition(
-            "#source_mp4_path",
-            "#source_ttml_path",
+            source_mp4_path,
+            source_ttml_path,
             nil
           )
 
