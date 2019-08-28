@@ -47,7 +47,7 @@ defmodule ExBackend.Workflow.Step.AcsSynchronize do
           %{
             "id" => "command_template",
             "type" => "string",
-            "value" => acs_app <> " {audio_path} {subtitle_path} {output_path} {threads_number}"
+            "value" => acs_app <> " {audio_path} {subtitle_path} {destination_path} {threads_number}"
           },
           %{
             "id" => "audio_path",
@@ -60,7 +60,7 @@ defmodule ExBackend.Workflow.Step.AcsSynchronize do
             "value" => subtitle_path
           },
           %{
-            "id" => "output_path",
+            "id" => "destination_path",
             "type" => "string",
             "value" => dst_path
           }
