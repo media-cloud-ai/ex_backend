@@ -2,7 +2,6 @@
 language: elixir
 
 elixir:
-  - 1.6.0
   - 1.6.1
   - 1.6.6
   - 1.7.0
@@ -16,7 +15,7 @@ otp_release:
 
 matrix:
   exclude:
-    - elixir: 1.6.0
+    - elixir: 1.6.1
       otp_release: 21.0
 
 dist: trusty
