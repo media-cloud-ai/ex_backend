@@ -12,7 +12,7 @@ defmodule ExBackend.Amqp.JobAcsCompletedConsumer do
         channel,
         tag,
         _redelivered,
-        %{"job_id" => job_id, "status" => status, "output" => _paths} = payload
+        %{"job_id" => job_id, "status" => status, "parameters" => _parameters} = payload
       ) do
     Logger.warn("receive #{inspect(payload)}")
     Jobs.Status.set_job_status(job_id, status)
