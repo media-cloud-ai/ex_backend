@@ -90,7 +90,7 @@ config :ex_backend,
     port: 1501
   ],
   appdir: "/opt/app",
-  acs_app: "./SynchroSubtilTSP_V0.5",
+  acs_app: "acs_launcher.sh",
   root_email: "admin@media-io.com",
   root_password: "admin123",
   root_dash_content: "/Users/marco/dash",

@@ -158,8 +158,8 @@ defmodule ExBackend.Workflow.Definition.FrancetvAcs do
       ]
 
     case extension do
-      "wav" -> []
-      "isma" -> [
+      ".wav" -> []
+      ".isma" -> [
           %{
             id: next_step_id,
             parent_ids: [0],
@@ -181,7 +181,7 @@ defmodule ExBackend.Workflow.Definition.FrancetvAcs do
             ] ++ common_parameters
           }
         ]
-      "mp4" -> [
+      ".mp4" -> [
           %{
             id: next_step_id,
             parent_ids: [0],
