@@ -43,7 +43,7 @@ FROM alpine:3.9
 WORKDIR /app
 
 RUN apk update && \
-    apk add bash openssl
+    apk add bash openssl curl
 
 COPY --from=ex_builder /app/_build/prod/rel/ex_backend .
 COPY --from=ex_builder /app/priv/static static/
@@ -52,5 +52,7 @@ COPY --from=ex_builder /app/documentation.json .
 RUN backend="$(ls -1 lib/ | grep ex_backend)" && \
     rm -rf lib/$backend/priv/static/ && \
     mv static/ lib/$backend/priv/
+
+HEALTHCHECK --interval=30s --start-period=2s --retries=2 --timeout=3s CMD curl -v --silent --fail http://localhost:8080/ || exit 1
 
 CMD ["./bin/ex_backend", "foreground"]
