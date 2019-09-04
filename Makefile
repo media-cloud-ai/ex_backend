@@ -28,3 +28,4 @@ docker-push-registry:
 
 version:
 	@echo ${VERSION}
+
