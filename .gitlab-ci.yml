@@ -6,16 +6,16 @@ stages:
   - docker
   - k8s-pipeline
 
-#build:
-#  stage: docker
-#  image: docker
-#  before_script:
-#    - apk add --no-cache git make
-#    - make docker-registry-login
-#  services:
-#    - docker:dind
-#  script:
-#    - make docker-build
-#    - make docker-push-registry
-#  only:
-#    - master
+build:
+  stage: docker
+  image: docker
+  before_script:
+    - apk add --no-cache git make
+    - make docker-registry-login
+  services:
+    - docker:dind
+  script:
+    - make docker-build
+    - make docker-push-registry
+  only:
+    - master
