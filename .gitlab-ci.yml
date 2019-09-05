@@ -15,5 +15,6 @@ build:
   services:
     - docker:dind
   script:
-    - make docker-build
-    - make docker-push-registry
+    #- make docker-build
+    #- make docker-push-registry
+    - git describe --always --tags --first-parent
