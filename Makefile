@@ -22,7 +22,6 @@ docker-clean:
 	@docker rmi ${DOCKER_REGISTRY}${DOCKER_IMG_NAME}:${CI_COMMIT_SHORT_SHA}
 
 docker-registry-login:
-	@echo "docker login --username ${DOCKER_REGISTRY_LOGIN} -p${DOCKER_REGISTRY_PWD} ${DOCKER_REGISTRY}"
 	@docker login --username "${DOCKER_REGISTRY_LOGIN}" -p"${DOCKER_REGISTRY_PWD}" ${DOCKER_REGISTRY}
 	
 docker-push-registry:
