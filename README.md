@@ -19,6 +19,7 @@ Backend installation:
 
   * Install dependencies with `mix deps.get`
   * Create and migrate your database with `mix ecto.create && mix ecto.migrate`
+  * To run the application locally in dev mode, in the config folder, you need to create a file `dev.secret.exs` which will contains `use Mix.Config`
 
 ### Start back-end server locally
 
