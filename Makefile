@@ -29,6 +29,8 @@ docker-push-registry:
 	@docker push ${DOCKER_REGISTRY}${DOCKER_IMG_NAME}:${VERSION}
 	@docker push ${DOCKER_REGISTRY}${DOCKER_IMG_NAME}:${CI_COMMIT_SHORT_SHA}
 
+up:
+	@mix phx.server
 
 version:
 	@echo ${VERSION}
