@@ -73,3 +73,4 @@ More environment variables are available due to using library [rs_amqp_worker](h
   * Docs: https://hexdocs.pm/phoenix
   * Mailing list: http://groups.google.com/group/phoenix-talk
   * Source: https://github.com/phoenixframework/phoenix
+
