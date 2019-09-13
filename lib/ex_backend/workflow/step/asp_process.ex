@@ -13,9 +13,9 @@ defmodule ExBackend.Workflow.Step.AspProcess do
     case Requirements.get_source_files(workflow.jobs, step) do
       [path1, path2] ->
         if String.ends_with?(path1, ".mp4") do
-          start_processing_synchro(path1, path2, workflow, step, step_id)
+          start_processing_asp(path1, path2, workflow, step, step_id)
         else
-          start_processing_synchro(path2, path1, workflow, step, step_id)
+          start_processing_asp(path2, path1, workflow, step, step_id)
         end
 
       _ ->
@@ -23,7 +23,7 @@ defmodule ExBackend.Workflow.Step.AspProcess do
     end
   end
 
-  defp start_processing_synchro(video_path, subtitle_path, workflow, step, step_id) do
+  defp start_processing_asp(video_path, subtitle_path, workflow, step, step_id) do
     work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
 
     asp_app = System.get_env("ASP_APP") || Application.get_env(:ex_backend, :asp_app)
