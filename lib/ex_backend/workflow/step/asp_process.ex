@@ -47,7 +47,12 @@ defmodule ExBackend.Workflow.Step.AspProcess do
           %{
             "id" => "command_template",
             "type" => "string",
-            "value" => asp_app <> " {video_path} {subtitle_path} {destination_path}"
+            "value" => "{program} {video_path} {subtitle_path} {destination_path}"
+          },
+          %{
+            "id" => "program",
+            "type" => "string",
+            "value" => asp_app
           },
           %{
             "id" => "video_path",
