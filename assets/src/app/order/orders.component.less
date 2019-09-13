@@ -1,0 +1,45 @@
+@import '../colors';
+
+.workflow {
+ .info {
+    display: flex;
+    line-height: 36px;
+    vertical-align: middle;
+
+    .identifier {
+      padding: 0px 4px;
+      align-content: flex-start;
+    }
+
+    .reference {
+      display: inline-block;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      vertical-align: middle;
+      flex: 1;
+      padding: 0px 4px;
+
+      .link {
+        cursor: pointer;
+        color: @blue;
+      }
+    }
+
+    .created,
+    .duration {
+      flex: 1;
+    }
+
+    .steps-count {
+      align-content: flex-end;
+      padding: 0px 6px;
+      display: inline-flex;
+      text-align: right;
+
+      .count {
+        min-width: 50px;
+      }
+    }
+  }
+}
