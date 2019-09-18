@@ -34,7 +34,8 @@ config :ex_backend,
   root_dash_content: "/tmp/",
   work_dir: "/data",
   acs_app: "./SynchroSubtilTSP_V0.6",
-  akamai_video_prefix: "/test/"
+  akamai_video_prefix: "/test/",
+  asp_app: "ASP_V3"
 
 config :amqp,
   hostname: "localhost",

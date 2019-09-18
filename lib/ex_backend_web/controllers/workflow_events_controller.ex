@@ -112,6 +112,10 @@ defmodule ExBackendWeb.WorkflowEventsController do
     CommonEmitter.publish_json("job_acs", params)
   end
 
+  defp publish("asp_process", _job, _workflow, params) do
+    CommonEmitter.publish_json("job_asp", params)
+  end
+
   defp publish("copy", _job, _workflow, params) do
     CommonEmitter.publish_json("job_file_system", params)
   end
