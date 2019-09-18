@@ -14,7 +14,7 @@ endif
 VERSION=1.0.0
 
 docker-build:
-    @docker build -t ${DOCKER_REGISTRY}${DOCKER_IMG_NAME}:${VERSION} .
+	@docker build -t ${DOCKER_REGISTRY}${DOCKER_IMG_NAME}:${VERSION} .
 	@docker tag ${DOCKER_REGISTRY}${DOCKER_IMG_NAME}:${VERSION} ${DOCKER_REGISTRY}${DOCKER_IMG_NAME}:${CI_COMMIT_SHORT_SHA}
 
 docker-clean:

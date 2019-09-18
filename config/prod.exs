@@ -17,6 +17,7 @@ config :ex_backend, ExBackendWeb.Endpoint,
   load_from_system_env: true,
   url: [host: "backend.media-io.com", port: 443],
   root: ".",
+  check_origin: false,
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Do not print debug messages in production
