@@ -1,21 +1,21 @@
-defmodule ExBackend.Workflow.Step.AcsSynchronize do
+defmodule ExBackend.Workflow.Step.AspProcess do
   alias ExBackend.Jobs
   alias ExBackend.Amqp.CommonEmitter
   alias ExBackend.Workflow.Step.Requirements
 
   require Logger
 
-  @action_name "acs_synchronize"
+  @action_name "asp_process"
 
   def launch(workflow, step) do
     step_id = ExBackend.Map.get_by_key_or_atom(step, :id)
 
     case Requirements.get_source_files(workflow.jobs, step) do
       [path1, path2] ->
-        if String.ends_with?(path1, ".wav") do
-          start_processing_synchro(path1, path2, workflow, step, step_id)
+        if String.ends_with?(path1, ".mp4") do
+          start_processing_asp(path1, path2, workflow, step, step_id)
         else
-          start_processing_synchro(path2, path1, workflow, step, step_id)
+          start_processing_asp(path2, path1, workflow, step, step_id)
         end
 
       _ ->
@@ -23,18 +23,18 @@ defmodule ExBackend.Workflow.Step.AcsSynchronize do
     end
   end
 
-  defp start_processing_synchro(audio_path, subtitle_path, workflow, step, step_id) do
+  defp start_processing_asp(video_path, subtitle_path, workflow, step, step_id) do
     work_dir = System.get_env("WORK_DIR") || Application.get_env(:ex_backend, :work_dir)
 
-    acs_app = System.get_env("ACS_APP") || Application.get_env(:ex_backend, :acs_app)
+    asp_app = System.get_env("ASP_APP") || Application.get_env(:ex_backend, :asp_app)
 
     filename =
       Path.basename(subtitle_path)
-      |> String.replace(".ttml", "_synchronized.ttml")
+      |> String.replace(".ttml", "_positioned.ttml")
 
     dst_path = work_dir <> "/" <> Integer.to_string(workflow.id) <> "/" <> filename
 
-    requirements = Requirements.new_required_paths([audio_path, subtitle_path])
+    requirements = Requirements.new_required_paths([video_path, subtitle_path])
 
     parameters =
       ExBackend.Map.get_by_key_or_atom(step, :parameters) ++
@@ -47,12 +47,17 @@ defmodule ExBackend.Workflow.Step.AcsSynchronize do
           %{
             "id" => "command_template",
             "type" => "string",
-            "value" => acs_app <> " {audio_path} {subtitle_path} {destination_path} {threads_number}"
+            "value" => "{program} {video_path} {subtitle_path} {destination_path}"
           },
           %{
-            "id" => "audio_path",
+            "id" => "program",
             "type" => "string",
-            "value" => audio_path
+            "value" => asp_app
+          },
+          %{
+            "id" => "video_path",
+            "type" => "string",
+            "value" => video_path
           },
           %{
             "id" => "subtitle_path",
@@ -77,7 +82,7 @@ defmodule ExBackend.Workflow.Step.AcsSynchronize do
 
     message = Jobs.get_message(job)
 
-    case CommonEmitter.publish_json("job_acs", message) do
+    case CommonEmitter.publish_json("job_asp", message) do
       :ok -> {:ok, "started"}
       _ -> {:error, "unable to publish message"}
     end

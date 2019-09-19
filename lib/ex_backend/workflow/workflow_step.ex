@@ -67,6 +67,10 @@ defmodule ExBackend.WorkflowStep do
     ExBackend.Workflow.Step.AcsSynchronize.launch(workflow, step)
   end
 
+  defp launch_step(workflow, "asp_process", step) do
+    ExBackend.Workflow.Step.AspProcess.launch(workflow, step)
+  end
+
   defp launch_step(workflow, "audio_extraction", step) do
     ExBackend.Workflow.Step.AudioExtraction.launch(workflow, step)
   end

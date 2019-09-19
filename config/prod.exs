@@ -90,7 +90,8 @@ config :ex_backend,
   akamai_password: "akamai_password",
   akamai_video_prefix: "/421959/prod/innovation/SubTil",
   appdir: "/opt/app",
-  acs_app: "./SynchroSubtilTSP_V0.6"
+  acs_app: "acs_launcher.sh",
+  asp_app: "ASP_V3"
 
 config :ex_video_factory,
   mode: :custom,
