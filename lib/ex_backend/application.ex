@@ -34,7 +34,19 @@ defmodule ExBackend.Application do
 
     ExBackend.Migration.All.apply_migrations()
     ExBackend.Amqp.Supervisor.start_all_amqp_consumming_connections()
+    create_root_user_if_needed()
 
+    main_supervisor
+  end
+
+  # Tell Phoenix to update the endpoint configuration
+  # whenever the application is updated.
+  def config_change(changed, _new, removed) do
+    ExBackendWeb.Endpoint.config_change(changed, removed)
+    :ok
+  end
+
+  defp create_root_user_if_needed() do
     root_email = System.get_env("ROOT_EMAIL") || Application.get_env(:ex_backend, :root_email)
 
     root_password =
@@ -48,19 +60,7 @@ defmodule ExBackend.Application do
       {:ok, user} = ExBackend.Accounts.update_password(user, %{password: root_password})
       {:ok, _user} = ExBackend.Accounts.confirm_user(user)
     else
-      Logger.warn("No root user (re-)created")
+      Logger.warn("No root user created")
     end
-
-    # BlueBird.start()
-
-    # ExBackend.Amqp.Supervisor.add_consumer("ftp")
-    main_supervisor
-  end
-
-  # Tell Phoenix to update the endpoint configuration
-  # whenever the application is updated.
-  def config_change(changed, _new, removed) do
-    ExBackendWeb.Endpoint.config_change(changed, removed)
-    :ok
   end
 end
