@@ -1,20 +1,25 @@
-include:
-  - project: exploit/k8s/utils/k8s-deploy
-    file: /.k8s-ci.yml
+
+image: docker:latest
 
 stages:
-  - docker
-  - k8s-pipeline
+  - build
 
-build:
-  stage: docker
-  image: docker
-  services:
-    - docker:dind
-  before_script:
-    - apk add --no-cache git make
-    - make docker-registry-login
+variables:
+  CONTAINER_LOCAL_IMAGE: ex_subtil_backend
+  CONTAINER_REGISTRY: registry.gitlab.com
+  CONTAINER_IMAGE_NAME: mediacloudai/ex_subtil_backend
+
+before_script:
+  - docker info
+
+build_image:
+  stage: build
   script:
-    - git describe --always --tags --first-parent
-    - make docker-build
-    - make docker-push-registry
+    - export IMAGE_TAG=`git describe --always --tags --first-parent`
+    - docker build -t $CONTAINER_LOCAL_IMAGE .
+    - docker login -u maarnaud -p $REGISTRY_PASSWORD $CONTAINER_REGISTRY
+    - docker tag $CONTAINER_LOCAL_IMAGE $CONTAINER_REGISTRY/$CONTAINER_IMAGE_NAME:$IMAGE_TAG
+    - docker push $CONTAINER_REGISTRY/$CONTAINER_IMAGE_NAME:$IMAGE_TAG
+    - echo $CONTAINER_REGISTRY/$CONTAINER_IMAGE_NAME:$IMAGE_TAG
+  tags:
+    - mediaio
