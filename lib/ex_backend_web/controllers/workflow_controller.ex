@@ -22,6 +22,13 @@ defmodule ExBackendWeb.WorkflowController do
     render(conn, "index.json", workflows: workflows)
   end
 
+  api :POST, "/api/workflows" do
+    title("Create a new workflow")
+    description("Start a new worklow.
+    <h4>Start a workflow with cURL:</h4>
+    <pre class=code>curl -H \"Authorization: $MIO_TOKEN\" -H \"Content-Type: application/json\" -d '{\"workflow\": {\"reference\": \"dfaaab14-c8f0-4e67-b109-0f5343831d0c\", \"identifier\": \"Test Transfer\", \"version_major\": 0, \"version_minor\": 0, \"version_micro\": 1, \"tags\": [\"test\", \"transfer\"], \"flow\": {\"steps\": [{\"id\": 0, \"name\": \"download_ftp\", \"parameters\": [{\"id\": \"source_hostname\", \"type\": \"credential\", \"default\": \"AKAMAI_REPLAY_HOSTNAME\", \"value\": \"AKAMAI_REPLAY_HOSTNAME\"},{\"id\": \"source_username\", \"type\": \"credential\",\"default\":\"AKAMAI_REPLAY_USERNAME\", \"value\": \"AKAMAI_REPLAY_USERNAME\"},{\"id\": \"source_password\", \"type\": \"credential\", \"default\": \"AKAMAI_REPLAY_PASSWORD\", \"value\": \"AKAMAI_REPLAY_PASSWORD\"},{\"id\": \"source_prefix\", \"type\": \"credential\", \"default\": \"AKAMAI_REPLAY_PREFIX\", \"value\": \"AKAMAI_REPLAY_PREFIX\"},{\"default\": \"AKAMAI_REPLAY_SSL\", \"id\": \"source_ssl\", \"type\": \"credential\", \"value\": \"AKAMAI_REPLAY_SSL\"}, {\"id\": \"source_paths\", \"type\": \"array_of_strings\", \"value\": [\"/streaming-adaptatif_france-dom-tom/2019/S40/J4/213733703-5d95953d73048-standard5.mp4\"]}]}]}}}' https://backend.media-io.com/api/workflows</pre>
+    ")
+  end
   def create(conn, %{"workflow" => workflow_params}) do
     IO.inspect(workflow_params)
     case Workflows.create_workflow(workflow_params) do
