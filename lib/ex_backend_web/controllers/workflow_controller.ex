@@ -26,8 +26,37 @@ defmodule ExBackendWeb.WorkflowController do
     title("Create a new workflow")
     description("Start a new worklow.
     <h4>Start a workflow with cURL:</h4>
-    <pre class=code>curl -H \"Authorization: $MIO_TOKEN\" -H \"Content-Type: application/json\" -d '{\"workflow\": {\"reference\": \"dfaaab14-c8f0-4e67-b109-0f5343831d0c\", \"identifier\": \"Test Transfer\", \"version_major\": 0, \"version_minor\": 0, \"version_micro\": 1, \"tags\": [\"test\", \"transfer\"], \"flow\": {\"steps\": [{\"id\": 0, \"name\": \"download_ftp\", \"parameters\": [{\"id\": \"source_hostname\", \"type\": \"credential\", \"default\": \"AKAMAI_REPLAY_HOSTNAME\", \"value\": \"AKAMAI_REPLAY_HOSTNAME\"},{\"id\": \"source_username\", \"type\": \"credential\",\"default\":\"AKAMAI_REPLAY_USERNAME\", \"value\": \"AKAMAI_REPLAY_USERNAME\"},{\"id\": \"source_password\", \"type\": \"credential\", \"default\": \"AKAMAI_REPLAY_PASSWORD\", \"value\": \"AKAMAI_REPLAY_PASSWORD\"},{\"id\": \"source_prefix\", \"type\": \"credential\", \"default\": \"AKAMAI_REPLAY_PREFIX\", \"value\": \"AKAMAI_REPLAY_PREFIX\"},{\"default\": \"AKAMAI_REPLAY_SSL\", \"id\": \"source_ssl\", \"type\": \"credential\", \"value\": \"AKAMAI_REPLAY_SSL\"}, {\"id\": \"source_paths\", \"type\": \"array_of_strings\", \"value\": [\"/streaming-adaptatif_france-dom-tom/2019/S40/J4/213733703-5d95953d73048-standard5.mp4\"]}]}]}}}' https://backend.media-io.com/api/workflows</pre>
+    <pre class=code>curl \\
+    -H \"Authorization: $MIO_TOKEN\" \\
+    -H \"Content-Type: application/json\" \\
+    -d '{\"workflow\": { \\
+      \"reference\": \"dfaaab14-c8f0-4e67-b109-0f5343831d0c\", \\
+      \"identifier\": \"Test Transfer\", \\
+      \"version_major\": 0, \\
+      \"version_minor\": 0, \\
+      \"version_micro\": 1, \\
+      \"tags\": [\"test\", \"transfer\"], \\
+      \"flow\": {\"steps\": [ \\
+        {\"id\": 0, \"name\": \"download_ftp\", \"parameters\": [\\
+          {\"id\": \"source_hostname\", \"type\": \"credential\", \"default\": \"AKAMAI_REPLAY_HOSTNAME\", \"value\": \"AKAMAI_REPLAY_HOSTNAME\"}, \\
+          {\"id\": \"source_username\", \"type\": \"credential\",\"default\":\"AKAMAI_REPLAY_USERNAME\", \"value\": \"AKAMAI_REPLAY_USERNAME\"}, \\
+          {\"id\": \"source_password\", \"type\": \"credential\", \"default\": \"AKAMAI_REPLAY_PASSWORD\", \"value\": \"AKAMAI_REPLAY_PASSWORD\"}, \\
+          {\"id\": \"source_prefix\", \"type\": \"credential\", \"default\": \"AKAMAI_REPLAY_PREFIX\", \"value\": \"AKAMAI_REPLAY_PREFIX\"}, \\
+          {\"default\": \"AKAMAI_REPLAY_SSL\", \"id\": \"source_ssl\", \"type\": \"credential\", \"value\": \"AKAMAI_REPLAY_SSL\"}, \\
+          {\"id\": \"source_paths\", \"type\": \"array_of_strings\", \"value\": [\"/streaming-adaptatif_france-dom-tom/2019/S40/J4/213733703-5d95953d73048-standard5.mp4\"]} \\
+        ]}
+      ]}
+    }}' \\
+    https://backend.media-io.com/api/workflows</pre>
     ")
+
+    parameter(:reference, :bitstring, description: "UUID of the Reference Media")
+    parameter(:identifier, :bitstring, description: "Workflow identifier")
+    parameter(:version_major, :bitstring, description: "Workflow version major")
+    parameter(:version_minor, :bitstring, description: "Workflow version minor")
+    parameter(:version_micro, :bitstring, description: "Workflow version micro")
+    parameter(:tags, :array, optional: true, description: "List of tag related to this workflow")
+    parameter(:flow, :map, description: "Container of steps")
   end
   def create(conn, %{"workflow" => workflow_params}) do
     IO.inspect(workflow_params)
@@ -54,7 +83,15 @@ defmodule ExBackendWeb.WorkflowController do
     title("Create a new workflow with a specific template")
     description("Start a new worklow. The identifier will select the template.
     <h4>Start an Automatic Content Synchronisation workflow with cURL:</h4>
-    <pre class=code>curl -H \"Authorization: $MIO_TOKEN\" -H \"Content-Type: application/json\" -d '{\"reference\": \"d953ffd8-53a4-49ed-9312-c1ba78bdd5f4\", \"mp4_path\": \"/streaming-adaptatif/2018/S50/J1/194377135-5c0dfc6eb3420-standard1.mp4\", \"ttml_path\": \"https://staticftv-a.akamaihd.net/sous-titres/2018/12/10/194377135-5c0dfc6eb3420-1544422463.ttml\"}' https://backend.media-io.com/api/workflow/acs</pre>
+    <pre class=code>curl \\
+    -H \"Authorization: $MIO_TOKEN\" \\
+    -H \"Content-Type: application/json\" \\
+    -d '{ \\
+      \"reference\": \"d953ffd8-53a4-49ed-9312-c1ba78bdd5f4\", \\
+      \"mp4_path\": \"/streaming-adaptatif/2018/S50/J1/194377135-5c0dfc6eb3420-standard1.mp4\", \\
+      \"ttml_path\": \"https://staticftv-a.akamaihd.net/sous-titres/2018/12/10/194377135-5c0dfc6eb3420-1544422463.ttml\" \\
+    }' \\
+    https://backend.media-io.com/api/workflow/acs</pre>
     ")
 
     parameter(:identifier, :bitstring,
