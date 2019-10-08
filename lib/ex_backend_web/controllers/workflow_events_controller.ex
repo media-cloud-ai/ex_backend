@@ -144,6 +144,10 @@ defmodule ExBackendWeb.WorkflowEventsController do
     CommonEmitter.publish_json("job_gpac", params)
   end
 
+  defp publish("clean_workspace", _job, _workflow, params) do
+    CommonEmitter.publish_json("job_file_system", params)
+  end
+
   defp publish("send_notification", job, workflow, params) do
     ExBackend.Workflow.Step.Notification.process_notification(workflow, job, params.parameters)
   end
