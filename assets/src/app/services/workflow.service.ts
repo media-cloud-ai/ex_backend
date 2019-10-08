@@ -86,6 +86,14 @@ export class WorkflowService {
       )
   }
 
+  createSpecificWorkflow(workflow_identifier: string, reference: string): Observable<Workflow> {
+    return this.http.post<Workflow>(this.workflowUrl  + '/' + workflow_identifier, {identifier: workflow_identifier, reference: reference})
+      .pipe(
+        tap(workflowPage => this.log('fetched Workflow')),
+        catchError(this.handleError('getWorkflowDefinition', undefined))
+      )
+  }
+
   sendWorkflowEvent(workflow_id: number, event: WorkflowEvent): Observable<Workflow> {
     return this.http.post<Workflow>(this.workflowsUrl + '/' + workflow_id + '/events', event)
       .pipe(

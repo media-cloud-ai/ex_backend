@@ -13,9 +13,11 @@ import {
   MatDialogModule,
   MatIconModule,
   MatInputModule,
+  MatPaginatorModule,
   MatProgressSpinnerModule,
   MatSelectModule,
   MatSliderModule,
+  MatTabsModule,
   } from '@angular/material'
 
 import {PipesModule} from '../pipes/pipes.module'
@@ -33,10 +35,12 @@ export const ROUTES: Routes = [
     MatDialogModule,
     MatIconModule,
     MatInputModule,
+    MatPaginatorModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
     MatSelectModule,
     MatSliderModule,
+    MatTabsModule,
     MaterialFileInputModule,
     PipesModule,
     RouterModule.forChild(ROUTES)
