@@ -176,6 +176,46 @@ defmodule ExBackendWeb.WorkflowController do
     })
   end
 
+  def create_specific(conn, %{
+        "identifier" => "ftv-acs-standalone",
+        "reference" => reference,
+      }) do
+
+    ism_source_path =
+      ExVideoFactory.get_ftp_paths_for_video_id(reference)
+      |> Enum.filter(fn path -> String.contains?(path, ".ism") end)
+      |> List.first()
+
+    mp4_source_path =
+      ExVideoFactory.get_ftp_paths_for_video_id(reference)
+      |> Enum.filter(fn path -> String.contains?(path, "-standard5.mp4") end)
+      |> List.first()
+      |> String.replace("/343079/http/", "/")
+
+    ttml_source_path =
+      ExVideoFactory.get_http_url_for_ttml(reference)
+      |> List.first()
+
+    workflow_params =
+      ExBackend.Workflow.Definition.FrancetvAcs.get_definition(
+        ism_source_path,
+        mp4_source_path,
+        ttml_source_path,
+        nil
+      )
+      |> Map.put(:reference, reference)
+
+
+    {:ok, workflow} = Workflows.create_workflow(workflow_params)
+    {:ok, response_status} = WorkflowStep.start_next_step(workflow)
+
+    conn
+    |> json(%{
+      status: response_status,
+      workflow_id: workflow.id
+    })
+  end
+
   def create_specific(conn, %{"identifier" => "ftv-acs-standalone"} = params) do
     IO.inspect(params)
 
