@@ -73,7 +73,7 @@ defmodule ExBackend.Mixfile do
       {:ecto_sql, "~> 3.1"},
       {:ex_imdb_sniffer, "~> 0.1.1"},
       {:ex_mock, "~> 0.1.1", only: :test},
-      {:ex_video_factory, "0.3.11"},
+      {:ex_video_factory, "0.3.12"},
       {:gettext, "~> 0.14"},
       {:httpotion, "~> 3.1.0"},
       {:jason, "~> 1.1"},
