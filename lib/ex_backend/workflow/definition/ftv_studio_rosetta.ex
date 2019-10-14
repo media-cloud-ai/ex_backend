@@ -134,7 +134,7 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
         id: 2,
         name: "download_ftp",
         parent_ids: [1],
-        required: [0],
+        required: [1],
         enable: true,
         parameters: [
           %{

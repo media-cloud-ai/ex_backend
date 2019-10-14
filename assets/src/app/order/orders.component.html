@@ -9,3 +9,48 @@
   <i class="material-icons">add</i>
   New Order
 </button>
+
+<div *ngIf="workflows">
+  <div *ngFor="let workflow of workflows.data" class=workflow>
+    <span class="reference">
+      <!-- <video-title-component [id]=workflow.reference></video-title-component> -->
+      {{workflow.reference}}
+    </span>
+    <!-- <span *ngFor="let step of workflow.flow.steps" class=step>
+      <label>
+        <span *ngIf="step.label">
+          {{step.label}}
+        </span>
+        <span *ngIf="!step.label">
+          {{step.name | jobType}}
+        </span>
+      </label>
+      ({{step.jobs.completed}}/{{step.jobs.total}})
+    </span> -->
+
+
+    <a target="_blank" href='http://cathodique.magneto.build.ftven.net/?gitrefname=poc/subtil/ttml_rendering&options=%7B"autostart"%3Afalse%2C"showAd"%3Afalse%7D&src=%5B"https%3A%2F%2Fbackend.media-io.com%2Fdash%2F666%2Fmanifest.mpd"%5D&env=integ'>
+      <i class="material-icons" title="Visualisation">live_tv</i>
+    </a>
+
+    <button
+      mat-raised-button
+      color="accent"
+      (click)="downloadTtml()"
+      >
+      <i class="material-icons">cloud_download</i>
+      Download TTML
+    </button>
+  </div>
+</div>
+
+<mat-paginator
+  class=paginator
+  showFirstLastButtons=true
+  [length]="length"
+  [pageSize]="pageSize"
+  [pageIndex]="page"
+  [pageSizeOptions]="pageSizeOptions"
+  (page)="pageEvent = eventGetWorkflows($event)"
+  *ngIf="workflows && !loading" >
+</mat-paginator>

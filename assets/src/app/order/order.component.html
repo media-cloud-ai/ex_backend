@@ -1,41 +1,70 @@
 <h1>New Order</h1>
 
-<div class=inputs>
-  <div class=dropzone>
-    <mat-form-field>
-      <ngx-mat-file-input [(ngModel)]="mp4_file" placeholder="MP4 video file" [accept]="'.mp4'"></ngx-mat-file-input>
-      <mat-icon matSuffix>folder</mat-icon>
-    </mat-form-field>
-  </div>
-  <div class=dropzone>
-    <mat-form-field>
-      <ngx-mat-file-input [(ngModel)]="ttml_file" placeholder="TTML file" [accept]="'.ttml'"></ngx-mat-file-input>
-      <mat-icon matSuffix>folder</mat-icon>
-    </mat-form-field>
-</div>
+<mat-tab-group>
+  <mat-tab label="Upload files">
+    <div class=inputs>
+      <div class=dropzone>
+        <mat-form-field>
+          <ngx-mat-file-input [(ngModel)]="mp4_file" placeholder="MP4 video file" [accept]="'.mp4'"></ngx-mat-file-input>
+          <mat-icon matSuffix>folder</mat-icon>
+        </mat-form-field>
+      </div>
+      <div class=dropzone>
+        <mat-form-field>
+          <ngx-mat-file-input [(ngModel)]="ttml_file" placeholder="TTML file" [accept]="'.ttml'"></ngx-mat-file-input>
+          <mat-icon matSuffix>folder</mat-icon>
+        </mat-form-field>
+      </div>
+    </div>
 
-<button
-  mat-raised-button
-  color="accent"
-  (click)="upload()"
-  [disabled]="!mp4_file && !ttml_file"
-  >
-  <i class="material-icons">cloud_upload</i>
-  Upload and start workflow
-</button>
+    <button
+      mat-raised-button
+      color="accent"
+      (click)="upload()"
+      [disabled]="!mp4_file && !ttml_file"
+      >
+      <i class="material-icons">cloud_upload</i>
+      Upload and start workflow
+    </button>
 
-<div class=progress>
-  <div>
-    {{mp4_percent_uploaded | number: '1.0-0'}} % of MP4 uploaded
-    <mat-progress-bar
-      [value]="mp4_percent_uploaded">
-    </mat-progress-bar>
-  </div>
+    <div class=progress>
+      <div>
+        {{mp4_percent_uploaded | number: '1.0-0'}} % of MP4 uploaded
+        <mat-progress-bar
+          [value]="mp4_percent_uploaded">
+        </mat-progress-bar>
+      </div>
 
-  <div>
-    {{ttml_percent_uploaded | number: '1.0-0'}} % of TTML uploaded
-    <mat-progress-bar
-      [value]="ttml_percent_uploaded">
-    </mat-progress-bar>
-  </div>
-</div>
+      <div>
+        {{ttml_percent_uploaded | number: '1.0-0'}} % of TTML uploaded
+        <mat-progress-bar
+          [value]="ttml_percent_uploaded">
+        </mat-progress-bar>
+      </div>
+    </div>
+
+  </mat-tab>
+  <mat-tab label="Via UUID from SI Video">
+    <div>
+      <mat-form-field class="search-text-input">
+        <input
+          matInput
+          placeholder="Video identifier"
+          name=video_identifier
+          [(ngModel)]="video_identifier"
+          >
+      </mat-form-field>
+    </div>
+    <div>
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="start_via_uuid()"
+        [disabled]="!video_identifier"
+        >
+        <i class="material-icons">playlist_play</i>
+        Start workflow
+      </button>
+    </div>
+  </mat-tab>
+</mat-tab-group>

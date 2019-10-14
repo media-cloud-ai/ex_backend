@@ -21,6 +21,7 @@ export class OrderComponent {
   order_id: number
   mp4_file: any
   ttml_file: any
+  video_identifier: string
   mp4_percent_uploaded = 0
   ttml_percent_uploaded = 0
   completed = 0
@@ -128,7 +129,6 @@ export class OrderComponent {
       "region=" + this.s3_configuration.region,
     ); 
 
-
     var source_mp4_url = "s3://" + this.s3_configuration.bucket + "/" + mp4_filename + "?" + params.join("&")
     var source_ttml_url = "s3://" + this.s3_configuration.bucket + "/" + ttml_filename + "?" + params.join("&")
     var output_url = "s3://" + this.s3_configuration.bucket + "/output.ttml?" + params.join("&")
@@ -141,6 +141,17 @@ export class OrderComponent {
         .subscribe(response => {
           console.log(response)
         })
+    })
+  }
+
+  start_via_uuid() {
+    var parameters = {
+      "reference": this.video_identifier
+    }
+
+    this.workflowService.createSpecificWorkflow("ftv-acs-standalone", this.video_identifier)
+    .subscribe(response => {
+      console.log(response)
     })
   }
 }

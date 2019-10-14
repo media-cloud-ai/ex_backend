@@ -40,13 +40,7 @@ export class WorkflowsComponent {
     'processing',
   ]
 
-  selectedWorkflows = [
-    'FranceTV Studio Ingest Rosetta',
-    'FranceTélévisions Rdf Ingest',
-    'FranceTélévisions ACS',
-    'FranceTélévisions Dash Ingest',
-    'FranceTélévisions ACS (standalone)',
-  ]
+  selectedWorkflows = []
 
   status = [
     {id: 'completed', label: 'Completed'},
