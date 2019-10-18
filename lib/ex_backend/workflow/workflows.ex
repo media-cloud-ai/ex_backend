@@ -39,6 +39,8 @@ defmodule ExBackend.Workflows do
 
     offset = page * size
 
+    IO.inspect(params)
+
     query =
       case ExBackend.Map.get_by_key_or_atom(params, :video_id) do
         nil ->
@@ -82,6 +84,15 @@ defmodule ExBackend.Workflows do
 
         version_micro ->
           from(workflow in query, where: workflow.version_micro == ^version_micro)
+      end
+
+    query =
+      case ExBackend.Map.get_by_key_or_atom(params, :ids) do
+        nil ->
+          query
+
+        identifiers ->
+          from(workflow in query, where: workflow.id in ^identifiers)
       end
 
     query =
