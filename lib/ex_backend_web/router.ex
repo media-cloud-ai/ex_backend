@@ -78,6 +78,7 @@ defmodule ExBackendWeb.Router do
 
     get("/s3_config", S3Controller, :config)
     get("/s3_signer", S3Controller, :signer)
+    get("/s3_presign_url", S3Controller, :presign_url)
   end
 
   get("/stream/:content/manifest.mpd", ExBackendWeb.PlayerController, :manifest)
