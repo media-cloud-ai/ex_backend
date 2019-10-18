@@ -4,5 +4,6 @@ export class S3Configuration {
   access_key: string
   region: string
   bucket: string
+  vod_endpoint?: string
 }
  

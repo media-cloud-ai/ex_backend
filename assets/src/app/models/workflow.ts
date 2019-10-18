@@ -54,6 +54,7 @@ export class Workflow {
   created_at?: string
   artifacts?: Artifact
   flow: Flow
+  workflow_id?: number
 }
 
 export class WorkflowEvent {

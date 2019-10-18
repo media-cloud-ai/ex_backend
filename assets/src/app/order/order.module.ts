@@ -20,6 +20,7 @@ import {
   MatTabsModule,
   } from '@angular/material'
 
+import {GenericModule} from '../generic/generic.module'
 import {PipesModule} from '../pipes/pipes.module'
 
 export const ROUTES: Routes = [
@@ -31,6 +32,7 @@ export const ROUTES: Routes = [
   imports: [
     CommonModule,
     FormsModule,
+    GenericModule,
     MatButtonModule,
     MatDialogModule,
     MatIconModule,

@@ -10,6 +10,43 @@
   background-color: @lightGrey;
 }
 
+.reference,
+.actions {
+  flex: 1;
+}
+
+.actions {
+  text-align: right;
+}
+
 .step {
   flex: 1;
+}
+
+.not_found {
+  text-align: center;
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.icon {
+  vertical-align: middle;
+}
+
+.link,
+.link:visited {
+  color: @blue;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.link.disabled {
+  color: @grey;
+  opacity: 0.8;
+}
+
+.percentage {
+  margin: auto;
+  text-align: center;
+  font-size: 0.7em;
 }

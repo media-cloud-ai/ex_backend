@@ -10,37 +10,65 @@
   New Order
 </button>
 
+
+<div class=search>
+  <mat-form-field class="search-text-input">
+    <input
+      matInput
+      type="number"
+      placeholder="Order ID"
+      name=order_id
+      [(ngModel)]="order_id"
+      (ngModelChange)="getWorkflows()"
+      >
+  </mat-form-field>
+</div>
+
 <div *ngIf="workflows">
   <div *ngFor="let workflow of workflows.data" class=workflow>
     <span class="reference">
-      <!-- <video-title-component [id]=workflow.reference></video-title-component> -->
-      {{workflow.reference}}
+      <video-title-component [id]=workflow.reference></video-title-component>
     </span>
-    <!-- <span *ngFor="let step of workflow.flow.steps" class=step>
-      <label>
-        <span *ngIf="step.label">
-          {{step.label}}
-        </span>
-        <span *ngIf="!step.label">
-          {{step.name | jobType}}
-        </span>
-      </label>
-      ({{step.jobs.completed}}/{{step.jobs.total}})
-    </span> -->
+    <span class=step>
+      <div class=percentage *ngIf="getCompletedPercentage(workflow) != 100">
+        {{getCompletedPercentage(workflow)}} %
+      </div>
+      <div class=percentage *ngIf="getCompletedPercentage(workflow) == 100">
+        Completed
+      </div>
+      <div>
+        <mat-progress-bar mode="determinate" [value]="getCompletedPercentage(workflow)"></mat-progress-bar>
+      </div>
+    </span>
 
+    <span class="actions">
+      <span
+        class="link"
+        [ngClass]="{'disabled': workflow.artifacts.length == 0}"
+        (click)="source_link(workflow)">
+        <i class="material-icons icon" title="Visualisation">live_tv</i> source
+      </span>
+      <span
+        class="link"
+        [ngClass]="{'disabled': workflow.artifacts.length == 0}"
+        (click)="sync_link(workflow)">
+        <i class="material-icons icon" title="Visualisation">live_tv</i> synchronised
+      </span>
 
-    <a target="_blank" href='http://cathodique.magneto.build.ftven.net/?gitrefname=poc/subtil/ttml_rendering&options=%7B"autostart"%3Afalse%2C"showAd"%3Afalse%7D&src=%5B"https%3A%2F%2Fbackend.media-io.com%2Fdash%2F666%2Fmanifest.mpd"%5D&env=integ'>
-      <i class="material-icons" title="Visualisation">live_tv</i>
-    </a>
-
-    <button
-      mat-raised-button
-      color="accent"
-      (click)="downloadTtml()"
-      >
-      <i class="material-icons">cloud_download</i>
-      Download TTML
-    </button>
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="downloadTtml(workflow)"
+        [disabled]="workflow.artifacts.length == 0"
+        >
+        <i class="material-icons">cloud_download</i>
+        Download TTML
+      </button>
+      
+    </span>
+  </div>
+  <div *ngIf="workflows.data.length === 0" class=not_found>
+    No order found
   </div>
 </div>
 
@@ -52,5 +80,5 @@
   [pageIndex]="page"
   [pageSizeOptions]="pageSizeOptions"
   (page)="pageEvent = eventGetWorkflows($event)"
-  *ngIf="workflows && !loading" >
+  *ngIf="workflows && workflows.data.length > 0 && !loading" >
 </mat-paginator>
