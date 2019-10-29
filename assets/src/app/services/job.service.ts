@@ -8,7 +8,7 @@ import {JobPage} from '../models/page/job_page'
 
 @Injectable()
 export class JobService {
-  private jobsUrl = '/api/jobs'
+  private jobsUrl = '/api/step_flow/jobs'
 
   constructor(private http: HttpClient) { }
 

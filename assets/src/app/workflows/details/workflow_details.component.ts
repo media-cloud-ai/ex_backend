@@ -62,10 +62,10 @@ export class WorkflowDetailsComponent {
       }
       console.log(workflow.data)
       this.workflow = workflow.data
-      this.renderer = new WorkflowRenderer(this.workflow.flow.steps)
+      this.renderer = new WorkflowRenderer(this.workflow.steps)
 
-      this.can_abort = this.workflow.flow.steps.some((s) => s.status === 'error')
-      if (this.can_abort && this.workflow.flow.steps.some((s) => s.name === 'clean_workspace' && s.status !== 'queued')) {
+      this.can_abort = this.workflow.steps.some((s) => s.status === 'error')
+      if (this.can_abort && this.workflow.steps.some((s) => s.name === 'clean_workspace' && s.status !== 'queued')) {
         this.can_abort = false
       }
     })
@@ -77,7 +77,7 @@ export class WorkflowDetailsComponent {
 
   getStepsCount(): string {
     let count = 0
-    for (let step of this.workflow.flow.steps) {
+    for (let step of this.workflow.steps) {
       if (step.jobs.skipped > 0 ||
          step.jobs.completed > 0 ||
          step.jobs.errors > 0) {
@@ -88,7 +88,7 @@ export class WorkflowDetailsComponent {
   }
 
   getTotalSteps(): number {
-    return this.workflow.flow.steps.length
+    return this.workflow.steps.length
   }
 
   abort(workflow_id): void {

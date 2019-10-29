@@ -12,8 +12,6 @@ defmodule ExBackendWeb.Router do
   pipeline :api do
     plug(:accepts, ["json"])
     plug(:fetch_session)
-    # plug(Phauxth.Authenticate)
-    # plug(Phauxth.Authenticate, method: :token)
     plug(Phauxth.AuthenticateToken)
   end
 
@@ -30,16 +28,12 @@ defmodule ExBackendWeb.Router do
     post("/password_resets", PasswordResetController, :create)
     put("/password_resets/update", PasswordResetController, :update)
 
-    get("/jobs", JobController, :index)
+    scope "/step_flow", StepFlow do
+      forward "/", Plug
+    end
 
     get("/workflow/:identifier", WorkflowController, :get)
     post("/workflow/:identifier", WorkflowController, :create_specific)
-
-    get("/workflows/statistics", WorkflowController, :statistics)
-
-    resources("/workflows", WorkflowController, except: [:new, :edit]) do
-      post("/events", WorkflowEventsController, :handle)
-    end
 
     scope "/docker", Docker do
       post("/test", NodeController, :test)
@@ -52,9 +46,7 @@ defmodule ExBackendWeb.Router do
       end
     end
 
-    resources "/catalog", CatalogController, except: [:new, :edit] do
-      post("/jobs", JobController, :create)
-    end
+    resources "/catalog", CatalogController, except: [:new, :edit]
 
     resources("/registery", RegisteryController, except: [:new, :edit]) do
       post("/subtitle", RegisteryController, :add_subtitle)

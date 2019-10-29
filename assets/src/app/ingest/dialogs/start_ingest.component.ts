@@ -28,7 +28,7 @@ export class StartIngestDialog {
 
   ngOnInit() {
     this.workflowService.getWorkflowDefinition("ebu_ingest", this.workflow_data.path).subscribe(workflowDefinition => {
-      this.steps = workflowDefinition.flow.steps
+      this.steps = workflowDefinition.steps
 
       for(var step of this.steps) {
         if(step.inputs) {

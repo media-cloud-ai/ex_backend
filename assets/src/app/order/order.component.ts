@@ -21,7 +21,7 @@ export class OrderComponent {
   order_id: number
   mp4_file: any
   ttml_file: any
-  video_identifier: string
+  video_identifier: string = "0b0651d8-34b9-4724-b36a-96a3e1f71ef8"
   mp4_percent_uploaded = 0
   ttml_percent_uploaded = 0
   completed = 0

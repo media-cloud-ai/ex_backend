@@ -5,12 +5,13 @@ import { Observable, of } from 'rxjs'
 import { catchError, map, tap } from 'rxjs/operators'
 
 import {WorkflowPage, WorkflowData, WorkflowHistory} from '../models/page/workflow_page'
-import {Flow, Step, Workflow, WorkflowEvent} from '../models/workflow'
+import {Step, Workflow, WorkflowEvent} from '../models/workflow'
 
 @Injectable()
 export class WorkflowService {
   private workflowUrl = '/api/workflow'
-  private workflowsUrl = '/api/workflows'
+  private workflowsUrl = '/api/step_flow/workflows'
+  private statisticsUrl = '/api/step_flow/workflows_statistics'
 
   constructor(private http: HttpClient) { }
 
@@ -111,7 +112,7 @@ export class WorkflowService {
     let params = new HttpParams()
     params = params.append('scale', scale)
 
-    return this.http.get<Workflow>(this.workflowsUrl + '/statistics', {params: params})
+    return this.http.get<Workflow>(this.statisticsUrl, {params: params})
       .pipe(
         tap(workflowPage => this.log('statistics Workflow')),
         catchError(this.handleError('getWorkflowStatistics', undefined))

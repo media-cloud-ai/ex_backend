@@ -213,7 +213,9 @@ export class OrdersComponent {
 
   getDestinationFilename(workflow, extension: string, not_extension?: string) {
     const result = workflow.jobs.filter(job => {
-      if(job.name == "upload_ftp") {
+      console.log(job)
+      if(job.name == "job_transfer" && job.icon === "file_upload") {
+        console.log(job.params.filter(param => param.id === "destination_secret_key"));
         const parameter = job.params.filter(param => param.id === "destination_path");
         if(parameter.length == 1) {
           if(not_extension) {
@@ -243,11 +245,11 @@ export class OrdersComponent {
   }
 
   getCompletedPercentage(workflow) {
-    const total_tasks = workflow.flow.steps.length
+    const total_tasks = workflow.steps.length
     var completed_tasks = 0
 
-    for(var i = 0; i < workflow.flow.steps.length; ++i) {
-      const step = workflow.flow.steps[i]
+    for(var i = 0; i < workflow.steps.length; ++i) {
+      const step = workflow.steps[i]
       if(step.jobs.total != 0) {
         if(step.jobs.completed == step.jobs.total) {
           completed_tasks += 1

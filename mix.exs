@@ -48,7 +48,8 @@ defmodule ExBackend.Mixfile do
         :runtime_tools,
         :timex,
         :elixir_make,
-        :parse_trans
+        :parse_trans,
+        :step_flow
       ]
     ]
   end
@@ -92,6 +93,7 @@ defmodule ExBackend.Mixfile do
       {:ranch, "~> 1.7.1"},
       {:remote_dockers, "1.4.0"},
       {:sigaws, "~> 0.7.2"},
+      {:step_flow, "~> 0.0.4"},
       {:timex, "~> 3.2"},
       {:uuid, "~> 1.1"}
     ]

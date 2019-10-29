@@ -35,10 +35,6 @@ export class Step {
   jobs?: JobsStatus
 }
 
-export class Flow {
-  steps: Step[]
-}
-
 export class Artifact {
   resources: any
 }
@@ -53,7 +49,7 @@ export class Workflow {
   reference?: string
   created_at?: string
   artifacts?: Artifact
-  flow: Flow
+  steps: Step[]
   workflow_id?: number
 }
 

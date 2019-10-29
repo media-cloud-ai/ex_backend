@@ -25,8 +25,8 @@ export class WorkflowComponent {
   ) {}
 
   ngOnInit() {
-    this.can_abort = this.workflow.flow.steps.some((s) => s['status'] === 'error')
-    if (this.can_abort && this.workflow.flow.steps.some((s) => s.name === 'clean_workspace' && s['status'] !== 'queued')) {
+    this.can_abort = this.workflow.steps.some((s) => s['status'] === 'error')
+    if (this.can_abort && this.workflow.steps.some((s) => s.name === 'clean_workspace' && s['status'] !== 'queued')) {
       this.can_abort = false
     }
   }
@@ -45,7 +45,7 @@ export class WorkflowComponent {
 
   getStepsCount(): number {
     let count = 0
-    for (let step of this.workflow.flow.steps) {
+    for (let step of this.workflow.steps) {
       if (step.jobs.skipped > 0 ||
          step.jobs.completed > 0 ||
          step.jobs.errors > 0) {
@@ -56,7 +56,7 @@ export class WorkflowComponent {
   }
   
   getTotalSteps(): number {
-    return this.workflow['flow'].steps.length
+    return this.workflow.steps.length
   }
 
   abort(workflow_id): void {

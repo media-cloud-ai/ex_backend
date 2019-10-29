@@ -79,7 +79,7 @@ export class IngestComponent {
       dialogRef.afterClosed().subscribe(steps => {
         if (steps !== undefined) {
           console.log('Start Ingest !', steps)
-          this.workflowService.createWorkflow({reference: filename, flow: {steps: steps}})
+          this.workflowService.createWorkflow({reference: filename, steps: steps})
           .subscribe(response => {
             console.log(response)
           })

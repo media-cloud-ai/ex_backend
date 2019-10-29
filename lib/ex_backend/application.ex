@@ -12,6 +12,7 @@ defmodule ExBackend.Application do
     children = [
       # Start the Ecto repository
       supervisor(ExBackend.Repo, []),
+      # supervisor(StepFlow.Repo, []),
 
       # Start the AMQP connection supervisor
       supervisor(ExBackend.Amqp.Supervisor, []),

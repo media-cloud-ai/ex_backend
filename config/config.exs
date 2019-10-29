@@ -6,7 +6,10 @@
 use Mix.Config
 
 # General application configuration
-config :ex_backend, ecto_repos: [ExBackend.Repo]
+config :ex_backend, ecto_repos: [
+  ExBackend.Repo,
+  StepFlow.Repo
+]
 
 # Configures the endpoint
 config :ex_backend, ExBackendWeb.Endpoint,
@@ -25,6 +28,19 @@ config :phauxth,
 
 # Mailer configuration
 config :ex_backend, ExBackend.Mailer, adapter: Bamboo.LocalAdapter
+
+config :step_flow,
+  work_dir: "/data",
+  authorize: [
+    module: ExBackendWeb.Authorize,
+    get_jobs: [:user_check, :right_technician_check],
+    get_workflows: [:user_check, :right_technician_check],
+    post_workflows: [:user_check, :right_technician_check],
+    put_workflows: [:user_check, :right_technician_check],
+    delete_workflows: [:user_check, :right_technician_check],
+    post_workflows_events: [:user_check, :right_technician_check]
+  ],
+  endpoint: ExBackendWeb.Endpoint
 
 # Configures Elixir's Logger
 config :logger, :console,

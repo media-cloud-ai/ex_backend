@@ -68,7 +68,7 @@
   </div>
   <div *ngIf="workflow" class=steps>
     <div
-      *ngFor="let step of workflow.flow.steps"
+      *ngFor="let step of workflow.steps"
       class="step {{step.name}} {{step.status}}">
       <step-progress-bar-component
         [step]=step
