@@ -15,7 +15,15 @@ defmodule ExBackendWeb.WorkflowController do
     title("Create a new workflow with a specific template")
     description("Start a new worklow. The identifier will select the template.
     <h4>Start an Automatic Content Synchronisation workflow with cURL:</h4>
-    <pre class=code>curl -H \"Authorization: $MIO_TOKEN\" -H \"Content-Type: application/json\" -d '{\"reference\": \"d953ffd8-53a4-49ed-9312-c1ba78bdd5f4\", \"mp4_path\": \"/streaming-adaptatif/2018/S50/J1/194377135-5c0dfc6eb3420-standard1.mp4\", \"ttml_path\": \"https://staticftv-a.akamaihd.net/sous-titres/2018/12/10/194377135-5c0dfc6eb3420-1544422463.ttml\"}' https://backend.media-io.com/api/workflow/acs</pre>
+    <pre class=code>curl \\
+    -H \"Authorization: $MIO_TOKEN\" \\
+    -H \"Content-Type: application/json\" \\
+    -d '{ \\
+      \"reference\": \"d953ffd8-53a4-49ed-9312-c1ba78bdd5f4\", \\
+      \"mp4_path\": \"/streaming-adaptatif/2018/S50/J1/194377135-5c0dfc6eb3420-standard1.mp4\", \\
+      \"ttml_path\": \"https://staticftv-a.akamaihd.net/sous-titres/2018/12/10/194377135-5c0dfc6eb3420-1544422463.ttml\" \\
+    }' \\
+    https://backend.media-io.com/api/workflow/acs</pre>
     ")
 
     parameter(:identifier, :bitstring,
