@@ -37,7 +37,8 @@ install:
 
 before_script:
   - psql -c 'create database ex_subtil_backend_test;' -U postgres
-  - mkdir priv/repo/migrations
+  - mkdir -p priv/repo/migrations
+  - mkdir -p deps/step_flow/priv/repo/migrations
   - echo -n 0.0.0 > VERSION
 
 scripts:

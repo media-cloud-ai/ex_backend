@@ -18,6 +18,14 @@ config :ex_backend, ExBackend.Repo,
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 
+config :step_flow, StepFlow.Repo,
+  hostname: "localhost",
+  username: "postgres",
+  password: "postgres",
+  database: "ex_backend_workflow_dev",
+  migration_source: "step_flow_test",
+  pool: Ecto.Adapters.SQL.Sandbox
+
 config :ex_backend,
   app_name: "Subtil",
   hostname: "http://localhost:4000",
