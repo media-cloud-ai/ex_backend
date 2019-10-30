@@ -173,7 +173,7 @@ export class OrdersComponent {
   source_link(workflow) {
     if(workflow.artifacts.length > 0) {
       const mp4_path = this.getDestinationFilename(workflow, "mp4");
-      const ttml_path = this.getDestinationFilename(workflow, ".ttml", "_synchronized.ttml");
+      const ttml_path = this.getDestinationFilename(workflow, ".ttml", "synchronised.ttml");
       this.openLink(mp4_path, ttml_path)
     }
   }
@@ -181,7 +181,7 @@ export class OrdersComponent {
   sync_link(workflow) {
     if(workflow.artifacts.length > 0) {
       const mp4_path = this.getDestinationFilename(workflow, "mp4");
-      const ttml_path = this.getDestinationFilename(workflow, "_synchronized.ttml");
+      const ttml_path = this.getDestinationFilename(workflow, "synchronised.ttml");
       this.openLink(mp4_path, ttml_path)
     }
   }
@@ -203,7 +203,7 @@ export class OrdersComponent {
 
   downloadTtml(workflow) {
     if(workflow.artifacts.length > 0) {
-      const ttml_path = this.getDestinationFilename(workflow, "_synchronized.ttml");
+      const ttml_path = this.getDestinationFilename(workflow, "synchronised.ttml");
       const current = this
       this.s3Service.getPresignedUrl(ttml_path).subscribe(response => {
         current.downloadFileUrl(response.url)
@@ -213,9 +213,7 @@ export class OrdersComponent {
 
   getDestinationFilename(workflow, extension: string, not_extension?: string) {
     const result = workflow.jobs.filter(job => {
-      console.log(job)
-      if(job.name == "job_transfer" && job.icon === "file_upload") {
-        console.log(job.params.filter(param => param.id === "destination_secret_key"));
+      if(job.name == "job_transfer"){
         const parameter = job.params.filter(param => param.id === "destination_path");
         if(parameter.length == 1) {
           if(not_extension) {
