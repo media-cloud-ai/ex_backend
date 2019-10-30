@@ -39,8 +39,6 @@ defmodule ExBackend.Workflows do
 
     offset = page * size
 
-    IO.inspect(params)
-
     query =
       case ExBackend.Map.get_by_key_or_atom(params, :video_id) do
         nil ->

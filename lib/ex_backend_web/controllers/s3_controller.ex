@@ -52,18 +52,21 @@ defmodule ExBackendWeb.S3Controller do
 
 
   def presign_url(conn, %{"path" => path}) do
-    mime_type = "application/ttml+xml"
-    url = make_presigned_url(path, mime_type)
+    # mime_type = "application/ttml+xml"
+    mime_type = "application/mxf"
+    bucket = "imf"
+    url = make_presigned_url(path, mime_type, bucket)
 
     conn
-    |> json(%{url: url})
+    # |> json(%{url: url})
+    |> text(url)
   end
 
-  defp make_presigned_url(path, mime_type) do
+  defp make_presigned_url(path, mime_type, bucket) do
     url = System.get_env("AWS_URL") || Application.get_env(:ex_backend, :aws_url)
       |> String.replace("https://", "")
 
-    bucket = System.get_env("AWS_BUCKET") || Application.get_env(:ex_backend, :aws_bucket)
+    # bucket = System.get_env("AWS_BUCKET") || Application.get_env(:ex_backend, :aws_bucket)
     region = System.get_env("AWS_REGION") || Application.get_env(:ex_backend, :aws_region)
     access_key = System.get_env("AWS_ACCESS_KEY") || Application.get_env(:ex_backend, :aws_access_key)
     secret_key = System.get_env("AWS_SECRET_KEY") || Application.get_env(:ex_backend, :aws_secret_key)

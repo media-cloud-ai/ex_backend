@@ -52,8 +52,6 @@ config :ex_backend, ExBackendWeb.Endpoint,
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
 config :logger, level: :debug
-# config :logger, level: :info
-# config :logger, level: :warn
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20
@@ -115,11 +113,10 @@ config :ex_backend,
   docker_container_amqp_password: "mediacloudai"
 
 config :amqp,
-  hostname: "192.168.99.101",
+  hostname: "127.0.0.1",
   port: "5672",
-  username: "mediacloudai",
-  password: "mediacloudai",
-  virtual_host: "media_cloud_ai_dev"
+  username: "guest",
+  password: "guest"
 
 config :httpotion, :default_timeout, 60000
 
