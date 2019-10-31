@@ -50,29 +50,27 @@ defmodule ExBackendWeb.S3Controller do
     text(conn, signature |> Base.encode16(case: :lower))
   end
 
+  def presign_url(conn, %{"path" => path} = params) do
+    bucket =
+      Map.get(params, "bucket") ||
+      System.get_env("AWS_BUCKET") ||
+      Application.get_env(:ex_backend, :aws_bucket)
 
-  def presign_url(conn, %{"path" => path}) do
-    # mime_type = "application/ttml+xml"
-    mime_type = "application/mxf"
-    bucket = "imf"
-    url = make_presigned_url(path, mime_type, bucket)
+    url = make_presigned_url(path, bucket)
 
     conn
-    # |> json(%{url: url})
-    |> text(url)
+    |> json(%{url: url})
   end
 
-  defp make_presigned_url(path, mime_type, bucket) do
+  defp make_presigned_url(path, bucket) do
     url = System.get_env("AWS_URL") || Application.get_env(:ex_backend, :aws_url)
       |> String.replace("https://", "")
 
-    # bucket = System.get_env("AWS_BUCKET") || Application.get_env(:ex_backend, :aws_bucket)
     region = System.get_env("AWS_REGION") || Application.get_env(:ex_backend, :aws_region)
     access_key = System.get_env("AWS_ACCESS_KEY") || Application.get_env(:ex_backend, :aws_access_key)
     secret_key = System.get_env("AWS_SECRET_KEY") || Application.get_env(:ex_backend, :aws_secret_key)
 
     query_params = [
-      {"ContentType", mime_type},
       {"ACL", "public-read"}
     ]
 
