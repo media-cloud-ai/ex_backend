@@ -82,7 +82,7 @@ config :ex_backend, ExBackend.Mailer,
 
 config :ex_backend,
   app_name: "Subtil",
-  hostname: "backend.media-io.com",
+  hostname: {:system, "EXPOSED_DOMAIN_NAME"},
   port: 443,
   ssl: true,
   akamai_hostname: "akamai.com",
