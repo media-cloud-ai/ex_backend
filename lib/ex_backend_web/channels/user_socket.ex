@@ -1,17 +1,9 @@
 defmodule ExBackendWeb.UserSocket do
-  use Phoenix.Socket
-
-  @doc """
-  Callback invoked for dynamically configuring the endpoint.
-
-  It receives the endpoint configuration and checks if
-  configuration should be loaded from the system environment.
-  """
-  def init(_key, config) do
-    IO.puts("User SOcker config: #{inspect config}")
-    config
-    # if confs
-  end
+  use Phoenix.Socket,
+    check_origin: [
+      "https://backend.media-io.com",
+      "https://ai.media-io.com"
+    ]
 
   ## Channels
   channel("browser:*", ExBackendWeb.BrowserChannel)
