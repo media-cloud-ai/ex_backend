@@ -15,7 +15,7 @@ use Mix.Config
 # which you typically run after static files are built.
 config :ex_backend, ExBackendWeb.Endpoint,
   load_from_system_env: true,
-  url: [host: "backend.media-io.com", port: 443],
+  url: [host: {:system, "EXPOSED_DOMAIN_NAME"}, port: 443],
   root: ".",
   cache_static_manifest: "priv/static/cache_manifest.json"
 
