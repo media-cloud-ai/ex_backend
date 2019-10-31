@@ -192,10 +192,8 @@ export class OrdersComponent {
     const directory = ttml_path.substring(0, ttml_path.lastIndexOf('/') + 1);
 
     this.s3Service.getConfiguration().subscribe(response => {
-      console.log(response)
-
       const manifest_path = response.vod_endpoint + "/" + response.bucket + "/" + directory + "," + mp4_file_name + "," + ttml_file_name + ",.urlset/manifest.mpd"
-      const full_url = "http://cathodique.magneto.build.ftven.net/?gitrefname=poc/subtil/ttml_rendering&options=%7B%22autostart%22%3Afalse%2C%22showAd%22%3Afalse%7D&env=integ&src=%5B%22" + manifest_path + "%22%5D"
+      const full_url = "http://cathodique.magneto.build.ftven.net/?gitrefname=poc/subtil/ttml_rendering&options=%7B%22autostart%22%3Afalse%2C%22showAd%22%3Afalse%7D&env=prod&src=%5B%22" + manifest_path + "%22%5D"
 
       window.open(full_url, "_blank");
     });
@@ -213,7 +211,8 @@ export class OrdersComponent {
 
   getDestinationFilename(workflow, extension: string, not_extension?: string) {
     const result = workflow.jobs.filter(job => {
-      if(job.name == "job_transfer"){
+      if(job.name == "job_transfer" &&
+        job.params.filter(param => param.id === "destination_access_key").length == 1){
         const parameter = job.params.filter(param => param.id === "destination_path");
         if(parameter.length == 1) {
           if(not_extension) {
