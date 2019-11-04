@@ -16,6 +16,7 @@ use Mix.Config
 config :ex_backend, ExBackendWeb.Endpoint,
   load_from_system_env: true,
   url: [host: {:system, "EXPOSED_DOMAIN_NAME"}, port: 443],
+  check_origin: false,
   root: ".",
   cache_static_manifest: "priv/static/cache_manifest.json"
 
