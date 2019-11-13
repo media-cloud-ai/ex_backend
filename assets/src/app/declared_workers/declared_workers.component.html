@@ -21,5 +21,15 @@
     <label>{{worker.label}} <span class=version>(Version {{worker.version}})</span> <span class=queue>{{worker.queue_name}}</span></label>
     <div class=description>{{worker.short_description}}</div>
     <div class=description>{{worker.description}}</div>
+    <div class=parameters>
+      <div class=parameter
+      	*ngFor="let parameter of worker.parameters">
+      	<div>{{parameter.label}} (<code>{{parameter.identifier}}</code>) <span class=required *ngIf="parameter.required">required</span></div>
+      	<div class=types>
+      	  Types:
+      	  <span *ngFor="let kind of parameter.kind">{{kind}}</span>
+      	</div>
+      </div>
+    </div>
   </li>
 </ul>
