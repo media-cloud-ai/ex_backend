@@ -5,16 +5,17 @@ import { Observable, of } from 'rxjs'
 import { catchError, map, tap } from 'rxjs/operators'
 
 import {WorkflowPage, WorkflowData, WorkflowHistory} from '../models/page/workflow_page'
-import {Flow, Step, Workflow, WorkflowEvent} from '../models/workflow'
+import {Step, Workflow, WorkflowEvent} from '../models/workflow'
 
 @Injectable()
 export class WorkflowService {
   private workflowUrl = '/api/workflow'
-  private workflowsUrl = '/api/workflows'
+  private workflowsUrl = '/api/step_flow/workflows'
+  private statisticsUrl = '/api/step_flow/workflows_statistics'
 
   constructor(private http: HttpClient) { }
 
-  getWorkflows(page: number, per_page: number, video_id: string, status: Array<string>, workflows: Array<string>, after_date: any, before_date: any): Observable<WorkflowPage> {
+  getWorkflows(page: number, per_page: number, video_id: string, status: Array<string>, workflows: Array<string>, ids: Array<number>, after_date: any, before_date: any): Observable<WorkflowPage> {
     let params = new HttpParams()
     if (per_page) {
       params = params.append('size', per_page.toString())
@@ -36,6 +37,11 @@ export class WorkflowService {
     }
     for (let workflow_id of workflows) {
       params = params.append('workflow_ids[]', workflow_id)
+    }
+    for (let id of ids) {
+      if(id) {
+        params = params.append('ids[]', id.toString())
+      }
     }
 
     return this.http.get<WorkflowPage>(this.workflowsUrl, {params: params})
@@ -106,7 +112,7 @@ export class WorkflowService {
     let params = new HttpParams()
     params = params.append('scale', scale)
 
-    return this.http.get<Workflow>(this.workflowsUrl + '/statistics', {params: params})
+    return this.http.get<Workflow>(this.statisticsUrl, {params: params})
       .pipe(
         tap(workflowPage => this.log('statistics Workflow')),
         catchError(this.handleError('getWorkflowStatistics', undefined))

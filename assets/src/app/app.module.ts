@@ -81,7 +81,6 @@ import {StepRendererComponent}   from './workflows/renderer/step_renderer.compon
 import {SubtitleComponent}       from './registeries/items/subtitle.component'
 import {UserComponent}           from './users/user.component'
 import {UsersComponent}          from './users/users.component'
-import {VideoTitleComponent}     from './workflows/video_title.component'
 import {WatchersComponent}       from './watchers/watchers.component'
 import {WorkflowComponent}       from './workflows/workflow.component'
 import {WorkflowDetailsComponent} from './workflows/details/workflow_details.component'
@@ -119,7 +118,8 @@ import {UserService}             from './services/user.service'
 import {WatcherService}          from './services/watcher.service'
 import {WorkflowService}         from './services/workflow.service'
 
-import {PipesModule}            from './pipes/pipes.module'
+import {GenericModule}           from './generic/generic.module'
+import {PipesModule}             from './pipes/pipes.module'
 
 import {TokenInterceptor}        from './authentication/token.interceptor'
 import {ErrorInterceptor}        from './authentication/error.interceptor'
@@ -146,6 +146,7 @@ const EX_BACKEND_DATE_FORMATS = {
     AppRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
+    GenericModule,
     FormsModule,
     HttpClientModule,
     MatAutocompleteModule,
@@ -207,7 +208,6 @@ const EX_BACKEND_DATE_FORMATS = {
     SubtitleComponent,
     UserComponent,
     UsersComponent,
-    VideoTitleComponent,
     RdfDialogComponent,
     WatchersComponent,
     WorkflowAbortDialogComponent,
@@ -237,7 +237,6 @@ const EX_BACKEND_DATE_FORMATS = {
     StepRendererComponent,
     SubtitleComponent,
     UserComponent,
-    VideoTitleComponent,
     WatchersComponent,
     WorkflowComponent,
     WorkflowAbortDialogComponent,

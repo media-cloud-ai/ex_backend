@@ -1,6 +1,6 @@
 
 import {Component} from '@angular/core'
-import {ActivatedRoute} from '@angular/router'
+import {ActivatedRoute, Router} from '@angular/router'
 
 import {S3Configuration} from '../models/s3'
 
@@ -21,7 +21,7 @@ export class OrderComponent {
   order_id: number
   mp4_file: any
   ttml_file: any
-  video_identifier: string
+  video_identifier: string = "0b0651d8-34b9-4724-b36a-96a3e1f71ef8"
   mp4_percent_uploaded = 0
   ttml_percent_uploaded = 0
   completed = 0
@@ -29,6 +29,7 @@ export class OrderComponent {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private s3Service: S3Service,
     private workflowService: WorkflowService
   ) {}
@@ -151,7 +152,7 @@ export class OrderComponent {
 
     this.workflowService.createSpecificWorkflow("ftv-acs-standalone", this.video_identifier)
     .subscribe(response => {
-      console.log(response)
+      this.router.navigate(['/orders'], { queryParams: {order_id: response.workflow_id} })
     })
   }
 }

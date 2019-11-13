@@ -85,6 +85,15 @@ defmodule ExBackend.Workflows do
       end
 
     query =
+      case ExBackend.Map.get_by_key_or_atom(params, :ids) do
+        nil ->
+          query
+
+        identifiers ->
+          from(workflow in query, where: workflow.id in ^identifiers)
+      end
+
+    query =
       case ExBackend.Map.get_by_key_or_atom(params, :before_date) do
         nil ->
           query

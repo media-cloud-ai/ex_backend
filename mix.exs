@@ -48,7 +48,8 @@ defmodule ExBackend.Mixfile do
         :runtime_tools,
         :timex,
         :elixir_make,
-        :parse_trans
+        :parse_trans,
+        :step_flow
       ]
     ]
   end
@@ -71,6 +72,8 @@ defmodule ExBackend.Mixfile do
       {:distillery, "~> 2.1"},
       {:ecto, "~> 3.1"},
       {:ecto_sql, "~> 3.1"},
+      {:ex_aws, "~> 2.0"},
+      {:ex_aws_s3, "~> 2.0"},
       {:ex_imdb_sniffer, "~> 0.1.1"},
       {:ex_mock, "~> 0.1.1", only: :test},
       {:ex_video_factory, "0.3.14"},
@@ -90,6 +93,7 @@ defmodule ExBackend.Mixfile do
       {:ranch, "~> 1.7.1"},
       {:remote_dockers, "1.4.0"},
       {:sigaws, "~> 0.7.2"},
+      {:step_flow, "~> 0.0.6"},
       {:timex, "~> 3.2"},
       {:uuid, "~> 1.1"}
     ]

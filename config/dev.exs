@@ -51,8 +51,7 @@ config :ex_backend, ExBackendWeb.Endpoint,
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
-# config :logger, level: :debug
-config :logger, level: :info
+config :logger, level: :debug
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20
@@ -63,6 +62,15 @@ config :ex_backend, ExBackend.Repo,
   password: "postgres",
   database: "ex_backend_dev",
   hostname: "localhost",
+  migration_source: "backend_migrations_dev",
+  pool_size: 10
+
+config :step_flow, StepFlow.Repo,
+  hostname: "localhost",
+  username: "postgres",
+  password: "postgres",
+  database: "ex_backend_workflow_dev",
+  migration_source: "step_flow_migrations_dev",
   pool_size: 10
 
 config :ex_backend, ExBackend.Mailer,
@@ -83,8 +91,7 @@ config :ex_backend,
   hostname: "localhost",
   port: 4000,
   ssl: false,
-  work_dir: "/tmp/ftp_francetv",
-  akamai_video_prefix: "/421959/prod/innovation/testing",
+  work_dir: "/data",
   rdf_converter: [
     hostname: "localhost",
     port: 1501
@@ -102,11 +109,12 @@ config :ex_backend,
   docker_container_backend_password: "admin123",
   docker_container_amqp_tls: "false",
   docker_container_amqp_hostname: "127.0.0.1",
-  docker_container_amqp_username: "guest",
-  docker_container_amqp_password: "guest"
+  docker_container_amqp_username: "mediacloudai",
+  docker_container_amqp_password: "mediacloudai"
 
 config :amqp,
   hostname: "127.0.0.1",
+  port: "5672",
   username: "guest",
   password: "guest"
 
@@ -114,7 +122,8 @@ config :httpotion, :default_timeout, 60000
 
 config :ex_video_factory,
   mode: :custom,
-  endpoint: "http://127.0.0.1:4001/api/"
+  # endpoint: "http://127.0.0.1:4001/api/"
+  endpoint: "https://gatewayvf.webservices.francetelevisions.fr/v1/"
 
 # Finally import the config/prod.secret.exs
 # with the private section for passwords

@@ -22,7 +22,7 @@ export class WorkflowAbortDialogComponent {
   }
 
   forceWorkspaceClean(): boolean {
-    return !this.workflow.flow.steps.some((s) => s.name === 'clean_workspace')
+    return !this.workflow.steps.some((s) => s.name === 'clean_workspace')
   }
 
   onNoClick(): void {

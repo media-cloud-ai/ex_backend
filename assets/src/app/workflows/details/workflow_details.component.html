@@ -9,11 +9,8 @@
   <div class="info">
     <span class="reference">
       <div>
-        <label>Reference ID:</label>
-        <span class="link"
-          (click)="goToVideo(workflow.reference)">
-          {{workflow.reference}}
-        </span>
+        <label>Reference:</label>
+        <video-title-component [id]=workflow.reference></video-title-component>
       </div>
       <div>
         <label>Workflow version:</label>

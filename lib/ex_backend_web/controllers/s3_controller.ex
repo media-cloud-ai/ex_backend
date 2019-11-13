@@ -17,12 +17,14 @@ defmodule ExBackendWeb.S3Controller do
     access_key = System.get_env("AWS_ACCESS_KEY") || Application.get_env(:ex_backend, :aws_access_key)
     region = System.get_env("AWS_REGION") || Application.get_env(:ex_backend, :aws_region)
     bucket = System.get_env("AWS_BUCKET") || Application.get_env(:ex_backend, :aws_bucket)
+    vod_endpoint = System.get_env("VOD_ENDPOINT") || Application.get_env(:ex_backend, :vod_endpoint)
 
     config = %{
       url: url,
       access_key: access_key,
       region: region,
       bucket: bucket,
+      vod_endpoint: vod_endpoint
     }
 
     json(conn, config)
@@ -47,4 +49,52 @@ defmodule ExBackendWeb.S3Controller do
     signature = :crypto.hmac(:sha256, signing_key, string_to_sign)
     text(conn, signature |> Base.encode16(case: :lower))
   end
+
+  def presign_url(conn, %{"path" => path} = params) do
+    bucket =
+      Map.get(params, "bucket") ||
+      System.get_env("AWS_BUCKET") ||
+      Application.get_env(:ex_backend, :aws_bucket)
+
+    url = make_presigned_url(path, bucket)
+
+    conn
+    |> json(%{url: url})
+  end
+
+  defp make_presigned_url(path, bucket) do
+    url = System.get_env("AWS_URL") || Application.get_env(:ex_backend, :aws_url)
+      |> String.replace("https://", "")
+
+    region = System.get_env("AWS_REGION") || Application.get_env(:ex_backend, :aws_region)
+    access_key = System.get_env("AWS_ACCESS_KEY") || Application.get_env(:ex_backend, :aws_access_key)
+    secret_key = System.get_env("AWS_SECRET_KEY") || Application.get_env(:ex_backend, :aws_secret_key)
+
+    query_params = [
+      {"ACL", "public-read"}
+    ]
+
+    presign_options = [query_params: query_params]
+
+    config = %{
+      access_key_id: access_key,
+      secret_access_key: secret_key,
+      http_client: ExAws.Request.Hackney,
+      json_codec: Jason,
+      retries: [
+        max_attempts: 10,
+        base_backoff_in_ms: 10,
+        max_backoff_in_ms: 10_000
+      ],
+      scheme: "https://",
+      region: region,
+      port: 443,
+      host: url
+    }
+
+    {:ok, presigned_url} =
+      ExAws.S3.presigned_url(config, :get, bucket, path, presign_options)
+
+    presigned_url 
+ end
 end

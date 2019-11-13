@@ -112,6 +112,9 @@ export class WorkflowsComponent {
     if (this.sub) {
       this.sub.unsubscribe()
     }
+    for (let connection of this.connections) {
+      connection.unsubscribe()
+    }
   }
 
   getWorkflows(index) {
@@ -126,6 +129,7 @@ export class WorkflowsComponent {
       this.video_id,
       this.selectedStatus,
       this.selectedWorkflows,
+      [],
       this.after_date,
       this.before_date)
     .subscribe(workflowPage => {

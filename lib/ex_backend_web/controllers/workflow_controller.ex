@@ -5,79 +5,11 @@ defmodule ExBackendWeb.WorkflowController do
 
   alias ExBackend.Workflows
   alias ExBackend.WorkflowStep
-  alias ExBackend.Workflows.Workflow
 
   action_fallback(ExBackendWeb.FallbackController)
 
   # the following plugs are defined in the controllers/authorize.ex file
-  plug(:user_check when action in [:index, :create, :create_specific, :show, :update, :delete])
-
-  plug(
-    :right_technician_or_ftvstudio_check
-    when action in [:index, :show, :update, :delete]
-  )
-
-  def index(conn, params) do
-    workflows = Workflows.list_workflows(params)
-    render(conn, "index.json", workflows: workflows)
-  end
-
-  api :POST, "/api/workflows" do
-    title("Create a new workflow")
-    description("Start a new worklow.
-    <h4>Start a workflow with cURL:</h4>
-    <pre class=code>curl \\
-    -H \"Authorization: $MIO_TOKEN\" \\
-    -H \"Content-Type: application/json\" \\
-    -d '{\"workflow\": { \\
-      \"reference\": \"dfaaab14-c8f0-4e67-b109-0f5343831d0c\", \\
-      \"identifier\": \"Test Transfer\", \\
-      \"version_major\": 0, \\
-      \"version_minor\": 0, \\
-      \"version_micro\": 1, \\
-      \"tags\": [\"test\", \"transfer\"], \\
-      \"flow\": {\"steps\": [ \\
-        {\"id\": 0, \"name\": \"download_ftp\", \"parameters\": [\\
-          {\"id\": \"source_hostname\", \"type\": \"credential\", \"default\": \"AKAMAI_REPLAY_HOSTNAME\", \"value\": \"AKAMAI_REPLAY_HOSTNAME\"}, \\
-          {\"id\": \"source_username\", \"type\": \"credential\",\"default\":\"AKAMAI_REPLAY_USERNAME\", \"value\": \"AKAMAI_REPLAY_USERNAME\"}, \\
-          {\"id\": \"source_password\", \"type\": \"credential\", \"default\": \"AKAMAI_REPLAY_PASSWORD\", \"value\": \"AKAMAI_REPLAY_PASSWORD\"}, \\
-          {\"id\": \"source_prefix\", \"type\": \"credential\", \"default\": \"AKAMAI_REPLAY_PREFIX\", \"value\": \"AKAMAI_REPLAY_PREFIX\"}, \\
-          {\"default\": \"AKAMAI_REPLAY_SSL\", \"id\": \"source_ssl\", \"type\": \"credential\", \"value\": \"AKAMAI_REPLAY_SSL\"}, \\
-          {\"id\": \"source_paths\", \"type\": \"array_of_strings\", \"value\": [\"/streaming-adaptatif_france-dom-tom/2019/S40/J4/213733703-5d95953d73048-standard5.mp4\"]} \\
-        ]}
-      ]}
-    }}' \\
-    https://backend.media-io.com/api/workflows</pre>
-    ")
-
-    parameter(:reference, :bitstring, description: "UUID of the Reference Media")
-    parameter(:identifier, :bitstring, description: "Workflow identifier")
-    parameter(:version_major, :bitstring, description: "Workflow version major")
-    parameter(:version_minor, :bitstring, description: "Workflow version minor")
-    parameter(:version_micro, :bitstring, description: "Workflow version micro")
-    parameter(:tags, :array, optional: true, description: "List of tag related to this workflow")
-    parameter(:flow, :map, description: "Container of steps")
-  end
-  def create(conn, %{"workflow" => workflow_params}) do
-    IO.inspect(workflow_params)
-    case Workflows.create_workflow(workflow_params) do
-      {:ok, %Workflow{} = workflow} ->
-        WorkflowStep.start_next_step(workflow)
-
-        ExBackendWeb.Endpoint.broadcast!("notifications:all", "new_workflow", %{
-          body: %{workflow_id: workflow.id}
-        })
-
-        conn
-        |> put_status(:created)
-        |> render("show.json", workflow: workflow)
-
-      {:error, changeset} ->
-        conn
-        |> put_status(:unprocessable_entity)
-        |> render(ExBackendWeb.ChangesetView, "error.json", changeset: changeset)
-    end
-  end
+  plug(:user_check when action in [:create_specific, :get])
 
   api :POST, "/api/workflow/:identifier" do
     title("Create a new workflow with a specific template")
@@ -210,8 +142,8 @@ defmodule ExBackendWeb.WorkflowController do
         ExBackend.Workflow.Definition.FrancetvAcs.get_definition(audio_url, ttml_url, destination_url)
         |> Map.put(:reference, reference)
 
-    {:ok, workflow} = Workflows.create_workflow(workflow_params)
-    {:ok, response_status} = WorkflowStep.start_next_step(workflow)
+    {:ok, workflow} = StepFlow.Workflows.create_workflow(workflow_params)
+    {:ok, response_status} = StepFlow.Step.start_next(workflow)
 
     conn
     |> json(%{
@@ -244,14 +176,13 @@ defmodule ExBackendWeb.WorkflowController do
       ExBackend.Workflow.Definition.FrancetvAcs.get_definition(
         ism_source_path,
         mp4_source_path,
-        ttml_source_path,
-        nil
+        ttml_source_path
       )
       |> Map.put(:reference, reference)
 
 
-    {:ok, workflow} = Workflows.create_workflow(workflow_params)
-    {:ok, response_status} = WorkflowStep.start_next_step(workflow)
+    {:ok, workflow} = StepFlow.Workflows.create_workflow(workflow_params)
+    {:ok, response_status} = StepFlow.Step.start_next(workflow)
 
     conn
     |> json(%{
@@ -311,14 +242,6 @@ defmodule ExBackendWeb.WorkflowController do
       status: "error",
       message: "unknown workflow identifier"
     })
-  end
-
-  def show(conn, %{"id" => id}) do
-    workflow =
-      Workflows.get_workflow!(id)
-      |> ExBackend.Repo.preload(:jobs)
-
-    render(conn, "show.json", workflow: workflow)
   end
 
   def get(conn, %{"identifier" => workflow_identifier} = params) do
@@ -382,32 +305,6 @@ defmodule ExBackendWeb.WorkflowController do
   def get(conn, _params) do
     conn
     |> json(%{})
-  end
-
-  def statistics(conn, params) do
-    scale = Map.get(params, "scale", "hour")
-    stats = ExBackend.Workflows.get_workflow_history(%{scale: scale})
-
-    conn
-    |> json(%{
-      data: stats
-    })
-  end
-
-  def update(conn, %{"id" => id, "workflow" => workflow_params}) do
-    workflow = Workflows.get_workflow!(id)
-
-    with {:ok, %Workflow{} = workflow} <- Workflows.update_workflow(workflow, workflow_params) do
-      render(conn, "show.json", workflow: workflow)
-    end
-  end
-
-  def delete(conn, %{"id" => id}) do
-    workflow = Workflows.get_workflow!(id)
-
-    with {:ok, %Workflow{}} <- Workflows.delete_workflow(workflow) do
-      send_resp(conn, :no_content, "")
-    end
   end
 
   defp get_workflow_definition_for_source(source_paths, workflow_id, workflow_reference) do
