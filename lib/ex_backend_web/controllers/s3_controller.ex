@@ -63,8 +63,19 @@ defmodule ExBackendWeb.S3Controller do
   end
 
   defp make_presigned_url(path, bucket) do
-    url = System.get_env("AWS_URL") || Application.get_env(:ex_backend, :aws_url)
+    aws_url = System.get_env("AWS_URL") || Application.get_env(:ex_backend, :aws_url)
+
+    url =
+      aws_url
       |> String.replace("https://", "")
+      |> String.replace("http://", "")
+
+    scheme =
+      if String.starts_with?(aws_url, "https://") do
+        "https://"
+      else
+        "http://"
+      end
 
     region = System.get_env("AWS_REGION") || Application.get_env(:ex_backend, :aws_region)
     access_key = System.get_env("AWS_ACCESS_KEY") || Application.get_env(:ex_backend, :aws_access_key)
@@ -86,7 +97,7 @@ defmodule ExBackendWeb.S3Controller do
         base_backoff_in_ms: 10,
         max_backoff_in_ms: 10_000
       ],
-      scheme: "https://",
+      scheme: scheme,
       region: region,
       port: 443,
       host: url

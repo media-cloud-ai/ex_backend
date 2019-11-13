@@ -68,6 +68,7 @@ defmodule ExBackend.Mixfile do
       {:bamboo, "~> 1.2"},
       {:blue_bird, "~> 0.4.1"},
       {:comeonin, "~> 5.1"},
+      {:cors_plug, "~> 2.0"},
       {:cowboy, "~> 2.6"},
       {:distillery, "~> 2.1"},
       {:ecto, "~> 3.1"},
