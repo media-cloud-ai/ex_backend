@@ -176,6 +176,10 @@ export class AppComponent {
     this.router.navigate(['/documentation'])
   }
 
+  declaredWorkers() {
+    this.router.navigate(['/declared-workers'])
+  }
+
   logout() {
     this.authService.logout()
   }

@@ -13,6 +13,7 @@ import {AuthService} from './authentication/auth.service'
 import {CatalogComponent} from './catalog/catalog.component'
 import {ConfirmComponent} from './confirm/confirm.component'
 import {DashboardComponent} from './dashboard/dashboard.component'
+import {DeclaredWorkersComponent} from './declared_workers/declared_workers.component'
 import {IngestComponent} from './ingest/ingest.component'
 import {JobsComponent} from './jobs/jobs.component'
 import {LoginComponent} from './login/login.component'
@@ -119,6 +120,11 @@ const appRoutes: Routes = [
   {
     path: 'workflows/:id',
     component: WorkflowDetailsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'declared-workers',
+    component: DeclaredWorkersComponent,
     canActivate: [AuthGuard]
   },
 ]

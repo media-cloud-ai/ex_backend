@@ -1,0 +1,25 @@
+<h1>Declared Workers</h1>
+
+
+<div *ngIf="loading" class="loading">
+  <span>
+    <img src="/bundles/images/media-io.animated.svg" width="50px" height="50px" />
+  </span>
+  <span class=text>
+    Loading ...
+  </span>
+</div>
+<ul *ngIf="workers && !loading" class="workers">
+  <li *ngIf="workers.total == 0"
+     class="notfound">
+    No workers found.
+  </li>
+  <li
+    *ngFor="let worker of workers.data"
+    class="worker"
+    >
+    <label>{{worker.label}} <span class=version>(Version {{worker.version}})</span> <span class=queue>{{worker.queue_name}}</span></label>
+    <div class=description>{{worker.short_description}}</div>
+    <div class=description>{{worker.description}}</div>
+  </li>
+</ul>

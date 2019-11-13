@@ -62,6 +62,7 @@ import {WorkersModule}            from './workers/workers.module'
 import {CatalogComponent}        from './catalog/catalog.component'
 import {ConfirmComponent}        from './confirm/confirm.component'
 import {DashboardComponent}      from './dashboard/dashboard.component'
+import {DeclaredWorkersComponent} from './declared_workers/declared_workers.component'
 import {DurationComponent}       from './workflows/details/duration.component'
 import {IngestComponent}         from './ingest/ingest.component'
 import {JobsComponent}           from './jobs/jobs.component'
@@ -105,6 +106,7 @@ import {CatalogService}          from './services/catalog.service'
 import {ContainerService}        from './services/container.service'
 import {CredentialService}       from './services/credential.service'
 import {DocumentationService}    from './services/documentation.service'
+import {DeclaredWorkersService}    from './services/declared_workers.service'
 import {ImageService}            from './services/image.service'
 import {IMDbService}             from './services/imdb.service'
 import {JobService}              from './services/job.service'
@@ -183,6 +185,7 @@ const EX_BACKEND_DATE_FORMATS = {
     CatalogComponent,
     ConfirmComponent,
     DashboardComponent,
+    DeclaredWorkersComponent,
     DeleteSubtitleDialog,
     DurationComponent,
     IngestComponent,
@@ -279,6 +282,7 @@ const EX_BACKEND_DATE_FORMATS = {
     ContainerService,
     CookieService,
     CredentialService,
+    DeclaredWorkersService,
     DocumentationService,
     ImageService,
     IMDbService,
