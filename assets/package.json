@@ -29,7 +29,7 @@
     "phoenix-socket": "^1.2.3",
     "phoenix_html": "^2.10.4",
     "reflect-metadata": "^0.1.12",
-    "rxjs": "^6.3.3",
+    "rxjs": "^6.5.3",
     "rxjs-compat": "^6.3.3",
     "sax": "^1.2.4",
     "ts-subtitle": "^0.0.6",
