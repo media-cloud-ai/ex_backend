@@ -3453,10 +3453,10 @@ import-local@^2.0.0:
     pkg-dir "^3.0.0"
     resolve-cwd "^2.0.0"
 
-imsc@^1.0.1, imsc@^1.0.1-rc.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/imsc/-/imsc-1.0.2.tgz#95dd684692bd6496ece7fc8f8ed0d2479f92b2d2"
-  integrity sha512-oxQWr4g2bAzjz5TIXA4K+9xQ4nnktsDI12/nijLQ42lT5c76JO7A8i9pbVkC8MUNQl3sd+bdwshnxB1Wn8lZlQ==
+imsc@^1.0.1-rc.2, imsc@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/imsc/-/imsc-1.1.1.tgz#5c2cdfd26881bcfd2355b994f4706e7defb0a44b"
+  integrity sha512-kfWjrmg/vdcqM65FPxpq46RyxKTpfMikDk0PhXOeAlZ6o1OkWBZsll4TlmSj261WcuNT252VBB0aGqSQ+vBZ/A==
   dependencies:
     sax "1.2.1"
 
