@@ -44,6 +44,7 @@
     </div>
 
   </mat-tab>
+
   <mat-tab label="Via UUID from SI Video">
     <div>
       <mat-form-field class="search-text-input">
@@ -66,5 +67,111 @@
         Start and show workflow
       </button>
     </div>
+  </mat-tab>
+
+    <mat-tab label="SpeechToText">
+    <div class=inputs>
+      <div class=dropzone>
+        <mat-form-field>
+          <ngx-mat-file-input [(ngModel)]="wav_file" placeholder="WAV audio file" [accept]="'.WAV'"></ngx-mat-file-input>
+          <mat-icon matSuffix>folder</mat-icon>
+        </mat-form-field>
+      </div>
+      <div class=langage_selector>
+          <mat-form-field>
+            <mat-select
+              class="channels-select"
+              placeholder="langage"
+              [(ngModel)]="selectedChannels"
+              (selectionChange)="updateVideos()"
+              multiple
+              >
+              <mat-optgroup
+              *ngFor="let channelGroup of allChannels"
+              [label]="channelGroup.label">
+              <mat-option
+              *ngFor="let channel of channelGroup.list"
+              [value]="channel.id"
+              [ngClass]="channel.id"
+              class="channels-option">
+              {{ channel.label }}
+              </mat-option>
+              </mat-optgroup>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class=type_selector>
+          <mat-form-field>
+            <mat-select
+              class="typeaudio-select"
+              placeholder="type d'audio"
+              [(ngModel)]="selectedChannels"
+              (selectionChange)="updateVideos()"
+              multiple
+              >
+              <mat-optgroup
+              *ngFor="let channelGroup of allChannels"
+              [label]="channelGroup.label">
+              <mat-option
+              *ngFor="let channel of channelGroup.list"
+              [value]="channel.id"
+              [ngClass]="channel.id"
+              class="channels-option">
+              {{ channel.label }}
+              </mat-option>
+              </mat-optgroup>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div>
+            <mat-form-field class="search-video-id">
+              <input
+                matInput
+                type="text"
+                placeholder="Video ID"
+                [(ngModel)]="videoid"
+                (keydown)="updateSearchByVideoId()"
+              >
+            <mat-icon matSuffix
+              class=videoid_button
+              *ngIf="videoid != ''"
+              (click)="videoid = ''; updateVideos()" >clear</mat-icon>
+            </mat-form-field>
+        </div>
+        <div>
+          <mat-paginator
+            class=paginator
+            showFirstLastButtons=true
+            [length]="length"
+            [pageSize]="pageSize"
+            [pageIndex]="page"
+            [pageSizeOptions]="pageSizeOptions"
+            (page)="pageEvent = eventGetVideos($event)"
+            *ngIf="!loading">
+          </mat-paginator>
+        </div>
+
+      </div>
+
+    <button
+      mat-raised-button
+      color="accent"
+      (click)="upload()"
+      [disabled]="WAV_file"
+      >
+      <i class="material-icons">cloud_upload</i>
+      Upload and start workflow
+    </button>
+
+    <div class=progress>
+      <div>
+        {{WAV_percent_uploaded | number: '1.0-0'}} % of WAV uploaded
+        <mat-progress-bar
+          [value]="wav_percent_uploaded">
+        </mat-progress-bar>
+      </div>
+    </div>
+
   </mat-tab>
 </mat-tab-group>
