@@ -51,11 +51,9 @@ export class OrderComponent {
   }
 
   upload() {
-    var mp4_file = this.mp4_file.files[0]
-    var ttml_file = this.ttml_file.files[0]
+    var wav_file = this.wav_file.files[0]
     var current = this
-    this.mp4_percent_uploaded = 0;
-    this.ttml_percent_uploaded = 0;
+    this.wav_percent_uploaded = 0;
     current.completed = 0;
 
     var config = {
@@ -74,34 +72,21 @@ export class OrderComponent {
 
     var uploader = Evaporate.create(config)
       .then(function (evaporate) {
-        var mp4Config = {
-          name: mp4_file.name,
-          file: mp4_file,
+        var wavConfig = {
+          name: wav_file.name,
+          file: wav_file,
           progress: function (progressValue) {
-            current.mp4_percent_uploaded = progressValue * 100;
+            current.wav_percent_uploaded = progressValue * 100;
           },
           complete: function (_xhr, awsKey) {
             current.completed += 1
             if(current.completed == 2) {
-              current.launch_workflow(mp4_file.name, ttml_file.name)
-            }
-          },
-        }
-        var ttmlConfig = {
-          name: ttml_file.name,
-          file: ttml_file,
-          progress: function (progressValue) {
-            current.ttml_percent_uploaded = progressValue * 100;
-          },
-          complete: function (_xhr, awsKey) {
-            current.completed += 1
-            if(current.completed == 2) {
-              current.launch_workflow(mp4_file.name, ttml_file.name)
+              current.launch_workflow(wav_file.name)
             }
           },
         }
         var overrides = {
-          bucket: 'subtil'
+          bucket: 'stt'
         }
 
         evaporate.add(mp4Config, overrides)
@@ -122,19 +107,17 @@ export class OrderComponent {
       })
   }
 
-  launch_workflow(mp4_filename, ttml_filename) {
+  launch_workflow(wav_filename) {
     var params = new Array(
-      "credential_aws_secret_key=MEDIAIO_BUCKET_SUBTIL",
-      "credential_aws_secret_key=MEDIAIO_BUCKET_SUBTIL",
+      "credential_aws_secret_key=MEDIAIO_BUCKET_STT",
       "hostname=" + this.s3_configuration.url,
       "region=" + this.s3_configuration.region,
     ); 
 
-    var source_mp4_url = "s3://" + this.s3_configuration.bucket + "/" + mp4_filename + "?" + params.join("&")
-    var source_ttml_url = "s3://" + this.s3_configuration.bucket + "/" + ttml_filename + "?" + params.join("&")
-    var output_url = "s3://" + this.s3_configuration.bucket + "/output.ttml?" + params.join("&")
+    var source_wav_url = "s3://" + this.s3_configuration.bucket + "/" + wav_filename + "?" + params.join("&")
+    var output_url = "s3://" + this.s3_configuration.bucket + "/output.txt?" + params.join("&")
 
-    this.workflowService.getStandaloneWorkflowDefinition("ftv_acs_standalone", source_mp4_url, source_ttml_url, output_url)
+    this.workflowService.getStandaloneWorkflowDefinition("ftv_acs_standalone", source_wav_url, source_ttml_url)
       .subscribe(workflowDefinition => {
         workflowDefinition['reference'] = output_url
 
