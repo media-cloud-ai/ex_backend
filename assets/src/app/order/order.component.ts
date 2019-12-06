@@ -19,11 +19,10 @@ let crypto = require('crypto');
 export class OrderComponent {
   is_new_order: boolean = false
   order_id: number
-  mp4_file: any
-  ttml_file: any
-  video_identifier: string = "0b0651d8-34b9-4724-b36a-96a3e1f71ef8"
-  mp4_percent_uploaded = 0
-  ttml_percent_uploaded = 0
+  wav_file: any
+  selected_langages: string = "fr"
+  customer_vocab: string = " "
+  wav_percent_uploaded = 0
   completed = 0
   s3_configuration: S3Configuration
 
@@ -59,7 +58,7 @@ export class OrderComponent {
     var config = {
       signerUrl: '/api/s3_signer',
       aws_key: this.s3_configuration.access_key,
-      bucket: 'subtil',
+      bucket: 'stt',
       aws_url: this.s3_configuration.url,
       computeContentMd5: true,
       cryptoMd5Method: function (data) {
@@ -89,15 +88,7 @@ export class OrderComponent {
           bucket: 'stt'
         }
 
-        evaporate.add(mp4Config, overrides)
-          .then(function (awsObjectKey) {
-            console.log('File successfully uploaded to:', awsObjectKey);
-          },
-          function (reason) {
-            console.log('File did not upload sucessfully:', reason);
-          })
-
-        evaporate.add(ttmlConfig, overrides)
+        evaporate.add(wavConfig, overrides)
           .then(function (awsObjectKey) {
             console.log('File successfully uploaded to:', awsObjectKey);
           },
@@ -117,7 +108,7 @@ export class OrderComponent {
     var source_wav_url = "s3://" + this.s3_configuration.bucket + "/" + wav_filename + "?" + params.join("&")
     var output_url = "s3://" + this.s3_configuration.bucket + "/output.txt?" + params.join("&")
 
-    this.workflowService.getStandaloneWorkflowDefinition("ftv_acs_standalone", source_wav_url, source_ttml_url)
+    this.workflowService.getStandaloneWorkflowDefinition("ftv_acs_standalone", source_wav_url, output_url)
       .subscribe(workflowDefinition => {
         workflowDefinition['reference'] = output_url
 
@@ -130,10 +121,10 @@ export class OrderComponent {
 
   start_via_uuid() {
     var parameters = {
-      "reference": this.video_identifier
+      "reference": this.customer_vocab
     }
 
-    this.workflowService.createSpecificWorkflow("ftv-acs-standalone", this.video_identifier)
+    this.workflowService.createSpecificWorkflow("ftv-acs-standalone", this.customer_vocab)
     .subscribe(response => {
       this.router.navigate(['/orders'], { queryParams: {order_id: response.workflow_id} })
     })
