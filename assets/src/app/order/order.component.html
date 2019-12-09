@@ -80,46 +80,36 @@
       <div class=langage_selector>
           <mat-form-field>
             <mat-select
-              class="channels-select"
+              class="langages-select"
               placeholder="langage"
-              [(ngModel)]="selectedChannels"
-              (selectionChange)="updateVideos()"
+              [(ngModel)]="selected_langages"
               multiple
               >
-              <mat-optgroup
-              *ngFor="let channelGroup of allChannels"
-              [label]="channelGroup.label">
               <mat-option
-              *ngFor="let channel of channelGroup.list"
-              [value]="channel.id"
-              [ngClass]="channel.id"
-              class="channels-option">
-              {{ channel.label }}
+              *ngFor="let langage of languageList"
+              [value]="langage.id"
+              [ngClass]="langage.id"
+              class="langages-option">
+              {{ langage.label }}
               </mat-option>
-              </mat-optgroup>
             </mat-select>
           </mat-form-field>
         </div>
         <div class=type_selector>
           <mat-form-field>
             <mat-select
-              class="typeaudio-select"
+              class="type-select"
               placeholder="type d'audio"
-              [(ngModel)]="selectedChannels"
-              (selectionChange)="updateVideos()"
+              [(ngModel)]="selected_type"
               multiple
               >
-              <mat-optgroup
-              *ngFor="let channelGroup of allChannels"
-              [label]="channelGroup.label">
               <mat-option
-              *ngFor="let channel of channelGroup.list"
-              [value]="channel.id"
-              [ngClass]="channel.id"
-              class="channels-option">
-              {{ channel.label }}
+              *ngFor="let type of typeList"
+              [value]="type.id"
+              [ngClass]="type.id"
+              class="types-option">
+              {{ type.label }}
               </mat-option>
-              </mat-optgroup>
             </mat-select>
           </mat-form-field>
         </div>
@@ -129,8 +119,8 @@
               <input
                 matInput
                 type="text"
-                placeholder="Video ID"
-                [(ngModel)]="videoid"
+                placeholder="customer vocabulary"
+                [(ngModel)]="customer_vocabulary"
                 (keydown)="updateSearchByVideoId()"
               >
             <mat-icon matSuffix
@@ -138,27 +128,14 @@
               *ngIf="videoid != ''"
               (click)="videoid = ''; updateVideos()" >clear</mat-icon>
             </mat-form-field>
-        </div>
-        <div>
-          <mat-paginator
-            class=paginator
-            showFirstLastButtons=true
-            [length]="length"
-            [pageSize]="pageSize"
-            [pageIndex]="page"
-            [pageSizeOptions]="pageSizeOptions"
-            (page)="pageEvent = eventGetVideos($event)"
-            *ngIf="!loading">
-          </mat-paginator>
-        </div>
-
+        </div>   
       </div>
 
     <button
       mat-raised-button
       color="accent"
       (click)="upload()"
-      [disabled]="WAV_file"
+      [disabled]="wav_file"
       >
       <i class="material-icons">cloud_upload</i>
       Upload and start workflow
@@ -172,6 +149,5 @@
         </mat-progress-bar>
       </div>
     </div>
-
   </mat-tab>
 </mat-tab-group>

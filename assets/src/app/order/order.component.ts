@@ -20,7 +20,37 @@ export class OrderComponent {
   is_new_order: boolean = false
   order_id: number
   wav_file: any
-  selected_langages: string = "fr"
+  selected_langages:string="fr";
+  languageList =[
+  {
+   "id": "fr",
+    "label": "Français"
+  },
+  {
+    "id": "en",
+   "label": "Anglais"
+  }
+]
+  selected_types:string="News";
+  typeList =[
+  {
+   "id": "fixion",
+    "label": "fiction"
+  },
+  {
+    "id": "reportage",
+   "label": "reportage"
+  },
+  {
+    "id": "documentary",
+   "label": "documentary"
+  }
+  {
+    "id": "News",
+   "label": "News"
+  }
+]
+
   customer_vocab: string = " "
   wav_percent_uploaded = 0
   completed = 0
@@ -47,7 +77,8 @@ export class OrderComponent {
       .subscribe(s3_configuration => {
         this.s3_configuration = s3_configuration
       })
-  }
+
+        }
 
   upload() {
     var wav_file = this.wav_file.files[0]
