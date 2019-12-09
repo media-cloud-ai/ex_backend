@@ -16,7 +16,6 @@ matrix:
     # Elixir format
     - elixir: 1.9.1
       script:
-        - touch config/dev.secret.exs
         - mix format --check-formatted
       env: CHECK_FORMAT=TRUE
     # Elixir credo
@@ -37,6 +36,7 @@ env:
   - MIX_ENV=test
 
 install:
+  - touch config/dev.secret.exs
   - mix local.hex --force
   - mix local.rebar --force
   - mix deps.get
