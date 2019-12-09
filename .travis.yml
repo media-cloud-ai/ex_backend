@@ -23,6 +23,8 @@ matrix:
       script:
         - mix credo --strict
       env: CHECK_SYNTAX=TRUE
+  allow_failures:
+    - env: CHECK_SYNTAX=TRUE
 
 dist: trusty
 
