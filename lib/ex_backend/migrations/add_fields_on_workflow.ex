@@ -1,4 +1,6 @@
 defmodule ExBackend.Migration.AddFieldsOnWorkflow do
+  @moduledoc false
+
   use Ecto.Migration
 
   def change do

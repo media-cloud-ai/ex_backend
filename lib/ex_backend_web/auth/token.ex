@@ -1,5 +1,6 @@
 defmodule ExBackendWeb.Auth.Token do
   @behaviour Phauxth.Token
+  @moduledoc false
 
   alias Phoenix.Token
   alias ExBackend.Accounts
@@ -17,7 +18,7 @@ defmodule ExBackendWeb.Auth.Token do
 
   @impl true
   def verify(%{"key" => token}, opts) do
-    opts = Keyword.put(opts, :max_age, 86400)
+    opts = Keyword.put(opts, :max_age, 86_400)
 
     case Token.verify(Endpoint, @token_salt, token, opts) do
       {:ok, nil} ->

@@ -123,7 +123,7 @@ defmodule ExBackend.HelpersTest do
   end
 
   defp validate_parameter(param) do
-    IO.inspect(param)
+    Logger.info(param)
     false
   end
 

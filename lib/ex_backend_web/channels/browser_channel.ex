@@ -1,4 +1,6 @@
 defmodule ExBackendWeb.BrowserChannel do
+  @moduledoc false
+
   use Phoenix.Channel
   require Logger
   alias ExBackend.Watchers

@@ -1,4 +1,6 @@
 defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
+  @moduledoc false
+
   def get_extra_parameters(video_id) do
     video =
       ExVideoFactory.videos(%{"qid" => video_id})

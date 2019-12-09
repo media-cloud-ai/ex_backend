@@ -1,4 +1,6 @@
 defmodule ExBackendWeb.FileTransferChannel do
+  @moduledoc false
+
   use Phoenix.Channel
   require Logger
   alias StepFlow.Jobs

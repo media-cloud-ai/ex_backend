@@ -1,4 +1,6 @@
 defmodule ExBackend.Migration.CreateJobs do
+  @moduledoc false
+
   use Ecto.Migration
 
   def change do

@@ -1,4 +1,6 @@
 defmodule ExBackendWeb.Authorize do
+  @moduledoc false
+
   import Plug.Conn
   import Phoenix.Controller
 

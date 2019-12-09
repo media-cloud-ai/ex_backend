@@ -1,4 +1,6 @@
 defmodule ExBackend.Migration.AddUserRight do
+  @moduledoc false
+
   use Ecto.Migration
 
   def change do

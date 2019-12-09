@@ -1,4 +1,6 @@
 defmodule ExBackend.Persons.Person do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
   alias ExBackend.Persons.Person

@@ -1,4 +1,6 @@
 defmodule Mix.Tasks.GenerateDocumentation do
+  @moduledoc false
+
   use Mix.Task
 
   @shortdoc "Wrote the BlueBird documentation into json file"

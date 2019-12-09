@@ -1,4 +1,6 @@
 defmodule ExBackend.Watchers.Watcher do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
   alias ExBackend.Watchers.Watcher

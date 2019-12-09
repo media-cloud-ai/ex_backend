@@ -1,4 +1,6 @@
 defmodule ExBackend.Workflow.Definition.FrancetvAcs do
+  @moduledoc false
+
   require Logger
 
   def get_definition(_, _, nil) do

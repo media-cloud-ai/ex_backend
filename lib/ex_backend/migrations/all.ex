@@ -1,4 +1,6 @@
 defmodule ExBackend.Migration.All do
+  @moduledoc false
+
   def apply_migrations() do
     Ecto.Migrator.up(
       ExBackend.Repo,

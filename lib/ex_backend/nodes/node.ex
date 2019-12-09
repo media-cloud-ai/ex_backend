@@ -1,4 +1,6 @@
 defmodule ExBackend.Nodes.Node do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
   alias ExBackend.Nodes.Node
