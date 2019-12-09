@@ -14,18 +14,12 @@ defmodule ExBackend.Application do
       supervisor(ExBackend.Repo, []),
       # supervisor(StepFlow.Repo, []),
 
-      # Start the AMQP connection supervisor
-      supervisor(ExBackend.Amqp.Supervisor, []),
-
       # Start the endpoint when the application starts
       supervisor(ExBackendWeb.Endpoint, []),
       supervisor(ExBackendWeb.Presence, []),
 
       # Start the AMQP connection to submit messages
-      worker(ExBackend.Amqp.Connection, []),
-
-      # Start workflow manager
-      worker(ExBackend.WorkflowStepManager, [])
+      # worker(ExBackend.Amqp.Connection, []),
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
@@ -34,7 +28,6 @@ defmodule ExBackend.Application do
     main_supervisor = Supervisor.start_link(children, opts)
 
     ExBackend.Migration.All.apply_migrations()
-    ExBackend.Amqp.Supervisor.start_all_amqp_consumming_connections()
     create_root_user_if_needed()
 
     main_supervisor

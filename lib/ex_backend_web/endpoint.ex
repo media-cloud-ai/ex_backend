@@ -40,7 +40,7 @@ defmodule ExBackendWeb.Endpoint do
       "If-Modified-Since",
       "X-CSRF-Token",
       "Range"
-    ],
+    ]
   )
 
   plug(

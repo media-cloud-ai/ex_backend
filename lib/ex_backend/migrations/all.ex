@@ -54,12 +54,6 @@ defmodule ExBackend.Migration.All do
       ExBackend.Migration.AddUserRight
     )
 
-    # Ecto.Migrator.up(
-    #   ExBackend.Repo,
-    #   20_180_424_161_800,
-    #   ExBackend.Migration.WorkflowSteps
-    # )
-
     Ecto.Migrator.up(
       ExBackend.Repo,
       20_180_514_190_000,
@@ -92,12 +86,6 @@ defmodule ExBackend.Migration.All do
 
     Ecto.Migrator.up(
       ExBackend.Repo,
-      20_180_904_151_130,
-      ExBackend.Migration.UpdateStepIdOnJob
-    )
-
-    Ecto.Migrator.up(
-      ExBackend.Repo,
       20_180_910_145_830,
       ExBackend.Migration.CreateRegistery
     )
@@ -106,12 +94,6 @@ defmodule ExBackend.Migration.All do
       ExBackend.Repo,
       20_181_008_122_930,
       ExBackend.Migration.CreateSubtitles
-    )
-
-    Ecto.Migrator.up(
-      ExBackend.Repo,
-      20_181_008_133_834,
-      ExBackend.Migration.MoveSubtitlesItems
     )
 
     Ecto.Migrator.up(
@@ -142,12 +124,6 @@ defmodule ExBackend.Migration.All do
       ExBackend.Repo,
       20_190_723_153_700,
       ExBackend.Migration.AddParametersOnJob
-    )
-
-    Ecto.Migrator.up(
-      ExBackend.Repo,
-      20_190_723_161_500,
-      ExBackend.Migration.MoveParamsToParametersOnJob
     )
 
     Ecto.Migrator.up(

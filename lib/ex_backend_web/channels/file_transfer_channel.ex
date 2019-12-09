@@ -1,7 +1,7 @@
 defmodule ExBackendWeb.FileTransferChannel do
   use Phoenix.Channel
   require Logger
-  alias ExBackend.Jobs
+  alias StepFlow.Jobs
 
   intercept([
     "start"
@@ -24,7 +24,7 @@ defmodule ExBackendWeb.FileTransferChannel do
     Logger.warn("upload completed for job id: #{job_id}")
     Jobs.Status.set_job_status(job_id, "completed")
 
-    ExBackend.WorkflowStepManager.check_step_status(%{job_id: job_id})
+    # ExBackend.WorkflowStepManager.check_step_status(%{job_id: job_id})
     {:noreply, socket}
   end
 

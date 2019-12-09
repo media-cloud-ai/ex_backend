@@ -46,14 +46,6 @@ defmodule ExBackendWeb.Router do
       end
     end
 
-    resources "/catalog", CatalogController, except: [:new, :edit]
-
-    resources("/registery", RegisteryController, except: [:new, :edit]) do
-      post("/subtitle", RegisteryController, :add_subtitle)
-      put("/subtitle/:index", RegisteryController, :update_subtitle)
-      delete("/subtitle/:index", RegisteryController, :delete_subtitle)
-    end
-
     scope "/amqp", Amqp do
       get("/queues", AmqpController, :queues)
       get("/connections", AmqpController, :connections)
