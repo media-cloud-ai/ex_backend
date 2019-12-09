@@ -22,6 +22,19 @@ defmodule ExBackendWeb.CredentialController do
   end
 
   def index(conn, params) do
+    local_token = "mediacloudai"
+
+    vault =
+      Vault.new([
+        engine: Vault.Engine.KVV2,
+        auth: Vault.Auth.Token,
+        host: "http://192.168.99.101:8201",
+        token: local_token
+      ])
+
+    Vault.read(vault, "secret/FTP_FranceTV_Akamai")
+    Vault.list(vault, "secret/")
+
     credentials = Credentials.list_credentials(params)
     render(conn, "index.json", credentials: credentials)
   end
