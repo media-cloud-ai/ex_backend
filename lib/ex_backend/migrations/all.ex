@@ -1,6 +1,6 @@
 defmodule ExBackend.Migration.All do
   def apply_migrations() do
-  	Ecto.Migrator.up(
+    Ecto.Migrator.up(
       ExBackend.Repo,
       20_171_116_223_034,
       ExBackend.Migration.CreateJobs

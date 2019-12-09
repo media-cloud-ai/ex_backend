@@ -29,7 +29,7 @@ defmodule ExBackendWeb.Router do
     put("/password_resets/update", PasswordResetController, :update)
 
     scope "/step_flow", StepFlow do
-      forward "/", Plug
+      forward("/", Plug)
     end
 
     get("/workflow/:identifier", WorkflowController, :get)

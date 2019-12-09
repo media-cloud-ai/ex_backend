@@ -1,5 +1,4 @@
 defmodule ExBackend.Workflow.Definition.FrancetvAcs do
-
   require Logger
 
   def get_definition(_, _, nil) do
@@ -72,8 +71,10 @@ defmodule ExBackend.Workflow.Definition.FrancetvAcs do
           %{
             id: "command_template",
             type: "string",
-            default: "ffmpeg -i {source_path} -codec:a {output_codec_audio} -ar {audio_sampling_rate} -ac {audio_channels} -af {audio_filters} -vn -dn {destination_path}",
-            value: "ffmpeg -i {source_path} -codec:a {output_codec_audio} -ar {audio_sampling_rate} -ac {audio_channels} -af {audio_filters} -vn -dn {destination_path}"
+            default:
+              "ffmpeg -i {source_path} -codec:a {output_codec_audio} -ar {audio_sampling_rate} -ac {audio_channels} -af {audio_filters} -vn -dn {destination_path}",
+            value:
+              "ffmpeg -i {source_path} -codec:a {output_codec_audio} -ar {audio_sampling_rate} -ac {audio_channels} -af {audio_filters} -vn -dn {destination_path}"
           },
           %{
             id: "destination_filename",
@@ -131,8 +132,10 @@ defmodule ExBackend.Workflow.Definition.FrancetvAcs do
           %{
             id: "command_template",
             type: "string",
-            default: "acs_launcher.sh {audio_path} {subtitle_path} {destination_path} {threads_number}",
-            value: "acs_launcher.sh {audio_path} {subtitle_path} {destination_path} {threads_number}"
+            default:
+              "acs_launcher.sh {audio_path} {subtitle_path} {destination_path} {threads_number}",
+            value:
+              "acs_launcher.sh {audio_path} {subtitle_path} {destination_path} {threads_number}"
           },
           %{
             id: "subtitle_path",

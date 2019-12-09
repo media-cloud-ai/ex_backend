@@ -25,6 +25,7 @@ defmodule ExBackendWeb.Endpoint do
 
   plug(Plug.RequestId)
   plug(Plug.Logger)
+
   plug(CORSPlug,
     headers: [
       "Authorization",

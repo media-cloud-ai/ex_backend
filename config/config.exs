@@ -6,10 +6,11 @@
 use Mix.Config
 
 # General application configuration
-config :ex_backend, ecto_repos: [
-  ExBackend.Repo,
-  StepFlow.Repo
-]
+config :ex_backend,
+  ecto_repos: [
+    ExBackend.Repo,
+    StepFlow.Repo
+  ]
 
 # Configures the endpoint
 config :ex_backend, ExBackendWeb.Endpoint,

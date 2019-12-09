@@ -16,7 +16,7 @@ defmodule ExBackend.Application do
 
       # Start the endpoint when the application starts
       supervisor(ExBackendWeb.Endpoint, []),
-      supervisor(ExBackendWeb.Presence, []),
+      supervisor(ExBackendWeb.Presence, [])
 
       # Start the AMQP connection to submit messages
       # worker(ExBackend.Amqp.Connection, []),

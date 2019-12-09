@@ -3,7 +3,7 @@ defmodule ExBackend.Migration.UpdateCredentialValueLength do
 
   def change do
     alter table(:credentials) do
-      modify :value, :text
+      modify(:value, :text)
     end
   end
 end

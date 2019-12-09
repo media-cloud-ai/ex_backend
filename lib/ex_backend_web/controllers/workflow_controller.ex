@@ -43,7 +43,6 @@ defmodule ExBackendWeb.WorkflowController do
         "identifier" => "ingest-rosetta",
         "reference" => reference
       }) do
-
     source_paths = ExVideoFactory.get_ftp_paths_for_video_id(reference)
 
     source_folder =
@@ -58,11 +57,17 @@ defmodule ExBackendWeb.WorkflowController do
       ExVideoFactory.get_ftp_paths_for_video_id(reference)
       |> get_workflow_definition_for_source("ftv_studio_rosetta", reference)
       |> Map.put(:reference, reference)
-      |> Map.put(:parameters, extra_parameters ++ [%{
-          id: "source_folder",
-          type: "string",
-          value: source_folder
-        }])
+      |> Map.put(
+        :parameters,
+        extra_parameters ++
+          [
+            %{
+              id: "source_folder",
+              type: "string",
+              value: source_folder
+            }
+          ]
+      )
 
     {:ok, workflow} = Workflows.create_workflow(workflow_params)
     {:ok, _response_status} = Step.start_next(workflow)
@@ -81,14 +86,17 @@ defmodule ExBackendWeb.WorkflowController do
         "ttml_url" => ttml_url,
         "destination_url" => destination_url
       }) do
-
     audio_url = URI.decode(audio_url)
     ttml_url = URI.decode(ttml_url)
     destination_url = URI.decode(destination_url)
 
     workflow_params =
-        ExBackend.Workflow.Definition.FrancetvAcs.get_definition(audio_url, ttml_url, destination_url)
-        |> Map.put(:reference, reference)
+      ExBackend.Workflow.Definition.FrancetvAcs.get_definition(
+        audio_url,
+        ttml_url,
+        destination_url
+      )
+      |> Map.put(:reference, reference)
 
     {:ok, workflow} = Workflows.create_workflow(workflow_params)
     {:ok, response_status} = Step.start_next(workflow)
@@ -102,9 +110,8 @@ defmodule ExBackendWeb.WorkflowController do
 
   def create_specific(conn, %{
         "identifier" => "ftv-acs-standalone",
-        "reference" => reference,
+        "reference" => reference
       }) do
-
     ism_source_path =
       ExVideoFactory.get_ftp_paths_for_video_id(reference)
       |> Enum.filter(fn path -> String.contains?(path, ".ism") end)
@@ -127,7 +134,6 @@ defmodule ExBackendWeb.WorkflowController do
         ttml_source_path
       )
       |> Map.put(:reference, reference)
-
 
     {:ok, workflow} = Workflows.create_workflow(workflow_params)
     {:ok, response_status} = Step.start_next(workflow)
@@ -171,6 +177,7 @@ defmodule ExBackendWeb.WorkflowController do
       case workflow_identifier do
         "ftv_studio_rosetta" ->
           reference = Map.get(params, "reference")
+
           ExVideoFactory.get_ftp_paths_for_video_id(reference)
           |> get_workflow_definition_for_source("ftv_studio_rosetta", reference)
 
@@ -198,35 +205,43 @@ defmodule ExBackendWeb.WorkflowController do
   defp get_workflow_definition_for_source(source_paths, workflow_id, workflow_reference) do
     case workflow_id do
       "ftv_studio_rosetta" ->
-          extra_parameters =
-            ExBackend.Workflow.Definition.FtvStudioRosetta.get_extra_parameters(workflow_reference)
+        extra_parameters =
+          ExBackend.Workflow.Definition.FtvStudioRosetta.get_extra_parameters(workflow_reference)
 
-          case Enum.find(source_paths, fn path -> String.ends_with?(path, ".ism") end) do
-            nil ->
-              mp4_paths =
-                source_paths
-                |> Enum.filter(fn path -> String.contains?(path, "-standard5.mp4") end)
-                |> Enum.map(fn path -> String.replace(path, "/343079/http", "") end)
+        case Enum.find(source_paths, fn path -> String.ends_with?(path, ".ism") end) do
+          nil ->
+            mp4_paths =
+              source_paths
+              |> Enum.filter(fn path -> String.contains?(path, "-standard5.mp4") end)
+              |> Enum.map(fn path -> String.replace(path, "/343079/http", "") end)
 
-              ttml_path =
-                ExVideoFactory.get_http_url_for_ttml(workflow_reference)
-                |> List.first()
+            ttml_path =
+              ExVideoFactory.get_http_url_for_ttml(workflow_reference)
+              |> List.first()
 
-              ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition_for_akamai_input(mp4_paths, ttml_path, extra_parameters)
+            ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition_for_akamai_input(
+              mp4_paths,
+              ttml_path,
+              extra_parameters
+            )
 
-            manifest_path ->
-              source_paths =
-                [manifest_path]
-                |> Enum.map(fn path -> String.replace_prefix(path, "/", "") end)
+          manifest_path ->
+            source_paths =
+              [manifest_path]
+              |> Enum.map(fn path -> String.replace_prefix(path, "/", "") end)
 
-              extra_parameters = []
+            extra_parameters = []
 
-              ttml_path =
-                ExVideoFactory.get_http_url_for_ttml(workflow_reference)
-                |> List.first()
+            ttml_path =
+              ExVideoFactory.get_http_url_for_ttml(workflow_reference)
+              |> List.first()
 
-              ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition_for_aws_input(source_paths, ttml_path, extra_parameters)
-          end
-   end
+            ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition_for_aws_input(
+              source_paths,
+              ttml_path,
+              extra_parameters
+            )
+        end
+    end
   end
 end
