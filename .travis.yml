@@ -38,7 +38,7 @@ env:
   - MIX_ENV=test
 
 install:
-  - echo "use Mix.Config\n" > config/dev.secret.exs
+  - echo "use Mix.Config" > config/dev.secret.exs
   - mix local.hex --force
   - mix local.rebar --force
   - mix deps.get
