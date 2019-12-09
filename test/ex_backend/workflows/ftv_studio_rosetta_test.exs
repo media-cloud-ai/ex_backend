@@ -1,8 +1,8 @@
 defmodule ExBackend.FtvStudioRosettaTest do
   use ExBackendWeb.ConnCase
 
-  alias ExBackend.Workflows
-  alias ExBackend.WorkflowStep
+  alias StepFlow.Step
+  alias StepFlow.Workflows
 
   require Logger
 
@@ -11,7 +11,7 @@ defmodule ExBackend.FtvStudioRosettaTest do
 
     on_exit(fn ->
       destination_paths =
-        ExBackend.HelpersTest.consume_messages(channel, "job_ftp", 4)
+        ExBackend.HelpersTest.consume_messages(channel, "job_queue_not_found", 5)
         |> Enum.map(fn job ->
           Map.get(job, "parameters")
           |> Enum.filter(fn p -> Map.get(p, "id") == "destination_path" end)
@@ -27,12 +27,11 @@ defmodule ExBackend.FtvStudioRosettaTest do
       assert String.ends_with?(Enum.at(destination_paths, 1), "/path.ttml")
 
       assert Enum.at(destination_paths, 2) ==
-               "F2/Un-jour-un-destin/20190220_2243/F2_20190220_2243_Un-jour-un-destin_Karl-Lagerfeld-etre-et-paraitre.mp4"
+               "F2/Emission_test/F2_2019_12_08_Emission_test_Additional_Title.ttml"
 
       assert Enum.at(destination_paths, 3) ==
-               "F2/Un-jour-un-destin/20190220_2243/F2_20190220_2243_Un-jour-un-destin_Karl-Lagerfeld-etre-et-paraitre.ttml"
+               "F2/Emission_test/F2_2019_12_08_Emission_test_Additional_Title.mp4"
 
-      ExBackend.HelpersTest.consume_messages(channel, "job_file_system", 1)
     end)
 
     :ok
@@ -57,58 +56,58 @@ defmodule ExBackend.FtvStudioRosettaTest do
         _ -> nil
       end
 
-      output_pattern =
-        "F2/Un-jour-un-destin/20190220_2243/F2_20190220_2243_Un-jour-un-destin_Karl-Lagerfeld-etre-et-paraitre#input_extension"
-
       workflow_params =
         ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition_for_akamai_input(
           ["ftp://source/path.mp4"],
           "http://static/source/path.ttml",
-          output_pattern,
-          "/prefix"
+          [
+            %{
+              id: "channel",
+              type: "string",
+              value: "F2"
+            },
+            %{
+              id: "title",
+              type: "string",
+              value: "Emission_test"
+            },
+            %{
+              id: "broadcasted_at",
+              type: "string",
+              value: "2019_12_08"
+            },
+            %{
+              id: "additional_title",
+              type: "string",
+              value: "Additional_Title"
+            }
+          ]
         )
         |> Map.put(:reference, "39984e00-055c-4aa8-902c-1d6cab12d2da")
 
       {:ok, workflow} = Workflows.create_workflow(workflow_params)
-      {:ok, "started"} = WorkflowStep.start_next_step(workflow)
-      ExBackend.HelpersTest.check(workflow.id, 1)
-      ExBackend.HelpersTest.check(workflow.id, "download_ftp", 1)
-      ExBackend.HelpersTest.complete_jobs(workflow.id, "download_ftp")
+      {:ok, "started"} = Step.start_next(workflow)
 
-      {:ok, "started"} = WorkflowStep.start_next_step(workflow)
       ExBackend.HelpersTest.check(workflow.id, 2)
-      ExBackend.HelpersTest.check(workflow.id, "download_ftp", 2)
-      ExBackend.HelpersTest.complete_jobs(workflow.id, "download_ftp")
+      ExBackend.HelpersTest.check(workflow.id, "job_transfer", 2)
+      ExBackend.HelpersTest.complete_jobs(workflow.id, "job_transfer")
 
-      {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+      {:ok, "started"} = Step.start_next(workflow)
       ExBackend.HelpersTest.check(workflow.id, 4)
-      ExBackend.HelpersTest.check(workflow.id, "upload_ftp", 2)
-      ExBackend.HelpersTest.complete_jobs(workflow.id, "upload_ftp")
+      ExBackend.HelpersTest.check(workflow.id, "job_transfer", 4)
+      ExBackend.HelpersTest.complete_jobs(workflow.id, "job_transfer")
 
-      {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+      {:ok, "started"} = Step.start_next(workflow)
       ExBackend.HelpersTest.check(workflow.id, 5)
-      ExBackend.HelpersTest.check(workflow.id, "download_ftp", 2)
-      ExBackend.HelpersTest.check(workflow.id, "upload_ftp", 2)
-      ExBackend.HelpersTest.check(workflow.id, "clean_workspace", 1)
+      ExBackend.HelpersTest.check(workflow.id, "job_transfer", 4)
+      ExBackend.HelpersTest.check(workflow.id, "job_file_system", 1)
+      ExBackend.HelpersTest.complete_jobs(workflow.id, "job_file_system")
 
-      {:ok, "completed"} = WorkflowStep.start_next_step(workflow)
-      ExBackend.HelpersTest.check(workflow.id, "download_ftp", 2)
-      ExBackend.HelpersTest.check(workflow.id, "upload_ftp", 2)
-      ExBackend.HelpersTest.check(workflow.id, "clean_workspace", 1)
+      {:ok, "completed"} = Step.start_next(workflow)
+      ExBackend.HelpersTest.check(workflow.id, "job_transfer", 4)
+      ExBackend.HelpersTest.check(workflow.id, "job_file_system", 1)
 
-      notification_status =
-        ExBackend.Jobs.list_jobs(%{
-          "job_type" => "send_notification",
-          "workflow_id" => workflow.id |> Integer.to_string(),
-          "size" => 1
-        })
-        |> Map.get(:data)
-        |> List.first
-        |> Map.get(:status)
-        |> Enum.map(fn status -> status.state end)
-
-      assert(notification_status == ["completed", "completed"])
-      ExBackend.HelpersTest.check(workflow.id, 6)
+      ExBackend.HelpersTest.check(workflow.id, 5)
     end
   end
 end

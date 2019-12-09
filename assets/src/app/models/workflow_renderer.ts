@@ -76,7 +76,7 @@ export class WorkflowRenderer {
     let children_weigth = 1
     let children_line = this.graph[step_line_idx + 1]
     if (children_line !== undefined) {
-      let step_children = children_line.filter(s => s.parent_ids.includes(step.id))
+      let step_children = children_line.filter(s => s.parent_ids && s.parent_ids.includes(step.id))
       children_weigth = 1 / children_line.length
       if (step_children.length > 0) {
         children_weigth = step_children.length / children_line.length
@@ -86,7 +86,7 @@ export class WorkflowRenderer {
     let parent_weigth = 1
     let parent_line = this.graph[step_line_idx - 1]
     if (parent_line !== undefined) {
-      let step_parents = parent_line.filter(s => step.parent_ids.includes(s.id))
+      let step_parents = parent_line.filter(s => s.parent_ids && step.parent_ids.includes(s.id))
       parent_weigth = 1 / parent_line.length
       if (step_parents.length > 0) {
         parent_weigth = step_parents.length / parent_line.length

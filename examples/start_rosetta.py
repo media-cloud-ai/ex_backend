@@ -2,7 +2,6 @@ import requests
 import sys
 
 hostname = "http://localhost:4000"
-mi_hostname = "http://localhost:4001"
 
 video_id = sys.argv[1]
 

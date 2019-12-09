@@ -3,7 +3,7 @@ defmodule ExBackendWeb.WorkflowController do
 
   import ExBackendWeb.Authorize
 
-  alias ExBackend.Workflows
+  alias StepFlow.Workflows
   alias ExBackend.WorkflowStep
 
   action_fallback(ExBackendWeb.FallbackController)
@@ -92,13 +92,29 @@ defmodule ExBackendWeb.WorkflowController do
         "identifier" => "ingest-rosetta",
         "reference" => reference
       }) do
+
+    source_paths = ExVideoFactory.get_ftp_paths_for_video_id(reference)
+
+    source_folder =
+      Enum.find(source_paths, fn path -> String.ends_with?(path, ".ism") end)
+      |> String.split("/")
+      |> Enum.at(1)
+
+    extra_parameters =
+      ExBackend.Workflow.Definition.FtvStudioRosetta.get_extra_parameters(reference)
+
     workflow_params =
       ExVideoFactory.get_ftp_paths_for_video_id(reference)
       |> get_workflow_definition_for_source("ftv_studio_rosetta", reference)
       |> Map.put(:reference, reference)
+      |> Map.put(:parameters, extra_parameters ++ [%{
+          id: "source_folder",
+          type: "string",
+          value: source_folder
+        }])
 
-    {:ok, workflow} = Workflows.create_workflow(workflow_params)
-    WorkflowStep.start_next_step(workflow)
+    {:ok, workflow} = StepFlow.Workflows.create_workflow(workflow_params)
+    {:ok, response_status} = StepFlow.Step.start_next(workflow)
 
     conn
     |> json(%{
@@ -247,12 +263,6 @@ defmodule ExBackendWeb.WorkflowController do
   def get(conn, %{"identifier" => workflow_identifier} = params) do
     workflow =
       case workflow_identifier do
-        "ebu_ingest" ->
-          ExBackend.Workflow.Definition.EbuIngest.get_definition(
-            "#agent_identifier",
-            "#input_filename"
-          )
-
         "francetv_subtil_rdf_ingest" ->
           reference = Map.get(params, "reference")
           ExVideoFactory.get_ftp_paths_for_video_id(reference)
@@ -339,31 +349,34 @@ defmodule ExBackendWeb.WorkflowController do
           end
 
       "ftv_studio_rosetta" ->
-          upload_pattern =
-            ExBackend.Workflow.Definition.FtvStudioRosetta.get_output_filename_base(workflow_reference)
+          extra_parameters =
+            ExBackend.Workflow.Definition.FtvStudioRosetta.get_extra_parameters(workflow_reference)
 
           case Enum.find(source_paths, fn path -> String.ends_with?(path, ".ism") end) do
             nil ->
-              prefix = "/343079/http"
               mp4_paths =
                 source_paths
                 |> Enum.filter(fn path -> String.contains?(path, "-standard5.mp4") end)
-                |> Enum.map(fn path -> String.replace(path, prefix, "") end)
+                |> Enum.map(fn path -> String.replace(path, "/343079/http", "") end)
 
               ttml_path =
                 ExVideoFactory.get_http_url_for_ttml(workflow_reference)
                 |> List.first()
 
-              ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition_for_akamai_input(mp4_paths, ttml_path, upload_pattern, prefix)
+              ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition_for_akamai_input(mp4_paths, ttml_path, extra_parameters)
 
             manifest_path ->
               source_paths =
                 [manifest_path]
                 |> Enum.map(fn path -> String.replace_prefix(path, "/", "") end)
 
-              prefix = Path.dirname(manifest_path)
+              extra_parameters = []
 
-              ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition_for_aws_input(source_paths, upload_pattern, prefix)
+              ttml_path =
+                ExVideoFactory.get_http_url_for_ttml(workflow_reference)
+                |> List.first()
+
+              ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition_for_aws_input(source_paths, ttml_path, extra_parameters)
           end
    end
   end

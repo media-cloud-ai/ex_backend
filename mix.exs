@@ -42,6 +42,7 @@ defmodule ExBackend.Mixfile do
         :httpotion,
         :jason,
         :logger,
+        :libvault,
         :phauxth,
         :phoenix_ecto,
         :postgrex,
@@ -49,7 +50,8 @@ defmodule ExBackend.Mixfile do
         :timex,
         :elixir_make,
         :parse_trans,
-        :step_flow
+        :step_flow,
+        :tesla
       ]
     ]
   end
@@ -68,6 +70,7 @@ defmodule ExBackend.Mixfile do
       {:bamboo, "~> 1.2"},
       {:blue_bird, "~> 0.4.1"},
       {:comeonin, "~> 5.1"},
+      {:cors_plug, "~> 2.0"},
       {:cowboy, "~> 2.6"},
       {:distillery, "~> 2.1"},
       {:ecto, "~> 3.1"},
@@ -78,9 +81,11 @@ defmodule ExBackend.Mixfile do
       {:ex_mock, "~> 0.1.1", only: :test},
       {:ex_video_factory, "0.3.14"},
       {:gettext, "~> 0.14"},
+      {:hackney, "~> 1.6"},
       {:httpotion, "~> 3.1.0"},
       {:jason, "~> 1.1"},
       {:lager, "3.6.10"},
+      {:libvault, "~> 0.2.1"},
       {:phoenix, "~> 1.4.6"},
       {:phoenix_ecto, "~> 4.0"},
       {:phoenix_html, "~> 2.10"},
@@ -93,8 +98,9 @@ defmodule ExBackend.Mixfile do
       {:ranch, "~> 1.7.1"},
       {:remote_dockers, "1.4.0"},
       {:sigaws, "~> 0.7.2"},
-      {:step_flow, "~> 0.0.6"},
-      {:timex, "~> 3.2"},
+      {:step_flow, version: "~> 0.0.9"},
+      {:tesla, "~> 1.3.0"},
+      {:timex, "~> 3.6"},
       {:uuid, "~> 1.1"}
     ]
   end

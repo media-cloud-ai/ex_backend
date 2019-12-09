@@ -363,9 +363,7 @@ defmodule ExBackend.Workflow.Definition.FrancetvSubtilAcs do
       version_minor: 0,
       version_micro: 0,
       tags: ["francetélévisions", "acs"],
-      flow: %{
-        steps: common_steps ++ steps
-      }
+      steps: common_steps ++ steps
     }
   end
 end

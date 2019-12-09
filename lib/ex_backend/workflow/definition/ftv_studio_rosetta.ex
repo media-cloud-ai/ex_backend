@@ -1,5 +1,5 @@
 defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
-  def get_output_filename_base(video_id) do
+  def get_extra_parameters(video_id) do
     video =
       ExVideoFactory.videos(%{"qid" => video_id})
       |> Map.get(:videos)
@@ -40,7 +40,28 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
           |> format_channel()
       end
 
-    "#{channel}/#{title}/#{channel}_#{broadcasted_at}_#{title}_#{additional_title}#input_extension"
+    [
+      %{
+        id: "channel",
+        type: "string",
+        value: channel,
+      },
+      %{
+        id: "broadcasted_at",
+        type: "string",
+        value: broadcasted_at,
+      },
+      %{
+        id: "additional_title",
+        type: "string",
+        value: additional_title,
+      },
+      %{
+        id: "title",
+        type: "string",
+        value: title,
+      }
+    ]
   end
 
   defp format_broadcasted_at(nil) do
@@ -48,7 +69,14 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
   end
 
   defp format_broadcasted_at(date) do
-    {:ok, date_object} = Timex.parse(date, "%Y-%m-%dT%H:%M:%S", :strftime)
+    date_object =
+      case Timex.parse(date, "%Y-%m-%dT%H:%M:%S", :strftime) do
+        {:ok, date_object} -> date_object
+        {:error, _} ->
+          {:ok, parsed} = Timex.parse(date, "{ISO:Extended}")
+          parsed
+      end
+
     {:ok, broadcasted_at} = Timex.format(date_object, "%Y%m%d_%H%M", :strftime)
     broadcasted_at
   end
@@ -81,11 +109,13 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
     "XX"
   end
 
-  def get_definition_for_aws_input(source_paths, upload_pattern, prefix) do
+  def get_definition_for_aws_input(source_paths, ttml_path, extra_parameters) do
     steps = [
       %{
         id: 0,
-        name: "download_ftp",
+        name: "job_transfer",
+        label: "Download ISM Manifest",
+        icon: "file_download",
         enable: true,
         parameters: [
           %{
@@ -125,15 +155,18 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
         id: 1,
         parent_ids: [0],
         required: [0],
-        name: "ism_manifest",
+        name: "job_ism_manifest",
+        label: "Inspect ISM Manifest",
+        icon: "assignment",
         enable: true,
         parameters: [
         ]
       },
       %{
         id: 2,
-        name: "download_ftp",
-        parent_ids: [1],
+        name: "job_transfer",
+        label: "Download source elements",
+        icon: "file_download",
         required: [1],
         enable: true,
         parameters: [
@@ -160,6 +193,14 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
             type: "credential",
             default: "AWS_FTV_PREFIX",
             value: "AWS_FTV_PREFIX"
+          },
+          %{
+            id: "source_paths",
+            type: "array_of_templates",
+            value: [
+              "{source_folder}/{audio}",
+              "{source_folder}/{video}"
+            ]
           }
         ]
       },
@@ -167,37 +208,63 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
         id: 3,
         parent_ids: [2],
         required: [2],
-        name: "ism_extraction",
+        name: "job_ffmpeg",
+        label: "Merge Audio and Video from ISM into MP4",
+        icon: "assignment",
+        mode: "one_for_many",
         enable: true,
         parameters: [
           %{
-            "id" => "output_codec_video",
-            "type" => "string",
-            "value" => "copy"
+            id: "command_template",
+            type: "string",
+            value: "ffmpeg -i {video_filename} -i {audio_filename} -codec:a copy -codec:a copy -map 0:3 -map 1:0 -dn {destination_path}"
           },
           %{
-            "id" => "output_codec_audio",
-            "type" => "string",
-            "value" => "copy"
+            id: "video_filename",
+            type: "template",
+            enable: false,
+            default: "{Enum.at(source_paths, 0)}",
+            value: "{Enum.at(source_paths, 0)}"
           },
           %{
-            "id" => "map",
-            "type" => "string",
-            "value" => "0:4"
+            id: "audio_filename",
+            type: "template",
+            enable: false,
+            default: "{Enum.at(source_paths, 1)}",
+            value: "{Enum.at(source_paths, 1)}"
           },
           %{
-            "id" => "map",
-            "type" => "string",
-            "value" => "1:0"
+            id: "destination_filename",
+            type: "template",
+            enable: false,
+            default: "merged.mp4",
+            value: "merged.mp4"
+          },
+        ]
+      },
+      %{
+        id: 4,
+        name: "job_transfer",
+        label: "Download TTML Subtitle",
+        icon: "file_download",
+        enable: true,
+        required: [3],
+        parameters: [
+          %{
+            id: "source_paths",
+            type: "array_of_strings",
+            enable: true,
+            default: [ttml_path],
+            value: [ttml_path]
           }
         ]
-      }
+      },
     ]
 
-    get_definition(steps, 3, 2, 3, upload_pattern, prefix)
+    get_definition(steps, 4, 3, 4, extra_parameters)
   end
 
-  def get_definition_for_akamai_input(source_mp4_paths, source_ttml_path, upload_pattern, prefix) do
+  def get_definition_for_akamai_input(source_mp4_paths, source_ttml_path, extra_parameters) do
     source_ttml_paths =
       case source_ttml_path do
         nil -> []
@@ -207,15 +274,17 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
     steps = [
       %{
         id: 0,
-        name: "download_ftp",
+        name: "job_transfer",
+        label: "Download sources",
+        icon: "file_download",
         enable: true,
         parameters: [
           %{
             id: "source_paths",
             type: "array_of_strings",
             enable: true,
-            default: source_mp4_paths,
-            value: source_mp4_paths
+            default: source_mp4_paths ++ source_ttml_paths,
+            value: source_mp4_paths ++ source_ttml_paths
           },
           %{
             id: "source_hostname",
@@ -248,33 +317,19 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
             value: "AKAMAI_REPLAY_SSL"
           }
         ]
-      },
-      %{
-        id: 1,
-        parent_ids: [0],
-        required: [0],
-        name: "download_ftp",
-        enable: true,
-        parameters: [
-          %{
-            id: "source_paths",
-            type: "array_of_strings",
-            enable: true,
-            default: source_ttml_paths,
-            value: source_ttml_paths
-          }
-        ]
       }
     ]
 
-    get_definition(steps, 1, 0, 1, upload_pattern, prefix)
+    get_definition(steps, 0, 0, 0, extra_parameters)
   end
 
-  def get_definition(steps, last_step_id, video_step_id, subtitles_step_id, upload_pattern, prefix) do
+  def get_definition(steps, last_step_id, video_step_id, subtitles_step_id, extra_parameters) do
     common_steps = [
       %{
         id: last_step_id + 1,
-        name: "upload_ftp",
+        name: "job_transfer",
+        label: "Upload Video with audio and Subtitle",
+        icon: "file_upload",
         enable: true,
         parent_ids: [video_step_id, subtitles_step_id],
         required: [subtitles_step_id],
@@ -282,38 +337,38 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
           %{
             id: "destination_hostname",
             type: "credential",
-            default: "FTP_ROSETTA_HOSTNAME",
-            value: "FTP_ROSETTA_HOSTNAME"
+            default: "AKAMAI_VIDEO_HOSTNAME",
+            value: "AKAMAI_VIDEO_HOSTNAME"
           },
           %{
             id: "destination_username",
             type: "credential",
-            default: "FTP_ROSETTA_USERNAME",
-            value: "FTP_ROSETTA_USERNAME"
+            default: "AKAMAI_VIDEO_USERNAME",
+            value: "AKAMAI_VIDEO_USERNAME"
           },
           %{
             id: "destination_password",
             type: "credential",
-            default: "FTP_ROSETTA_PASSWORD",
-            value: "FTP_ROSETTA_PASSWORD"
+            default: "AKAMAI_VIDEO_PASSWORD",
+            value: "AKAMAI_VIDEO_PASSWORD"
           },
           %{
             id: "destination_prefix",
             type: "credential",
-            default: "FTP_ROSETTA_PREFIX",
-            value: "FTP_ROSETTA_PREFIX"
+            default: "AKAMAI_VIDEO_PREFIX",
+            value: "AKAMAI_VIDEO_PREFIX"
           },
           %{
-            id: "destination_pattern",
-            type: "string",
-            default: upload_pattern,
-            value: upload_pattern
+            id: "destination_path",
+            type: "template",
+            default: "{channel}/{title}/{channel}_{broadcasted_at}_{title}_{additional_title}{extension}",
+            value: "{channel}/{title}/{channel}_{broadcasted_at}_{title}_{additional_title}{extension}"
           },
           %{
             id: "ssl",
             type: "credential",
-            default: "FTP_ROSETTA_SSL",
-            value: "FTP_ROSETTA_SSL"
+            default: "AKAMAI_VIDEO_SSL",
+            value: "AKAMAI_VIDEO_SSL"
           },
           %{
             "id" => "input_filter",
@@ -326,31 +381,25 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
       %{
         id: last_step_id + 2,
         parent_ids: [last_step_id + 1],
-        required: [last_step_id + 1],
-        name: "clean_workspace",
-        enable: true
-      },
-      %{
-        id: last_step_id + 3,
-        parent_ids: [last_step_id + 1],
-        required: [last_step_id + 2],
-        name: "send_notification",
-        label: "Send notification",
-        icon: "notification_important",
+        name: "job_file_system",
+        label: "Clean workspace",
+        icon: "delete_forever",
+        mode: "one_for_many",
         enable: true,
         parameters: [
           %{
-            id: "endpoint",
-            type: "credential",
-            default: "ATTESOR_FTVACCESS_ENDPOINT",
-            value: "ATTESOR_FTVACCESS_ENDPOINT"
+            id: "action",
+            type: "string",
+            default: "remove",
+            value: "remove"
           },
           %{
-            id: "token",
-            type: "credential",
-            default: "ATTESOR_FTVACCESS_TOKEN",
-            value: "ATTESOR_FTVACCESS_TOKEN"
-          },
+            id: "source_paths",
+            type: "array_of_templates",
+            value: [
+              "{work_directory}/{workflow_id}"
+            ]
+          }
         ]
       }
     ]
@@ -361,16 +410,8 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
       version_minor: 0,
       version_micro: 0,
       tags: ["francetv", "studio", "rosetta", "ingest"],
-      parameters: [
-        %{
-          id: "source_prefix",
-          type: "string",
-          value: prefix
-        }
-      ],
-      flow: %{
-        steps: steps ++ common_steps
-      }
+      parameters: extra_parameters,
+      steps: steps ++ common_steps
     }
   end
 end
