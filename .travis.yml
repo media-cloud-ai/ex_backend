@@ -12,15 +12,11 @@ otp_release:
   - 22.0
 
 matrix:
-  exclude:
-    - elixir: 1.6.1
-      otp_release: 21.0
-
-matrix:
   include:
     # Elixir format
     - elixir: 1.9.1
       script:
+        - touch config/dev.secret.exs
         - mix format --check-formatted
       env: CHECK_FORMAT=TRUE
     # Elixir credo
@@ -53,7 +49,6 @@ before_script:
   - echo -n 0.0.0 > VERSION
 
 scripts:
-  - if [[ $(elixir --version) = *"1.7"* ]]; then mix format --check-formatted; fi
   - mix test
   - cd assets && ../yarn && ../yarn run lint && ../yarn run release
 
