@@ -1,4 +1,6 @@
 defmodule ExBackend.Credentials.Credential do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
   alias ExBackend.Credentials.Credential

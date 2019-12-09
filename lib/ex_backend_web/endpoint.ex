@@ -25,6 +25,7 @@ defmodule ExBackendWeb.Endpoint do
 
   plug(Plug.RequestId)
   plug(Plug.Logger)
+
   plug(CORSPlug,
     headers: [
       "Authorization",
@@ -40,7 +41,7 @@ defmodule ExBackendWeb.Endpoint do
       "If-Modified-Since",
       "X-CSRF-Token",
       "Range"
-    ],
+    ]
   )
 
   plug(

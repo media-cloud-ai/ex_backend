@@ -1,4 +1,6 @@
 defmodule ExBackend.Accounts.LoginConfirm do
+  @moduledoc false
+
   use Phauxth.Login.Base
 
   def authenticate(%{"password" => password} = params) do

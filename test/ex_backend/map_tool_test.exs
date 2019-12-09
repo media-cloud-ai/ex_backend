@@ -3,6 +3,7 @@ defmodule ExBackend.MapToolTest do
 
   test "get dict atom parameter value by atom" do
     atom_value = "atom_value"
+
     atom_dict = %{
       atom_key: atom_value
     }
@@ -22,6 +23,7 @@ defmodule ExBackend.MapToolTest do
 
   test "replace dict atom parameter value" do
     atom_value = "atom_value"
+
     atom_dict = %{
       atom_key: atom_value
     }
@@ -38,5 +40,4 @@ defmodule ExBackend.MapToolTest do
     string_dict = ExBackend.Map.replace_by_atom(string_dict, :string_key, "new_string_value")
     assert string_dict.string_key =~ "new_string_value"
   end
-
 end

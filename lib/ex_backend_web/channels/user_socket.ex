@@ -1,4 +1,6 @@
 defmodule ExBackendWeb.UserSocket do
+  @moduledoc false
+
   use Phoenix.Socket,
     check_origin: [
       "https://backend.media-io.com",

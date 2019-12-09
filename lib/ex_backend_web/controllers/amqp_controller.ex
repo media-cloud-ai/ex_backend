@@ -29,7 +29,7 @@ defmodule ExBackendWeb.Amqp.AmqpController do
 
     port =
       System.get_env("AMQP_MANAGEMENT_PORT") || Application.get_env(:amqp, :management_port) ||
-        15672
+        15_672
         |> port_format
 
     url = "http://" <> hostname <> ":" <> port <> "/api/" <> endpoint

@@ -1,4 +1,6 @@
 defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
+  @moduledoc false
+
   def get_extra_parameters(video_id) do
     video =
       ExVideoFactory.videos(%{"qid" => video_id})
@@ -44,22 +46,22 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
       %{
         id: "channel",
         type: "string",
-        value: channel,
+        value: channel
       },
       %{
         id: "broadcasted_at",
         type: "string",
-        value: broadcasted_at,
+        value: broadcasted_at
       },
       %{
         id: "additional_title",
         type: "string",
-        value: additional_title,
+        value: additional_title
       },
       %{
         id: "title",
         type: "string",
-        value: title,
+        value: title
       }
     ]
   end
@@ -71,7 +73,9 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
   defp format_broadcasted_at(date) do
     date_object =
       case Timex.parse(date, "%Y-%m-%dT%H:%M:%S", :strftime) do
-        {:ok, date_object} -> date_object
+        {:ok, date_object} ->
+          date_object
+
         {:error, _} ->
           {:ok, parsed} = Timex.parse(date, "{ISO:Extended}")
           parsed
@@ -159,8 +163,7 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
         label: "Inspect ISM Manifest",
         icon: "assignment",
         enable: true,
-        parameters: [
-        ]
+        parameters: []
       },
       %{
         id: 2,
@@ -217,7 +220,8 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
           %{
             id: "command_template",
             type: "string",
-            value: "ffmpeg -i {video_filename} -i {audio_filename} -codec:a copy -codec:a copy -map 0:3 -map 1:0 -dn {destination_path}"
+            value:
+              "ffmpeg -i {video_filename} -i {audio_filename} -codec:a copy -codec:a copy -map 0:3 -map 1:0 -dn {destination_path}"
           },
           %{
             id: "video_filename",
@@ -239,7 +243,7 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
             enable: false,
             default: "merged.mp4",
             value: "merged.mp4"
-          },
+          }
         ]
       },
       %{
@@ -258,7 +262,7 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
             value: [ttml_path]
           }
         ]
-      },
+      }
     ]
 
     get_definition(steps, 4, 3, 4, extra_parameters)
@@ -361,8 +365,10 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
           %{
             id: "destination_path",
             type: "template",
-            default: "{channel}/{title}/{channel}_{broadcasted_at}_{title}_{additional_title}{extension}",
-            value: "{channel}/{title}/{channel}_{broadcasted_at}_{title}_{additional_title}{extension}"
+            default:
+              "{channel}/{title}/{channel}_{broadcasted_at}_{title}_{additional_title}{extension}",
+            value:
+              "{channel}/{title}/{channel}_{broadcasted_at}_{title}_{additional_title}{extension}"
           },
           %{
             id: "ssl",

@@ -1,4 +1,6 @@
 defmodule ExBackend.Migration.CreateSubtitles do
+  @moduledoc false
+
   use Ecto.Migration
 
   def change do

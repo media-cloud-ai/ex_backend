@@ -1,4 +1,6 @@
 defmodule ExBackend.Migration.CreateRegistery do
+  @moduledoc false
+
   use Ecto.Migration
 
   def change do

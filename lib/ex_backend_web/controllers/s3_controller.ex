@@ -14,10 +14,15 @@ defmodule ExBackendWeb.S3Controller do
 
   def config(conn, _params) do
     url = System.get_env("AWS_URL") || Application.get_env(:ex_backend, :aws_url)
-    access_key = System.get_env("AWS_ACCESS_KEY") || Application.get_env(:ex_backend, :aws_access_key)
+
+    access_key =
+      System.get_env("AWS_ACCESS_KEY") || Application.get_env(:ex_backend, :aws_access_key)
+
     region = System.get_env("AWS_REGION") || Application.get_env(:ex_backend, :aws_region)
     bucket = System.get_env("AWS_BUCKET") || Application.get_env(:ex_backend, :aws_bucket)
-    vod_endpoint = System.get_env("VOD_ENDPOINT") || Application.get_env(:ex_backend, :vod_endpoint)
+
+    vod_endpoint =
+      System.get_env("VOD_ENDPOINT") || Application.get_env(:ex_backend, :vod_endpoint)
 
     config = %{
       url: url,
@@ -39,7 +44,8 @@ defmodule ExBackendWeb.S3Controller do
       url
       |> String.split("/")
 
-    secret_key = System.get_env("AWS_SECRET_KEY") || Application.get_env(:ex_backend, :aws_secret_key)
+    secret_key =
+      System.get_env("AWS_SECRET_KEY") || Application.get_env(:ex_backend, :aws_secret_key)
 
     date_key = :crypto.hmac(:sha256, "AWS4" <> secret_key, date)
     date_region_key = :crypto.hmac(:sha256, date_key, region)
@@ -53,8 +59,8 @@ defmodule ExBackendWeb.S3Controller do
   def presign_url(conn, %{"path" => path} = params) do
     bucket =
       Map.get(params, "bucket") ||
-      System.get_env("AWS_BUCKET") ||
-      Application.get_env(:ex_backend, :aws_bucket)
+        System.get_env("AWS_BUCKET") ||
+        Application.get_env(:ex_backend, :aws_bucket)
 
     url = make_presigned_url(path, bucket)
 
@@ -78,8 +84,12 @@ defmodule ExBackendWeb.S3Controller do
       end
 
     region = System.get_env("AWS_REGION") || Application.get_env(:ex_backend, :aws_region)
-    access_key = System.get_env("AWS_ACCESS_KEY") || Application.get_env(:ex_backend, :aws_access_key)
-    secret_key = System.get_env("AWS_SECRET_KEY") || Application.get_env(:ex_backend, :aws_secret_key)
+
+    access_key =
+      System.get_env("AWS_ACCESS_KEY") || Application.get_env(:ex_backend, :aws_access_key)
+
+    secret_key =
+      System.get_env("AWS_SECRET_KEY") || Application.get_env(:ex_backend, :aws_secret_key)
 
     query_params = [
       {"ACL", "public-read"}
@@ -103,9 +113,8 @@ defmodule ExBackendWeb.S3Controller do
       host: url
     }
 
-    {:ok, presigned_url} =
-      ExAws.S3.presigned_url(config, :get, bucket, path, presign_options)
+    {:ok, presigned_url} = ExAws.S3.presigned_url(config, :get, bucket, path, presign_options)
 
-    presigned_url 
- end
+    presigned_url
+  end
 end

@@ -25,12 +25,12 @@ defmodule ExBackendWeb.CredentialController do
     local_token = "mediacloudai"
 
     vault =
-      Vault.new([
+      Vault.new(
         engine: Vault.Engine.KVV2,
         auth: Vault.Auth.Token,
         host: "http://192.168.99.101:8201",
         token: local_token
-      ])
+      )
 
     Vault.read(vault, "secret/FTP_FranceTV_Akamai")
     Vault.list(vault, "secret/")

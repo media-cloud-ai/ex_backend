@@ -1,11 +1,10 @@
 defmodule ExBackendWeb.BrowserChannel do
+  @moduledoc false
+
   use Phoenix.Channel
   require Logger
   alias ExBackend.Watchers
   alias ExBackendWeb.Presence
-  alias ExBackend.Workflows
-  alias ExBackend.WorkflowStep
-  alias ExBackend.Workflows.Workflow
 
   intercept([
     "file_system",
@@ -102,7 +101,7 @@ defmodule ExBackendWeb.BrowserChannel do
         %{assigns: %{identifier: identifier}} = socket
       ) do
     Logger.info("new item #{identifier} / #{date_time}: #{filename}")
-    watchers = Watchers.list_watchers(%{identifier: identifier})
+    _watchers = Watchers.list_watchers(%{identifier: identifier})
     {:noreply, socket}
   end
 

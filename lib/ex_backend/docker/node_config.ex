@@ -1,4 +1,6 @@
 defmodule ExBackend.Docker.NodeConfig do
+  @moduledoc false
+
   alias ExBackend.Nodes.Node
 
   def build(hostname, port, cacertfile, certfile, keyfile) do

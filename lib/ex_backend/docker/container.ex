@@ -1,4 +1,6 @@
 defmodule ExBackend.Docker.Container do
+  @moduledoc false
+
   alias RemoteDockers.ContainerConfig
 
   def build_config(params) do

@@ -1,13 +1,11 @@
 defmodule ExBackend.WorkflowsTest do
   use ExBackend.DataCase
 
-
   alias StepFlow.Workflows.Workflow
   alias StepFlow.Workflows
   alias StepFlow.Repo
 
   describe "workflows" do
-
     @valid_attrs %{
       identifier: "id",
       version_major: 6,

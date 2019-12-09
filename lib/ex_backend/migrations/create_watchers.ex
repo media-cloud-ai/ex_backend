@@ -1,4 +1,6 @@
 defmodule ExBackend.Migration.CreateWatchers do
+  @moduledoc false
+
   use Ecto.Migration
 
   def change do

@@ -29,7 +29,7 @@ defmodule ExBackendWeb.Router do
     put("/password_resets/update", PasswordResetController, :update)
 
     scope "/step_flow", StepFlow do
-      forward "/", Plug
+      forward("/", Plug)
     end
 
     get("/workflow/:identifier", WorkflowController, :get)
@@ -44,14 +44,6 @@ defmodule ExBackendWeb.Router do
         post("/start", ContainersController, :start)
         post("/stop", ContainersController, :stop)
       end
-    end
-
-    resources "/catalog", CatalogController, except: [:new, :edit]
-
-    resources("/registery", RegisteryController, except: [:new, :edit]) do
-      post("/subtitle", RegisteryController, :add_subtitle)
-      put("/subtitle/:index", RegisteryController, :update_subtitle)
-      delete("/subtitle/:index", RegisteryController, :delete_subtitle)
     end
 
     scope "/amqp", Amqp do

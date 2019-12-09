@@ -1,4 +1,6 @@
 defmodule ExBackendWeb.WatchChannel do
+  @moduledoc false
+
   use Phoenix.Channel
   alias ExBackendWeb.Presence
 

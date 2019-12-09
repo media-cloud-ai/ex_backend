@@ -31,7 +31,6 @@ defmodule ExBackend.FtvStudioRosettaTest do
 
       assert Enum.at(destination_paths, 3) ==
                "F2/Emission_test/F2_2019_12_08_Emission_test_Additional_Title.mp4"
-
     end)
 
     :ok
@@ -45,15 +44,20 @@ defmodule ExBackend.FtvStudioRosettaTest do
             key: "ATTESOR_FTVACCESS_ENDPOINT",
             value: "https://demo.media-io.com/mockup/francetv"
           })
-        _ -> nil
+
+        _ ->
+          nil
       end
+
       case ExBackend.Credentials.get_credential_by_key("ATTESOR_FTVACCESS_TOKEN") do
         nil ->
           ExBackend.Credentials.create_credential(%{
             key: "ATTESOR_FTVACCESS_TOKEN",
             value: "my_personal_token"
           })
-        _ -> nil
+
+        _ ->
+          nil
       end
 
       workflow_params =

@@ -1,4 +1,6 @@
 defmodule ExBackend.Migration.UpdatePersons do
+  @moduledoc false
+
   use Ecto.Migration
 
   def change do
