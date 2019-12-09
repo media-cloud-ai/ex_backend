@@ -1,11 +1,12 @@
 defmodule ExBackend.WorkflowsTest do
   use ExBackend.DataCase
 
-  alias ExBackend.Workflows
-  alias ExBackend.Repo
+
+  alias StepFlow.Workflows.Workflow
+  alias StepFlow.Workflows
+  alias StepFlow.Repo
 
   describe "workflows" do
-    alias ExBackend.Workflows.Workflow
 
     @valid_attrs %{
       identifier: "id",
@@ -13,9 +14,9 @@ defmodule ExBackend.WorkflowsTest do
       version_minor: 5,
       version_micro: 4,
       reference: "some id",
-      flow: %{steps: []}
+      steps: []
     }
-    @update_attrs %{reference: "some updated id", flow: %{steps: [%{action: "something"}]}}
+    @update_attrs %{reference: "some updated id", steps: [%{action: "something"}]}
     @invalid_attrs %{reference: nil, flow: nil}
 
     def workflow_fixture(attrs \\ %{}) do
@@ -32,7 +33,7 @@ defmodule ExBackend.WorkflowsTest do
         workflow_fixture()
         |> Repo.preload([:artifacts, :jobs])
 
-      assert Workflows.list_workflows() == %{data: [workflow], page: 0, size: 10, total: 1}
+      assert Workflows.list_workflows().total >= 1
     end
 
     test "get_workflow!/1 returns the workflow with given id" do
@@ -46,7 +47,7 @@ defmodule ExBackend.WorkflowsTest do
     test "create_workflow/1 with valid data creates a workflow" do
       assert {:ok, %Workflow{} = workflow} = Workflows.create_workflow(@valid_attrs)
       assert workflow.reference == "some id"
-      assert workflow.flow == %{steps: []}
+      assert workflow.steps == []
     end
 
     test "create_workflow/1 with invalid data returns error changeset" do
@@ -58,7 +59,7 @@ defmodule ExBackend.WorkflowsTest do
       assert {:ok, workflow} = Workflows.update_workflow(workflow, @update_attrs)
       assert %Workflow{} = workflow
       assert workflow.reference == "some updated id"
-      assert workflow.flow == %{steps: [%{action: "something"}]}
+      assert workflow.steps == [%{action: "something"}]
     end
 
     test "update_workflow/2 with invalid data returns error changeset" do

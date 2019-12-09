@@ -263,12 +263,6 @@ defmodule ExBackendWeb.WorkflowController do
   def get(conn, %{"identifier" => workflow_identifier} = params) do
     workflow =
       case workflow_identifier do
-        "ebu_ingest" ->
-          ExBackend.Workflow.Definition.EbuIngest.get_definition(
-            "#agent_identifier",
-            "#input_filename"
-          )
-
         "francetv_subtil_rdf_ingest" ->
           reference = Map.get(params, "reference")
           ExVideoFactory.get_ftp_paths_for_video_id(reference)

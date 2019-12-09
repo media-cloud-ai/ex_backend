@@ -1,8 +1,8 @@
 defmodule ExBackend.FrancetvSubtilAcsTest do
   use ExBackendWeb.ConnCase
 
-  alias ExBackend.Workflows
-  alias ExBackend.WorkflowStep
+  alias StepFlow.Workflows
+  alias StepFlow.Step
 
   require Logger
 
@@ -10,12 +10,7 @@ defmodule ExBackend.FrancetvSubtilAcsTest do
     channel = ExBackend.HelpersTest.get_amqp_connection()
 
     on_exit(fn ->
-      ExBackend.HelpersTest.consume_messages(channel, "job_ftp", 2)
-      ExBackend.HelpersTest.consume_messages(channel, "job_http", 1)
-      ExBackend.HelpersTest.consume_messages(channel, "job_ffmpeg", 1)
-      ExBackend.HelpersTest.consume_messages(channel, "job_acs", 1)
-      ExBackend.HelpersTest.consume_messages(channel, "job_rdf", 1)
-      ExBackend.HelpersTest.consume_messages(channel, "job_file_system", 1)
+      ExBackend.HelpersTest.consume_messages(channel, "job_queue_not_found", 7)
     end)
 
     :ok
@@ -32,37 +27,38 @@ defmodule ExBackend.FrancetvSubtilAcsTest do
         |> Map.put(:reference, "666")
 
       {:ok, workflow} = Workflows.create_workflow(workflow_params)
-      {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+
+      {:ok, "started"} = Step.start_next(workflow)
       ExBackend.HelpersTest.check(workflow.id, 1)
       ExBackend.HelpersTest.check(workflow.id, "download_ftp", 1)
       ExBackend.HelpersTest.complete_jobs(workflow.id, "download_ftp")
 
-      {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+      {:ok, "started"} = Step.start_next(workflow)
       ExBackend.HelpersTest.check(workflow.id, 2)
       ExBackend.HelpersTest.check(workflow.id, "audio_extraction", 1)
       ExBackend.HelpersTest.complete_jobs(workflow.id, "audio_extraction")
 
-      {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+      {:ok, "started"} = Step.start_next(workflow)
       ExBackend.HelpersTest.check(workflow.id, 3)
       ExBackend.HelpersTest.check(workflow.id, "download_http", 1)
       ExBackend.HelpersTest.complete_jobs(workflow.id, "download_http")
 
-      {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+      {:ok, "started"} = Step.start_next(workflow)
       ExBackend.HelpersTest.check(workflow.id, 4)
       ExBackend.HelpersTest.check(workflow.id, "acs_synchronize", 1)
       ExBackend.HelpersTest.complete_jobs(workflow.id, "acs_synchronize")
 
-      {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+      {:ok, "started"} = Step.start_next(workflow)
       ExBackend.HelpersTest.check(workflow.id, 5)
       ExBackend.HelpersTest.check(workflow.id, "upload_ftp", 1)
       ExBackend.HelpersTest.complete_jobs(workflow.id, "upload_ftp")
 
-      {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+      {:ok, "started"} = Step.start_next(workflow)
       ExBackend.HelpersTest.check(workflow.id, 6)
       ExBackend.HelpersTest.check(workflow.id, "push_rdf", 1)
       ExBackend.HelpersTest.complete_jobs(workflow.id, "push_rdf")
 
-      {:ok, "started"} = WorkflowStep.start_next_step(workflow)
+      {:ok, "started"} = Step.start_next(workflow)
       ExBackend.HelpersTest.check(workflow.id, 7)
       ExBackend.HelpersTest.check(workflow.id, "download_ftp", 1)
       ExBackend.HelpersTest.check(workflow.id, "download_http", 1)
@@ -72,7 +68,7 @@ defmodule ExBackend.FrancetvSubtilAcsTest do
       ExBackend.HelpersTest.check(workflow.id, "push_rdf", 1)
       ExBackend.HelpersTest.check(workflow.id, "clean_workspace", 1)
 
-      {:ok, "completed"} = WorkflowStep.start_next_step(workflow)
+      {:ok, "completed"} = Step.start_next(workflow)
       ExBackend.HelpersTest.check(workflow.id, 7)
     end
   end

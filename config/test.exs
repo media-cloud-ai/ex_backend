@@ -22,7 +22,7 @@ config :step_flow, StepFlow.Repo,
   hostname: "localhost",
   username: "postgres",
   password: "postgres",
-  database: "ex_backend_workflow_dev",
+  database: "ex_backend_workflow_test",
   migration_source: "step_flow_test",
   pool: Ecto.Adapters.SQL.Sandbox
 

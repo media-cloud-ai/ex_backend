@@ -103,37 +103,6 @@ defmodule ExBackendWeb.BrowserChannel do
       ) do
     Logger.info("new item #{identifier} / #{date_time}: #{filename}")
     watchers = Watchers.list_watchers(%{identifier: identifier})
-
-    if watchers.total == 1 do
-      steps = ExBackend.Workflow.Definition.EbuIngest.get_definition(identifier, filename)
-
-      workflow_params = %{
-        reference: filename,
-        flow: steps
-      }
-
-      case Workflows.create_workflow(workflow_params) do
-        {:ok, %Workflow{} = workflow} ->
-          WorkflowStep.start_next_step(workflow)
-
-          ExBackendWeb.Endpoint.broadcast!("notifications:all", "new_workflow", %{
-            body: %{workflow_id: workflow.id}
-          })
-
-          Logger.info("workflow created: #{inspect(workflow)}")
-
-          watcher =
-            watchers
-            |> Map.get(:data)
-            |> List.first()
-
-          Watchers.update_watcher(watcher, %{last_event: date_time})
-
-        {:error, changeset} ->
-          Logger.error("unable to start workflow: #{inspect(changeset)}")
-      end
-    end
-
     {:noreply, socket}
   end
 
