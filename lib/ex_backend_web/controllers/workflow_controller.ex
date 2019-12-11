@@ -150,9 +150,8 @@ defmodule ExBackendWeb.WorkflowController do
         "identifier" => "speech_to_text",
         "audio_source_filename" => audio_source_filename,
         "content_type" => content_type,
-        "language" => language,
+        "language" => language
       }) do
-
     workflow_params =
       ExBackend.Workflow.Definition.FrancetvSpeechToText.get_definition()
       |> Map.put(:reference, audio_source_filename)
@@ -212,7 +211,8 @@ defmodule ExBackendWeb.WorkflowController do
   end
 
   def create_specific(conn, params) do
-    Logger.warn("unable to start workflow: #{inspect params}")
+    Logger.warn("unable to start workflow: #{inspect(params)}")
+
     conn
     |> put_status(:unprocessable_entity)
     |> json(%{

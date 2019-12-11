@@ -48,7 +48,7 @@ defmodule ExBackend.Workflow.Definition.FrancetvSpeechToText do
               id: "source_region",
               type: "credential",
               value: "S3_STORAGE_REGION"
-            },
+            }
           ]
         },
         %{
