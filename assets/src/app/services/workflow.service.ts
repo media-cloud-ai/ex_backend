@@ -62,20 +62,6 @@ export class WorkflowService {
       )
   }
 
-  getStandaloneWorkflowDefinition(workflow_identifier: string, audio_url: string, ttml_url: string, destination_url: string) {
-    let params = new HttpParams()
-    params = params.append('reference', destination_url)
-    params = params.append('audio_url', audio_url)
-    params = params.append('ttml_url', ttml_url)
-    params = params.append('destination_url', destination_url)
-
-    return this.http.get<Workflow>(this.workflowUrl  + '/' + workflow_identifier, {params: params})
-      .pipe(
-        tap(workflowPage => this.log('fetched Workflow')),
-        catchError(this.handleError('getWorkflowDefinition', undefined))
-      )
-  }
-
   getWorkflow(workflow_id: number): Observable<WorkflowData> {
     return this.http.get<WorkflowData>(this.workflowsUrl  + '/' + workflow_id.toString())
       .pipe(
@@ -92,8 +78,8 @@ export class WorkflowService {
       )
   }
 
-  createSpecificWorkflow(workflow_identifier: string, reference: string): Observable<Workflow> {
-    return this.http.post<Workflow>(this.workflowUrl  + '/' + workflow_identifier, {identifier: workflow_identifier, reference: reference})
+  createSpecificWorkflow(workflow_identifier: string, parameters: any): Observable<Workflow> {
+    return this.http.post<Workflow>(this.workflowUrl  + '/' + workflow_identifier, parameters)
       .pipe(
         tap(workflowPage => this.log('fetched Workflow')),
         catchError(this.handleError('getWorkflowDefinition', undefined))

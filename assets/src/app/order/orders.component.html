@@ -1,5 +1,4 @@
-<h1>Orders</h1>
-
+<h1>Commandes</h1>
 
 <button
   mat-raised-button
@@ -7,16 +6,15 @@
   (click)="newOrder()"
   >
   <i class="material-icons">add</i>
-  New Order
+  Nouvelle commande
 </button>
-
 
 <div class=search>
   <mat-form-field class="search-text-input">
     <input
       matInput
       type="number"
-      placeholder="Order ID"
+      placeholder="ID de la commande"
       name=order_id
       [(ngModel)]="order_id"
       (ngModelChange)="getWorkflows()"

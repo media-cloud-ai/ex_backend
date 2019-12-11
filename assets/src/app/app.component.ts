@@ -96,7 +96,7 @@ export class AppComponent {
         if (this.application && this.application.identifier === 'subtil') {
           this.left_menu.push({
             'link': '/orders',
-            'label': 'Orders'
+            'label': 'Commandes'
           })
         }
       }

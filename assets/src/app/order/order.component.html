@@ -1,70 +1,98 @@
-<h1>New Order</h1>
+<h1>Nouvelle commande</h1>
 
-<mat-tab-group>
-  <mat-tab label="Upload files">
-    <div class=inputs>
-      <div class=dropzone>
-        <mat-form-field>
-          <ngx-mat-file-input [(ngModel)]="mp4_file" placeholder="MP4 video file" [accept]="'.mp4'"></ngx-mat-file-input>
-          <mat-icon matSuffix>folder</mat-icon>
+<mat-horizontal-stepper linear="true" #stepper>
+  <mat-step [stepControl]="modeSelection">
+    <ng-template matStepLabel>Sélection du service</ng-template>
+    <div class=services>
+      <div class=service
+        *ngFor="let service of services">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="selectService(service)"
+          >
+          <i class="material-icons" *ngIf=service.icon>
+            {{service.icon}}
+          </i>
+          {{service.label}}
+        </button>
+      </div>
+    </div>
+  </mat-step>
+  <mat-step [stepControl]="inputSelection">
+    <ng-template matStepLabel>Paramétrage</ng-template>
+    <div *ngIf=selectedService>
+      <div class=service
+        *ngFor="let parameter of selectedService.parameters">
+
+          <div class=dropzone *ngIf="parameter.type == 'file'">
+            <mat-form-field>
+              <ngx-mat-file-input
+                [(ngModel)]="parameters[parameter.id]"
+                [placeholder]="parameter.label"
+                [accept]="parameter.accept">
+                </ngx-mat-file-input>
+              <mat-icon matSuffix>folder</mat-icon>
+            </mat-form-field>
+          </div>
+        <mat-form-field
+          *ngIf="parameter.type == 'choice'">
+          <mat-select
+            [placeholder]="parameter.label"
+            [(ngModel)]="parameters[parameter.id]"
+            >
+            <mat-option
+              *ngFor="let item of parameter.items"
+              [value]="item.id"
+              [ngClass]="item.id" >
+              {{ item.label }}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
       </div>
-      <div class=dropzone>
-        <mat-form-field>
-          <ngx-mat-file-input [(ngModel)]="ttml_file" placeholder="TTML file" [accept]="'.ttml'"></ngx-mat-file-input>
-          <mat-icon matSuffix>folder</mat-icon>
-        </mat-form-field>
-      </div>
+    </div>
+    <div>
+      <button mat-button matStepperPrevious>Retour</button>
+      <button mat-button matStepperNext (click)="upload()">Suite</button>
+    </div>
+  </mat-step>
+
+  <mat-step [stepControl]="upload">
+    <ng-template matStepLabel>Chargement des fichiers</ng-template>
+    <div>Récupération des fichiers:</div>
+
+    <div *ngFor="let progressBar of progressBars" class=fileProgress>
+      {{progressBar.name}} - {{progressBar.progress}}&nbsp;%
+      <mat-progress-bar
+        [value]="progressBar.progress">
+      </mat-progress-bar>
+    </div>
+
+    <div>
+      <button
+        mat-button
+        matStepperPrevious>
+        Retour
+      </button>
+      <button
+        mat-button
+        matStepperNext
+        [disabled]='!uploadCompleted'
+        (click)="startWorkflow()">
+        Démarrer le traitement
+      </button>
+    </div>
+  </mat-step>
+  <mat-step [stepControl]="startWorkflow">
+    <ng-template matStepLabel>Traitement</ng-template>
+    <div>
+      Votre commande est en cours de réalisation.
     </div>
 
     <button
-      mat-raised-button
-      color="accent"
-      (click)="upload()"
-      [disabled]="!mp4_file && !ttml_file"
-      >
-      <i class="material-icons">cloud_upload</i>
-      Upload and start workflow
+      mat-button
+      (click)="follow()">
+      Suivre la commande
     </button>
-
-    <div class=progress>
-      <div>
-        {{mp4_percent_uploaded | number: '1.0-0'}} % of MP4 uploaded
-        <mat-progress-bar
-          [value]="mp4_percent_uploaded">
-        </mat-progress-bar>
-      </div>
-
-      <div>
-        {{ttml_percent_uploaded | number: '1.0-0'}} % of TTML uploaded
-        <mat-progress-bar
-          [value]="ttml_percent_uploaded">
-        </mat-progress-bar>
-      </div>
-    </div>
-
-  </mat-tab>
-  <mat-tab label="Via UUID from SI Video">
-    <div>
-      <mat-form-field class="search-text-input">
-        <input
-          matInput
-          placeholder="Video identifier"
-          name=video_identifier
-          [(ngModel)]="video_identifier"
-          >
-      </mat-form-field>
-    </div>
-    <div>
-      <button
-        mat-raised-button
-        color="accent"
-        (click)="start_via_uuid()"
-        [disabled]="!video_identifier"
-        >
-        <i class="material-icons">playlist_play</i>
-        Start and show workflow
-      </button>
-    </div>
-  </mat-tab>
-</mat-tab-group>
+  </mat-step>
+</mat-horizontal-stepper>

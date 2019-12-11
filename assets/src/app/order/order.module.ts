@@ -17,6 +17,7 @@ import {
   MatProgressSpinnerModule,
   MatSelectModule,
   MatSliderModule,
+  MatStepperModule,
   MatTabsModule,
   } from '@angular/material'
 
@@ -42,6 +43,7 @@ export const ROUTES: Routes = [
     MatProgressSpinnerModule,
     MatSelectModule,
     MatSliderModule,
+    MatStepperModule,
     MatTabsModule,
     MaterialFileInputModule,
     PipesModule,

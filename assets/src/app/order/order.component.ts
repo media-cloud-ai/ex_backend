@@ -1,6 +1,7 @@
 
-import {Component} from '@angular/core'
+import {Component, ViewChild} from '@angular/core'
 import {ActivatedRoute, Router} from '@angular/router'
+import {MatStepper} from '@angular/material';
 
 import {S3Configuration} from '../models/s3'
 
@@ -17,15 +18,87 @@ let crypto = require('crypto');
 })
 
 export class OrderComponent {
-  is_new_order: boolean = false
-  order_id: number
-  mp4_file: any
-  ttml_file: any
-  video_identifier: string = "0b0651d8-34b9-4724-b36a-96a3e1f71ef8"
-  mp4_percent_uploaded = 0
-  ttml_percent_uploaded = 0
-  completed = 0
-  s3_configuration: S3Configuration
+  @ViewChild('stepper') stepper: MatStepper;
+  s3Configuration: S3Configuration;
+  progressBars = [];
+  completed: number = 0;
+  uploadCompleted = false;
+  parameters: any = {};
+
+  services = [
+    {
+      "id": "acs",
+      "label": "Re-synchronisation du sous-titre basé sur l'audio",
+      "icon": "sync",
+      "parameters": [
+        {
+          "id": "ttmlSourceFile",
+          "label": "TTML Source file",
+          "type": "file"
+        },
+        {
+          "id": "audioSourceFile",
+          "label": "Audio Source file (can be video with audio)",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "id": "speech_to_text",
+      "label": "Transcription",
+      "icon": "subtitles",
+      "parameters": [
+        {
+          "id": "audioSourceFile",
+          "label": "Audio Source file",
+          "type": "file",
+          "accept": ".wav"
+        },
+        {
+          "id": "language",
+          "label": "Langue audio",
+          "type": "choice",
+          "default": "fr",
+          "items": [
+            {
+              "id": "fr",
+              "label": "Français"
+            },
+            {
+              "id": "en",
+              "label": "Anglais"
+            }
+          ]
+        },
+        {
+          "id": "contentType",
+          "label": "Type du contenu",
+          "type": "choice",
+          "default": "news",
+          "items": [
+            {
+              "id": "documentary",
+              "label": "Documentaire"
+            },
+            {
+              "id": "fiction",
+              "label": "Fiction"
+            },
+            {
+              "id": "news",
+              "label": "News"
+            },
+            {
+              "id": "reportage",
+              "label": "Reportage"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+
+  selectedService = undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -35,37 +108,30 @@ export class OrderComponent {
   ) {}
 
   ngOnInit() {
-    this.route
-      .params.subscribe(params => {
-        if(params['id'] == 'new') {
-          this.is_new_order = true
-        } else {
-          this.order_id = params['id']
-        }
-      })
-
     this.s3Service.getConfiguration()
-      .subscribe(s3_configuration => {
-        this.s3_configuration = s3_configuration
+      .subscribe(s3Configuration => {
+        this.s3Configuration = s3Configuration
       })
   }
 
+  selectService(service) {
+    this.selectedService = service;
+    this.stepper.next();
+  }
+
   upload() {
-    var mp4_file = this.mp4_file.files[0]
-    var ttml_file = this.ttml_file.files[0]
     var current = this
-    this.mp4_percent_uploaded = 0;
-    this.ttml_percent_uploaded = 0;
     current.completed = 0;
+    current.progressBars = [];
+    current.uploadCompleted = false;
 
     var config = {
       signerUrl: '/api/s3_signer',
-      aws_key: this.s3_configuration.access_key,
-      bucket: 'subtil',
-      aws_url: this.s3_configuration.url,
+      aws_key: this.s3Configuration.access_key,
+      bucket: this.s3Configuration.bucket,
+      aws_url: this.s3Configuration.url,
       computeContentMd5: true,
       cryptoMd5Method: function (data) {
-        console.log(data, crypto.createHash('md5'))
         var buffer = new Buffer(data)
         return crypto.createHash('md5').update(buffer).digest('base64');
       },
@@ -74,85 +140,66 @@ export class OrderComponent {
 
     var uploader = Evaporate.create(config)
       .then(function (evaporate) {
-        var mp4Config = {
-          name: mp4_file.name,
-          file: mp4_file,
-          progress: function (progressValue) {
-            current.mp4_percent_uploaded = progressValue * 100;
-          },
-          complete: function (_xhr, awsKey) {
-            current.completed += 1
-            if(current.completed == 2) {
-              current.launch_workflow(mp4_file.name, ttml_file.name)
-            }
-          },
-        }
-        var ttmlConfig = {
-          name: ttml_file.name,
-          file: ttml_file,
-          progress: function (progressValue) {
-            current.ttml_percent_uploaded = progressValue * 100;
-          },
-          complete: function (_xhr, awsKey) {
-            current.completed += 1
-            if(current.completed == 2) {
-              current.launch_workflow(mp4_file.name, ttml_file.name)
-            }
-          },
-        }
+        
         var overrides = {
-          bucket: 'subtil'
+          bucket: current.s3Configuration.bucket
         }
 
-        evaporate.add(mp4Config, overrides)
-          .then(function (awsObjectKey) {
-            console.log('File successfully uploaded to:', awsObjectKey);
-          },
-          function (reason) {
-            console.log('File did not upload sucessfully:', reason);
-          })
+        Object.entries(current.parameters).forEach(
+          ([key, value]) => {
+            if(typeof value == 'object') {
+              const file = (<HTMLInputElement>value).files[0]
+              current.progressBars.push({name: file.name, progress: 0});
 
-        evaporate.add(ttmlConfig, overrides)
-          .then(function (awsObjectKey) {
-            console.log('File successfully uploaded to:', awsObjectKey);
-          },
-          function (reason) {
-            console.log('File did not upload sucessfully:', reason);
-          })
+              var fileConfig = {
+                name: file.name,
+                file: file,
+                progress: function (progressValue) {
+                  for(let item of current.progressBars) {
+                    if(item.name == file.name) {
+                      item.progress = progressValue * 100;
+                    }
+                  }
+                },
+                complete: function (_xhr, awsKey) {
+                  current.completed += 1
+                  if(current.completed == current.progressBars.length) {
+                    current.uploadCompleted = true
+                  }
+                },
+              }
+
+              evaporate.add(fileConfig, overrides)
+                .then(function (awsObjectKey) {
+                  console.log('File successfully uploaded to:', awsObjectKey);
+                },
+                function (reason) {
+                  console.log('File did not upload sucessfully:', reason);
+                })
+            }
+          }
+        );
+
       })
   }
 
-  launch_workflow(mp4_filename, ttml_filename) {
-    var params = new Array(
-      "credential_aws_secret_key=MEDIAIO_BUCKET_SUBTIL",
-      "credential_aws_secret_key=MEDIAIO_BUCKET_SUBTIL",
-      "hostname=" + this.s3_configuration.url,
-      "region=" + this.s3_configuration.region,
-    ); 
-
-    var source_mp4_url = "s3://" + this.s3_configuration.bucket + "/" + mp4_filename + "?" + params.join("&")
-    var source_ttml_url = "s3://" + this.s3_configuration.bucket + "/" + ttml_filename + "?" + params.join("&")
-    var output_url = "s3://" + this.s3_configuration.bucket + "/output.ttml?" + params.join("&")
-
-    this.workflowService.getStandaloneWorkflowDefinition("ftv_acs_standalone", source_mp4_url, source_ttml_url, output_url)
-      .subscribe(workflowDefinition => {
-        workflowDefinition['reference'] = output_url
-
-        this.workflowService.createWorkflow(workflowDefinition)
-        .subscribe(response => {
-          console.log(response)
-        })
-    })
-  }
-
-  start_via_uuid() {
-    var parameters = {
-      "reference": this.video_identifier
+  startWorkflow() {
+    console.log(this.parameters)
+    const workflowParameters = {
+      "audio_source_filename": this.parameters.audioSourceFile._fileNames,
+      "content_type": this.parameters.contentType,
+      "language": this.parameters.language
     }
 
-    this.workflowService.createSpecificWorkflow("ftv-acs-standalone", this.video_identifier)
-    .subscribe(response => {
-      this.router.navigate(['/orders'], { queryParams: {order_id: response.workflow_id} })
-    })
+    this.workflowService.createSpecificWorkflow(this.selectedService.id, workflowParameters)
+      .subscribe(response => {
+        console.log(response)
+      })
+  }
+
+  follow() {
+    console.log("follow")
+    this.router.navigate(['/orders'])
+    // this.router.navigate(['/orders'], { queryParams: {order_id: response.workflow_id} })
   }
 }
