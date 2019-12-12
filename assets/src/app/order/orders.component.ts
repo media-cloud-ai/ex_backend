@@ -37,7 +37,8 @@ export class OrdersComponent {
     'processing',
   ]
   selectedWorkflows = [
-    'FranceTélévisions ACS (standalone)'
+    'FranceTélévisions ACS (standalone)',
+    'FranceTélévisions Speech To Text'
   ]
   workflows: WorkflowPage
   connections: any = []
@@ -199,14 +200,21 @@ export class OrdersComponent {
     });
   }
 
-  downloadTtml(workflow) {
+  downloadS3Resource(workflow: Workflow, filename:string) {
     if(workflow.artifacts.length > 0) {
-      const ttml_path = this.getDestinationFilename(workflow, "synchronised.ttml");
+      const file_path = this.getDestinationFilename(workflow, filename);
       const current = this
-      this.s3Service.getPresignedUrl(ttml_path).subscribe(response => {
-        current.downloadFileUrl(response.url)
-      });
+
+      if(file_path) {
+        this.s3Service.getPresignedUrl(file_path).subscribe(response => {
+          current.downloadFileUrl(response.url)
+        });
+      }
     }
+  }
+
+  viewTranscript(workflow: Workflow) {
+    this.router.navigate(['orders', workflow.id, 'transcript'])
   }
 
   getDestinationFilename(workflow, extension: string, not_extension?: string) {
@@ -214,7 +222,7 @@ export class OrdersComponent {
       if(job.name == "job_transfer" &&
         job.params.filter(param => param.id === "destination_access_key").length == 1){
         const parameter = job.params.filter(param => param.id === "destination_path");
-        if(parameter.length == 1) {
+        if(parameter.length > 0) {
           if(not_extension) {
             return parameter[0].value.endsWith(extension) && !parameter[0].value.endsWith(not_extension)
           } else {
@@ -227,6 +235,10 @@ export class OrdersComponent {
         return false
       }
     });
+
+    if(result.length == 0){
+      return undefined
+    }
 
     return result[0].params.filter(param => param.id === "destination_path")[0].value;
   }

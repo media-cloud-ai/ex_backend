@@ -39,7 +39,8 @@
       </div>
     </span>
 
-    <span class="actions">
+    <span class="actions"
+      *ngIf="workflow.identifier === 'FranceTélévisions ACS (standalone)'">
       <span
         class="link"
         [ngClass]="{'disabled': workflow.artifacts.length == 0}"
@@ -56,13 +57,35 @@
       <button
         mat-raised-button
         color="accent"
-        (click)="downloadTtml(workflow)"
+        (click)="downloadS3Resource(workflow, 'synchronised.ttml')"
         [disabled]="workflow.artifacts.length == 0"
         >
         <i class="material-icons">cloud_download</i>
         Download TTML
       </button>
-      
+    </span>
+
+    <span class="actions"
+      *ngIf="workflow.identifier === 'FranceTélévisions Speech To Text'">
+
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="viewTranscript(workflow)"
+        [disabled]="workflow.artifacts.length == 0"
+        >
+        <i class="material-icons">search</i>
+        Visualiser
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="downloadS3Resource(workflow, 'transcript.json')"
+        [disabled]="workflow.artifacts.length == 0"
+        >
+        <i class="material-icons">cloud_download</i>
+        Télécharger
+      </button>
     </span>
   </div>
   <div *ngIf="workflows.data.length === 0" class=not_found>
