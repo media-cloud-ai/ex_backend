@@ -1,5 +1,4 @@
-<h1>Orders</h1>
-
+<h1>Commandes</h1>
 
 <button
   mat-raised-button
@@ -7,16 +6,15 @@
   (click)="newOrder()"
   >
   <i class="material-icons">add</i>
-  New Order
+  Nouvelle commande
 </button>
-
 
 <div class=search>
   <mat-form-field class="search-text-input">
     <input
       matInput
       type="number"
-      placeholder="Order ID"
+      placeholder="ID de la commande"
       name=order_id
       [(ngModel)]="order_id"
       (ngModelChange)="getWorkflows()"
@@ -41,7 +39,8 @@
       </div>
     </span>
 
-    <span class="actions">
+    <span class="actions"
+      *ngIf="workflow.identifier === 'FranceTélévisions ACS (standalone)'">
       <span
         class="link"
         [ngClass]="{'disabled': workflow.artifacts.length == 0}"
@@ -58,13 +57,35 @@
       <button
         mat-raised-button
         color="accent"
-        (click)="downloadTtml(workflow)"
+        (click)="downloadS3Resource(workflow, 'synchronised.ttml')"
         [disabled]="workflow.artifacts.length == 0"
         >
         <i class="material-icons">cloud_download</i>
         Download TTML
       </button>
-      
+    </span>
+
+    <span class="actions"
+      *ngIf="workflow.identifier === 'FranceTélévisions Speech To Text'">
+
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="viewTranscript(workflow)"
+        [disabled]="workflow.artifacts.length == 0"
+        >
+        <i class="material-icons">search</i>
+        Visualiser
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="downloadS3Resource(workflow, 'transcript.json')"
+        [disabled]="workflow.artifacts.length == 0"
+        >
+        <i class="material-icons">cloud_download</i>
+        Télécharger
+      </button>
     </span>
   </div>
   <div *ngIf="workflows.data.length === 0" class=not_found>

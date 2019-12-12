@@ -18,6 +18,7 @@ export class VideoTitleComponent {
 
   application: Application
   video: Catalog
+  loading: boolean = true
 
   constructor(
     private applicationService: ApplicationService,
@@ -29,6 +30,7 @@ export class VideoTitleComponent {
     var index = 0
     var page = 0
     var selectedChannels = undefined
+    this.loading = true
 
     this.applicationService.get_cached_app()
     .subscribe(response => {
@@ -37,7 +39,10 @@ export class VideoTitleComponent {
       if (this.application.identifier === 'subtil') {
         this.catalogService.getVideo(this.id)
         .subscribe(response => {
-          this.video = response.data
+          if(response) {
+            this.video = response.data
+          }
+          this.loading = false
         })
       }
     })

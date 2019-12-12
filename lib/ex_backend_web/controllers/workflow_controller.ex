@@ -1,5 +1,6 @@
 defmodule ExBackendWeb.WorkflowController do
   use ExBackendWeb, :controller
+  require Logger
 
   import ExBackendWeb.Authorize
 
@@ -145,6 +146,43 @@ defmodule ExBackendWeb.WorkflowController do
     })
   end
 
+  def create_specific(conn, %{
+        "identifier" => "speech_to_text",
+        "audio_source_filename" => audio_source_filename,
+        "content_type" => content_type,
+        "language" => language
+      }) do
+    workflow_params =
+      ExBackend.Workflow.Definition.FrancetvSpeechToText.get_definition()
+      |> Map.put(:reference, audio_source_filename)
+      |> Map.put(:parameters, [
+        %{
+          id: "audio_source_filename",
+          type: "string",
+          value: audio_source_filename
+        },
+        %{
+          id: "content_type",
+          type: "string",
+          value: content_type
+        },
+        %{
+          id: "language",
+          type: "string",
+          value: language
+        }
+      ])
+
+    {:ok, workflow} = Workflows.create_workflow(workflow_params)
+    {:ok, response_status} = Step.start_next(workflow)
+
+    conn
+    |> json(%{
+      status: response_status,
+      workflow_id: workflow.id
+    })
+  end
+
   def create_specific(conn, %{"identifier" => "ftv-acs-standalone"} = _params) do
     conn
     |> put_status(:unprocessable_entity)
@@ -163,7 +201,18 @@ defmodule ExBackendWeb.WorkflowController do
     })
   end
 
-  def create_specific(conn, _params) do
+  def create_specific(conn, %{"identifier" => "speech_to_text"} = _params) do
+    conn
+    |> put_status(:unprocessable_entity)
+    |> json(%{
+      status: "error",
+      message: "missing parameters to start speech_to_text workflow"
+    })
+  end
+
+  def create_specific(conn, params) do
+    Logger.warn("unable to start workflow: #{inspect(params)}")
+
     conn
     |> put_status(:unprocessable_entity)
     |> json(%{

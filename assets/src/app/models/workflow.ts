@@ -48,7 +48,7 @@ export class Workflow {
   tags?: string[]
   reference?: string
   created_at?: string
-  artifacts?: Artifact
+  artifacts?: Artifact[]
   steps: Step[]
   workflow_id?: number
 }

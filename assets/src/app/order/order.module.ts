@@ -7,6 +7,7 @@ import { MaterialFileInputModule } from 'ngx-material-file-input';
 
 import { OrdersComponent } from './orders.component';
 import { OrderComponent } from './order.component';
+import { TranscriptViewerComponent } from './transcript_viewer.component';
 
 import {
   MatButtonModule,
@@ -17,6 +18,7 @@ import {
   MatProgressSpinnerModule,
   MatSelectModule,
   MatSliderModule,
+  MatStepperModule,
   MatTabsModule,
   } from '@angular/material'
 
@@ -25,7 +27,8 @@ import {PipesModule} from '../pipes/pipes.module'
 
 export const ROUTES: Routes = [
   { path: '', component: OrdersComponent },
-  { path: ':id', component: OrderComponent }
+  { path: ':id', component: OrderComponent },
+  { path: ':id/transcript', component: TranscriptViewerComponent },
 ];
 
 @NgModule({
@@ -42,6 +45,7 @@ export const ROUTES: Routes = [
     MatProgressSpinnerModule,
     MatSelectModule,
     MatSliderModule,
+    MatStepperModule,
     MatTabsModule,
     MaterialFileInputModule,
     PipesModule,
@@ -50,6 +54,7 @@ export const ROUTES: Routes = [
   declarations: [
     OrderComponent,
     OrdersComponent,
+    TranscriptViewerComponent,
   ],
   entryComponents: [
   ]
