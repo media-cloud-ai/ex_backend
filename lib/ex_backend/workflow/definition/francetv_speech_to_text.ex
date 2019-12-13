@@ -115,6 +115,11 @@ defmodule ExBackend.Workflow.Definition.FrancetvSpeechToText do
           enable: true,
           parameters: [
             %{
+              id: "provider",
+              type: "string",
+              value: "vocapia"
+            },
+            %{
               id: "username",
               type: "credential",
               value: "VOCAPIA_USERNAME"
