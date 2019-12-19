@@ -52,7 +52,7 @@ export class OrderComponent {
           "id": "audioSourceFile",
           "label": "Audio Source file",
           "type": "file",
-          "accept": ".wav"
+          "accept": ".wav,.mp4"
         },
         {
           "id": "language",
