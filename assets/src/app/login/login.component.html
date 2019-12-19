@@ -1,26 +1,5 @@
 <div class=content>
   <div class=logo>
-    <span class=home>
-      <a
-        class=title
-        routerLink='/'
-        *ngIf="application"
-        >
-        <img src="{{application.logo}}" class=app_logo>
-        <span class=app_name>Backend</span>
-      </a>
-    </span>
-
-    <span class=wrapper>
-      <a href="http://media-io.com" target="_blank">
-        <div class="powered">
-          Powered by
-        </div>
-        <label>Media</label>
-        <img src="/bundles/images/mediaio_logo.png">
-      </a>
-    </span>
-
     <span
       class="version"
       *ngIf="application">
@@ -29,6 +8,9 @@
   </div>
 
   <form class="login" (ngSubmit)="login()" #heroForm="ngForm">
+    <span class=wrapper>
+      <img src="{{application.logo}}" class=app_logo>
+    </span>
     <div>
       <mat-form-field class="search-text-input">
         <input
@@ -63,11 +45,6 @@
     </div>
     <div class=message>
       {{message}}
-    </div>
-
-    <div class=id_logo
-      *ngIf="application">
-      <img src="{{application.company_logo}}">
     </div>
   </form>
 </div>
