@@ -8,12 +8,12 @@
 
 	.logo {
 		flex: 1;
-		box-shadow: 1px 1px 5px 0 @blue;
-		background-color: @blue;
-		background: -moz-linear-gradient(-45deg, #1e5799 0%, #213b65 100%);
-		background: -webkit-linear-gradient(-45deg, #1e5799 0%, #213b65 100%);
-		background: linear-gradient(135deg, #1e5799 0%, #213b65 100%);
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#1e5799', endColorstr='#213b65', GradientType=1);
+		box-shadow: 1px 1px 5px 0 #03a35b;
+		background-color: #03a35b;
+		background: -moz-linear-gradient(-45deg, #03a35b 0%, #037b45 100%);
+		background: -webkit-linear-gradient(-45deg, #03a35b 0%, #037b45 100%);
+		background: linear-gradient(135deg, #03a35b 0%, #037b45 100%);
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#03a35b', endColorstr='#037b45', GradientType=1);
 
 		.home {
 			width: 100%;
@@ -35,39 +35,6 @@
 			}
 		}
 
-		.wrapper {
-			display: block;
-			width: 300px;
-			margin: auto;
-			padding-top: 5px;
-			padding-bottom: 15px;
-			padding-top: 42%;
-
-			a {
-				text-decoration: none;
-			}
-			.powered {
-				color: @lightGrey;
-				text-align: left;
-				font-size: 0.8em;
-				padding-left: 24px;
-			}
-			label {
-				font-family: "Castorgate";
-				font-size: 5em;
-				color: @white;
-				vertical-align: middle;
-				display: inline-block;
-				width: 150px;
-				text-align: left;
-			}
-			img {
-				width: 100px;
-				height: 100px;
-				vertical-align: middle;
-				display: inline-block;
-			}
-		}
 
 		.version:before {
 			content: "Version ";
@@ -84,6 +51,19 @@
 		margin-top: 20px;
 		padding-top: 18%;
 		flex: 2;
+
+
+		.wrapper {
+			display: block;
+			margin: auto;
+			padding-bottom: 15px;
+
+			img {
+				width: 300px;
+				vertical-align: middle;
+				display: inline-block;
+			}
+		}
 
 		.button.submit {
 			display: inline-block;

@@ -11,6 +11,11 @@
     font-style: normal;
 }
 
+.mat-toolbar.mat-primary {
+  background-color: #ade0c9 !important;
+  color: black !important;
+}
+
 .mat-checkbox.small .mat-checkbox-layout {
   transform: scale(.6);
   margin-bottom: 5px;

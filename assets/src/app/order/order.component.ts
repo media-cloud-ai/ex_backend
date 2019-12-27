@@ -26,23 +26,23 @@ export class OrderComponent {
   parameters: any = {};
 
   services = [
-    {
-      "id": "acs",
-      "label": "Re-synchronisation du sous-titre basé sur l'audio",
-      "icon": "sync",
-      "parameters": [
-        {
-          "id": "ttmlSourceFile",
-          "label": "TTML Source file",
-          "type": "file"
-        },
-        {
-          "id": "audioSourceFile",
-          "label": "Audio Source file (can be video with audio)",
-          "type": "file"
-        }
-      ]
-    },
+    // {
+    //   "id": "acs",
+    //   "label": "Re-synchronisation du sous-titre basé sur l'audio",
+    //   "icon": "sync",
+    //   "parameters": [
+    //     {
+    //       "id": "ttmlSourceFile",
+    //       "label": "TTML Source file",
+    //       "type": "file"
+    //     },
+    //     {
+    //       "id": "audioSourceFile",
+    //       "label": "Audio Source file (can be video with audio)",
+    //       "type": "file"
+    //     }
+    //   ]
+    // },
     {
       "id": "speech_to_text",
       "label": "Transcription",
@@ -52,7 +52,7 @@ export class OrderComponent {
           "id": "audioSourceFile",
           "label": "Audio Source file",
           "type": "file",
-          "accept": ".wav"
+          "accept": ".wav,.mp4"
         },
         {
           "id": "language",
