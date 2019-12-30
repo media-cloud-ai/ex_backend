@@ -183,6 +183,17 @@ export class OrderComponent {
       })
   }
 
+  parameterChange(parameter_id, event) {
+    this.parameters[parameter_id] = event.target.value
+  }
+
+  getDefaultParameterValue(parameter) {
+    if(this.parameters[parameter.id] == undefined) {
+      this.parameters[parameter.id] = parameter.default;
+    }
+    return this.parameters[parameter.id];
+  }
+
   startWorkflow() {
     console.log(this.parameters)
     const workflowParameters = {
