@@ -148,7 +148,7 @@ defmodule ExBackendWeb.WorkflowController do
 
   def create_specific(conn, %{
         "identifier" => "speech_to_text",
-        "audio_source_filename" => audio_source_filename,
+        "source_filename" => audio_source_filename,
         "content_type" => content_type,
         "language" => language
       }) do
@@ -170,6 +170,43 @@ defmodule ExBackendWeb.WorkflowController do
           id: "language",
           type: "string",
           value: language
+        }
+      ])
+
+    {:ok, workflow} = Workflows.create_workflow(workflow_params)
+    {:ok, response_status} = Step.start_next(workflow)
+
+    conn
+    |> json(%{
+      status: response_status,
+      workflow_id: workflow.id
+    })
+  end
+
+  def create_specific(conn, %{
+        "identifier" => "ftv_dialog_enhancement",
+        "source_filename" => source_filename,
+        "dialog_gain" => dialog_gain,
+        "ambiance_gain" => ambiance_gain
+      }) do
+    workflow_params =
+      ExBackend.Workflow.Definition.FrancetvDialogEnhancement.get_definition()
+      |> Map.put(:reference, source_filename)
+      |> Map.put(:parameters, [
+        %{
+          id: "source_filename",
+          type: "string",
+          value: source_filename
+        },
+        %{
+          id: "dialog_gain",
+          type: "string",
+          value: dialog_gain
+        },
+        %{
+          id: "ambiance_gain",
+          type: "string",
+          value: ambiance_gain
         }
       ])
 
@@ -207,6 +244,15 @@ defmodule ExBackendWeb.WorkflowController do
     |> json(%{
       status: "error",
       message: "missing parameters to start speech_to_text workflow"
+    })
+  end
+
+  def create_specific(conn, %{"identifier" => "ftv_dialog_enhancement"} = _params) do
+    conn
+    |> put_status(:unprocessable_entity)
+    |> json(%{
+      status: "error",
+      message: "missing parameters to start ftv_dialog_enhancement workflow"
     })
   end
 

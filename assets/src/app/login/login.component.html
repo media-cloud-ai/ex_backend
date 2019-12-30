@@ -8,7 +8,7 @@
   </div>
 
   <form class="login" (ngSubmit)="login()" #heroForm="ngForm">
-    <span class=wrapper>
+    <span class=wrapper *ngIf="application">
       <img src="{{application.logo}}" class=app_logo>
     </span>
     <div>

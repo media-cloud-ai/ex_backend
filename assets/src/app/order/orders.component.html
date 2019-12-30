@@ -87,6 +87,19 @@
         Télécharger
       </button>
     </span>
+
+    <span class="actions"
+      *ngIf="workflow.identifier === 'FranceTélévisions Audio'">
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="downloadS3Resource(workflow, 'dialog_enhanced.wav')"
+        [disabled]="workflow.artifacts.length == 0"
+        >
+        <i class="material-icons">cloud_download</i>
+        Télécharger
+      </button>
+    </span>
   </div>
   <div *ngIf="workflows.data.length === 0" class=not_found>
     No order found
