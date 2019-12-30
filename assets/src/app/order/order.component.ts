@@ -11,12 +11,16 @@ import {S3Service} from '../services/s3.service'
 let Evaporate = require('evaporate');
 let crypto = require('crypto');
 
+export class ProcessStatus {
+  failed: boolean = true;
+  message: string = "";
+}
+
 @Component({
   selector: 'order-component',
   templateUrl: 'order.component.html',
   styleUrls: ['./order.component.less'],
 })
-
 export class OrderComponent {
   @ViewChild('stepper') stepper: MatStepper;
   s3Configuration: S3Configuration;
@@ -24,6 +28,10 @@ export class OrderComponent {
   completed: number = 0;
   uploadCompleted = false;
   parameters: any = {};
+  processStatus: ProcessStatus = {
+    failed: true,
+    message: ""
+  };
 
   services = [
     // {
@@ -204,7 +212,14 @@ export class OrderComponent {
 
     this.workflowService.createSpecificWorkflow(this.selectedService.id, workflowParameters)
       .subscribe(response => {
-        console.log(response)
+        console.log(response);
+        if(response) {
+          this.processStatus.failed = false;
+          this.processStatus.message = "Votre commande est en cours de réalisation.";
+        } else {
+          this.processStatus.failed = true;
+          this.processStatus.message = "Une erreur est apparue.";
+        }
       })
   }
 

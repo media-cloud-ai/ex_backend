@@ -96,14 +96,14 @@
   </mat-step>
   <mat-step [stepControl]="startWorkflow">
     <ng-template matStepLabel>Traitement</ng-template>
-    <div>
-      Votre commande est en cours de réalisation.
+    <div [ngStyle]="{ 'color': (processStatus.failed)? 'red' : 'black' }">
+      {{processStatus.message}}
     </div>
 
     <button
       mat-button
       (click)="follow()">
-      Suivre la commande
+      {{ (processStatus.failed)? "Retour" : "Suivre la commande" }}
     </button>
   </mat-step>
 </mat-horizontal-stepper>
