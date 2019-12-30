@@ -55,6 +55,61 @@ defmodule ExBackend.Workflow.Definition.FrancetvDialogEnhancement do
           id: 1,
           parent_ids: [0],
           required: [0],
+          name: "job_ffmpeg",
+          label: "Convert audio",
+          icon: "queue_music",
+          enable: true,
+          parameters: [
+            %{
+              id: "command_template",
+              type: "string",
+              default:
+                "ffmpeg -i {source_path} -codec:a {output_codec_audio} -ar {audio_sampling_rate} -vn -dn {destination_path}",
+              value:
+                "ffmpeg -i {source_path} -codec:a {output_codec_audio} -ar {audio_sampling_rate} -vn -dn {destination_path}"
+            },
+            %{
+              id: "destination_path",
+              type: "template",
+              value: "{work_directory}/{workflow_id}/audio_track.wav"
+            },
+            %{
+              id: "output_codec_audio",
+              type: "string",
+              value: "pcm_s24le"
+            },
+            %{
+              id: "audio_sampling_rate",
+              type: "integer",
+              value: 48_000
+            }
+          ]
+        },
+        %{
+          id: 2,
+          parent_ids: [1],
+          required: [1],
+          name: "job_extractor",
+          label: "Dialog Extraction",
+          icon: "call_split",
+          enable: true,
+          parameters: [
+            %{
+              id: "command_template",
+              type: "string",
+              value: "extractor {source_path} {destination_path}"
+            },
+            %{
+              id: "destination_path",
+              type: "template",
+              value: "{work_directory}/{workflow_id}/audio_split_tracks.wav"
+            }
+          ]
+        },
+        %{
+          id: 3,
+          parent_ids: [2],
+          required: [2],
           name: "job_adm_loudness",
           label: "Dialog Enhancement",
           icon: "record_voice_over",
@@ -102,13 +157,13 @@ defmodule ExBackend.Workflow.Definition.FrancetvDialogEnhancement do
           ]
         },
         %{
-          id: 2,
+          id: 4,
           name: "job_transfer",
           label: "Upload generated elements to S3",
           icon: "file_upload",
           enable: true,
-          parent_ids: [1],
-          required: [1],
+          parent_ids: [3],
+          required: [3],
           parameters: [
             %{
               id: "destination_hostname",
