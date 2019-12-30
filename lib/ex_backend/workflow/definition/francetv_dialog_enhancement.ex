@@ -59,6 +59,7 @@ defmodule ExBackend.Workflow.Definition.FrancetvDialogEnhancement do
           label: "Dialog Enhancement",
           icon: "record_voice_over",
           enable: true,
+          skip_destination_path: true,
           parameters: [
             %{
               id: "input",
@@ -67,11 +68,6 @@ defmodule ExBackend.Workflow.Definition.FrancetvDialogEnhancement do
             },
             %{
               id: "output",
-              type: "template",
-              value: "{work_directory}/{workflow_id}"
-            },
-            %{
-              id: "destination_path",
               type: "template",
               value: "{work_directory}/{workflow_id}"
             },
@@ -143,6 +139,11 @@ defmodule ExBackend.Workflow.Definition.FrancetvDialogEnhancement do
               type: "credential",
               default: "S3_STORAGE_REGION",
               value: "S3_STORAGE_REGION"
+            },
+            %{
+              id: "destination_path",
+              type: "template",
+              value: "{workflow_id}/dialog_enhanced.wav"
             }
           ]
         },
