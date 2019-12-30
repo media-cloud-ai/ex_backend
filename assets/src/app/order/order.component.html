@@ -52,11 +52,11 @@
         <mat-form-field *ngIf="parameter.type == 'number'">
           <input
             matInput
-            placeholder="{{parameter.label}}"
-            type="{{parameter.type}}"
+            [placeholder]="parameter.label"
+            type="number"
             [value]="getDefaultParameterValue(parameter)"
             (input)="parameterChange(parameter.id, $event)"
-            step="{{(parameter.step)? parameter.step : 1}}"
+            [step]="(parameter.step)? parameter.step : 1"
             >
           <mat-icon matSuffix>{{parameter.icon}}</mat-icon>
         </mat-form-field>
