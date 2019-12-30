@@ -38,7 +38,8 @@ export class OrdersComponent {
   ]
   selectedWorkflows = [
     'FranceTélévisions ACS (standalone)',
-    'FranceTélévisions Speech To Text'
+    'FranceTélévisions Speech To Text',
+    'FranceTélévisions Audio'
   ]
   workflows: WorkflowPage
   connections: any = []

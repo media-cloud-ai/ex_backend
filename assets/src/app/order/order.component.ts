@@ -57,7 +57,7 @@ export class OrderComponent {
       "icon": "subtitles",
       "parameters": [
         {
-          "id": "audioSourceFile",
+          "id": "sourceFile",
           "label": "Audio Source file",
           "type": "file",
           "accept": ".wav,.mp4"
@@ -101,6 +101,35 @@ export class OrderComponent {
               "label": "Reportage"
             }
           ]
+        }
+      ]
+    },
+    {
+      "id": "ftv_dialog_enhancement",
+      "label": "Amélioration des dialogues",
+      "icon": "record_voice_over",
+      "parameters": [
+        {
+          "id": "sourceFile",
+          "label": "Source file",
+          "type": "file",
+          "accept": ".mp4, .wav"
+        },
+        {
+          "id": "dialogGain",
+          "label": "Gain appliqué aux dialogues",
+          "type": "number",
+          "default": 3.0,
+          "icon": "record_voice_over",
+          "step": 0.1
+        },
+        {
+          "id": "ambianceMusicGain",
+          "label": "Gain appliqué aux ambiances & musiques",
+          "type": "number",
+          "default": -4.5,
+          "icon": "music_video",
+          "step": 0.1
         }
       ]
     }
@@ -205,9 +234,11 @@ export class OrderComponent {
   startWorkflow() {
     console.log(this.parameters)
     const workflowParameters = {
-      "audio_source_filename": this.parameters.audioSourceFile._fileNames,
+      "source_filename": this.parameters.sourceFile._fileNames,
       "content_type": this.parameters.contentType,
-      "language": this.parameters.language
+      "language": this.parameters.language,
+      "dialog_gain": this.parameters.dialogGain,
+      "ambiance_gain": this.parameters.ambianceMusicGain,
     }
 
     this.workflowService.createSpecificWorkflow(this.selectedService.id, workflowParameters)
