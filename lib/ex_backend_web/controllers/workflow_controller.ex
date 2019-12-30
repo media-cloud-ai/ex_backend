@@ -189,7 +189,6 @@ defmodule ExBackendWeb.WorkflowController do
         "dialog_gain" => dialog_gain,
         "ambiance_gain" => ambiance_gain
       }) do
-
     workflow_params =
       ExBackend.Workflow.Definition.FrancetvDialogEnhancement.get_definition()
       |> Map.put(:reference, source_filename)
