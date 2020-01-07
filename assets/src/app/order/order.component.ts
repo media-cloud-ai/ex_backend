@@ -153,7 +153,8 @@ export class OrderComponent {
       }
 
       if(typeof value === "number") {
-        type = "number"
+        type = "string"
+        value = value.toString()
       }
 
       parameters.push({
