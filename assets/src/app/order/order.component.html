@@ -23,7 +23,7 @@
     <ng-template matStepLabel>Paramétrage</ng-template>
     <div *ngIf=selectedService>
       <div class=service
-        *ngFor="let parameter of selectedService.parameters">
+        *ngFor="let parameter of selectedService.start_parameters">
 
           <div class=dropzone *ngIf="parameter.type == 'file'">
             <mat-form-field>

@@ -33,107 +33,7 @@ export class OrderComponent {
     message: ""
   };
 
-  services = [
-    // {
-    //   "id": "acs",
-    //   "label": "Re-synchronisation du sous-titre basé sur l'audio",
-    //   "icon": "sync",
-    //   "parameters": [
-    //     {
-    //       "id": "ttmlSourceFile",
-    //       "label": "TTML Source file",
-    //       "type": "file"
-    //     },
-    //     {
-    //       "id": "audioSourceFile",
-    //       "label": "Audio Source file (can be video with audio)",
-    //       "type": "file"
-    //     }
-    //   ]
-    // },
-    {
-      "id": "speech_to_text",
-      "label": "Transcription",
-      "icon": "subtitles",
-      "parameters": [
-        {
-          "id": "sourceFile",
-          "label": "Audio Source file",
-          "type": "file",
-          "accept": ".wav,.mp4"
-        },
-        {
-          "id": "language",
-          "label": "Langue audio",
-          "type": "choice",
-          "default": "fr",
-          "items": [
-            {
-              "id": "fr",
-              "label": "Français"
-            },
-            {
-              "id": "en",
-              "label": "Anglais"
-            }
-          ]
-        },
-        {
-          "id": "contentType",
-          "label": "Type du contenu",
-          "type": "choice",
-          "default": "news",
-          "items": [
-            {
-              "id": "documentary",
-              "label": "Documentaire"
-            },
-            {
-              "id": "fiction",
-              "label": "Fiction"
-            },
-            {
-              "id": "news",
-              "label": "News"
-            },
-            {
-              "id": "reportage",
-              "label": "Reportage"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "ftv_dialog_enhancement",
-      "label": "Amélioration des dialogues",
-      "icon": "record_voice_over",
-      "parameters": [
-        {
-          "id": "sourceFile",
-          "label": "Source file",
-          "type": "file",
-          "accept": ".mp4, .wav"
-        },
-        {
-          "id": "dialogGain",
-          "label": "Gain appliqué aux dialogues",
-          "type": "number",
-          "default": 3.0,
-          "icon": "record_voice_over",
-          "step": 0.1
-        },
-        {
-          "id": "ambianceMusicGain",
-          "label": "Gain appliqué aux ambiances & musiques",
-          "type": "number",
-          "default": -4.5,
-          "icon": "music_video",
-          "step": 0.1
-        }
-      ]
-    }
-  ]
+  services = []
 
   selectedService = undefined;
 
@@ -148,6 +48,11 @@ export class OrderComponent {
     this.s3Service.getConfiguration()
       .subscribe(s3Configuration => {
         this.s3Configuration = s3Configuration
+      })
+
+    this.workflowService.getWorkflowDefinitions()
+      .subscribe(definitions => {
+        this.services = definitions.data
       })
   }
 
@@ -232,18 +137,39 @@ export class OrderComponent {
   }
 
   startWorkflow() {
-    console.log(this.parameters)
-    const workflowParameters = {
-      "source_filename": this.parameters.sourceFile._fileNames,
-      "content_type": this.parameters.contentType,
-      "language": this.parameters.language,
-      "dialog_gain": this.parameters.dialogGain,
-      "ambiance_gain": this.parameters.ambianceMusicGain,
+    let parameters = [];
+
+    for(let i = 0; i < this.selectedService.start_parameters.length; i++) {
+      const parameter = this.selectedService.start_parameters[i];
+
+      let value = this.parameters[parameter.id];
+      let type = "string"
+      if(value._fileNames) {
+        value = value._fileNames
+
+        if(this.selectedService.reference === undefined) {
+          this.selectedService.reference = value;
+        }
+      }
+
+      if(typeof value === "number") {
+        type = "number"
+      }
+
+      parameters.push({
+        "id": parameter.id,
+        "type": type,
+        "value": value,
+      })
     }
 
-    this.workflowService.createSpecificWorkflow(this.selectedService.id, workflowParameters)
+    if(this.selectedService.reference === undefined) {
+      this.selectedService.reference = this.selectedService.identifier;
+    }
+    this.selectedService.parameters = parameters;
+
+    this.workflowService.createWorkflow(this.selectedService)
       .subscribe(response => {
-        console.log(response);
         if(response) {
           this.processStatus.failed = false;
           this.processStatus.message = "Votre commande est en cours de réalisation.";
