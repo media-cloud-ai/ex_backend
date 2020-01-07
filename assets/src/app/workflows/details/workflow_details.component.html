@@ -28,6 +28,17 @@
           </mat-chip>
         </mat-chip-list>
       </div>
+      <div>
+        <label>Parameters:</label>
+        <div class=parameter *ngFor="let parameter of workflow.parameters">
+          <label>
+            {{parameter.id}}
+          </label>
+          <span>
+            {{parameter.value | json}}
+          </span>
+        </div>
+      </div>
     </span>
     <span class="duration">
       <duration-component [workflow]=workflow></duration-component>
