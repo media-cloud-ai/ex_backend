@@ -32,7 +32,6 @@ defmodule ExBackendWeb.Router do
       forward("/", Plug)
     end
 
-    get("/workflow/:identifier", WorkflowController, :get)
     post("/workflow/:identifier", WorkflowController, :create_specific)
 
     scope "/docker", Docker do

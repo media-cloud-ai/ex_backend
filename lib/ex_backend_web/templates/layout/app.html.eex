@@ -30,8 +30,8 @@
 
       .loading_content .logo {
         flex: 1;
-        box-shadow: 1px 1px 5px 0 #3965ac;
-        background-color: #3965ac;
+        box-shadow: 1px 1px 5px 0 #03a35b;
+        background-color: #03a35b;
       }
       .loading_content .loading-text {
         color: #fff;

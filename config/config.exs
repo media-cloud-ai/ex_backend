@@ -39,7 +39,11 @@ config :step_flow,
     post_workflows: [:user_check, :right_technician_check],
     put_workflows: [:user_check, :right_technician_check],
     delete_workflows: [:user_check, :right_technician_check],
-    post_workflows_events: [:user_check, :right_technician_check]
+    post_workflows_events: [:user_check, :right_technician_check],
+    get_definitions: [:user_check, :right_technician_check],
+    post_worker_definitions: [:user_check, :right_technician_check],
+    get_worker_definitions: [:user_check, :right_technician_check],
+    get_workflows_statistics: [:user_check]
   ],
   endpoint: ExBackendWeb.Endpoint
 

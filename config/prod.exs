@@ -104,6 +104,5 @@ config :amqp,
   password: "guest",
   virtual_host: ""
 
-# Finally import the config/prod.secret.exs
-# which should be versioned separately.
-# import_config "prod.secret.exs"
+config :step_flow,
+  workflow_definition: {:system, "STEP_FLOW_WORKFLOW_DIRECTORY"}

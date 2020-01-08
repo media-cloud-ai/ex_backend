@@ -11,9 +11,18 @@ import {Step, Workflow, WorkflowEvent} from '../models/workflow'
 export class WorkflowService {
   private workflowUrl = '/api/workflow'
   private workflowsUrl = '/api/step_flow/workflows'
+  private workflowDefinitionsUrl = '/api/step_flow/definitions'
   private statisticsUrl = '/api/step_flow/workflows_statistics'
 
   constructor(private http: HttpClient) { }
+
+  getWorkflowDefinitions(): Observable<WorkflowPage> {
+    return this.http.get<WorkflowPage>(this.workflowDefinitionsUrl)
+      .pipe(
+        tap(workflowPage => this.log('fetched WorkflowPage')),
+        catchError(this.handleError('getWorkflowDefinitions', undefined))
+      )
+  }
 
   getWorkflows(page: number, per_page: number, video_id: string, status: Array<string>, workflows: Array<string>, ids: Array<number>, after_date: any, before_date: any): Observable<WorkflowPage> {
     let params = new HttpParams()
@@ -71,18 +80,10 @@ export class WorkflowService {
   }
 
   createWorkflow(workflow: Workflow): Observable<WorkflowData> {
-    return this.http.post<WorkflowData>(this.workflowsUrl, {workflow: workflow})
+    return this.http.post<WorkflowData>(this.workflowsUrl, workflow)
       .pipe(
         tap(workflowPage => this.log('fetched Workflow')),
         catchError(this.handleError('createWorkflow', undefined))
-      )
-  }
-
-  createSpecificWorkflow(workflow_identifier: string, parameters: any): Observable<Workflow> {
-    return this.http.post<Workflow>(this.workflowUrl  + '/' + workflow_identifier, parameters)
-      .pipe(
-        tap(workflowPage => this.log('fetched Workflow')),
-        catchError(this.handleError('getWorkflowDefinition', undefined))
       )
   }
 

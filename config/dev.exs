@@ -73,6 +73,9 @@ config :step_flow, StepFlow.Repo,
   migration_source: "step_flow_migrations_dev",
   pool_size: 10
 
+config :step_flow,
+  workflow_definition: {:system, "STEP_FLOW_WORKFLOW_DIRECTORY"}
+
 config :ex_backend, ExBackend.Mailer,
   adapter: Bamboo.SendGridAdapter,
   api_key: {:system, "SENDGRID_API_KEY"}
