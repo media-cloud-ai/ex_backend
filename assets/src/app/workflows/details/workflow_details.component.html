@@ -30,14 +30,16 @@
       </div>
       <div>
         <label>Parameters:</label>
-        <div class=parameter *ngFor="let parameter of workflow.parameters">
-          <label>
-            {{parameter.id}}
-          </label>
-          <span>
-            {{parameter.value | json}}
-          </span>
-        </div>
+        <span *ngFor="let parameter of workflow.parameters">
+          <div class=parameter *ngIf="parameter.id != 'message'">
+            <label>
+              {{parameter.id}}
+            </label>
+            <span>
+              {{parameter.value | json}}
+            </span>
+          </div>
+        </span>
       </div>
     </span>
     <span class="duration">
