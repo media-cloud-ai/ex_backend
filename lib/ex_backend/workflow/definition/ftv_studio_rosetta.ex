@@ -221,7 +221,7 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
             id: "command_template",
             type: "string",
             value:
-              "ffmpeg -i {video_filename} -i {audio_filename} -codec:a copy -codec:a copy -map 0:3 -map 1:0 -dn {destination_path}"
+              "ffmpeg -i {video_filename} -i {audio_filename} -codec:v copy -codec:a copy -map 0:3 -map 1:0 -dn {destination_path}"
           },
           %{
             id: "video_filename",
