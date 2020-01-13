@@ -236,56 +236,6 @@
           <i class="material-icons" title="Rediffusion">launch</i>
         </span>
       </span>
-      <span class="icons perfectmemory"
-        [ngClass]="{disabled: video.manifest_url == undefined}"
-        *ngIf="technician">
-        <a target="_blank" href="https://player-ftv.idfrancetv.perfect-memory.com/nodes/uuid:{{video.id}}">
-          <img src="bundles/images/logo_perfect_memory.png" />
-        </a>
-      </span>
-      <span class="icons jarvis"
-        [ngClass]="{disabled: video.manifest_url == undefined}"
-        *ngIf="technician">
-        <a target="_blank" href="http://master.player.build.ftven.net/jarvis/?streams={{get_encoded_uri(video.manifest_url)}}">
-          <i class="material-icons" title="Visualisation">live_tv</i>
-        </a>
-      </span>
-      <span class="icons workflows"
-        (click)="gotoRelatedWorkflows(video.id)">
-        <span
-          class="workflows_count"
-          [ngClass]="{found: video.workflows_count > 0}"
-          >
-          {{video.workflows_count}}
-        </span>
-      </span>
-      <span class="starter">
-        <mat-checkbox
-          color="primary"
-          [(ngModel)]="video.selected"
-          disabled="{{ !video.available }}"
-          (change)="selectVideo(video, $event.checked)"
-          *ngIf="technician">
-        </mat-checkbox>
-        <button
-          mat-raised-button
-          color="primary"
-          (click)="start_process(video)"
-          *ngIf="technician"
-          >
-          <mat-icon>play_arrow</mat-icon>
-          Process
-        </button>
-        <button
-          mat-raised-button
-          color="primary"
-          (click)="start_ftvstudio_ingest(video)"
-          *ngIf="ftvstudio"
-          >
-          <mat-icon>play_arrow</mat-icon>
-          Send to Rosetta
-        </button>
-      </span>
     </span>
   </li>
 </ul>
