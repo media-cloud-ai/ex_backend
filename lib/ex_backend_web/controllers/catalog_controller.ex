@@ -14,8 +14,7 @@ defmodule ExBackendWeb.CatalogController do
   def index(conn, params) do
     response = ExVideoFactory.videos(params)
 
-    videos =
-      response.videos
+    videos = response.videos
 
     response = Map.put(response, :videos, videos)
 

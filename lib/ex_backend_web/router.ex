@@ -34,7 +34,7 @@ defmodule ExBackendWeb.Router do
 
     post("/workflow/:identifier", WorkflowController, :create_specific)
 
-    resources "/catalog", CatalogController, except: [:new, :edit]
+    resources("/catalog", CatalogController, except: [:new, :edit])
 
     scope "/docker", Docker do
       post("/test", NodeController, :test)
