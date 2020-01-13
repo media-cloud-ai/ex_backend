@@ -89,11 +89,30 @@
     </span>
 
     <span class="actions"
-      *ngIf="workflow.identifier === 'FranceTélévisions Audio'">
+      *ngIf="workflow.identifier === 'dialog_enhancement'">
+
       <button
         mat-raised-button
         color="accent"
-        (click)="downloadS3Resource(workflow, 'dialog_enhanced.wav')"
+        (click)="play_original_version(workflow)"
+        [disabled]="workflow.artifacts.length == 0"
+        >
+        <i class="material-icons" title="Visualisation">live_tv</i>
+        Version originale
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="play_enhanced_version(workflow)"
+        [disabled]="workflow.artifacts.length == 0"
+        >
+        <i class="material-icons" title="Visualisation">live_tv</i>
+        Dialogues améliorés
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="downloadS3Resource(workflow, 'dialog_enhanced.mp4')"
         [disabled]="workflow.artifacts.length == 0"
         >
         <i class="material-icons">cloud_download</i>
