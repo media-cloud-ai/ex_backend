@@ -39,7 +39,7 @@ export class OrdersComponent {
   selectedWorkflows = [
     'FranceTélévisions ACS (standalone)',
     'FranceTélévisions Speech To Text',
-    'FranceTélévisions Audio'
+    'dialog_enhancement'
   ]
   workflows: WorkflowPage
   connections: any = []
@@ -185,6 +185,34 @@ export class OrdersComponent {
       const mp4_path = this.getDestinationFilename(workflow, "mp4");
       const ttml_path = this.getDestinationFilename(workflow, "synchronised.ttml");
       this.openLink(mp4_path, ttml_path)
+    }
+  }
+
+  play_original_version(workflow) {
+    if(workflow.artifacts.length > 0) {
+      const original_mp4_path = this.getDestinationFilename(workflow, "mp4", "enhanced.mp4");
+      const original_mp4_file_name = original_mp4_path.substring(original_mp4_path.lastIndexOf('/') + 1);
+      const directory = original_mp4_path.substring(0, original_mp4_path.lastIndexOf('/') + 1);
+
+      this.s3Service.getConfiguration().subscribe(response => {
+        const manifest_path = response.vod_endpoint + "/" + response.bucket + "/" + directory +  "/" + original_mp4_file_name + "/manifest.mpd"
+        const full_url = "http://cathodique.magneto.build.ftven.net/?options=%7B%22autostart%22%3Afalse%2C%22pip%22%3Atrue%2C%22showAd%22%3Afalse%2C%22zapping%22%3A%5B%5D%7D&env=prod&src=%5B%22" + manifest_path + "%22%5D"
+        window.open(full_url, "_blank");
+      });
+    }
+  }
+
+  play_enhanced_version(workflow) {
+    if(workflow.artifacts.length > 0) {
+      var enhanced_mp4_path = this.getDestinationFilename(workflow, "enhanced.mp4");
+      const enhanced_mp4_file_name = enhanced_mp4_path.substring(enhanced_mp4_path.lastIndexOf('/') + 1);
+      const directory = enhanced_mp4_path.substring(0, enhanced_mp4_path.lastIndexOf('/') + 1);
+
+      this.s3Service.getConfiguration().subscribe(response => {
+        const manifest_path = response.vod_endpoint + "/" + response.bucket + "/" + directory +  "/" + enhanced_mp4_file_name + "/manifest.mpd"
+        const full_url = "http://cathodique.magneto.build.ftven.net/?options=%7B%22autostart%22%3Afalse%2C%22pip%22%3Atrue%2C%22showAd%22%3Afalse%2C%22zapping%22%3A%5B%5D%7D&env=prod&src=%5B%22" + manifest_path + "%22%5D"
+        window.open(full_url, "_blank");
+      });
     }
   }
 
