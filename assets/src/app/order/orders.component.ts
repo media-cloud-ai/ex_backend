@@ -37,8 +37,7 @@ export class OrdersComponent {
     'processing',
   ]
   selectedWorkflows = [
-    'FranceTélévisions ACS (standalone)',
-    'FranceTélévisions Speech To Text',
+    'speech_to_text',
     'dialog_enhancement'
   ]
   workflows: WorkflowPage
