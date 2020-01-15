@@ -46,6 +46,13 @@ export class WorkflowDetailsComponent {
       .subscribe((message: Message) => {
         this.getWorkflow(this.workflow_id)
       })
+
+    this.connection = this.socketService.onRetryJob()
+      .subscribe((message: Message) => {
+        if(message.workflow_id == this.workflow_id) {
+          this.getWorkflow(this.workflow_id)
+        }
+      })
   }
 
   ngOnDestroy() {
