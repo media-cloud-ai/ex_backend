@@ -73,6 +73,11 @@ export class OrdersComponent {
           .subscribe((message) => {
             this.getWorkflows()
           })
+
+        this.socketService.onRetryJob()
+          .subscribe((message) => {
+            this.getWorkflows()
+          })
       })
   }
 

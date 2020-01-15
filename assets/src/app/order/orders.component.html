@@ -120,7 +120,7 @@
       </button>
     </span>
   </div>
-  <div *ngIf="workflows.data.length === 0" class=not_found>
+  <div *ngIf="!workflows.data || workflows.data.length === 0" class=not_found>
     No order found
   </div>
 </div>
@@ -133,5 +133,5 @@
   [pageIndex]="page"
   [pageSizeOptions]="pageSizeOptions"
   (page)="pageEvent = eventGetWorkflows($event)"
-  *ngIf="workflows && workflows.data.length > 0 && !loading" >
+  *ngIf="workflows && workflows.data && workflows.data.length > 0 && !loading" >
 </mat-paginator>

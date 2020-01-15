@@ -105,6 +105,10 @@ export class WorkflowsComponent {
           .subscribe((message: Message) => {
             this.getWorkflows(this.page)
           })
+        this.connection = this.socketService.onRetryJob()
+          .subscribe((message: Message) => {
+            this.getWorkflows(this.page)
+          })
       })
   }
 
