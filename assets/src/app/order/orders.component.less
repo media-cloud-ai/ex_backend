@@ -1,18 +1,29 @@
 @import '../colors';
 
-.workflow {
+.workflow,
+.workflow-header {
   display: flex;
   line-height: 40px;
   padding: 10px;
 }
 
+.workflow-header,
 .workflow:nth-child(2n) {
   background-color: @lightGrey;
+}
+
+.workflowType {
+  width: 80px;
 }
 
 .reference,
 .actions {
   flex: 1;
+}
+
+.workflow .reference.technician {
+  cursor: pointer;
+  color: @blue;
 }
 
 .actions {

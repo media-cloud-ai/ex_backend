@@ -22,14 +22,34 @@
   </mat-form-field>
 </div>
 
+<div class=workflow-header>
+  <span class=reference>
+    Référence
+  </span>
+  <span class=workflowType>
+    Type
+  </span>
+  <span class=step>
+    Statut
+  </span>
+  <span class=actions>
+  </span>
+</div>
+
 <div *ngIf="workflows">
   <div *ngFor="let workflow of workflows.data" class=workflow>
-    <span class="reference">
+    <span
+      class="reference"
+      (click)="goToWorkflow(workflow)"
+      [ngClass]="{'technician': technician}">
       <video-title-component [id]=workflow.reference></video-title-component>
+    </span>
+    <span class="workflowType">
+      {{workflow.identifier}}
     </span>
     <span class=step>
       <div class=percentage *ngIf="getCompletedPercentage(workflow) != 100">
-        {{getCompletedPercentage(workflow)}} %
+        {{getCompletedPercentage(workflow) | number: '1.0-0'}} %
       </div>
       <div class=percentage *ngIf="getCompletedPercentage(workflow) == 100">
         Completed
@@ -40,7 +60,7 @@
     </span>
 
     <span class="actions"
-      *ngIf="workflow.identifier === 'FranceTélévisions ACS (standalone)'">
+      *ngIf="workflow.identifier === 'acs'">
       <span
         class="link"
         [ngClass]="{'disabled': workflow.artifacts.length == 0}"
@@ -58,6 +78,58 @@
         mat-raised-button
         color="accent"
         (click)="downloadS3Resource(workflow, 'synchronised.ttml')"
+        [disabled]="workflow.artifacts.length == 0"
+        >
+        <i class="material-icons">cloud_download</i>
+        Download TTML
+      </button>
+    </span>
+
+    <span class="actions"
+      *ngIf="workflow.identifier === 'asp'">
+      <span
+        class="link"
+        [ngClass]="{'disabled': workflow.artifacts.length == 0}"
+        (click)="source_link(workflow)">
+        <i class="material-icons icon" title="Visualisation">live_tv</i> source
+      </span>
+      <span
+        class="link"
+        [ngClass]="{'disabled': workflow.artifacts.length == 0}"
+        (click)="sync_link(workflow)">
+        <i class="material-icons icon" title="Visualisation">live_tv</i> positioned
+      </span>
+
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="downloadS3Resource(workflow, 'file_positioned.ttml')"
+        [disabled]="workflow.artifacts.length == 0"
+        >
+        <i class="material-icons">cloud_download</i>
+        Download TTML
+      </button>
+    </span>
+
+    <span class="actions"
+      *ngIf="workflow.identifier === 'acs_and_asp'">
+      <span
+        class="link"
+        [ngClass]="{'disabled': workflow.artifacts.length == 0}"
+        (click)="source_link(workflow)">
+        <i class="material-icons icon" title="Visualisation">live_tv</i> source
+      </span>
+      <span
+        class="link"
+        [ngClass]="{'disabled': workflow.artifacts.length == 0}"
+        (click)="sync_link(workflow)">
+        <i class="material-icons icon" title="Visualisation">live_tv</i> synchronised and positioned
+      </span>
+
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="downloadS3Resource(workflow, 'file_positioned.ttml')"
         [disabled]="workflow.artifacts.length == 0"
         >
         <i class="material-icons">cloud_download</i>
