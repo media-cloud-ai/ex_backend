@@ -70,7 +70,7 @@
       <span
         class="link"
         [ngClass]="{'disabled': workflow.artifacts.length == 0}"
-        (click)="sync_link(workflow)">
+        (click)="sync_link(workflow, 'synchronised.ttml')">
         <i class="material-icons icon" title="Visualisation">live_tv</i> synchronised
       </span>
 
@@ -96,7 +96,7 @@
       <span
         class="link"
         [ngClass]="{'disabled': workflow.artifacts.length == 0}"
-        (click)="sync_link(workflow)">
+        (click)="sync_link(workflow, 'file_positioned')">
         <i class="material-icons icon" title="Visualisation">live_tv</i> positioned
       </span>
 
@@ -122,8 +122,8 @@
       <span
         class="link"
         [ngClass]="{'disabled': workflow.artifacts.length == 0}"
-        (click)="sync_link(workflow)">
-        <i class="material-icons icon" title="Visualisation">live_tv</i> synchronised and positioned
+        (click)="sync_link(workflow, 'file_positioned.ttml')">
+        <i class="material-icons icon" title="Visualisation">live_tv</i> positioned
       </span>
 
       <button

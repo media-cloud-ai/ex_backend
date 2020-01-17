@@ -184,7 +184,7 @@ export class OrdersComponent {
     return params
   }
 
-  source_link(workflow, filename) {
+  source_link(workflow) {
     if(workflow.artifacts.length > 0) {
       const mp4_path = this.getDestinationFilename(workflow, "mp4");
       const ttml_path = this.getDestinationFilename(workflow, ".ttml", ["synchronised.ttml","file_positioned.ttml"]);
@@ -203,7 +203,7 @@ export class OrdersComponent {
   private playS3Media(directory, filename) {
     this.s3Service.getConfiguration().subscribe(response => {
       const manifest_path = response.vod_endpoint + "/" + response.bucket + "/" + directory +  "/" + filename + "/manifest.mpd"
-      const full_url = "http://cathodique.magneto.build.ftven.net/?options=%7B%22autostart%22%3Afalse%2C%22pip%22%3Atrue%2C%22showAd%22%3Afalse%2C%22zapping%22%3A%5B%5D%7D&env=prod&src=%5B%22" + manifest_path + "%22%5D"
+      const full_url = "http://cathodique.magneto.build.ftven.net/?env=prod&src=%5B%22" + manifest_path + "%22%5D"
       window.open(full_url, "_blank");
     });
   }
@@ -235,7 +235,7 @@ export class OrdersComponent {
 
     this.s3Service.getConfiguration().subscribe(response => {
       const manifest_path = response.vod_endpoint + "/" + response.bucket + "/" + directory + "," + mp4_file_name + "," + ttml_file_name + ",.urlset/manifest.mpd"
-      const full_url = "http://cathodique.magneto.build.ftven.net/?gitrefname=poc/subtil/ttml_rendering&options=%7B%22autostart%22%3Afalse%2C%22showAd%22%3Afalse%7D&env=prod&src=%5B%22" + manifest_path + "%22%5D"
+      const full_url = "http://cathodique.magneto.build.ftven.net/?gitrefname=poc/subtil/ttml_rendering&env=prod&src=%5B%22" + manifest_path + "%22%5D"
 
       window.open(full_url, "_blank");
     });
@@ -258,22 +258,18 @@ export class OrdersComponent {
     this.router.navigate(['orders', workflow.id, 'transcript'])
   }
 
-  getDestinationFilename(workflow, extension: string, not_extension?: string[]) {
+  getDestinationFilename(workflow, extension: string, notExtension?: string[]) {
     const result = workflow.jobs.filter(job => {
       if(job.name == "job_transfer" &&
         job.params.filter(param => param.id === "destination_access_key").length == 1){
         const parameter = job.params.filter(param => param.id === "destination_path");
         if(parameter.length > 0) {
-          if(not_extension.length > 0) {
-            for(const i=0; i<not_extension.length; i++) {
-              const sourceFilename = parameter[0].value;
-              if(sourceFilename.endsWith(extension) && !sourceFilename.endsWith(not_extension[i])){
-                return true;
-              }
-            }
-            return false;
+          const sourceFilename = parameter[0].value;
+          if(notExtension) {
+            const notExtensionMatch = notExtension.filter(extension => sourceFilename.endsWith(extension)).length;
+            return (sourceFilename.endsWith(extension) && (notExtensionMatch === 0))
           } else {
-            return parameter[0].value.endsWith(extension)
+            return sourceFilename.endsWith(extension)
           }
         } else {
           return false
