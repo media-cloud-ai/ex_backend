@@ -2,6 +2,7 @@
 import {Component} from '@angular/core'
 import {ActivatedRoute, Router} from '@angular/router'
 
+import {AuthService} from '../authentication/auth.service'
 import {SocketService} from '../services/socket.service'
 import {S3Service} from '../services/s3.service'
 import {WorkflowService} from '../services/workflow.service'
@@ -30,6 +31,7 @@ export class OrdersComponent {
   order_id: number
   after_date: undefined
   before_date: undefined
+  technician: boolean
 
   selectedStatus = [
     'completed',
@@ -38,12 +40,16 @@ export class OrdersComponent {
   ]
   selectedWorkflows = [
     'speech_to_text',
-    'dialog_enhancement'
+    'dialog_enhancement',
+    'acs',
+    'asp',
+    'acs_and_asp'
   ]
   workflows: WorkflowPage
   connections: any = []
 
   constructor(
+    private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
     private socketService: SocketService,
@@ -52,6 +58,7 @@ export class OrdersComponent {
   ) {}
 
   ngOnInit() {
+    this.technician = this.authService.hasTechnicianRight();
     this.sub = this.route
       .queryParams
       .subscribe(params => {
@@ -92,6 +99,12 @@ export class OrdersComponent {
 
   newOrder() {
     this.router.navigate(['/orders/new'])
+  }
+
+  goToWorkflow(workflow: Workflow) {
+    if(this.authService.hasTechnicianRight()) {
+      this.router.navigate([`/workflows/${workflow.id}`])
+    }
   }
 
   getWorkflows() {
@@ -179,15 +192,15 @@ export class OrdersComponent {
   source_link(workflow) {
     if(workflow.artifacts.length > 0) {
       const mp4_path = this.getDestinationFilename(workflow, "mp4");
-      const ttml_path = this.getDestinationFilename(workflow, ".ttml", "synchronised.ttml");
+      const ttml_path = this.getDestinationFilename(workflow, ".ttml", ["synchronised.ttml","file_positioned.ttml"]);
       this.openLink(mp4_path, ttml_path)
     }
   }
 
-  sync_link(workflow) {
+  sync_link(workflow, filename) {
     if(workflow.artifacts.length > 0) {
       const mp4_path = this.getDestinationFilename(workflow, "mp4");
-      const ttml_path = this.getDestinationFilename(workflow, "synchronised.ttml");
+      const ttml_path = this.getDestinationFilename(workflow, filename);
       this.openLink(mp4_path, ttml_path)
     }
   }
@@ -195,7 +208,7 @@ export class OrdersComponent {
   private playS3Media(directory, filename) {
     this.s3Service.getConfiguration().subscribe(response => {
       const manifest_path = response.vod_endpoint + "/" + response.bucket + "/" + directory +  "/" + filename + "/manifest.mpd"
-      const full_url = "http://cathodique.magneto.build.ftven.net/?options=%7B%22autostart%22%3Afalse%2C%22pip%22%3Atrue%2C%22showAd%22%3Afalse%2C%22zapping%22%3A%5B%5D%7D&env=prod&src=%5B%22" + manifest_path + "%22%5D"
+      const full_url = "http://cathodique.magneto.build.ftven.net/?env=prod&src=%5B%22" + manifest_path + "%22%5D"
       window.open(full_url, "_blank");
     });
   }
@@ -227,7 +240,7 @@ export class OrdersComponent {
 
     this.s3Service.getConfiguration().subscribe(response => {
       const manifest_path = response.vod_endpoint + "/" + response.bucket + "/" + directory + "," + mp4_file_name + "," + ttml_file_name + ",.urlset/manifest.mpd"
-      const full_url = "http://cathodique.magneto.build.ftven.net/?gitrefname=poc/subtil/ttml_rendering&options=%7B%22autostart%22%3Afalse%2C%22showAd%22%3Afalse%7D&env=prod&src=%5B%22" + manifest_path + "%22%5D"
+      const full_url = "http://cathodique.magneto.build.ftven.net/?gitrefname=poc/subtil/ttml_rendering&env=prod&src=%5B%22" + manifest_path + "%22%5D"
 
       window.open(full_url, "_blank");
     });
@@ -250,16 +263,18 @@ export class OrdersComponent {
     this.router.navigate(['orders', workflow.id, 'transcript'])
   }
 
-  getDestinationFilename(workflow, extension: string, not_extension?: string) {
+  getDestinationFilename(workflow, extension: string, notExtension?: string[]) {
     const result = workflow.jobs.filter(job => {
       if(job.name == "job_transfer" &&
         job.params.filter(param => param.id === "destination_access_key").length == 1){
         const parameter = job.params.filter(param => param.id === "destination_path");
         if(parameter.length > 0) {
-          if(not_extension) {
-            return parameter[0].value.endsWith(extension) && !parameter[0].value.endsWith(not_extension)
+          const sourceFilename = parameter[0].value;
+          if(notExtension) {
+            const notExtensionMatch = notExtension.filter(extension => sourceFilename.endsWith(extension)).length;
+            return (sourceFilename.endsWith(extension) && (notExtensionMatch === 0))
           } else {
-            return parameter[0].value.endsWith(extension)
+            return sourceFilename.endsWith(extension)
           }
         } else {
           return false

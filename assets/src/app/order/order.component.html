@@ -73,7 +73,7 @@
     <div>Récupération des fichiers:</div>
 
     <div *ngFor="let progressBar of progressBars" class=fileProgress>
-      {{progressBar.name}} - {{progressBar.progress}}&nbsp;%
+      {{progressBar.name}} - {{progressBar.progress | number: '1.0-0'}}&nbsp;%
       <mat-progress-bar
         [value]="progressBar.progress">
       </mat-progress-bar>
