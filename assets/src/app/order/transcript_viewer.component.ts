@@ -82,4 +82,15 @@ export class TranscriptViewerComponent {
 
     return result[0].params.filter(param => param.id === "destination_path")[0].value;
   }
+
+  downloadTranscriptText(){
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(this.transcript.text));
+    element.setAttribute('download', "transcript.txt");
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  }
 }

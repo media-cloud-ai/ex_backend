@@ -20,3 +20,13 @@
     </span>
   </span>
 </div>
+
+<button
+        mat-raised-button
+        color="accent"
+        (click)="downloadTranscriptText()"
+        [disabled]="workflow.artifacts.length == 0"
+        >
+        <i class="material-icons">cloud_download</i>
+        Download Transcript
+</button>
