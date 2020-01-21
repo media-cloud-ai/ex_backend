@@ -161,6 +161,29 @@
     </span>
 
     <span class="actions"
+      *ngIf="workflow.identifier === 'nlp'">
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="viewNlp(workflow)"
+        [disabled]="workflow.artifacts.length == 0"
+        >
+        <i class="material-icons">search</i>
+        Visualiser
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="downloadS3Resource(workflow, 'nlp.json')"
+        [disabled]="workflow.artifacts.length == 0"
+      >
+        <i class="material-icons">cloud_download</i>
+        Télécharger
+      </button>
+
+    </span>
+
+    <span class="actions"
       *ngIf="workflow.identifier === 'dialog_enhancement'">
 
       <button

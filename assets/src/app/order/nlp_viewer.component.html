@@ -1,0 +1,14 @@
+<h1>Neural Language Processing</h1>
+
+<h3>Reference: {{workflow.reference}}</h3>
+
+<div *ngIf="nlp"
+  class="nlp">
+  <span *ngFor="let entity of nlp.entity">
+    <span class="text">
+
+      {{entity.string_ner}}
+    </span>
+    <br>
+  </span>
+</div>

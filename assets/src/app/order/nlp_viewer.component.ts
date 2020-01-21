@@ -9,15 +9,15 @@ import {WorkflowPage} from '../models/page/workflow_page'
 import {Workflow} from '../models/workflow'
 
 @Component({
-  selector: 'transcript-viewer-component',
-  templateUrl: 'transcript_viewer.component.html',
-  styleUrls: ['./transcript_viewer.component.less'],
+  selector: 'nlp-viewer-component',
+  templateUrl: './nlp_viewer.component.html',
+  styleUrls: ['./nlp_viewer.component.less'],
 })
 
-export class TranscriptViewerComponent {
+export class NlpViewerComponent {
   workflow_id: number;
   workflow: Workflow;
-  transcript: any;
+  nlp: any;
 
   constructor(
     private http: HttpClient,
@@ -27,12 +27,11 @@ export class TranscriptViewerComponent {
   ) {}
 
   ngOnInit() {
-    const filename = 'transcript.json';
+    const filename = 'nlp.json';
 
     this.route
       .params
       .subscribe(params => {
-        console.log(params)
         this.workflow_id = +params['id']
 
         this.workflowService.getWorkflow(this.workflow_id)
@@ -40,14 +39,13 @@ export class TranscriptViewerComponent {
             this.workflow = workflowPage.data;
 
             if(this.workflow.artifacts.length > 0) {
-              console.log(this.workflow)
               const file_path = this.getDestinationFilename(this.workflow, filename);
               const current = this
 
               if(file_path) {
                 this.s3Service.getPresignedUrl(file_path).subscribe(response => {
                   this.http.get(response.url).subscribe(content => {
-                    this.transcript = content
+                    this.nlp = content
                   })
                 });
               }
@@ -63,7 +61,6 @@ export class TranscriptViewerComponent {
       if(job.name == "job_transfer" &&
         job.params.filter(param => param.id === "destination_access_key").length == 1){
         const parameter = job.params.filter(param => param.id === "destination_path");
-        console.log("HEREEEEEEEEEEEEee")
         if(parameter.length > 0) {
           if(not_extension) {
             return parameter[0].value.endsWith(extension) && !parameter[0].value.endsWith(not_extension)
