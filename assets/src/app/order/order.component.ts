@@ -72,6 +72,7 @@ export class OrderComponent {
       aws_key: this.s3Configuration.access_key,
       bucket: this.s3Configuration.bucket,
       aws_url: this.s3Configuration.url,
+      awsRegion: this.s3Configuration.region,
       computeContentMd5: true,
       cryptoMd5Method: function (data) {
         var buffer = new Buffer(data)
