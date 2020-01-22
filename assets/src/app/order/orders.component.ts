@@ -221,7 +221,7 @@ export class OrdersComponent {
 
   play_original_version(workflow) {
     if(workflow.artifacts.length > 0) {
-      const original_mp4_path = this.getDestinationFilename(workflow, "mp4", "enhanced.mp4");
+      const original_mp4_path = this.getDestinationFilename(workflow, "mp4", ["enhanced.mp4"]);
       this.playS3MediaFromPath(original_mp4_path);
     }
   }
