@@ -1,14 +1,18 @@
-<h1>Neural Language Processing</h1>
+<h1>Natural Language Processing</h1>
 
 <h3>Reference: {{workflow.reference}}</h3>
 
-<div *ngIf="nlp"
-  class="nlp">
-  <span *ngFor="let entity of nlp.entity">
-    <span class="text">
+<div *ngIf="nlp" class="nlp">
+  <span *ngFor="let word of words">
 
-      {{entity.string_ner}}
+    <span class="ner" *ngIf="word.ner == true">
+      {{word.token}}
+      <span class="ner_detail">
+        Relevance = {{word.relevance_score}}
+      </span>
     </span>
-    <br>
+    <span class="text" *ngIf="word.ner == false">
+      {{word.token}}
+    </span>
   </span>
 </div>
