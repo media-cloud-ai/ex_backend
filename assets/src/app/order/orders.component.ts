@@ -44,7 +44,8 @@ export class OrdersComponent {
     'acs',
     'asp',
     'acs_and_asp',
-    'nlp'
+    'nlp',
+    'speech_to_text_and_nlp'
 
   ]
   workflows: WorkflowPage
