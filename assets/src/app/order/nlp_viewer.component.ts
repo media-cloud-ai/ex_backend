@@ -1,13 +1,13 @@
 
-import {Component} from '@angular/core'
-import {ActivatedRoute} from '@angular/router'
+import { Component } from '@angular/core'
+import { ActivatedRoute } from '@angular/router'
 import { HttpClient } from '@angular/common/http';
 
-import {S3Service} from '../services/s3.service'
-import {WorkflowService} from '../services/workflow.service'
-import {WorkflowPage} from '../models/page/workflow_page'
-import {Workflow} from '../models/workflow'
-import {NlpEntity} from '../models/nlp_entity'
+import { S3Service } from '../services/s3.service'
+import { WorkflowService } from '../services/workflow.service'
+import { WorkflowPage } from '../models/page/workflow_page'
+import { Workflow } from '../models/workflow'
+import { NlpEntity } from '../models/nlp_entity'
 
 @Component({
   selector: 'nlp-viewer-component',
@@ -26,7 +26,7 @@ export class NlpViewerComponent {
     private route: ActivatedRoute,
     private workflowService: WorkflowService,
     private s3Service: S3Service,
-  ) {}
+  ) { }
 
   ngOnInit() {
     const filename = 'nlp.json';
@@ -85,10 +85,10 @@ export class NlpViewerComponent {
     return result[0].params.filter(param => param.id === "destination_path")[0].value;
   }
 
-  createListOfWords(){
+  createListOfWords() {
     var words_list = this.nlp.words_list;
     var words = [];
-    for (let word_elem of words_list){
+    for (let word_elem of words_list) {
       var word = new NlpEntity;
       word.token = word_elem;
       words.push(word);
@@ -96,24 +96,20 @@ export class NlpViewerComponent {
     return words;
   }
 
-  getListOfWord(text: string[]){
+  getListOfWord(text: string[]) {
     var entities = this.nlp.entity;
     var len_entities = entities.length;
     var i_entity = 0;
-    var id_ner = 0;
 
     var words = this.createListOfWords();
-    
-    for (var i_word = 0; i_word < words.length; i_word++){
-      if (i_entity < len_entities && entities[i_entity].list_id[0] <= i_word){
-        id_ner = i_word;
-        for(var i_listid = 0; i_listid < entities[i_entity].list_id.length; i_listid++){
-          words[i_word].ner = true;
-          words[i_word].id_ner = id_ner;
-          words[i_word].token = entities[i_entity].string_ner;
-          words[i_word].type = entities[i_entity].type;
-          words[i_word].relevance_score = entities[i_entity].relevance_score;
-        }
+
+    for (var i_word = 0; i_word < words.length; i_word++) {
+      if (i_entity < len_entities && entities[i_entity].list_id[0] <= i_word) {
+        words[i_word].ner = true;
+        words[i_word].id_ner = i_word;
+        words[i_word].token = entities[i_entity].string_ner;
+        words[i_word].type = entities[i_entity].type;
+        words[i_word].relevance_score = entities[i_entity].relevance_score;
         i_entity++;
       }
     }

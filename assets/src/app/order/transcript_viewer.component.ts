@@ -32,7 +32,6 @@ export class TranscriptViewerComponent {
     this.route
       .params
       .subscribe(params => {
-        console.log(params)
         this.workflow_id = +params['id']
 
         this.workflowService.getWorkflow(this.workflow_id)
@@ -40,7 +39,6 @@ export class TranscriptViewerComponent {
             this.workflow = workflowPage.data;
 
             if(this.workflow.artifacts.length > 0) {
-              console.log(this.workflow)
               const file_path = this.getDestinationFilename(this.workflow, filename);
               const current = this
 
@@ -63,7 +61,6 @@ export class TranscriptViewerComponent {
       if(job.name == "job_transfer" &&
         job.params.filter(param => param.id === "destination_access_key").length == 1){
         const parameter = job.params.filter(param => param.id === "destination_path");
-        console.log("HEREEEEEEEEEEEEee")
         if(parameter.length > 0) {
           if(not_extension) {
             return parameter[0].value.endsWith(extension) && !parameter[0].value.endsWith(not_extension)
