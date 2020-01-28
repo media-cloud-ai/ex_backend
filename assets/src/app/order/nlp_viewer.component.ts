@@ -48,7 +48,6 @@ export class NlpViewerComponent {
                 this.s3Service.getPresignedUrl(file_path).subscribe(response => {
                   this.http.get(response.url).subscribe(content => {
                     this.nlp = content
-                    console.log(content)
                     this.words = this.getListOfWord(this.nlp.words_list);
                   })
                 });
@@ -109,26 +108,15 @@ export class NlpViewerComponent {
       if (i_entity < len_entities && entities[i_entity].list_id[0] <= i_word){
         id_ner = i_word;
         for(var i_listid = 0; i_listid < entities[i_entity].list_id.length; i_listid++){
-          console.log("i_listid = " + i_listid + "< entities[" + i_entity + "].list_id.lenght = " + entities[i_entity].list_id.length)
           words[i_word].ner = true;
           words[i_word].id_ner = id_ner;
           words[i_word].token = entities[i_entity].string_ner;
           words[i_word].type = entities[i_entity].type;
           words[i_word].relevance_score = entities[i_entity].relevance_score;
-          // i_word++;
         }
         i_entity++;
       }
     }
-    this.printword(words);
-    console.log(words)
     return words;
   }
-
-  printword(words: NlpEntity[]){
-    for (let word of words){
-      console.log("text: " + word.token + " | ner: " + word.ner)
-    }
-  }
-
 }
