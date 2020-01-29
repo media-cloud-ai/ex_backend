@@ -7,15 +7,16 @@
   <span *ngFor="let word of transcript.words; let i = index"
     [ngClass]="{'new_speaker': i == 0 || word.speakerId != transcript.words[i-1].speakerId }"
     >
-    <div
-      class=linebreak
-      *ngIf="i == 0 || word.speakerId != transcript.words[i-1].speakerId">
+    <div class=linebreak *ngIf="i == 0 || word.speakerId != transcript.words[i-1].speakerId">
       <span class="start time">
         {{ {'seconds' : word.startTime} | duration : 'timecode_frame'}}
       </span>
     </div>
 
-    <span class="text">
+    <span [ngClass]="{
+                      'textMergedLeft': word.content == ',' || word.content == '.' || word.content == ';' || word.content.startsWith('-'),
+                      'textMergedRight': word.content.endsWith('(') || word.content.endsWith('\'') || word.content.endsWith('-')
+                     }">
       {{word.content}}
     </span>
   </span>

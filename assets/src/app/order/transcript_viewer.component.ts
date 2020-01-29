@@ -53,8 +53,6 @@ export class TranscriptViewerComponent {
               }
             }
           });
-
-
       })
   }
 
@@ -63,7 +61,6 @@ export class TranscriptViewerComponent {
       if(job.name == "job_transfer" &&
         job.params.filter(param => param.id === "destination_access_key").length == 1){
         const parameter = job.params.filter(param => param.id === "destination_path");
-        console.log("HEREEEEEEEEEEEEee")
         if(parameter.length > 0) {
           if(not_extension) {
             return parameter[0].value.endsWith(extension) && !parameter[0].value.endsWith(not_extension)
@@ -81,7 +78,6 @@ export class TranscriptViewerComponent {
     if(result.length == 0){
       return undefined;
     }
-
     return result[0].params.filter(param => param.id === "destination_path")[0].value;
   }
 }
