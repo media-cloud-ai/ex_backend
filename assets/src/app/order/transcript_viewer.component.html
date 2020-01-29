@@ -18,7 +18,7 @@
                       {{ {'seconds' : word.endTime} | duration : 'timecode_frame' }}"
           matTooltipPosition="above"
           [ngClass]="{
-                      'textMergedLeft': word.content in [',', '.', ';'] || word.content.startsWith('-'),
+                      'textMergedLeft': [',', '.', ';'].includes(word.content) || word.content.startsWith('-'),
                       'textMergedRight': word.content.endsWith('(') || word.content.endsWith('\'') || word.content.endsWith('-')
                      }">
       {{word.content}}
