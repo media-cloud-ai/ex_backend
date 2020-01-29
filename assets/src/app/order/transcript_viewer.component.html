@@ -14,8 +14,10 @@
         {{ {'seconds' : word.startTime} | duration : 'timecode_frame'}}
       </span>
     </div>
-
-    <span class="text">
+    <span [ngClass]="{
+                      'textMergedLeft': word.content == ',' || word.content == '.' || word.content == ';' || word.content.startsWith('-'),
+                      'textMergedRight': word.content.endsWith('(') || word.content.endsWith('\'') || word.content.endsWith('-')
+                     }">
       {{word.content}}
     </span>
   </span>
