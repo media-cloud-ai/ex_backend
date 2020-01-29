@@ -161,6 +161,59 @@
     </span>
 
     <span class="actions"
+      *ngIf="workflow.identifier === 'natural_language_processing'">
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="viewNlp(workflow)"
+        [disabled]="workflow.artifacts.length == 0"
+        >
+        <i class="material-icons">search</i>
+        Visualiser
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="downloadS3Resource(workflow, 'nlp.json')"
+        [disabled]="workflow.artifacts.length == 0"
+      >
+        <i class="material-icons">cloud_download</i>
+        Télécharger
+      </button>
+
+    </span>
+    <span class="actions"
+      *ngIf="workflow.identifier === 'speech_to_text_and_nlp'">
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="viewNlp(workflow)"
+        [disabled]="workflow.artifacts.length == 0"
+        >
+        <i class="material-icons">search</i>
+        Visualiser
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="downloadS3Resource(workflow, 'nlp.json')"
+        [disabled]="workflow.artifacts.length == 0"
+      >
+        <i class="material-icons">cloud_download</i>
+        Télécharger l'Analyse
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="downloadS3Resource(workflow, 'transcript.json')"
+        [disabled]="workflow.artifacts.length == 0"
+        >
+        <i class="material-icons">cloud_download</i>
+        Télécharger le Transcript
+      </button>
+
+    </span>
+    <span class="actions"
       *ngIf="workflow.identifier === 'dialog_enhancement'">
 
       <button

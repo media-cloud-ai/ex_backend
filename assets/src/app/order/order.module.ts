@@ -8,6 +8,7 @@ import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { OrdersComponent } from './orders.component';
 import { OrderComponent } from './order.component';
 import { TranscriptViewerComponent } from './transcript_viewer.component';
+import { NlpViewerComponent } from './nlp_viewer.component';
 
 import {
   MatButtonModule,
@@ -29,6 +30,7 @@ export const ROUTES: Routes = [
   { path: '', component: OrdersComponent },
   { path: ':id', component: OrderComponent },
   { path: ':id/transcript', component: TranscriptViewerComponent },
+  { path: ':id/nlp', component: NlpViewerComponent},
 ];
 
 @NgModule({
@@ -55,6 +57,7 @@ export const ROUTES: Routes = [
     OrderComponent,
     OrdersComponent,
     TranscriptViewerComponent,
+    NlpViewerComponent,
   ],
   entryComponents: [
   ]

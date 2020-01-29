@@ -32,7 +32,6 @@ export class TranscriptViewerComponent {
     this.route
       .params
       .subscribe(params => {
-        console.log(params)
         this.workflow_id = +params['id']
 
         this.workflowService.getWorkflow(this.workflow_id)
