@@ -8,11 +8,8 @@ export class NlpEntity{
     metadata_freebase: String
     relevance_score: Float32Array
 
-    newline: Boolean
-
     constructor() {
-        this.type = new Array<string>('')
-        this.newline = false
+        this.type = []
         this.ner = false
     }
-  }
+}

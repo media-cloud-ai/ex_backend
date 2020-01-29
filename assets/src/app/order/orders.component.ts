@@ -44,9 +44,8 @@ export class OrdersComponent {
     'acs',
     'asp',
     'acs_and_asp',
-    'nlp',
+    'natural_language_processing',
     'speech_to_text_and_nlp'
-
   ]
   workflows: WorkflowPage
   connections: any = []

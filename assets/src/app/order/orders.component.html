@@ -161,7 +161,7 @@
     </span>
 
     <span class="actions"
-      *ngIf="workflow.identifier === 'nlp'">
+      *ngIf="workflow.identifier === 'natural_language_processing'">
       <button
         mat-raised-button
         color="accent"
@@ -200,7 +200,7 @@
         [disabled]="workflow.artifacts.length == 0"
       >
         <i class="material-icons">cloud_download</i>
-        Télécharger NLP
+        Télécharger l'Analyse
       </button>
       <button
         mat-raised-button
@@ -209,7 +209,7 @@
         [disabled]="workflow.artifacts.length == 0"
         >
         <i class="material-icons">cloud_download</i>
-        Télécharger Transcript
+        Télécharger le Transcript
       </button>
 
     </span>
