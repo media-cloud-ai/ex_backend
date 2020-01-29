@@ -2,8 +2,7 @@
 
 <h3>Reference: {{workflow.reference}}</h3>
 
-<div *ngIf="transcript"
-  class="transcript">
+<div *ngIf="transcript" class="transcript">
   <span *ngFor="let word of transcript.words; let i = index"
     [ngClass]="{'new_speaker': i == 0 || word.speakerId != transcript.words[i-1].speakerId }"
     >
@@ -12,7 +11,6 @@
         {{ {'seconds' : word.startTime} | duration : 'timecode_frame'}}
       </span>
     </div>
-
     <span [ngClass]="{
                       'textMergedLeft': word.content == ',' || word.content == '.' || word.content == ';' || word.content.startsWith('-'),
                       'textMergedRight': word.content.endsWith('(') || word.content.endsWith('\'') || word.content.endsWith('-')
