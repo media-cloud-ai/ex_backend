@@ -1,8 +1,6 @@
-
 import {Component} from '@angular/core'
 import {ActivatedRoute} from '@angular/router'
 import { HttpClient } from '@angular/common/http';
-
 import {S3Service} from '../services/s3.service'
 import {WorkflowService} from '../services/workflow.service'
 import {WorkflowPage} from '../models/page/workflow_page'
@@ -28,20 +26,16 @@ export class TranscriptViewerComponent {
 
   ngOnInit() {
     const filename = 'transcript.json';
-
     this.route
       .params
       .subscribe(params => {
         this.workflow_id = +params['id']
-
         this.workflowService.getWorkflow(this.workflow_id)
           .subscribe(workflowPage => {
             this.workflow = workflowPage.data;
-
             if(this.workflow.artifacts.length > 0) {
               const file_path = this.getDestinationFilename(this.workflow, filename);
               const current = this
-
               if(file_path) {
                 this.s3Service.getPresignedUrl(file_path).subscribe(response => {
                   this.http.get(response.url).subscribe(content => {
@@ -51,8 +45,6 @@ export class TranscriptViewerComponent {
               }
             }
           });
-
-
       })
   }
 
@@ -74,11 +66,9 @@ export class TranscriptViewerComponent {
         return false
       }
     });
-
     if(result.length == 0){
       return undefined;
     }
-
     return result[0].params.filter(param => param.id === "destination_path")[0].value;
   }
 

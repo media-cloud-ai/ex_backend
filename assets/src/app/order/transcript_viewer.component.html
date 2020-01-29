@@ -14,8 +14,13 @@
         {{ {'seconds' : word.startTime} | duration : 'timecode_frame'}}
       </span>
     </div>
-
-    <span class="text">
+    <span matTooltip="{{ {'seconds' : word.startTime} | duration : 'timecode_frame' }} -
+                      {{ {'seconds' : word.endTime} | duration : 'timecode_frame' }}"
+          matTooltipPosition="above"
+          [ngClass]="{
+                      'textMergedLeft': [',', '.', ';'].includes(word.content) || word.content.startsWith('-'),
+                      'textMergedRight': word.content.endsWith('(') || word.content.endsWith('\'') || word.content.endsWith('-')
+                     }">
       {{word.content}}
     </span>
   </span>
