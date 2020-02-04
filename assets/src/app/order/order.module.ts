@@ -22,6 +22,7 @@ import {
   MatStepperModule,
   MatTabsModule,
   MatTooltipModule,
+  MatChipsModule,
   } from '@angular/material'
 
 import {GenericModule} from '../generic/generic.module'
@@ -53,6 +54,7 @@ export const ROUTES: Routes = [
     MaterialFileInputModule,
     PipesModule,
     MatTooltipModule,
+    MatChipsModule,
     RouterModule.forChild(ROUTES)
   ],
   declarations: [

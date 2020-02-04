@@ -2,13 +2,35 @@
 
 <h3>Reference: {{workflow.reference}}</h3>
 
-<div *ngIf="nlp" class="nlp">
-  <span *ngFor="let word of words">
-    <span [ngClass]="{'ner': word.ner, 'text': !word.ner}">
-      {{word.token}}
-      <span class="ner_detail" *ngIf="word.ner">
-        Relevance = {{word.relevance_score}}
-      </span>
+<div *ngIf="words" class="nlp">
+  <mat-chip-list>
+    <h3>Thèmes :</h3>
+    <span *ngFor="let topic of topics; let i=index">
+      <mat-chip *ngIf="i < 5 || topics.score == 1" color="primary" selected>
+          {{topic.label}}
+      </mat-chip>
     </span>
-  </span>
+  </mat-chip-list>
+  <mat-chip-list>
+    <h3>Catégories :</h3>
+    <span *ngFor="let category of categories; let i=index">
+      <mat-chip *ngIf="i < 5 || category.score == 1" color="accent" selected>
+          {{category.label}}
+      </mat-chip>
+    </span>
+  </mat-chip-list>
+  <div class="entities">
+    <span *ngFor="let word of words; let i=index">
+        <span [matTooltip]="word.ner ? 'Type : ' + word.entity.type +
+                                        '&#13;Score : ' + word.entity.relevance_score : null"
+              matTooltipPosition="above"
+              matTooltipClass="tooltip"
+              [ngClass]="{'ner': word.ner,
+                          'textMergedLeft': [',', '.', ';'].includes(word.word) || word.word.startsWith('-'),
+                          'textMergedRight': word.word.endsWith('(') || word.word.endsWith('\'') || word.word.endsWith('-')
+              }">
+          {{word.word}}
+        </span>
+    </span>
+  </div>
 </div>

@@ -1,15 +1,38 @@
-export class NlpEntity{
-    token: String
-    ner: Boolean
+export class Entity {
     string_ner: String
-    id_ner: Int16Array
     type: String[]
-    metadata_wiki: String
-    metadata_freebase: String
-    relevance_score: Float32Array
+    list_id: number[]
+    metadata: Metadata
+    relevance_score: String
+}
 
-    constructor() {
-        this.type = []
-        this.ner = false
+export class Metadata {
+    wiki_id: String
+    freebase_id: String
+}
+
+export class Category {
+    label: String
+    score: String
+    category_id: String
+}
+
+export class Topic {
+    label: String
+    score: String
+    wiki_id: String
+}
+
+export class WordEntity{
+    ner: Boolean
+    word: String
+    entity: Entity
+    list_id: number[]
+
+    constructor(word: String, ner: Boolean, entity: Entity, list_id: number[]) {
+        this.word = word
+        this.entity = entity
+        this.ner = ner
+        this.list_id = list_id
     }
 }

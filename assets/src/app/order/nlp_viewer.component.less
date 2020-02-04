@@ -3,26 +3,31 @@
 .nlp {
 	margin-bottom: 100px;
 
-	.ner {
-		background-color: #ABD1FF;
-		margin: 5px;
-		border-radius: 5px 5px 5px;	
-	}
+    .entities {
+        margin-top: 40px;
 
-	.time {
-		display: inline-block;
-		width: 80px;
-		font-size: 0.8em;
-		color: @grey;
-	}
+        .ner {
+            background-color: orange;
+            padding-top: 3px;
+            padding-right: 2px;
+            padding-left: 2px;
+            padding-bottom: 3px;
+            border-radius: 5px 5px 5px;
+	    }
 
-	.linebreak {
-		margin-top: 10px;
-	}
+	    .textMergedLeft {
+            margin-left: -0.26em;
+        }
 
-	.ner_detail {
-		background-color: #FFE0B0;
-		margin: 5px;
-		border-radius: 5px 5px 5px;	
-	}
+        .textMergedRight {
+            margin-right: -0.26em;
+        }
+    }
+}
+
+::ng-deep .mat-tooltip {
+    white-space: pre-line;
+    background-color: royalblue;
+	font-size: 1em;
+	font-weight:bold;
 }
