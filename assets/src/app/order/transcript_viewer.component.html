@@ -14,9 +14,24 @@
         {{ {'seconds' : word.startTime} | duration : 'timecode_frame'}}
       </span>
     </div>
-
-    <span class="text">
+    <span matTooltip="{{ {'seconds' : word.startTime} | duration : 'timecode_frame' }} -
+                      {{ {'seconds' : word.endTime} | duration : 'timecode_frame' }}"
+          matTooltipPosition="above"
+          [ngClass]="{
+                      'textMergedLeft': [',', '.', ';'].includes(word.content) || word.content.startsWith('-'),
+                      'textMergedRight': word.content.endsWith('(') || word.content.endsWith('\'') || word.content.endsWith('-')
+                     }">
       {{word.content}}
     </span>
   </span>
 </div>
+
+<button
+        mat-raised-button
+        color="accent"
+        (click)="downloadTranscriptText()"
+        [disabled]="workflow.artifacts.length == 0"
+        >
+        <i class="material-icons">cloud_download</i>
+        Download Transcript
+</button>

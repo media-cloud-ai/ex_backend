@@ -1,0 +1,14 @@
+<h1>Natural Language Processing: Named Entity</h1>
+
+<h3>Reference: {{workflow.reference}}</h3>
+
+<div *ngIf="nlp" class="nlp">
+  <span *ngFor="let word of words">
+    <span [ngClass]="{'ner': word.ner, 'text': !word.ner}">
+      {{word.token}}
+      <span class="ner_detail" *ngIf="word.ner">
+        Relevance = {{word.relevance_score}}
+      </span>
+    </span>
+  </span>
+</div>

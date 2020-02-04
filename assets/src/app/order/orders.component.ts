@@ -43,7 +43,9 @@ export class OrdersComponent {
     'dialog_enhancement',
     'acs',
     'asp',
-    'acs_and_asp'
+    'acs_and_asp',
+    'natural_language_processing',
+    'speech_to_text_and_nlp'
   ]
   workflows: WorkflowPage
   connections: any = []
@@ -261,6 +263,10 @@ export class OrdersComponent {
 
   viewTranscript(workflow: Workflow) {
     this.router.navigate(['orders', workflow.id, 'transcript'])
+  }
+
+  viewNlp(workflow: Workflow) {
+    this.router.navigate(['orders', workflow.id, 'nlp'])
   }
 
   getDestinationFilename(workflow, extension: string, notExtension?: string[]) {
