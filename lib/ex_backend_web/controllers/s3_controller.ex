@@ -1,7 +1,7 @@
 defmodule ExBackendWeb.S3Controller do
   use ExBackendWeb, :controller
 
-  # import ExBackendWeb.Authorize
+  import ExBackendWeb.Authorize
 
   # alias ExBackend.Registeries
   # alias ExBackend.Subtitles
@@ -13,13 +13,13 @@ defmodule ExBackendWeb.S3Controller do
   # plug(:right_editor_check when action in [:index])
 
   def config(conn, _params) do
-    url = System.get_env("AWS_URL") || Application.get_env(:ex_backend, :aws_url)
+    url = System.get_env("S3_URL") || Application.get_env(:ex_backend, :s3_url)
 
     access_key =
-      System.get_env("AWS_ACCESS_KEY") || Application.get_env(:ex_backend, :aws_access_key)
+      System.get_env("S3_ACCESS_KEY") || Application.get_env(:ex_backend, :s3_access_key)
 
-    region = System.get_env("AWS_REGION") || Application.get_env(:ex_backend, :aws_region)
-    bucket = System.get_env("AWS_BUCKET") || Application.get_env(:ex_backend, :aws_bucket)
+    region = System.get_env("S3_REGION") || Application.get_env(:ex_backend, :s3_region)
+    bucket = System.get_env("S3_BUCKET") || Application.get_env(:ex_backend, :s3_bucket)
 
     vod_endpoint =
       System.get_env("VOD_ENDPOINT") || Application.get_env(:ex_backend, :vod_endpoint)
@@ -45,7 +45,7 @@ defmodule ExBackendWeb.S3Controller do
       |> String.split("/")
 
     secret_key =
-      System.get_env("AWS_SECRET_KEY") || Application.get_env(:ex_backend, :aws_secret_key)
+      System.get_env("S3_SECRET_KEY") || Application.get_env(:ex_backend, :s3_secret_key)
 
     date_key = :crypto.hmac(:sha256, "AWS4" <> secret_key, date)
     date_region_key = :crypto.hmac(:sha256, date_key, region)
@@ -56,11 +56,13 @@ defmodule ExBackendWeb.S3Controller do
     text(conn, signature |> Base.encode16(case: :lower))
   end
 
+  def signer(conn, _), do: error(conn, :unprocessable_entity, 422)
+
   def presign_url(conn, %{"path" => path} = params) do
     bucket =
       Map.get(params, "bucket") ||
-        System.get_env("AWS_BUCKET") ||
-        Application.get_env(:ex_backend, :aws_bucket)
+        System.get_env("S3_BUCKET") ||
+        Application.get_env(:ex_backend, :S3_bucket)
 
     url = make_presigned_url(path, bucket)
 
@@ -68,28 +70,30 @@ defmodule ExBackendWeb.S3Controller do
     |> json(%{url: url})
   end
 
+  def presign_url(conn, _), do: error(conn, :unprocessable_entity, 422)
+
   defp make_presigned_url(path, bucket) do
-    aws_url = System.get_env("AWS_URL") || Application.get_env(:ex_backend, :aws_url)
+    s3_url = System.get_env("S3_URL") || Application.get_env(:ex_backend, :s3_url)
 
     url =
-      aws_url
+      s3_url
       |> String.replace("https://", "")
       |> String.replace("http://", "")
 
     scheme =
-      if String.starts_with?(aws_url, "https://") do
+      if String.starts_with?(s3_url, "https://") do
         "https://"
       else
         "http://"
       end
 
-    region = System.get_env("AWS_REGION") || Application.get_env(:ex_backend, :aws_region)
+    region = System.get_env("S3_REGION") || Application.get_env(:ex_backend, :s3_region)
 
     access_key =
-      System.get_env("AWS_ACCESS_KEY") || Application.get_env(:ex_backend, :aws_access_key)
+      System.get_env("S3_ACCESS_KEY") || Application.get_env(:ex_backend, :s3_access_key)
 
     secret_key =
-      System.get_env("AWS_SECRET_KEY") || Application.get_env(:ex_backend, :aws_secret_key)
+      System.get_env("S3_SECRET_KEY") || Application.get_env(:ex_backend, :s3_secret_key)
 
     query_params = [
       {"ACL", "public-read"}
