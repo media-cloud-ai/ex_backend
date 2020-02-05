@@ -1,8 +1,6 @@
-
 import {Component} from '@angular/core'
 import {ActivatedRoute} from '@angular/router'
 import { HttpClient } from '@angular/common/http';
-
 import {S3Service} from '../services/s3.service'
 import {WorkflowService} from '../services/workflow.service'
 import {WorkflowPage} from '../models/page/workflow_page'
@@ -28,21 +26,16 @@ export class TranscriptViewerComponent {
 
   ngOnInit() {
     const filename = 'transcript.json';
-
     this.route
       .params
       .subscribe(params => {
-        console.log(params)
         this.workflow_id = +params['id']
-
         this.workflowService.getWorkflow(this.workflow_id)
           .subscribe(workflowPage => {
             this.workflow = workflowPage.data;
-
             if(this.workflow.artifacts.length > 0) {
               const file_path = this.getDestinationFilename(this.workflow, filename);
               const current = this
-
               if(file_path) {
                 this.s3Service.getPresignedUrl(file_path).subscribe(response => {
                   this.http.get(response.url).subscribe(content => {
@@ -52,8 +45,6 @@ export class TranscriptViewerComponent {
               }
             }
           });
-
-
       })
   }
 
@@ -75,11 +66,20 @@ export class TranscriptViewerComponent {
         return false
       }
     });
-
     if(result.length == 0){
       return undefined;
     }
-
     return result[0].params.filter(param => param.id === "destination_path")[0].value;
+  }
+
+  downloadTranscriptText(){
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(this.transcript.text));
+    element.setAttribute('download', "transcript.txt");
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
   }
 }
