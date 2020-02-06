@@ -19,18 +19,17 @@
       </mat-chip>
     </span>
   </mat-chip-list>
-  <div class="entities">
+  <div class="words">
     <span *ngFor="let word of words; let i=index">
-        <span [matTooltip]="word.ner ? 'Type : ' + word.entity.type +
-                                        '&#13;Score : ' + word.entity.relevance_score : null"
-              matTooltipPosition="above"
-              matTooltipClass="tooltip"
-              [ngClass]="{'ner': word.ner,
-                          'textMergedLeft': [',', '.', ';'].includes(word.word) || word.word.startsWith('-'),
-                          'textMergedRight': word.word.endsWith('(') || word.word.endsWith('\'') || word.word.endsWith('-')
+        <span *ngIf="getEntities(i).length == 0; else entity"
+              [ngClass]="{'textMergedLeft': mergedLeft(word),
+                          'textMergedRight': mergedRight(word)
               }">
-          {{word.word}}
+            {{ word }}
         </span>
+        <ng-template #entity>
+            <entity-component [entities]="getEntities(i)" [word]="word" [index]="0"></entity-component>
+        </ng-template>
     </span>
   </div>
 </div>

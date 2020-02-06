@@ -9,6 +9,7 @@ import { OrdersComponent } from './orders.component';
 import { OrderComponent } from './order.component';
 import { TranscriptViewerComponent } from './transcript_viewer.component';
 import { NlpViewerComponent } from './nlp_viewer.component';
+import { EntityComponent } from './entity/entity.component';
 
 import {
   MatButtonModule,
@@ -62,6 +63,7 @@ export const ROUTES: Routes = [
     OrdersComponent,
     TranscriptViewerComponent,
     NlpViewerComponent,
+    EntityComponent,
   ],
   entryComponents: [
   ]
