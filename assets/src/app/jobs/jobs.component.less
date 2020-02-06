@@ -63,13 +63,19 @@ ul.jobs {
   li.completed .bar {
     background-color: @green;
   }
+  li.error .bar {
+    background-color: @red;
+  }
+  li.queued .bar {
+    background-color: @yellow;
+  }
   li.processing .bar {
     background-color: @blue;
   }
+  li.retrying .bar {
+    background-color: @orange;
+  }
   li.skipped .bar {
     background-color: @grey;
-  }
-  li.error .bar {
-    background-color: @red;
   }
 }
