@@ -180,8 +180,21 @@
         <i class="material-icons">cloud_download</i>
         Télécharger
       </button>
-
     </span>
+
+    <span class="actions"
+      *ngIf="workflow.identifier === 'shot_detection'">
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="downloadS3Resource(workflow, 'shot_detection.json')"
+        [disabled]="workflow.artifacts.length == 0"
+      >
+        <i class="material-icons">cloud_download</i>
+        Télécharger
+      </button>
+    </span>
+
     <span class="actions"
       *ngIf="workflow.identifier === 'speech_to_text_and_nlp'">
       <button

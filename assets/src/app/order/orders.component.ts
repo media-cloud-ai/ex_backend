@@ -45,7 +45,8 @@ export class OrdersComponent {
     'asp',
     'acs_and_asp',
     'natural_language_processing',
-    'speech_to_text_and_nlp'
+    'speech_to_text_and_nlp',
+    'shot_detection'
   ]
   workflows: WorkflowPage
   connections: any = []
@@ -251,6 +252,7 @@ export class OrdersComponent {
   downloadS3Resource(workflow: Workflow, filename:string) {
     if(workflow.artifacts.length > 0) {
       const file_path = this.getDestinationFilename(workflow, filename);
+      console.log(file_path)
       const current = this
 
       if(file_path) {
