@@ -62,7 +62,7 @@ defmodule ExBackendWeb.S3Controller do
     bucket =
       Map.get(params, "bucket") ||
         System.get_env("S3_BUCKET") ||
-        Application.get_env(:ex_backend, :S3_bucket)
+        Application.get_env(:ex_backend, :s3_bucket)
 
     url = make_presigned_url(path, bucket)
 

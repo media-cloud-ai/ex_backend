@@ -38,6 +38,13 @@
         {{job.status[0].description.message}}
       </span>
     </div>
-    <div class="bar {{job.status | jobStatus}}"></div>
+
+    <div *ngIf="(job.status | jobStatus) === 'processing'; then thenBlock else elseBlock"></div>
+      <ng-template #thenBlock>
+        <mat-progress-bar mode="determinate" value="{{job.progressions | jobProgression}}"></mat-progress-bar>
+      </ng-template>
+      <ng-template #elseBlock>
+        <div class="bar {{job.status | jobStatus}}"></div>
+      </ng-template>
   </li>
 </ul>

@@ -17,4 +17,10 @@ export class Job {
   inserted_at: string
   params: Parameter[]
   status: Status[]
+  progressions: Progression[]
+}
+
+export class Progression {
+  progression: number
+  inserted_at: string
 }
