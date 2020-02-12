@@ -227,15 +227,15 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
             id: "video_filename",
             type: "template",
             enable: false,
-            default: "{Enum.at(source_paths, 0)}",
-            value: "{Enum.at(source_paths, 0)}"
+            default: "{Enum.filter(source_paths, fn item -> String.ends_with?(item, \".ismv\") end) |> List.first}",
+            value: "{Enum.filter(source_paths, fn item -> String.ends_with?(item, \".ismv\") end) |> List.first}"
           },
           %{
             id: "audio_filename",
             type: "template",
             enable: false,
-            default: "{Enum.at(source_paths, 1)}",
-            value: "{Enum.at(source_paths, 1)}"
+            default: "{Enum.filter(source_paths, fn item -> String.ends_with?(item, \".isma\") end) |> List.first}",
+            value: "{Enum.filter(source_paths, fn item -> String.ends_with?(item, \".isma\") end) |> List.first}"
           },
           %{
             id: "destination_filename",
