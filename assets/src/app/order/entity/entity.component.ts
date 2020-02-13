@@ -13,12 +13,6 @@ export class EntityComponent {
   @Input() word: string;
   @Input() index: number;
 
-  constructor(
-  ) { }
-
-  ngOnInit() {
-  }
-
   getStyle(index: number) {
     var colors: string[] = ['#afd5aa', '#90c978', '#83c6dd', '#5db1d1'];
     var color: string = colors[(index % colors.length).toString()];
