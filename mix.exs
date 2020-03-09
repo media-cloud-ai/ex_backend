@@ -65,7 +65,7 @@ defmodule ExBackend.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:amqp, "~> 1.2"},
+      {:amqp, "~> 1.4"},
       {:bcrypt_elixir, "~> 2.0"},
       {:bamboo, "~> 1.2"},
       {:blue_bird, "~> 0.4.1"},
@@ -85,7 +85,7 @@ defmodule ExBackend.Mixfile do
       {:hackney, "~> 1.6"},
       {:httpotion, "~> 3.1.0"},
       {:jason, "~> 1.1"},
-      {:lager, "3.6.10"},
+      {:lager, "3.8.0"},
       {:libvault, "~> 0.2.1"},
       {:phoenix, "~> 1.4.6"},
       {:phoenix_ecto, "~> 4.0"},
@@ -99,7 +99,7 @@ defmodule ExBackend.Mixfile do
       {:ranch, "~> 1.7.1"},
       {:remote_dockers, "1.4.0"},
       {:sigaws, "~> 0.7.2"},
-      {:step_flow, "~> 0.0.16"},
+      {:step_flow, "~> 0.0.17"},
       {:tesla, "~> 1.3.0"},
       {:timex, "~> 3.6"},
       {:uuid, "~> 1.1"}
