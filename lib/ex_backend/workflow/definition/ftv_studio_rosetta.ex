@@ -345,26 +345,26 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
           %{
             id: "destination_hostname",
             type: "credential",
-            default: "AKAMAI_VIDEO_HOSTNAME",
-            value: "AKAMAI_VIDEO_HOSTNAME"
+            default: "FTP_ROSETTA_HOSTNAME",
+            value: "FTP_ROSETTA_HOSTNAME"
           },
           %{
             id: "destination_username",
             type: "credential",
-            default: "AKAMAI_VIDEO_USERNAME",
-            value: "AKAMAI_VIDEO_USERNAME"
+            default: "FTP_ROSETTA_USERNAME",
+            value: "FTP_ROSETTA_USERNAME"
           },
           %{
             id: "destination_password",
             type: "credential",
-            default: "AKAMAI_VIDEO_PASSWORD",
-            value: "AKAMAI_VIDEO_PASSWORD"
+            default: "FTP_ROSETTA_PASSWORD",
+            value: "FTP_ROSETTA_PASSWORD"
           },
           %{
             id: "destination_prefix",
             type: "credential",
-            default: "AKAMAI_VIDEO_PREFIX",
-            value: "AKAMAI_VIDEO_PREFIX"
+            default: "FTP_ROSETTA_PREFIX",
+            value: "FTP_ROSETTA_PREFIX"
           },
           %{
             id: "destination_path",
@@ -377,8 +377,8 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
           %{
             id: "ssl",
             type: "credential",
-            default: "AKAMAI_VIDEO_SSL",
-            value: "AKAMAI_VIDEO_SSL"
+            default: "FTP_ROSETTA_SSL",
+            value: "FTP_ROSETTA_SSL"
           },
           %{
             "id" => "input_filter",
