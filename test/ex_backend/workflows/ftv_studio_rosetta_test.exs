@@ -4,6 +4,8 @@ defmodule ExBackend.FtvStudioRosettaTest do
   alias StepFlow.Step
   alias StepFlow.Workflows
 
+  import FakeServer
+  alias FakeServer.Response
   require Logger
 
   setup do
@@ -27,38 +29,26 @@ defmodule ExBackend.FtvStudioRosettaTest do
       assert String.ends_with?(Enum.at(destination_paths, 1), "/path.ttml")
 
       assert Enum.at(destination_paths, 2) ==
-               "F2/Emission_test/F2_2019_12_08_Emission_test_Additional_Title.ttml"
+               "F2/emission_test/F2_2019_12_08_emission_test_additional_title.mp4"
 
       assert Enum.at(destination_paths, 3) ==
-               "F2/Emission_test/F2_2019_12_08_Emission_test_Additional_Title.mp4"
+               "F2/emission_test/F2_2019_12_08_emission_test_additional_title.ttml"
     end)
 
     :ok
   end
 
   describe "francetv_studio_rosetta_workflow" do
-    test "bad id" do
-      case ExBackend.Credentials.get_credential_by_key("ATTESOR_FTVACCESS_ENDPOINT") do
-        nil ->
-          ExBackend.Credentials.create_credential(%{
-            key: "ATTESOR_FTVACCESS_ENDPOINT",
-            value: "https://demo.media-io.com/mockup/francetv"
-          })
-
-        _ ->
-          nil
-      end
-
-      case ExBackend.Credentials.get_credential_by_key("ATTESOR_FTVACCESS_TOKEN") do
-        nil ->
-          ExBackend.Credentials.create_credential(%{
-            key: "ATTESOR_FTVACCESS_TOKEN",
-            value: "my_personal_token"
-          })
-
-        _ ->
-          nil
-      end
+    test_with_server "bad id" do
+      route("/notifications", fn request ->
+        if Map.get(request.headers, "content-type") == "application/json" &&
+          Map.get(request.headers, "authorization") == "Bearer JWT_TOKEN"
+          do
+          Response.ok!(~s({"status": "ok"}))
+        else
+          Response.no_content!()
+        end
+      end)
 
       workflow_params =
         ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition_for_akamai_input(
@@ -66,14 +56,19 @@ defmodule ExBackend.FtvStudioRosettaTest do
           "http://static/source/path.ttml",
           [
             %{
-              id: "channel",
+              id: "short_channel",
               type: "string",
               value: "F2"
             },
             %{
+              id: "channel",
+              type: "string",
+              value: "france-2"
+            },
+            %{
               id: "title",
               type: "string",
-              value: "Emission_test"
+              value: "Emission test"
             },
             %{
               id: "broadcasted_at",
@@ -81,9 +76,89 @@ defmodule ExBackend.FtvStudioRosettaTest do
               value: "2019_12_08"
             },
             %{
+              id: "formatted_title",
+              type: "string",
+              value: "emission_test"
+            },
+            %{
+              id: "formatted_broadcasted_at",
+              type: "string",
+              value: "2019_12_08"
+            },
+            %{
+              id: "formatted_additional_title",
+              type: "string",
+              value: "additional_title"
+            },
+            %{
               id: "additional_title",
               type: "string",
-              value: "Additional_Title"
+              value: "Additional Title"
+            },
+            %{
+              id: "aedra_id",
+              type: "string",
+              value: "FO02455384_28813401"
+            },
+            %{
+              id: "legacy_id",
+              type: "string",
+              value: "224705433"
+            },
+            %{
+              id: "broadcasted_live",
+              type: "boolean",
+              value: false
+            },
+            %{
+              id: "duration",
+              type: "string",
+              value: "PT43M42S"
+            },
+            %{
+              id: "expected_at",
+              type: "string",
+              value: "2020-03-12T14:30:00+01:00"
+            },
+            %{
+              id: "expected_duration",
+              type: "string",
+              value: "PT45M"
+            },
+            %{
+              id: "ftvcut_id",
+              type: "string",
+              value: nil
+            },
+            %{
+              id: "oscar_id",
+              type: "string",
+              value: nil
+            },
+            %{
+              id: "plurimedia_broadcast_id",
+              type: "integer",
+              value: 224705433
+            },
+            %{
+              id: "plurimedia_collection_ids",
+              type: "array_of_integers",
+              value: [30826685, 30823521]
+            },
+            %{
+              id: "plurimedia_program_id",
+              type: "integer",
+              value: 128909645
+            },
+            %{
+              id: "rosetta_notification_endpoint",
+              type: "string",
+              value: "http://#{FakeServer.address()}/notifications"
+            },
+            %{
+              id: "rosetta_notification_token",
+              type: "string",
+              value: "JWT_TOKEN"
             }
           ]
         )
@@ -108,10 +183,12 @@ defmodule ExBackend.FtvStudioRosettaTest do
       ExBackend.HelpersTest.complete_jobs(workflow.id, "job_file_system")
 
       {:ok, "completed"} = Step.start_next(workflow)
+
       ExBackend.HelpersTest.check(workflow.id, "job_transfer", 4)
       ExBackend.HelpersTest.check(workflow.id, "job_file_system", 1)
+      ExBackend.HelpersTest.check(workflow.id, "job_notification", 1)
 
-      ExBackend.HelpersTest.check(workflow.id, 5)
+      ExBackend.HelpersTest.check(workflow.id, 6)
     end
   end
 end
