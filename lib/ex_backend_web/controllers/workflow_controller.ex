@@ -61,7 +61,8 @@ defmodule ExBackendWeb.WorkflowController do
       |> Map.put(:reference, reference)
       |> Map.put(
         :parameters,
-        parameters ++ extra_parameters ++
+        parameters ++
+          extra_parameters ++
           [
             %{
               id: "source_folder",

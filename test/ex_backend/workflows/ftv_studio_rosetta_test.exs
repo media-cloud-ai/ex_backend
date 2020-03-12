@@ -28,11 +28,15 @@ defmodule ExBackend.FtvStudioRosettaTest do
       assert String.starts_with?(Enum.at(destination_paths, 1), "/data/")
       assert String.ends_with?(Enum.at(destination_paths, 1), "/path.ttml")
 
-      assert Enum.at(destination_paths, 2) ==
+      assert Enum.member?(
+               destination_paths,
                "F2/emission_test/F2_2019_12_08_emission_test_additional_title.mp4"
+             )
 
-      assert Enum.at(destination_paths, 3) ==
+      assert Enum.member?(
+               destination_paths,
                "F2/emission_test/F2_2019_12_08_emission_test_additional_title.ttml"
+             )
     end)
 
     :ok
@@ -42,8 +46,7 @@ defmodule ExBackend.FtvStudioRosettaTest do
     test_with_server "bad id" do
       route("/notifications", fn request ->
         if Map.get(request.headers, "content-type") == "application/json" &&
-          Map.get(request.headers, "authorization") == "Bearer JWT_TOKEN"
-          do
+             Map.get(request.headers, "authorization") == "Bearer JWT_TOKEN" do
           Response.ok!(~s({"status": "ok"}))
         else
           Response.no_content!()
@@ -138,17 +141,17 @@ defmodule ExBackend.FtvStudioRosettaTest do
             %{
               id: "plurimedia_broadcast_id",
               type: "integer",
-              value: 224705433
+              value: 224_705_433
             },
             %{
               id: "plurimedia_collection_ids",
               type: "array_of_integers",
-              value: [30826685, 30823521]
+              value: [30_826_685, 30_823_521]
             },
             %{
               id: "plurimedia_program_id",
               type: "integer",
-              value: 128909645
+              value: 128_909_645
             },
             %{
               id: "rosetta_notification_endpoint",

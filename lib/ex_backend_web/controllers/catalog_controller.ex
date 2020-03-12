@@ -20,7 +20,10 @@ defmodule ExBackendWeb.CatalogController do
   end
 
   def show(conn, params) do
-    if String.match?(params["id"], ~r/^[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}$/) do
+    if String.match?(
+         params["id"],
+         ~r/^[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}$/
+       ) do
       case ExVideoFactory.videos(%{"qid" => params["id"]}) do
         %{total: "1", size: 1, videos: videos} ->
           render(conn, "show.json", video: videos |> List.first())

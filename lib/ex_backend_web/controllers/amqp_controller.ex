@@ -35,16 +35,17 @@ defmodule ExBackendWeb.Amqp.AmqpController do
     url = "http://" <> hostname <> ":" <> port <> "/api/" <> endpoint
 
     basic_auth =
-      username <> ":" <> password
-      |> Base.encode64
+      (username <> ":" <> password)
+      |> Base.encode64()
 
-    headers = ["Authorization": "Basic #{basic_auth}"]
+    headers = [Authorization: "Basic #{basic_auth}"]
 
     case HTTPoison.get(url, headers) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         Poison.decode(body)
+
       error ->
-        Logger.error("Unable to connect to #{url} | #{inspect error}")
+        Logger.error("Unable to connect to #{url} | #{inspect(error)}")
         %{error: "Unable to connect to #{url}"}
     end
   end
