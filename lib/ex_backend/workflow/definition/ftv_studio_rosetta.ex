@@ -31,35 +31,19 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
       Map.get(video, "broadcasted_at")
       |> format_broadcasted_at()
 
-    channel =
-      case Map.get(video, "channel") do
-        nil ->
-          "XX"
-
-        value ->
-          value
-          |> Map.get("id")
-          |> format_channel()
-      end
-
     [
       %{
-        id: "channel",
-        type: "string",
-        value: channel
-      },
-      %{
-        id: "broadcasted_at",
+        id: "formatted_broadcasted_at",
         type: "string",
         value: broadcasted_at
       },
       %{
-        id: "additional_title",
+        id: "formatted_additional_title",
         type: "string",
         value: additional_title
       },
       %{
-        id: "title",
+        id: "formatted_title",
         type: "string",
         value: title
       }
@@ -83,34 +67,6 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
 
     {:ok, broadcasted_at} = Timex.format(date_object, "%Y%m%d_%H%M", :strftime)
     broadcasted_at
-  end
-
-  defp format_channel("france-2") do
-    "F2"
-  end
-
-  defp format_channel("france-3") do
-    "F3"
-  end
-
-  defp format_channel("france-4") do
-    "F4"
-  end
-
-  defp format_channel("france-5") do
-    "F5"
-  end
-
-  defp format_channel("france-o") do
-    "FO"
-  end
-
-  defp format_channel("france-info") do
-    "FI"
-  end
-
-  defp format_channel(_) do
-    "XX"
   end
 
   def get_definition_for_aws_input(source_paths, ttml_path, extra_parameters) do
@@ -369,10 +325,8 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
           %{
             id: "destination_path",
             type: "template",
-            default:
-              "{channel}/{title}/{channel}_{broadcasted_at}_{title}_{additional_title}{extension}",
             value:
-              "{channel}/{title}/{channel}_{broadcasted_at}_{title}_{additional_title}{extension}"
+              "{short_channel}/{formatted_title}/{short_channel}_{formatted_broadcasted_at}_{formatted_title}_{formatted_additional_title}{extension}"
           },
           %{
             id: "ssl",
@@ -402,13 +356,61 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
             type: "string",
             default: "remove",
             value: "remove"
+          }
+        ]
+      },
+      %{
+        id: last_step_id + 3,
+        parent_ids: [video_step_id, subtitles_step_id],
+        required: [last_step_id + 2],
+        name: "job_notification",
+        label: "Notify Rosetta",
+        icon: "notifications",
+        mode: "notification",
+        enable: true,
+        parameters: [
+          %{
+            id: "url",
+            type: "template",
+            value: "{rosetta_notification_endpoint}"
           },
           %{
-            id: "source_paths",
-            type: "array_of_templates",
-            value: [
-              "{work_directory}/{workflow_id}"
-            ]
+            id: "method",
+            type: "string",
+            value: "POST"
+          },
+          %{
+            id: "headers",
+            type: "template",
+            value: ~s({
+              "content-type": "application/json",
+              "X-Requested-With": "XMLHttpRequest",
+              "Authorization": "Bearer {rosetta_notification_token}"
+            })
+          },
+          %{
+            id: "body",
+            type: "template",
+            value: ~s({
+              "id": "{workflow_reference}",
+              "title": "{title}",
+              "additional_title": "{additional_title}",
+              "broadcasted_at": "{broadcasted_at}",
+              "channel": "{channel}",
+              "duration": "{duration}",
+              "expected_at": "{expected_at}",
+              "expected_duration": "{expected_duration}",
+              "legacy_id": {legacy_id},
+              "oscar_id": {oscar_id},
+              "aedra_id": "{aedra_id}",
+              "plurimedia_broadcast_id": {plurimedia_broadcast_id},
+              "plurimedia_collection_ids": {plurimedia_collection_ids},
+              "plurimedia_program_id": {plurimedia_program_id},
+              "ftvcut_id": "{ftvcut_id}",
+              "broadcasted_live": {broadcasted_live},
+              "ttml_path": "<%= Enum.filter(source_paths, fn item -> String.ends_with?(item, ".ttml"\) end\) |> List.first %>",
+              "mp4_path": "<%= Enum.filter(source_paths, fn item -> String.ends_with?(item, ".mp4"\) end\) |> List.first %>",
+            })
           }
         ]
       }

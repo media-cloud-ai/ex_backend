@@ -9,6 +9,10 @@ defmodule ExBackendWeb.AuthView do
     %{errors: %{detail: "You are not authorized to view this resource"}}
   end
 
+  def render("404.json", _assigns) do
+    %{errors: %{detail: "No content"}}
+  end
+
   def render("422.json", _assigns) do
     %{errors: %{detail: "missing paramaters"}}
   end

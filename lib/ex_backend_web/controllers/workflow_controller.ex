@@ -42,7 +42,8 @@ defmodule ExBackendWeb.WorkflowController do
 
   def create_specific(conn, %{
         "identifier" => "ingest-rosetta",
-        "reference" => reference
+        "reference" => reference,
+        "parameters" => parameters
       }) do
     source_paths = ExVideoFactory.get_ftp_paths_for_video_id(reference)
 
@@ -60,7 +61,8 @@ defmodule ExBackendWeb.WorkflowController do
       |> Map.put(:reference, reference)
       |> Map.put(
         :parameters,
-        extra_parameters ++
+        parameters ++
+          extra_parameters ++
           [
             %{
               id: "source_folder",

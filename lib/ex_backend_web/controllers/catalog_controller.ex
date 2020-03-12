@@ -3,8 +3,6 @@ defmodule ExBackendWeb.CatalogController do
 
   import ExBackendWeb.Authorize
 
-  alias ExBackend.Catalog
-
   action_fallback(ExBackendWeb.FallbackController)
 
   # the following plugs are defined in the controllers/authorize.ex file
@@ -22,12 +20,19 @@ defmodule ExBackendWeb.CatalogController do
   end
 
   def show(conn, params) do
-    case ExVideoFactory.videos(%{"qid" => params["id"]}) do
-      %{total: "1", size: 1, videos: videos} ->
-        render(conn, "show.json", video: videos |> List.first())
+    if String.match?(
+         params["id"],
+         ~r/^[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}$/
+       ) do
+      case ExVideoFactory.videos(%{"qid" => params["id"]}) do
+        %{total: "1", size: 1, videos: videos} ->
+          render(conn, "show.json", video: videos |> List.first())
 
-      _ ->
-        error(conn, :notfound, 404)
+        _ ->
+          error(conn, :not_found, 404)
+      end
+    else
+      error(conn, :not_found, 404)
     end
   end
 end

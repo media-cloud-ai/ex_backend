@@ -39,7 +39,7 @@ defmodule ExBackend.Mixfile do
         :bcrypt_elixir,
         :blue_bird,
         :ecto_sql,
-        :httpotion,
+        :httpoison,
         :jason,
         :logger,
         :libvault,
@@ -71,7 +71,7 @@ defmodule ExBackend.Mixfile do
       {:blue_bird, "~> 0.4.1"},
       {:comeonin, "~> 5.1"},
       {:cors_plug, "~> 2.0"},
-      {:cowboy, "~> 2.6"},
+      # {:cowboy, "~> 2.7"},
       {:credo, "~> 1.1", only: [:dev, :test], runtime: false},
       {:distillery, "~> 2.1"},
       {:ecto, "~> 3.1"},
@@ -81,9 +81,10 @@ defmodule ExBackend.Mixfile do
       {:ex_imdb_sniffer, "~> 0.1.1"},
       {:ex_mock, "~> 0.1.1", only: :test},
       {:ex_video_factory, "0.3.14"},
+      {:fake_server, "~> 2.1", only: :test},
       {:gettext, "~> 0.14"},
       {:hackney, "~> 1.6"},
-      {:httpotion, "~> 3.1.0"},
+      {:httpoison, "~> 1.6"},
       {:jason, "~> 1.1"},
       {:lager, "3.8.0"},
       {:libvault, "~> 0.2.1"},
@@ -99,7 +100,7 @@ defmodule ExBackend.Mixfile do
       {:ranch, "~> 1.7.1"},
       {:remote_dockers, "1.4.0"},
       {:sigaws, "~> 0.7.2"},
-      {:step_flow, "~> 0.0.17"},
+      {:step_flow, "~> 0.0.18"},
       {:tesla, "~> 1.3.0"},
       {:timex, "~> 3.6"},
       {:uuid, "~> 1.1"}
@@ -114,7 +115,7 @@ defmodule ExBackend.Mixfile do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
+      "ecto.setup": ["ecto.create"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
