@@ -54,7 +54,7 @@ export class JobsComponent {
   }
 
   getJobs(index) {
-    this.jobService.getJobs(index, 100, this.workflowId, this.step_id, this.jobType)
+    this.jobService.getJobs(index, 200, this.workflowId, this.step_id, this.jobType)
     .subscribe(jobPage => {
       this.jobs = jobPage
       this.length = jobPage.total
