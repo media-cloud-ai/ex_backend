@@ -1,4 +1,4 @@
-defmodule ExBackend.FtvStudioRosettaTest do
+defmodule ExBackend.FtvStudioRosettaAwsTest do
   use ExBackendWeb.ConnCase
 
   alias StepFlow.Step
@@ -13,7 +13,7 @@ defmodule ExBackend.FtvStudioRosettaTest do
 
     on_exit(fn ->
       destination_paths =
-        ExBackend.HelpersTest.consume_messages(channel, "job_queue_not_found", 5)
+        ExBackend.HelpersTest.consume_messages(channel, "job_queue_not_found", 9)
         |> Enum.map(fn job ->
           Map.get(job, "parameters")
           |> Enum.filter(fn p -> Map.get(p, "id") == "destination_path" end)
@@ -23,10 +23,12 @@ defmodule ExBackend.FtvStudioRosettaTest do
           |> List.first()
         end)
 
+      IO.inspect(destination_paths)
+
       assert String.starts_with?(Enum.at(destination_paths, 0), "/data/")
       assert String.ends_with?(Enum.at(destination_paths, 0), "/path.mp4")
-      assert String.starts_with?(Enum.at(destination_paths, 1), "/data/")
-      assert String.ends_with?(Enum.at(destination_paths, 1), "/path.ttml")
+      assert String.starts_with?(Enum.at(destination_paths, 5), "/data/")
+      assert String.ends_with?(Enum.at(destination_paths, 5), "/path.ttml")
 
       assert Enum.member?(
                destination_paths,
@@ -42,8 +44,8 @@ defmodule ExBackend.FtvStudioRosettaTest do
     :ok
   end
 
-  describe "francetv_studio_rosetta_workflow_akamais" do
-    test_with_server "akamai source content" do
+  describe "francetv_studio_rosetta_workflow_aws" do
+    test_with_server "aws source content" do
       route("/notifications", fn request ->
         request.body
         |> Jason.decode!
@@ -57,9 +59,9 @@ defmodule ExBackend.FtvStudioRosettaTest do
       end)
 
       workflow_params =
-        ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition_for_akamai_input(
-          ["aws://source/path.mp4"],
-          "http://static/source/aws/path.ttml",
+        ExBackend.Workflow.Definition.FtvStudioRosetta.get_definition_for_aws_input(
+          ["ftp://source/path.mp4"],
+          "http://static/source/path.ttml",
           [
             %{
               id: "short_channel",
@@ -165,36 +167,77 @@ defmodule ExBackend.FtvStudioRosettaTest do
               id: "rosetta_notification_token",
               type: "string",
               value: "JWT_TOKEN"
+            },
+            %{
+              id: "audio",
+              type: "string",
+              value: ~s(["audio_file.isma"])
+            },
+            %{
+              id: "video",
+              type: "string",
+              value: ~s(["video_file.ismv"])
             }
           ]
         )
         |> Map.put(:reference, "39984e00-055c-4aa8-902c-1d6cab12d2da")
 
       {:ok, workflow} = Workflows.create_workflow(workflow_params)
-      {:ok, "started"} = Step.start_next(workflow)
 
-      ExBackend.HelpersTest.check(workflow.id, 2)
-      ExBackend.HelpersTest.check(workflow.id, "job_transfer", 2)
+      {:ok, "started"} = Step.start_next(workflow)
+      ExBackend.HelpersTest.check(workflow.id, 1)
+      ExBackend.HelpersTest.check(workflow.id, "job_transfer", 1)
       ExBackend.HelpersTest.complete_jobs(workflow.id, "job_transfer")
 
       {:ok, "started"} = Step.start_next(workflow)
+      ExBackend.HelpersTest.check(workflow.id, 2)
+      ExBackend.HelpersTest.check(workflow.id, "job_ism_manifest", 1)
+      ExBackend.HelpersTest.complete_jobs(workflow.id, "job_ism_manifest")
+
+      {:ok, "started"} = Step.start_next(workflow)
       ExBackend.HelpersTest.check(workflow.id, 4)
-      ExBackend.HelpersTest.check(workflow.id, "job_transfer", 4)
+      ExBackend.HelpersTest.check(workflow.id, "job_transfer", 3)
+      ExBackend.HelpersTest.check(workflow.id, "job_ism_manifest", 1)
       ExBackend.HelpersTest.complete_jobs(workflow.id, "job_transfer")
 
       {:ok, "started"} = Step.start_next(workflow)
       ExBackend.HelpersTest.check(workflow.id, 5)
+      ExBackend.HelpersTest.check(workflow.id, "job_transfer", 3)
+      ExBackend.HelpersTest.check(workflow.id, "job_ism_manifest", 1)
+      ExBackend.HelpersTest.check(workflow.id, "job_ffmpeg", 1)
+      ExBackend.HelpersTest.complete_jobs(workflow.id, "job_ffmpeg")
+
+      {:ok, "started"} = Step.start_next(workflow)
+      ExBackend.HelpersTest.check(workflow.id, 6)
       ExBackend.HelpersTest.check(workflow.id, "job_transfer", 4)
+      ExBackend.HelpersTest.check(workflow.id, "job_ism_manifest", 1)
+      ExBackend.HelpersTest.check(workflow.id, "job_ffmpeg", 1)
+      ExBackend.HelpersTest.complete_jobs(workflow.id, "job_transfer")
+
+      {:ok, "started"} = Step.start_next(workflow)
+      ExBackend.HelpersTest.check(workflow.id, 8)
+      ExBackend.HelpersTest.check(workflow.id, "job_transfer", 6)
+      ExBackend.HelpersTest.check(workflow.id, "job_ism_manifest", 1)
+      ExBackend.HelpersTest.check(workflow.id, "job_ffmpeg", 1)
+      ExBackend.HelpersTest.complete_jobs(workflow.id, "job_transfer")
+
+      {:ok, "started"} = Step.start_next(workflow)
+      ExBackend.HelpersTest.check(workflow.id, 9)
+      ExBackend.HelpersTest.check(workflow.id, "job_transfer", 6)
+      ExBackend.HelpersTest.check(workflow.id, "job_ism_manifest", 1)
+      ExBackend.HelpersTest.check(workflow.id, "job_ffmpeg", 1)
       ExBackend.HelpersTest.check(workflow.id, "job_file_system", 1)
       ExBackend.HelpersTest.complete_jobs(workflow.id, "job_file_system")
 
       {:ok, "completed"} = Step.start_next(workflow)
-
-      ExBackend.HelpersTest.check(workflow.id, "job_transfer", 4)
+      ExBackend.HelpersTest.check(workflow.id, 10)
+      ExBackend.HelpersTest.check(workflow.id, "job_transfer", 6)
+      ExBackend.HelpersTest.check(workflow.id, "job_ism_manifest", 1)
+      ExBackend.HelpersTest.check(workflow.id, "job_ffmpeg", 1)
       ExBackend.HelpersTest.check(workflow.id, "job_file_system", 1)
       ExBackend.HelpersTest.check(workflow.id, "job_notification", 1)
 
-      ExBackend.HelpersTest.check(workflow.id, 6)
+      ExBackend.HelpersTest.check(workflow.id, 10)
     end
   end
 end

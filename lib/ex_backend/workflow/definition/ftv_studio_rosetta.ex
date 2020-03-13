@@ -157,8 +157,8 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
             id: "source_paths",
             type: "array_of_templates",
             value: [
-              "{source_folder}/{audio}",
-              "{source_folder}/{video}"
+              "{source_folder}/<%= Enum.at(Jason.decode!(audio), 0) %>",
+              "{source_folder}/<%= Enum.at(Jason.decode!(video), 0) %>"
             ]
           }
         ]
@@ -183,19 +183,15 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
             id: "video_filename",
             type: "template",
             enable: false,
-            default:
-              "{Enum.filter(source_paths, fn item -> String.ends_with?(item, \".ismv\") end) |> List.first}",
             value:
-              "{Enum.filter(source_paths, fn item -> String.ends_with?(item, \".ismv\") end) |> List.first}"
+              "<%= Enum.filter(source_paths, fn item -> String.ends_with?(item, \".ismv\") end) |> List.first %>"
           },
           %{
             id: "audio_filename",
             type: "template",
             enable: false,
-            default:
-              "{Enum.filter(source_paths, fn item -> String.ends_with?(item, \".isma\") end) |> List.first}",
             value:
-              "{Enum.filter(source_paths, fn item -> String.ends_with?(item, \".isma\") end) |> List.first}"
+              "<%= Enum.filter(source_paths, fn item -> String.ends_with?(item, \".isma\") end) |> List.first %>"
           },
           %{
             id: "destination_filename",
@@ -323,16 +319,16 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
             value: "FTP_ROSETTA_PREFIX"
           },
           %{
-            id: "destination_path",
-            type: "template",
-            value:
-              "{short_channel}/{formatted_title}/{short_channel}_{formatted_broadcasted_at}_{formatted_title}_{formatted_additional_title}{extension}"
-          },
-          %{
             id: "ssl",
             type: "credential",
             default: "FTP_ROSETTA_SSL",
             value: "FTP_ROSETTA_SSL"
+          },
+          %{
+            id: "destination_path",
+            type: "template",
+            value:
+              "{short_channel}/{formatted_title}/{short_channel}_{formatted_broadcasted_at}_{formatted_title}_{formatted_additional_title}{extension}"
           },
           %{
             "id" => "input_filter",
@@ -344,7 +340,8 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
       },
       %{
         id: last_step_id + 2,
-        parent_ids: [last_step_id + 1],
+        parent_ids: [video_step_id, subtitles_step_id],
+        required: [subtitles_step_id],
         name: "job_file_system",
         label: "Clean workspace",
         icon: "delete_forever",
@@ -354,15 +351,25 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
           %{
             id: "action",
             type: "string",
-            default: "remove",
             value: "remove"
+          },
+          %{
+            id: "source_path",
+            type: "template",
+            value: "{work_directory}/{workflow_id}"
+          },
+          %{
+            id: "source_paths",
+            type: "array_of_templates",
+            value: [
+              "{work_directory}/{workflow_id}"
+            ]
           }
         ]
       },
       %{
         id: last_step_id + 3,
         parent_ids: [video_step_id, subtitles_step_id],
-        required: [last_step_id + 2],
         name: "job_notification",
         label: "Notify Rosetta",
         icon: "notifications",
@@ -401,15 +408,14 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
               "expected_at": "{expected_at}",
               "expected_duration": "{expected_duration}",
               "legacy_id": {legacy_id},
-              "oscar_id": {oscar_id},
+              "oscar_id": "{oscar_id}",
               "aedra_id": "{aedra_id}",
               "plurimedia_broadcast_id": {plurimedia_broadcast_id},
               "plurimedia_collection_ids": {plurimedia_collection_ids},
               "plurimedia_program_id": {plurimedia_program_id},
               "ftvcut_id": "{ftvcut_id}",
-              "broadcasted_live": {broadcasted_live},
               "ttml_path": "<%= Enum.filter(source_paths, fn item -> String.ends_with?(item, ".ttml"\) end\) |> List.first %>",
-              "mp4_path": "<%= Enum.filter(source_paths, fn item -> String.ends_with?(item, ".mp4"\) end\) |> List.first %>",
+              "mp4_path": "<%= Enum.filter(source_paths, fn item -> String.ends_with?(item, ".mp4"\) end\) |> List.first %>"
             })
           }
         ]
