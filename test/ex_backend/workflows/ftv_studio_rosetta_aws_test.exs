@@ -23,8 +23,6 @@ defmodule ExBackend.FtvStudioRosettaAwsTest do
           |> List.first()
         end)
 
-      IO.inspect(destination_paths)
-
       assert String.starts_with?(Enum.at(destination_paths, 0), "/data/")
       assert String.ends_with?(Enum.at(destination_paths, 0), "/path.mp4")
       assert String.starts_with?(Enum.at(destination_paths, 5), "/data/")
@@ -48,7 +46,7 @@ defmodule ExBackend.FtvStudioRosettaAwsTest do
     test_with_server "aws source content" do
       route("/notifications", fn request ->
         request.body
-        |> Jason.decode!
+        |> Jason.decode!()
 
         if Map.get(request.headers, "content-type") == "application/json" &&
              Map.get(request.headers, "authorization") == "Bearer JWT_TOKEN" do
