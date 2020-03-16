@@ -45,8 +45,7 @@ defmodule ExBackend.FtvStudioRosettaTest do
   describe "francetv_studio_rosetta_workflow_akamais" do
     test_with_server "akamai source content" do
       route("/notifications", fn request ->
-        request.body
-        |> Jason.decode!()
+        assert is_map(request.body) == true
 
         if Map.get(request.headers, "content-type") == "application/json" &&
              Map.get(request.headers, "authorization") == "Bearer JWT_TOKEN" do
