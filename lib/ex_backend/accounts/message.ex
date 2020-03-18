@@ -34,23 +34,30 @@ defmodule ExBackend.Accounts.Message do
   alias ExBackend.Mailer
 
   defp get_url_base() do
-    hostname = System.get_env("HOSTNAME") || Application.get_env(:ex_backend, :hostname)
+    hostname = System.get_env("EXPOSED_DOMAIN_NAME") || Application.get_env(:ex_backend, :hostname)
     ssl = System.get_env("SSL") || Application.get_env(:ex_backend, :ssl)
+    port = System.get_env("EXTERNAL_PORT") || Application.get_env(:ex_backend, :external_port)
 
     protocol =
-      if ssl == true do
-        "https://"
-      else
-        "http://"
+      case ssl do
+        true -> "https://"
+        "true" -> "https://"
+        _ -> "http://"
       end
 
     port =
-      case System.get_env("EXTERNAL_PORT") || Application.get_env(:ex_backend, :external_port) do
-        nil -> ""
+      case (ssl, port) do
+        (_, nil) -> ""
+        (_, 80) -> ""
+        (_, "80") -> ""
+        (true, 443) -> ""
+        ("true", 443) -> ""
+        (true, "443") -> ""
+        ("true", "443") -> ""
         port -> ":" <> port
       end
 
-    protocol <> hostname <> ":" <> port
+    protocol <> hostname <> port
   end
 
   @doc """
