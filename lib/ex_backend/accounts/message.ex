@@ -46,14 +46,14 @@ defmodule ExBackend.Accounts.Message do
       end
 
     port =
-      case (ssl, port) do
-        (_, nil) -> ""
-        (_, 80) -> ""
-        (_, "80") -> ""
-        (true, 443) -> ""
-        ("true", 443) -> ""
-        (true, "443") -> ""
-        ("true", "443") -> ""
+      case {ssl, port} do
+        {_, nil} -> ""
+        {_, 80} -> ""
+        {_, "80"} -> ""
+        {true, 443} -> ""
+        {"true", 443} -> ""
+        {true, "443"} -> ""
+        {"true", "443"} -> ""
         port -> ":" <> port
       end
 
