@@ -9,6 +9,7 @@ import { OrdersComponent } from './orders.component';
 import { OrderComponent } from './order.component';
 import { TranscriptViewerComponent } from './transcript_viewer.component';
 import { NlpViewerComponent } from './nlp_viewer.component';
+import { EntityComponent } from './entity/entity.component';
 
 import {
   MatButtonModule,
@@ -22,6 +23,7 @@ import {
   MatStepperModule,
   MatTabsModule,
   MatTooltipModule,
+  MatChipsModule,
   } from '@angular/material'
 
 import {GenericModule} from '../generic/generic.module'
@@ -53,6 +55,7 @@ export const ROUTES: Routes = [
     MaterialFileInputModule,
     PipesModule,
     MatTooltipModule,
+    MatChipsModule,
     RouterModule.forChild(ROUTES)
   ],
   declarations: [
@@ -60,6 +63,7 @@ export const ROUTES: Routes = [
     OrdersComponent,
     TranscriptViewerComponent,
     NlpViewerComponent,
+    EntityComponent,
   ],
   entryComponents: [
   ]

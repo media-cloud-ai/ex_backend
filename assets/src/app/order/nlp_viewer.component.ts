@@ -1,11 +1,10 @@
-
 import { Component } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { HttpClient } from '@angular/common/http'
 import { S3Service } from '../services/s3.service'
 import { WorkflowService } from '../services/workflow.service'
 import { Workflow } from '../models/workflow'
-import { NlpEntity } from '../models/nlp_entity'
+import { Entity, Category, Topic} from '../models/nlp_entity'
 
 @Component({
   selector: 'nlp-viewer-component',
@@ -16,8 +15,10 @@ import { NlpEntity } from '../models/nlp_entity'
 export class NlpViewerComponent {
   workflow_id: number;
   workflow: Workflow;
-  nlp: any;
-  words: NlpEntity[];
+  entities: Entity[];
+  words: string;
+  categories: Category[];
+  topics: Topic[];
 
   constructor(
     private http: HttpClient,
@@ -40,9 +41,11 @@ export class NlpViewerComponent {
               const current = this
               if (file_path) {
                 this.s3Service.getPresignedUrl(file_path).subscribe(response => {
-                  this.http.get(response.url).subscribe(content => {
-                    this.nlp = content
-                    this.words = this.getListOfWord(this.nlp.words_list);
+                  this.http.get(response.url).subscribe((content: any) => {
+                    this.entities = content.entity;
+                    this.words = content.words_list;
+                    this.categories = content.categories;
+                    this.topics = content.topics;
                   })
                 });
               }
@@ -75,34 +78,22 @@ export class NlpViewerComponent {
     return result[0].params.filter(param => param.id === "destination_path")[0].value;
   }
 
-  createListOfWords() {
-    var words_list = this.nlp.words_list;
-    var words = [];
-
-    for (let word_elem of words_list) {
-      var word = new NlpEntity;
-      word.token = word_elem;
-      words.push(word);
+  getEntities(word_index: number): Entity[] {
+    var wordEntities: Entity[] = [];
+    for (var index in this.entities) {
+        var entity: Entity = this.entities[index];
+        if (entity.list_id.includes(word_index)) {
+            wordEntities.push(entity);
+        }
     }
-    return words;
+    return wordEntities.sort((a,b) => b.list_id.length - a.list_id.length);
   }
 
-  getListOfWord(text: string[]) {
-    var entities = this.nlp.entity;
-    var len_entities = entities.length;
-    var i_entity = 0;
-    var words = this.createListOfWords();
+  mergedLeft(word: string): boolean {
+    return [',', '.', ';'].includes(word) || word.startsWith('-');
+  }
 
-    for (var i_word = 0; i_word < words.length; i_word++) {
-      if (i_entity < len_entities && entities[i_entity].list_id[0] <= i_word) {
-        words[i_word].ner = true;
-        words[i_word].id_ner = i_word;
-        words[i_word].token = entities[i_entity].string_ner;
-        words[i_word].type = entities[i_entity].type;
-        words[i_word].relevance_score = entities[i_entity].relevance_score;
-        i_entity++;
-      }
-    }
-    return words;
+  mergedRight(word: string): boolean {
+    return word.endsWith('(') || word.endsWith('\'') || word.endsWith('-');
   }
 }
