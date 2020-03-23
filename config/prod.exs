@@ -71,11 +71,19 @@ config :httpotion, :default_timeout, 60000
 # Configure your database
 config :ex_backend, ExBackend.Repo,
   migration_timestamps: [type: :naive_datetime_usec],
-  username: "postgres",
-  password: "postgres",
-  database: "ex_backend_prod",
-  hostname: "database",
-  pool_size: 10
+  username: {:system, "DATABASE_USERNAME"},
+  password: {:system, "DATABASE_PASSWORD"},
+  database: {:system, "DATABASE_NAME"},
+  hostname: {:system, "DATABASE_HOSTNAME"},
+  pool_size: {:system, "DATABASE_POOL_SIZE"}
+
+config :step_flow, StepFlow.Repo,
+  migration_timestamps: [type: :naive_datetime_usec],
+  username: {:system, "DATABASE_USERNAME"},
+  password: {:system, "DATABASE_PASSWORD"},
+  database: {:system, "DATABASE_NAME"},
+  hostname: {:system, "DATABASE_HOSTNAME"},
+  pool_size: {:system, "DATABASE_POOL_SIZE"}
 
 config :ex_backend, ExBackend.Mailer,
   adapter: Bamboo.SendGridAdapter,
@@ -86,10 +94,6 @@ config :ex_backend,
   hostname: {:system, "EXPOSED_DOMAIN_NAME"},
   port: 443,
   ssl: true,
-  akamai_hostname: "akamai.com",
-  akamai_username: "akamai_username",
-  akamai_password: "akamai_password",
-  akamai_video_prefix: "/421959/prod/innovation/SubTil",
   appdir: "/opt/app",
   acs_app: "acs_launcher.sh",
   asp_app: "ASP_V3"
@@ -99,10 +103,11 @@ config :ex_video_factory,
   endpoint: {:system, "VIDEO_FACTORY_ENDPOINT"}
 
 config :step_flow, StepFlow.Amqp,
-  hostname: "192.168.101.107",
-  username: "guest",
-  password: "guest",
-  virtual_host: ""
+  username: {:system, "AMQP_USERNAME"},
+  password: {:system, "AMQP_PASSWORD"},
+  port: {:system, "AMQP_PORT"},
+  hostname: {:system, "AMQP_HOSTNAME"},
+  virtual_host: {:system, "AMQP_VIRTUAL_HOST"}
 
 config :step_flow, StepFlow.Amqp,
   workflow_definition: {:system, "STEP_FLOW_WORKFLOW_DIRECTORY"}

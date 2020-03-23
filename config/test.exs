@@ -50,7 +50,8 @@ config :step_flow, StepFlow.Amqp,
   hostname: "localhost",
   port: 5672,
   username: "guest",
-  password: "guest"
+  password: "guest",
+  virtual_host: ""
 
 # Comeonin password hashing test config
 # config :argon2_elixir,
