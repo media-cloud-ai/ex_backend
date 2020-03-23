@@ -30,7 +30,7 @@ config :phauxth,
 # Mailer configuration
 config :ex_backend, ExBackend.Mailer, adapter: Bamboo.LocalAdapter
 
-config :step_flow,
+config :step_flow, StepFlow,
   work_dir: "/data",
   authorize: [
     module: ExBackendWeb.Authorize,

@@ -98,11 +98,11 @@ config :ex_video_factory,
   mode: :custom,
   endpoint: {:system, "VIDEO_FACTORY_ENDPOINT"}
 
-config :amqp,
+config :step_flow, StepFlow.Amqp,
   hostname: "192.168.101.107",
   username: "guest",
   password: "guest",
   virtual_host: ""
 
-config :step_flow,
+config :step_flow, StepFlow.Amqp,
   workflow_definition: {:system, "STEP_FLOW_WORKFLOW_DIRECTORY"}

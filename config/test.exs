@@ -45,11 +45,12 @@ config :ex_backend,
   akamai_video_prefix: "/test/",
   asp_app: "ASP_V3"
 
-config :amqp,
+
+config :step_flow, StepFlow.Amqp,
   hostname: "localhost",
+  port: 5672,
   username: "guest",
-  password: "guest",
-  virtual_host: ""
+  password: "guest"
 
 # Comeonin password hashing test config
 # config :argon2_elixir,
