@@ -56,7 +56,7 @@ export class NlpViewerComponent {
 
   getDestinationFilename(workflow, extension: string, not_extension?: string) {
     const result = workflow.jobs.filter(job => {
-      if (job.name == "job_transfer" &&
+      if ((job.name == "job_transfer" || job.name == "job_transfer_optim") &&
         job.params.filter(param => param.id === "destination_access_key").length == 1) {
         const parameter = job.params.filter(param => param.id === "destination_path");
         if (parameter.length > 0) {

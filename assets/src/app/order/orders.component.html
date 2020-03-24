@@ -61,7 +61,7 @@
 
     <span class="actions"
       *ngIf="workflow.identifier === 'acs'">
-      <span
+      <!-- <span
         class="link"
         [ngClass]="{'disabled': workflow.artifacts.length == 0}"
         (click)="source_link(workflow)">
@@ -72,7 +72,7 @@
         [ngClass]="{'disabled': workflow.artifacts.length == 0}"
         (click)="sync_link(workflow, 'synchronised.ttml')">
         <i class="material-icons icon" title="Visualisation">live_tv</i> synchronised
-      </span>
+      </span> -->
 
       <button
         mat-raised-button
