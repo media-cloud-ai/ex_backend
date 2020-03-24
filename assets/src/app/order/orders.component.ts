@@ -271,8 +271,8 @@ export class OrdersComponent {
 
   getDestinationFilename(workflow, extension: string, notExtension?: string[]) {
     const result = workflow.jobs.filter(job => {
-      if(job.name == "job_transfer" &&
-        job.params.filter(param => param.id === "destination_access_key").length == 1){
+      //if((job.name == "job_transfer" || job.name == "job_transfer_optim") && job.params.filter(param => param.id === "destination_access_key").length == 1){
+      if((job.name == "job_transfer" || job.name == "job_transfer_optim")){
         const parameter = job.params.filter(param => param.id === "destination_path");
         if(parameter.length > 0) {
           const sourceFilename = parameter[0].value;
