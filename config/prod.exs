@@ -75,7 +75,7 @@ config :ex_backend, ExBackend.Repo,
   password: {:system, "DATABASE_PASSWORD"},
   database: {:system, "DATABASE_NAME"},
   hostname: {:system, "DATABASE_HOSTNAME"},
-  pool_size: {:system, "DATABASE_POOL_SIZE"}
+  pool_size: 10
 
 config :step_flow, StepFlow.Repo,
   migration_timestamps: [type: :naive_datetime_usec],
@@ -83,7 +83,7 @@ config :step_flow, StepFlow.Repo,
   password: {:system, "DATABASE_PASSWORD"},
   database: {:system, "DATABASE_NAME"},
   hostname: {:system, "DATABASE_HOSTNAME"},
-  pool_size: {:system, "DATABASE_POOL_SIZE"}
+  pool_size: 10
 
 config :ex_backend, ExBackend.Mailer,
   adapter: Bamboo.SendGridAdapter,
