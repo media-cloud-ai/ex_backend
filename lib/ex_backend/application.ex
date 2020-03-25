@@ -14,14 +14,10 @@ defmodule ExBackend.Application do
     children = [
       # Start the Ecto repository
       supervisor(ExBackend.Repo, []),
-      # supervisor(StepFlow.Repo, []),
 
       # Start the endpoint when the application starts
       supervisor(ExBackendWeb.Endpoint, []),
       supervisor(ExBackendWeb.Presence, [])
-
-      # Start the AMQP connection to submit messages
-      # worker(ExBackend.Amqp.Connection, []),
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

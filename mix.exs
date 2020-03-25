@@ -74,7 +74,7 @@ defmodule ExBackend.Mixfile do
       # {:cowboy, "~> 2.7"},
       {:credo, "~> 1.1", only: [:dev, :test], runtime: false},
       {:distillery, "~> 2.1"},
-      {:ecto, "~> 3.1"},
+      {:ecto, "~> 3.3"},
       {:ecto_sql, "~> 3.1"},
       {:ex_aws, "~> 2.0"},
       {:ex_aws_s3, "~> 2.0"},
@@ -100,7 +100,7 @@ defmodule ExBackend.Mixfile do
       {:ranch, "~> 1.7.1"},
       {:remote_dockers, "1.4.0"},
       {:sigaws, "~> 0.7.2"},
-      {:step_flow, "~> 0.0.22"},
+      {:step_flow, "~> 0.0.23"},
       {:tesla, "~> 1.3.0"},
       {:timex, "~> 3.6"},
       {:uuid, "~> 1.1"}

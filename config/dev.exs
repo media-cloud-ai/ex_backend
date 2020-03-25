@@ -63,7 +63,7 @@ config :ex_backend, ExBackend.Repo,
   database: "ex_backend_dev",
   hostname: "localhost",
   migration_source: "backend_migrations_dev",
-  pool_size: 10
+  runtime_pool_size: 10
 
 config :step_flow, StepFlow.Repo,
   hostname: "localhost",
@@ -71,7 +71,7 @@ config :step_flow, StepFlow.Repo,
   password: "postgres",
   database: "ex_backend_workflow_dev",
   migration_source: "step_flow_migrations_dev",
-  pool_size: 10
+  runtime_pool_size: 10
 
 config :step_flow, StepFlow,
   workflow_definition: {:system, "STEP_FLOW_WORKFLOW_DIRECTORY"}
