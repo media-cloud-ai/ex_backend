@@ -28,6 +28,9 @@ config :step_flow, StepFlow.Repo,
   migration_source: "step_flow_test",
   pool: Ecto.Adapters.SQL.Sandbox
 
+config :step_flow, StepFlow,
+  workers_work_directory: "/data"
+
 config :ex_backend,
   app_name: "Subtil",
   hostname: "http://localhost:4000",
@@ -42,7 +45,6 @@ config :ex_backend,
     ]
   ],
   root_dash_content: "/tmp/",
-  work_dir: "/data",
   acs_app: "./SynchroSubtilTSP_V0.6",
   akamai_video_prefix: "/test/",
   asp_app: "ASP_V3"

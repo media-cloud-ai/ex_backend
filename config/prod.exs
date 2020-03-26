@@ -104,6 +104,9 @@ config :ex_video_factory,
   mode: :custom,
   endpoint: {:system, "VIDEO_FACTORY_ENDPOINT"}
 
+config :step_flow, StepFlow,
+  workers_work_directory: {:system, "WORKERS_WORK_DIRECTORY"}
+
 config :step_flow, StepFlow.Amqp,
   username: {:system, "AMQP_USERNAME"},
   password: {:system, "AMQP_PASSWORD"},
