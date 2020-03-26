@@ -94,7 +94,7 @@ defmodule ExBackend.Mixfile do
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_pubsub, "~> 1.0"},
       {:phauxth, "~> 2.2"},
-      {:plug, "~> 1.9.0"},
+      {:plug, "~> 1.10.0"},
       {:plug_cowboy, "~> 2.0"},
       {:postgrex, "~> 0.15.0"},
       {:ranch, "~> 1.7.1"},
