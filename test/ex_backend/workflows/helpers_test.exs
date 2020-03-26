@@ -23,25 +23,7 @@ defmodule ExBackend.HelpersTest do
   end
 
   def get_amqp_connection() do
-    hostname = System.get_env("AMQP_HOSTNAME") || Application.get_env(:amqp, :hostname)
-    username = System.get_env("AMQP_USERNAME") || Application.get_env(:amqp, :username)
-    password = System.get_env("AMQP_PASSWORD") || Application.get_env(:amqp, :password)
-
-    virtual_host = System.get_env("AMQP_VHOST") || Application.get_env(:amqp, :virtual_host) || ""
-
-    virtual_host =
-      case virtual_host do
-        "" -> virtual_host
-        _ -> "/" <> virtual_host
-      end
-
-    port =
-      System.get_env("AMQP_PORT") || Application.get_env(:amqp, :port) ||
-        5672
-        |> port_format
-
-    url =
-      "amqp://" <> username <> ":" <> password <> "@" <> hostname <> ":" <> port <> virtual_host
+    url = StepFlow.Amqp.Helpers.get_amqp_connection_url()
 
     {:ok, connection} = AMQP.Connection.open(url)
     {:ok, channel} = AMQP.Channel.open(connection)

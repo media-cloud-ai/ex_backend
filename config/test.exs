@@ -16,6 +16,7 @@ config :ex_backend, ExBackend.Repo,
   password: "postgres",
   database: "ex_backend_test",
   hostname: "localhost",
+  port: 5432,
   pool: Ecto.Adapters.SQL.Sandbox
 
 config :step_flow, StepFlow.Repo,
@@ -23,6 +24,7 @@ config :step_flow, StepFlow.Repo,
   username: "postgres",
   password: "postgres",
   database: "ex_backend_workflow_test",
+  port: 5432,
   migration_source: "step_flow_test",
   pool: Ecto.Adapters.SQL.Sandbox
 
