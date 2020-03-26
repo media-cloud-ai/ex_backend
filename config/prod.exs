@@ -75,6 +75,7 @@ config :ex_backend, ExBackend.Repo,
   password: {:system, "DATABASE_PASSWORD"},
   database: {:system, "DATABASE_NAME"},
   hostname: {:system, "DATABASE_HOSTNAME"},
+  port: {:system, "DATABASE_PORT"},
   runtime_pool_size: {:system, "DATABASE_POOL_SIZE"}
 
 config :step_flow, StepFlow.Repo,
@@ -83,6 +84,7 @@ config :step_flow, StepFlow.Repo,
   password: {:system, "DATABASE_PASSWORD"},
   database: {:system, "DATABASE_NAME"},
   hostname: {:system, "DATABASE_HOSTNAME"},
+  port: {:system, "DATABASE_PORT"},
   runtime_pool_size: {:system, "DATABASE_POOL_SIZE"}
 
 config :ex_backend, ExBackend.Mailer,
