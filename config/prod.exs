@@ -104,7 +104,9 @@ config :ex_video_factory,
   mode: :custom,
   endpoint: {:system, "VIDEO_FACTORY_ENDPOINT"}
 
-config :step_flow, StepFlow, workers_work_directory: {:system, "WORKERS_WORK_DIRECTORY"}
+config :step_flow, StepFlow,
+  workers_work_directory: {:system, "WORKERS_WORK_DIRECTORY"},
+  workflow_definition: {:system, "STEP_FLOW_WORKFLOW_DIRECTORY"}
 
 config :step_flow, StepFlow.Amqp,
   username: {:system, "AMQP_USERNAME"},
@@ -112,5 +114,3 @@ config :step_flow, StepFlow.Amqp,
   port: {:system, "AMQP_PORT"},
   hostname: {:system, "AMQP_HOSTNAME"},
   virtual_host: {:system, "AMQP_VIRTUAL_HOST"}
-
-config :step_flow, StepFlow.Amqp, workflow_definition: {:system, "STEP_FLOW_WORKFLOW_DIRECTORY"}
