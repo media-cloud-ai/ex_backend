@@ -58,7 +58,7 @@ defmodule ExBackend.Workflow.Definition.FrancetvAcs do
       %{
         id: 1,
         parent_ids: [0],
-        required: [0],
+        required_to_start: [0],
         name: "job_ffmpeg",
         label: "Extract audio",
         icon: "queue_music",
@@ -118,7 +118,7 @@ defmodule ExBackend.Workflow.Definition.FrancetvAcs do
       %{
         id: 2,
         parent_ids: [0, 1],
-        required: [0, 1],
+        required_to_start: [0, 1],
         name: "job_acs",
         label: "Audio Content Synchronisation",
         icon: "music_video",
@@ -174,7 +174,7 @@ defmodule ExBackend.Workflow.Definition.FrancetvAcs do
         icon: "file_upload",
         enable: true,
         parent_ids: [0, 2],
-        required: [0, 2],
+        required_to_start: [0, 2],
         parameters: [
           %{
             id: "destination_hostname",
@@ -217,6 +217,7 @@ defmodule ExBackend.Workflow.Definition.FrancetvAcs do
       %{
         id: 4,
         parent_ids: [3],
+        required_to_start: [3],
         name: "job_file_system",
         label: "Clean workspace",
         icon: "delete_forever",

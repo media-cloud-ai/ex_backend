@@ -114,7 +114,7 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
       %{
         id: 1,
         parent_ids: [0],
-        required: [0],
+        required_to_start: [0],
         name: "job_ism_manifest",
         label: "Inspect ISM Manifest",
         icon: "assignment",
@@ -126,7 +126,7 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
         name: "job_transfer",
         label: "Download source elements",
         icon: "file_download",
-        required: [1],
+        required_to_start: [1],
         enable: true,
         parameters: [
           %{
@@ -166,7 +166,7 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
       %{
         id: 3,
         parent_ids: [2],
-        required: [2],
+        required_to_start: [2],
         name: "job_ffmpeg",
         label: "Merge Audio and Video from ISM into MP4",
         icon: "assignment",
@@ -208,7 +208,7 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
         label: "Download TTML Subtitle",
         icon: "file_download",
         enable: true,
-        required: [3],
+        required_to_start: [3],
         parameters: [
           %{
             id: "source_paths",
@@ -292,7 +292,7 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
         icon: "file_upload",
         enable: true,
         parent_ids: [video_step_id, subtitles_step_id],
-        required: [subtitles_step_id],
+        required_to_start: [subtitles_step_id],
         parameters: [
           %{
             id: "destination_hostname",
@@ -341,7 +341,7 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
       %{
         id: last_step_id + 2,
         parent_ids: [video_step_id, subtitles_step_id],
-        required: [subtitles_step_id],
+        required_to_start: [subtitles_step_id, last_step_id + 1],
         name: "job_file_system",
         label: "Clean workspace",
         icon: "delete_forever",
@@ -370,6 +370,7 @@ defmodule ExBackend.Workflow.Definition.FtvStudioRosetta do
       %{
         id: last_step_id + 3,
         parent_ids: [video_step_id, subtitles_step_id],
+        required_to_start: [last_step_id + 2],
         name: "job_notification",
         label: "Notify Rosetta",
         icon: "notifications",
