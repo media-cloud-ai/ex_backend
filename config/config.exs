@@ -47,6 +47,8 @@ config :step_flow, StepFlow,
   ],
   endpoint: ExBackendWeb.Endpoint
 
+config :xema, loader: StepFlow.WorkflowDefinitions.ExternalLoader
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
