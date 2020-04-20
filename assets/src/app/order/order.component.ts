@@ -83,7 +83,7 @@ export class OrderComponent {
 
     var uploader = Evaporate.create(config)
       .then(function (evaporate) {
-        
+
         var overrides = {
           bucket: current.s3Configuration.bucket
         }
@@ -170,7 +170,14 @@ export class OrderComponent {
     }
     this.selectedService.parameters = parameters;
 
-    this.workflowService.createWorkflow(this.selectedService)
+    startWorkflowDefinition = []
+    startWorkflowDefinition.push({
+      "workflow_identifier": this.selectedService.identifier,
+      "parameters": this.selectedService.parameters,
+      "reference": this.selectedService.reference,
+    })
+
+    this.workflowService.createWorkflow(startWorkflowDefinition)
       .subscribe(response => {
         if(response) {
           this.processStatus.failed = false;
