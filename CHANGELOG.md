@@ -1,11 +1,21 @@
 <a name="unreleased"></a>
 ## [Unreleased]
 
-### Add
-- Add endpoint launch_workflow in config.exs
 
+<a name="0.1.1"></a>
+## [0.1.1] - 2020-04-22
 ### Add
 - add json loader to config
+
+### Add
+- Add CHANGELOG for tracking
+- Add endpoint launch_workflow in config.exs
+
+### Format
+- Format config.exs
+
+### Merge
+- Merge remote-tracking branch 'origin/master' into hotfix/add-launch-workflow-endpoint
 
 ### Modified
 - Modified createWorkflows to use the correct stepFlow API endpoint
@@ -1771,7 +1781,8 @@
 - Workflow end steps refactoring
 
 
-[Unreleased]: https://github.com/media-cloud-ai/ex_backend/compare/0.1.0...HEAD
+[Unreleased]: https://github.com/media-cloud-ai/ex_backend/compare/0.1.1...HEAD
+[0.1.1]: https://github.com/media-cloud-ai/ex_backend/compare/0.1.0...0.1.1
 [0.1.0]: https://github.com/media-cloud-ai/ex_backend/compare/0.0.13...0.1.0
 [0.0.13]: https://github.com/media-cloud-ai/ex_backend/compare/0.0.12...0.0.13
 [0.0.12]: https://github.com/media-cloud-ai/ex_backend/compare/0.0.11...0.0.12
