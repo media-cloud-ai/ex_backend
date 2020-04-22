@@ -6,11 +6,13 @@ import { catchError, map, tap } from 'rxjs/operators'
 
 import {WorkflowPage, WorkflowData, WorkflowHistory} from '../models/page/workflow_page'
 import {Step, Workflow, WorkflowEvent} from '../models/workflow'
+import {StartWorkflowDefinition} from '../models/startWorkflowDefinition'
 
 @Injectable()
 export class WorkflowService {
   private workflowUrl = '/api/workflow'
   private workflowsUrl = '/api/step_flow/workflows'
+  private workflowsLauncher = '/api/step_flow/launch_workflow'
   private workflowDefinitionsUrl = '/api/step_flow/definitions'
   private statisticsUrl = '/api/step_flow/workflows_statistics'
 
@@ -79,8 +81,8 @@ export class WorkflowService {
       )
   }
 
-  createWorkflow(workflow: Workflow): Observable<WorkflowData> {
-    return this.http.post<WorkflowData>(this.workflowsUrl, workflow)
+  createWorkflow(startWorkflowDefinition: StartWorkflowDefinition): Observable<WorkflowData> {
+    return this.http.post<WorkflowData>(this.workflowsLauncher, startWorkflowDefinition)
       .pipe(
         tap(workflowPage => this.log('fetched Workflow')),
         catchError(this.handleError('createWorkflow', undefined))
