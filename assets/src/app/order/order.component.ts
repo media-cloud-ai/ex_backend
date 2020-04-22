@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router'
 import {MatStepper} from '@angular/material';
 
 import {S3Configuration} from '../models/s3'
+import {StartWorkflowDefinition} from '../models/startWorkflowDefinition'
 
 import {WorkflowService} from '../services/workflow.service'
 import {S3Service} from '../services/s3.service'
@@ -83,7 +84,7 @@ export class OrderComponent {
 
     var uploader = Evaporate.create(config)
       .then(function (evaporate) {
-        
+
         var overrides = {
           bucket: current.s3Configuration.bucket
         }
@@ -138,39 +139,37 @@ export class OrderComponent {
   }
 
   startWorkflow() {
-    let parameters = [];
+    let parameters = {};
 
     for(let i = 0; i < this.selectedService.start_parameters.length; i++) {
       const parameter = this.selectedService.start_parameters[i];
 
       let value = this.parameters[parameter.id];
-      let type = "string"
       if(value._fileNames) {
-        value = value._fileNames
-
+        value = value._fileNames;
         if(this.selectedService.reference === undefined) {
           this.selectedService.reference = value;
         }
       }
 
       if(typeof value === "number") {
-        type = "string"
         value = value.toString()
       }
 
-      parameters.push({
-        "id": parameter.id,
-        "type": type,
-        "value": value,
-      })
+      parameters[parameter.id] = value;
     }
 
     if(this.selectedService.reference === undefined) {
       this.selectedService.reference = this.selectedService.identifier;
     }
-    this.selectedService.parameters = parameters;
 
-    this.workflowService.createWorkflow(this.selectedService)
+    let startWorkflowDefinition: StartWorkflowDefinition = {
+        "workflow_identifier": this.selectedService.identifier,
+        "parameters": parameters,
+        "reference": this.selectedService.reference
+    };
+
+    this.workflowService.createWorkflow(startWorkflowDefinition)
       .subscribe(response => {
         if(response) {
           this.processStatus.failed = false;

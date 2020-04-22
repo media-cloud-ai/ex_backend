@@ -298,10 +298,11 @@ export class CatalogComponent {
     dialogRef.afterClosed().subscribe(workflow => {
       if (workflow !== undefined) {
         workflow.reference = video.id
-        this.workflowService.createWorkflow(workflow)
-        .subscribe(response => {
-          console.log(response)
-        })
+        // this.workflowService.createWorkflow(workflow)
+        // .subscribe(response => {
+        //   console.log(response)
+        // })
+        console.error("Deprecated")
       }
     })
   }
@@ -310,16 +311,17 @@ export class CatalogComponent {
     this.workflowService.getWorkflowDefinition("ftv_studio_rosetta", video.id)
       .subscribe(workflowDefinition => {
         workflowDefinition.reference = video.id
-        this.workflowService.createWorkflow(workflowDefinition)
-          .subscribe(response => {
-            let snackBarRef = this.snackBar.open("Rosetta ingest started for \"" + video.title + "\"", "Show workflow", {
-              duration: 4000,
-            })
-
-            snackBarRef.onAction().subscribe(() => {
-              this.router.navigate(['/workflows/' +  response.data.id])
-            });
-          })
+        // this.workflowService.createWorkflow(workflowDefinition)
+        //   .subscribe(response => {
+        //     let snackBarRef = this.snackBar.open("Rosetta ingest started for \"" + video.title + "\"", "Show workflow", {
+        //       duration: 4000,
+        //     })
+        //
+        //     snackBarRef.onAction().subscribe(() => {
+        //       this.router.navigate(['/workflows/' +  response.data.id])
+        //     });
+        //   })
+        console.error("Deprecated")
       })
   }
 
@@ -330,10 +332,11 @@ export class CatalogComponent {
       if (workflow !== undefined) {
         for (let video of this.selectedVideos) {
           workflow.reference = video.id
-          this.workflowService.createWorkflow(workflow)
-          .subscribe(response => {
-            console.log(response)
-          })
+          // this.workflowService.createWorkflow(workflow)
+          // .subscribe(response => {
+          //   console.log(response)
+          // })
+          console.error('Deprecated')
         }
       }
     })
