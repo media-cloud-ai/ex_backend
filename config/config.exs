@@ -45,7 +45,6 @@ config :step_flow, StepFlow,
     post_worker_definitions: [:user_check, :right_technician_check],
     get_worker_definitions: [:user_check, :right_technician_check],
     get_workflows_statistics: [:user_check]
-
   ],
   endpoint: ExBackendWeb.Endpoint
 
