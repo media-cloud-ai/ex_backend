@@ -1,6 +1,6 @@
 
 export class StartWorkflowDefinition {
   workflow_identifier?: string
-  parameters?: map
+  parameters?: {}
   reference?: string
 }
