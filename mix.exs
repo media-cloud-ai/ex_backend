@@ -71,7 +71,7 @@ defmodule ExBackend.Mixfile do
       {:blue_bird, "~> 0.4.1"},
       {:comeonin, "~> 5.1"},
       {:cors_plug, "~> 2.0"},
-      {:cowboy, "~> 2.7.0"},
+      {:cowboy, "~> 2.8.0"},
       {:credo, "~> 1.1", only: [:dev, :test], runtime: false},
       {:distillery, "~> 2.1"},
       {:ecto, "~> 3.4.4"},
