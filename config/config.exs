@@ -18,7 +18,7 @@ config :ex_backend, ExBackendWeb.Endpoint,
   server: true,
   secret_key_base: "VQyOE7QLAMr0qyhIR+4/NtEK9G8DU+mdESssX4ZO0j05mchaW1VzebD2dZ+r9xCS",
   render_errors: [view: ExBackendWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: ExBackend.PubSub, adapter: Phoenix.PubSub.PG2]
+  pubsub_server: ExBackend.PubSub
 
 # Phauxth authentication configuration
 config :phauxth,
