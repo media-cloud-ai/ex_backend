@@ -32,8 +32,6 @@ defmodule ExBackendWeb.Router do
       forward("/", Plug)
     end
 
-    post("/workflow/:identifier", WorkflowController, :create_specific)
-
     resources("/catalog", CatalogController, except: [:new, :edit])
 
     scope "/docker", Docker do
