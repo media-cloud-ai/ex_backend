@@ -1,4 +1,4 @@
-FROM elixir:1.8.1-alpine AS ex_builder
+FROM elixir:1.10.3-alpine AS ex_builder
 
 RUN apk update && \
     apk add --no-cache \
@@ -38,7 +38,7 @@ RUN mix deps.get && \
     cd .. && \
     mix phx.digest
 
-FROM alpine:3.9
+FROM alpine:3.11
 
 WORKDIR /app
 
