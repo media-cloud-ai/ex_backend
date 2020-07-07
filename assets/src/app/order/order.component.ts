@@ -124,6 +124,9 @@ export class OrderComponent {
           }
         );
 
+        if(current.progressBars.length === 0){
+          current.uploadCompleted = true;
+        }
       })
   }
 
@@ -135,6 +138,9 @@ export class OrderComponent {
     if(this.parameters[parameter.id] == undefined) {
       this.parameters[parameter.id] = parameter.default;
     }
+    if(parameter.type == "string") {
+      return this.parameters[parameter.id] || "";
+    }
     return this.parameters[parameter.id];
   }
 
@@ -145,7 +151,7 @@ export class OrderComponent {
       const parameter = this.selectedService.start_parameters[i];
 
       let value = this.parameters[parameter.id];
-      if(value._fileNames) {
+      if(value && value._fileNames) {
         value = value._fileNames;
         if(this.selectedService.reference === undefined) {
           this.selectedService.reference = value;
