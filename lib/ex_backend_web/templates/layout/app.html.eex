@@ -44,12 +44,12 @@
   </head>
 
   <body>
-    <%= render @view_module, @view_template, assigns %>
-    <script src="<%= static_path(@conn, "/bundles/main.js") %>"></script>
-    <script src="<%= static_path(@conn, "/bundles/main~theme-chunk.js") %>"></script>
-    <script src="<%= static_path(@conn, "/bundles/style.js") %>"></script>
-    <script src="<%= static_path(@conn, "/bundles/theme.js") %>"></script>
-    <script src="<%= static_path(@conn, "/bundles/vendors~main-chunk.js") %>"></script>
-    <script src="<%= static_path(@conn, "/bundles/vendors~main~style~theme-chunk.js") %>"></script>
+    <%= @inner_content %>
+    <script src='<%= static_path(@conn, "/bundles/main.js") %>'></script>
+    <script src='<%= static_path(@conn, "/bundles/main~theme-chunk.js") %>'></script>
+    <script src='<%= static_path(@conn, "/bundles/style.js") %>'></script>
+    <script src='<%= static_path(@conn, "/bundles/theme.js") %>'></script>
+    <script src='<%= static_path(@conn, "/bundles/vendors~main-chunk.js") %>'></script>
+    <script src='<%= static_path(@conn, "/bundles/vendors~main~style~theme-chunk.js") %>'></script>
   </body>
 </html>

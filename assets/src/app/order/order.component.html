@@ -49,6 +49,14 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
+        <mat-form-field *ngIf="parameter.type == 'string'">
+          <input
+            matInput
+            [placeholder]="parameter.label"
+            [value]="getDefaultParameterValue(parameter)"
+            (input)="parameterChange(parameter.id, $event)"
+            >
+        </mat-form-field>
         <mat-form-field *ngIf="parameter.type == 'number'">
           <input
             matInput

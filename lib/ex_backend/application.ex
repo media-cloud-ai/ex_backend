@@ -12,6 +12,7 @@ defmodule ExBackend.Application do
 
     # Define workers and child supervisors to be supervised
     children = [
+      {Phoenix.PubSub, [name: ExBackend.PubSub, adapter: Phoenix.PubSub.PG2]},
       # Start the Ecto repository
       supervisor(ExBackend.Repo, []),
 
