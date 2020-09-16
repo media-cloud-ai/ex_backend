@@ -31,6 +31,23 @@ matrix:
       env: CHECK_SYNTAX=TRUE
   allow_failures:
     - env: CHECK_SYNTAX=TRUE
+  exclude:
+    - elixir: 1.9.0
+      otp_release: 23.0
+    - elixir: 1.9.1
+      otp_release: 23.0
+    - elixir: 1.9.2
+      otp_release: 23.0
+    - elixir: 1.9.3
+      otp_release: 23.0
+    - elixir: 1.9.4
+      otp_release: 23.0
+    - elixir: 1.10.0
+      otp_release: 23.0
+    - elixir: 1.10.1
+      otp_release: 23.0
+    - elixir: 1.10.2
+      otp_release: 23.0
 
 dist: trusty
 
