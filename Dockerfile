@@ -17,7 +17,7 @@ RUN apk update && \
     mix local.rebar --force && \
     mix hex.info && \
     cd /usr/local/bin && \
-    curl -o- -L https://yarnpkg.com/install.sh | sh -s -- --version 1.9.4
+    curl -o- -L https://yarnpkg.com/install.sh | sh -s -- --version 1.22.5
 
 WORKDIR /app
 ENV MIX_ENV prod
@@ -30,7 +30,6 @@ RUN mix deps.get && \
     mix generate_documentation && \
     cd assets && \
     yarn install --network-timeout 1000000 && \
-    yarn add --force node-sass && \
     yarn add node-gyp && \
     yarn add bcrypt && \
     yarn run lint && \
