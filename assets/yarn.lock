@@ -2619,9 +2619,10 @@ esutils@^2.0.2:
   resolved "https://registry.yarnpkg.com/esutils/-/esutils-2.0.3.tgz#74d2eb4de0b8da1293711910d50775b9b710ef64"
   integrity sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==
 
-evaporate@TTLabs/EvaporateJS:
+"evaporate@https://github.com/TTLabs/EvaporateJS.git#c1f8905":
   version "2.1.4"
-  resolved "https://codeload.github.com/TTLabs/EvaporateJS/tar.gz/c1f8905d173f07dab1f277b4bd753a2ce2303967"
+  uid c1f8905d173f07dab1f277b4bd753a2ce2303967
+  resolved "https://github.com/TTLabs/EvaporateJS.git#c1f8905d173f07dab1f277b4bd753a2ce2303967"
 
 events@^3.0.0:
   version "3.1.0"
@@ -4603,10 +4604,10 @@ next-tick@~1.0.0:
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
   integrity sha1-yobR/ogoFpsBICCOPchCS524NCw=
 
-ngx-cookie-service@^2.0.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/ngx-cookie-service/-/ngx-cookie-service-2.3.0.tgz#290e6f55047ad9e9f1aa4ddf30d1ab8d41927949"
-  integrity sha512-Cegg6ifVuAwhsdrj0sGDyS9lg2o/Uc6FkR8HLcI40rpNMu5tzMd8w23cUiB81a8jDUr/MC44f1S+G6zmWmoy0A==
+ngx-cookie-service@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/ngx-cookie-service/-/ngx-cookie-service-2.4.0.tgz#293de6d393220f8fe5712a4c9f724042404e6971"
+  integrity sha512-uR/6mCQ1t+XY5G1/irqRhoEddx1PPtmz7JHM/2nn5yQmicnj+n48x8C2PMxwaYDHKRh7QPQ9G5scR36Mmdz09A==
 
 ngx-material-file-input@^1.1.1:
   version "1.1.1"
