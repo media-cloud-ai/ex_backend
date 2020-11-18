@@ -2619,10 +2619,9 @@ esutils@^2.0.2:
   resolved "https://registry.yarnpkg.com/esutils/-/esutils-2.0.3.tgz#74d2eb4de0b8da1293711910d50775b9b710ef64"
   integrity sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==
 
-evaporate@^2.1.4:
+evaporate@TTLabs/EvaporateJS:
   version "2.1.4"
-  resolved "https://registry.yarnpkg.com/evaporate/-/evaporate-2.1.4.tgz#44aa46a930347fdffe9027bae3bb2af71e7a3299"
-  integrity sha1-RKpGqTA0f9/+kCe647sq9x56Mpk=
+  resolved "https://codeload.github.com/TTLabs/EvaporateJS/tar.gz/c1f8905d173f07dab1f277b4bd753a2ce2303967"
 
 events@^3.0.0:
   version "3.1.0"
@@ -6673,7 +6672,6 @@ tslib@^1.10.0, tslib@^1.7.1, tslib@^1.9.0:
 
 tslint-eslint-rules@krzkaczor/tslint-eslint-rules#prepublish-script:
   version "1.2.0"
-  uid "72a49e088c5476bc124fbbdcbda477e9e2b4d780"
   resolved "https://codeload.github.com/krzkaczor/tslint-eslint-rules/tar.gz/72a49e088c5476bc124fbbdcbda477e9e2b4d780"
   dependencies:
     doctrine "^0.7.2"
