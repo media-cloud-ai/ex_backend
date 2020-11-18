@@ -114,7 +114,7 @@ config :ex_backend,
   docker_container_amqp_username: "mediacloudai",
   docker_container_amqp_password: "mediacloudai"
 
-config :amqp,
+config :step_flow, StepFlow.Amqp,
   hostname: "127.0.0.1",
   port: "5672",
   username: "guest",
