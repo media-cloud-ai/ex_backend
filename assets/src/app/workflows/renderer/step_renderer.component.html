@@ -56,12 +56,12 @@
         <div>
           {{parameter.value | json}}
         </div>
-        <!-- <input matInput
+        <input matInput
           type={{parameter.type}}
           placeholder="{{parameter.id | parameterLabel}}"
           [disabled]="!step.enable || !parameter.enable"
           value={{parameter.value}}
-          [(ngModel)]='parameter.value'> -->
+          [(ngModel)]='parameter.value'>
       </mat-form-field>
       <div
         class="parameter"
