@@ -28,18 +28,35 @@
           </mat-chip>
         </mat-chip-list>
       </div>
-      <div>
-        <label>Parameters:</label>
-        <span *ngFor="let parameter of workflow.parameters">
-          <div class=parameter *ngIf="parameter.id != 'message'">
-            <label>
-              {{parameter.id}}
-            </label>
-            <span>
-              {{parameter.value | json}}
-            </span>
-          </div>
+      <div class="parameters">
+        <span class="expander">
+          <i class="material-icons open"
+            [ngClass]="{disabled: disabled}"
+            *ngIf="!parameters_opened"
+            (click)="toggleParameters()"
+            title="Show parameters"
+            >expand_more</i>
+
+          <i class="material-icons close"
+            [ngClass]="{disabled: disabled}"
+            *ngIf="parameters_opened"
+            (click)="toggleParameters()"
+            title="Hide parameters"
+            >expand_less</i>
         </span>
+        <label>Parameters:</label>
+        <div *ngIf=parameters_opened>
+          <span *ngFor="let parameter of workflow.parameters">
+            <div class=parameter *ngIf="parameter.id != 'message'">
+              <label>
+                {{parameter.id}}
+              </label>
+              <span>
+                {{parameter.value | json}}
+              </span>
+            </div>
+          </span>
+        </div>
       </div>
     </span>
     <span class="duration">

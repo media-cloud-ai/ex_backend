@@ -4,7 +4,7 @@
       <mat-list-item
         *ngFor="let parameter of parameters">
         <mat-form-field class="parameter"
-          *ngIf="parameter.type == 'string' || parameter.type == 'integer' || parameter.type == 'credential'">
+          *ngIf="parameter.type != 'boolean' && parameter.type != 'filter' && parameter.type != 'paths'">
           <input matInput
             type={{parameter.type}}
             placeholder="{{parameter.id | parameterLabel}}"
@@ -42,6 +42,7 @@
             [(ngModel)]=parameter.value
             ></mat-checkbox>
         </div>
+
       </mat-list-item>
     </mat-list>
   </div>

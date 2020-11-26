@@ -21,6 +21,7 @@ export class WorkflowDetailsComponent {
   workflow: Workflow
   renderer: WorkflowRenderer
   can_abort: boolean = false
+  parameters_opened: boolean = false
   connection: any
   messages: Message[] = []
 
@@ -96,6 +97,10 @@ export class WorkflowDetailsComponent {
 
   getTotalSteps(): number {
     return this.workflow.steps.length
+  }
+
+  toggleParameters() {
+    this.parameters_opened = !this.parameters_opened;
   }
 
   abort(workflow_id): void {
