@@ -42,6 +42,31 @@ ul.jobs {
       }
     }
 
+    .status {
+      font-size: 0.8em;
+      text-align: center;
+    }
+
+    .status.error {
+      display: none;
+    }
+
+    .status.completed {
+      color: @green;
+    }
+
+    .status.processing {
+      color: @blue;
+    }
+
+    .status.queued {
+      color: @purple;
+    }
+
+    .status.skipped {
+      color: @grey;
+    }
+
     .bar {
       height: 5px;
     }
