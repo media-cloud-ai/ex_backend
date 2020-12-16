@@ -16,7 +16,7 @@ for user <- users do
 end
 
 admin = ExBackend.Accounts.get_by(%{"email" => "admin@media-cloud.ai"})
-ExBackend.Accounts.update_user(admin, %{rights: ["technician", "editor"]})
+ExBackend.Accounts.update_user(admin, %{rights: ["administrator", "technician", "editor"]})
 
 workflow_definition = %{
   schema_version: "1.8",
@@ -52,6 +52,14 @@ workflow_definition = %{
           default: "{source_path}.wav",
           value: "{source_path}.wav"
         }
+      ]
+    },
+    %{
+      id: 1,
+      name: "skipped_step",
+      icon: "step_icon",
+      label: "My first step",
+      parameters: [
       ]
     }
   ],
@@ -94,7 +102,7 @@ workflow_definition = %{
 
 {:ok, workflow} = StepFlow.Workflows.create_workflow(workflow_definition)
 
-{:ok, "started"} = StepFlow.Step.start_next(workflow)
+{:ok, "still_processing"} = StepFlow.Step.start_next(workflow)
 
 defmodule Helpers do
   def get_job_id(workflow_id, type, source_path) do
