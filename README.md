@@ -15,21 +15,39 @@ The following tool must be installed on your computer:
 
 ### Installation
 
-Backend installation:
+### Backend installation:
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.create && mix ecto.migrate`
+  * Install dependencies
+  * Create and migrate your database
   * To run the application locally in dev mode, in the config folder, you need to create a file `dev.secret.exs` which will contains `use Mix.Config`
 
-### Start back-end server locally
+```
+mix deps.get
+mix ecto.create && mix ecto.migrate
 
-Start Phoenix endpoint with `mix phx.server`
+# update the config/dev.secret.exs
+```
 
-## Front-end
+### Front-end installation:
 
-### Installation 
+Install Node.js dependencies with :
+```
+cd assets && yarn install && cd ..
+```
 
-Install Node.js dependencies with : `cd assets && yarn install`
+### Start backend server locally
+
+Start Phoenix endpoint with:
+```
+mix phx.server
+```
+
+### Start backend with sample data
+
+The backend can start with some sample data using:
+```
+mix dev
+```
 
 ### Launch front server locally
 
