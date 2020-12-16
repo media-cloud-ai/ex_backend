@@ -1,50 +1,43 @@
 <ul *ngIf="jobs" class="jobs">
-  <li
-    *ngFor="let job of jobs.data"
-    class="job {{job.channel}} {{job.status | jobStatus}}"
-    >
+  <li *ngFor="let job of jobs.data" class="job {{job.channel}} {{job | jobStatus}}">
 
     <div class="info">
       <span class="name">Job #{{job.id}}</span>
-      <span class="summary" title="{{job.status | jobStatus}}">
-        <div class="duration"
-          (click)="switchDurationRenderingMode()"
-          >
+      <span class="summary" title="{{job | jobStatus}}">
+        <div class="duration" (click)="switchDurationRenderingMode()">
           {{job | jobDuration | duration: job_duration_rendering_mode}}
         </div>
       </span>
       <span class="details">
-        <button
-          mat-button
-          (click)="displayJobDetails(job)"
-          >
+        <button mat-button (click)="displayJobDetails(job)">
           <mat-icon>visibility</mat-icon>
           Details
         </button>
-        <button
-          mat-button
-          *ngIf="(job.status | jobStatus) == 'error'"
-          (click)="retryJob(job)"
-          >
+        <button mat-button *ngIf="(job | jobStatus) == 'error'" (click)="retryJob(job)">
           <mat-icon>autorenew</mat-icon>
           Retry
         </button>
       </span>
     </div>
-    
-    <div class="description {{job.status | jobStatus}}">
+
+    <div class="description {{job | jobStatus}}">
       <label>Error:</label>
       <span *ngIf="job.status[0] && job.status[0].description">
         {{job.status[0].description.message}}
       </span>
     </div>
-
-    <div *ngIf="(job.status | jobStatus) === 'processing'; then thenBlock else elseBlock"></div>
-      <ng-template #thenBlock>
-        <mat-progress-bar mode="determinate" value="{{job.progressions | jobProgression}}"></mat-progress-bar>
-      </ng-template>
-      <ng-template #elseBlock>
-        <div class="bar {{job.status | jobStatus}}"></div>
-      </ng-template>
+    <div *ngIf="(job | jobStatus) === 'processing'; then thenBlock else elseBlock"></div>
+    <ng-template #thenBlock>
+      <div class="info">
+        <span>{{job.progressions | jobProgression}}%</span>
+      </div>
+      <mat-progress-bar mode="determinate" value="{{job.progressions | jobProgression}}"></mat-progress-bar>
+    </ng-template>
+    <ng-template #elseBlock>
+      <div class="info">
+        <span>{{job | jobStatus}}</span>
+      </div>
+      <div class="bar {{job | jobStatus}}"></div>
+    </ng-template>
   </li>
 </ul>

@@ -23,4 +23,5 @@ export class Job {
 export class Progression {
   progression: number
   inserted_at: string
+  datetime: string
 }

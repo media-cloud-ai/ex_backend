@@ -49,17 +49,30 @@
     </button>
   </span>
   <span
-    class="queued"
-    title="{{step.name | jobType}}: queued"
-    [ngStyle]="{'flex': step.jobs.queued}">
+    class="processing"
+    title="{{step.name | jobType}}: processing"
+    [ngStyle]="{'flex': step.jobs.processing}">
     <span
-      *ngIf="step.jobs.queued && detailed && !step.label">
-      {{step.name | jobType}} ({{step.jobs.queued}}/{{step.jobs.total}})
+      *ngIf="step.jobs.processing && detailed && !step.label">
+      {{step.name | jobType}} ({{step.jobs.processing}}/{{step.jobs.total}})
     </span>
     <span
-      *ngIf="step.jobs.queued && detailed && step.label">
-      {{step.label}} ({{step.jobs.queued}}/{{step.jobs.total}})
+      *ngIf="step.jobs.processing && detailed && step.label">
+      {{step.label}} ({{step.jobs.processing}}/{{step.jobs.total}})
     </span>
+  </span>
+  <span
+  class="queued"
+  title="{{step.name | jobType}}: queued"
+  [ngStyle]="{'flex': step.jobs.queued}">
+  <span
+    *ngIf="step.jobs.queued && detailed && !step.label">
+    {{step.name | jobType}} ({{step.jobs.queued}}/{{step.jobs.total}})
+  </span>
+  <span
+    *ngIf="step.jobs.queued && detailed && step.label">
+    {{step.label}} ({{step.jobs.queued}}/{{step.jobs.total}})
+  </span>
   </span>
   <span
     class="future"
