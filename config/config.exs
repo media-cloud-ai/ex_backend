@@ -14,7 +14,7 @@ config :ex_backend,
 
 # Configures the endpoint
 config :ex_backend, ExBackendWeb.Endpoint,
-  url: [host: "ai.media-io.com"],
+  url: [host: "media-cloud.ai"],
   server: true,
   secret_key_base: "VQyOE7QLAMr0qyhIR+4/NtEK9G8DU+mdESssX4ZO0j05mchaW1VzebD2dZ+r9xCS",
   render_errors: [view: ExBackendWeb.ErrorView, accepts: ~w(html json)],
