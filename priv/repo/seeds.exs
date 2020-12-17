@@ -70,7 +70,7 @@ workflow_definition = %{
       action: "view",
       groups: [
         "administrator",
-        "techinician",
+        "technician",
         "editor",
       ]
     },
@@ -78,7 +78,7 @@ workflow_definition = %{
       action: "create",
       groups: [
         "administrator",
-        "techinician",
+        "technician",
         "editor",
       ]
     },
@@ -86,7 +86,7 @@ workflow_definition = %{
       action: "retry",
       groups: [
         "administrator",
-        "techinician"
+        "technician"
       ]
     },
     %{
