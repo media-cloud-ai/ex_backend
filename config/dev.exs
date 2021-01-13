@@ -58,10 +58,10 @@ config :phoenix, :stacktrace_depth, 20
 
 # Configure your database
 config :ex_backend, ExBackend.Repo,
+  hostname: "localhost",
   username: "postgres",
   password: "postgres",
   database: "ex_backend_dev",
-  hostname: "localhost",
   migration_source: "backend_migrations_dev",
   runtime_pool_size: 10
 
