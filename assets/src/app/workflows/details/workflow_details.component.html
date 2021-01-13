@@ -8,17 +8,23 @@
 
   <div class="info">
     <span class="reference">
-      <div>
+      <div class="item">
         <label>Reference:</label>
         <video-title-component [id]=workflow.reference></video-title-component>
       </div>
-      <div>
+      <div class="item">
         <label>Workflow version:</label>
         <span>
           {{workflow.version_major}}.{{workflow.version_minor}}.{{workflow.version_micro}}
         </span>
       </div>
-      <div>
+      <div class="item">
+        <label>Workflow mode:</label>
+        <span>
+          {{workflow.is_live ? 'Live' : 'File'}}
+        </span>
+      </div>
+      <div class="item">
         <label>Workflow tags:</label>
         <mat-chip-list>
           <mat-chip

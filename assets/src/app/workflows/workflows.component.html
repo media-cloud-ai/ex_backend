@@ -8,7 +8,7 @@
       class="status-select"
       placeholder="Status"
       [(ngModel)]="selectedStatus"
-      (selectionChange)="updateSearchStatus()"
+      (selectionChange)="updateSearch()"
       multiple
       >
       <mat-option
@@ -26,7 +26,7 @@
       class="status-select"
       placeholder="Workflows"
       [(ngModel)]="selectedWorkflows"
-      (selectionChange)="updateSearchWorkflows()"
+      (selectionChange)="updateSearch()"
       multiple
       >
       <mat-option
@@ -47,7 +47,7 @@
       placeholder="After date"
       name=after_date
       [(ngModel)]="after_date"
-      (ngModelChange)="updateSearchWorkflows()"
+      (ngModelChange)="updateSearch()"
       >
   </mat-form-field>
   <mat-form-field class="search-text-input">
@@ -61,11 +61,31 @@
       >
   </mat-form-field>
 
+  <mat-form-field>
+    <mat-select
+      class="status-select"
+      placeholder="Mode"
+      [(ngModel)]="selectedModes"
+      (selectionChange)="updateSearch()"
+      multiple
+      >
+      <mat-option
+        *ngFor="let mode of modes"
+        [value]="mode.id"
+        [ngClass]="mode.id"
+        class="mode-option"
+        >
+        {{ mode.label }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div class="search left-margin">
   <mat-slide-toggle
     color="primary"
     [checked]="detailed"
     [(ngModel)]="detailed"
-    (change)="updateSearchStatus()">
+    (change)="updateSearch()">
     Detailed all
   </mat-slide-toggle>
 </div>

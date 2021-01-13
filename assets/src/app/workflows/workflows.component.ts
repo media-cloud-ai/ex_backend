@@ -40,12 +40,18 @@ export class WorkflowsComponent {
     'processing',
   ]
 
+  selectedModes = []
   selectedWorkflows = []
 
   status = [
     {id: 'completed', label: 'Completed'},
     {id: 'error', label: 'Error'},
     {id: 'processing', label: 'Processing'},
+  ]
+
+  modes = [
+    {id: 'live', label: 'Live'},
+    {id: 'file', label: 'File'},
   ]
 
   workflow_ids = [
@@ -132,6 +138,7 @@ export class WorkflowsComponent {
       this.pageSize,
       this.video_id,
       this.selectedStatus,
+      this.selectedModes,
       this.selectedWorkflows,
       [],
       this.after_date,
@@ -166,16 +173,7 @@ export class WorkflowsComponent {
     this.getWorkflows(0)
   }
 
-  updateSearchStatus() {
-    this.router.navigate(['/workflows'], {
-      queryParams: this.getQueryParamsForPage(
-        this.page,
-        this.pageSize)
-    })
-    this.getWorkflows(0)
-  }
-
-  updateSearchWorkflows() {
+  updateSearch() {
     this.router.navigate(['/workflows'], {
       queryParams: this.getQueryParamsForPage(
         this.page,
