@@ -19,6 +19,9 @@
               service.version_micro
             }}
           </span>
+          <span *ngIf="service.is_live" class="badge-live">
+            LIVE
+          </span>
         </button>
       </div>
     </div>

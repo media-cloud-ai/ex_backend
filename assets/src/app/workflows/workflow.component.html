@@ -14,6 +14,9 @@
     <span class="identifier">#{{ workflow.id }}</span>
     <span class="reference">
       <video-title-component [id]=workflow.reference></video-title-component>
+      <span class="badge-live" *ngIf=workflow.is_live>
+        LIVE
+      </span>
     </span>
     <span class="created">
       <label>

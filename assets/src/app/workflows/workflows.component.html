@@ -3,8 +3,91 @@
 </h1>
 
 <div class=search>
-  <workflow-seach-bar [parameters]="parameters" [showDetailedToggle]=true (detailedEvent)="toogleDetailed($event)"
-    (parametersEvent)="updateWorkflows($event)"></workflow-seach-bar>
+  <mat-form-field>
+    <mat-select
+      class="status-select"
+      placeholder="Status"
+      [(ngModel)]="selectedStatus"
+      (selectionChange)="updateSearch()"
+      multiple
+      >
+      <mat-option
+        *ngFor="let state of status"
+        [value]="state.id"
+        [ngClass]="state.id"
+        class="state-option"
+        >
+        {{ state.label }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select
+      class="status-select"
+      placeholder="Workflows"
+      [(ngModel)]="selectedWorkflows"
+      (selectionChange)="updateSearch()"
+      multiple
+      >
+      <mat-option
+        *ngFor="let workflow_id of workflow_ids"
+        [value]="workflow_id.id"
+        [ngClass]="workflow_id.id"
+        class="workflow-option"
+        >
+        {{ workflow_id.label }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="search-text-input">
+    <input
+      matInput
+      type="date"
+      placeholder="After date"
+      name=after_date
+      [(ngModel)]="after_date"
+      (ngModelChange)="updateSearch()"
+      >
+  </mat-form-field>
+  <mat-form-field class="search-text-input">
+    <input
+      matInput
+      type="date"
+      placeholder="Before date"
+      name=before_date
+      [(ngModel)]="before_date"
+      (ngModelChange)="updateSearchWorkflows()"
+      >
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select
+      class="status-select"
+      placeholder="Mode"
+      [(ngModel)]="selectedModes"
+      (selectionChange)="updateSearch()"
+      multiple
+      >
+      <mat-option
+        *ngFor="let mode of modes"
+        [value]="mode.id"
+        [ngClass]="mode.id"
+        class="mode-option"
+        >
+        {{ mode.label }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div class="search left-margin">
+  <mat-slide-toggle
+    color="primary"
+    [checked]="detailed"
+    [(ngModel)]="detailed"
+    (change)="updateSearch()">
+    Detailed all
+  </mat-slide-toggle>
 </div>
 
 <div *ngIf="loading" class="loading">
