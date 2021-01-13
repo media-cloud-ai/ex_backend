@@ -33,6 +33,13 @@ export class WorkflowsComponent {
   loading = true
   detailed = false
 
+  selectedModes = []
+
+  modes = [
+    {id: 'live', label: 'Live'},
+    {id: 'file', label: 'File'},
+  ]
+
   pageEvent: PageEvent
   workflows: WorkflowPage
   connection: any
@@ -102,6 +109,7 @@ export class WorkflowsComponent {
       page,
       pageSize,
       parameters
+      this.selectedModes,
     ).subscribe(workflowPage => {
       if (workflowPage === undefined) {
         this.length = undefined
