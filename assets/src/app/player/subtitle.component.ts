@@ -8,7 +8,7 @@ import {
   SimpleChange,
   HostListener
 } from '@angular/core'
-import {MatDialog} from '@angular/material'
+import {MatDialog} from '@angular/material/dialog'
 import {HttpClient} from '@angular/common/http'
 import {WebVtt, Cue, Timecode} from 'ts-subtitle'
 

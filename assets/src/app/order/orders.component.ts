@@ -37,6 +37,7 @@ export class OrdersComponent {
   technician: boolean
 
   parameters: WorkflowQueryParams
+  selectedMode = []
   workflows: WorkflowPage
   connections: any = []
 
@@ -120,7 +121,8 @@ export class OrdersComponent {
     this.workflowService.getWorkflows(
       page,
       pageSize,
-      parameters
+      parameters,
+      this.selectedMode
     ).subscribe(workflowPage => {
       if (workflowPage === undefined) {
         this.length = undefined

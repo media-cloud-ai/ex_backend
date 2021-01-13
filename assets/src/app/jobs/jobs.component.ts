@@ -1,6 +1,7 @@
 
 import {Component, Input, ViewChild} from '@angular/core'
-import {PageEvent, MatDialog} from '@angular/material'
+import {MatDialog} from '@angular/material/dialog'
+import {PageEvent} from '@angular/material/paginator'
 import {ActivatedRoute, Router} from '@angular/router'
 
 import {AuthService} from '../authentication/auth.service'

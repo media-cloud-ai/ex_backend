@@ -8,7 +8,7 @@ import {
   OnChanges,
   SimpleChange
 } from '@angular/core'
-import {MatDialog} from '@angular/material'
+import {MatDialog} from '@angular/material/dialog'
 
 import {Timecode} from 'ts-subtitle'
 import {Subscription} from 'rxjs'

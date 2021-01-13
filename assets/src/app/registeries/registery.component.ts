@@ -1,7 +1,7 @@
 
 import {Component, Input} from '@angular/core'
 import {ActivatedRoute, Router} from '@angular/router'
-import {MatDialog} from '@angular/material'
+import {MatDialog} from '@angular/material/dialog'
 
 import {Registery} from '../models/registery'
 import {RegisteryService} from '../services/registery.service'
