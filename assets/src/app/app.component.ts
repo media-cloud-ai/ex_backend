@@ -90,16 +90,15 @@ export class AppComponent {
   updateLeftMenu() {
     // console.log(this.loggedIn);
     if (this.loggedIn) {
-      this.left_menu = []
+      this.left_menu = [{
+        'link': '/orders',
+        'label': 'Commandes'
+      },
+      {
+        'link': '/workflows',
+        'label': 'Workflows'
+      }]
 
-      if (this.right_editor) {
-        if (this.application && this.application.identifier === 'subtil') {
-          this.left_menu.push({
-            'link': '/orders',
-            'label': 'Commandes'
-          })
-        }
-      }
       if (this.right_technician || this.right_ftvstudio) {
         if (this.application && this.application.identifier === 'subtil') {
           this.left_menu.push({
@@ -122,12 +121,6 @@ export class AppComponent {
         }
       }
 
-      if (this.right_technician || this.right_ftvstudio) {
-        this.left_menu.push({
-          'link': '/workflows',
-          'label': 'Workflows'
-        })
-      }
 
       if (this.right_technician) {
         this.left_menu.push({
