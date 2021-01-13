@@ -1,7 +1,7 @@
 
 import {Component, ViewChild} from '@angular/core'
 import {ActivatedRoute, Router} from '@angular/router'
-import {MatStepper} from '@angular/material';
+import {MatStepper} from '@angular/material/stepper';
 
 import {S3Configuration} from '../models/s3'
 import {StartWorkflowDefinition} from '../models/startWorkflowDefinition'

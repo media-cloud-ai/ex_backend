@@ -1,6 +1,6 @@
 
 import {Component, EventEmitter, Input, Output} from '@angular/core'
-import {MatSnackBar} from '@angular/material'
+import {MatSnackBar} from '@angular/material/snack-bar'
 import {Step, Workflow} from '../models/workflow'
 
 import {JobService} from '../services/job.service'

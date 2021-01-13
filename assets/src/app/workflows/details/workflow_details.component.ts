@@ -1,7 +1,7 @@
 import {Component} from '@angular/core'
 import {ActivatedRoute, Router} from '@angular/router'
 
-import {MatDialog} from '@angular/material'
+import {MatDialog} from '@angular/material/dialog'
 import {Message} from '../../models/message'
 import {SocketService} from '../../services/socket.service'
 import {WorkflowService} from '../../services/workflow.service'

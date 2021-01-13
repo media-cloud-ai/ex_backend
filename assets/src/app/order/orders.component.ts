@@ -33,6 +33,7 @@ export class OrdersComponent {
   before_date: undefined
   technician: boolean
 
+  selectedMode = []
   selectedStatus = [
     'completed',
     'error',
@@ -120,6 +121,7 @@ export class OrdersComponent {
       this.pageSize,
       this.reference,
       this.selectedStatus,
+      this.selectedMode,
       this.selectedWorkflows,
       [this.order_id],
       this.after_date,

@@ -1,6 +1,6 @@
 
 import {Component} from '@angular/core'
-import {MatDialog} from '@angular/material'
+import {MatDialog} from '@angular/material/dialog'
 
 import {SocketService} from '../services/socket.service'
 import {WatcherService} from '../services/watcher.service'

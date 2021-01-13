@@ -3,12 +3,10 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
-import {
-  MatButtonModule,
-  MatIconModule,
-  MatInputModule,
-  MatSelectModule
-  } from '@angular/material'
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
 
 import { CredentialComponent } from './credential.component';
 import { CredentialsComponent } from './credentials.component';

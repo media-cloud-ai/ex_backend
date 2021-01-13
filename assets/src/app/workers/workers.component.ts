@@ -1,7 +1,7 @@
 
 import {Component} from '@angular/core'
 import {ActivatedRoute, Router} from '@angular/router'
-import {MatDialog} from '@angular/material'
+import {MatDialog} from '@angular/material/dialog'
 
 import {ContainerService} from '../services/container.service'
 import {NodeService} from '../services/node.service'

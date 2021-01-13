@@ -1,5 +1,5 @@
 import {Component, Inject} from '@angular/core'
-import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material'
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog'
 
 import {NodeService} from '../services/node.service'
 import {NodeConfig} from '../models/node_config'
