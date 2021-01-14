@@ -39,6 +39,11 @@ export class Artifact {
   resources: any
 }
 
+export class Right {
+  action: string
+  groups: string[]
+}
+
 export class Workflow {
   id?: number
   identifier?: string
@@ -49,6 +54,7 @@ export class Workflow {
   reference?: string
   created_at?: string
   artifacts?: Artifact[]
+  rights: Right[]
   steps: Step[]
   workflow_id?: number
 }
