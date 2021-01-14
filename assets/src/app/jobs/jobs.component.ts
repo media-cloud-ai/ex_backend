@@ -45,14 +45,12 @@ export class JobsComponent {
   ) {}
 
   ngOnInit() {
-    if (this.authService.hasTechnicianRight()) {
-      this.sub = this.route
+    this.sub = this.route
       .queryParams
       .subscribe(params => {
         this.page = 0
         this.getJobs(this.page)
       })
-    }
 
     this.workflowService.getWorkflow(this.workflowId)
       .subscribe(workflow => {
@@ -68,9 +66,7 @@ export class JobsComponent {
   }
 
   ngOnDestroy() {
-    if (this.sub !== undefined) {
-      this.sub.unsubscribe()
-    }
+    this.sub.unsubscribe()
   }
 
   getJobs(index) {
