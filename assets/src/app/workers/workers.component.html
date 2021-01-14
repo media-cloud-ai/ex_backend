@@ -2,96 +2,74 @@
 <h1>
   Live Workers
 </h1>
-<div class="containers-creation-bar">
-  <div class=workers_selector>
-    <mat-form-field color="accent">
-      <mat-select
-        class="workers-select"
-        placeholder="Worker"
-        [(ngModel)]="selectedWorker"
+
+<div class="search-params">
+  <mat-form-field>
+    <mat-select
+      class="status-select"
+      placeholder="Status"
+      [(ngModel)]="selectedStatus"
+      (selectionChange)="updateSearch()"
+      multiple
+      >
+      <mat-option
+        *ngFor="let state of status"
+        [value]="state.id"
+        [ngClass]="state.id"
+        class="state-option"
         >
-        <mat-option
-          *ngFor="let image of images"
-          [value]="image">
-          {{image.node_config.label}} | {{image.params.image | dockerImage}} - {{image.params.image | dockerImageVersion}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-  <button mat-raised-button
-    color="accent"
-    (click)="addContainer()"
-    [disabled]="!selectedWorker">
-      <i class="material-icons">add</i>
-      Add a worker
-  </button>
+        {{ state.label }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 </div>
 
-<ul class="containers">
-   <li class="container header">
-    <span class="id">
-      ID
+<ul class="workers">
+   <li class="worker header">
+    <span class="instance_id">
+      Intance ID
     </span>
-    <span class="name">
-      Name
+    <span class="ips">
+      IPs
     </span>
-    <span class="image">
-      Image
+    <span class="ports">
+      Ports
     </span>
-    <span class="version">
-      Version
+    <span class="dm_queue_name">
+      Direct messaging queue name
     </span>
-    <span class="host">
-      Node
+    <span class="creation_date">
+      Creation date
     </span>
-    <span class="status">
-      Status
-    </span>
-    <span class="actions">
+    <span class="termination_date">
+      Termination Date
     </span>
   </li>
   <li
-    *ngFor="let container of containers"
-    class="container"
+    *ngFor="let worker of workers"
+    class="worker"
     >
-    <span class="id">
-      {{container.id | slice:0:12}}
+    <span class="instance_id">
+      {{worker.instance_id}}
     </span>
-    <span class="name">
-      {{container.names[0] | slice:1}}
+    <span class="ips">
+      <span class="ip" *ngFor="let ip of worker.ips">
+        {{ip}}
+      </span>
     </span>
-    <span class="image">
-      {{container.image | dockerImage}}
+    <span class="ports">
+      <span class="port" *ngFor="let port of worker.ports">
+        {{port}}
+      </span>
     </span>
-    <span class="version">
-      {{container.image | dockerImageVersion}}
+    <span class="dm_queue_name">
+      {{worker.direct_messaging_queue_name}}
     </span>
-    <span class="host">
-      {{container.node_config.label}}
+    <span class="creation_date">
+      {{worker.creation_date | date: 'd LLL yy H:mm:ss'}}
     </span>
-    <span class="status"
-      [ngClass]="container.state">
-      {{container.status}}
-    </span>
-    <span class="actions">
-      <button mat-raised-button
-        color="primary"
-        (click)="actionContainer(container.id, container.state)"
-        *ngIf="container.state != 'running'">
-          <i class="material-icons">play_circle_outline</i> Start
-      </button>
-      <button mat-raised-button
-        color="accent"
-        (click)="actionContainer(container.id, container.state)"
-        *ngIf="container.state == 'running'">
-          <i class="material-icons">pause_circle_outline</i> Stop
-      </button>
-      <button mat-raised-button
-        color="warn"
-        (click)="removeContainer(container.id)"
-        [disabled]="(container.state == 'running')">
-          <i class="material-icons">delete</i> Delete
-      </button>
+    <span class="termination_date">
+      {{worker.termination_date | date: 'd LLL yy H:mm:ss'}}
     </span>
   </li>
 </ul>

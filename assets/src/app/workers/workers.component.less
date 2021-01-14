@@ -1,115 +1,45 @@
 @import '../colors';
 
-.nodes {
-  list-style: none;
-  padding: 0px;
+h1,
+.search-params {
+  padding-left: 40px;
+}
 
-  .node {
-    border: 1px solid @green;
-    border-radius: 3px;
+.workers {
+
+  .worker {
     padding: 5px;
-    display: inline-block;
-    width: 400px;
-    margin-right: 10px;
-    cursor: pointer;
-    text-align: right;
-
-    label {
-      font-weight: bold;
-      display: block;
-      cursor: pointer;
-    }
-    label,
-    .hostname,
-    .ssl {
-      text-align: left;
-      display: inline-block;
-      width: 100%;
-    }
-
-    .hostname {
-      padding-bottom: 10px;
-    }
-  }
-  .node.selected {
-    background-color: @green;
-    color: @white;
-    label {
-      color: @black;
-    }
-  }
-}
-
-.containers-creation-bar {
-  div {
-    margin: 0 10px;
-    display: inline-block;
-  }
-}
-
-.containers {
-  list-style: none;
-  padding: 0px;
-  margin-bottom: 80px;
-
-  .container {
-    padding: 10px;
-    background-color: @white;
     display: flex;
 
-    span {
-      min-width: 80px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    span.id {
-      font-size: 0.8em;
-      color: @grey;
-    }
-
-    span.name,
-    span.status,
-    span.host,
-    span.version {
-      flex: 0.5;
-    }
-
-    span.image {
+    .id,
+    .ips,
+    .ports,
+    .instance_id,
+    .dm_queue_name,
+    .creation_date,
+    .termination_date {
       flex: 1;
     }
 
-    span.actions {
-      width: 250px;
-    }
-
-    span.status.created {
-      color: @blue;
-    }
-    span.status.running {
-      color: @green;
-    }
-    span.status.exited {
-      color: @red;
+    .ips .ip,
+    .ports .port {
+      background-color: @backGreen;
+      border-radius: 6px;
+      padding: 3px;
+      margin-right: 3px;
     }
   }
 
-  li.header {
+  .worker:nth-child(2n+1) {
+    background-color: @lightGrey;
+  }
+
+  .worker.header {
     font-weight: bold;
-    margin-bottom: 2px;
+    background-color: @green;
   }
 }
 
-.trash {
-  color: @red;
-  cursor: pointer;
-  text-align: right;
-  display: inline-block;
+.paginator {
+  margin-bottom: 80px;
 }
-
-.trash:hover {
-  background-color: #FF3719;
-  opacity: 1;
-  color: #fff;
-  border-radius: 4px;
-};

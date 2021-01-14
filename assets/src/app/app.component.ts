@@ -125,7 +125,7 @@ export class AppComponent {
       if (this.right_technician) {
         this.left_menu.push({
           'link': '/workers',
-          'label': 'Workers'
+          'label': 'Live Workers'
         })
       }
 
