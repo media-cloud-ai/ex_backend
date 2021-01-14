@@ -61,6 +61,7 @@ export class AuthService {
             token: response.access_token,
             rights: response.user.rights
           }))
+
           this.isLoggedIn = true
           this.token = response.access_token
           this.username = email

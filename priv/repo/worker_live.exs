@@ -60,3 +60,41 @@ StepFlow.LiveWorkers.create_live_worker(%{
   direct_messaging_queue_name: "my_direct_messaging_queue_name",
   job_id: job.id,
 })
+
+StepFlow.LiveWorkers.create_live_worker(%{
+  ips: [
+    "127.0.0.1",
+    "192.168.1.1"
+  ],
+  ports: [80, 443],
+  instance_id: "9876543210",
+  direct_messaging_queue_name: "my_direct_messaging_queue_name",
+  job_id: job.id,
+  creation_date: DateTime.now!("Etc/UTC")
+})
+
+StepFlow.LiveWorkers.create_live_worker(%{
+  ips: [
+    "127.0.0.1",
+    "192.168.1.1"
+  ],
+  ports: [80, 443],
+  instance_id: "444444444",
+  direct_messaging_queue_name: "my_direct_messaging_queue_name",
+  job_id: job.id,
+  creation_date: DateTime.now!("Etc/UTC") |> DateTime.add(-3600, :second),
+  termination_date: DateTime.now!("Etc/UTC")
+})
+
+StepFlow.LiveWorkers.create_live_worker(%{
+  instance_id: "666666666",
+  direct_messaging_queue_name: "my_direct_messaging_queue_name",
+  job_id: job.id,
+  creation_date: DateTime.now!("Etc/UTC") |> DateTime.add(-3600, :second)
+})
+
+StepFlow.LiveWorkers.create_live_worker(%{
+  instance_id: "999999999",
+  direct_messaging_queue_name: "my_direct_messaging_queue_name",
+  job_id: job.id,
+})
