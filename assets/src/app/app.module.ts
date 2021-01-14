@@ -106,6 +106,7 @@ import {DeclaredWorkersService}    from './services/declared_workers.service'
 import {IMDbService}             from './services/imdb.service'
 import {JobService}              from './services/job.service'
 import {MouseMoveService}        from './services/mousemove.service'
+import {PersonService}           from './services/person.service'
 import {RdfService}              from './services/rdf.service'
 import {RegisteryService}        from './services/registery.service'
 import {S3Service}               from './services/s3.service'
@@ -216,6 +217,7 @@ const EX_BACKEND_DATE_FORMATS = {
     DeleteSubtitleDialog,
     DurationComponent,
     JobDetailsDialogComponent,
+    LinkImportComponent,
     NewSubtitleDialogComponent,
     ParametersComponent,
     RdfDialogComponent,
@@ -273,6 +275,7 @@ const EX_BACKEND_DATE_FORMATS = {
     IMDbService,
     JobService,
     MouseMoveService,
+    PersonService,
     RdfService,
     RegisteryService,
     S3Service,
