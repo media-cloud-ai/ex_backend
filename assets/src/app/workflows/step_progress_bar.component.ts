@@ -3,6 +3,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core'
 import {MatSnackBar} from '@angular/material'
 import {Step, Workflow} from '../models/workflow'
 
+import {AuthService} from '../authentication/auth.service'
 import {JobService} from '../services/job.service'
 import {WorkflowService} from '../services/workflow.service'
 
@@ -16,12 +17,21 @@ export class StepProgressBarComponent {
   @Input() step: Step
   @Input() workflow: Workflow
   @Input() detailed: boolean
+  right_retry: boolean = false
 
   constructor(
+    private authService: AuthService,
     private snackBar: MatSnackBar,
     private jobService: JobService,
     private workflowService: WorkflowService,
   ){}
+
+  ngOnInit() {
+    let authorized_to_retry = this.workflow.rights.find((r) => r.action === "retry")
+    if (authorized_to_retry !== undefined) {
+      this.right_retry = this.authService.hasAnyRights(authorized_to_retry.groups)
+    }
+  }
 
   retry(step) {
     const workflowService = this.workflowService;
