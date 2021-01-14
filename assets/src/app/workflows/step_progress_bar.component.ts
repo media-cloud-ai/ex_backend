@@ -27,9 +27,11 @@ export class StepProgressBarComponent {
   ){}
 
   ngOnInit() {
-    let authorized_to_retry = this.workflow.rights.find((r) => r.action === "retry")
-    if (authorized_to_retry !== undefined) {
-      this.right_retry = this.authService.hasAnyRights(authorized_to_retry.groups)
+    if (this.workflow !== undefined) {
+      let authorized_to_retry = this.workflow.rights.find((r) => r.action === "retry")
+      if (authorized_to_retry !== undefined) {
+        this.right_retry = this.authService.hasAnyRights(authorized_to_retry.groups)
+      }
     }
   }
 
