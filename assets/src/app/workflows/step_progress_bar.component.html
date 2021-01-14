@@ -41,7 +41,7 @@
     <button
       mat-flat-button
       color="warn"
-      *ngIf="step.jobs.errors && detailed"
+      *ngIf="step.jobs.errors && detailed && right_retry"
       (click)="retry(step)"
       class=retry>
       <mat-icon>sync</mat-icon>
