@@ -126,6 +126,21 @@ export class AuthService {
     return this.rights.includes('ftvstudio')
   }
 
+  hasAnyRights(authorized_rights: string[]): boolean {
+    if (!this.rights){
+      return false
+    } else if (authorized_rights === undefined){
+      return false
+    } else {
+      let intersection = this.rights.filter(x => authorized_rights.includes(x));
+      if (!intersection.length) {
+        return false
+      } else {
+        return true
+      }
+    }
+  }
+
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error)
