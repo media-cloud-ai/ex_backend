@@ -35,7 +35,7 @@ config :step_flow, StepFlow,
   authorize: [
     module: ExBackendWeb.Authorize,
     get_jobs: [:user_check, :right_technician_check],
-    get_workflows: [:user_check, :right_technician_check],
+    get_workflows: [:user_check],
     post_workflows: [:user_check, :right_technician_check],
     post_launch_workflow: [:user_check, :right_technician_check],
     put_workflows: [:user_check, :right_technician_check],
