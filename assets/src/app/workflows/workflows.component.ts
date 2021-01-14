@@ -122,7 +122,6 @@ export class WorkflowsComponent {
   }
 
   getWorkflows(index) {
-    console.log("get WFs")
     for (let connection of this.connections) {
       connection.unsubscribe()
     }
