@@ -4,6 +4,7 @@ import {MatDialog} from '@angular/material/dialog'
 import {PageEvent} from '@angular/material/paginator'
 import {ActivatedRoute, Router} from '@angular/router'
 
+import {AuthService} from '../authentication/auth.service'
 import {JobService} from '../services/job.service'
 import {WorkflowService} from '../services/workflow.service'
 import {JobPage} from '../models/page/job_page'
@@ -34,6 +35,7 @@ export class JobsComponent {
   jobs: JobPage
 
   constructor(
+    private authService: AuthService,
     private jobService: JobService,
     private workflowService: WorkflowService,
     private route: ActivatedRoute,
@@ -42,16 +44,20 @@ export class JobsComponent {
   ) {}
 
   ngOnInit() {
-    this.sub = this.route
+    if (this.authService.hasTechnicianRight()) {
+      this.sub = this.route
       .queryParams
       .subscribe(params => {
         this.page = 0
         this.getJobs(this.page)
       })
+    }
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe()
+    if (this.sub !== undefined) {
+      this.sub.unsubscribe()
+    }
   }
 
   getJobs(index) {
