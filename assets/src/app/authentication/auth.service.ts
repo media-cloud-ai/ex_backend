@@ -129,16 +129,12 @@ export class AuthService {
   hasAnyRights(authorized_rights: string[]): boolean {
     if (!this.rights){
       return false
-    } else if (authorized_rights === undefined){
-      return false
-    } else {
-      let intersection = this.rights.filter(x => authorized_rights.includes(x));
-      if (!intersection.length) {
-        return false
-      } else {
-        return true
-      }
     }
+    if (authorized_rights === undefined){
+      return false
+    }
+    let intersection = this.rights.filter(x => authorized_rights.includes(x))
+    return intersection.length
   }
 
   private handleError<T> (operation = 'operation', result?: T) {
