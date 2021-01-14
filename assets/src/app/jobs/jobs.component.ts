@@ -34,6 +34,8 @@ export class JobsComponent {
   pageEvent: PageEvent
   jobs: JobPage
 
+  right_retry: boolean = false
+
   constructor(
     private authService: AuthService,
     private jobService: JobService,
@@ -52,6 +54,18 @@ export class JobsComponent {
         this.getJobs(this.page)
       })
     }
+
+    this.workflowService.getWorkflow(this.workflowId)
+      .subscribe(workflow => {
+        if (workflow === undefined) {
+          return
+        }
+  
+        let authorized_to_retry = workflow.data.rights.find((r) => r.action === "retry")
+        if (authorized_to_retry !== undefined) {
+          this.right_retry = this.authService.hasAnyRights(authorized_to_retry.groups)
+        }}
+    )
   }
 
   ngOnDestroy() {
