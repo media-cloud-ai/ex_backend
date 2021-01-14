@@ -79,6 +79,7 @@
         color="warn"
         [disabled]=!can_abort
         (click)="abort(workflow.id)"
+        *ngIf="right_abort"
         >
         <mat-icon>cancel</mat-icon>
         Abort

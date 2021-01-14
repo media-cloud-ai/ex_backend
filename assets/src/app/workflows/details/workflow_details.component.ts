@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router'
 
 import {MatDialog} from '@angular/material/dialog'
 import {Message} from '../../models/message'
+import {AuthService} from '../../authentication/auth.service'
 import {SocketService} from '../../services/socket.service'
 import {WorkflowService} from '../../services/workflow.service'
 import {Workflow, Step} from '../../models/workflow'
@@ -24,8 +25,10 @@ export class WorkflowDetailsComponent {
   parameters_opened: boolean = false
   connection: any
   messages: Message[] = []
+  right_abort: boolean = false
 
   constructor(
+    private authService: AuthService,
     private socketService: SocketService,
     private workflowService: WorkflowService,
     private route: ActivatedRoute,
@@ -68,13 +71,17 @@ export class WorkflowDetailsComponent {
         this.renderer = undefined
         return
       }
-      console.log(workflow.data)
       this.workflow = workflow.data
       this.renderer = new WorkflowRenderer(this.workflow.steps)
 
       this.can_abort = this.workflow.steps.some((s) => s.status === 'error')
       if (this.can_abort && this.workflow.steps.some((s) => s.name === 'clean_workspace' && s.status !== 'queued')) {
         this.can_abort = false
+      }
+
+      let authorized_to_abort = this.workflow.rights.find((r) => r.action === "abort")
+      if (authorized_to_abort !== undefined) {
+        this.right_abort = this.authService.hasAnyRights(authorized_to_abort.groups)
       }
     })
   }
