@@ -9,6 +9,8 @@ defmodule ExBackend.Application do
   # for more information on OTP Applications
   def start(_type, _args) do
 
+    Logger.configure(level: String.to_atom(System.get_env("LOG_LEVEL", "debug")))
+
     # Define workers and child supervisors to be supervised
     children = [
       {Phoenix.PubSub, [name: ExBackend.PubSub, adapter: Phoenix.PubSub.PG2]},
