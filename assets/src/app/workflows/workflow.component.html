@@ -50,6 +50,7 @@
         color="warn"
         [disabled]=!can_abort
         (click)="abort(workflow.id)"
+        *ngIf="right_abort"
         >
         <mat-icon>cancel</mat-icon>
         Abort
@@ -61,6 +62,7 @@
         mat-raised-button
         color="warn"
         (click)="delete(workflow.id)"
+        *ngIf="right_delete"
         >
         <mat-icon>delete_forever</mat-icon>
       </button>

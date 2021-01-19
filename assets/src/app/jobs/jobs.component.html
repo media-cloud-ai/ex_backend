@@ -13,7 +13,7 @@
           <mat-icon>visibility</mat-icon>
           Details
         </button>
-        <button mat-button *ngIf="(job | jobStatus) == 'error'" (click)="retryJob(job)">
+        <button mat-button *ngIf="(job | jobStatus) == 'error' && right_retry" (click)="retryJob(job)">
           <mat-icon>autorenew</mat-icon>
           Retry
         </button>
