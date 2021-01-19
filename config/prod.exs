@@ -64,7 +64,7 @@ config :logger, level: :info
 config :ex_backend, ExBackendWeb.Endpoint,
   secret_key_base: "WzHyGzHsy0VflZcAynNf3xwUbUBzw3m7BkaiuiVpD0qofv0r8+BlXDJzadh+NTLN"
 
-config :logger, level: :debug
+config :logger, level: String.to_atom(System.get_env("BACKEND_LOG_LEVEL") || "info")
 
 config :httpotion, :default_timeout, 60000
 
