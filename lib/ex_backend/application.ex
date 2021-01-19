@@ -10,6 +10,8 @@ defmodule ExBackend.Application do
   def start(_type, _args) do
     import Supervisor.Spec
 
+    Logger.configure(level: String.to_atom(System.get_env("LOG_LEVEL", "debug")))
+
     # Define workers and child supervisors to be supervised
     children = [
       {Phoenix.PubSub, [name: ExBackend.PubSub, adapter: Phoenix.PubSub.PG2]},
