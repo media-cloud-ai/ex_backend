@@ -85,6 +85,18 @@
         Abort
       </button>
     </span>
+    <span
+      class="stop">
+      <button
+        mat-raised-button
+        color="warn"
+        [disabled]=!can_stop
+        (click)="stop(workflow.id)"
+        >
+        <mat-icon>stop</mat-icon>
+        Stop
+      </button>
+    </span>
   </div>
 
   <div

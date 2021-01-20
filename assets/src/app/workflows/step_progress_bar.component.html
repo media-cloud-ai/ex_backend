@@ -51,7 +51,22 @@
   <span
     class="processing"
     title="{{step.name | jobType}}: processing"
-    [ngStyle]="{'flex': step.jobs.processing}">
+    *ngIf="is_live"
+    [ngStyle]="{'flex': step.jobs.total}">
+    <span
+      *ngIf="step.jobs.processing && detailed && !step.label">
+      {{step.name | jobType}} ({{step.jobs.processing}}/{{step.jobs.total}})
+    </span>
+    <span
+      *ngIf="step.jobs.processing && detailed && step.label">
+      {{step.label}} ({{step.jobs.processing}}/{{step.jobs.total}})
+    </span>
+  </span>
+  <span
+    class="processing"
+    title="{{is_live}}: processing"
+    *ngIf="!is_live"
+    [ngStyle]="{'flex': step.jobs.total}">
     <span
       *ngIf="step.jobs.processing && detailed && !step.label">
       {{step.name | jobType}} ({{step.jobs.processing}}/{{step.jobs.total}})

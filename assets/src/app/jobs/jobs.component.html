@@ -28,10 +28,19 @@
     </div>
     <div *ngIf="(job | jobStatus) === 'processing'; then thenBlock else elseBlock"></div>
     <ng-template #thenBlock>
-      <div class="status {{job | jobStatus}}">
-        <span>{{job.progressions | jobProgression}}%</span>
-      </div>
-      <mat-progress-bar mode="determinate" value="{{job.progressions | jobProgression}}"></mat-progress-bar>
+      <div *ngIf="is_live; then thenBlock else elseBlock"></div>
+      <ng-template #thenBlock>
+        <div class="status {{job | jobStatus}}">
+          <span>running</span>
+        </div>
+        <mat-progress-bar mode="indeterminate" value="running"></mat-progress-bar>
+      </ng-template>
+      <ng-template #elseBlock>
+        <div class="status {{job | jobStatus}}">
+          <span>{{job.progressions | jobProgression}}%</span>
+        </div>
+        <mat-progress-bar mode="determinate" value="{{job.progressions | jobProgression}}"></mat-progress-bar>
+      </ng-template>
     </ng-template>
     <ng-template #elseBlock>
       <div class="status {{job | jobStatus}}">

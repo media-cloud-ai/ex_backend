@@ -18,6 +18,7 @@ export class WorkflowComponent {
   @Input() workflow: Workflow
   @Input() detailed = false
   can_abort: boolean
+  can_stop: boolean = true
   right_abort: boolean = false
   right_delete: boolean = false
 
@@ -68,7 +69,7 @@ export class WorkflowComponent {
     }
     return count
   }
-  
+
   getTotalSteps(): number {
     return this.workflow.steps.length
   }
@@ -83,6 +84,23 @@ export class WorkflowComponent {
       if (workflow !== undefined) {
         console.log('Abort workflow!')
         this.workflowService.sendWorkflowEvent(workflow.id, {event: 'abort'})
+        .subscribe(response => {
+          console.log(response)
+        })
+      }
+    })
+  }
+
+  stop(workflow_id): void {
+    let dialogRef = this.dialog.open(WorkflowAbortDialogComponent, {data: {
+      'workflow': this.workflow,
+      'message': 'stop'
+    }})
+
+    dialogRef.afterClosed().subscribe(workflow => {
+      if (workflow !== undefined) {
+        console.log('Stop workflow!')
+        this.workflowService.sendWorkflowEvent(workflow.id, {event: 'stop'})
         .subscribe(response => {
           console.log(response)
         })
