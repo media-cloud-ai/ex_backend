@@ -60,6 +60,7 @@ export class JobsComponent {
           return
         }
         this.is_live = workflow.data.is_live
+
         let authorized_to_retry = workflow.data.rights.find((r) => r.action === "retry")
         if (authorized_to_retry !== undefined) {
           this.right_retry = this.authService.hasAnyRights(authorized_to_retry.groups)
