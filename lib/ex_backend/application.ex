@@ -10,7 +10,11 @@ defmodule ExBackend.Application do
   def start(_type, _args) do
     import Supervisor.Spec
 
-    Logger.configure(level: String.to_atom(System.get_env("LOG_LEVEL", "info")))
+    log_level =
+      System.get_env("LOG_LEVEL", "info")
+      |> String.to_atom()
+
+    Logger.configure(level: log_level)
 
     # Define workers and child supervisors to be supervised
     children = [
