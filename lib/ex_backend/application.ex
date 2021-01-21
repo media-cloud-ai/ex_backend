@@ -9,7 +9,7 @@ defmodule ExBackend.Application do
   # for more information on OTP Applications
   def start(_type, _args) do
 
-    Logger.configure(level: String.to_atom(System.get_env("LOG_LEVEL", "debug")))
+    Logger.configure(level: String.to_atom(System.get_env("LOG_LEVEL", "info")))
 
     # Define workers and child supervisors to be supervised
     children = [
