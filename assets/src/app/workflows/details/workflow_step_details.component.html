@@ -32,6 +32,7 @@
 
         <step-progress-bar-component
           [step]=step
+	  [workflow]=workflow
           ></step-progress-bar-component>
       </div>
     </div>
@@ -53,7 +54,7 @@
         <jobs-component
           jobType={{step.name}}
           step_id={{step.id}}
-          workflowId={{workflowId}}
+          workflowId={{workflow.id}}
           ></jobs-component>
       </div>
     </div>

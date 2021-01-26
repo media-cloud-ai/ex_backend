@@ -1,6 +1,6 @@
 
 import {Component, Input} from '@angular/core'
-import {Step} from '../../models/workflow'
+import {Step, Workflow} from '../../models/workflow'
 
 @Component({
   selector: 'workflow-step-details-component',
@@ -13,7 +13,7 @@ export class WorkflowStepDetailsComponent {
   disabled: boolean = true
 
   @Input() step: Step
-  @Input() workflowId: number
+  @Input() workflow: Workflow
 
   ngOnInit() {
     if (this.step.parameters) {

@@ -79,6 +79,7 @@
   <span
     class="queued"
     title="{{step.name | jobType}}: queued"
+    *ngIf="!is_live"
     [ngStyle]="{'flex': step.jobs.queued}">
     <span
       *ngIf="step.jobs.queued && detailed && !step.label">
