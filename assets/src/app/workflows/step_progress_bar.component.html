@@ -51,8 +51,8 @@
   <span
     class="processing"
     title="{{step.name | jobType}}: processing"
-    *ngIf="is_live"
-    [ngStyle]="{'flex': step.jobs.total}">
+    *ngIf="!is_live"
+    [ngStyle]="{'flex': step.jobs.processing}">
     <span
       *ngIf="step.jobs.processing && detailed && !step.label">
       {{step.name | jobType}} ({{step.jobs.processing}}/{{step.jobs.total}})
@@ -64,22 +64,25 @@
   </span>
   <span
     class="processing"
-    title="{{is_live}}: processing"
-    *ngIf="!is_live"
+    title="{{step.name | jobType}}: processing"
+    *ngIf="is_live && 
+      !step.jobs.queued &&
+      !step.jobs.errors &&
+      !step.jobs.completed &&
+      !step.jobs.skipped"
     [ngStyle]="{'flex': step.jobs.total}">
     <span
-      *ngIf="step.jobs.processing && detailed && !step.label">
+      *ngIf="step.jobs.total && detailed && !step.label">
       {{step.name | jobType}} ({{step.jobs.processing}}/{{step.jobs.total}})
     </span>
     <span
-      *ngIf="step.jobs.processing && detailed && step.label">
+      *ngIf="step.jobs.total && detailed && step.label">
       {{step.label}} ({{step.jobs.processing}}/{{step.jobs.total}})
     </span>
   </span>
   <span
     class="queued"
     title="{{step.name | jobType}}: queued"
-    *ngIf="!is_live"
     [ngStyle]="{'flex': step.jobs.queued}">
     <span
       *ngIf="step.jobs.queued && detailed && !step.label">
@@ -93,10 +96,12 @@
   <span
     class="future"
     *ngIf="
+      !is_live &&
       !step.jobs.queued &&
       !step.jobs.errors &&
       !step.jobs.completed &&
       !step.jobs.skipped &&
+      !step.jobs.processing &&
       detailed">
     <span>
       {{step.name | jobType}}
