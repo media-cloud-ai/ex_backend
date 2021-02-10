@@ -100,7 +100,7 @@ defmodule ExBackend.Mixfile do
       {:ranch, "~> 1.7.1"},
       {:remote_dockers, "1.4.0"},
       {:sigaws, "~> 0.7.2"},
-      {:step_flow, "~> 0.2.7"},
+      {:step_flow, "~> 1.0.0-rc1"},
       {:tesla, "~> 1.4.0"},
       {:timex, "~> 3.6"},
       {:uuid, "~> 1.1"}
@@ -150,5 +150,6 @@ defmodule ExBackend.Mixfile do
     System.cmd("git", ~w{describe --always --tags --first-parent})
     |> elem(0)
     |> String.trim()
+    |> IO.inspect
   end
 end
