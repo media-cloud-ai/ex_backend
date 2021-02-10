@@ -11,31 +11,31 @@ import {
   Title
 } from '@angular/platform-browser'
 import {AppComponent}     from './app.component'
-import {
-  MatAutocompleteModule,
-  MatButtonModule,
-  MatCardModule,
-  MatCheckboxModule,
-  MatChipsModule,
-  MatDatepickerModule,
-  MatDialogModule,
-  MatIconModule,
-  MatInputModule,
-  MatListModule,
-  MatMenuModule,
-  MatPaginatorModule,
-  MatProgressBarModule,
-  MatProgressSpinnerModule,
-  MatRadioModule,
-  MatSelectModule,
-  MatSidenavModule,
-  MatSliderModule,
-  MatSlideToggleModule,
-  MatSnackBarModule,
-  MatTableModule,
-  MatTabsModule,
-  MatToolbarModule
-  } from '@angular/material'
+
+import {MatAutocompleteModule} from '@angular/material/autocomplete'
+import {MatButtonModule} from '@angular/material/button'
+import {MatCardModule} from '@angular/material/card'
+import {MatCheckboxModule} from '@angular/material/checkbox'
+import {MatChipsModule} from '@angular/material/chips'
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatIconModule} from '@angular/material/icon'
+import {MatInputModule} from '@angular/material/input'
+import {MatListModule} from '@angular/material/list'
+import {MatMenuModule} from '@angular/material/menu'
+import {MatPaginatorModule} from '@angular/material/paginator'
+import {MatProgressBarModule} from '@angular/material/progress-bar'
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'
+import {MatRadioModule} from '@angular/material/radio'
+import {MatSelectModule} from '@angular/material/select'
+import {MatSidenavModule} from '@angular/material/sidenav'
+import {MatSlideToggleModule} from '@angular/material/slide-toggle'
+import {MatSliderModule} from '@angular/material/slider'
+import {MatSnackBarModule} from '@angular/material/snack-bar'
+import {MatTableModule} from '@angular/material/table'
+import {MatTabsModule} from '@angular/material/tabs'
+import {MatToolbarModule} from '@angular/material/toolbar'
+
 
 import {MatStepperModule} from '@angular/material/stepper'
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
@@ -92,7 +92,6 @@ import {WorkflowsComponent}      from './workflows/workflows.component'
 import {DeleteSubtitleDialog} from './registeries/dialog/delete_subtitle_dialog.component'
 import {StartIngestDialog} from './ingest/dialogs/start_ingest.component'
 import {JobDetailsDialogComponent} from './jobs/details/job_details_dialog.component'
-import {NewNodeDialogComponent} from './nodes/new_node_dialog.component'
 import {NewSubtitleDialogComponent} from './registeries/dialog/new_subtitle_dialog.component'
 import {PersonShowDialogComponent} from './persons/show_dialog.component'
 import {RdfDialogComponent} from './catalog/rdf/rdf_dialog.component'
@@ -103,21 +102,19 @@ import {AuthService}             from './authentication/auth.service'
 import {AmqpService}             from './services/amqp.service'
 import {ApplicationService}      from './services/application.service'
 import {CatalogService}          from './services/catalog.service'
-import {ContainerService}        from './services/container.service'
 import {CredentialService}       from './services/credential.service'
 import {DocumentationService}    from './services/documentation.service'
 import {DeclaredWorkersService}    from './services/declared_workers.service'
-import {ImageService}            from './services/image.service'
 import {IMDbService}             from './services/imdb.service'
 import {JobService}              from './services/job.service'
 import {MouseMoveService}        from './services/mousemove.service'
-import {NodeService}             from './services/node.service'
 import {PersonService}           from './services/person.service'
 import {RdfService}              from './services/rdf.service'
 import {RegisteryService}        from './services/registery.service'
 import {S3Service}               from './services/s3.service'
 import {UserService}             from './services/user.service'
 import {WatcherService}          from './services/watcher.service'
+import {WorkerService}           from './services/worker.service'
 import {WorkflowService}         from './services/workflow.service'
 
 import {GenericModule}           from './generic/generic.module'
@@ -193,7 +190,6 @@ const EX_BACKEND_DATE_FORMATS = {
     JobDetailsDialogComponent,
     LinkImportComponent,
     LoginComponent,
-    NewNodeDialogComponent,
     NewSubtitleDialogComponent,
     ParametersComponent,
     PersonComponent,
@@ -226,7 +222,6 @@ const EX_BACKEND_DATE_FORMATS = {
     DurationComponent,
     JobDetailsDialogComponent,
     LinkImportComponent,
-    NewNodeDialogComponent,
     NewSubtitleDialogComponent,
     ParametersComponent,
     PersonFormComponent,
@@ -279,16 +274,13 @@ const EX_BACKEND_DATE_FORMATS = {
     ApplicationService,
     AuthService,
     CatalogService,
-    ContainerService,
     CookieService,
     CredentialService,
     DeclaredWorkersService,
     DocumentationService,
-    ImageService,
     IMDbService,
     JobService,
     MouseMoveService,
-    NodeService,
     PersonService,
     RdfService,
     RegisteryService,
@@ -296,6 +288,7 @@ const EX_BACKEND_DATE_FORMATS = {
     Title,
     UserService,
     WatcherService,
+    WorkerService,
     WorkflowService,
   ],
   bootstrap: [

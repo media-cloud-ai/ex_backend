@@ -1,6 +1,7 @@
 
 import {Component, ViewChild, Input, Output, EventEmitter} from '@angular/core'
-import {PageEvent, MatRadioModule} from '@angular/material'
+import {PageEvent} from '@angular/material/paginator'
+import {MatRadioModule} from '@angular/material/radio'
 import {Observable} from 'rxjs'
 
 import {Person} from '../models/person'

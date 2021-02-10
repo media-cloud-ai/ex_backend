@@ -13,6 +13,15 @@
   .reference {
     flex: 1;
     padding: 0px 4px;
+    .item {
+      display: flex;
+
+      label {
+        min-width: 120px;
+        font-weight: bold;
+        color: @grey;
+      }
+    }
 
     .link {
       cursor: pointer;
@@ -49,7 +58,6 @@
 
 mat-chip-list {
   display: inline-block;
-  padding-left: 10px;
 }
 
 .parameters {

@@ -26,7 +26,7 @@ export class WorkflowService {
       )
   }
 
-  getWorkflows(page: number, per_page: number, video_id: string, status: Array<string>, workflows: Array<string>, ids: Array<number>, after_date: any, before_date: any): Observable<WorkflowPage> {
+  getWorkflows(page: number, per_page: number, video_id: string, status: Array<string>, modes: Array<string>, workflows: Array<string>, ids: Array<number>, after_date: any, before_date: any): Observable<WorkflowPage> {
     let params = new HttpParams()
     if (per_page) {
       params = params.append('size', per_page.toString())
@@ -45,6 +45,9 @@ export class WorkflowService {
     }
     for (let state of status) {
       params = params.append('state[]', state)
+    }
+    for (let mode of modes) {
+      params = params.append('mode[]', mode)
     }
     for (let workflow_id of workflows) {
       params = params.append('workflow_ids[]', workflow_id)

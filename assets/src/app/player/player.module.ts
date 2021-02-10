@@ -9,15 +9,13 @@ import { TimecodeComponent } from './timecode.component'
 import { TimecodeDialogComponent } from './dialog/timecode_dialog.component'
 import { SetVersionDialog } from './dialog/set_version_dialog'
 
-import {
-  MatButtonModule,
-  MatDialogModule,
-  MatIconModule,
-  MatInputModule,
-  MatProgressSpinnerModule,
-  MatSelectModule,
-  MatSliderModule
-  } from '@angular/material'
+import {MatButtonModule} from '@angular/material/button'
+import {MatDialogModule} from '@angular/material/dialog'
+import {MatIconModule} from '@angular/material/icon'
+import {MatInputModule} from '@angular/material/input'
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'
+import {MatSelectModule} from '@angular/material/select'
+import {MatSliderModule} from '@angular/material/slider'
 
 import {PipesModule} from '../pipes/pipes.module'
 

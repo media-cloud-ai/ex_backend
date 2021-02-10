@@ -1,6 +1,6 @@
 
 import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core'
-import {PageEvent} from '@angular/material'
+import {PageEvent} from '@angular/material/paginator'
 import {ActivatedRoute, Router} from '@angular/router'
 
 import {IMDbService} from '../services/imdb.service'

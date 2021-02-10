@@ -1,5 +1,5 @@
 import {Component, Inject} from '@angular/core'
-import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material'
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog'
 
 import {Step, Workflow} from '../../models/workflow'
 import {WorkflowRenderer} from '../../models/workflow_renderer'
