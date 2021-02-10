@@ -51,6 +51,7 @@ export class Workflow {
   version_major?: string
   version_minor?: string
   version_micro?: string
+  is_live?: boolean
   tags?: string[]
   reference?: string
   created_at?: string
