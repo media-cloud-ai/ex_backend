@@ -21,7 +21,7 @@
     <span class="created">
       <label>
         Created at
-      </label> 
+      </label>
       <span class="date">
         {{workflow.created_at | date: 'd LLL yy'}}
       </span>
@@ -57,6 +57,18 @@
         >
         <mat-icon>cancel</mat-icon>
         Abort
+      </button>
+    </span>
+    <span
+      class="stop" *ngIf=workflow.is_live>
+      <button
+        mat-raised-button
+        color="warn"
+        [disabled]=!can_stop
+        (click)="stop(workflow.id)"
+        >
+        <mat-icon>stop</mat-icon>
+        Stop
       </button>
     </span>
     <span
