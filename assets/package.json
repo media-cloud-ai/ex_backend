@@ -16,7 +16,7 @@
     "@types/canvasjs": "^1.9.5",
     "canvasjs": "^1.8.1",
     "crypto": "^1.0.1",
-    "dashjs": "https://github.com/Dash-Industry-Forum/dash.js.git#16be8f8",
+    "dashjs": "^3.2.0",
     "es7-shim": "6.0.0",
     "evaporate": "https://github.com/TTLabs/EvaporateJS.git#c1f8905",
     "hammerjs": "^2.0.8",
