@@ -106,7 +106,12 @@ config :ex_video_factory,
 
 config :step_flow, StepFlow,
   workers_work_directory: {:system, "WORKERS_WORK_DIRECTORY"},
-  workflow_definition: {:system, "STEP_FLOW_WORKFLOW_DIRECTORY"}
+  workflow_definition: {:system, "STEP_FLOW_WORKFLOW_DIRECTORY"},
+  enable_metrics: {:system, "SPEP_FLOW_ENABLE_METRICS"}
+
+config :step_flow, StepFlow.Metrics,
+  scale: {:system, "STEP_FLOW_METRICS_SCALE"},
+  delta: {:system, "STEP_FLOW_METRICS_DELTA"}
 
 config :step_flow, StepFlow.Amqp,
   username: {:system, "AMQP_USERNAME"},
