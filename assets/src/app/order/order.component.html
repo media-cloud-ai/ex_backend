@@ -3,51 +3,65 @@
 <mat-horizontal-stepper linear="true" #stepper>
   <mat-step [stepControl]="modeSelection">
     <ng-template matStepLabel>Sélection du service</ng-template>
-    <div class=services>
-      <div class=service
-        *ngFor="let service of services">
+    <div class="services">
+      <div class="service" *ngFor="let service of services">
         <button
           mat-raised-button
           color="primary"
           (click)="selectService(service)"
-          >
-          <i class="material-icons" *ngIf=service.icon>
-            {{service.icon}}
+        >
+          <i class="material-icons" *ngIf="service.icon">
+            {{ service.icon }}
           </i>
-          {{service.label}}
+          {{ service.label }}
           <span class="version">
-            v{{service.version_major}}.{{service.version_minor}}.{{service.version_micro}}
+            v{{ service.version_major }}.{{ service.version_minor }}.{{
+              service.version_micro
+            }}
           </span>
         </button>
       </div>
     </div>
+    <mat-paginator
+      class="paginator"
+      showFirstLastButtons="true"
+      [length]="length"
+      [pageSize]="pageSize"
+      [pageIndex]="page"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="pageEvent = eventGetWorkflows($event)"
+      *ngIf="services && services.length > 0"
+    >
+    </mat-paginator>
   </mat-step>
   <mat-step [stepControl]="inputSelection">
     <ng-template matStepLabel>Paramétrage</ng-template>
-    <div *ngIf=selectedService>
-      <div class=service
-        *ngFor="let parameter of selectedService.start_parameters">
-
-          <div class=dropzone *ngIf="parameter.type == 'file'">
-            <mat-form-field>
-              <ngx-mat-file-input
-                [(ngModel)]="parameters[parameter.id]"
-                [placeholder]="parameter.label"
-                [accept]="parameter.accept">
-                </ngx-mat-file-input>
-              <mat-icon matSuffix>folder</mat-icon>
-            </mat-form-field>
-          </div>
-        <mat-form-field
-          *ngIf="parameter.type == 'choice'">
+    <div *ngIf="selectedService">
+      <div
+        class="service"
+        *ngFor="let parameter of selectedService.start_parameters"
+      >
+        <div class="dropzone" *ngIf="parameter.type == 'file'">
+          <mat-form-field>
+            <ngx-mat-file-input
+              [(ngModel)]="parameters[parameter.id]"
+              [placeholder]="parameter.label"
+              [accept]="parameter.accept"
+            >
+            </ngx-mat-file-input>
+            <mat-icon matSuffix>folder</mat-icon>
+          </mat-form-field>
+        </div>
+        <mat-form-field *ngIf="parameter.type == 'choice'">
           <mat-select
             [placeholder]="parameter.label"
             [(ngModel)]="parameters[parameter.id]"
-            >
+          >
             <mat-option
               *ngFor="let item of parameter.items"
               [value]="item.id"
-              [ngClass]="item.id" >
+              [ngClass]="item.id"
+            >
               {{ item.label }}
             </mat-option>
           </mat-select>
@@ -58,7 +72,7 @@
             [placeholder]="parameter.label"
             [value]="getDefaultParameterValue(parameter)"
             (input)="parameterChange(parameter.id, $event)"
-            >
+          />
         </mat-form-field>
         <mat-form-field *ngIf="parameter.type == 'number'">
           <input
@@ -67,9 +81,9 @@
             type="number"
             [value]="getDefaultParameterValue(parameter)"
             (input)="parameterChange(parameter.id, $event)"
-            [step]="(parameter.step)? parameter.step : 1"
-            >
-          <mat-icon matSuffix>{{parameter.icon}}</mat-icon>
+            [step]="parameter.step ? parameter.step : 1"
+          />
+          <mat-icon matSuffix>{{ parameter.icon }}</mat-icon>
         </mat-form-field>
       </div>
     </div>
@@ -83,38 +97,32 @@
     <ng-template matStepLabel>Chargement des fichiers</ng-template>
     <div>Récupération des fichiers:</div>
 
-    <div *ngFor="let progressBar of progressBars" class=fileProgress>
-      {{progressBar.name}} - {{progressBar.progress | number: '1.0-0'}}&nbsp;%
-      <mat-progress-bar
-        [value]="progressBar.progress">
-      </mat-progress-bar>
+    <div *ngFor="let progressBar of progressBars" class="fileProgress">
+      {{ progressBar.name }} -
+      {{ progressBar.progress | number: "1.0-0" }}&nbsp;%
+      <mat-progress-bar [value]="progressBar.progress"> </mat-progress-bar>
     </div>
 
     <div>
-      <button
-        mat-button
-        matStepperPrevious>
-        Retour
-      </button>
+      <button mat-button matStepperPrevious>Retour</button>
       <button
         mat-button
         matStepperNext
-        [disabled]='!uploadCompleted'
-        (click)="startWorkflow()">
+        [disabled]="!uploadCompleted"
+        (click)="startWorkflow()"
+      >
         Démarrer le traitement
       </button>
     </div>
   </mat-step>
   <mat-step [stepControl]="startWorkflow">
     <ng-template matStepLabel>Traitement</ng-template>
-    <div [ngStyle]="{ 'color': (processStatus.failed)? 'red' : 'black' }">
-      {{processStatus.message}}
+    <div [ngStyle]="{ color: processStatus.failed ? 'red' : 'black' }">
+      {{ processStatus.message }}
     </div>
 
-    <button
-      mat-button
-      (click)="follow()">
-      {{ (processStatus.failed)? "Retour" : "Suivre la commande" }}
+    <button mat-button (click)="follow()">
+      {{ processStatus.failed ? "Retour" : "Suivre la commande" }}
     </button>
   </mat-step>
 </mat-horizontal-stepper>
