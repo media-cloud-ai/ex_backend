@@ -4,14 +4,15 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http'
 import { Observable, of } from 'rxjs'
 import { catchError, map, tap } from 'rxjs/operators'
 
-import { WorkflowPage, WorkflowData, WorkflowHistory } from '../models/page/workflow_page'
-import { Step, Workflow, WorkflowEvent } from '../models/workflow'
-import { StartWorkflowDefinition } from '../models/startWorkflowDefinition'
+import {WorkflowIdentifiersData, WorkflowQueryParams, WorkflowPage, WorkflowData, WorkflowHistory} from '../models/page/workflow_page'
+import {Step, Workflow, WorkflowEvent} from '../models/workflow'
+import {StartWorkflowDefinition} from '../models/startWorkflowDefinition'
 
 @Injectable()
 export class WorkflowService {
   private workflowUrl = '/api/workflow'
   private workflowsUrl = '/api/step_flow/workflows'
+  private workflowIdentifiersUrl = '/api/step_flow/definitions_identifiers'
   private workflowsLauncher = '/api/step_flow/launch_workflow'
   private workflowDefinitionsUrl = '/api/step_flow/definitions'
   private statisticsUrl = '/api/step_flow/workflows_statistics'
@@ -69,6 +70,14 @@ export class WorkflowService {
       )
   }
 
+  getWorkflowIdentifiers(action: string): Observable<WorkflowIdentifiersData> {
+    return this.http.get<WorkflowIdentifiersData>(this.workflowIdentifiersUrl  + '/' + action)
+      .pipe(
+        tap(workflowPage => this.log('fetched Identifiers')),
+        catchError(this.handleError('getWorkflowIdentifiers', undefined))
+      )
+  }
+
   getWorkflowDefinition(workflow_identifier: string, reference: string): Observable<Workflow> {
     let params = new HttpParams()
     params = params.append('reference', reference)
@@ -104,9 +113,15 @@ export class WorkflowService {
       )
   }
 
-  getWorkflowStatistics(scale: string): Observable<WorkflowHistory> {
+  getWorkflowStatistics(parameters: WorkflowQueryParams): Observable<WorkflowHistory> {
     let params = new HttpParams()
-    params = params.append('scale', scale)
+
+    for (let identifier of parameters.identifiers) {
+      params = params.append('identifiers[]', identifier)
+    }
+    params = params.append('time_interval', parameters.time_interval.toString())
+    params = params.append('start_date', parameters.start_date.toISOString())
+    params = params.append('end_date', parameters.end_date.toISOString())
 
     return this.http.get<Workflow>(this.statisticsUrl, { params: params })
       .pipe(
