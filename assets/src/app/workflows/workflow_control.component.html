@@ -1,0 +1,41 @@
+<form [formGroup]="workflowsForm" fxFlex fxLayout="column" autocomplete="off">
+  <mat-form-field>
+    <mat-select formControlName="selectedStatus" placeholder="Status" [(ngModel)]="parameters.status" multiple>
+      <mat-option *ngFor="let state of status" [value]="state.id" [ngClass]="state.id" class="state-option">
+        {{ state.label }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select formControlName="selectedWorkflows" placeholder="Workflows" [(ngModel)]="parameters.identifiers"
+      multiple>
+      <mat-option #allSelected (click)="toggleAllSelection()" [value]="0">All</mat-option>
+      <mat-option *ngFor="let workflow of workflows" [value]="workflow.id" [ngClass]="workflow.id"
+        (click)="tosslePerOne(allSelected.viewValue)" class="workflow-option">
+        {{ workflow.label }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="search-text-input">
+    <input formControlName="startDate" matInput [ngxMatDatetimePicker]="picker_start_date" placeholder="Start date"
+      name=start_date [(ngModel)]="parameters.start_date">
+    <mat-datepicker-toggle matSuffix [for]="picker_start_date"></mat-datepicker-toggle>
+    <ngx-mat-datetime-picker #picker_start_date [showSeconds]=true>
+    </ngx-mat-datetime-picker>
+  </mat-form-field>
+  <mat-form-field class="search-text-input">
+    <input formControlName="endDate" matInput [ngxMatDatetimePicker]="picker_end_date" placeholder="End date"
+      name=end_date [(ngModel)]="parameters.end_date">
+    <mat-datepicker-toggle matSuffix [for]="picker_end_date"></mat-datepicker-toggle>
+    <ngx-mat-datetime-picker #picker_end_date [showSeconds]=true>
+    </ngx-mat-datetime-picker>
+  </mat-form-field>
+  <mat-slide-toggle *ngIf="showDetailedToggle" formControlName="detailedToogle" color="primary"
+    [checked]="parameters.detailed" [(ngModel)]="parameters.detailed">
+    Detailed
+  </mat-slide-toggle>
+  <button mat-raised-button color="accent" (click)="searchWorkflows()">
+    <i class="material-icons">search</i>
+    Rechercher
+  </button>
+</form>

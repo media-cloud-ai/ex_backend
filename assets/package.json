@@ -13,7 +13,7 @@
     "@angular/platform-browser-dynamic": "^11.2.9",
     "@angular/router": "^11.2.9",
     "@types/canvasjs": "^1.9.5",
-    "canvasjs": "^1.8.1",
+    "canvasjs": "^1.8.3",
     "crypto": "^1.0.1",
     "dashjs": "git+https://github.com/Dash-Industry-Forum/dash.js.git#16be8f8",
     "es7-shim": "6.0.0",

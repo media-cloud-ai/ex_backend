@@ -5,7 +5,7 @@ import {
   HTTP_INTERCEPTORS
 } from '@angular/common/http'
 import {NgModule}         from '@angular/core'
-import {FormsModule}      from '@angular/forms'
+import {FormsModule, ReactiveFormsModule}      from '@angular/forms'
 import {
   BrowserModule,
   Title
@@ -36,6 +36,7 @@ import {MatToolbarModule} from '@angular/material/toolbar'
 
 
 import {MatStepperModule} from '@angular/material/stepper'
+import {NgxMatDatetimePickerModule, NgxMatNativeDateModule} from '@angular-material-components/datetime-picker';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 
 import {
@@ -82,6 +83,7 @@ import {WorkflowDetailsComponent} from './workflows/details/workflow_details.com
 import {WorkflowRendererComponent} from './workflows/renderer/workflow_renderer.component'
 import {WorkflowStepDetailsComponent} from './workflows/details/workflow_step_details.component'
 import {WorkflowsComponent}      from './workflows/workflows.component'
+import {WorkflowControlComponent} from './workflows/workflow_control.component'
 
 import {DeleteSubtitleDialog} from './registeries/dialog/delete_subtitle_dialog.component'
 import {StartIngestDialog} from './ingest/dialogs/start_ingest.component'
@@ -163,7 +165,10 @@ const EX_BACKEND_DATE_FORMATS = {
     MatStepperModule,
     MatTabsModule,
     MatToolbarModule,
+    NgxMatDatetimePickerModule,
+    NgxMatNativeDateModule,
     PipesModule,
+    ReactiveFormsModule,
     SocketModule,
     WorkersModule,
   ],
@@ -201,6 +206,7 @@ const EX_BACKEND_DATE_FORMATS = {
     WorkflowRendererComponent,
     WorkflowStepDetailsComponent,
     WorkflowsComponent,
+    WorkflowControlComponent,
   ],
   entryComponents: [
     DeleteSubtitleDialog,
