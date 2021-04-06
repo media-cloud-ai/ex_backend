@@ -30,12 +30,12 @@
     <ngx-mat-datetime-picker #picker_end_date [showSeconds]=true>
     </ngx-mat-datetime-picker>
   </mat-form-field>
-  <mat-slide-toggle *ngIf="showDetailedToggle" formControlName="detailedToogle" color="primary"
-    [checked]="parameters.detailed" [(ngModel)]="parameters.detailed">
-    Detailed
-  </mat-slide-toggle>
   <button mat-raised-button color="accent" (click)="searchWorkflows()">
     <i class="material-icons">search</i>
     Rechercher
   </button>
+  <mat-slide-toggle *ngIf="showDetailedToggle" formControlName="detailedToogle" color="primary"
+    [checked]="parameters.detailed" [(ngModel)]="parameters.detailed" (change)="toogleDetailed()">
+    Detailed
+  </mat-slide-toggle>
 </form>

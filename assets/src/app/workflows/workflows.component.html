@@ -3,91 +3,8 @@
 </h1>
 
 <div class=search>
-  <mat-form-field>
-    <mat-select
-      class="status-select"
-      placeholder="Status"
-      [(ngModel)]="selectedStatus"
-      (selectionChange)="updateSearch()"
-      multiple
-      >
-      <mat-option
-        *ngFor="let state of status"
-        [value]="state.id"
-        [ngClass]="state.id"
-        class="state-option"
-        >
-        {{ state.label }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-select
-      class="status-select"
-      placeholder="Workflows"
-      [(ngModel)]="selectedWorkflows"
-      (selectionChange)="updateSearch()"
-      multiple
-      >
-      <mat-option
-        *ngFor="let workflow_id of workflow_ids"
-        [value]="workflow_id.id"
-        [ngClass]="workflow_id.id"
-        class="workflow-option"
-        >
-        {{ workflow_id.label }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <mat-form-field class="search-text-input">
-    <input
-      matInput
-      type="date"
-      placeholder="After date"
-      name=after_date
-      [(ngModel)]="after_date"
-      (ngModelChange)="updateSearch()"
-      >
-  </mat-form-field>
-  <mat-form-field class="search-text-input">
-    <input
-      matInput
-      type="date"
-      placeholder="Before date"
-      name=before_date
-      [(ngModel)]="before_date"
-      (ngModelChange)="updateSearchWorkflows()"
-      >
-  </mat-form-field>
-
-  <mat-form-field>
-    <mat-select
-      class="status-select"
-      placeholder="Mode"
-      [(ngModel)]="selectedModes"
-      (selectionChange)="updateSearch()"
-      multiple
-      >
-      <mat-option
-        *ngFor="let mode of modes"
-        [value]="mode.id"
-        [ngClass]="mode.id"
-        class="mode-option"
-        >
-        {{ mode.label }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-</div>
-<div class="search left-margin">
-  <mat-slide-toggle
-    color="primary"
-    [checked]="detailed"
-    [(ngModel)]="detailed"
-    (change)="updateSearch()">
-    Detailed all
-  </mat-slide-toggle>
+  <workflow-control [parameters]="parameters" [showDetailedToggle]=true (detailedEvent)="toogleDetailed($event)"
+    (parametersEvent)="updateWorkflows($event)"></workflow-control>
 </div>
 
 <div *ngIf="loading" class="loading">
@@ -99,25 +16,14 @@
   </span>
 </div>
 <ul *ngIf="workflows && !loading" class="workflows">
-  <li *ngIf="workflows.total == 0"
-     class="notfound">
+  <li *ngIf="workflows.total == 0" class="notfound">
     No workflow found.
   </li>
-  <li
-    *ngFor="let workflow of workflows.data"
-    class="workflow"
-    >
-    <workflow-component [workflow]=workflow [detailed]=detailed></workflow-component>
+  <li *ngFor="let workflow of workflows.data" class="workflow">
+    <workflow-component [workflow]=workflow [detailed]=parameters.detailed></workflow-component>
   </li>
 </ul>
 
-<mat-paginator
-  class=paginator
-  showFirstLastButtons=true
-  [length]="length"
-  [pageSize]="pageSize"
-  [pageIndex]="page"
-  [pageSizeOptions]="pageSizeOptions"
-  (page)="pageEvent = eventGetWorkflows($event)"
-  *ngIf="workflows && !loading" >
+<mat-paginator class=paginator showFirstLastButtons=true [length]="length" [pageSize]="pageSize" [pageIndex]="page"
+  [pageSizeOptions]="pageSizeOptions" (page)="pageEvent = changeWorkflowPage($event)" *ngIf="workflows && !loading">
 </mat-paginator>

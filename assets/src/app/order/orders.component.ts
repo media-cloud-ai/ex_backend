@@ -1,13 +1,14 @@
 
-import {Component} from '@angular/core'
-import {ActivatedRoute, Router} from '@angular/router'
+import { Component } from '@angular/core'
+import { ActivatedRoute, Router } from '@angular/router'
 
-import {AuthService} from '../authentication/auth.service'
-import {SocketService} from '../services/socket.service'
-import {S3Service} from '../services/s3.service'
-import {WorkflowService} from '../services/workflow.service'
-import {WorkflowPage} from '../models/page/workflow_page'
-import {Workflow} from '../models/workflow'
+import { AuthService } from '../authentication/auth.service'
+import { SocketService } from '../services/socket.service'
+import { S3Service } from '../services/s3.service'
+import { WorkflowService } from '../services/workflow.service'
+import { WorkflowPage } from '../models/page/workflow_page'
+import { WorkflowQueryParams } from '../models/page/workflow_page'
+import { Workflow } from '../models/workflow'
 
 @Component({
   selector: 'orders-component',
@@ -33,21 +34,7 @@ export class OrdersComponent {
   before_date: undefined
   technician: boolean
 
-  selectedMode = []
-  selectedStatus = [
-    'completed',
-    'error',
-    'processing',
-  ]
-  selectedWorkflows = [
-    'speech_to_text',
-    'dialog_enhancement',
-    'acs',
-    'asp',
-    'acs_and_asp',
-    'natural_language_processing',
-    'speech_to_text_and_nlp'
-  ]
+  parameters: WorkflowQueryParams
   workflows: WorkflowPage
   connections: any = []
 
@@ -58,7 +45,26 @@ export class OrdersComponent {
     private socketService: SocketService,
     private workflowService: WorkflowService,
     private s3Service: S3Service,
-  ) {}
+  ) {
+    let today = new Date();
+    let yesterday = new Date();
+    yesterday.setDate(today.getDate() - 1);
+    this.parameters = {
+      identifiers: [
+        "acs",
+        "acs_and_asp",
+        "speech_to_text",
+        "dialog_enhancement"
+      ],
+      start_date: yesterday,
+      end_date: today,
+      status: [
+        "completed"
+      ],
+      detailed: false,
+      time_interval: 1
+    };
+  }
 
   ngOnInit() {
     this.technician = this.authService.hasTechnicianRight();
@@ -67,26 +73,24 @@ export class OrdersComponent {
       .subscribe(params => {
         this.page = +params['page'] || 0
         this.pageSize = +params['per_page'] || 10
-        this.reference = params['reference']
-        this.order_id = params['order_id']
-        this.getWorkflows()
+        this.getWorkflows(this.page, this.pageSize, this.parameters)
 
         this.socketService.initSocket()
         this.socketService.connectToChannel('notifications:all')
 
         this.socketService.onNewWorkflow()
           .subscribe((message) => {
-            this.getWorkflows()
+            this.getWorkflows(this.page, this.pageSize, this.parameters)
           })
 
         this.socketService.onDeleteWorkflow()
           .subscribe((message) => {
-            this.getWorkflows()
+            this.getWorkflows(this.page, this.pageSize, this.parameters)
           })
 
         this.socketService.onRetryJob()
           .subscribe((message) => {
-            this.getWorkflows()
+            this.getWorkflows(this.page, this.pageSize, this.parameters)
           })
       })
   }
@@ -105,28 +109,17 @@ export class OrdersComponent {
   }
 
   goToWorkflow(workflow: Workflow) {
-    if(this.authService.hasTechnicianRight()) {
+    if (this.authService.hasTechnicianRight()) {
       this.router.navigate([`/workflows/${workflow.id}`])
     }
   }
 
-  getWorkflows() {
-    for (let connection of this.connections) {
-      connection.unsubscribe()
-    }
-    this.loading = true
-
-    this.workflowService.getWorkflows(
-      this.page,
-      this.pageSize,
-      this.reference,
-      this.selectedStatus,
-      this.selectedMode,
-      this.selectedWorkflows,
-      [this.order_id],
-      this.after_date,
-      this.before_date)
-    .subscribe(workflowPage => {
+  getWorkflows(page: number, pageSize: number, parameters: WorkflowQueryParams) {
+    this.workflowService.getWorkflows2(
+      page,
+      pageSize,
+      parameters
+    ).subscribe(workflowPage => {
       if (workflowPage === undefined) {
         this.length = undefined
         this.workflows = new WorkflowPage()
@@ -138,7 +131,7 @@ export class OrdersComponent {
       this.loading = false
       for (let workflow of this.workflows.data) {
         var connection = this.socketService.onWorkflowUpdate(workflow.id)
-          .subscribe((message) => {
+          .subscribe((message: Message) => {
             this.updateWorkflow(message.body.workflow_id)
           })
       }
@@ -153,14 +146,14 @@ export class OrdersComponent {
 
   updateWorkflow(workflow_id) {
     this.workflowService.getWorkflow(workflow_id)
-    .subscribe(workflowData => {
-      for (let i = 0; i < this.workflows.data.length; i++) {
-        if (this.workflows.data[i].id === workflowData.data.id) {
-          this.workflows.data[i] = workflowData.data
-          return
+      .subscribe(workflowData => {
+        for (let i = 0; i < this.workflows.data.length; i++) {
+          if (this.workflows.data[i].id === workflowData.data.id) {
+            this.workflows.data[i] = workflowData.data
+            return
+          }
         }
-      }
-    })
+      })
   }
 
   getQueryParamsForPage(pageIndex: number, pageSize: number = undefined): Object {
@@ -194,15 +187,15 @@ export class OrdersComponent {
   }
 
   source_link(workflow) {
-    if(workflow.artifacts.length > 0) {
+    if (workflow.artifacts.length > 0) {
       const mp4_path = this.getDestinationFilename(workflow, "mp4");
-      const ttml_path = this.getDestinationFilename(workflow, ".ttml", ["synchronised.ttml","file_positioned.ttml"]);
+      const ttml_path = this.getDestinationFilename(workflow, ".ttml", ["synchronised.ttml", "file_positioned.ttml"]);
       this.openLink(mp4_path, ttml_path)
     }
   }
 
   sync_link(workflow, filename) {
-    if(workflow.artifacts.length > 0) {
+    if (workflow.artifacts.length > 0) {
       const mp4_path = this.getDestinationFilename(workflow, "mp4");
       const ttml_path = this.getDestinationFilename(workflow, filename);
       this.openLink(mp4_path, ttml_path)
@@ -211,7 +204,7 @@ export class OrdersComponent {
 
   private playS3Media(directory, filename) {
     this.s3Service.getConfiguration().subscribe(response => {
-      const manifest_path = response.vod_endpoint + "/" + response.bucket + "/" + directory +  "/" + filename + "/manifest.mpd"
+      const manifest_path = response.vod_endpoint + "/" + response.bucket + "/" + directory + "/" + filename + "/manifest.mpd"
       const full_url = "http://cathodique.magneto.build.ftven.net/?env=prod&src=%5B%22" + manifest_path + "%22%5D"
       window.open(full_url, "_blank");
     });
@@ -224,14 +217,14 @@ export class OrdersComponent {
   }
 
   play_original_version(workflow) {
-    if(workflow.artifacts.length > 0) {
+    if (workflow.artifacts.length > 0) {
       const original_mp4_path = this.getDestinationFilename(workflow, "mp4", ["enhanced.mp4"]);
       this.playS3MediaFromPath(original_mp4_path);
     }
   }
 
   play_enhanced_version(workflow) {
-    if(workflow.artifacts.length > 0) {
+    if (workflow.artifacts.length > 0) {
       const enhanced_mp4_path = this.getDestinationFilename(workflow, "enhanced.mp4");
       this.playS3MediaFromPath(enhanced_mp4_path);
     }
@@ -250,12 +243,12 @@ export class OrdersComponent {
     });
   }
 
-  downloadS3Resource(workflow: Workflow, filename:string) {
-    if(workflow.artifacts.length > 0) {
+  downloadS3Resource(workflow: Workflow, filename: string) {
+    if (workflow.artifacts.length > 0) {
       const file_path = this.getDestinationFilename(workflow, filename);
       const current = this
 
-      if(file_path) {
+      if (file_path) {
         this.s3Service.getPresignedUrl(file_path).subscribe(response => {
           current.downloadFileUrl(response.url)
         });
@@ -273,11 +266,11 @@ export class OrdersComponent {
 
   getDestinationFilename(workflow, extension: string, notExtension?: string[]) {
     const result = workflow.jobs.filter(job => {
-      if((job.name == "job_transfer" || job.name == "job_transfer_optim")){
+      if ((job.name == "job_transfer" || job.name == "job_transfer_optim")) {
         const parameter = job.params.filter(param => param.id === "destination_path");
-        if(parameter.length > 0) {
+        if (parameter.length > 0) {
           const sourceFilename = parameter[0].value;
-          if(notExtension) {
+          if (notExtension) {
             const notExtensionMatch = notExtension.filter(extension => sourceFilename.endsWith(extension)).length;
             return (sourceFilename.endsWith(extension) && (notExtensionMatch === 0))
           } else {
@@ -291,7 +284,7 @@ export class OrdersComponent {
       }
     });
 
-    if(result.length == 0){
+    if (result.length == 0) {
       return undefined
     }
 
@@ -312,10 +305,10 @@ export class OrdersComponent {
     const total_tasks = workflow.steps.length
     var completed_tasks = 0
 
-    for(var i = 0; i < workflow.steps.length; ++i) {
+    for (var i = 0; i < workflow.steps.length; ++i) {
       const step = workflow.steps[i]
-      if(step.jobs.total != 0) {
-        if(step.jobs.completed == step.jobs.total) {
+      if (step.jobs.total != 0) {
+        if (step.jobs.completed == step.jobs.total) {
           completed_tasks += 1
         }
       }
