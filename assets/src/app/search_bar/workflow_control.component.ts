@@ -33,6 +33,7 @@ export class WorkflowControlComponent {
     time_interval: 3600
   };
   @Output() parametersEvent = new EventEmitter<WorkflowQueryParams>();
+  @Output() detailedEvent = new EventEmitter<boolean>();
 
   @ViewChild('picker') picker: any;
   @ViewChild('allSelected') private allSelected: MatOption;
@@ -44,15 +45,14 @@ export class WorkflowControlComponent {
   status = [
     { id: 'completed', label: 'Completed' },
     { id: 'error', label: 'Error' },
+    { id: 'pending', label: 'Pending' },
     { id: 'processing', label: 'Processing' },
   ]
 
   constructor(
     private workflowService: WorkflowService,
     private fb: FormBuilder
-  ) {
-    this.parameters.start_date.setDate(this.parameters.end_date.getDate() - 1);
-  }
+  ) {}
 
   ngOnInit() {
     this.workflowsForm = this.fb.group({
@@ -64,15 +64,15 @@ export class WorkflowControlComponent {
     });
     this.allSelected.select();
 
-    this.workflowService.getWorkflowIdentifiers("view")
+    this.workflowService.getWorkflowDefinitions(undefined, -1, "view", undefined, ["latest"], "simple")
       .subscribe(response => {
-        for (var index = 0; index < response.identifiers.length; ++index) {
+        for (var index = 0; index < response.data.length; ++index) {
           this.workflows.push({
-            id: response.identifiers[index].identifier,
-            label: response.identifiers[index].label
+            id: response.data[index].identifier,
+            label: response.data[index].label
           })
           this.parameters.identifiers.push(
-            response.identifiers[index].identifier
+            response.data[index].identifier
           )
         })
   }
@@ -97,5 +97,9 @@ export class WorkflowControlComponent {
     } else {
       this.workflowsForm.controls.selectedWorkflows.patchValue([]);
     }
+  }
+
+  toogleDetailed() {
+    this.detailedEvent.emit(this.parameters.detailed)
   }
 }

@@ -1,12 +1,13 @@
 
 import { Injectable } from '@angular/core'
+import { formatDate } from '@angular/common'
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http'
 import { Observable, of } from 'rxjs'
 import { catchError, map, tap } from 'rxjs/operators'
 
-import {WorkflowIdentifiersData, WorkflowQueryParams, WorkflowPage, WorkflowData, WorkflowHistory} from '../models/page/workflow_page'
-import {Step, Workflow, WorkflowEvent} from '../models/workflow'
-import {StartWorkflowDefinition} from '../models/startWorkflowDefinition'
+import { WorkflowQueryParams, WorkflowPage, WorkflowData, WorkflowHistory } from '../models/page/workflow_page'
+import { Step, Workflow, WorkflowEvent } from '../models/workflow'
+import { StartWorkflowDefinition } from '../models/startWorkflowDefinition'
 
 @Injectable()
 export class WorkflowService {
@@ -19,13 +20,25 @@ export class WorkflowService {
 
   constructor(private http: HttpClient) { }
 
-  getWorkflowDefinitions(page?: number, per_page?: number): Observable<WorkflowPage> {
+  getWorkflowDefinitions(page?: number, per_page?: number, right_action?: string, search?: string, versions?: string[], mode?: string): Observable<WorkflowPage> {
     let params = new HttpParams()
     if (per_page) {
       params = params.append('size', per_page.toString())
     }
     if (page > 0) {
       params = params.append('page', String(page))
+    }
+    if (right_action) {
+      params = params.append("right_action", right_action)
+    }
+    if (search) {
+      params = params.append("search", search)
+    }
+    for (let version of versions) {
+      params = params.append("versions[]", version)
+    }
+    if (mode) {
+      params = params.append("mode", mode)
     }
     return this.http.get<WorkflowPage>(this.workflowDefinitionsUrl, { params: params })
       .pipe(
@@ -70,11 +83,28 @@ export class WorkflowService {
       )
   }
 
-  getWorkflowIdentifiers(action: string): Observable<WorkflowIdentifiersData> {
-    return this.http.get<WorkflowIdentifiersData>(this.workflowIdentifiersUrl  + '/' + action)
+  getWorkflows2(page: number, per_page: number, parameters: WorkflowQueryParams): Observable<WorkflowPage> {
+    let params = new HttpParams()
+
+    if (per_page) {
+      params = params.append('size', per_page.toString())
+    }
+    if (page > 0) {
+      params = params.append('page', String(page))
+    }
+    for (let identifier of parameters.identifiers) {
+      params = params.append('identifiers[]', identifier)
+    }
+    for (let state of parameters.status) {
+      params = params.append('states[]', state)
+    }
+    params = params.append('after_date', formatDate(parameters.start_date, "yyyy-MM-ddTHH:mm:ss", "fr"))
+    params = params.append('before_date', formatDate(parameters.end_date, "yyyy-MM-ddTHH:mm:ss", "fr"))
+
+    return this.http.get<WorkflowPage>(this.workflowsUrl, { params: params })
       .pipe(
-        tap(workflowPage => this.log('fetched Identifiers')),
-        catchError(this.handleError('getWorkflowIdentifiers', undefined))
+        tap(workflowPage => this.log('fetched WorkflowPage')),
+        catchError(this.handleError('getWorkflows', undefined))
       )
   }
 

@@ -1,25 +1,12 @@
 <h1>Commandes</h1>
 
-<button
-  mat-raised-button
-  color="accent"
-  (click)="newOrder()"
-  >
+<button mat-raised-button color="accent" (click)="newOrder()">
   <i class="material-icons">add</i>
   Nouvelle commande
 </button>
 
 <div class=search>
-  <mat-form-field class="search-text-input">
-    <input
-      matInput
-      type="number"
-      placeholder="ID de la commande"
-      name=order_id
-      [(ngModel)]="order_id"
-      (ngModelChange)="getWorkflows()"
-      >
-  </mat-form-field>
+  <workflow-control (parametersEvent)="updateWorkflows($event)"></workflow-control>
 </div>
 
 <div class=workflow-header>
@@ -38,10 +25,7 @@
 
 <div *ngIf="workflows">
   <div *ngFor="let workflow of workflows.data" class=workflow>
-    <span
-      class="reference"
-      (click)="goToWorkflow(workflow)"
-      [ngClass]="{'technician': technician}">
+    <span class="reference" (click)="goToWorkflow(workflow)" [ngClass]="{'technician': technician}">
       <video-title-component [id]=workflow.reference></video-title-component>
     </span>
     <span class="workflowType">
@@ -59,8 +43,7 @@
       </div>
     </span>
 
-    <span class="actions"
-      *ngIf="workflow.identifier === 'acs'">
+    <span class="actions" *ngIf="workflow.identifier === 'acs'">
       <!-- <span
         class="link"
         [ngClass]="{'disabled': workflow.artifacts.length == 0}"
@@ -74,172 +57,102 @@
         <i class="material-icons icon" title="Visualisation">live_tv</i> synchronised
       </span> -->
 
-      <button
-        mat-raised-button
-        color="accent"
-        (click)="downloadS3Resource(workflow, 'synchronised.ttml')"
-        [disabled]="workflow.artifacts.length == 0"
-        >
+      <button mat-raised-button color="accent" (click)="downloadS3Resource(workflow, 'synchronised.ttml')"
+        [disabled]="workflow.artifacts.length == 0">
         <i class="material-icons">cloud_download</i>
         Download TTML
       </button>
     </span>
 
-    <span class="actions"
-      *ngIf="workflow.identifier === 'asp'">
-      <span
-        class="link"
-        [ngClass]="{'disabled': workflow.artifacts.length == 0}"
-        (click)="source_link(workflow)">
+    <span class="actions" *ngIf="workflow.identifier === 'asp'">
+      <span class="link" [ngClass]="{'disabled': workflow.artifacts.length == 0}" (click)="source_link(workflow)">
         <i class="material-icons icon" title="Visualisation">live_tv</i> source
       </span>
-      <span
-        class="link"
-        [ngClass]="{'disabled': workflow.artifacts.length == 0}"
+      <span class="link" [ngClass]="{'disabled': workflow.artifacts.length == 0}"
         (click)="sync_link(workflow, 'file_positioned')">
         <i class="material-icons icon" title="Visualisation">live_tv</i> positioned
       </span>
 
-      <button
-        mat-raised-button
-        color="accent"
-        (click)="downloadS3Resource(workflow, 'file_positioned.ttml')"
-        [disabled]="workflow.artifacts.length == 0"
-        >
+      <button mat-raised-button color="accent" (click)="downloadS3Resource(workflow, 'file_positioned.ttml')"
+        [disabled]="workflow.artifacts.length == 0">
         <i class="material-icons">cloud_download</i>
         Download TTML
       </button>
     </span>
 
-    <span class="actions"
-      *ngIf="workflow.identifier === 'acs_and_asp'">
-      <span
-        class="link"
-        [ngClass]="{'disabled': workflow.artifacts.length == 0}"
-        (click)="source_link(workflow)">
+    <span class="actions" *ngIf="workflow.identifier === 'acs_and_asp'">
+      <span class="link" [ngClass]="{'disabled': workflow.artifacts.length == 0}" (click)="source_link(workflow)">
         <i class="material-icons icon" title="Visualisation">live_tv</i> source
       </span>
-      <span
-        class="link"
-        [ngClass]="{'disabled': workflow.artifacts.length == 0}"
+      <span class="link" [ngClass]="{'disabled': workflow.artifacts.length == 0}"
         (click)="sync_link(workflow, 'file_positioned.ttml')">
         <i class="material-icons icon" title="Visualisation">live_tv</i> positioned
       </span>
 
-      <button
-        mat-raised-button
-        color="accent"
-        (click)="downloadS3Resource(workflow, 'file_positioned.ttml')"
-        [disabled]="workflow.artifacts.length == 0"
-        >
+      <button mat-raised-button color="accent" (click)="downloadS3Resource(workflow, 'file_positioned.ttml')"
+        [disabled]="workflow.artifacts.length == 0">
         <i class="material-icons">cloud_download</i>
         Download TTML
       </button>
     </span>
 
-    <span class="actions"
-      *ngIf="workflow.identifier === 'speech_to_text'">
+    <span class="actions" *ngIf="workflow.identifier === 'speech_to_text'">
 
-      <button
-        mat-raised-button
-        color="accent"
-        (click)="viewTranscript(workflow)"
-        [disabled]="workflow.artifacts.length == 0"
-        >
+      <button mat-raised-button color="accent" (click)="viewTranscript(workflow)"
+        [disabled]="workflow.artifacts.length == 0">
         <i class="material-icons">search</i>
         Visualiser
       </button>
-      <button
-        mat-raised-button
-        color="accent"
-        (click)="downloadS3Resource(workflow, 'transcript.json')"
-        [disabled]="workflow.artifacts.length == 0"
-        >
+      <button mat-raised-button color="accent" (click)="downloadS3Resource(workflow, 'transcript.json')"
+        [disabled]="workflow.artifacts.length == 0">
         <i class="material-icons">cloud_download</i>
         Télécharger
       </button>
     </span>
 
-    <span class="actions"
-      *ngIf="workflow.identifier === 'natural_language_processing'">
-      <button
-        mat-raised-button
-        color="accent"
-        (click)="viewNlp(workflow)"
-        [disabled]="workflow.artifacts.length == 0"
-        >
+    <span class="actions" *ngIf="workflow.identifier === 'natural_language_processing'">
+      <button mat-raised-button color="accent" (click)="viewNlp(workflow)" [disabled]="workflow.artifacts.length == 0">
         <i class="material-icons">search</i>
         Visualiser
       </button>
-      <button
-        mat-raised-button
-        color="accent"
-        (click)="downloadS3Resource(workflow, 'nlp.json')"
-        [disabled]="workflow.artifacts.length == 0"
-      >
+      <button mat-raised-button color="accent" (click)="downloadS3Resource(workflow, 'nlp.json')"
+        [disabled]="workflow.artifacts.length == 0">
         <i class="material-icons">cloud_download</i>
         Télécharger
       </button>
 
     </span>
-    <span class="actions"
-      *ngIf="workflow.identifier === 'speech_to_text_and_nlp'">
-      <button
-        mat-raised-button
-        color="accent"
-        (click)="viewNlp(workflow)"
-        [disabled]="workflow.artifacts.length == 0"
-        >
+    <span class="actions" *ngIf="workflow.identifier === 'speech_to_text_and_nlp'">
+      <button mat-raised-button color="accent" (click)="viewNlp(workflow)" [disabled]="workflow.artifacts.length == 0">
         <i class="material-icons">search</i>
         Visualiser
       </button>
-      <button
-        mat-raised-button
-        color="accent"
-        (click)="downloadS3Resource(workflow, 'nlp.json')"
-        [disabled]="workflow.artifacts.length == 0"
-      >
+      <button mat-raised-button color="accent" (click)="downloadS3Resource(workflow, 'nlp.json')"
+        [disabled]="workflow.artifacts.length == 0">
         <i class="material-icons">cloud_download</i>
         Télécharger l'Analyse
       </button>
-      <button
-        mat-raised-button
-        color="accent"
-        (click)="downloadS3Resource(workflow, 'transcript.json')"
-        [disabled]="workflow.artifacts.length == 0"
-        >
+      <button mat-raised-button color="accent" (click)="downloadS3Resource(workflow, 'transcript.json')"
+        [disabled]="workflow.artifacts.length == 0">
         <i class="material-icons">cloud_download</i>
         Télécharger le Transcript
       </button>
 
     </span>
-    <span class="actions"
-      *ngIf="workflow.identifier === 'dialog_enhancement'">
+    <span class="actions" *ngIf="workflow.identifier === 'dialog_enhancement'">
 
-      <button
-        mat-raised-button
-        color="accent"
-        (click)="play_original_version(workflow)"
-        [disabled]="workflow.artifacts.length == 0"
-        >
+      <button mat-raised-button color="accent" (click)="play_original_version(workflow)"
+        [disabled]="workflow.artifacts.length == 0">
         <i class="material-icons" title="Visualisation">live_tv</i>
         Version originale
       </button>
-      <button
-        mat-raised-button
-        color="accent"
-        (click)="play_enhanced_version(workflow)"
-        [disabled]="workflow.artifacts.length == 0"
-        >
+      <button mat-raised-button color="accent" (click)="play_enhanced_version(workflow)"
+        [disabled]="workflow.artifacts.length == 0">
         <i class="material-icons" title="Visualisation">live_tv</i>
         Dialogues améliorés
       </button>
-      <button
-        mat-raised-button
-        color="accent"
-        (click)="downloadS3Resource(workflow, 'dialog_enhanced.mp4')"
-        [disabled]="workflow.artifacts.length == 0"
-        >
+      <button mat-raised-button color="accent" (click)="downloadS3Resource(workflow, 'dialog_enhanced.mp4')"
+        [disabled]="workflow.artifacts.length == 0">
         <i class="material-icons">cloud_download</i>
         Télécharger
       </button>
@@ -250,13 +163,7 @@
   </div>
 </div>
 
-<mat-paginator
-  class=paginator
-  showFirstLastButtons=true
-  [length]="length"
-  [pageSize]="pageSize"
-  [pageIndex]="page"
-  [pageSizeOptions]="pageSizeOptions"
-  (page)="pageEvent = eventGetWorkflows($event)"
-  *ngIf="workflows && workflows.data && workflows.data.length > 0 && !loading" >
+<mat-paginator class=paginator showFirstLastButtons=true [length]="length" [pageSize]="pageSize" [pageIndex]="page"
+  [pageSizeOptions]="pageSizeOptions" (page)="pageEvent = eventGetWorkflows($event)"
+  *ngIf="workflows && workflows.data && workflows.data.length > 0 && !loading">
 </mat-paginator>

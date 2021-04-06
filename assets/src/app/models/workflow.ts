@@ -47,6 +47,7 @@ export class Right {
 export class Workflow {
   id?: number
   identifier?: string
+  label?: string
   version_major?: string
   version_minor?: string
   version_micro?: string
@@ -54,8 +55,8 @@ export class Workflow {
   reference?: string
   created_at?: string
   artifacts?: Artifact[]
-  rights: Right[]
-  steps: Step[]
+  rights?: Right[]
+  steps?: Step[]
   workflow_id?: number
 }
 

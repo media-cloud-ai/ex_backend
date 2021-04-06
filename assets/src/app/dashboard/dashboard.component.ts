@@ -5,7 +5,7 @@ import localeFr from '@angular/common/locales/fr';
 import { AuthService } from '../authentication/auth.service'
 import { Subscription } from 'rxjs'
 
-import * as CanvasJS from './canvasjs.min.js';
+import * as CanvasJS from '../../assets/canvasjs.min.js';
 
 import { ApplicationService } from '../services/application.service'
 import { WorkflowService } from '../services/workflow.service'
@@ -36,17 +36,7 @@ export class DashboardComponent {
     processing: "#3864AA"
   }
 
-  parameters: WorkflowQueryParams = {
-    identifiers: [],
-    start_date: new Date(),
-    end_date: new Date(),
-    status: [
-      "completed",
-      "error"
-    ],
-    detailed: false,
-    time_interval: 1
-  };
+  parameters: WorkflowQueryParams;
 
   loading = true
 
@@ -54,7 +44,22 @@ export class DashboardComponent {
     private applicationService: ApplicationService,
     private workflowService: WorkflowService,
     public authService: AuthService
-  ) { }
+  ) {
+    let today = new Date();
+    let yesterday = new Date();
+    yesterday.setDate(today.getDate() - 1);
+    this.parameters =  {
+      identifiers: [],
+      start_date: yesterday,
+      end_date: today,
+      status: [
+        "completed",
+        "error"
+      ],
+      detailed: false,
+      time_interval: 1
+    };
+   }
 
   ngOnInit() {
     this.subIn = this.authService.userLoggedIn$.subscribe(

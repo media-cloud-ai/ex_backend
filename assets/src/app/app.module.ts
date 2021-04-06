@@ -59,6 +59,7 @@ import {CookieService}           from 'ngx-cookie-service'
 import {AppRoutingModule}        from './app-routing.module'
 import {SocketModule}            from './socket.module'
 import {WorkersModule}            from './workers/workers.module'
+import {SearchBarModule}      from './search_bar/search_bar.module'
 
 import {CatalogComponent}        from './catalog/catalog.component'
 import {ConfirmComponent}        from './confirm/confirm.component'
@@ -89,7 +90,6 @@ import {WorkflowDetailsComponent} from './workflows/details/workflow_details.com
 import {WorkflowRendererComponent} from './workflows/renderer/workflow_renderer.component'
 import {WorkflowStepDetailsComponent} from './workflows/details/workflow_step_details.component'
 import {WorkflowsComponent}      from './workflows/workflows.component'
-import {WorkflowControlComponent} from './workflows/workflow_control.component'
 
 import {DeleteSubtitleDialog} from './registeries/dialog/delete_subtitle_dialog.component'
 import {StartIngestDialog} from './ingest/dialogs/start_ingest.component'
@@ -182,6 +182,7 @@ const EX_BACKEND_DATE_FORMATS = {
     NgxMatNativeDateModule,
     PipesModule,
     ReactiveFormsModule,
+    SearchBarModule,
     SocketModule,
     WorkersModule,
   ],
@@ -225,7 +226,6 @@ const EX_BACKEND_DATE_FORMATS = {
     WorkflowRendererComponent,
     WorkflowStepDetailsComponent,
     WorkflowsComponent,
-    WorkflowControlComponent,
   ],
   entryComponents: [
     DeleteSubtitleDialog,

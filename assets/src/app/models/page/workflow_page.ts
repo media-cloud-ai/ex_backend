@@ -29,15 +29,6 @@ export class WorkflowHistoryBin {
   start_date: string
 }
 
-export class WorkflowIdentifiersData {
-  identifiers: WorkflowIdentifiers[]
-}
-
-export class WorkflowIdentifiers {
-  identifier: string
-  label: string
-}
-
 export class WorkflowQueryParams {
   identifiers: string[]
   start_date: any
