@@ -1,13 +1,13 @@
 
-import {Component, ViewChild} from '@angular/core'
-import {ActivatedRoute, Router} from '@angular/router'
-import {MatStepper} from '@angular/material/stepper';
+import { Component, ViewChild } from '@angular/core'
+import { ActivatedRoute, Router } from '@angular/router'
+import { MatStepper } from '@angular/material/stepper';
 
-import {S3Configuration} from '../models/s3'
-import {StartWorkflowDefinition} from '../models/startWorkflowDefinition'
+import { S3Configuration } from '../models/s3'
+import { StartWorkflowDefinition } from '../models/startWorkflowDefinition'
 
-import {WorkflowService} from '../services/workflow.service'
-import {S3Service} from '../services/s3.service'
+import { WorkflowService } from '../services/workflow.service'
+import { S3Service } from '../services/s3.service'
 
 let Evaporate = require('evaporate');
 let crypto = require('crypto');
@@ -24,6 +24,14 @@ export class ProcessStatus {
 })
 export class OrderComponent {
   @ViewChild('stepper') stepper: MatStepper;
+  length = 1000
+  pageSize = 10
+  pageSizeOptions = [
+    10,
+    20,
+    50,
+    100
+  ]
   s3Configuration: S3Configuration;
   progressBars = [];
   completed: number = 0;
@@ -43,7 +51,7 @@ export class OrderComponent {
     private router: Router,
     private s3Service: S3Service,
     private workflowService: WorkflowService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.s3Service.getConfiguration()
@@ -54,6 +62,7 @@ export class OrderComponent {
     this.workflowService.getWorkflowDefinitions()
       .subscribe(definitions => {
         this.services = definitions.data
+        this.length = definitions.total
       })
   }
 
@@ -91,23 +100,23 @@ export class OrderComponent {
 
         Object.entries(current.parameters).forEach(
           ([key, value]) => {
-            if(typeof value == 'object') {
+            if (typeof value == 'object') {
               const file = (<HTMLInputElement>value).files[0]
-              current.progressBars.push({name: file.name, progress: 0});
+              current.progressBars.push({ name: file.name, progress: 0 });
 
               var fileConfig = {
                 name: file.name,
                 file: file,
                 progress: function (progressValue) {
-                  for(let item of current.progressBars) {
-                    if(item.name == file.name) {
+                  for (let item of current.progressBars) {
+                    if (item.name == file.name) {
                       item.progress = progressValue * 100;
                     }
                   }
                 },
                 complete: function (_xhr, awsKey) {
                   current.completed += 1
-                  if(current.completed == current.progressBars.length) {
+                  if (current.completed == current.progressBars.length) {
                     current.uploadCompleted = true
                   }
                 },
@@ -117,14 +126,14 @@ export class OrderComponent {
                 .then(function (awsObjectKey) {
                   console.log('File successfully uploaded to:', awsObjectKey);
                 },
-                function (reason) {
-                  console.log('File did not upload sucessfully:', reason);
-                })
+                  function (reason) {
+                    console.log('File did not upload sucessfully:', reason);
+                  })
             }
           }
         );
 
-        if(current.progressBars.length === 0){
+        if (current.progressBars.length === 0) {
           current.uploadCompleted = true;
         }
       })
@@ -135,10 +144,10 @@ export class OrderComponent {
   }
 
   getDefaultParameterValue(parameter) {
-    if(this.parameters[parameter.id] == undefined) {
+    if (this.parameters[parameter.id] == undefined) {
       this.parameters[parameter.id] = parameter.default;
     }
-    if(parameter.type == "string") {
+    if (parameter.type == "string") {
       return this.parameters[parameter.id] || "";
     }
     return this.parameters[parameter.id];
@@ -147,37 +156,37 @@ export class OrderComponent {
   startWorkflow() {
     let parameters = {};
 
-    for(let i = 0; i < this.selectedService.start_parameters.length; i++) {
+    for (let i = 0; i < this.selectedService.start_parameters.length; i++) {
       const parameter = this.selectedService.start_parameters[i];
 
       let value = this.parameters[parameter.id];
-      if(value && value._fileNames) {
+      if (value && value._fileNames) {
         value = value._fileNames;
-        if(this.selectedService.reference === undefined) {
+        if (this.selectedService.reference === undefined) {
           this.selectedService.reference = value;
         }
       }
 
-      if(typeof value === "number") {
+      if (typeof value === "number") {
         value = value.toString()
       }
 
       parameters[parameter.id] = value;
     }
 
-    if(this.selectedService.reference === undefined) {
+    if (this.selectedService.reference === undefined) {
       this.selectedService.reference = this.selectedService.identifier;
     }
 
     let startWorkflowDefinition: StartWorkflowDefinition = {
-        "workflow_identifier": this.selectedService.identifier,
-        "parameters": parameters,
-        "reference": this.selectedService.reference
+      "workflow_identifier": this.selectedService.identifier,
+      "parameters": parameters,
+      "reference": this.selectedService.reference
     };
 
     this.workflowService.createWorkflow(startWorkflowDefinition)
       .subscribe(response => {
-        if(response) {
+        if (response) {
           this.processStatus.failed = false;
           this.processStatus.message = "Votre commande est en cours de réalisation.";
         } else {
@@ -191,5 +200,13 @@ export class OrderComponent {
     console.log("follow")
     this.router.navigate(['/orders'])
     // this.router.navigate(['/orders'], { queryParams: {order_id: response.workflow_id} })
+  }
+
+  eventGetWorkflows(event) {
+    this.workflowService.getWorkflowDefinitions(event.pageIndex, event.pageSize)
+      .subscribe(definitions => {
+        this.services = definitions.data
+        this.length = definitions.total
+      })
   }
 }
