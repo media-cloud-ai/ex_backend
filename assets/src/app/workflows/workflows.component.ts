@@ -99,7 +99,7 @@ export class WorkflowsComponent {
   }
 
   getWorkflows(page: number, pageSize: number, parameters: WorkflowQueryParams) {
-    this.workflowService.getWorkflows2(
+    this.workflowService.getWorkflows(
       page,
       pageSize,
       parameters

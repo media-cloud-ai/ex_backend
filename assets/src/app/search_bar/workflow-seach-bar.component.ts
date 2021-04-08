@@ -14,12 +14,12 @@ import { WorkflowService } from '../services/workflow.service'
 import { WorkflowQueryParams } from '../models/page/workflow_page'
 
 @Component({
-  selector: 'workflow-control',
-  templateUrl: './workflow_control.component.html',
-  styleUrls: ['./workflow_control.component.less'],
+  selector: 'workflow-seach-bar',
+  templateUrl: './workflow-seach-bar.component.html',
+  styleUrls: ['./workflow-seach-bar.component.less'],
 })
 
-export class WorkflowControlComponent {
+export class WorkflowSearchBarComponent {
   @Input() showDetailedToggle: boolean = false;
   @Input() parameters: WorkflowQueryParams = {
     identifiers: [],
@@ -51,11 +51,11 @@ export class WorkflowControlComponent {
 
   constructor(
     private workflowService: WorkflowService,
-    private fb: FormBuilder
+    private formBuilder: FormBuilder
   ) {}
 
   ngOnInit() {
-    this.workflowsForm = this.fb.group({
+    this.workflowsForm = this.formBuilder.group({
       selectedStatus: new FormControl(''),
       selectedWorkflows: new FormControl(''),
       startDate: new FormControl(''),
