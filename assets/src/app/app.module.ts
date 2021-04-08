@@ -26,13 +26,11 @@ import {MatMenuModule} from '@angular/material/menu'
 import {MatPaginatorModule} from '@angular/material/paginator'
 import {MatProgressBarModule} from '@angular/material/progress-bar'
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'
-import {MatRadioModule} from '@angular/material/radio'
 import {MatSelectModule} from '@angular/material/select'
 import {MatSidenavModule} from '@angular/material/sidenav'
 import {MatSlideToggleModule} from '@angular/material/slide-toggle'
 import {MatSliderModule} from '@angular/material/slider'
 import {MatSnackBarModule} from '@angular/material/snack-bar'
-import {MatTableModule} from '@angular/material/table'
 import {MatTabsModule} from '@angular/material/tabs'
 import {MatToolbarModule} from '@angular/material/toolbar'
 
@@ -106,7 +104,6 @@ import {DeclaredWorkersService}    from './services/declared_workers.service'
 import {IMDbService}             from './services/imdb.service'
 import {JobService}              from './services/job.service'
 import {MouseMoveService}        from './services/mousemove.service'
-import {PersonService}           from './services/person.service'
 import {RdfService}              from './services/rdf.service'
 import {RegisteryService}        from './services/registery.service'
 import {S3Service}               from './services/s3.service'
@@ -217,7 +214,6 @@ const EX_BACKEND_DATE_FORMATS = {
     DeleteSubtitleDialog,
     DurationComponent,
     JobDetailsDialogComponent,
-    LinkImportComponent,
     NewSubtitleDialogComponent,
     ParametersComponent,
     RdfDialogComponent,
@@ -275,7 +271,6 @@ const EX_BACKEND_DATE_FORMATS = {
     IMDbService,
     JobService,
     MouseMoveService,
-    PersonService,
     RdfService,
     RegisteryService,
     S3Service,
