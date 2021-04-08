@@ -26,13 +26,11 @@ import {MatMenuModule} from '@angular/material/menu'
 import {MatPaginatorModule} from '@angular/material/paginator'
 import {MatProgressBarModule} from '@angular/material/progress-bar'
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'
-import {MatRadioModule} from '@angular/material/radio'
 import {MatSelectModule} from '@angular/material/select'
 import {MatSidenavModule} from '@angular/material/sidenav'
 import {MatSlideToggleModule} from '@angular/material/slide-toggle'
 import {MatSliderModule} from '@angular/material/slider'
 import {MatSnackBarModule} from '@angular/material/snack-bar'
-import {MatTableModule} from '@angular/material/table'
 import {MatTabsModule} from '@angular/material/tabs'
 import {MatToolbarModule} from '@angular/material/toolbar'
 
@@ -69,12 +67,8 @@ import {DeclaredWorkersComponent} from './declared_workers/declared_workers.comp
 import {DurationComponent}       from './workflows/details/duration.component'
 import {IngestComponent}         from './ingest/ingest.component'
 import {JobsComponent}           from './jobs/jobs.component'
-import {LinkImportComponent}     from './persons/link_import.component'
 import {LoginComponent}          from './login/login.component'
 import {ParametersComponent}     from './workflows/details/parameters.component'
-import {PersonComponent}         from './persons/person.component'
-import {PersonFormComponent}     from './persons/form.component'
-import {PersonsComponent}        from './persons/persons.component'
 import {RegisteriesComponent}    from './registeries/registeries.component'
 import {RegisteryComponent}      from './registeries/registery.component'
 import {RegisteryDetailComponent} from './registeries/registery_detail.component'
@@ -96,7 +90,6 @@ import {DeleteSubtitleDialog} from './registeries/dialog/delete_subtitle_dialog.
 import {StartIngestDialog} from './ingest/dialogs/start_ingest.component'
 import {JobDetailsDialogComponent} from './jobs/details/job_details_dialog.component'
 import {NewSubtitleDialogComponent} from './registeries/dialog/new_subtitle_dialog.component'
-import {PersonShowDialogComponent} from './persons/show_dialog.component'
 import {RdfDialogComponent} from './catalog/rdf/rdf_dialog.component'
 import {WorkflowAbortDialogComponent} from './workflows/dialogs/workflow_abort_dialog.component'
 import {WorkflowDialogComponent} from './catalog/workflow/workflow_dialog.component'
@@ -111,7 +104,6 @@ import {DeclaredWorkersService}    from './services/declared_workers.service'
 import {IMDbService}             from './services/imdb.service'
 import {JobService}              from './services/job.service'
 import {MouseMoveService}        from './services/mousemove.service'
-import {PersonService}           from './services/person.service'
 import {RdfService}              from './services/rdf.service'
 import {RegisteryService}        from './services/registery.service'
 import {S3Service}               from './services/s3.service'
@@ -167,14 +159,12 @@ const EX_BACKEND_DATE_FORMATS = {
     MatPaginatorModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
-    MatRadioModule,
     MatSelectModule,
     MatSidenavModule,
     MatSliderModule,
     MatSlideToggleModule,
     MatSnackBarModule,
     MatStepperModule,
-    MatTableModule,
     MatTabsModule,
     MatToolbarModule,
     NgxMatDatetimePickerModule,
@@ -196,14 +186,9 @@ const EX_BACKEND_DATE_FORMATS = {
     IngestComponent,
     JobsComponent,
     JobDetailsDialogComponent,
-    LinkImportComponent,
     LoginComponent,
     NewSubtitleDialogComponent,
     ParametersComponent,
-    PersonComponent,
-    PersonFormComponent,
-    PersonShowDialogComponent,
-    PersonsComponent,
     QueuesComponent,
     RegisteryComponent,
     RegisteriesComponent,
@@ -229,11 +214,8 @@ const EX_BACKEND_DATE_FORMATS = {
     DeleteSubtitleDialog,
     DurationComponent,
     JobDetailsDialogComponent,
-    LinkImportComponent,
     NewSubtitleDialogComponent,
     ParametersComponent,
-    PersonFormComponent,
-    PersonShowDialogComponent,
     RdfDialogComponent,
     RegisteryComponent,
     RegisteryDetailComponent,
@@ -289,7 +271,6 @@ const EX_BACKEND_DATE_FORMATS = {
     IMDbService,
     JobService,
     MouseMoveService,
-    PersonService,
     RdfService,
     RegisteryService,
     S3Service,
