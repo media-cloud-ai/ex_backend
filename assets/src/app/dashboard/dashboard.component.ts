@@ -5,7 +5,7 @@ import localeFr from '@angular/common/locales/fr';
 import { AuthService } from '../authentication/auth.service'
 import { Subscription } from 'rxjs'
 
-import * as CanvasJS from '../../assets/canvasjs.min.js';
+import * as CanvasJS from 'canvasjs/dist/canvasjs.min.js';
 
 import { ApplicationService } from '../services/application.service'
 import { WorkflowService } from '../services/workflow.service'

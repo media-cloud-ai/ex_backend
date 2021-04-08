@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {NgxMatDatetimePickerModule, NgxMatNativeDateModule} from '@angular-material-components/datetime-picker';
 
-import { WorkflowControlComponent } from './workflow_control.component';
+import { WorkflowSearchBarComponent } from './workflow-seach-bar.component';
 
 import {
   MatButtonModule,
@@ -30,10 +30,10 @@ import {
     ReactiveFormsModule
   ],
   exports: [
-    WorkflowControlComponent
+    WorkflowSearchBarComponent
   ],
   declarations: [
-    WorkflowControlComponent
+    WorkflowSearchBarComponent
   ],
   entryComponents: [
   ]

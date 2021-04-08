@@ -47,46 +47,7 @@ export class WorkflowService {
       )
   }
 
-  getWorkflows(page: number, per_page: number, video_id: string, status: Array<string>, modes: Array<string>, workflows: Array<string>, ids: Array<number>, after_date: any, before_date: any): Observable<WorkflowPage> {
-    let params = new HttpParams()
-    if (per_page) {
-      params = params.append('size', per_page.toString())
-    }
-    if (page > 0) {
-      params = params.append('page', String(page))
-    }
-    if (video_id !== '' && video_id !== undefined) {
-      params = params.append('video_id', video_id)
-    }
-    if (after_date !== '' && after_date !== undefined) {
-      params = params.append('after_date', after_date)
-    }
-    if (before_date !== '' && before_date !== undefined) {
-      params = params.append('before_date', before_date)
-    }
-    for (let state of status) {
-      params = params.append('state[]', state)
-    }
-    for (let mode of modes) {
-      params = params.append('mode[]', mode)
-    }
-    for (let workflow_id of workflows) {
-      params = params.append('workflow_ids[]', workflow_id)
-    }
-    for (let id of ids) {
-      if (id) {
-        params = params.append('ids[]', id.toString())
-      }
-    }
-
-    return this.http.get<WorkflowPage>(this.workflowsUrl, { params: params })
-      .pipe(
-        tap(workflowPage => this.log('fetched WorkflowPage')),
-        catchError(this.handleError('getWorkflows', undefined))
-      )
-  }
-
-  getWorkflows2(page: number, per_page: number, parameters: WorkflowQueryParams): Observable<WorkflowPage> {
+  getWorkflows(page: number, per_page: number, parameters: WorkflowQueryParams): Observable<WorkflowPage> {
     let params = new HttpParams()
 
     if (per_page) {

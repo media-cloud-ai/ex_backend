@@ -3,8 +3,8 @@
 </h1>
 
 <div class=search>
-  <workflow-control [parameters]="parameters" [showDetailedToggle]=true (detailedEvent)="toogleDetailed($event)"
-    (parametersEvent)="updateWorkflows($event)"></workflow-control>
+  <workflow-seach-bar [parameters]="parameters" [showDetailedToggle]=true (detailedEvent)="toogleDetailed($event)"
+    (parametersEvent)="updateWorkflows($event)"></workflow-seach-bar>
 </div>
 
 <div *ngIf="loading" class="loading">
