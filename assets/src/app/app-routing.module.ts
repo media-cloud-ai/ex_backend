@@ -17,8 +17,6 @@ import {DeclaredWorkersComponent} from './declared_workers/declared_workers.comp
 import {IngestComponent} from './ingest/ingest.component'
 import {JobsComponent} from './jobs/jobs.component'
 import {LoginComponent} from './login/login.component'
-import {PersonComponent} from './persons/person.component'
-import {PersonsComponent} from './persons/persons.component'
 import {RegisteriesComponent} from './registeries/registeries.component'
 import {RegisteryDetailComponent} from './registeries/registery_detail.component'
 import {UsersComponent} from './users/users.component'
@@ -70,16 +68,6 @@ const appRoutes: Routes = [
   {
     path: 'orders',
     loadChildren: () => OrderModule,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'people',
-    component: PersonsComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'person',
-    component: PersonComponent,
     canActivate: [AuthGuard]
   },
   {
