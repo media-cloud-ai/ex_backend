@@ -4,9 +4,9 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http'
 import { Observable, of } from 'rxjs'
 import { catchError, map, tap } from 'rxjs/operators'
 
-import {WorkflowPage, WorkflowData, WorkflowHistory} from '../models/page/workflow_page'
-import {Step, Workflow, WorkflowEvent} from '../models/workflow'
-import {StartWorkflowDefinition} from '../models/startWorkflowDefinition'
+import { WorkflowPage, WorkflowData, WorkflowHistory } from '../models/page/workflow_page'
+import { Step, Workflow, WorkflowEvent } from '../models/workflow'
+import { StartWorkflowDefinition } from '../models/startWorkflowDefinition'
 
 @Injectable()
 export class WorkflowService {
@@ -18,8 +18,15 @@ export class WorkflowService {
 
   constructor(private http: HttpClient) { }
 
-  getWorkflowDefinitions(): Observable<WorkflowPage> {
-    return this.http.get<WorkflowPage>(this.workflowDefinitionsUrl)
+  getWorkflowDefinitions(page?: number, per_page?: number): Observable<WorkflowPage> {
+    let params = new HttpParams()
+    if (per_page) {
+      params = params.append('size', per_page.toString())
+    }
+    if (page > 0) {
+      params = params.append('page', String(page))
+    }
+    return this.http.get<WorkflowPage>(this.workflowDefinitionsUrl, { params: params })
       .pipe(
         tap(workflowPage => this.log('fetched WorkflowPage')),
         catchError(this.handleError('getWorkflowDefinitions', undefined))
@@ -53,12 +60,12 @@ export class WorkflowService {
       params = params.append('workflow_ids[]', workflow_id)
     }
     for (let id of ids) {
-      if(id) {
+      if (id) {
         params = params.append('ids[]', id.toString())
       }
     }
 
-    return this.http.get<WorkflowPage>(this.workflowsUrl, {params: params})
+    return this.http.get<WorkflowPage>(this.workflowsUrl, { params: params })
       .pipe(
         tap(workflowPage => this.log('fetched WorkflowPage')),
         catchError(this.handleError('getWorkflows', undefined))
@@ -69,7 +76,7 @@ export class WorkflowService {
     let params = new HttpParams()
     params = params.append('reference', reference)
 
-    return this.http.get<Workflow>(this.workflowUrl  + '/' + workflow_identifier, {params: params})
+    return this.http.get<Workflow>(this.workflowUrl + '/' + workflow_identifier, { params: params })
       .pipe(
         tap(workflowPage => this.log('fetched Workflow')),
         catchError(this.handleError('getWorkflowDefinition', undefined))
@@ -77,7 +84,7 @@ export class WorkflowService {
   }
 
   getWorkflow(workflow_id: number): Observable<WorkflowData> {
-    return this.http.get<WorkflowData>(this.workflowsUrl  + '/' + workflow_id.toString())
+    return this.http.get<WorkflowData>(this.workflowsUrl + '/' + workflow_id.toString())
       .pipe(
         tap(workflowPage => this.log('fetched Workflow')),
         catchError(this.handleError('getWorkflow', undefined))
@@ -104,14 +111,14 @@ export class WorkflowService {
     let params = new HttpParams()
     params = params.append('scale', scale)
 
-    return this.http.get<Workflow>(this.statisticsUrl, {params: params})
+    return this.http.get<Workflow>(this.statisticsUrl, { params: params })
       .pipe(
         tap(workflowPage => this.log('statistics Workflow')),
         catchError(this.handleError('getWorkflowStatistics', undefined))
       )
   }
 
-  private handleError<T> (operation = 'operation', result?: T) {
+  private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       this.log(`${operation} failed: ${error.message}`)
       return of(result as T)
