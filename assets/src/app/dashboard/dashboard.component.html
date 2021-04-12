@@ -1,4 +1,3 @@
-
 <h1>
   Dashboard
 </h1>
@@ -9,14 +8,25 @@
   <workflow-seach-bar [parameters]="parameters" (parametersEvent)="updateWorkflows($event)"></workflow-seach-bar>
 </div>
 
-<div id="chartContainer">
-  <span class=spinner>
+<div id="chartContainer" [ngSwitch]="lineChartData?.length">
+  <span class=spinner *ngSwitchCase="undefined">
     <img src="/bundles/images/media-io.animated.svg" width="80px" height="80px" />
     <span class=text>
       Loading ...
     </span>
   </span>
+  <span class=spinner *ngSwitchCase="0">
+    <span class=no_data>
+      No Data
+    </span>
+  </span>
+  <div class="canvasWrapper" *ngSwitchDefault>
+    <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+      [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins">
+    </canvas>
+  </div>
 </div>
+
 
 <div *ngIf="application">
 
