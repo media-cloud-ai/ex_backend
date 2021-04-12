@@ -40,6 +40,7 @@ import {
 import {MatStepperModule} from '@angular/material/stepper'
 import {NgxMatDatetimePickerModule, NgxMatNativeDateModule} from '@angular-material-components/datetime-picker';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
+import { ChartsModule } from 'ng2-charts'
 
 import {
   MomentDateAdapter,
@@ -150,6 +151,7 @@ const EX_BACKEND_DATE_FORMATS = {
     AppRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
+    ChartsModule,
     GenericModule,
     FormsModule,
     HttpClientModule,
