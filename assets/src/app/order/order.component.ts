@@ -26,6 +26,7 @@ export class OrderComponent {
   @ViewChild('stepper') stepper: MatStepper;
   length = 1000
   pageSize = 10
+  page = 0
   pageSizeOptions = [
     10,
     20,
@@ -59,7 +60,7 @@ export class OrderComponent {
         this.s3Configuration = s3Configuration
       })
 
-    this.workflowService.getWorkflowDefinitions()
+    this.workflowService.getWorkflowDefinitions(this.page, this.pageSize, "create", undefined, ["latest"], "simple")
       .subscribe(definitions => {
         this.services = definitions.data
         this.length = definitions.total
@@ -203,7 +204,7 @@ export class OrderComponent {
   }
 
   eventGetWorkflows(event) {
-    this.workflowService.getWorkflowDefinitions(event.pageIndex, event.pageSize)
+    this.workflowService.getWorkflowDefinitions(event.pageIndex, event.pageSize, "create", undefined, ["latest"], "simple")
       .subscribe(definitions => {
         this.services = definitions.data
         this.length = definitions.total

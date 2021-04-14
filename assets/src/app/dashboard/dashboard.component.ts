@@ -26,9 +26,6 @@ registerLocaleData(localeFr, 'fr');
 })
 
 export class DashboardComponent {
-
-
-
   public lineChartData: ChartDataSets[];
   public lineChartLabels: Label[];
   public lineChartOptions: ChartOptions = {
