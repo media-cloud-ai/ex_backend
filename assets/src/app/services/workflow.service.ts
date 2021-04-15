@@ -1,10 +1,11 @@
 
 import { Injectable } from '@angular/core'
+import { formatDate } from '@angular/common'
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http'
 import { Observable, of } from 'rxjs'
 import { catchError, map, tap } from 'rxjs/operators'
 
-import { WorkflowPage, WorkflowData, WorkflowHistory } from '../models/page/workflow_page'
+import { WorkflowQueryParams, WorkflowPage, WorkflowData, WorkflowHistory } from '../models/page/workflow_page'
 import { Step, Workflow, WorkflowEvent } from '../models/workflow'
 import { StartWorkflowDefinition } from '../models/startWorkflowDefinition'
 
@@ -12,19 +13,32 @@ import { StartWorkflowDefinition } from '../models/startWorkflowDefinition'
 export class WorkflowService {
   private workflowUrl = '/api/workflow'
   private workflowsUrl = '/api/step_flow/workflows'
+  private workflowIdentifiersUrl = '/api/step_flow/definitions_identifiers'
   private workflowsLauncher = '/api/step_flow/launch_workflow'
   private workflowDefinitionsUrl = '/api/step_flow/definitions'
   private statisticsUrl = '/api/step_flow/workflows_statistics'
 
   constructor(private http: HttpClient) { }
 
-  getWorkflowDefinitions(page?: number, per_page?: number): Observable<WorkflowPage> {
+  getWorkflowDefinitions(page?: number, per_page?: number, right_action?: string, search?: string, versions?: string[], mode?: string): Observable<WorkflowPage> {
     let params = new HttpParams()
     if (per_page) {
       params = params.append('size', per_page.toString())
     }
     if (page > 0) {
       params = params.append('page', String(page))
+    }
+    if (right_action) {
+      params = params.append("right_action", right_action)
+    }
+    if (search) {
+      params = params.append("search", search)
+    }
+    for (let version of versions) {
+      params = params.append("versions[]", version)
+    }
+    if (mode) {
+      params = params.append("mode", mode)
     }
     return this.http.get<WorkflowPage>(this.workflowDefinitionsUrl, { params: params })
       .pipe(
@@ -33,34 +47,23 @@ export class WorkflowService {
       )
   }
 
-  getWorkflows(page: number, per_page: number, video_id: string, status: Array<string>, workflows: Array<string>, ids: Array<number>, after_date: any, before_date: any): Observable<WorkflowPage> {
+  getWorkflows(page: number, per_page: number, parameters: WorkflowQueryParams): Observable<WorkflowPage> {
     let params = new HttpParams()
+
     if (per_page) {
       params = params.append('size', per_page.toString())
     }
     if (page > 0) {
       params = params.append('page', String(page))
     }
-    if (video_id !== '' && video_id !== undefined) {
-      params = params.append('video_id', video_id)
+    for (let identifier of parameters.identifiers) {
+      params = params.append('identifiers[]', identifier)
     }
-    if (after_date !== '' && after_date !== undefined) {
-      params = params.append('after_date', after_date)
+    for (let state of parameters.status) {
+      params = params.append('states[]', state)
     }
-    if (before_date !== '' && before_date !== undefined) {
-      params = params.append('before_date', before_date)
-    }
-    for (let state of status) {
-      params = params.append('state[]', state)
-    }
-    for (let workflow_id of workflows) {
-      params = params.append('workflow_ids[]', workflow_id)
-    }
-    for (let id of ids) {
-      if (id) {
-        params = params.append('ids[]', id.toString())
-      }
-    }
+    params = params.append('after_date', formatDate(parameters.start_date, "yyyy-MM-ddTHH:mm:ss", "fr"))
+    params = params.append('before_date', formatDate(parameters.end_date, "yyyy-MM-ddTHH:mm:ss", "fr"))
 
     return this.http.get<WorkflowPage>(this.workflowsUrl, { params: params })
       .pipe(
@@ -104,9 +107,15 @@ export class WorkflowService {
       )
   }
 
-  getWorkflowStatistics(scale: string): Observable<WorkflowHistory> {
+  getWorkflowStatistics(parameters: WorkflowQueryParams): Observable<WorkflowHistory> {
     let params = new HttpParams()
-    params = params.append('scale', scale)
+
+    for (let identifier of parameters.identifiers) {
+      params = params.append('identifiers[]', identifier)
+    }
+    params = params.append('time_interval', parameters.time_interval.toString())
+    params = params.append('start_date', parameters.start_date.toISOString())
+    params = params.append('end_date', parameters.end_date.toISOString())
 
     return this.http.get<Workflow>(this.statisticsUrl, { params: params })
       .pipe(

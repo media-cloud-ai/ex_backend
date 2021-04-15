@@ -28,6 +28,7 @@ import {
 
 import {GenericModule} from '../generic/generic.module'
 import {PipesModule} from '../pipes/pipes.module'
+import {SearchBarModule}      from '../search_bar/search_bar.module'
 
 export const ROUTES: Routes = [
   { path: '', component: OrdersComponent },
@@ -56,7 +57,8 @@ export const ROUTES: Routes = [
     PipesModule,
     MatTooltipModule,
     MatChipsModule,
-    RouterModule.forChild(ROUTES)
+    RouterModule.forChild(ROUTES),
+    SearchBarModule
   ],
   declarations: [
     OrderComponent,

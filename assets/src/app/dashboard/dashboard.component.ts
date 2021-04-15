@@ -1,21 +1,53 @@
 
-import {Component} from '@angular/core'
-import {AuthService}    from '../authentication/auth.service'
-import {Subscription}   from 'rxjs'
+import { Component } from '@angular/core'
+import { registerLocaleData } from '@angular/common'
+import localeFr from '@angular/common/locales/fr';
+import { AuthService } from '../authentication/auth.service'
+import { Subscription } from 'rxjs'
 
-import * as CanvasJS from 'canvasjs/dist/canvasjs.min.js';
+import { ApplicationService } from '../services/application.service'
+import { WorkflowService } from '../services/workflow.service'
+import { Application } from '../models/application'
 
-import {ApplicationService} from '../services/application.service'
-import {WorkflowService} from '../services/workflow.service'
-import {Application} from '../models/application'
+import { WorkflowHistory, WorkflowQueryParams } from '../models/page/workflow_page'
+
+
+
+import { ChartDataSets, ChartOptions } from 'chart.js';
+import { Label } from 'ng2-charts';
+
+
+registerLocaleData(localeFr, 'fr');
 
 @Component({
-    selector: 'dashboard-component',
-    templateUrl: 'dashboard.component.html',
-    styleUrls: ['./dashboard.component.less'],
+  selector: 'dashboard-component',
+  templateUrl: 'dashboard.component.html',
+  styleUrls: ['./dashboard.component.less'],
 })
 
 export class DashboardComponent {
+  public lineChartData: ChartDataSets[];
+  public lineChartLabels: Label[];
+  public lineChartOptions: ChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      xAxes: [{
+        type: 'time',
+        time: {
+          displayFormats: {
+            minute: "YYYY-MM-DD HH:mm"
+          },
+          parser: "YYYY-MM-DD HH:mm:SS"
+        }
+      }]
+    }
+  };
+  public lineChartLegend = true;
+  public lineChartType = 'line';
+  public lineChartPlugins = [];
+
+
   right_administrator: boolean
   right_technician: boolean
   right_editor: boolean
@@ -24,49 +56,37 @@ export class DashboardComponent {
   subIn: Subscription
   subOut: Subscription
 
-  selectedWorkflows = [
-    'total',
-    'rosetta',
-    'rdf_ingest',
-    'acs',
-    'dash_ingest',
-    'acs_standalone',
-    'errors',
-  ]
-  workflows = [
-    {id: 'total', label: 'Total'},
-    {id: 'rosetta', label: 'FranceTV Studio Ingest Rosetta'},
-    {id: 'rdf_ingest', label: 'FranceTélévisions Rdf Ingest'},
-    {id: 'acs', label: 'FranceTélévisions ACS'},
-    {id: 'dash_ingest', label: 'FranceTélévisions Dash Ingest'},
-    {id: 'acs_standalone', label: 'FranceTélévisions ACS (standalone)'},
-    {id: 'errors', label: 'Errors'},
-  ]
-  
-  selectedScale: string = "hour"
-  scales = [
-    {
-      id: "minute",
-      label: "Minutes"
-    },
-    {
-      id: "hour",
-      label: "Hours"
-    },
-    {
-      id: "day",
-      label: "Days"
-    }
-  ]
+  colors = {
+    error: "#ff3719",
+    completed: "#87b209",
+    pending: "#88497e",
+    processing: "#3864AA"
+  }
 
-  loading = true
+  parameters: WorkflowQueryParams;
+
+  data: any;
 
   constructor(
     private applicationService: ApplicationService,
     private workflowService: WorkflowService,
-    public authService: AuthService
-  ) {}
-
+    public authService: AuthService,
+  ) {
+    let today = new Date();
+    let yesterday = new Date();
+    yesterday.setDate(today.getDate() - 1);
+    this.parameters = {
+      identifiers: [],
+      start_date: yesterday,
+      end_date: today,
+      status: [
+        "completed",
+        "error"
+      ],
+      detailed: false,
+      time_interval: 3600
+    };
+  }
   ngOnInit() {
     this.subIn = this.authService.userLoggedIn$.subscribe(
       username => {
@@ -88,185 +108,31 @@ export class DashboardComponent {
     }
 
     this.applicationService.get()
-    .subscribe(application => {
-      this.application = application
-    })
-
-    this.renderChart()
-  }
-
-  updateWorkflows() {
-    this.renderChart()
-  }
-
-  updateScale() {
-    this.renderChart()
-  }
-
-  renderChart() {
-    this.loading = true
-    this.workflowService.getWorkflowStatistics(this.selectedScale)
-    .subscribe(stats => {
-      var totalData = []
-      var rosettaData = []
-      var rdfData = []
-      var dashData = []
-      var acsData = []
-      var acsStandaloneData = []
-      var errorsData = []
-
-      let suffix = "h"
-      if(this.selectedScale == "minute") {
-        suffix = "m"
-      }
-      if(this.selectedScale == "day") {
-        suffix = "d"
-      }
-
-      for(var index = 0; index < stats.data.length; ++index) {
-        totalData.push({
-          x: -index,
-          y: stats.data[index]['total']
-        })
-        rosettaData.push({
-          x: -index,
-          y: stats.data[index]['rosetta']
-        })
-        rdfData.push({
-          x: -index,
-          y: stats.data[index]['ingest_rdf']
-        })
-        dashData.push({
-          x: -index,
-          y: stats.data[index]['ingest_dash']
-        })
-        acsData.push({
-          x: -index,
-          y: stats.data[index]['process_acs']
-        })
-        acsStandaloneData.push({
-          x: -index,
-          y: stats.data[index]['process_acs_standalone']
-        })
-        errorsData.push({
-          x: -index,
-          y: stats.data[index]['errors']
-        })
-      }
-
-      let data = []
-      if(this.selectedWorkflows.includes('total')) {
-        data.push({
-          type: 'line',
-          name: "Total",
-          toolTipContent: "<b>{name}</b>: {y}",
-          dataPoints: totalData
-        })
-      }
-      if(this.selectedWorkflows.includes('rosetta')) {
-        data.push({
-          type: 'line',
-          name: "Rosetta",
-          toolTipContent: "<b>{name}</b>: {y}",
-          dataPoints: rosettaData
-        })
-      }
-      if(this.selectedWorkflows.includes('rdf_ingest')) {
-        data.push({
-          type: 'line',
-          name: "Ingest RDF",
-          toolTipContent: "<b>{name}</b>: {y}",
-          dataPoints: rdfData
-        })
-      }
-      if(this.selectedWorkflows.includes('acs')) {
-        data.push({
-          type: 'line',
-          name: "ACS Process",
-          toolTipContent: "<b>{name}</b>: {y}",
-          dataPoints: acsData
-        })
-      }
-      if(this.selectedWorkflows.includes('dash_ingest')) {
-        data.push({
-          type: 'line',
-          name: "DASH Ingest",
-          toolTipContent: "<b>{name}</b>: {y}",
-          dataPoints: dashData
-        })
-      }
-      if(this.selectedWorkflows.includes('acs_standalone')) {
-        data.push({
-          type: 'line',
-          name: "FranceTélévisions ACS (standalone)",
-          toolTipContent: "<b>{name}</b>: {y}",
-          dataPoints: acsStandaloneData
-        })
-      }
-      if(this.selectedWorkflows.includes('errors')) {
-        data.push({
-          type: 'line',
-          name: "Errors",
-          toolTipContent: "<b>{name}</b>: {y}",
-          dataPoints: errorsData
-        })
-      }
-
-      this.loading = false
-
-      let chart = new CanvasJS.Chart("chartContainer", {
-        // animationEnabled: true,
-        // exportEnabled: false,
-        // zoomEnabled: true,
-        // title: {
-        //   text: "Workflow history"
-        // },
-
-        // legend: {
-        //   horizontalAlign: "left", // "center" , "right"
-        //   verticalAlign: "center",  // "top" , "bottom"
-        //   fontSize: 15
-        // },
-        backgroundColor: "#ffffff00",
-        data: data,//[
-        //   {
-        //     type: 'line',
-        //     name: "Total",
-        //     toolTipContent: "<b>{name}</b>: {y}",
-        //     dataPoints: totalData
-        //   },
-        //   {
-        //     type: 'line',
-        //     name: "Rosetta",
-        //     toolTipContent: "<b>{name}</b>: {y}",
-        //     dataPoints: rosettaData
-        //   },
-        //   {
-        //     type: 'line',
-        //     name: "Ingest RDF",
-        //     toolTipContent: "<b>{name}</b>: {y}",
-        //     dataPoints: rdfData
-        //   },
-        //   {
-        //     type: 'line',
-        //     name: "DASH Ingest",
-        //     toolTipContent: "<b>{name}</b>: {y}",
-        //     dataPoints: dashData
-        //   },
-        //   {
-        //     type: 'line',
-        //     name: "ACS Process",
-        //     toolTipContent: "<b>{name}</b>: {y}",
-        //     dataPoints: acsData
-        //   },
-        // ],
-        axisX: {
-            suffix: suffix
-        },
-        options: {}
+      .subscribe(application => {
+        this.application = application
       })
 
-      chart.render()
-    })
+    this.updateWorkflows(this.parameters)
+  }
+
+  updateWorkflows(parameters: WorkflowQueryParams) {
+    this.lineChartData = undefined
+    this.workflowService.getWorkflowStatistics(parameters)
+      .subscribe(response => {
+        this.lineChartData = parameters.status.map(state => (
+          {
+            label: state,
+            fill: false,
+            borderColor: this.colors[state],
+            backgroundColor: this.colors[state],
+            pointBorderColor: this.colors[state],
+            pointBackgroundColor: this.colors[state],
+            data: response.data.bins.map(bin => ({
+              y: bin[state],
+              t: bin.end_date
+            }))
+          }));
+        this.lineChartLabels = response.data.bins.map(bin => (bin.end_date));
+      })
   }
 }

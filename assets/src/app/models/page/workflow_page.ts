@@ -10,9 +10,30 @@ export class WorkflowData {
 }
 
 export class WorkflowHistory {
-  data: WorkflowHistoryStep[]
+  data: WorkflowHistoryData
 }
 
-export class WorkflowHistoryStep {
-  total: number
+export class WorkflowHistoryData {
+  bins: WorkflowHistoryBin[]
+  completed: number
+  error: number
+  processing: number
+}
+
+export class WorkflowHistoryBin {
+  bin: number
+  completed: number
+  end_date: string
+  error: number
+  processing: number
+  start_date: string
+}
+
+export class WorkflowQueryParams {
+  identifiers: string[]
+  start_date: any
+  end_date: any
+  status: string[]
+  detailed: boolean
+  time_interval: number
 }
