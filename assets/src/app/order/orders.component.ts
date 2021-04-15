@@ -7,7 +7,7 @@ import { SocketService } from '../services/socket.service'
 import { S3Service } from '../services/s3.service'
 import { WorkflowService } from '../services/workflow.service'
 
-import { Message} from '../models/message'
+import { Message } from '../models/message'
 import { WorkflowPage } from '../models/page/workflow_page'
 import { WorkflowQueryParams } from '../models/page/workflow_page'
 import { Workflow } from '../models/workflow'
@@ -174,12 +174,6 @@ export class OrdersComponent {
     }
     if (this.reference !== '') {
       params['reference'] = this.reference
-    }
-    if (this.selectedStatus.length != 3) {
-      params['status[]'] = this.selectedStatus
-    }
-    if (this.selectedWorkflows.length !== 4) {
-      params['workflows[]'] = this.selectedWorkflows
     }
     if (this.order_id !== undefined) {
       params['order_id[]'] = this.order_id
