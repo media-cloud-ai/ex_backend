@@ -100,7 +100,7 @@ defmodule ExBackend.Mixfile do
       {:ranch, "~> 1.7.1"},
       {:remote_dockers, "1.4.0"},
       {:sigaws, "~> 0.7.2"},
-      {:step_flow, "~> 0.2.11"},
+      {:step_flow, "~> 0.2.13"},
       {:tesla, "~> 1.4.0"},
       {:timex, "~> 3.6"},
       {:uuid, "~> 1.1"}
