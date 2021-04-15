@@ -43,7 +43,6 @@ export class WorkflowsComponent {
     private socketService: SocketService,
     private workflowService: WorkflowService,
     private route: ActivatedRoute,
-    private router: Router
   ) {
     let today = new Date();
     let yesterday = new Date();

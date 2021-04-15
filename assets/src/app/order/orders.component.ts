@@ -6,6 +6,8 @@ import { AuthService } from '../authentication/auth.service'
 import { SocketService } from '../services/socket.service'
 import { S3Service } from '../services/s3.service'
 import { WorkflowService } from '../services/workflow.service'
+
+import { Message} from '../models/message'
 import { WorkflowPage } from '../models/page/workflow_page'
 import { WorkflowQueryParams } from '../models/page/workflow_page'
 import { Workflow } from '../models/workflow'
@@ -141,7 +143,7 @@ export class OrdersComponent {
   eventGetWorkflows(event) {
     this.pageSize = event.pageSize
     this.router.navigate(['/orders'], { queryParams: this.getQueryParamsForPage(event.pageIndex, event.pageSize) })
-    this.getWorkflows()
+    this.getWorkflows(event.pageIndex, event.pageSize, this.parameters)
   }
 
   updateWorkflow(workflow_id) {
