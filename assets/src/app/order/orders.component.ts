@@ -122,7 +122,6 @@ export class OrdersComponent {
       page,
       pageSize,
       parameters,
-      this.selectedMode
     ).subscribe(workflowPage => {
       if (workflowPage === undefined) {
         this.length = undefined
