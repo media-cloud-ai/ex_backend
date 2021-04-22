@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"@angular-material-components/datetime-picker@^5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@angular-material-components/datetime-picker/-/datetime-picker-5.1.0.tgz#ed32295fa2d3c076d0e7d4ac768993472f99de3d"
+  integrity sha512-SzxBG9oquHF4EWXgr0QStdMG9oR+aY0Uc5j/x0pq36NzqHWUkR+NgkwjSx6fEk0orQ751UMcgdM90525JO4OWQ==
+  dependencies:
+    tslib "^2.0.0"
+
 "@angular/animations@^11.2.9":
   version "11.2.9"
   resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-11.2.9.tgz#78a31842f797be67e244a5abbdf52983d261f9f0"
@@ -328,10 +335,10 @@
   dependencies:
     moment "^2.10.2"
 
-"@types/jasmine@^3.5.7":
-  version "3.6.3"
-  resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-3.6.3.tgz#824df555b8a5114f91619e78d8f59624d6f23050"
-  integrity sha512-5QKAG8WfC9XrOgYLXPrxv1G2IIUE6zDyzTWamhNWJO0LqPRUbZ0q0zGHDhDJ7MpFloUuyME/jpBIdPjq3/P3jA==
+"@types/jasmine@^3.6.6":
+  version "3.6.9"
+  resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-3.6.9.tgz#8785870f87839b7d91b45d7b226380f28dee5d9f"
+  integrity sha512-B53NIwMj/AO0O+xfSWLYmKB0Mo6TYxfv2Mk8/c1T2w/e38t55iaPR6p7pHXTTtqfTmevPK3i8T1YweYFTZlxDw==
 
 "@types/json-schema@^7.0.5", "@types/json-schema@^7.0.6":
   version "7.0.7"
@@ -1682,11 +1689,6 @@ caniuse-lite@^1.0.30001181:
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001208.tgz#a999014a35cebd4f98c405930a057a0d75352eb9"
   integrity sha512-OE5UE4+nBOro8Dyvv0lfx+SRtfVIOM9uhKqFmJeUbGriqhhStgp1A0OyBpgy3OUF8AhYCT+PVwPC1gMl2ZcQMA==
 
-canvasjs@^1.8.1:
-  version "1.8.3"
-  resolved "https://registry.yarnpkg.com/canvasjs/-/canvasjs-1.8.3.tgz#181a526bbce09c1909431d9471f808494fe970cf"
-  integrity sha512-60eUT0VjqRgYqdIQcOkXg0Zptfbl4HefA/O51YEf1m/P0uXvE3icI/1KPrXpY9aVxn8gG/BB8DzVoTGCcyBnYg==
-
 capture-stack-trace@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/capture-stack-trace/-/capture-stack-trace-1.0.1.tgz#a6c0bbe1f38f3aa0b92238ecb6ff42c344d4135d"
@@ -2286,9 +2288,9 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
-"dashjs@git+https://github.com/Dash-Industry-Forum/dash.js.git#16be8f8":
+"dashjs@https://github.com/Dash-Industry-Forum/dash.js.git#16be8f8":
   version "2.9.0"
-  resolved "git+https://github.com/Dash-Industry-Forum/dash.js.git#16be8f8131b71505dc905daee5d0bc6cc9f7e38e"
+  resolved "https://github.com/Dash-Industry-Forum/dash.js.git#16be8f8131b71505dc905daee5d0bc6cc9f7e38e"
   dependencies:
     codem-isoboxer "0.3.5"
     fast-deep-equal "1.1.0"

@@ -47,7 +47,7 @@ export class WorkflowService {
       )
   }
 
-  getWorkflows(page: number, per_page: number, video_id: string, status: Array<string>, modes: Array<string>, workflows: Array<string>, ids: Array<number>, after_date: any, before_date: any): Observable<WorkflowPage> {
+  getWorkflows(page: number, per_page: number, parameters: WorkflowQueryParams): Observable<WorkflowPage> {
     let params = new HttpParams()
 
     if (per_page) {
@@ -60,18 +60,7 @@ export class WorkflowService {
       params = params.append('identifiers[]', identifier)
     }
     for (let state of status) {
-      params = params.append('state[]', state)
-    }
-    for (let mode of modes) {
-      params = params.append('mode[]', mode)
-    }
-    for (let workflow_id of workflows) {
-      params = params.append('workflow_ids[]', workflow_id)
-    }
-    for (let id of ids) {
-      if(id) {
-        params = params.append('ids[]', id.toString())
-      }
+      params = params.append('states[]', state)
     }
     params = params.append('after_date', formatDate(parameters.start_date, "yyyy-MM-ddTHH:mm:ss", "fr"))
     params = params.append('before_date', formatDate(parameters.end_date, "yyyy-MM-ddTHH:mm:ss", "fr"))

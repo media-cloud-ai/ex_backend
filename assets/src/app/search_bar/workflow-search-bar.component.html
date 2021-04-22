@@ -11,7 +11,7 @@
       multiple>
       <mat-option #allSelected (click)="toggleAllSelection()" [value]="0">All</mat-option>
       <mat-option *ngFor="let workflow of workflows" [value]="workflow.id" [ngClass]="workflow.id"
-        (click)="tosslePerOne(allSelected.viewValue)" class="workflow-option">
+        (click)="tosslePerOne(allSelected)" class="workflow-option">
         {{ workflow.label }}
       </mat-option>
     </mat-select>

@@ -5,7 +5,7 @@
 <h3>Workflow history</h3>
 
 <div class=selectors>
-  <workflow-seach-bar [parameters]="parameters" (parametersEvent)="updateWorkflows($event)"></workflow-seach-bar>
+  <workflow-search-bar [parameters]="parameters" (parametersEvent)="updateWorkflows($event)"></workflow-search-bar>
 </div>
 
 <div id="chartContainer" [ngSwitch]="lineChartData?.length">

@@ -1,6 +1,6 @@
 
 import { Component, ViewChild } from '@angular/core'
-import { PageEvent } from '@angular/material'
+import { PageEvent } from '@angular/material/paginator'
 import { ActivatedRoute, Router } from '@angular/router'
 
 import { Message } from '../models/message'
@@ -109,7 +109,6 @@ export class WorkflowsComponent {
       page,
       pageSize,
       parameters
-      this.selectedModes,
     ).subscribe(workflowPage => {
       if (workflowPage === undefined) {
         this.length = undefined
