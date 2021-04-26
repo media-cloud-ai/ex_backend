@@ -36,8 +36,8 @@ export class WorkflowSearchBarComponent {
   @Output() detailedEvent = new EventEmitter<boolean>();
 
   @ViewChild('picker') picker: any;
-  @ViewChild('allSelected') private allSelected: boolean = true;
 
+  allSelected: boolean;
   workflowsForm: FormGroup;
 
   workflows = []
@@ -63,6 +63,8 @@ export class WorkflowSearchBarComponent {
       detailedToogle: new FormControl('')
     });
 
+    this.allSelected = false;
+
     this.workflowService.getWorkflowDefinitions(undefined, -1, "view", undefined, ["latest"], "simple")
       .subscribe(response => {
         for (var index = 0; index < response.data.length; ++index) {
@@ -81,21 +83,23 @@ export class WorkflowSearchBarComponent {
     this.parametersEvent.emit(this.parameters)
   }
 
-  tosslePerOne(all) {
+  tosslePerOne() {
     if (this.allSelected) {
       this.allSelected = false;
-      return false;
     }
-    if (this.workflowsForm.controls.selectedWorkflows.value.length == this.workflows.length)
+    if (this.workflowsForm.controls.selectedWorkflows.value.length == this.workflows.length) {
       this.allSelected = true;
+    }
   }
 
   toggleAllSelection() {
-    if (this.allSelected) {
+    if (!this.allSelected) {
       this.workflowsForm.controls.selectedWorkflows
         .patchValue([0, ...this.workflows.map(item => item.id)]);
+      this.allSelected = true;
     } else {
       this.workflowsForm.controls.selectedWorkflows.patchValue([]);
+      this.allSelected = false;
     }
   }
 
