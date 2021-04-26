@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { MaterialFileInputModule } from 'ngx-material-file-input';
+import { NgxMatFileInputModule } from '@angular-material-components/file-input';
 
 import { OrdersComponent } from './orders.component';
 import { OrderComponent } from './order.component';
@@ -51,7 +51,7 @@ export const ROUTES: Routes = [
     MatSliderModule,
     MatStepperModule,
     MatTabsModule,
-    MaterialFileInputModule,
+    NgxMatFileInputModule,
     PipesModule,
     MatTooltipModule,
     MatChipsModule,

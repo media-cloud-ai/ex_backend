@@ -9,6 +9,13 @@
   dependencies:
     tslib "^2.0.0"
 
+"@angular-material-components/file-input@^5.0.1":
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/@angular-material-components/file-input/-/file-input-5.0.1.tgz#5250165243b4f7b09251c0f80839cabcf1b1ab67"
+  integrity sha512-IqforYNdtY5B7iyWMGGt/r/s8IvLW3pmRKehIVjTzNE0aX4pumAIlOeRoPvR0Q6pRvTEEij0lRssipJrzWrY5Q==
+  dependencies:
+    tslib "^2.0.0"
+
 "@angular/animations@^11.2.9":
   version "11.2.9"
   resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-11.2.9.tgz#78a31842f797be67e244a5abbdf52983d261f9f0"
@@ -5039,11 +5046,6 @@ ngx-cookie-service@^11.0.2:
   integrity sha512-nsjzdcjK+gNAweE/DDdnOyHo04jlxTeMXOL/oJNp8MHtOTvCXnOtIFYgq4Sb2JU6UXTovO9tHEMIf9TxjlsdgQ==
   dependencies:
     tslib "^2.0.0"
-
-ngx-material-file-input@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/ngx-material-file-input/-/ngx-material-file-input-2.1.1.tgz#8f3dffc9bfcc1e2e07a00c9cf168d901ecb0cd30"
-  integrity sha512-FbaIjiJnL6BZtZYWLvMSn9aSaM62AZaJegloTUphmLz5jopXPzE5W+3aC+dsf9h1IIqHSCLcyv0w+qH0ypBhMA==
 
 nice-try@^1.0.4:
   version "1.0.5"
