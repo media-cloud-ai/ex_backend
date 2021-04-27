@@ -58,6 +58,10 @@ export class WorkflowsComponent {
       identifiers: [],
       start_date: yesterday,
       end_date: today,
+      mode: [
+       "file",
+       "live"
+      ],
       status: [
         "completed",
         "error",

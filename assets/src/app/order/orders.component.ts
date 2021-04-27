@@ -59,6 +59,10 @@ export class OrdersComponent {
         "speech_to_text",
         "dialog_enhancement"
       ],
+      mode: [
+        "file",
+        "live"
+      ],
       start_date: yesterday,
       end_date: today,
       status: [

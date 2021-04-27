@@ -31,6 +31,7 @@ export class WorkflowHistoryBin {
 
 export class WorkflowQueryParams {
   identifiers: string[]
+  mode: string[]
   start_date: any
   end_date: any
   status: string[]
