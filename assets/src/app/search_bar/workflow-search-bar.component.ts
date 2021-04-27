@@ -23,6 +23,10 @@ export class WorkflowSearchBarComponent {
   @Input() showDetailedToggle: boolean = false;
   @Input() parameters: WorkflowQueryParams = {
     identifiers: [],
+    mode: [
+       "file",
+       "live"
+    ],
     start_date: new Date(),
     end_date: new Date(),
     status: [
@@ -49,6 +53,11 @@ export class WorkflowSearchBarComponent {
     { id: 'processing', label: 'Processing' },
   ]
 
+  mode = [
+    { id: 'file', label: 'Fichier' },
+    { id: 'live', label: 'Live' },
+  ]
+
   constructor(
     private workflowService: WorkflowService,
     private formBuilder: FormBuilder
@@ -57,10 +66,11 @@ export class WorkflowSearchBarComponent {
   ngOnInit() {
     this.workflowsForm = this.formBuilder.group({
       selectedStatus: new FormControl(''),
+      selectedMode: new FormControl(''),
       selectedWorkflows: new FormControl(''),
       startDate: new FormControl(''),
       endDate: new FormControl(''),
-      detailedToogle: new FormControl('')
+      detailedToggle: new FormControl('')
     });
 
     this.allSelected = false;
@@ -75,7 +85,7 @@ export class WorkflowSearchBarComponent {
           this.parameters.identifiers.push(
             response.data[index].identifier
           );
-        }
+       }
      });
   }
 
@@ -83,7 +93,7 @@ export class WorkflowSearchBarComponent {
     this.parametersEvent.emit(this.parameters)
   }
 
-  tosslePerOne() {
+  toggleOne() {
     if (this.allSelected) {
       this.allSelected = false;
     }
@@ -103,7 +113,7 @@ export class WorkflowSearchBarComponent {
     }
   }
 
-  toogleDetailed() {
+  toggleDetailed() {
     this.detailedEvent.emit(this.parameters.detailed)
   }
 }

@@ -79,6 +79,10 @@ export class DashboardComponent {
       identifiers: [],
       start_date: yesterday,
       end_date: today,
+      mode: [
+        "file",
+        "live"
+      ],
       status: [
         "completed",
         "error"

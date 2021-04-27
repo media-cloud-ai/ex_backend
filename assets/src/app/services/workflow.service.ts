@@ -57,10 +57,17 @@ export class WorkflowService {
       params = params.append('page', String(page))
     }
     for (let identifier of parameters.identifiers) {
-      params = params.append('identifiers[]', identifier)
+      params = params.append('workflow_ids[]', identifier)
     }
-    for (let state of status) {
+    for (let state of parameters.status) {
       params = params.append('states[]', state)
+    }
+    if (parameters.mode.length == 1) {
+      if (parameters.mode[0] == "live") {
+        params = params.append('is_live', "true")
+      }
+      else
+        params = params.append('is_live', "false")
     }
     params = params.append('after_date', formatDate(parameters.start_date, "yyyy-MM-ddTHH:mm:ss", "fr"))
     params = params.append('before_date', formatDate(parameters.end_date, "yyyy-MM-ddTHH:mm:ss", "fr"))
@@ -114,6 +121,14 @@ export class WorkflowService {
       params = params.append('identifiers[]', identifier)
     }
     params = params.append('time_interval', parameters.time_interval.toString())
+    
+    if (parameters.mode.length == 1) {
+      if (parameters.mode[0] == "live") {
+        params = params.append('is_live', "true")
+      }
+      else
+        params = params.append('is_live', "false")
+    }
     params = params.append('start_date', parameters.start_date.toISOString())
     params = params.append('end_date', parameters.end_date.toISOString())
 
