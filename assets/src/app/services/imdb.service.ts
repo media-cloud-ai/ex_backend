@@ -15,7 +15,7 @@ export class IMDbService {
     return this.http.get<any>(this.imdbUrl + '/search/' + query)
       .pipe(
         tap(searchData => this.log('search IMDb people', searchData)),
-        catchError(this.handleError('seach', undefined))
+        catchError(this.handleError('search', undefined))
       )
   }
 

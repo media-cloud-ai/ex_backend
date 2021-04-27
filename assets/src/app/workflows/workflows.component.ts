@@ -1,6 +1,6 @@
 
 import { Component, ViewChild } from '@angular/core'
-import { PageEvent } from '@angular/material'
+import { PageEvent } from '@angular/material/paginator'
 import { ActivatedRoute, Router } from '@angular/router'
 
 import { Message } from '../models/message'
@@ -32,6 +32,13 @@ export class WorkflowsComponent {
   sub = undefined
   loading = true
   detailed = false
+
+  selectedModes = []
+
+  modes = [
+    {id: 'live', label: 'Live'},
+    {id: 'file', label: 'File'},
+  ]
 
   pageEvent: PageEvent
   workflows: WorkflowPage

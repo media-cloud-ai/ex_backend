@@ -59,11 +59,11 @@ defmodule ExBackend.Repo do
               Keyword.put(opts, :database, database)
           end
 
-        Logger.info("connect to #{inspect(opts)}")
+        Logger.debug("Backend connecting to Postgres with parameters: #{inspect(opts)}")
         {:ok, opts}
 
       url ->
-        Logger.info("connect to #{url}")
+        Logger.debug("Backend connecting to Postgres with parameters: #{url}")
         {:ok, Keyword.put(opts, :url, url)}
     end
   end

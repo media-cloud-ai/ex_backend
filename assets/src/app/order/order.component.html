@@ -19,6 +19,9 @@
               service.version_micro
             }}
           </span>
+          <span *ngIf="service.is_live" class="badge-live">
+            LIVE
+          </span>
         </button>
       </div>
     </div>
@@ -49,7 +52,7 @@
               [accept]="parameter.accept"
             >
             </ngx-mat-file-input>
-            <mat-icon matSuffix>folder</mat-icon>
+            <mat-icon ngxMatFileInputIcon>folder</mat-icon>
           </mat-form-field>
         </div>
         <mat-form-field *ngIf="parameter.type == 'choice'">

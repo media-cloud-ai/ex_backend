@@ -9,9 +9,9 @@
   <mat-form-field>
     <mat-select formControlName="selectedWorkflows" placeholder="Workflows" [(ngModel)]="parameters.identifiers"
       multiple>
-      <mat-option #allSelected (click)="toggleAllSelection()" [value]="0">All</mat-option>
+      <mat-option (click)="toggleAllSelection()" [value]="0">All</mat-option>
       <mat-option *ngFor="let workflow of workflows" [value]="workflow.id" [ngClass]="workflow.id"
-        (click)="tosslePerOne(allSelected.viewValue)" class="workflow-option">
+        (click)="tosslePerOne()" class="workflow-option">
         {{ workflow.label }}
       </mat-option>
     </mat-select>

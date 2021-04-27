@@ -59,7 +59,7 @@ export class WorkflowService {
     for (let identifier of parameters.identifiers) {
       params = params.append('identifiers[]', identifier)
     }
-    for (let state of parameters.status) {
+    for (let state of status) {
       params = params.append('states[]', state)
     }
     params = params.append('after_date', formatDate(parameters.start_date, "yyyy-MM-ddTHH:mm:ss", "fr"))

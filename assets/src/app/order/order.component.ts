@@ -1,7 +1,7 @@
 
 import { Component, ViewChild } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
-import { MatStepper } from '@angular/material';
+import { MatStepper } from '@angular/material/stepper';
 
 import { S3Configuration } from '../models/s3'
 import { StartWorkflowDefinition } from '../models/startWorkflowDefinition'
@@ -60,7 +60,7 @@ export class OrderComponent {
         this.s3Configuration = s3Configuration
       })
 
-    this.workflowService.getWorkflowDefinitions(this.page, this.pageSize, "create", undefined, ["latest"], "simple")
+    this.workflowService.getWorkflowDefinitions(this.page, this.pageSize, "create", undefined, ["latest"], "full")
       .subscribe(definitions => {
         this.services = definitions.data
         this.length = definitions.total

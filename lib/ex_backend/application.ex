@@ -8,7 +8,6 @@ defmodule ExBackend.Application do
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   def start(_type, _args) do
-    import Supervisor.Spec
 
     log_level =
       System.get_env("LOG_LEVEL", "info")
@@ -20,11 +19,11 @@ defmodule ExBackend.Application do
     children = [
       {Phoenix.PubSub, [name: ExBackend.PubSub, adapter: Phoenix.PubSub.PG2]},
       # Start the Ecto repository
-      supervisor(ExBackend.Repo, []),
+      ExBackend.Repo,
 
       # Start the endpoint when the application starts
-      supervisor(ExBackendWeb.Endpoint, []),
-      supervisor(ExBackendWeb.Presence, [])
+      ExBackendWeb.Endpoint,
+      ExBackendWeb.Presence,
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
