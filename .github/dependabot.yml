@@ -1,0 +1,75 @@
+version: 2
+updates:
+- package-ecosystem: mix
+  directory: "/"
+  schedule:
+    interval: weekly
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: bamboo
+    versions:
+    - 1.7.0
+    - 2.0.0
+    - 2.0.1
+    - 2.0.2
+  - dependency-name: ex_aws
+    versions:
+    - 2.1.7
+  - dependency-name: ecto
+    versions:
+    - 3.5.7
+    - 3.5.8
+  - dependency-name: ecto_sql
+    versions:
+    - 3.5.4
+  - dependency-name: postgrex
+    versions:
+    - 0.15.8
+  - dependency-name: step_flow
+    versions:
+    - 0.2.7
+  - dependency-name: comeonin
+    versions:
+    - 5.3.2
+  - dependency-name: httpoison
+    versions:
+    - 1.8.0
+  - dependency-name: bcrypt_elixir
+    versions:
+    - 2.3.0
+  - dependency-name: credo
+    versions:
+    - 1.5.4
+  - dependency-name: timex
+    versions:
+    - 3.6.3
+  - dependency-name: hackney
+    versions:
+    - 1.17.0
+- package-ecosystem: npm
+  directory: "/assets"
+  schedule:
+    interval: weekly
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: css-loader
+    versions:
+    - 5.0.1
+    - 5.0.2
+    - 5.1.0
+    - 5.1.1
+    - 5.1.2
+    - 5.1.3
+    - 5.2.0
+    - 5.2.1
+  - dependency-name: webpack-cli
+    versions:
+    - 4.4.0
+    - 4.5.0
+  - dependency-name: dashjs
+    versions:
+    - 3.2.0
+    - 3.2.1
+  - dependency-name: sass-loader
+    versions:
+    - 10.1.1
