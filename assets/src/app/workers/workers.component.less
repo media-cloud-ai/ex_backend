@@ -1,11 +1,11 @@
 @import '../colors';
 
-h1,
+h1, h2,
 .search-params {
   padding-left: 40px;
 }
 
-.workers {
+.workers, .workers-status {
 
   .worker {
     padding: 5px;
@@ -17,8 +17,16 @@ h1,
     .instance_id,
     .dm_queue_name,
     .creation_date,
-    .termination_date {
+    .termination_date,
+    .worker-name,
+    .job-status, {
       flex: 1;
+    }
+
+    .worker-version,
+    .worker-activity,
+    .current-job, {
+      flex: 0.6;
     }
 
     .ips .ip,

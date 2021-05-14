@@ -3,9 +3,11 @@ import {Component} from '@angular/core'
 import {ActivatedRoute, Router} from '@angular/router'
 import {MatDialog} from '@angular/material/dialog'
 
+import {Message} from '../models/message'
+import {SocketService} from '../services/socket.service'
 import {WorkerService} from '../services/worker.service'
 
-import {Worker} from '../models/worker'
+import {Worker, WorkerStatus} from '../models/worker'
 
 @Component({
   selector: 'workers-component',
@@ -14,7 +16,9 @@ import {Worker} from '../models/worker'
 })
 
 export class WorkersComponent {
+  connection: any
   workers: Worker[]
+  workers_status: WorkerStatus[]
   selectedStatus = []
   sub = undefined;
 
@@ -25,6 +29,7 @@ export class WorkersComponent {
   ]
 
   constructor(
+    private socketService: SocketService,
     private workerService: WorkerService,
     private route: ActivatedRoute,
     private router: Router,
@@ -50,6 +55,28 @@ export class WorkersComponent {
             this.workers = workerPage.data
           }
         })
+
+        this.socketService.initSocket()
+        this.socketService.connectToChannel('notifications:all')
+
+        this.connection = this.socketService.onWorkersStatusUpdated()
+          .subscribe((message: Message) => {
+            this.workers_status = [];
+
+            var workers_status = message.body.content.data;
+            Object.entries(workers_status).forEach(
+              ([id, status]) => {
+                let worker_status = new WorkerStatus(status.instance_id, status.label, status.version, status.activity);
+
+                if (status.current_job) {
+                    worker_status.current_job = status.current_job.job_id;
+                    worker_status.job_status = status.current_job.status;
+                }
+
+                this.workers_status.push(worker_status);
+              }
+            );
+          })
       });
   }
 
