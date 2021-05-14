@@ -4,6 +4,7 @@ import {Action} from './action'
 
 export interface Body {
   workflow_id?: number
+  content?: any
 }
 
 export interface FileEntry {

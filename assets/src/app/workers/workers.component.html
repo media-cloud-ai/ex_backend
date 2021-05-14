@@ -1,7 +1,11 @@
 
 <h1>
-  Live Workers
+  Workers
 </h1>
+
+<h2>
+  Live workers
+</h2>
 
 <div class="search-params">
   <mat-form-field>
@@ -27,7 +31,7 @@
 <ul class="workers">
    <li class="worker header">
     <span class="instance_id">
-      Intance ID
+      Instance ID
     </span>
     <span class="ips">
       IPs
@@ -70,6 +74,54 @@
     </span>
     <span class="termination_date">
       {{worker.termination_date | date: 'd LLL yy H:mm:ss'}}
+    </span>
+  </li>
+</ul>
+
+<h2>
+  Workers status
+</h2>
+
+<ul class="workers-status">
+  <li class="worker header">
+    <span class="instance_id">
+      Instance ID
+    </span>
+    <span class="worker-name">
+      Name
+    </span>
+    <span class="worker-version">
+      Version
+    </span>
+    <span class="worker-activity">
+      Activity
+    </span>
+    <span class="current-job">
+      Current job
+    </span>
+    <span class="job-status">
+      Status
+    </span>
+  </li>
+  <li *ngFor="let status of workers_status"
+      class="worker">
+    <span class="instance_id">
+      {{status.id}}
+    </span>
+    <span class="worker-name">
+      {{status.name}}
+    </span>
+    <span class="worker-version">
+      {{status.version}}
+    </span>
+    <span class="worker-activity">
+      {{status.activity}}
+    </span>
+    <span class="current-job">
+      {{status.current_job}}
+    </span>
+    <span class="job-status">
+      {{status.job_status}}
     </span>
   </li>
 </ul>
