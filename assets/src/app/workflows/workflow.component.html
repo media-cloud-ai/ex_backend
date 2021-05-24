@@ -47,7 +47,7 @@
       </button>
     </span>
     <span
-      class="abort">
+      class="abort" *ngIf=!workflow.is_live>
       <button
         mat-raised-button
         color="warn"
