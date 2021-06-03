@@ -4,7 +4,7 @@ defmodule ExBackendWeb.AuthCase do
 
   import Ecto.Changeset
   alias ExBackendWeb.Auth.Token
-  alias ExeBackend.{Accounts, Repo}
+  alias ExBackend.{Accounts, Repo}
 
   def add_user(email, rights \\ ["administrator"]) do
     user = %{email: email, rights: rights}
