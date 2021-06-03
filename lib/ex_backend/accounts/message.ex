@@ -33,7 +33,7 @@ defmodule ExBackend.Accounts.Message do
   import Bamboo.Email
   alias ExBackend.Mailer
 
-  defp get_url_base() do
+  defp get_url_base do
     hostname =
       System.get_env("EXPOSED_DOMAIN_NAME") || Application.get_env(:ex_backend, :hostname)
 

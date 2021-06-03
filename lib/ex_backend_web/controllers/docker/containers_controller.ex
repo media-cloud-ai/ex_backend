@@ -4,6 +4,7 @@ defmodule ExBackendWeb.Docker.ContainersController do
 
   import ExBackendWeb.Authorize
 
+  alias ExBackend.Docker.NodeConfig
   alias ExBackend.Nodes
   alias ExBackend.Nodes.Node
   alias RemoteDockers.Container
@@ -26,7 +27,7 @@ defmodule ExBackendWeb.Docker.ContainersController do
 
     node_config =
       Nodes.get_node!(node_id)
-      |> ExBackend.Docker.NodeConfig.to_node_config()
+      |> NodeConfig.to_node_config()
 
     container_config = ExBackend.Docker.Container.build_config(parameters)
 
@@ -93,7 +94,7 @@ defmodule ExBackendWeb.Docker.ContainersController do
 
   defp list_containers(%Node{} = node_config) do
     node_config
-    |> ExBackend.Docker.NodeConfig.to_node_config()
+    |> NodeConfig.to_node_config()
     |> Container.list_all!()
   end
 

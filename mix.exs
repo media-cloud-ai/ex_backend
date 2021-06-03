@@ -111,7 +111,7 @@ defmodule ExBackend.Mixfile do
       {:step_flow, "1.0.0-rc7"},
       {:tesla, "~> 1.4.0"},
       {:timex, "~> 3.6"},
-      {:uuid, "~> 1.1"},
+      {:uuid, "~> 1.1"}
     ]
   end
 

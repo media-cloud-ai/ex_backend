@@ -5,6 +5,8 @@ defmodule ExBackend.Application do
 
   require Logger
 
+  alias ExBackend.Migration.All
+
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   def start(_type, _args) do
@@ -30,7 +32,7 @@ defmodule ExBackend.Application do
     opts = [strategy: :one_for_one, name: ExBackend.Supervisor]
     main_supervisor = Supervisor.start_link(children, opts)
 
-    ExBackend.Migration.All.apply_migrations()
+    All.apply_migrations()
     create_root_user_if_needed()
 
     main_supervisor
@@ -43,7 +45,7 @@ defmodule ExBackend.Application do
     :ok
   end
 
-  defp create_root_user_if_needed() do
+  defp create_root_user_if_needed do
     root_email = System.get_env("ROOT_EMAIL") || Application.get_env(:ex_backend, :root_email)
 
     root_password =

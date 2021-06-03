@@ -8,6 +8,8 @@ defmodule ExBackendWeb.UserSocket do
       "//*.media-io.com"
     ]
 
+  alias ExBackendWeb.Auth.Token
+
   ## Channels
   channel("browser:*", ExBackendWeb.BrowserChannel)
   channel("notifications:*", ExBackendWeb.NotificationChannel)
@@ -34,7 +36,7 @@ defmodule ExBackendWeb.UserSocket do
         identifier -> assign(socket, :identifier, identifier)
       end
 
-    case ExBackendWeb.Auth.Token.verify(%{"key" => token}) do
+    case Token.verify(%{"key" => token}) do
       {:ok, verified_user} ->
         {:ok, assign(socket, :user_id, verified_user.id)}
 

@@ -2,6 +2,7 @@ defmodule ExBackendWeb.Docker.ImagesController do
   use ExBackendWeb, :controller
 
   import ExBackendWeb.Authorize
+  alias ExBackend.Docker.NodeConfig
   alias ExBackend.Nodes.Node
   alias RemoteDockers.Image
 
@@ -159,7 +160,7 @@ defmodule ExBackendWeb.Docker.ImagesController do
 
   defp list_images(%Node{} = node_config) do
     node_config
-    |> ExBackend.Docker.NodeConfig.to_node_config()
+    |> NodeConfig.to_node_config()
     |> Image.list_all!()
   end
 
