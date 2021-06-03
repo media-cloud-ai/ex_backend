@@ -34,32 +34,49 @@ defmodule ExBackend.Accounts.Message do
   alias ExBackend.Mailer
 
   defp get_url_base do
-    hostname =
-      System.get_env("EXPOSED_DOMAIN_NAME") || Application.get_env(:ex_backend, :hostname)
+    hostname = get_hostname()
 
-    ssl = System.get_env("SSL") || Application.get_env(:ex_backend, :ssl)
-    port = System.get_env("EXTERNAL_PORT") || Application.get_env(:ex_backend, :external_port)
+    ssl = get_ssl()
+    external_port = get_ext_port()
 
-    protocol =
-      case ssl do
-        true -> "https://"
-        "true" -> "https://"
-        _ -> "http://"
-      end
+    protocol = get_protocol(ssl)
 
-    port =
-      case {ssl, port} do
-        {_, nil} -> ""
-        {_, 80} -> ""
-        {_, "80"} -> ""
-        {true, 443} -> ""
-        {"true", 443} -> ""
-        {true, "443"} -> ""
-        {"true", "443"} -> ""
-        port -> ":" <> port
-      end
+    port = get_port(ssl, external_port)
 
     protocol <> hostname <> port
+  end
+
+  def get_hostname do
+    System.get_env("EXPOSED_DOMAIN_NAME") || Application.get_env(:ex_backend, :hostname)
+  end
+
+  def get_ssl do
+    System.get_env("SSL") || Application.get_env(:ex_backend, :ssl)
+  end
+
+  def get_ext_port do
+    System.get_env("EXTERNAL_PORT") || Application.get_env(:ex_backend, :external_port)
+  end
+
+  def get_protocol(ssl) do
+    case ssl do
+      true -> "https://"
+      "true" -> "https://"
+      _ -> "http://"
+    end
+  end
+
+  def get_port(ssl, ext_port) do
+    case {ssl, ext_port} do
+      {_, nil} -> ""
+      {_, 80} -> ""
+      {_, "80"} -> ""
+      {true, 443} -> ""
+      {"true", 443} -> ""
+      {true, "443"} -> ""
+      {"true", "443"} -> ""
+      ext_port -> ":" <> ext_port
+    end
   end
 
   @doc """
