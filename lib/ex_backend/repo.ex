@@ -14,12 +14,13 @@ defmodule ExBackend.Repo do
   def init(_, opts) do
     case System.get_env("DATABASE_URL") do
       nil ->
-        opts = opts
-                |> get_hostname()
-                |> get_database_port()
-                |> get_database_username()
-                |> get_database_password()
-                |> get_database_name()
+        opts =
+          opts
+          |> get_hostname()
+          |> get_database_port()
+          |> get_database_username()
+          |> get_database_password()
+          |> get_database_name()
 
         Logger.debug("Backend connecting to Postgres with parameters: #{inspect(opts)}")
         {:ok, opts}
