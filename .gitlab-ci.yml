@@ -1,25 +1,19 @@
+variables:
+  POSTGRES_PASSWORD: postgres
+  POSTGRES_USER: postgres
+  POSTGRES_DB: step_flow_test
 
-image: docker:latest
+services:
+  - postgres:12.2-alpine
+  - rabbitmq:3.8.14-alpine
 
 stages:
-  - build
+    - test
+    - publish
 
-variables:
-  CONTAINER_LOCAL_IMAGE: ex_subtil_backend
-  CONTAINER_REGISTRY: registry.gitlab.com
-  CONTAINER_IMAGE_NAME: mediacloudai/ex_subtil_backend
-
-before_script:
-  - docker info
-
-build_image:
-  stage: build
-  script:
-    - export IMAGE_TAG=`git describe --always --tags --first-parent`
-    - docker build -t $CONTAINER_LOCAL_IMAGE .
-    - docker login -u maarnaud -p $REGISTRY_PASSWORD $CONTAINER_REGISTRY
-    - docker tag $CONTAINER_LOCAL_IMAGE $CONTAINER_REGISTRY/$CONTAINER_IMAGE_NAME:$IMAGE_TAG
-    - docker push $CONTAINER_REGISTRY/$CONTAINER_IMAGE_NAME:$IMAGE_TAG
-    - echo $CONTAINER_REGISTRY/$CONTAINER_IMAGE_NAME:$IMAGE_TAG
-  tags:
-    - mediaio
+include:
+  - project: 'media-cloud-ai/ci/pipelines'
+    file: 'elixir/elixir-publish-docker.yml'
+  - project: 'media-cloud-ai/ci/pipelines'
+    ref: fix/add-migration-dir-for-backend
+    file: 'elixir/elixir-base.yml'
