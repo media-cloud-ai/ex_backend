@@ -9,12 +9,8 @@ services:
   - rabbitmq:3.8.14-alpine
 
 stages:
-    - test
     - publish
 
 include:
   - project: 'media-cloud-ai/ci/pipelines'
     file: 'elixir/elixir-publish-docker.yml'
-  - project: 'media-cloud-ai/ci/pipelines'
-    ref: fix/add-migration-dir-for-backend
-    file: 'elixir/elixir-base.yml'

@@ -4,7 +4,7 @@ defmodule ExBackend.Mixfile do
   def project do
     [
       app: :ex_backend,
-      version: get_version(),
+      version: "0.1.18",
       elixir: "~> 1.9",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -126,38 +126,14 @@ defmodule ExBackend.Mixfile do
       "ecto.setup": ["ecto.create"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       dev: ["ecto.drop", "ecto.setup", "phx.server -r priv/repo/seeds.exs"],
-      test: ["ecto.create --quiet", "ecto.migrate", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate", "test"],
+      version: &get_version/1
     ]
   end
 
-  defp get_version do
-    version_from_file()
-    |> handle_file_version()
-    |> String.replace_leading("v", "")
-  end
-
-  defp version_from_file(file \\ "VERSION") do
-    File.read(file)
-  end
-
-  defp handle_file_version({:ok, content}) do
-    content
-  end
-
-  defp handle_file_version({:error, _}) do
-    retrieve_version_from_git()
-  end
-
-  defp retrieve_version_from_git do
-    require Logger
-
-    Logger.debug(
-      "Calling out to `git describe` for the version number. This is slow! You should think about a hook to set the VERSION file"
-    )
-
-    System.cmd("git", ~w{describe --always --tags --first-parent})
-    |> elem(0)
-    |> String.trim()
-    |> IO.inspect()
-  end
+  defp get_version(_) do
+    project() 
+    |> Keyword.fetch!(:version)
+    |> IO.puts()
+  end  
 end
