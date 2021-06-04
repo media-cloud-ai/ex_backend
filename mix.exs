@@ -5,12 +5,19 @@ defmodule ExBackend.Mixfile do
     [
       app: :ex_backend,
       version: get_version(),
-      elixir: "~> 1.6",
-      elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
+      elixir: "~> 1.9",
       start_permanent: Mix.env() == :prod,
-      aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      test_coverage: [tool: ExCoveralls],
+      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ],
+      elixirc_paths: elixirc_paths(Mix.env()),
+      aliases: aliases()
     ]
   end
 
@@ -65,17 +72,18 @@ defmodule ExBackend.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:amqp, "~> 1.4"},
+      {:amqp, "~> 2.1.1"},
       {:bcrypt_elixir, "~> 2.0"},
       {:bamboo, "~> 1.2"},
       {:blue_bird, "~> 0.4.1"},
       {:comeonin, "~> 5.1"},
       {:cors_plug, "~> 2.0"},
-      {:cowboy, "~> 2.8.0"},
+      {:cowboy, "~> 2.9.0"},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:distillery, "~> 2.1"},
-      {:ecto, "~> 3.5.5"},
-      {:ecto_sql, "~> 3.5.3"},
+      {:ecto, "~> 3.6.1"},
+      {:ecto_sql, "~> 3.6.1"},
+      {:excoveralls, "~> 0.13", only: :test},
       {:ex_aws, "~> 2.0"},
       {:ex_aws_s3, "~> 2.0"},
       {:ex_imdb_sniffer, "~> 0.1.1"},
@@ -97,10 +105,10 @@ defmodule ExBackend.Mixfile do
       {:plug, "~> 1.11.0"},
       {:plug_cowboy, "~> 2.0"},
       {:postgrex, "~> 0.15.0"},
-      {:ranch, "~> 1.7.1"},
+      {:ranch, "~> 1.8.0"},
       {:remote_dockers, "1.4.0"},
       {:sigaws, "~> 0.7.2"},
-      {:step_flow, "~> 0.2.9"},
+      {:step_flow, "1.0.0-rc6"},
       {:tesla, "~> 1.4.0"},
       {:timex, "~> 3.6"},
       {:uuid, "~> 1.1"}
@@ -150,6 +158,6 @@ defmodule ExBackend.Mixfile do
     System.cmd("git", ~w{describe --always --tags --first-parent})
     |> elem(0)
     |> String.trim()
-    |> IO.inspect
+    |> IO.inspect()
   end
 end
