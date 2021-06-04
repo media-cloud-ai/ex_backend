@@ -2,6 +2,7 @@ variables:
   POSTGRES_PASSWORD: postgres
   POSTGRES_USER: postgres
   POSTGRES_DB: step_flow_test
+  BUILD_EMPTY_DIRECTORIES: priv/repo/migrations deps/step_flow/priv/repo/migrations
 
 services:
   - postgres:12.2-alpine
