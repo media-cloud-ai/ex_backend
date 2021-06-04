@@ -132,8 +132,8 @@ defmodule ExBackend.Mixfile do
   end
 
   defp get_version(_) do
-    project() 
+    project()
     |> Keyword.fetch!(:version)
     |> IO.puts()
-  end  
+  end
 end

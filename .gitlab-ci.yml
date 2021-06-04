@@ -3,14 +3,20 @@ variables:
   POSTGRES_USER: postgres
   POSTGRES_DB: step_flow_test
   BUILD_EMPTY_DIRECTORIES: priv/repo/migrations deps/step_flow/priv/repo/migrations
+  CONTAINER_REGISTRY: registry.gitlab.com
+  CONTAINER_IMAGE_NAME: mediacloudai/ex_backend
 
 services:
   - postgres:12.2-alpine
   - rabbitmq:3.8.14-alpine
 
 stages:
+    - test
     - publish
 
 include:
   - project: 'media-cloud-ai/ci/pipelines'
     file: 'elixir/elixir-publish-docker.yml'
+  - project: 'media-cloud-ai/ci/pipelines'
+    ref: fix/add-migration-dir-for-backend
+    file: 'elixir/elixir-base.yml'
