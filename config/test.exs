@@ -15,12 +15,12 @@ config :ex_backend, ExBackend.Repo,
   username: "postgres",
   password: "postgres",
   database: "ex_backend_test",
-  hostname: "localhost",
+  hostname: "postgres",
   port: 5432,
   pool: Ecto.Adapters.SQL.Sandbox
 
 config :step_flow, StepFlow.Repo,
-  hostname: "localhost",
+  hostname: "postgres",
   username: "postgres",
   password: "postgres",
   database: "ex_backend_workflow_test",
@@ -49,7 +49,7 @@ config :ex_backend,
   asp_app: "ASP_V3"
 
 config :step_flow, StepFlow.Amqp,
-  hostname: "localhost",
+  hostname: "rabbitmq",
   port: 5672,
   username: "guest",
   password: "guest",
