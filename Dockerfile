@@ -8,7 +8,7 @@ RUN apk update && \
     git \
     make \
     nodejs \
-    python \
+    python3 \
     tar \
     wget \
     g++ \

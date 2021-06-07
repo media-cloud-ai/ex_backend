@@ -4,7 +4,7 @@ defmodule ExBackend.Mixfile do
   def project do
     [
       app: :ex_backend,
-      version: "0.1.18",
+      version: "1.0.0-rc4",
       elixir: "~> 1.9",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
