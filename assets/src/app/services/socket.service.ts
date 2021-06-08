@@ -59,6 +59,12 @@ export class SocketService {
     })
   }
 
+  public onWorkersStatusUpdated(): Observable<Message> {
+      return new Observable<Message>(observer => {
+        this.channel.on('workers_status_updated', (data: Message) => observer.next(data))
+      })
+    }
+
   public onRetryJob(): Observable<Message> {
     return new Observable<Message>(observer => {
       this.channel.on('retry_job', (data: Message) => observer.next(data))
