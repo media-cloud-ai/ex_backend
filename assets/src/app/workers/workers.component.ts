@@ -66,13 +66,9 @@ export class WorkersComponent {
             var workers_status = message.body.content.data;
             Object.entries(workers_status).forEach(
               ([id, status]) => {
-                let worker_status = new WorkerStatus(status.instance_id, status.label, status.version, status.activity);
-
-                if (status.current_job) {
-                    worker_status.current_job = status.current_job.job_id;
-                    worker_status.job_status = status.current_job.status;
-                }
-
+                // console.log("\t => id", id, ", status:", status);
+                let worker_status = Object.assign(new WorkerStatus(), status);
+                // console.log("\t => worker_status:", worker_status);
                 this.workers_status.push(worker_status);
               }
             );
