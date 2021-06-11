@@ -106,10 +106,10 @@
   <li *ngFor="let status of workers_status"
       class="worker">
     <span class="instance_id">
-      {{status.id}}
+      {{status.instance_id}}
     </span>
     <span class="worker-name">
-      {{status.name}}
+      {{status.label}}
     </span>
     <span class="worker-version">
       {{status.version}}
@@ -117,11 +117,17 @@
     <span class="worker-activity">
       {{status.activity}}
     </span>
-    <span class="current-job">
-      {{status.current_job}}
+    <span class="current-job" *ngIf="status.current_job">
+      {{status.current_job.job_id}}
     </span>
-    <span class="job-status">
-      {{status.job_status}}
+    <span class="current-job" *ngIf="!status.current_job">
+      -
+    </span>
+    <span class="job-status" *ngIf="status.current_job">
+      {{status.current_job.status}}
+    </span>
+    <span class="job-status" *ngIf="!status.current_job">
+      -
     </span>
   </li>
 </ul>
