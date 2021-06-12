@@ -73,8 +73,6 @@ export class OrderComponent {
   }
 
   upload() {
-    console.log("COUCOU")
-
     var current = this
     current.completed = 0;
     current.progressBars = [];
@@ -97,22 +95,13 @@ export class OrderComponent {
     var uploader = Evaporate.create(config)
       .then(function (evaporate) {
 
-        console.log("COUCOU")
-
         var overrides = {
           bucket: current.s3Configuration.bucket
         }
 
-        console.log(current.parameters)
-
         Object.entries(current.parameters).forEach(
           ([key, value]) => {
-            console.log(key)
-            console.log(value)
-	    console.log("----------------")
             if (typeof value == 'object') {
-              console.log("#####################TOTO")
-              console.log((<HTMLInputElement>value))
               const file = (<HTMLInputElement>value)
               current.progressBars.push({ name: file.name, progress: 0 });
               var fileConfig = {
