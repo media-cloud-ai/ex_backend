@@ -102,6 +102,9 @@
     <span class="job-status">
       Status
     </span>
+    <span class="worker-orders">
+      Orders
+    </span>
   </li>
   <li *ngFor="let status of workers_status"
       class="worker">
@@ -128,6 +131,45 @@
     </span>
     <span class="job-status" *ngIf="!status.current_job">
       -
+    </span>
+    <span class="worker-orders">
+        <button
+          mat-raised-button
+          color="accent"
+          [disabled]="!status.current_job || status.activity == 'Terminated'"
+          (click)="stopProcess(status.instance_id, status.current_job.job_id)"
+          title="Stop process"
+        >
+          <mat-icon>stop</mat-icon>
+        </button>
+        <button
+          *ngIf="status.activity != 'Suspended'"
+          mat-raised-button
+          color="primary"
+          [disabled]="status.activity == 'Terminated'"
+          (click)="toggleJobConsumption(status.instance_id, 'stop')"
+          title="Stop consuming jobs"
+        >
+          <mat-icon>lock</mat-icon>
+        </button>
+        <button
+          *ngIf="status.activity == 'Suspended'"
+          mat-raised-button
+          color="accent"
+          (click)="toggleJobConsumption(status.instance_id, 'resume')"
+          title="Resume consuming jobs"
+        >
+          <mat-icon>lock_open</mat-icon>
+        </button>
+        <button
+          mat-raised-button
+          color="warn"
+          [disabled]="status.activity == 'Terminated'"
+          (click)="stopWorker(status.instance_id)"
+          title="Stop worker"
+        >
+          <mat-icon>cancel</mat-icon>
+        </button>
     </span>
   </li>
 </ul>

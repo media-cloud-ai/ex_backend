@@ -93,4 +93,33 @@ export class WorkersComponent {
 
     return params
   }
+
+  public stopProcess(id, job_id) {
+    let message = {
+      "job_id": job_id,
+      "type": "stop_process",
+      "parameters": []
+    }
+
+    this.workerService.sendWorkerOrderMessage(id, message)
+      .subscribe(result => {});
+  }
+
+  public toggleJobConsumption(id, prefix) {
+    let message = {
+      "type": prefix + "_consuming_jobs"
+    }
+
+    this.workerService.sendWorkerOrderMessage(id, message)
+      .subscribe(result => {});
+  }
+
+  public stopWorker(id) {
+    let message = {
+      "type": "stop_worker"
+    }
+
+    this.workerService.sendWorkerOrderMessage(id, message)
+      .subscribe(result => {});
+  }
 }
