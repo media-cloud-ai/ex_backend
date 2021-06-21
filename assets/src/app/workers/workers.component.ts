@@ -56,6 +56,13 @@ export class WorkersComponent {
           }
         })
 
+        this.workerService.getWorkerStatuses()
+        .subscribe(workerStatuses => {
+          if(workerStatuses) {
+            this.workers_status = workerStatuses.data;
+          }
+        })
+
         this.socketService.initSocket()
         this.socketService.connectToChannel('notifications:all')
 

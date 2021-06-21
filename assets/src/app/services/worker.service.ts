@@ -5,6 +5,7 @@ import { Observable, of } from 'rxjs'
 import { catchError, map, tap } from 'rxjs/operators'
 
 import { WorkerPage } from '../models/page/worker_page'
+import { WorkersStatus } from '../models/worker'
 
 @Injectable()
 export class WorkerService {
@@ -32,6 +33,16 @@ export class WorkerService {
       .pipe(
         tap(workerPage => this.log('fetched WorkerPage')),
         catchError(this.handleError('getWorkers', undefined))
+      )
+  }
+
+  getWorkerStatuses(): Observable<WorkersStatus> {
+    let params = new HttpParams();
+
+    return this.http.get<WorkerPage>(this.workerStatusesUrl, {params: params})
+      .pipe(
+        tap(workerPage => this.log('fetched WorkersStatus')),
+        catchError(this.handleError('getWorkerStatuses', undefined))
       )
   }
 
