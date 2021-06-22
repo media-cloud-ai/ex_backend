@@ -136,7 +136,7 @@
         <button
           mat-raised-button
           color="accent"
-          [disabled]="!status.current_job || status.activity == 'Terminated'"
+          [disabled]="!status.current_job || status.current_job.status != 'running' || status.activity == 'Terminated'"
           (click)="stopProcess(status.instance_id, status.current_job.job_id)"
           title="Stop process"
         >
