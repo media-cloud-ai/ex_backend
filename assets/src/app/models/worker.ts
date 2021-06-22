@@ -5,6 +5,7 @@ export class Worker {
 
 
 export class WorkerJobStatus {
+  execution_duration?: number
   job_id: number
   status: string
 }

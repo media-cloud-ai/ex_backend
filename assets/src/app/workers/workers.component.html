@@ -102,6 +102,9 @@
     <span class="job-status">
       Job status
     </span>
+    <span class="job-duration">
+      Job duration
+    </span>
     <span class="worker-orders">
       Orders
     </span>
@@ -130,6 +133,12 @@
       {{status.current_job.status}}
     </span>
     <span class="job-status" *ngIf="!status.current_job">
+      -
+    </span>
+    <span class="job-duration" *ngIf="status.current_job" title="{{status.current_job.execution_duration}}">
+      {{status.current_job.execution_duration * 1000 | duration : 'human' }}
+    </span>
+    <span class="job-duration" *ngIf="!status.current_job">
       -
     </span>
     <span class="worker-orders">
