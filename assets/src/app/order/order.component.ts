@@ -160,8 +160,8 @@ export class OrderComponent {
       const parameter = this.selectedService.start_parameters[i];
 
       let value = this.parameters[parameter.id];
-      if (value && value._fileNames) {
-        value = value._fileNames;
+      if (value && value.name) {
+        value = value.name;
         if (this.selectedService.reference === undefined) {
           this.selectedService.reference = value;
         }
