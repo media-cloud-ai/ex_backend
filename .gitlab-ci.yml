@@ -4,7 +4,7 @@ variables:
   POSTGRES_DB: step_flow_test
   BUILD_EMPTY_DIRECTORIES: priv/repo/migrations deps/step_flow/priv/repo/migrations
   CONTAINER_REGISTRY: registry.gitlab.com
-  CONTAINER_IMAGE_NAME: mediacloudai/ex_backend
+  CONTAINER_IMAGE_NAME: media-cloud-ai/backend/ex_backend
 
 services:
   - postgres:12.2-alpine
