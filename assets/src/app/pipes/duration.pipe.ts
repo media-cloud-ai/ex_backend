@@ -61,7 +61,7 @@ export class DurationPipe implements PipeTransform {
     }
 
     if (format === 'timecode_ms') {
-      display += '.' + this.pad_left(duration.milliseconds(), 3, '0')
+      display += '.' + this.pad_left(Math.round(duration.milliseconds()), 3, '0')
       return display
     }
 
