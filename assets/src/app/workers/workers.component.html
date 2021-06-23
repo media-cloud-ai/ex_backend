@@ -142,7 +142,7 @@
       -
     </span>
     <span class="job-duration" *ngIf="status.current_job" title="{{status.current_job.execution_duration}}">
-      {{status.current_job.execution_duration * 1000 | duration : 'human' }}
+      {{status.current_job.execution_duration * 1000 | duration : 'timecode_ms' }}
     </span>
     <span class="job-duration" *ngIf="!status.current_job">
       -
