@@ -73,7 +73,7 @@
       <span class="count">{{getStepsCount()}} / {{getTotalSteps()}}</span>
     </span>
     <span
-      class="abort">
+      class="abort" *ngIf=!workflow.is_live>
       <button
         mat-raised-button
         color="warn"
@@ -86,12 +86,13 @@
       </button>
     </span>
     <span
-      class="stop">
+      class="stop" *ngIf=workflow.is_live>
       <button
         mat-raised-button
         color="warn"
         [disabled]=!can_stop
         (click)="stop(workflow.id)"
+        *ngIf="right_abort"
         >
         <mat-icon>stop</mat-icon>
         Stop

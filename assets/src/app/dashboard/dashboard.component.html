@@ -1,51 +1,32 @@
-
 <h1>
   Dashboard
 </h1>
 
 <h3>Workflow history</h3>
-<div id="chartContainer">
-  <span class=spinner>
+
+<div class=selectors>
+  <workflow-search-bar [parameters]="parameters" (parametersEvent)="updateWorkflows($event)"></workflow-search-bar>
+</div>
+
+<div id="chartContainer" [ngSwitch]="lineChartData?.length">
+  <span class=spinner *ngSwitchCase="undefined">
     <img src="/bundles/images/media-io.animated.svg" width="80px" height="80px" />
     <span class=text>
       Loading ...
     </span>
   </span>
+  <span class=spinner *ngSwitchCase="0">
+    <span class=no_data>
+      No Data
+    </span>
+  </span>
+  <div class="canvasWrapper" *ngSwitchDefault>
+    <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+      [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins">
+    </canvas>
+  </div>
 </div>
 
-<div class=selectors>
-  <mat-form-field>
-    <mat-select
-      placeholder="Workflows"
-      [(ngModel)]="selectedWorkflows"
-      (selectionChange)="updateWorkflows()"
-      multiple
-      >
-      <mat-option
-        *ngFor="let workflow of workflows"
-        [value]="workflow.id"
-        [ngClass]="workflow.id"
-        >
-        {{ workflow.label }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-select
-      placeholder="Scale"
-      [(ngModel)]="selectedScale"
-      (selectionChange)="updateScale()"
-      >
-      <mat-option
-        *ngFor="let scale of scales"
-        [value]="scale.id"
-        [ngClass]="scale.id"
-        >
-        {{ scale.label }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-</div>
 
 <div *ngIf="application">
 

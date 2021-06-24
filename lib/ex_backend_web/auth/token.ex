@@ -2,9 +2,10 @@ defmodule ExBackendWeb.Auth.Token do
   @behaviour Phauxth.Token
   @moduledoc false
 
-  alias Phoenix.Token
   alias ExBackend.Accounts
+  alias ExBackend.Accounts.LoginConfirm
   alias ExBackendWeb.Endpoint
+  alias Phoenix.Token
 
   @token_salt "KBPzeh/8"
 
@@ -34,7 +35,7 @@ defmodule ExBackendWeb.Auth.Token do
 
   @impl true
   def verify(%{"password" => _password} = params, _opts) do
-    ExBackend.Accounts.LoginConfirm.authenticate(params)
+    LoginConfirm.authenticate(params)
   end
 
   @impl true

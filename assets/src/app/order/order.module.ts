@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { MaterialFileInputModule } from 'ngx-material-file-input';
+import { NgxMatFileInputModule } from '@angular-material-components/file-input';
 
 import { OrdersComponent } from './orders.component';
 import { OrderComponent } from './order.component';
@@ -26,6 +26,7 @@ import {MatChipsModule} from '@angular/material/chips';
 
 import {GenericModule} from '../generic/generic.module'
 import {PipesModule} from '../pipes/pipes.module'
+import {SearchBarModule}      from '../search_bar/search_bar.module'
 
 export const ROUTES: Routes = [
   { path: '', component: OrdersComponent },
@@ -50,11 +51,12 @@ export const ROUTES: Routes = [
     MatSliderModule,
     MatStepperModule,
     MatTabsModule,
-    MaterialFileInputModule,
+    NgxMatFileInputModule,
     PipesModule,
     MatTooltipModule,
     MatChipsModule,
-    RouterModule.forChild(ROUTES)
+    RouterModule.forChild(ROUTES),
+    SearchBarModule
   ],
   declarations: [
     OrderComponent,

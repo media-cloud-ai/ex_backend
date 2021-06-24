@@ -26,6 +26,7 @@ export class OrderComponent {
   @ViewChild('stepper') stepper: MatStepper;
   length = 1000
   pageSize = 10
+  page = 0
   pageSizeOptions = [
     10,
     20,
@@ -59,7 +60,7 @@ export class OrderComponent {
         this.s3Configuration = s3Configuration
       })
 
-    this.workflowService.getWorkflowDefinitions()
+    this.workflowService.getWorkflowDefinitions(this.page, this.pageSize, "create", undefined, ["latest"], "full")
       .subscribe(definitions => {
         this.services = definitions.data
         this.length = definitions.total
@@ -101,9 +102,8 @@ export class OrderComponent {
         Object.entries(current.parameters).forEach(
           ([key, value]) => {
             if (typeof value == 'object') {
-              const file = (<HTMLInputElement>value).files[0]
+              const file = (<HTMLInputElement>value)
               current.progressBars.push({ name: file.name, progress: 0 });
-
               var fileConfig = {
                 name: file.name,
                 file: file,
@@ -160,8 +160,8 @@ export class OrderComponent {
       const parameter = this.selectedService.start_parameters[i];
 
       let value = this.parameters[parameter.id];
-      if (value && value._fileNames) {
-        value = value._fileNames;
+      if (value && value.name) {
+        value = value.name;
         if (this.selectedService.reference === undefined) {
           this.selectedService.reference = value;
         }
@@ -203,7 +203,7 @@ export class OrderComponent {
   }
 
   eventGetWorkflows(event) {
-    this.workflowService.getWorkflowDefinitions(event.pageIndex, event.pageSize)
+    this.workflowService.getWorkflowDefinitions(event.pageIndex, event.pageSize, "create", undefined, ["latest"], "simple")
       .subscribe(definitions => {
         this.services = definitions.data
         this.length = definitions.total

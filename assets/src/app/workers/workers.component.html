@@ -93,35 +93,98 @@
     <span class="worker-version">
       Version
     </span>
+    <span class="worker-queue">
+      Queue
+    </span>
     <span class="worker-activity">
-      Activity
+      Worker activity
     </span>
     <span class="current-job">
       Current job
     </span>
     <span class="job-status">
-      Status
+      Job status
+    </span>
+    <span class="job-duration">
+      Job duration
+    </span>
+    <span class="worker-orders">
+      Orders
     </span>
   </li>
   <li *ngFor="let status of workers_status"
       class="worker">
     <span class="instance_id">
-      {{status.id}}
+      {{status.instance_id}}
     </span>
     <span class="worker-name">
-      {{status.name}}
+      {{status.label}}
     </span>
     <span class="worker-version">
       {{status.version}}
     </span>
+    <span class="worker-queue">
+      {{status.queue_name}}
+    </span>
     <span class="worker-activity">
       {{status.activity}}
     </span>
-    <span class="current-job">
-      {{status.current_job}}
+    <span class="current-job" *ngIf="status.current_job">
+      {{status.current_job.job_id}}
     </span>
-    <span class="job-status">
-      {{status.job_status}}
+    <span class="current-job" *ngIf="!status.current_job">
+      -
+    </span>
+    <span class="job-status" *ngIf="status.current_job">
+      {{status.current_job.status}}
+    </span>
+    <span class="job-status" *ngIf="!status.current_job">
+      -
+    </span>
+    <span class="job-duration" *ngIf="status.current_job" title="{{status.current_job.execution_duration}}">
+      {{status.current_job.execution_duration * 1000 | duration : 'timecode_ms' }}
+    </span>
+    <span class="job-duration" *ngIf="!status.current_job">
+      -
+    </span>
+    <span class="worker-orders">
+        <button
+          mat-raised-button
+          color="accent"
+          [disabled]="!status.current_job || status.current_job.status != 'running' || status.activity == 'Terminated'"
+          (click)="stopProcess(status.instance_id, status.current_job.job_id)"
+          title="Stop process"
+        >
+          <mat-icon>stop</mat-icon>
+        </button>
+        <button
+          *ngIf="status.activity != 'Suspended'"
+          mat-raised-button
+          color="primary"
+          [disabled]="status.activity == 'Terminated'"
+          (click)="toggleJobConsumption(status.instance_id, 'stop')"
+          title="Stop consuming jobs"
+        >
+          <mat-icon>lock</mat-icon>
+        </button>
+        <button
+          *ngIf="status.activity == 'Suspended'"
+          mat-raised-button
+          color="accent"
+          (click)="toggleJobConsumption(status.instance_id, 'resume')"
+          title="Resume consuming jobs"
+        >
+          <mat-icon>lock_open</mat-icon>
+        </button>
+        <button
+          mat-raised-button
+          color="warn"
+          [disabled]="status.activity == 'Terminated'"
+          (click)="stopWorker(status.instance_id)"
+          title="Stop worker"
+        >
+          <mat-icon>cancel</mat-icon>
+        </button>
     </span>
   </li>
 </ul>

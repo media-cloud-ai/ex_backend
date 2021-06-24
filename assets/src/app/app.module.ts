@@ -5,7 +5,7 @@ import {
   HTTP_INTERCEPTORS
 } from '@angular/common/http'
 import {NgModule}         from '@angular/core'
-import {FormsModule}      from '@angular/forms'
+import {FormsModule, ReactiveFormsModule}      from '@angular/forms'
 import {
   BrowserModule,
   Title
@@ -36,7 +36,9 @@ import {MatToolbarModule} from '@angular/material/toolbar'
 
 
 import {MatStepperModule} from '@angular/material/stepper'
+import {NgxMatDatetimePickerModule, NgxMatNativeDateModule} from '@angular-material-components/datetime-picker';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
+import { ChartsModule } from 'ng2-charts'
 
 import {
   MomentDateAdapter,
@@ -56,6 +58,7 @@ import {CookieService}           from 'ngx-cookie-service'
 import {AppRoutingModule}        from './app-routing.module'
 import {SocketModule}            from './socket.module'
 import {WorkersModule}            from './workers/workers.module'
+import {SearchBarModule}      from './search_bar/search_bar.module'
 
 import {CatalogComponent}        from './catalog/catalog.component'
 import {ConfirmComponent}        from './confirm/confirm.component'
@@ -137,6 +140,7 @@ const EX_BACKEND_DATE_FORMATS = {
     AppRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
+    ChartsModule,
     GenericModule,
     FormsModule,
     HttpClientModule,
@@ -163,7 +167,11 @@ const EX_BACKEND_DATE_FORMATS = {
     MatStepperModule,
     MatTabsModule,
     MatToolbarModule,
+    NgxMatDatetimePickerModule,
+    NgxMatNativeDateModule,
     PipesModule,
+    ReactiveFormsModule,
+    SearchBarModule,
     SocketModule,
     WorkersModule,
   ],

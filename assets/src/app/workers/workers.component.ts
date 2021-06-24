@@ -56,6 +56,13 @@ export class WorkersComponent {
           }
         })
 
+        this.workerService.getWorkerStatuses()
+        .subscribe(workerStatuses => {
+          if(workerStatuses) {
+            this.workers_status = workerStatuses.data;
+          }
+        })
+
         this.socketService.initSocket()
         this.socketService.connectToChannel('notifications:all')
 
@@ -66,13 +73,7 @@ export class WorkersComponent {
             var workers_status = message.body.content.data;
             Object.entries(workers_status).forEach(
               ([id, status]) => {
-                let worker_status = new WorkerStatus(status.instance_id, status.label, status.version, status.activity);
-
-                if (status.current_job) {
-                    worker_status.current_job = status.current_job.job_id;
-                    worker_status.job_status = status.current_job.status;
-                }
-
+                let worker_status = Object.assign(new WorkerStatus(), status);
                 this.workers_status.push(worker_status);
               }
             );
@@ -98,5 +99,34 @@ export class WorkersComponent {
     }
 
     return params
+  }
+
+  public stopProcess(id, job_id) {
+    let message = {
+      "job_id": job_id,
+      "type": "stop_process",
+      "parameters": []
+    }
+
+    this.workerService.sendWorkerOrderMessage(id, message)
+      .subscribe(result => {});
+  }
+
+  public toggleJobConsumption(id, prefix) {
+    let message = {
+      "type": prefix + "_consuming_jobs"
+    }
+
+    this.workerService.sendWorkerOrderMessage(id, message)
+      .subscribe(result => {});
+  }
+
+  public stopWorker(id) {
+    let message = {
+      "type": "stop_worker"
+    }
+
+    this.workerService.sendWorkerOrderMessage(id, message)
+      .subscribe(result => {});
   }
 }

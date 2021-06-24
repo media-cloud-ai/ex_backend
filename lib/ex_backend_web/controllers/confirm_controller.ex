@@ -3,9 +3,10 @@ defmodule ExBackendWeb.ConfirmController do
 
   import ExBackendWeb.Authorize
   alias ExBackend.Accounts
+  alias ExBackendWeb.Auth.Token
 
   def index(conn, params) do
-    case ExBackendWeb.Auth.Token.verify(params) do
+    case Token.verify(params) do
       {:ok, nil} ->
         error(conn, :unauthorized, 401)
 

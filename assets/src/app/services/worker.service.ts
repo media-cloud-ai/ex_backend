@@ -5,10 +5,12 @@ import { Observable, of } from 'rxjs'
 import { catchError, map, tap } from 'rxjs/operators'
 
 import { WorkerPage } from '../models/page/worker_page'
+import { WorkersStatus } from '../models/worker'
 
 @Injectable()
 export class WorkerService {
   private workersUrl = '/api/step_flow/live_workers'
+  private workerStatusesUrl = '/api/step_flow/workers'
 
   constructor(private http: HttpClient) { }
 
@@ -31,6 +33,26 @@ export class WorkerService {
       .pipe(
         tap(workerPage => this.log('fetched WorkerPage')),
         catchError(this.handleError('getWorkers', undefined))
+      )
+  }
+
+  getWorkerStatuses(): Observable<WorkersStatus> {
+    let params = new HttpParams();
+
+    return this.http.get<WorkerPage>(this.workerStatusesUrl, {params: params})
+      .pipe(
+        tap(workerPage => this.log('fetched WorkersStatus')),
+        catchError(this.handleError('getWorkerStatuses', undefined))
+      )
+  }
+
+  sendWorkerOrderMessage(instance_id: string, message: object): Observable<any> {
+    console.log("Send order to worker:", instance_id, message);
+
+    return this.http.put<any>(this.workerStatusesUrl + '/' + instance_id, message)
+      .pipe(
+        tap(registery => this.log('put worker order message')),
+        catchError(this.handleError('sendWorkerOrderMessage', undefined))
       )
   }
 

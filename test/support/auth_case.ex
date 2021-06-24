@@ -3,6 +3,7 @@ defmodule ExBackendWeb.AuthCase do
   @moduledoc false
 
   import Ecto.Changeset
+  alias ExBackendWeb.Auth.Token
   alias ExBackend.{Accounts, Repo}
 
   def add_user(email, rights \\ ["administrator"]) do
@@ -28,7 +29,7 @@ defmodule ExBackendWeb.AuthCase do
   end
 
   def add_token_conn(conn, user) do
-    user_token = ExBackendWeb.Auth.Token.sign(%{"email" => user.email})
+    user_token = Token.sign(%{"email" => user.email})
 
     conn
     |> put_req_header("accept", "application/json")
@@ -36,6 +37,6 @@ defmodule ExBackendWeb.AuthCase do
   end
 
   def gen_key(email) do
-    ExBackendWeb.Auth.Token.sign(%{"email" => email})
+    Token.sign(%{"email" => email})
   end
 end

@@ -2,8 +2,9 @@ defmodule ExBackendWeb.UserController do
   use ExBackendWeb, :controller
 
   import ExBackendWeb.Authorize
-  alias Phauxth.Log
   alias ExBackend.Accounts
+  alias ExBackendWeb.Auth.Token
+  alias Phauxth.Log
 
   action_fallback(ExBackendWeb.FallbackController)
 
@@ -17,7 +18,7 @@ defmodule ExBackendWeb.UserController do
   end
 
   def create(conn, %{"user" => %{"email" => email} = user_params}) do
-    token = ExBackendWeb.Auth.Token.sign(%{"email" => email})
+    token = Token.sign(%{"email" => email})
 
     with {:ok, user} <- Accounts.create_user(user_params) do
       Log.info(%Log{user: user.id, message: "user created"})

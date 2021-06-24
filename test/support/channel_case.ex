@@ -25,11 +25,13 @@ defmodule ExBackendWeb.ChannelCase do
     end
   end
 
+  alias Ecto.Adapters.SQL.Sandbox
+
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(ExBackend.Repo)
+    :ok = Sandbox.checkout(ExBackend.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(ExBackend.Repo, {:shared, self()})
+      Sandbox.mode(ExBackend.Repo, {:shared, self()})
     end
 
     :ok
