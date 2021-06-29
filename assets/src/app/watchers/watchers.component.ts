@@ -1,6 +1,7 @@
 
 import {Component, ViewChild} from '@angular/core'
-import {MatCheckboxModule, PageEvent} from '@angular/material'
+import {MatCheckboxModule} from '@angular/material/checkbox'
+import {PageEvent} from '@angular/material/paginator'
 import {ActivatedRoute, Router} from '@angular/router'
 
 import {WatcherService} from '../services/watcher.service'

@@ -37,6 +37,7 @@ export class OrdersComponent {
   technician: boolean
 
   parameters: WorkflowQueryParams
+  selectedMode = []
   workflows: WorkflowPage
   connections: any = []
 
@@ -57,6 +58,10 @@ export class OrdersComponent {
         "acs_and_asp",
         "speech_to_text",
         "dialog_enhancement"
+      ],
+      mode: [
+        "file",
+        "live"
       ],
       start_date: yesterday,
       end_date: today,
@@ -120,7 +125,7 @@ export class OrdersComponent {
     this.workflowService.getWorkflows(
       page,
       pageSize,
-      parameters
+      parameters,
     ).subscribe(workflowPage => {
       if (workflowPage === undefined) {
         this.length = undefined

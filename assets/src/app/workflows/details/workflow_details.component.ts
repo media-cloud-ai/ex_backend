@@ -1,7 +1,7 @@
 import {Component} from '@angular/core'
 import {ActivatedRoute, Router} from '@angular/router'
 
-import {MatDialog} from '@angular/material'
+import {MatDialog} from '@angular/material/dialog'
 import {Message} from '../../models/message'
 import {AuthService} from '../../authentication/auth.service'
 import {SocketService} from '../../services/socket.service'
@@ -22,6 +22,7 @@ export class WorkflowDetailsComponent {
   workflow: Workflow
   renderer: WorkflowRenderer
   can_abort: boolean = false
+  can_stop: boolean = true
   parameters_opened: boolean = false
   connection: any
   messages: Message[] = []
@@ -117,6 +118,20 @@ export class WorkflowDetailsComponent {
       if (workflow !== undefined) {
         console.log('Abort workflow!')
         this.workflowService.sendWorkflowEvent(workflow.id, {event: 'abort'})
+        .subscribe(response => {
+          console.log(response)
+        })
+      }
+    })
+  }
+
+  stop(workflow_id): void {
+    let dialogRef = this.dialog.open(WorkflowAbortDialogComponent, {data: {'workflow': this.workflow}})
+
+    dialogRef.afterClosed().subscribe(workflow => {
+      if (workflow !== undefined) {
+        console.log('Stop workflow!')
+        this.workflowService.sendWorkflowEvent(workflow.id, {event: 'stop'})
         .subscribe(response => {
           console.log(response)
         })

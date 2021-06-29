@@ -8,17 +8,23 @@
 
   <div class="info">
     <span class="reference">
-      <div>
+      <div class="item">
         <label>Reference:</label>
         <video-title-component [id]=workflow.reference></video-title-component>
       </div>
-      <div>
+      <div class="item">
         <label>Workflow version:</label>
         <span>
           {{workflow.version_major}}.{{workflow.version_minor}}.{{workflow.version_micro}}
         </span>
       </div>
-      <div>
+      <div class="item">
+        <label>Workflow mode:</label>
+        <span>
+          {{workflow.is_live ? 'Live' : 'File'}}
+        </span>
+      </div>
+      <div class="item">
         <label>Workflow tags:</label>
         <mat-chip-list>
           <mat-chip
@@ -67,7 +73,7 @@
       <span class="count">{{getStepsCount()}} / {{getTotalSteps()}}</span>
     </span>
     <span
-      class="abort">
+      class="abort" *ngIf=!workflow.is_live>
       <button
         mat-raised-button
         color="warn"
@@ -77,6 +83,19 @@
         >
         <mat-icon>cancel</mat-icon>
         Abort
+      </button>
+    </span>
+    <span
+      class="stop" *ngIf=workflow.is_live>
+      <button
+        mat-raised-button
+        color="warn"
+        [disabled]=!can_stop
+        (click)="stop(workflow.id)"
+        *ngIf="right_abort"
+        >
+        <mat-icon>stop</mat-icon>
+        Stop
       </button>
     </span>
   </div>
@@ -91,7 +110,7 @@
       >
       <workflow-step-details-component
         [step]=step
-        workflowId={{workflow.id}}>
+        [workflow]=workflow>
       </workflow-step-details-component>
     </span>
   </div>

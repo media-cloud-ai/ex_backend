@@ -14,11 +14,14 @@
     <span class="identifier">#{{ workflow.id }}</span>
     <span class="reference">
       <video-title-component [id]=workflow.reference></video-title-component>
+      <span class="badge-live" *ngIf=workflow.is_live>
+        LIVE
+      </span>
     </span>
     <span class="created">
       <label>
         Created at
-      </label> 
+      </label>
       <span class="date">
         {{workflow.created_at | date: 'd LLL yy'}}
       </span>
@@ -44,7 +47,7 @@
       </button>
     </span>
     <span
-      class="abort">
+      class="abort" *ngIf=!workflow.is_live>
       <button
         mat-raised-button
         color="warn"
@@ -54,6 +57,18 @@
         >
         <mat-icon>cancel</mat-icon>
         Abort
+      </button>
+    </span>
+    <span
+      class="stop" *ngIf=workflow.is_live>
+      <button
+        mat-raised-button
+        color="warn"
+        [disabled]=!can_stop
+        (click)="stop(workflow.id)"
+        >
+        <mat-icon>stop</mat-icon>
+        Stop
       </button>
     </span>
     <span

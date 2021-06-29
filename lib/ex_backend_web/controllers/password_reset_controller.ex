@@ -1,6 +1,7 @@
 defmodule ExBackendWeb.PasswordResetController do
   use ExBackendWeb, :controller
   alias ExBackend.Accounts
+  alias ExBackendWeb.Auth.Token
 
   def create(conn, %{"password_reset" => %{"email" => email}}) do
     case Accounts.create_password_reset(%{"email" => email}) do
@@ -12,7 +13,7 @@ defmodule ExBackendWeb.PasswordResetController do
         |> render("error.json", error: message)
 
       user ->
-        token = ExBackendWeb.Auth.Token.sign(%{"email" => user.email})
+        token = Token.sign(%{"email" => user.email})
 
         Accounts.Message.reset_request(email, token)
         message = "Check your inbox for instructions on how to reset your password"
@@ -25,7 +26,7 @@ defmodule ExBackendWeb.PasswordResetController do
   end
 
   def update(conn, %{"password_reset" => params}) do
-    case ExBackendWeb.Auth.Token.verify(params, mode: :pass_reset) do
+    case Token.verify(params, mode: :pass_reset) do
       {:ok, nil} ->
         put_status(conn, :unprocessable_entity)
         |> put_view(ExBackendWeb.PasswordResetView)

@@ -1,167 +1,190 @@
 
-<div *ngIf=nodes>
-  <h1>
-    Nodes
-  </h1>
-  <span>
-    <button
-      mat-raised-button
-      color="accent"
-      (click)="addNode()"
-      >
-      <i class="material-icons">add</i>
-      New Node
-    </button>
-  </span>
-  <ul class=nodes>
-    <li
-      *ngFor="let node of nodes"
-      [ngClass]="{selected: selectedNode == node}"
-      class=node>
-      <div>
-        <label>
-          {{node.label}}
-        </label>
-        <span
-          class=hostname>
-          {{node.hostname}}:{{node.port}}
-        </span>
-        <span
-          *ngIf=node.ssl.certfile
-          class="ssl">
-          SSL
-        </span>
-      </div>
-      <button
-        mat-raised-button
-        color="accent"
-        (click)="switchSelectedNode(node)"
-        *ngIf="selectedNode != node"
-        >
-        <i class="material-icons">check_box_outline_blank</i>
-        Select
-      </button>
-      <button
-        mat-raised-button
-        (click)="switchSelectedNode(node)"
-        *ngIf="selectedNode == node"
-        >
-        <i class="material-icons">check_box</i>
-        Unselect
-      </button>
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="showImages(node)"
-        >
-        <i class="material-icons">burst_mode</i>
-        Images
-      </button>
-      <button
-        mat-raised-button
-        color="warn"
-        (click)="deleteNode(node.id)"
-        >
-        <i class="material-icons">delete_forever</i>
-        Remove
-      </button>
-    </li>
-  </ul>
-</div>
-
 <h1>
   Workers
 </h1>
-<div class="containers-creation-bar">
-  <div class=workers_selector>
-    <mat-form-field color="accent">
-      <mat-select
-        class="workers-select"
-        placeholder="Worker"
-        [(ngModel)]="selectedWorker"
+
+<h2>
+  Live workers
+</h2>
+
+<div class="search-params">
+  <mat-form-field>
+    <mat-select
+      class="status-select"
+      placeholder="Status"
+      [(ngModel)]="selectedStatus"
+      (selectionChange)="updateSearch()"
+      multiple
+      >
+      <mat-option
+        *ngFor="let state of status"
+        [value]="state.id"
+        [ngClass]="state.id"
+        class="state-option"
         >
-        <mat-option
-          *ngFor="let image of images"
-          [value]="image">
-          {{image.node_config.label}} | {{image.params.image | dockerImage}} - {{image.params.image | dockerImageVersion}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-  <button mat-raised-button
-    color="accent"
-    (click)="addContainer()"
-    [disabled]="!selectedWorker">
-      <i class="material-icons">add</i>
-      Add a worker
-  </button>
+        {{ state.label }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 </div>
 
-<ul class="containers">
-   <li class="container header">
-    <span class="id">
-      ID
+<ul class="workers">
+   <li class="worker header">
+    <span class="instance_id">
+      Instance ID
     </span>
-    <span class="name">
-      Name
+    <span class="ips">
+      IPs
     </span>
-    <span class="image">
-      Image
+    <span class="ports">
+      Ports
     </span>
-    <span class="version">
-      Version
+    <span class="dm_queue_name">
+      Direct messaging queue name
     </span>
-    <span class="host">
-      Node
+    <span class="creation_date">
+      Creation date
     </span>
-    <span class="status">
-      Status
-    </span>
-    <span class="actions">
+    <span class="termination_date">
+      Termination Date
     </span>
   </li>
   <li
-    *ngFor="let container of containers"
-    class="container"
+    *ngFor="let worker of workers"
+    class="worker"
     >
-    <span class="id">
-      {{container.id | slice:0:12}}
+    <span class="instance_id">
+      {{worker.instance_id}}
     </span>
-    <span class="name">
-      {{container.names[0] | slice:1}}
+    <span class="ips">
+      <span class="ip" *ngFor="let ip of worker.ips">
+        {{ip}}
+      </span>
     </span>
-    <span class="image">
-      {{container.image | dockerImage}}
+    <span class="ports">
+      <span class="port" *ngFor="let port of worker.ports">
+        {{port}}
+      </span>
     </span>
-    <span class="version">
-      {{container.image | dockerImageVersion}}
+    <span class="dm_queue_name">
+      {{worker.direct_messaging_queue_name}}
     </span>
-    <span class="host">
-      {{container.node_config.label}}
+    <span class="creation_date">
+      {{worker.creation_date | date: 'd LLL yy H:mm:ss'}}
     </span>
-    <span class="status"
-      [ngClass]="container.state">
-      {{container.status}}
+    <span class="termination_date">
+      {{worker.termination_date | date: 'd LLL yy H:mm:ss'}}
     </span>
-    <span class="actions">
-      <button mat-raised-button
-        color="primary"
-        (click)="actionContainer(container.id, container.state)"
-        *ngIf="container.state != 'running'">
-          <i class="material-icons">play_circle_outline</i> Start
-      </button>
-      <button mat-raised-button
-        color="accent"
-        (click)="actionContainer(container.id, container.state)"
-        *ngIf="container.state == 'running'">
-          <i class="material-icons">pause_circle_outline</i> Stop
-      </button>
-      <button mat-raised-button
-        color="warn"
-        (click)="removeContainer(container.id)"
-        [disabled]="(container.state == 'running')">
-          <i class="material-icons">delete</i> Delete
-      </button>
+  </li>
+</ul>
+
+<h2>
+  Workers status
+</h2>
+
+<ul class="workers-status">
+  <li class="worker header">
+    <span class="instance_id">
+      Instance ID
+    </span>
+    <span class="worker-name">
+      Name
+    </span>
+    <span class="worker-version">
+      Version
+    </span>
+    <span class="worker-queue">
+      Queue
+    </span>
+    <span class="worker-activity">
+      Worker activity
+    </span>
+    <span class="current-job">
+      Current job
+    </span>
+    <span class="job-status">
+      Job status
+    </span>
+    <span class="job-duration">
+      Job duration
+    </span>
+    <span class="worker-orders">
+      Orders
+    </span>
+  </li>
+  <li *ngFor="let status of workers_status"
+      class="worker">
+    <span class="instance_id">
+      {{status.instance_id}}
+    </span>
+    <span class="worker-name">
+      {{status.label}}
+    </span>
+    <span class="worker-version">
+      {{status.version}}
+    </span>
+    <span class="worker-queue">
+      {{status.queue_name}}
+    </span>
+    <span class="worker-activity">
+      {{status.activity}}
+    </span>
+    <span class="current-job" *ngIf="status.current_job">
+      {{status.current_job.job_id}}
+    </span>
+    <span class="current-job" *ngIf="!status.current_job">
+      -
+    </span>
+    <span class="job-status" *ngIf="status.current_job">
+      {{status.current_job.status}}
+    </span>
+    <span class="job-status" *ngIf="!status.current_job">
+      -
+    </span>
+    <span class="job-duration" *ngIf="status.current_job" title="{{status.current_job.execution_duration}}">
+      {{status.current_job.execution_duration * 1000 | duration : 'timecode_ms' }}
+    </span>
+    <span class="job-duration" *ngIf="!status.current_job">
+      -
+    </span>
+    <span class="worker-orders">
+        <button
+          mat-raised-button
+          color="accent"
+          [disabled]="!status.current_job || status.current_job.status != 'running' || status.activity == 'Terminated'"
+          (click)="stopProcess(status.instance_id, status.current_job.job_id)"
+          title="Stop process"
+        >
+          <mat-icon>stop</mat-icon>
+        </button>
+        <button
+          *ngIf="status.activity != 'Suspended'"
+          mat-raised-button
+          color="primary"
+          [disabled]="status.activity == 'Terminated'"
+          (click)="toggleJobConsumption(status.instance_id, 'stop')"
+          title="Stop consuming jobs"
+        >
+          <mat-icon>lock</mat-icon>
+        </button>
+        <button
+          *ngIf="status.activity == 'Suspended'"
+          mat-raised-button
+          color="accent"
+          (click)="toggleJobConsumption(status.instance_id, 'resume')"
+          title="Resume consuming jobs"
+        >
+          <mat-icon>lock_open</mat-icon>
+        </button>
+        <button
+          mat-raised-button
+          color="warn"
+          [disabled]="status.activity == 'Terminated'"
+          (click)="stopWorker(status.instance_id)"
+          title="Stop worker"
+        >
+          <mat-icon>cancel</mat-icon>
+        </button>
     </span>
   </li>
 </ul>

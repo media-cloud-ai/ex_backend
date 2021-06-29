@@ -1,6 +1,9 @@
 
 import {Component, ViewChild} from '@angular/core'
-import {MatDialog, MatCheckboxModule, MatSnackBar, PageEvent} from '@angular/material'
+import {MatCheckboxModule} from '@angular/material/checkbox'
+import {MatDialog} from '@angular/material/dialog'
+import {MatSnackBar} from '@angular/material/snack-bar'
+import {PageEvent} from '@angular/material/paginator'
 import {ActivatedRoute, Router} from '@angular/router'
 import {FormControl} from '@angular/forms'
 

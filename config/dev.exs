@@ -58,15 +58,15 @@ config :phoenix, :stacktrace_depth, 20
 
 # Configure your database
 config :ex_backend, ExBackend.Repo,
+  hostname: "postgres",
   username: "postgres",
   password: "postgres",
   database: "ex_backend_dev",
-  hostname: "localhost",
   migration_source: "backend_migrations_dev",
   runtime_pool_size: 10
 
 config :step_flow, StepFlow.Repo,
-  hostname: "localhost",
+  hostname: "postgres",
   username: "postgres",
   password: "postgres",
   database: "ex_backend_workflow_dev",
@@ -115,7 +115,7 @@ config :ex_backend,
   docker_container_amqp_password: "mediacloudai"
 
 config :step_flow, StepFlow.Amqp,
-  hostname: "127.0.0.1",
+  hostname: "rabbitmq",
   port: "5672",
   username: "guest",
   password: "guest"

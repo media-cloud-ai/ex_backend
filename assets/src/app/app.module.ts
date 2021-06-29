@@ -11,31 +11,29 @@ import {
   Title
 } from '@angular/platform-browser'
 import {AppComponent}     from './app.component'
-import {
-  MatAutocompleteModule,
-  MatButtonModule,
-  MatCardModule,
-  MatCheckboxModule,
-  MatChipsModule,
-  MatDatepickerModule,
-  MatDialogModule,
-  MatIconModule,
-  MatInputModule,
-  MatListModule,
-  MatMenuModule,
-  MatPaginatorModule,
-  MatProgressBarModule,
-  MatProgressSpinnerModule,
-  MatRadioModule,
-  MatSelectModule,
-  MatSidenavModule,
-  MatSliderModule,
-  MatSlideToggleModule,
-  MatSnackBarModule,
-  MatTableModule,
-  MatTabsModule,
-  MatToolbarModule
-  } from '@angular/material'
+
+import {MatAutocompleteModule} from '@angular/material/autocomplete'
+import {MatButtonModule} from '@angular/material/button'
+import {MatCardModule} from '@angular/material/card'
+import {MatCheckboxModule} from '@angular/material/checkbox'
+import {MatChipsModule} from '@angular/material/chips'
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatIconModule} from '@angular/material/icon'
+import {MatInputModule} from '@angular/material/input'
+import {MatListModule} from '@angular/material/list'
+import {MatMenuModule} from '@angular/material/menu'
+import {MatPaginatorModule} from '@angular/material/paginator'
+import {MatProgressBarModule} from '@angular/material/progress-bar'
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'
+import {MatSelectModule} from '@angular/material/select'
+import {MatSidenavModule} from '@angular/material/sidenav'
+import {MatSlideToggleModule} from '@angular/material/slide-toggle'
+import {MatSliderModule} from '@angular/material/slider'
+import {MatSnackBarModule} from '@angular/material/snack-bar'
+import {MatTabsModule} from '@angular/material/tabs'
+import {MatToolbarModule} from '@angular/material/toolbar'
+
 
 import {MatStepperModule} from '@angular/material/stepper'
 import {NgxMatDatetimePickerModule, NgxMatNativeDateModule} from '@angular-material-components/datetime-picker';
@@ -69,12 +67,8 @@ import {DeclaredWorkersComponent} from './declared_workers/declared_workers.comp
 import {DurationComponent}       from './workflows/details/duration.component'
 import {IngestComponent}         from './ingest/ingest.component'
 import {JobsComponent}           from './jobs/jobs.component'
-import {LinkImportComponent}     from './persons/link_import.component'
 import {LoginComponent}          from './login/login.component'
 import {ParametersComponent}     from './workflows/details/parameters.component'
-import {PersonComponent}         from './persons/person.component'
-import {PersonFormComponent}     from './persons/form.component'
-import {PersonsComponent}        from './persons/persons.component'
 import {RegisteriesComponent}    from './registeries/registeries.component'
 import {RegisteryComponent}      from './registeries/registery.component'
 import {RegisteryDetailComponent} from './registeries/registery_detail.component'
@@ -95,9 +89,7 @@ import {WorkflowsComponent}      from './workflows/workflows.component'
 import {DeleteSubtitleDialog} from './registeries/dialog/delete_subtitle_dialog.component'
 import {StartIngestDialog} from './ingest/dialogs/start_ingest.component'
 import {JobDetailsDialogComponent} from './jobs/details/job_details_dialog.component'
-import {NewNodeDialogComponent} from './nodes/new_node_dialog.component'
 import {NewSubtitleDialogComponent} from './registeries/dialog/new_subtitle_dialog.component'
-import {PersonShowDialogComponent} from './persons/show_dialog.component'
 import {RdfDialogComponent} from './catalog/rdf/rdf_dialog.component'
 import {WorkflowAbortDialogComponent} from './workflows/dialogs/workflow_abort_dialog.component'
 import {WorkflowDialogComponent} from './catalog/workflow/workflow_dialog.component'
@@ -106,21 +98,18 @@ import {AuthService}             from './authentication/auth.service'
 import {AmqpService}             from './services/amqp.service'
 import {ApplicationService}      from './services/application.service'
 import {CatalogService}          from './services/catalog.service'
-import {ContainerService}        from './services/container.service'
 import {CredentialService}       from './services/credential.service'
 import {DocumentationService}    from './services/documentation.service'
 import {DeclaredWorkersService}    from './services/declared_workers.service'
-import {ImageService}            from './services/image.service'
 import {IMDbService}             from './services/imdb.service'
 import {JobService}              from './services/job.service'
 import {MouseMoveService}        from './services/mousemove.service'
-import {NodeService}             from './services/node.service'
-import {PersonService}           from './services/person.service'
 import {RdfService}              from './services/rdf.service'
 import {RegisteryService}        from './services/registery.service'
 import {S3Service}               from './services/s3.service'
 import {UserService}             from './services/user.service'
 import {WatcherService}          from './services/watcher.service'
+import {WorkerService}           from './services/worker.service'
 import {WorkflowService}         from './services/workflow.service'
 
 import {GenericModule}           from './generic/generic.module'
@@ -170,14 +159,12 @@ const EX_BACKEND_DATE_FORMATS = {
     MatPaginatorModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
-    MatRadioModule,
     MatSelectModule,
     MatSidenavModule,
     MatSliderModule,
     MatSlideToggleModule,
     MatSnackBarModule,
     MatStepperModule,
-    MatTableModule,
     MatTabsModule,
     MatToolbarModule,
     NgxMatDatetimePickerModule,
@@ -199,15 +186,9 @@ const EX_BACKEND_DATE_FORMATS = {
     IngestComponent,
     JobsComponent,
     JobDetailsDialogComponent,
-    LinkImportComponent,
     LoginComponent,
-    NewNodeDialogComponent,
     NewSubtitleDialogComponent,
     ParametersComponent,
-    PersonComponent,
-    PersonFormComponent,
-    PersonShowDialogComponent,
-    PersonsComponent,
     QueuesComponent,
     RegisteryComponent,
     RegisteriesComponent,
@@ -233,12 +214,8 @@ const EX_BACKEND_DATE_FORMATS = {
     DeleteSubtitleDialog,
     DurationComponent,
     JobDetailsDialogComponent,
-    LinkImportComponent,
-    NewNodeDialogComponent,
     NewSubtitleDialogComponent,
     ParametersComponent,
-    PersonFormComponent,
-    PersonShowDialogComponent,
     RdfDialogComponent,
     RegisteryComponent,
     RegisteryDetailComponent,
@@ -287,23 +264,20 @@ const EX_BACKEND_DATE_FORMATS = {
     ApplicationService,
     AuthService,
     CatalogService,
-    ContainerService,
     CookieService,
     CredentialService,
     DeclaredWorkersService,
     DocumentationService,
-    ImageService,
     IMDbService,
     JobService,
     MouseMoveService,
-    NodeService,
-    PersonService,
     RdfService,
     RegisteryService,
     S3Service,
     Title,
     UserService,
     WatcherService,
+    WorkerService,
     WorkflowService,
   ],
   bootstrap: [

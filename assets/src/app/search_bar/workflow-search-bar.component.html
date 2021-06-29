@@ -7,11 +7,18 @@
     </mat-select>
   </mat-form-field>
   <mat-form-field>
+    <mat-select formControlName="selectedMode" placeholder="Mode" [(ngModel)]="parameters.mode" multiple>
+      <mat-option *ngFor="let modus of mode" [value]="modus.id" [ngClass]="modus.id" class="state-option">
+        {{ modus.label }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
     <mat-select formControlName="selectedWorkflows" placeholder="Workflows" [(ngModel)]="parameters.identifiers"
       multiple>
-      <mat-option #allSelected (click)="toggleAllSelection()" [value]="0">All</mat-option>
+      <mat-option (click)="toggleAllSelection()" [value]="0">All</mat-option>
       <mat-option *ngFor="let workflow of workflows" [value]="workflow.id" [ngClass]="workflow.id"
-        (click)="tosslePerOne(allSelected.viewValue)" class="workflow-option">
+        (click)="toggleOne()" class="workflow-option">
         {{ workflow.label }}
       </mat-option>
     </mat-select>
@@ -34,8 +41,8 @@
     <i class="material-icons">search</i>
     Search
   </button>
-  <mat-slide-toggle *ngIf="showDetailedToggle" formControlName="detailedToogle" color="primary"
-    [checked]="parameters.detailed" [(ngModel)]="parameters.detailed" (change)="toogleDetailed()">
+  <mat-slide-toggle *ngIf="showDetailedToggle" formControlName="detailedToggle" color="primary"
+    [checked]="parameters.detailed" [(ngModel)]="parameters.detailed" (change)="toggleDetailed()">
     Detailed
   </mat-slide-toggle>
 </form>

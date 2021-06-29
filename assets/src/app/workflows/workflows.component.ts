@@ -1,6 +1,6 @@
 
 import { Component, ViewChild } from '@angular/core'
-import { PageEvent } from '@angular/material'
+import { PageEvent } from '@angular/material/paginator'
 import { ActivatedRoute, Router } from '@angular/router'
 
 import { Message } from '../models/message'
@@ -33,6 +33,13 @@ export class WorkflowsComponent {
   loading = true
   detailed = false
 
+  selectedModes = []
+
+  modes = [
+    {id: 'live', label: 'Live'},
+    {id: 'file', label: 'File'},
+  ]
+
   pageEvent: PageEvent
   workflows: WorkflowPage
   connection: any
@@ -43,7 +50,7 @@ export class WorkflowsComponent {
     private socketService: SocketService,
     private workflowService: WorkflowService,
     private route: ActivatedRoute,
-  ) { 
+  ) {
     let today = new Date();
     let yesterday = new Date();
     yesterday.setDate(today.getDate() - 1);
@@ -51,6 +58,10 @@ export class WorkflowsComponent {
       identifiers: [],
       start_date: yesterday,
       end_date: today,
+      mode: [
+       "file",
+       "live"
+      ],
       status: [
         "completed",
         "error",
