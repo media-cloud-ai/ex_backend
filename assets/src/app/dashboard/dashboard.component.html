@@ -8,7 +8,7 @@
   <workflow-search-bar [parameters]="parameters" (parametersEvent)="updateWorkflows($event)"></workflow-search-bar>
 </div>
 
-<div id="chartContainer" [ngSwitch]="lineChartData?.length">
+<div id="chartContainer" [ngSwitch]="barChartData?.length">
   <span class=spinner *ngSwitchCase="undefined">
     <img src="/bundles/images/media-io.animated.svg" width="80px" height="80px" />
     <span class=text>
@@ -21,8 +21,8 @@
     </span>
   </span>
   <div class="canvasWrapper" *ngSwitchDefault>
-    <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
-      [legend]="lineChartLegend" [chartType]="lineChartType" [plugins]="lineChartPlugins">
+    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+      [legend]="barChartLegend" [chartType]="barChartType" [plugins]="barChartPlugins">
     </canvas>
   </div>
 </div>

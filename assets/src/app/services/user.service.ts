@@ -16,7 +16,7 @@ export class UserService {
     let params = new HttpParams()
     params = params.append('per_page', per_page.toString())
     if (page > 0) {
-      params = params.append('page', String(page + 1))
+      params = params.append('page', String(page))
     }
 
     return this.http.get<UserPage>(this.usersUrl, {params: params})

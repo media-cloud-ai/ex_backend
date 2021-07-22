@@ -26,9 +26,9 @@ registerLocaleData(localeFr, 'fr');
 })
 
 export class DashboardComponent {
-  public lineChartData: ChartDataSets[];
-  public lineChartLabels: Label[];
-  public lineChartOptions: ChartOptions = {
+  public barChartData: ChartDataSets[];
+  public barChartLabels: Label[];
+  public barChartOptions: ChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
@@ -43,9 +43,9 @@ export class DashboardComponent {
       }]
     }
   };
-  public lineChartLegend = true;
-  public lineChartType = 'line';
-  public lineChartPlugins = [];
+  public barChartLegend = true;
+  public barChartType = 'bar';
+  public barChartPlugins = [];
 
 
   right_administrator: boolean
@@ -120,10 +120,10 @@ export class DashboardComponent {
   }
 
   updateWorkflows(parameters: WorkflowQueryParams) {
-    this.lineChartData = undefined
+    this.barChartData = undefined
     this.workflowService.getWorkflowStatistics(parameters)
       .subscribe(response => {
-        this.lineChartData = parameters.status.map(state => (
+        this.barChartData = parameters.status.map(state => (
           {
             label: state,
             fill: false,
@@ -136,7 +136,7 @@ export class DashboardComponent {
               t: bin.end_date
             }))
           }));
-        this.lineChartLabels = response.data.bins.map(bin => (bin.end_date));
+        this.barChartLabels = response.data.bins.map(bin => (bin.end_date));
       })
   }
 }
