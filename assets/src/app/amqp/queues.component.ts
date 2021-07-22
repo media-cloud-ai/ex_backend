@@ -22,7 +22,7 @@ export class QueuesComponent {
   ngOnInit() {
     this.getQueues()
 
-    const updater = interval(5000);
+    const updater = interval(60_000);
     this.updaterSub = updater.subscribe(n =>
       this.getQueues()
     );
@@ -38,8 +38,7 @@ export class QueuesComponent {
       if (queuePage){
         var all_queues = []
         queuePage.queues.forEach(function(queue){
-          if(queue.messages_unacknowledged > 0 || (queue.messages - queue.messages_unacknowledged) > 0) {
-            // console.log(queue)
+          if( !queue.name.includes('direct_messaging_') && (queue.messages_unacknowledged > 0 || (queue.messages - queue.messages_unacknowledged) > 0)) {
             all_queues.push(queue)
           }
         })
