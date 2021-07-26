@@ -12,19 +12,19 @@
 
     <div class="duration">
       <div *ngIf="job.status[0]">
-        <span class="label">Executed in</span>
+        <span class="label">Executed in: </span>
         <span class="time">{{ job | jobDuration | duration: 'timecode_ms' }}</span>
       </div>
     </div>
 
     <div class="times">
       <div>
-        <span class="label">Started at:</span>
-        <span class="time">{{ job.inserted_at | date: 'yyyy-MM-dd HH:mm:ss' }}</span>
+        <span class="label">Started at: </span>
+        <span class="time">{{ job.inserted_at+'Z' | date: 'yyyy-MM-dd HH:mm:ss' }}</span>
       </div>
       <div *ngIf="job.status[0]">
-        <span class="label">Ended at</span>
-        <span class="time">{{ job.status[0].inserted_at | date: 'yyyy-MM-dd HH:mm:ss' }}</span>
+        <span class="label">Ended at: </span>
+        <span class="time">{{ job.status[0].inserted_at+'Z' | date: 'yyyy-MM-dd HH:mm:ss' }}</span>
       </div>
     </div>
 
