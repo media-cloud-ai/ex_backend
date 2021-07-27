@@ -25,6 +25,55 @@
         </button>
       </div>
     </div>
+    <mat-toolbar>
+      <mat-toolbar-row>
+        <button
+            mat-raised-button
+            color="primary"
+            (click)="loadWorkflows()"
+          >
+            <span class="material-icons">
+              refresh
+            </span>
+        </button>
+        <mat-paginator
+          class="paginator"
+          showFirstLastButtons="true"
+          [length]="length"
+          [pageSize]="pageSize"
+          [pageIndex]="page"
+          [pageSizeOptions]="pageSizeOptions"
+          (page)="pageEvent = eventGetWorkflows($event)"
+          *ngIf="services && services.length > 0"
+        >
+        </mat-paginator>
+      </mat-toolbar-row>
+    </mat-toolbar>
+  </mat-step>
+  <mat-step [stepControl]="versionSelection">
+    <ng-template matStepLabel>Sélection de la version du service</ng-template>
+    <div class="services">
+      <div class="service" *ngFor="let service of services">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="selectVersion(service)"
+        >
+          <i class="material-icons" *ngIf="service.icon">
+            {{ service.icon }}
+          </i>
+          {{ service.label }}
+          <span class="version">
+            v{{ service.version_major }}.{{ service.version_minor }}.{{
+              service.version_micro
+            }}
+          </span>
+          <span *ngIf="service.is_live" class="badge-live">
+            LIVE
+          </span>
+        </button>
+      </div>
+    </div>
     <mat-paginator
       class="paginator"
       showFirstLastButtons="true"
