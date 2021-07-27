@@ -52,6 +52,8 @@ COPY --from=ex_builder /app/_build/prod/rel/ex_backend .
 COPY --from=ex_builder /app/priv/static static/
 COPY --from=ex_builder /app/documentation.json .
 
+RUN apk add --no-cache tzdata
+
 RUN backend="$(ls -1 lib/ | grep ex_backend)" && \
     rm -rf lib/$backend/priv/static/ && \
     mv static/ lib/$backend/priv/
