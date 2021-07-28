@@ -14,11 +14,6 @@
             {{ service.icon }}
           </i>
           {{ service.label }}
-          <span class="version">
-            v{{ service.version_major }}.{{ service.version_minor }}.{{
-              service.version_micro
-            }}
-          </span>
           <span *ngIf="service.is_live" class="badge-live">
             LIVE
           </span>

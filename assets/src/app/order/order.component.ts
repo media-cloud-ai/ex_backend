@@ -225,7 +225,6 @@ export class OrderComponent {
   follow() {
     console.log("follow");
     this.router.navigate(['/workflows/'+this.response.data.id])
-    // this.router.navigate(['/orders'], { queryParams: {order_id: response.workflow_id} })
   }
 
   eventGetWorkflows(event) {
