@@ -130,7 +130,7 @@
       {{status.activity}}
     </span>
     <span class="current-job" *ngIf="status.current_job">
-      {{status.current_job.job_id}}
+      <a (click)="goToWorkflow(status.current_job.job_id)">{{status.current_job.job_id}}</a>
     </span>
     <span class="current-job" *ngIf="!status.current_job">
       -

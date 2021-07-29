@@ -98,6 +98,18 @@ export class WorkflowService {
       )
   }
 
+  getWorkflowForJob(job_id: number, mode: string): Observable<WorkflowData> {
+    let params = new HttpParams()
+    params = params.append('job_id', job_id)
+    params = params.append('mode', mode)
+
+    return this.http.get<WorkflowData>(this.workflowsUrl, { params: params })
+      .pipe(
+        tap(workflowPage => this.log('fetched Workflow')),
+        catchError(this.handleError('getWorkflow', undefined))
+      )
+  }
+
   createWorkflow(startWorkflowDefinition: StartWorkflowDefinition): Observable<WorkflowData> {
     return this.http.post<WorkflowData>(this.workflowsLauncher, startWorkflowDefinition)
       .pipe(
