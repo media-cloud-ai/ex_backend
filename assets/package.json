@@ -19,7 +19,7 @@
     "crypto": "^1.0.1",
     "chart.js": "2.9.3",
     "chartjs-plugin-annotation": "0.5.7",
-    "dashjs": "https://github.com/Dash-Industry-Forum/dash.js.git#16be8f8",
+    "dashjs": "^4.0.1",
     "es7-shim": "6.0.0",
     "evaporate": "https://github.com/TTLabs/EvaporateJS.git#c1f8905",
     "hammerjs": "^2.0.8",
