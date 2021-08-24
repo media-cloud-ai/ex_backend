@@ -31,6 +31,9 @@ config :phauxth,
 config :ex_backend, ExBackend.Mailer, adapter: Bamboo.LocalAdapter
 
 config :step_flow, StepFlow,
+  exposed_domain_name: {:system, "EXPOSED_DOMAIN_NAME"},
+  slack_api_token: {:system, "SLACK_API_TOKEN"},
+  teams_channel_url: {:system, "TEAMS_CHANNEL_URL"},
   work_dir: "/data",
   authorize: [
     module: ExBackendWeb.Authorize,
