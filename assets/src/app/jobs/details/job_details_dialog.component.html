@@ -28,6 +28,11 @@
       </div>
     </div>
 
+    <div class="worker">
+      <span class="label">Worker: </span>
+      <span>{{worker_instance_id}}</span>
+    </div>
+
     <div class="error-description" *ngIf="job.status[0] && job.status[0].state == 'error' && job.status[0].description">
       <h4>Error</h4>
       {{ job.status[0].description.message }}
