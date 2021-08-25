@@ -100,7 +100,7 @@ export class WorkflowService {
 
   getWorkflowForJob(job_id: number, mode: string): Observable<WorkflowData> {
     let params = new HttpParams()
-    params = params.append('job_id', job_id)
+    params = params.append('job_id', job_id.toString())
     params = params.append('mode', mode)
 
     return this.http.get<WorkflowData>(this.workflowsUrl, { params: params })
