@@ -1,5 +1,6 @@
 import {Component, Inject} from '@angular/core'
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog'
+import {Router} from '@angular/router'
 import {Job} from '../../models/job'
 import {WorkerService} from '../../services/worker.service'
 
@@ -10,13 +11,14 @@ import {WorkerService} from '../../services/worker.service'
 })
 export class JobDetailsDialogComponent {
   job: Job
-  worker_instance_id = ""
+  worker_instance_id: string
 
   constructor(
     public dialogRef: MatDialogRef<JobDetailsDialogComponent>,
     @Inject(MAT_DIALOG_DATA)
     public data: any,
     private workerService: WorkerService,
+    private router: Router,
    ) {
     this.job = data
 
@@ -26,6 +28,12 @@ export class JobDetailsDialogComponent {
           this.worker_instance_id = workerStatuses.data[0].instance_id;
         }
       })
+  }
+
+  goToWorkers(): void {
+    console.log("Got to workers!")
+    this.router.navigate(['/workers']);
+    this.dialogRef.close();
   }
 
   onClose(): void {
