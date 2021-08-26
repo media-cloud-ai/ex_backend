@@ -28,6 +28,25 @@
       </div>
     </div>
 
+    <div class="worker">
+      <span class="label">Worker: </span>
+      <span *ngIf="worker_instance_id">
+        <button
+          mat-button
+          color="primary"
+          (click)="goToWorkers()"
+          title="Go to workers">
+          {{worker_instance_id}}
+        </button>
+      </span>
+      <span *ngIf="!worker_instance_id">
+        <button
+          mat-button
+          disabled>
+        </button>
+      </span>
+    </div>
+
     <div class="error-description" *ngIf="job.status[0] && job.status[0].state == 'error' && job.status[0].description">
       <h4>Error</h4>
       {{ job.status[0].description.message }}

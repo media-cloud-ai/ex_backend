@@ -6,6 +6,7 @@ import {MatDialog} from '@angular/material/dialog'
 import {Message} from '../models/message'
 import {SocketService} from '../services/socket.service'
 import {WorkerService} from '../services/worker.service'
+import {WorkflowService} from '../services/workflow.service'
 
 import {Worker, WorkerStatus} from '../models/worker'
 
@@ -31,6 +32,7 @@ export class WorkersComponent {
   constructor(
     private socketService: SocketService,
     private workerService: WorkerService,
+    private workflowService: WorkflowService,
     private route: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog
@@ -128,5 +130,13 @@ export class WorkersComponent {
 
     this.workerService.sendWorkerOrderMessage(id, message)
       .subscribe(result => {});
+  }
+
+  public goToWorkflow(jobId) {
+    this.workflowService.getWorkflowForJob(jobId, "simple")
+      .subscribe(workflow => {
+        console.log("Workflow:", workflow);
+        this.router.navigate([`/workflows/${workflow.data.id}`]);
+      });
   }
 }

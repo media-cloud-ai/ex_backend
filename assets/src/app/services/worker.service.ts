@@ -36,8 +36,11 @@ export class WorkerService {
       )
   }
 
-  getWorkerStatuses(): Observable<WorkersStatus> {
+  getWorkerStatuses(job_id?: string): Observable<WorkersStatus> {
     let params = new HttpParams();
+    if (job_id) {
+      params = params.append('job_id', job_id)
+    }
 
     return this.http.get<WorkerPage>(this.workerStatusesUrl, {params: params})
       .pipe(
