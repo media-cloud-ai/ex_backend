@@ -30,8 +30,8 @@
         </span>
         <span
            class="creation_date">
-          {{subtitle.inserted_at | date: 'd LLL yy'}}
-          {{subtitle.inserted_at | date: 'H:mm:ss'}}
+          {{subtitle.inserted_at+'Z' | date: 'd LLLL yy'}}
+          {{subtitle.inserted_at+'Z' | date: 'HH:mm:ss'}}
         </span>
         <span *ngIf="subtitle.user"
            class="email">

@@ -47,6 +47,8 @@ export class OrderComponent {
 
   selectedService = undefined;
 
+  response = undefined;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -67,7 +69,27 @@ export class OrderComponent {
       })
   }
 
+  loadWorkflows() {
+    this.workflowService.getWorkflowDefinitions(this.page, this.pageSize, "create", undefined, ["latest"], "full")
+      .subscribe(definitions => {
+        this.services = definitions.data
+        this.length = definitions.total
+      })
+  }
+
   selectService(service) {
+    this.selectedService = service;
+
+    this.workflowService.getWorkflowDefinitions(this.page, this.pageSize, "create", this.selectedService.identifier, [], "full")
+      .subscribe(definitions => {
+        this.services = definitions.data
+        this.length = definitions.total
+      })
+
+    this.stepper.next();
+  }
+
+  selectVersion(service) {
     this.selectedService = service;
     this.stepper.next();
   }
@@ -181,7 +203,10 @@ export class OrderComponent {
     let startWorkflowDefinition: StartWorkflowDefinition = {
       "workflow_identifier": this.selectedService.identifier,
       "parameters": parameters,
-      "reference": this.selectedService.reference
+      "reference": this.selectedService.reference,
+      "version_major": this.selectedService.version_major,
+      "version_minor": this.selectedService.version_minor,
+      "version_micro": this.selectedService.version_micro
     };
 
     this.workflowService.createWorkflow(startWorkflowDefinition)
@@ -189,6 +214,7 @@ export class OrderComponent {
         if (response) {
           this.processStatus.failed = false;
           this.processStatus.message = "Votre commande est en cours de réalisation.";
+          this.response = response;
         } else {
           this.processStatus.failed = true;
           this.processStatus.message = "Une erreur est apparue.";
@@ -197,9 +223,8 @@ export class OrderComponent {
   }
 
   follow() {
-    console.log("follow")
-    this.router.navigate(['/orders'])
-    // this.router.navigate(['/orders'], { queryParams: {order_id: response.workflow_id} })
+    console.log("follow");
+    this.router.navigate(['/workflows/'+this.response.data.id])
   }
 
   eventGetWorkflows(event) {

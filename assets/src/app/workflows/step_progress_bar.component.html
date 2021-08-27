@@ -1,6 +1,19 @@
 <div class="progress"
   [ngClass]="{detailed: detailed}">
   <span
+    class="stopped"
+    title="{{step.name | jobType}}: stopped"
+    [ngStyle]="{'flex': step.jobs.stopped}">
+    <span
+      *ngIf="step.jobs.stopped && detailed && !step.label">
+      {{step.name | jobType}}
+    </span>
+    <span
+      *ngIf="step.jobs.stopped && detailed && step.label">
+      {{step.label}}
+    </span>
+  </span>
+  <span
     class="skipped"
     title="{{step.name | jobType}}: skipped"
     [ngStyle]="{'flex': step.jobs.skipped}">
@@ -69,7 +82,8 @@
       !step.jobs.queued &&
       !step.jobs.errors &&
       !step.jobs.completed &&
-      !step.jobs.skipped"
+      !step.jobs.skipped &&
+      !step.jobs.stopped"
     [ngStyle]="{'flex': step.jobs.total}">
     <span
       *ngIf="step.jobs.total && detailed && !step.label">
@@ -87,7 +101,8 @@
       !step.jobs.queued &&
       !step.jobs.errors &&
       !step.jobs.completed &&
-      !step.jobs.skipped"
+      !step.jobs.skipped &&
+      !step.jobs.stopped"
     [ngStyle]="{'flex': step.jobs.total}">
     <span
       *ngIf="step.jobs.total && detailed && !step.label">
@@ -120,6 +135,7 @@
       !step.jobs.completed &&
       !step.jobs.skipped &&
       !step.jobs.processing &&
+      !step.jobs.stopped &&
       detailed">
     <span>
       {{step.name | jobType}}

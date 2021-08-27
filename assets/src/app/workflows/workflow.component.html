@@ -23,10 +23,10 @@
         Created at
       </label>
       <span class="date">
-        {{workflow.created_at | date: 'd LLL yy'}}
+        {{workflow.created_at | date: 'd LLLL yy'}}
       </span>
       <span class="hour">
-        {{workflow.created_at | date: 'H:mm:ss'}}
+        {{workflow.created_at+'Z' | date: 'HH:mm:ss'}}
       </span>
     </span>
     <span class="duration">
@@ -40,7 +40,7 @@
       <button
         mat-raised-button
         color="primary"
-        (click)="goToDetails(workflow.id)"
+        (click)="goToDetails($event, workflow.id)"
         >
         <mat-icon>visibility</mat-icon>
         Details

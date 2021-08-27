@@ -200,10 +200,10 @@
     </span>
     <span class="broadcast_date">
       <span class="date">
-        {{video.broadcasted_at | date: 'd LLL yy'}}
+        {{video.broadcasted_at+'Z' | date: 'd LLLL yy'}}
       </span>
       <span class="hour">
-        {{video.broadcasted_at | date: 'H:mm:ss'}}
+        {{video.broadcasted_at+'Z' | date: 'HH:mm:ss'}}
       </span>
     </span>
 
