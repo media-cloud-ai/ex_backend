@@ -54,18 +54,6 @@ export class WorkflowComponent {
     this.router.navigate(['/videos'], { queryParams: {video_id: video_id} })
   }
 
-  goToDetails(event, workflow_id): void {
-    if (event.ctrlKey | event.metaKey) {
-      const url = this.router.serializeUrl(
-        this.router.createUrlTree(['/workflows/'+workflow_id])
-      );
-
-      window.open(url, '_blank')
-    } else {
-      this.router.navigate(['/workflows', workflow_id])
-    }
-  }
-
   getStepsCount(): number {
     let count = 0
     for (let step of this.workflow.steps) {

@@ -40,10 +40,11 @@
       <button
         mat-raised-button
         color="primary"
-        (click)="goToDetails($event, workflow.id)"
         >
-        <mat-icon>visibility</mat-icon>
-        Details
+        <a routerLink="/workflows/{{workflow.id}}">
+          <mat-icon>visibility</mat-icon>
+          Details
+        </a>
       </button>
     </span>
     <span
