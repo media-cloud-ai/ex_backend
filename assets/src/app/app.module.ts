@@ -106,6 +106,7 @@ import {JobService}              from './services/job.service'
 import {MouseMoveService}        from './services/mousemove.service'
 import {RdfService}              from './services/rdf.service'
 import {RegisteryService}        from './services/registery.service'
+import {StatisticsService}       from './services/statistics.service'
 import {S3Service}               from './services/s3.service'
 import {UserService}             from './services/user.service'
 import {WatcherService}          from './services/watcher.service'
@@ -273,6 +274,7 @@ const EX_BACKEND_DATE_FORMATS = {
     MouseMoveService,
     RdfService,
     RegisteryService,
+    StatisticsService,
     S3Service,
     Title,
     UserService,

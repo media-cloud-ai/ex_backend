@@ -1,30 +1,38 @@
 
 import {Component, Input} from '@angular/core'
+import {WorkflowDurations, WorkflowDuration} from '../../models/statistics/duration'
 import {Workflow} from '../../models/workflow'
+import {StatisticsService} from '../../services/statistics.service'
 
 import * as moment from 'moment'
 
 @Component({
   selector: 'duration-component',
-  templateUrl: 'duration.component.html',
+  styleUrls: ['./duration.component.less'],
+  templateUrl: 'duration.component.html'
 })
 
 export class DurationComponent {
-  duration = undefined
+  duration: WorkflowDuration = undefined
 
   @Input() workflow: Workflow
+  @Input() display: string
 
   constructor(
+    private statisticsService: StatisticsService,
   ) {}
 
   ngOnInit() {
-    if (this.workflow.artifacts[0]) {
-      let start_moment = moment(this.workflow.created_at)
-      let end_moment = moment(this.workflow.artifacts[0]['inserted_at'])
+    this.statisticsService.getWorkflowDurations(this.workflow.id)
+    .subscribe(response => {
+       if (response && response.data.length > 0) {
+         this.duration = response.data[0];
+       }
+    });
+  }
 
-      this.duration = end_moment.diff(start_moment)
-    } else {
-      this.duration = undefined
-    }
+
+  public isFullMode() {
+    return this.display == "full";
   }
 }
