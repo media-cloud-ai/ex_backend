@@ -34,6 +34,7 @@ export class Step {
   output_extension?: string
   parameters?: Parameter[]
   jobs?: JobsStatus
+  focus?: boolean
 }
 
 export class Artifact {

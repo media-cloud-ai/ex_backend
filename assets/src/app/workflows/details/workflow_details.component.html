@@ -110,7 +110,8 @@
       >
       <workflow-step-details-component
         [step]=step
-        [workflow]=workflow>
+        [workflow]=workflow
+        (stepChange)="updateStepInWorkflow($event)">
       </workflow-step-details-component>
     </span>
   </div>
