@@ -66,7 +66,7 @@
       </div>
     </span>
     <span class="duration">
-      <duration-component [workflow]=workflow></duration-component>
+      <duration-component [workflow]=workflow display="full"></duration-component>
     </span>
     <span class="steps-count">
       <span class="label">Steps:</span>
@@ -110,7 +110,8 @@
       >
       <workflow-step-details-component
         [step]=step
-        [workflow]=workflow>
+        [workflow]=workflow
+        (stepChange)="updateStepInWorkflow($event)">
       </workflow-step-details-component>
     </span>
   </div>

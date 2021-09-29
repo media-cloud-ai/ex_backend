@@ -9,6 +9,7 @@ import {JobService} from '../services/job.service'
 import {WorkflowService} from '../services/workflow.service'
 import {JobPage} from '../models/page/job_page'
 import {Job} from '../models/job'
+import {Workflow} from '../models/workflow'
 
 import {JobDetailsDialogComponent} from './details/job_details_dialog.component'
 
@@ -29,7 +30,7 @@ export class JobsComponent {
 
   @Input() jobType: string
   @Input() step_id: number
-  @Input() workflowId: number
+  @Input() workflow: Workflow
 
   pageEvent: PageEvent
   jobs: JobPage
@@ -54,18 +55,10 @@ export class JobsComponent {
         this.getJobs(this.page)
       })
 
-    this.workflowService.getWorkflow(this.workflowId)
-      .subscribe(workflow => {
-        if (workflow === undefined) {
-          return
-        }
-        this.is_live = workflow.data.is_live
-
-        let authorized_to_retry = workflow.data.rights.find((r) => r.action === "retry")
-        if (authorized_to_retry !== undefined) {
-          this.right_retry = this.authService.hasAnyRights(authorized_to_retry.groups)
-        }}
-    )
+      let authorized_to_retry = this.workflow.rights.find((r) => r.action === "retry")
+      if (authorized_to_retry !== undefined) {
+        this.right_retry = this.authService.hasAnyRights(authorized_to_retry.groups)
+      }
   }
 
   ngOnDestroy() {
@@ -73,7 +66,7 @@ export class JobsComponent {
   }
 
   getJobs(index) {
-    this.jobService.getJobs(index, 200, this.workflowId, this.step_id, this.jobType)
+    this.jobService.getJobs(index, 200, this.workflow.id, this.step_id, this.jobType)
     .subscribe(jobPage => {
       this.jobs = jobPage
       this.length = jobPage.total
@@ -113,7 +106,7 @@ export class JobsComponent {
   }
 
   retryJob(job: Job) {
-    this.workflowService.sendWorkflowEvent(this.workflowId, {event: 'retry', job_id: job.id})
+    this.workflowService.sendWorkflowEvent(this.workflow.id, {event: 'retry', job_id: job.id})
     .subscribe(response => {
       console.log(response)
     })

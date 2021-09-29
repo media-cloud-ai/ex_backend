@@ -97,4 +97,12 @@ export class WorkflowRenderer {
 
     return parent_weigth * children_weigth * step_line.length
   }
+
+  public setStepFocus(step_focus: Map<number, boolean>) {
+    for (let steps_line of this.graph) {
+      for (let step of steps_line) {
+        step.focus = step_focus.get(step.id) || false;
+      }
+    }
+  }
 }
