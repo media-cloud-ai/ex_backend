@@ -91,6 +91,12 @@ defmodule ExBackend.Accounts do
     |> Repo.update()
   end
 
+  def update_credentials(%User{} = user) do
+    user
+    |> User.changeset_credentials()
+    |> Repo.update()
+  end
+
   def delete_user(%User{} = user) do
     Repo.delete(user)
   end

@@ -133,5 +133,11 @@ defmodule ExBackend.Migration.All do
       20_190_723_162_000,
       ExBackend.Migration.RemoveParamsFromJob
     )
+
+    Ecto.Migrator.up(
+      ExBackend.Repo,
+      20_210_930_160_000,
+      ExBackend.Migration.AddUuidAndCredsToUser
+    )
   end
 end
