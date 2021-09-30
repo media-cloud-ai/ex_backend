@@ -30,7 +30,7 @@ export class WorkflowComponent {
   ) {}
 
   ngOnInit() {
-    this.can_abort = this.workflow.steps.some((s) => s['status'] === 'error')
+    this.can_abort = this.workflow.steps.some((s) => s['status'] === 'processing')
     if (this.can_abort && this.workflow.steps.some((s) => s.name === 'clean_workspace' && s['status'] !== 'queued')) {
       this.can_abort = false
     }
