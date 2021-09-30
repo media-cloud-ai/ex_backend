@@ -1,9 +1,4 @@
-
-@white: #fff;
-@green: #71bd2c;
-@blue: #3965ac;
-@red: #db280f;
-@grey: #696f74;
+@import '../../colors';
 
 .details {
   font-family: sans-serif;
@@ -31,7 +26,13 @@
       color: @grey;
     }
     span.error {
-      color: @red;
+      color: @darkRed;
+    }
+    span.stopped {
+      color: @yellow;
+    }
+    span.queued {
+      color: @purple;
     }
   }
 
