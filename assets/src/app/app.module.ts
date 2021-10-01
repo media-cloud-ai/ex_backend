@@ -39,6 +39,7 @@ import {MatStepperModule} from '@angular/material/stepper'
 import {NgxMatDatetimePickerModule, NgxMatNativeDateModule} from '@angular-material-components/datetime-picker';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import { ChartsModule } from 'ng2-charts'
+import {ClipboardModule} from '@angular/cdk/clipboard';
 
 import {
   MomentDateAdapter,
@@ -91,6 +92,7 @@ import {StartIngestDialog} from './ingest/dialogs/start_ingest.component'
 import {JobDetailsDialogComponent} from './jobs/details/job_details_dialog.component'
 import {NewSubtitleDialogComponent} from './registeries/dialog/new_subtitle_dialog.component'
 import {RdfDialogComponent} from './catalog/rdf/rdf_dialog.component'
+import {UserShowCredentialsDialogComponent} from './users/dialogs/user_show_credentials_dialog.component'
 import {WorkflowAbortDialogComponent} from './workflows/dialogs/workflow_abort_dialog.component'
 import {WorkflowDialogComponent} from './catalog/workflow/workflow_dialog.component'
 
@@ -139,6 +141,7 @@ const EX_BACKEND_DATE_FORMATS = {
   ],
   imports: [
     AppRoutingModule,
+    ClipboardModule,
     BrowserAnimationsModule,
     BrowserModule,
     ChartsModule,
@@ -201,6 +204,7 @@ const EX_BACKEND_DATE_FORMATS = {
     SubtitleComponent,
     UserComponent,
     UsersComponent,
+    UserShowCredentialsDialogComponent,
     RdfDialogComponent,
     WatchersComponent,
     WorkflowAbortDialogComponent,
@@ -226,6 +230,7 @@ const EX_BACKEND_DATE_FORMATS = {
     StepRendererComponent,
     SubtitleComponent,
     UserComponent,
+    UserShowCredentialsDialogComponent,
     WatchersComponent,
     WorkflowComponent,
     WorkflowAbortDialogComponent,

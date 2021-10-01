@@ -3,10 +3,12 @@ import {Component, ViewChild} from '@angular/core'
 import {MatCheckboxModule} from '@angular/material/checkbox'
 import {PageEvent} from '@angular/material/paginator'
 import {ActivatedRoute, Router} from '@angular/router'
+import {MatDialog} from '@angular/material/dialog'
 
 import {UserService} from '../services/user.service'
 import {UserPage} from '../models/page/user_page'
 import {User} from '../models/user'
+import {UserShowCredentialsDialogComponent} from './dialogs/user_show_credentials_dialog.component'
 
 @Component({
   selector: 'users-component',
@@ -29,7 +31,8 @@ export class UsersComponent {
   constructor(
     private userService: UserService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -74,6 +77,19 @@ export class UsersComponent {
         this.password = ''
         this.getUsers(0)
       }
+    })
+  }
+
+  generateCredentials(user): void {
+    this.userService.generateCredentials(user)
+    .subscribe(response_user => {
+      let dialogRef = this.dialog.open(UserShowCredentialsDialogComponent, {data: {
+        'user': response_user
+      }})
+
+      dialogRef.afterClosed().subscribe(response => {
+        this.getUsers(this.page)
+      })
     })
   }
 

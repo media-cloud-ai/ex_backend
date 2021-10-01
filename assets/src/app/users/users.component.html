@@ -49,6 +49,23 @@
     class="user"
     >
     <user-component [user]=user></user-component>
+    <span class="creds">
+      <button mat-raised-button
+        color="primary"
+        *ngIf="user.access_key_id; else notShow"
+        (click)="generateCredentials(user)">
+          <i class="material-icons">key</i> Regenerate
+      </button>
+    </span>
+    <ng-template #notShow>
+      <span class="creds">
+        <button mat-raised-button
+          color="primary"
+          (click)="generateCredentials(user)">
+            <i class="material-icons">key</i> Generate Credentials
+        </button>
+      </span>
+    </ng-template>
     <span class="actions">
       <button mat-raised-button
         color="warn"
