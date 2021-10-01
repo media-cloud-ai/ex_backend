@@ -10,7 +10,7 @@ defmodule ExBackendWeb.UserController do
 
   # the following plugs are defined in the controllers/authorize.ex file
   plug(:user_check when action in [:index, :show, :update, :delete])
-  plug(:right_administrator_check when action in [:update, :delete])
+  plug(:right_administrator_check when action in [:update, :delete, :generate_credentials])
 
   def index(conn, params) do
     users = Accounts.list_users(params)
@@ -44,6 +44,16 @@ defmodule ExBackendWeb.UserController do
     selected_user = Accounts.get(id)
 
     with {:ok, user} <- Accounts.update_user(selected_user, user_params) do
+      render(conn, "show.json", user: user)
+    end
+  end
+
+  def generate_credentials(%Plug.Conn{assigns: %{current_user: _user}} = conn, %{
+        "id" => id
+      }) do
+    selected_user = Accounts.get(id)
+
+    with {:ok, user} <- Accounts.update_credentials(selected_user) do
       render(conn, "show.json", user: user)
     end
   end
