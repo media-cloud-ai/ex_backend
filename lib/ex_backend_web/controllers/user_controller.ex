@@ -28,13 +28,13 @@ defmodule ExBackendWeb.UserController do
       conn
       |> put_status(:created)
       |> put_resp_header("location", user_path(conn, :show, user))
-      |> render("show.json", user: user)
+      |> render("show.json", %{user: user, credentials: false})
     end
   end
 
   def show(%Plug.Conn{assigns: %{current_user: user}} = conn, %{"id" => id}) do
     user = (id == to_string(user.id) and user) || Accounts.get(id)
-    render(conn, "show.json", user: user)
+    render(conn, "show.json", %{user: user, credentials: false})
   end
 
   def update(%Plug.Conn{assigns: %{current_user: _user}} = conn, %{
@@ -44,7 +44,7 @@ defmodule ExBackendWeb.UserController do
     selected_user = Accounts.get(id)
 
     with {:ok, user} <- Accounts.update_user(selected_user, user_params) do
-      render(conn, "show.json", user: user)
+      render(conn, "show.json", %{user: user, credentials: false})
     end
   end
 
@@ -54,7 +54,7 @@ defmodule ExBackendWeb.UserController do
     selected_user = Accounts.get(id)
 
     with {:ok, user} <- Accounts.update_credentials(selected_user) do
-      render(conn, "show.json", user: user)
+      render(conn, "show.json", %{user: user, credentials: true})
     end
   end
 
