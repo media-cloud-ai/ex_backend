@@ -23,7 +23,7 @@ defmodule ExBackend.Accounts.User do
     uuid = credential_generator(28)
 
     attrs =
-      if Map.get(attrs, :email) do
+      if Map.get(attrs, :email) || Map.get(attrs, :rights) do
         Map.put(attrs, :uuid, uuid)
       else
         Map.put(attrs, "uuid", uuid)
