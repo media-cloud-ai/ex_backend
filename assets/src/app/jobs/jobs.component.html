@@ -22,8 +22,8 @@
 
     <div class="description {{job | jobStatus}}">
       <label>Error:</label>
-      <span *ngIf="job.status[0] && job.status[0].description">
-        {{job.status[0].description.message}}
+      <span *ngIf="getLastStatusDescription(job)">
+        {{getLastStatusDescription(job).message}}
       </span>
     </div>
     <div *ngIf="(job | jobStatus) === 'processing'; then thenBlock else elseBlock"></div>
