@@ -31,6 +31,9 @@ export class JobStatusPipe implements PipeTransform {
         if (jobStatus[i].state === 'skipped'){
           return 'skipped'
         }
+        if (jobStatus[i].state === 'stopped'){
+          return 'stopped'
+        }
       }
     }
     if (status === undefined) {
