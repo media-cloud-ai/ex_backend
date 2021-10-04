@@ -101,6 +101,14 @@ export class JobsComponent {
     }
   }
 
+  getLastStatusDescription(job: Job) {
+    let lastStatus = Job.getLastStatus(job);
+    if (lastStatus) {
+      return lastStatus["description"];
+    }
+    return undefined;
+  }
+
   displayJobDetails(job: Job) {
     this.dialog.open(JobDetailsDialogComponent, { data: job })
   }
@@ -109,6 +117,7 @@ export class JobsComponent {
     this.workflowService.sendWorkflowEvent(this.workflow.id, {event: 'retry', job_id: job.id})
     .subscribe(response => {
       console.log(response)
+      this.ngOnInit();
     })
   }
 }
