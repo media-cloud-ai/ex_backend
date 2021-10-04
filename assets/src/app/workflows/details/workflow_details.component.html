@@ -68,6 +68,12 @@
     <span class="duration">
       <duration-component [workflow]=workflow display="full"></duration-component>
     </span>
+    <span class="user-launch">
+      <div class="item">
+        <label>Launched by: </label>
+        <span>{{workflow.user_uuid}}</span>
+      </div>
+    </span>
     <span class="steps-count">
       <span class="label">Steps:</span>
       <span class="count">{{getStepsCount()}} / {{getTotalSteps()}}</span>

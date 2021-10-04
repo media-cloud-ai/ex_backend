@@ -4,6 +4,7 @@ defmodule ExBackend.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
   alias ExBackend.Accounts.User
+  alias ExBackend.Repo
 
   schema "users" do
     field(:email, :string)
@@ -12,24 +13,39 @@ defmodule ExBackend.Accounts.User do
     field(:rights, {:array, :string}, default: ["administrator"])
     field(:confirmed_at, :utc_datetime_usec)
     field(:reset_sent_at, :utc_datetime_usec)
+    field(:uuid, :string)
+    field(:access_key_id, :string)
+    field(:secret_access_key, :string)
 
     timestamps()
   end
 
   def changeset(%User{} = user, attrs) do
+    uuid = credential_generator(28)
+
+    attrs =
+      if Map.get(attrs, :email) || Map.get(attrs, :rights) do
+        Map.put(attrs, :uuid, uuid)
+      else
+        Map.put(attrs, "uuid", uuid)
+      end
+
     user
-    |> cast(attrs, [:email, :rights])
-    |> validate_required([:email])
+    |> cast(attrs, [:email, :rights, :uuid])
+    |> validate_required([:email, :uuid])
     |> unique_email
   end
 
-  def create_changeset(%User{} = user, attrs) do
+  def changeset_credentials(%User{} = user) do
+    access_key_id = "MCAI" <> credential_generator(12, true)
+    secret_access_key = credential_generator(28)
+
     user
-    |> cast(attrs, [:email, :password, :rights])
-    |> validate_required([:email, :password])
-    |> unique_email
-    |> validate_password(:password)
-    |> put_pass_hash
+    |> cast(%{access_key_id: access_key_id, secret_access_key: secret_access_key}, [
+      :access_key_id,
+      :secret_access_key
+    ])
+    |> validate_required([:access_key_id, :secret_access_key])
   end
 
   def password_changeset(%User{} = user, attrs) do
@@ -38,6 +54,14 @@ defmodule ExBackend.Accounts.User do
     |> validate_required([:password])
     |> validate_password(:password)
     |> put_pass_hash
+  end
+
+  def get_by(%{"access_key_id" => access_key_id}) do
+    Repo.get_by(User, access_key_id: access_key_id)
+  end
+
+  def verify_secret_access_key(user, secret_access_key) do
+    secret_access_key == user.secret_access_key
   end
 
   defp unique_email(changeset) do
@@ -71,4 +95,21 @@ defmodule ExBackend.Accounts.User do
   end
 
   defp strong_password?(_), do: {:error, "The password is too short"}
+
+  # In the function below, a random bytes chain is generated to be transformed
+  # in an alphanumeric string in order to be used as a credential
+  defp credential_generator(length, is_upcase \\ false) do
+    creds =
+      :crypto.strong_rand_bytes(length)
+      |> Base.url_encode64(padding: true)
+
+    if is_upcase do
+      creds
+      |> String.upcase()
+      |> String.replace("-", "D")
+      |> String.replace("_", "U")
+    else
+      creds
+    end
+  end
 end

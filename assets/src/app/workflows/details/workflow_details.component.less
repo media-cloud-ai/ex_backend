@@ -33,6 +33,25 @@
     flex: 1;
   }
 
+  .user-launch {
+    flex: 1;
+
+    .item {
+      display: flex;
+
+      label {
+        min-width: 120px;
+        font-weight: bold;
+        color: @grey;
+      }
+    }
+
+    .link {
+      cursor: pointer;
+      color: @blue;
+    }
+  }
+
   .steps-count {
     align-content: flex-end;
     padding: 0px 6px;
@@ -43,6 +62,7 @@
       min-width: 50px;
     }
   }
+
 }
 
 .line {

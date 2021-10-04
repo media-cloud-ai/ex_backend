@@ -61,6 +61,7 @@ export class Workflow {
   rights?: Right[]
   steps?: Step[]
   workflow_id?: number
+  user_uuid?: string
 }
 
 export class WorkflowEvent {

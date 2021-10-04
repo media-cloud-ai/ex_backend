@@ -39,6 +39,17 @@ export class UserService {
       )
   }
 
+  generateCredentials(user: User): Observable<User> {
+    let params = new HttpParams()
+    params = params.append('id', user.id.toString())
+
+    return this.http.post<User>(this.usersUrl + '/generate_credentials', params)
+      .pipe(
+        tap(userPage => this.log('Generate credentials')),
+        catchError(this.handleError('generateCredentials', undefined))
+      )
+  }
+
   removeUser(user_id: number): Observable<User> {
     return this.http.delete<User>(this.usersUrl + '/' + user_id)
       .pipe(

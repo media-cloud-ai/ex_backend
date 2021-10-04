@@ -39,6 +39,14 @@ defmodule ExBackendWeb.Auth.Token do
   end
 
   @impl true
+  def verify(
+        %{"access_key_id" => _access_key_id, "secret_access_key" => _secret_access_key} = params,
+        _opts
+      ) do
+    LoginConfirm.authenticate_credentials(params)
+  end
+
+  @impl true
   def verify(token, opts) do
     Token.verify(Endpoint, @token_salt, token, opts)
   end
