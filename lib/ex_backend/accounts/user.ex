@@ -21,7 +21,7 @@ defmodule ExBackend.Accounts.User do
   end
 
   def changeset(%User{} = user, attrs) do
-    uuid = credential_generator(28)
+    uuid = Ecto.UUID.generate()
 
     attrs =
       if Map.get(attrs, :email) || Map.get(attrs, :rights) do

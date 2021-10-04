@@ -32,7 +32,12 @@ defmodule ExBackend.AccountsTest do
   test "create_user/1 with valid data creates a user" do
     assert {:ok, %User{} = user} = Accounts.create_user(@create_attrs)
     assert user.email == "fred@example.com"
-    assert String.length(user.uuid) == 40
+    assert String.length(user.uuid) == 36
+
+    assert Regex.match?(
+             ~r/^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}/,
+             user.uuid
+           ) == true
   end
 
   test "create_user/1 with invalid data returns error changeset" do
