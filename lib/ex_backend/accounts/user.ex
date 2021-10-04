@@ -3,6 +3,7 @@ defmodule ExBackend.Accounts.User do
 
   use Ecto.Schema
   import Ecto.Changeset
+  alias ExBackend.Repo
   alias ExBackend.Accounts.User
 
   schema "users" do
@@ -53,6 +54,14 @@ defmodule ExBackend.Accounts.User do
     |> validate_required([:password])
     |> validate_password(:password)
     |> put_pass_hash
+  end
+
+  def get_by(%{"access_key_id" => access_key_id}) do
+    Repo.get_by(User, access_key_id: access_key_id)
+  end
+
+  def verify_secret_access_key(user, secret_access_key) do
+    secret_access_key == user.secret_access_key
   end
 
   defp unique_email(changeset) do
