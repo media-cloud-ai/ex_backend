@@ -3,8 +3,8 @@ defmodule ExBackend.Accounts.User do
 
   use Ecto.Schema
   import Ecto.Changeset
-  alias ExBackend.Repo
   alias ExBackend.Accounts.User
+  alias ExBackend.Repo
 
   schema "users" do
     field(:email, :string)

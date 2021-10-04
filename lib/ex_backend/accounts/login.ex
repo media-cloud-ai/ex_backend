@@ -21,7 +21,10 @@ defmodule ExBackend.Accounts.LoginConfirm do
     end
   end
 
-  def authenticate_credentials(%{"access_key_id" => access_key_id, "secret_access_key" => secret_access_key}) do
+  def authenticate_credentials(%{
+        "access_key_id" => access_key_id,
+        "secret_access_key" => secret_access_key
+      }) do
     case User.get_by(%{"access_key_id" => access_key_id}) do
       nil ->
         {:error, "no user found"}
