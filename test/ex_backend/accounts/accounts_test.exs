@@ -83,6 +83,7 @@ defmodule ExBackend.AccountsTest do
     <<head::binary-size(4)>> <> rest = user.access_key_id
     assert head == "MCAI"
     assert String.length(user.access_key_id) == 20
+    assert Regex.match?(~r/[^\d]/, user.access_key_id) == true
     assert String.length(user.secret_access_key) == 40
   end
 end
