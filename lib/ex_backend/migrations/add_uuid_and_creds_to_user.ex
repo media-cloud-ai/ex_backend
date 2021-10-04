@@ -5,11 +5,7 @@ defmodule ExBackend.Migration.AddUuidAndCredsToUser do
 
   def change do
     alter table(:users) do
-      add(:uuid, :string,
-        default:
-          :crypto.strong_rand_bytes(40)
-          |> Base.url_encode64(padding: true)
-      )
+      add(:uuid, :string, default: Ecto.UUID.generate())
     end
 
     alter table(:users) do
