@@ -12,28 +12,33 @@ export class JobStatusPipe implements PipeTransform {
 
   transform(job: Job): string {
     var status = undefined
-    var jobStatus = job.status
-    var jobProgression = job.progressions
-    if (jobStatus.length === 0){
-      if (jobProgression.length > 0){
+    var jobStatus = Job.getLastStatus(job)
+    var jobProgression = Job.getLastProgression(job)
+
+    if (!jobStatus){
+      if (jobProgression){
         return 'processing'
       } else {
         return 'queued'
       }
     } else {
-      for (var i = jobStatus.length - 1; i >= 0; i--) {
-        if (jobStatus[i].state === 'completed'){
-          return 'completed'
+      if (jobStatus.state === 'completed'){
+        return 'completed'
+      }
+      if (jobStatus.state === 'error'){
+        status = 'error'
+      }
+      if (jobStatus.state === 'skipped'){
+        return 'skipped'
+      }
+      if (jobStatus.state === 'stopped'){
+        return 'stopped'
+      }
+      if (status != "error" && jobStatus.state === 'retrying'){
+        if (!jobProgression || jobProgression.datetime < jobStatus.inserted_at) {
+          return "queued"
         }
-        if (jobStatus[i].state === 'error'){
-          status = 'error'
-        }
-        if (jobStatus[i].state === 'skipped'){
-          return 'skipped'
-        }
-        if (jobStatus[i].state === 'stopped'){
-          return 'stopped'
-        }
+        return 'processing'
       }
     }
     if (status === undefined) {
@@ -43,3 +48,5 @@ export class JobStatusPipe implements PipeTransform {
     }
   }
 }
+
+
