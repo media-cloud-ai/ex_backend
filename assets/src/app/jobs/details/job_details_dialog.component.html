@@ -44,20 +44,17 @@
 
     <div class="worker">
       <span class="label">Worker: </span>
-      <span *ngIf="worker_instance_id">
-        <button
-          mat-button
-          color="primary"
-          (click)="goToWorkers()"
-          title="Go to workers">
-          {{worker_instance_id}}
-        </button>
-      </span>
-      <span *ngIf="!worker_instance_id">
-        <button
-          mat-button
-          disabled>
-        </button>
+      <span>
+        {{job.last_worker_instance_id}}
+        <div *ngIf=job.last_worker_instance_id>
+          <button
+            mat-button
+            color="primary"
+            (click)="goToWorkers()"
+            title="Go to workers">
+            Workers
+          </button>
+        </div>
       </span>
     </div>
 
