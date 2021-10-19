@@ -114,7 +114,10 @@ export class WorkflowDetailsComponent {
   }
 
   abort(workflow_id): void {
-    let dialogRef = this.dialog.open(WorkflowAbortDialogComponent, {data: {'workflow': this.workflow}})
+    let dialogRef = this.dialog.open(WorkflowAbortDialogComponent, {data: {
+      'workflow': this.workflow,
+      'message': 'abort'
+    }})
 
     dialogRef.afterClosed().subscribe(workflow => {
       if (workflow !== undefined) {
