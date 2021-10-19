@@ -77,7 +77,7 @@ export class WorkflowDetailsComponent {
       this.renderer = new WorkflowRenderer(this.workflow.steps)
       this.renderer.setStepFocus(this.step_focus);
 
-      this.can_abort = this.workflow.steps.some((s) => s['status'] === 'processing')
+      this.can_abort = !this.workflow.steps.some((s) => s['jobs']['queued'] == 1) && this.workflow.steps.some((s) => s['status'] === "processing")
       if (this.can_abort && this.workflow.steps.some((s) => s.name === 'clean_workspace' && s.status !== 'queued')) {
         this.can_abort = false
       }
