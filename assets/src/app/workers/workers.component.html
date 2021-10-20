@@ -108,12 +108,15 @@
     <span class="job-duration">
       Job duration
     </span>
+    <span class="worker-status-last-update">
+      Last status update
+    </span>
     <span class="worker-orders">
       Orders
     </span>
   </li>
   <li *ngFor="let status of workers_status"
-      class="worker worker-status">
+      class="worker worker-status {{getUpdateStatusClass(status)}}">
     <span class="instance_id">
       {{status.instance_id}}
     </span>
@@ -126,10 +129,22 @@
     <span class="worker-queue">
       {{status.queue_name}}
     </span>
-    <span class="worker-activity">
+    <span class="worker-activity" *ngIf="!isWorkerStatusOutdated(status) || status.activity == 'Terminated'">
       {{status.activity}}
     </span>
-    <span class="current-job" *ngIf="status.current_job">
+    <span class="worker-activity" *ngIf="isWorkerStatusOutdated(status) && status.activity != 'Terminated'">
+      {{status.activity}} (Outdated)
+    </span>
+    <span class="current-job outdated" *ngIf="status.current_job && status.activity == 'Terminated'">
+      <button
+        mat-button
+        color="primary"
+        (click)="goToWorkflow(status.current_job.job_id)"
+        title="Go to workflow">
+        {{status.current_job.job_id}}
+      </button>
+    </span>
+    <span class="current-job" *ngIf="status.current_job && status.activity != 'Terminated'">
       <button
         mat-button
         color="primary"
@@ -145,7 +160,10 @@
         -
       </button>
     </span>
-    <span class="job-status" *ngIf="status.current_job">
+    <span class="job-status outdated" *ngIf="status.current_job && status.activity == 'Terminated'">
+      {{status.current_job.status}}
+    </span>
+    <span class="job-status" *ngIf="status.current_job && status.activity != 'Terminated'">
       {{status.current_job.status}}
     </span>
     <span class="job-status" *ngIf="!status.current_job">
@@ -157,7 +175,10 @@
     <span class="job-duration" *ngIf="!status.current_job">
       -
     </span>
-    <span class="worker-orders">
+    <span class="worker-status-last-update">
+      {{ status.updated_at | date: 'yyyy-MM-dd HH:mm:ss' }}
+    </span>
+    <span class="worker-orders" *ngIf="!isWorkerStatusOutdated(status)">
         <button
           mat-raised-button
           color="accent"
@@ -196,5 +217,55 @@
           <mat-icon>cancel</mat-icon>
         </button>
     </span>
+    <span class="worker-orders" *ngIf="isWorkerStatusOutdated(status)">
+        <button
+          mat-stroked-button
+          color="accent"
+          [disabled]="!status.current_job || status.current_job.status != 'running' || status.activity == 'Terminated'"
+          (click)="stopProcess(status.instance_id, status.current_job.job_id)"
+          title="Stop process"
+        >
+          <mat-icon>stop</mat-icon>
+        </button>
+        <button
+          *ngIf="status.activity != 'Suspended'"
+          mat-stroked-button
+          color="primary"
+          [disabled]="status.activity == 'Terminated'"
+          (click)="toggleJobConsumption(status.instance_id, 'stop')"
+          title="Stop consuming jobs"
+        >
+          <mat-icon>lock</mat-icon>
+        </button>
+        <button
+          *ngIf="status.activity == 'Suspended'"
+          mat-stroked-button
+          color="accent"
+          (click)="toggleJobConsumption(status.instance_id, 'resume')"
+          title="Resume consuming jobs"
+        >
+          <mat-icon>lock_open</mat-icon>
+        </button>
+        <button
+          mat-stroked-button
+          color="warn"
+          [disabled]="status.activity == 'Terminated'"
+          (click)="stopWorker(status.instance_id)"
+          title="Stop worker"
+        >
+          <mat-icon>cancel</mat-icon>
+        </button>
+    </span>
   </li>
 </ul>
+
+<mat-paginator
+  class=paginator
+  showFirstLastButtons=true
+  [length]="length"
+  [pageSize]="pageSize"
+  [pageIndex]="page"
+  [pageSizeOptions]="pageSizeOptions"
+  (page)="pageEvent = changeWorkerStatusPage($event)"
+  *ngIf="workers_status && !loading">
+</mat-paginator>

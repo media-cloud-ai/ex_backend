@@ -36,11 +36,25 @@ export class WorkerService {
       )
   }
 
-  getWorkerStatuses(job_id?: string): Observable<WorkersStatus> {
+  getWorkerStatuses(page: number, per_page: number): Observable<WorkersStatus> {
     let params = new HttpParams();
-    if (job_id) {
-      params = params.append('job_id', job_id)
+    if (per_page) {
+      params = params.append('size', per_page.toString())
     }
+    if (page > 0) {
+      params = params.append('page', String(page))
+    }
+
+    return this.http.get<WorkerPage>(this.workerStatusesUrl, {params: params})
+      .pipe(
+        tap(workerPage => this.log('fetched WorkersStatus')),
+        catchError(this.handleError('getWorkerStatuses', undefined))
+      )
+  }
+
+  getWorkerStatus(job_id: string): Observable<WorkersStatus> {
+    let params = new HttpParams();
+    params = params.append('job_id', job_id)
 
     return this.http.get<WorkerPage>(this.workerStatusesUrl, {params: params})
       .pipe(
