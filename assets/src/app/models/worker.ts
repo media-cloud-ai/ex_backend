@@ -36,5 +36,6 @@ export class WorkerStatus {
 }
 
 export class WorkersStatus {
+  total: number
   data: WorkerStatus[]
 }

@@ -258,3 +258,14 @@
     </span>
   </li>
 </ul>
+
+<mat-paginator
+  class=paginator
+  showFirstLastButtons=true
+  [length]="length"
+  [pageSize]="pageSize"
+  [pageIndex]="page"
+  [pageSizeOptions]="pageSizeOptions"
+  (page)="pageEvent = changeWorkerStatusPage($event)"
+  *ngIf="workers_status && !loading">
+</mat-paginator>

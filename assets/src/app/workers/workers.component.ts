@@ -21,7 +21,19 @@ const OUTDATE_SECONDS_THRESHOLD = 3600;
   styleUrls: ['workers.component.less']
 })
 export class WorkersComponent {
+  // paginator parameters
+  length = 1000
+  page = 0
+  pageSize = 10
+  pageSizeOptions = [
+    10,
+    20,
+    50,
+    100
+  ]
+
   connection: any
+  loading: boolean
   last_worker_status_update: Moment
   workers: Worker[]
   workers_status: WorkerStatus[]
@@ -45,6 +57,7 @@ export class WorkersComponent {
   }
 
   ngOnInit() {
+    this.loading = true;
     this.sub = this.route
       .queryParams
       .subscribe(params => {
@@ -96,12 +109,16 @@ export class WorkersComponent {
   }
 
   private getWorkerStatuses() {
-    this.workerService.getWorkerStatuses()
+    this.loading = true;
+    this.workerService.getWorkerStatuses(this.page, this.pageSize)
         .subscribe(workerStatuses => {
+          this.length = undefined;
           if(workerStatuses) {
+            this.length = workerStatuses.total;
             this.workers_status = workerStatuses.data;
             this.last_worker_status_update = moment.utc();
           }
+          this.loading = false;
         })
   }
 
@@ -151,5 +168,11 @@ export class WorkersComponent {
         console.log("Workflow:", workflow);
         this.router.navigate([`/workflows/${workflow.data.id}`]);
       });
+  }
+
+  changeWorkerStatusPage(event) {
+    this.page = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.getWorkerStatuses();
   }
 }
