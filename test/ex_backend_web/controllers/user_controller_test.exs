@@ -73,6 +73,26 @@ defmodule ExBackendWeb.UserControllerTest do
     assert json_response(conn, 422)["errors"] != %{}
   end
 
+  @tag login: "reg@example.com", rights: ["administrator"]
+  test "generate credentials for chosen user when data is valid", %{conn: conn, user: user} do
+    conn = post(conn, user_path(conn, :generate_credentials, id: user.id))
+    assert json_response(conn, 200)["data"]["id"] == user.id
+    updated_user = Accounts.get(user.id)
+    <<head::binary-size(4)>> <> rest = updated_user.access_key_id
+    assert head == "MCAI"
+    assert String.length(updated_user.access_key_id) == 20
+    assert String.length(updated_user.secret_access_key) == 40
+  end
+
+  @tag login: "reg@example.com", rights: ["technician", "editor"]
+  test "does not generate credentials for unauthorized user", %{
+    conn: conn,
+    user: user
+  } do
+    conn = post(conn, user_path(conn, :generate_credentials, id: user.id))
+    assert json_response(conn, 403)["errors"] != %{}
+  end
+
   @tag login: "reg@example.com"
   test "unable to delete myself", %{conn: conn, user: user} do
     conn = delete(conn, user_path(conn, :delete, user))

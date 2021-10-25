@@ -1,5 +1,5 @@
 
-import {Component, Input} from '@angular/core'
+import {Component, EventEmitter, Input, Output} from '@angular/core'
 import {Step, Workflow} from '../../models/workflow'
 
 @Component({
@@ -15,7 +15,11 @@ export class WorkflowStepDetailsComponent {
   @Input() step: Step
   @Input() workflow: Workflow
 
+  @Output() stepChange = new EventEmitter<Step>();
+
   ngOnInit() {
+    this.details_opened = this.step.focus || false;
+
     if (this.step.parameters) {
       this.disabled = this.step.parameters.length === 0
     }
@@ -27,7 +31,9 @@ export class WorkflowStepDetailsComponent {
 
   toggleStepDetails(): void {
     if (!this.disabled) {
-      this.details_opened = !this.details_opened
+      this.details_opened = !this.details_opened;
+      this.step.focus = this.details_opened;
+      this.stepChange.emit(this.step);
     }
   }
 }

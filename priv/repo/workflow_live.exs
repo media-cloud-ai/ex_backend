@@ -9,6 +9,7 @@ workflow_definition = %{
   version_major: 6,
   version_minor: 5,
   version_micro: 4,
+  user_uuid: "toto_live",
   reference: "some-identifier",
   steps: [
     %{

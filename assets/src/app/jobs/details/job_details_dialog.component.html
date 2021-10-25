@@ -11,10 +11,24 @@
     </div>
 
     <div class="duration">
-      <div *ngIf="job.status[0]">
-        <span class="label">Executed in: </span>
-        <span class="time">{{ job | jobDuration | duration: 'timecode_ms' }}</span>
-      </div>
+      <span *ngIf="duration" title="{{duration | duration : 'human'}}">
+        <div>
+          <span class="label">Pending duration: </span>
+          <span class="time">{{ duration.order_pending * 1000 | duration : 'timecode_ms' }}</span>
+        </div>
+        <div>
+          <span class="label">Processing duration: </span>
+          <span class="time">{{ duration.processing * 1000 | duration : 'timecode_ms' }}</span>
+        </div>
+        <div>
+          <span class="label">Response latency: </span>
+          <span class="time">{{ duration.response_pending * 1000 | duration : 'timecode_ms' }}</span>
+        </div>
+        <div>
+          <span class="label">Total duration: </span>
+          <span class="time">{{ duration.total * 1000 | duration : 'timecode_ms' }}</span>
+        </div>
+      </span>
     </div>
 
     <div class="times">

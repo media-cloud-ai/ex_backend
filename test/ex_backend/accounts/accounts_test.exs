@@ -32,6 +32,12 @@ defmodule ExBackend.AccountsTest do
   test "create_user/1 with valid data creates a user" do
     assert {:ok, %User{} = user} = Accounts.create_user(@create_attrs)
     assert user.email == "fred@example.com"
+    assert String.length(user.uuid) == 36
+
+    assert Regex.match?(
+             ~r/^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}/,
+             user.uuid
+           ) == true
   end
 
   test "create_user/1 with invalid data returns error changeset" do
@@ -73,5 +79,16 @@ defmodule ExBackend.AccountsTest do
     user = fixture(:user)
     attrs = %{password: "pass"}
     assert {:error, %Ecto.Changeset{}} = Accounts.update_password(user, attrs)
+  end
+
+  test "update credentials" do
+    user = fixture(:user)
+    {:ok, %User{}} = Accounts.update_credentials(user)
+    user = Accounts.get(user.id)
+    <<head::binary-size(4)>> <> rest = user.access_key_id
+    assert head == "MCAI"
+    assert String.length(user.access_key_id) == 20
+    assert Regex.match?(~r/[^\d]/, user.access_key_id) == true
+    assert String.length(user.secret_access_key) == 40
   end
 end

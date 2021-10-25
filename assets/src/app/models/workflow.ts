@@ -34,6 +34,7 @@ export class Step {
   output_extension?: string
   parameters?: Parameter[]
   jobs?: JobsStatus
+  focus?: boolean
 }
 
 export class Artifact {
@@ -60,6 +61,7 @@ export class Workflow {
   rights?: Right[]
   steps?: Step[]
   workflow_id?: number
+  user_uuid?: string
 }
 
 export class WorkflowEvent {

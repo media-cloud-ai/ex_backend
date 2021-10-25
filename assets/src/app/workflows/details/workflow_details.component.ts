@@ -27,6 +27,7 @@ export class WorkflowDetailsComponent {
   connection: any
   messages: Message[] = []
   right_abort: boolean = false
+  step_focus: Map<number, boolean> = new Map()
 
   constructor(
     private authService: AuthService,
@@ -74,8 +75,9 @@ export class WorkflowDetailsComponent {
       }
       this.workflow = workflow.data
       this.renderer = new WorkflowRenderer(this.workflow.steps)
+      this.renderer.setStepFocus(this.step_focus);
 
-      this.can_abort = this.workflow.steps.some((s) => s.status === 'error')
+      this.can_abort = this.workflow.steps.some((s) => s['status'] === 'processing')
       if (this.can_abort && this.workflow.steps.some((s) => s.name === 'clean_workspace' && s.status !== 'queued')) {
         this.can_abort = false
       }
@@ -137,5 +139,9 @@ export class WorkflowDetailsComponent {
         })
       }
     })
+  }
+
+  updateStepInWorkflow(step) {
+    this.step_focus.set(step.id, step.focus);
   }
 }
