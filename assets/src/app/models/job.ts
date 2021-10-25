@@ -19,6 +19,7 @@ export class Job {
   params: Parameter[]
   status: Status[]
   progressions: Progression[]
+  last_worker_instance_id: string
 
   constructor(other: Job) {
     this.id = other.id;
