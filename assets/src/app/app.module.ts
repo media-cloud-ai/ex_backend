@@ -75,6 +75,7 @@ import {RegisteryComponent}      from './registeries/registery.component'
 import {RegisteryDetailComponent} from './registeries/registery_detail.component'
 import {RightsComponent}         from './users/rights.component'
 import {QueuesComponent}         from './amqp/queues.component'
+import {StatisticsComponent}     from './statistics/statistics.component'
 import {StepProgressBarComponent} from './workflows/step_progress_bar.component'
 import {StepRendererComponent}   from './workflows/renderer/step_renderer.component'
 import {SubtitleComponent}       from './registeries/items/subtitle.component'
@@ -199,6 +200,7 @@ const EX_BACKEND_DATE_FORMATS = {
     RegisteryDetailComponent,
     RightsComponent,
     StartIngestDialog,
+    StatisticsComponent,
     StepProgressBarComponent,
     StepRendererComponent,
     SubtitleComponent,

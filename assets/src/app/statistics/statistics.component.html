@@ -1,0 +1,115 @@
+
+<h1>
+  Statistics
+</h1>
+
+<h2>
+  Workflow durations
+</h2>
+
+<ul class="workflow-durations">
+  <li class="durations-header">
+    <span class="workflow-identifier">
+      <div class="durations-title">Identifier</div>
+    </span>
+    <span class="workflow-version">
+      <div class="durations-title">Version</div>
+    </span>
+    <span class="workflow-duration">
+      <div class="durations-title">Order pending</div>
+      <div class="durations-sub-title">
+        <span class="minimum">Minimum</span>
+        <span class="average">Average</span>
+        <span class="maximum">Maximum</span>
+      </div>
+    </span>
+    <span class="workflow-duration">
+      <div class="durations-title">Processing</div>
+      <div class="durations-sub-title">
+        <span class="minimum">Minimum</span>
+        <span class="average">Average</span>
+        <span class="maximum">Maximum</span>
+      </div>
+    </span>
+    <span class="workflow-duration">
+      <div class="durations-title">Response Pending</div>
+      <div class="durations-sub-title">
+        <span class="minimum">Minimum</span>
+        <span class="average">Average</span>
+        <span class="maximum">Maximum</span>
+      </div>
+    </span>
+    <span class="workflow-duration">
+      <div class="durations-title">Total</div>
+      <div class="durations-sub-title">
+        <span class="minimum">Minimum</span>
+        <span class="average">Average</span>
+        <span class="maximum">Maximum</span>
+      </div>
+    </span>
+  </li>
+  <li *ngFor="let item of workflow_durations" class="duration">
+    <span class="workflow-identifier">
+      <div>{{ item.workflow.identifier }}</div>
+    </span>
+    <span class="workflow-version">
+      <div>{{ item.workflow.version_major }}.{{ item.workflow.version_minor }}.{{ item.workflow.version_micro }}</div>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count > 0">
+      <div class="workflow-duration-values">
+        <span class="minimum">{{ item.durations.min.order_pending * 1000 | duration : 'timecode_ms' }}</span>
+        <span class="average">{{ item.durations.average.order_pending * 1000 | duration : 'timecode_ms' }}</span>
+        <span class="maximum">{{ item.durations.max.order_pending * 1000 | duration : 'timecode_ms' }}</span>
+      </div>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count == 0">
+      <span class="workflow-duration-values">
+        <span class="minimum">-</span>
+        <span class="average">-</span>
+        <span class="maximum">-</span>
+      </span>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count > 0">
+      <div class="workflow-duration-values">
+        <span class="minimum">{{ item.durations.min.processing * 1000 | duration : 'timecode_ms' }}</span>
+        <span class="average">{{ item.durations.average.processing * 1000 | duration : 'timecode_ms' }}</span>
+        <span class="maximum">{{ item.durations.max.processing * 1000 | duration : 'timecode_ms' }}</span>
+      </div>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count == 0">
+      <span class="workflow-duration-values">
+        <span class="minimum">-</span>
+        <span class="average">-</span>
+        <span class="maximum">-</span>
+      </span>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count > 0">
+      <div class="workflow-duration-values">
+        <span class="minimum">{{ item.durations.min.response_pending * 1000 | duration : 'timecode_ms' }}</span>
+        <span class="average">{{ item.durations.average.response_pending * 1000 | duration : 'timecode_ms' }}</span>
+        <span class="maximum">{{ item.durations.max.response_pending * 1000 | duration : 'timecode_ms' }}</span>
+      </div>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count == 0">
+      <span class="workflow-duration-values">
+        <span class="minimum">-</span>
+        <span class="average">-</span>
+        <span class="maximum">-</span>
+      </span>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count > 0">
+      <div class="workflow-duration-values">
+        <span class="minimum">{{ item.durations.min.total * 1000 | duration : 'timecode_ms' }}</span>
+        <span class="average">{{ item.durations.average.total * 1000 | duration : 'timecode_ms' }}</span>
+        <span class="maximum">{{ item.durations.max.total * 1000 | duration : 'timecode_ms' }}</span>
+      </div>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count == 0">
+      <span class="workflow-duration-values">
+        <span class="minimum">-</span>
+        <span class="average">-</span>
+        <span class="maximum">-</span>
+      </span>
+    </span>
+  </li>
+</ul>

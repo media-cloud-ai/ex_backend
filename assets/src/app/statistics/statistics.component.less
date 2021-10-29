@@ -1,0 +1,87 @@
+@import '../colors';
+
+h1, h2,
+.search-params {
+  padding-left: 40px;
+}
+
+
+.workflow-durations {
+
+  .durations-header,
+  .duration {
+    padding: 5px;
+    display: flex;
+    line-height: 36px;
+    vertical-align: middle; 
+
+    .workflow-identifier,
+    .workflow-duration,
+    {
+      flex: 1;
+    }
+
+    .workflow-duration,
+    .workflow-version, {
+      text-align: center;
+    }
+
+    .durations-sub-title,
+    .workflow-duration-values {
+      display: flex;
+      border-style: solid;
+      border-width: 0px 0px 0px 1px;
+
+      span {
+        flex: 1;
+        margin: 0px 1px;
+      }
+    }
+
+    .durations-sub-title {
+      border-color: @lightGrey;
+    }
+
+    .workflow-duration-values {
+      border-color: @grey;
+    }
+
+    .workflow-version, {
+      flex: 0.5;
+    }
+
+  }
+
+  .duration:nth-child(2n+1) {
+    background-color: @lightGrey;
+  }
+
+  .durations-header {
+    font-weight: bold;
+    background-color: @green;
+
+
+    .workflow-identifier,
+    .workflow-version, {
+      line-height: 72px;
+    }
+  }
+  
+
+  .duration {
+    .minimum,
+    .maximum {
+      font-style: italic;
+      font-size: 10px;
+    }
+
+    .minimum {
+      color: @green;
+    }
+
+    .maximum {
+      color: @darkRed;
+    }
+  }
+
+}
