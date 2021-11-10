@@ -25,6 +25,7 @@ export class StatisticsComponent {
   workflow_status = [
     { id: 'completed', label: 'Completed' },
     { id: 'error', label: 'Error' },
+    { id: 'stopped', label: 'Stopped' },
   ]
 
   workflowsForm: FormGroup
