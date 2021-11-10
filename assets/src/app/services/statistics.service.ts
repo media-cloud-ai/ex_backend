@@ -25,11 +25,11 @@ export class StatisticsService {
       )
   }
 
-  getWorkflowsDurationStatistics(parameters: object = {}): Observable<DurationStatistics> {
+  getWorkflowsDurationStatistics(parameters = []): Observable<DurationStatistics> {
     let params = new HttpParams()
 
-    for(let key in parameters) {
-      params = params.append(key, String(parameters[key]))
+    for(let item of parameters) {
+      params = params.append(item["key"], String(item["value"]))
     }
 
     return this.http.get<DurationStatistics>(this.durationsStatisticsUrl + "/workflows", { params: params })
