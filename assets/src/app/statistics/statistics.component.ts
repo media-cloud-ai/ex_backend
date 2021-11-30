@@ -66,8 +66,8 @@ export class StatisticsComponent {
   selectedVersions: Version[] = []
   selectedStatuses = ["completed"]
 
-  start_date: Date
-  end_date: Date
+  workflow_start_date: Date
+  workflow_end_date: Date
 
   workflowStatisticsPage = 0;
   workflowStatisticsPageSize = this.pageSizeOptions[0];
@@ -80,6 +80,9 @@ export class StatisticsComponent {
   jobsForm: FormGroup
 
   selectedNames: string[] = []
+
+  job_start_date: Date
+  job_end_date: Date
 
   jobStatisticsPage = 0;
   jobStatisticsPageSize = this.pageSizeOptions[0];
@@ -105,7 +108,9 @@ export class StatisticsComponent {
     });
 
     this.jobsForm = this.formBuilder.group({
-      selectedSteps: new FormControl('')
+      selectedSteps: new FormControl(''),
+      startDate: new FormControl(''),
+      endDate: new FormControl('')
     })
 
     this.workflowService.getWorkflowDefinitions(undefined, -1, undefined, undefined, undefined, "full_with_steps").subscribe((definitions) => {
@@ -165,12 +170,12 @@ export class StatisticsComponent {
         params.push({ "key": "states[]", "value": status });
       }
 
-      if (this.start_date) {
-        params.push({ "key": "after_date", "value": formatDate(this.start_date, "yyyy-MM-ddTHH:mm:ss", "fr") });
+      if (this.workflow_start_date) {
+        params.push({ "key": "after_date", "value": formatDate(this.workflow_start_date, "yyyy-MM-ddTHH:mm:ss", "fr") });
       }
 
-      if (this.end_date) {
-        params.push({ "key": "before_date", "value": formatDate(this.end_date, "yyyy-MM-ddTHH:mm:ss", "fr") });
+      if (this.workflow_end_date) {
+        params.push({ "key": "before_date", "value": formatDate(this.workflow_end_date, "yyyy-MM-ddTHH:mm:ss", "fr") });
       }
 
       this.statisticsService.getWorkflowsDurationStatistics(params).subscribe((statistics) => {
@@ -184,6 +189,14 @@ export class StatisticsComponent {
     let params = []
     for (let name of this.selectedNames) {
       params.push({ "key": "job_type", "value": name });
+    }
+
+    if (this.job_start_date) {
+      params.push({ "key": "after_date", "value": formatDate(this.job_start_date, "yyyy-MM-ddTHH:mm:ss", "fr") });
+    }
+
+    if (this.job_end_date) {
+      params.push({ "key": "before_date", "value": formatDate(this.job_end_date, "yyyy-MM-ddTHH:mm:ss", "fr") });
     }
 
     this.statisticsService.getJobsDurationStatistics(params).subscribe((statistics) => {
