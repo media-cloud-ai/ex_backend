@@ -1,19 +1,15 @@
 import { formatDate } from '@angular/common'
 import {Component, ViewChild} from '@angular/core'
 import {ActivatedRoute, Router} from '@angular/router'
+import {MatChipInputEvent} from '@angular/material/chips';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
 
 import {StatisticsService} from '../services/statistics.service'
 import {WorkflowService} from '../services/workflow.service'
-import {DurationStatistics} from '../models/statistics/duration'
+import {DurationStatistics, JobsDurationStatistics} from '../models/statistics/duration'
 import {Workflow, Version} from '../models/workflow'
 
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
-
-
-class JobsDurationStatistics {
-  name: string
-  durations: DurationStatistics
-}
 
 class WorkflowDurationStatistics {
   workflow: Workflow
@@ -38,7 +34,6 @@ class WorkflowDurationStatistics {
   }
 }
 
-
 @Component({
   selector: 'statistics-component',
   templateUrl: 'statistics.component.html',
@@ -46,15 +41,16 @@ class WorkflowDurationStatistics {
 })
 export class StatisticsComponent {
 
-  pageSizeOptions = [20, 50, 100];
+  readonly pageSizeOptions = [20, 50, 100] as const;
+  readonly separatorKeysCodes = [ENTER, COMMA] as const;
 
   // Workflow statistics
   statistics: []
-  workflow_identifiers: Set<string>
-  workflow_versions: Set<Version>
-  workflow_definitions: Workflow[]
-  workflow_durations: Array<WorkflowDurationStatistics>
-  workflow_status = [
+  workflowIdentifiers: Set<string>
+  workflowVersions: Set<Version>
+  workflowDefinitions: Workflow[]
+  workflowDurations: Array<WorkflowDurationStatistics>
+  workflowStatus = [
     { id: 'completed', label: 'Completed' },
     { id: 'error', label: 'Error' },
     { id: 'stopped', label: 'Stopped' },
@@ -62,27 +58,51 @@ export class StatisticsComponent {
 
   workflowsForm: FormGroup
 
-  selectedIdentifiers: string[] = []
-  selectedVersions: Version[] = []
-  selectedStatuses = ["completed"]
+  workflowSelectedIdentifiers: string[] = []
+  workflowSelectedVersions: Version[] = []
+  workflowSelectedStatuses = ["completed"]
 
-  workflow_start_date: Date
-  workflow_end_date: Date
+  workflowStartDate: Date
+  workflowEndDate: Date
 
   workflowStatisticsPage = 0;
   workflowStatisticsPageSize = this.pageSizeOptions[0];
   workflowStatisticsPageTotal: number;
 
   // Job statistics
-  step_names: Set<string>
-  job_durations: JobsDurationStatistics[] = []
+  stepNames: Set<string>
+  jobDurations: Array<JobsDurationStatistics> = []
+  jobStatus = [
+    { id: 'queued', label: 'Queued' },
+    { id: 'ready_to_init', label: 'Ready to init' },
+    { id: 'ready_to_start', label: 'Ready to start' },
+    { id: 'initializing', label: 'Initializing' },
+    { id: 'initialized', label: 'Initialized' },
+    { id: 'starting', label: 'Starting' },
+    { id: 'processing', label: 'Processing' },
+    { id: 'running', label: 'Running' },
+    { id: 'update', label: 'Update' },
+    { id: 'updating', label: 'Updating' },
+    { id: 'skipped', label: 'Skipped' },
+    { id: 'stopped', label: 'Stopped' },
+    { id: 'completed', label: 'Completed' },
+    { id: 'error', label: 'Error' },
+    { id: 'retrying', label: 'Retrying' },
+    { id: 'unknown', label: 'Unknown' }
+  ]
+
+  jobInstanceIDs: string[] = []
+  jobWorkerLabels: string[] = []
+  jobWorkerVersions: string[] = []
 
   jobsForm: FormGroup
 
-  selectedNames: string[] = []
+  jobSelectedNames: string[] = []
 
-  job_start_date: Date
-  job_end_date: Date
+  jobSelectedStatus = ["completed"]
+
+  jobStartDate: Date
+  jobEndDate: Date
 
   jobStatisticsPage = 0;
   jobStatisticsPageSize = this.pageSizeOptions[0];
@@ -109,45 +129,47 @@ export class StatisticsComponent {
 
     this.jobsForm = this.formBuilder.group({
       selectedSteps: new FormControl(''),
+      selectedStatus: new FormControl(''),
       startDate: new FormControl(''),
       endDate: new FormControl('')
     })
 
     this.workflowService.getWorkflowDefinitions(undefined, -1, undefined, undefined, undefined, "full_with_steps").subscribe((definitions) => {
-      this.workflow_definitions = definitions.data;
-      this.workflow_identifiers = new Set(this.workflow_definitions.map((definition) => definition.identifier).sort());
-      this.step_names = new Set(this.workflow_definitions.map((definition) => definition.steps).reduce((acc, steps) => acc.concat(steps), []).map((step) => step.name).sort());
+      this.workflowDefinitions = definitions.data;
+      this.workflowIdentifiers = new Set(this.workflowDefinitions.map((definition) => definition.identifier).sort());
+      this.stepNames = new Set(this.workflowDefinitions.map((definition) => definition.steps).reduce((acc, steps) => acc.concat(steps), []).map((step) => step.name).sort());
 
-      let sorted_versions = this.workflow_definitions
+      let sorted_versions = this.workflowDefinitions
           .map((definition) => new Version(definition))
           .sort(Version.compare);
-      this.workflow_versions = new Set(sorted_versions);
+      this.workflowVersions = new Set(sorted_versions);
 
       this.getWorkflowStatistics();
       this.getJobStatistics();
+
     })
 
     this.workflowsForm.controls.selectedWorkflows.valueChanges.subscribe((change) => {
-      if (change.length != this.selectedIdentifiers.length) {
-        this.selectedVersions = [];
+      if (change.length != this.workflowSelectedIdentifiers.length) {
+        this.workflowSelectedVersions = [];
 
-        let sorted_filtered_versions = this.workflow_definitions
+        let sorted_filtered_versions = this.workflowDefinitions
           .filter((definition) => change.includes(definition.identifier))
           .map((definition) => new Version(definition))
           .sort(Version.compare);
 
-        this.workflow_versions = new Set(sorted_filtered_versions);
+        this.workflowVersions = new Set(sorted_filtered_versions);
       }
     });
   }
 
   private getWorkflowStatistics() {
     let selected_definitions =
-      this.workflow_definitions
-        .filter((definition) => this.selectedIdentifiers.length == 0 || this.selectedIdentifiers.includes(definition.identifier))
-        .filter((definition) => this.selectedVersions.length == 0 || this.selectedVersions.find(version => {
-          let workflow_version = new Version(definition);
-          return version.equals(workflow_version);
+      this.workflowDefinitions
+        .filter((definition) => this.workflowSelectedIdentifiers.length == 0 || this.workflowSelectedIdentifiers.includes(definition.identifier))
+        .filter((definition) => this.workflowSelectedVersions.length == 0 || this.workflowSelectedVersions.find(version => {
+          let workflowVersion = new Version(definition);
+          return version.equals(workflowVersion);
         }))
         .sort(Workflow.compare);
 
@@ -156,7 +178,7 @@ export class StatisticsComponent {
     this.workflowStatisticsPageTotal = selected_definitions.length;
     selected_definitions = selected_definitions.slice(offset, offset + this.workflowStatisticsPageSize);
 
-    this.workflow_durations = new Array<WorkflowDurationStatistics>();
+    this.workflowDurations = new Array<WorkflowDurationStatistics>();
 
     for (let definition of selected_definitions) {
       let params = [
@@ -166,41 +188,57 @@ export class StatisticsComponent {
         { "key": "identifier", "value": definition.identifier },
       ]
 
-      for (let status of this.selectedStatuses) {
+      for (let status of this.workflowSelectedStatuses) {
         params.push({ "key": "states[]", "value": status });
       }
 
-      if (this.workflow_start_date) {
-        params.push({ "key": "after_date", "value": formatDate(this.workflow_start_date, "yyyy-MM-ddTHH:mm:ss", "fr") });
+      if (this.workflowStartDate) {
+        params.push({ "key": "after_date", "value": formatDate(this.workflowStartDate, "yyyy-MM-ddTHH:mm:ss", "fr") });
       }
 
-      if (this.workflow_end_date) {
-        params.push({ "key": "before_date", "value": formatDate(this.workflow_end_date, "yyyy-MM-ddTHH:mm:ss", "fr") });
+      if (this.workflowEndDate) {
+        params.push({ "key": "before_date", "value": formatDate(this.workflowEndDate, "yyyy-MM-ddTHH:mm:ss", "fr") });
       }
 
       this.statisticsService.getWorkflowsDurationStatistics(params).subscribe((statistics) => {
-        this.workflow_durations.push(new WorkflowDurationStatistics(definition, statistics));
-        this.workflow_durations.sort(WorkflowDurationStatistics.compare);
+        this.workflowDurations.push(new WorkflowDurationStatistics(definition, statistics));
+        this.workflowDurations.sort(WorkflowDurationStatistics.compare);
       })
     }
   }
 
   private getJobStatistics() {
     let params = []
-    for (let name of this.selectedNames) {
+    for (let name of this.jobSelectedNames) {
       params.push({ "key": "job_type", "value": name });
     }
 
-    if (this.job_start_date) {
-      params.push({ "key": "after_date", "value": formatDate(this.job_start_date, "yyyy-MM-ddTHH:mm:ss", "fr") });
+    for (let status of this.jobSelectedStatus) {
+      params.push({ "key": "states[]", "value": status });
     }
 
-    if (this.job_end_date) {
-      params.push({ "key": "before_date", "value": formatDate(this.job_end_date, "yyyy-MM-ddTHH:mm:ss", "fr") });
+    for (let instanceId of this.jobInstanceIDs) {
+      params.push({ "key": "instance_ids[]", "value": instanceId });
+    }
+
+    for (let workerLabel of this.jobWorkerLabels) {
+      params.push({ "key": "labels[]", "value": workerLabel });
+    }
+
+    for (let workerVersion of this.jobWorkerVersions) {
+      params.push({ "key": "versions[]", "value": workerVersion });
+    }
+
+    if (this.jobStartDate) {
+      params.push({ "key": "after_date", "value": formatDate(this.jobStartDate, "yyyy-MM-ddTHH:mm:ss", "fr") });
+    }
+
+    if (this.jobEndDate) {
+      params.push({ "key": "before_date", "value": formatDate(this.jobEndDate, "yyyy-MM-ddTHH:mm:ss", "fr") });
     }
 
     this.statisticsService.getJobsDurationStatistics(params).subscribe((statistics) => {
-      this.job_durations = statistics;
+      this.jobDurations = statistics;
     });
   }
 
@@ -214,5 +252,25 @@ export class StatisticsComponent {
     this.jobStatisticsPage = event.pageIndex;
     this.jobStatisticsPageSize = event.pageSize;
     this.getJobStatistics();
+  }
+
+  private removeChip(list: string[], instance_id: string) {
+    const index = list.indexOf(instance_id);
+
+    if (index >= 0) {
+      list.splice(index, 1);
+    }
+  }
+
+  private addChip(list: string[], event: MatChipInputEvent) {
+    const value = (event.value || '').trim();
+
+    if (value) {
+      list.push(value);
+    }
+
+    if (event.input) {
+      event.input.value = '';
+    }
   }
 }

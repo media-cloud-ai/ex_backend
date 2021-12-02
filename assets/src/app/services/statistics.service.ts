@@ -39,14 +39,14 @@ export class StatisticsService {
       )
   }
 
-  getJobsDurationStatistics(parameters = []): Observable<JobsDurationStatistics> {
+  getJobsDurationStatistics(parameters = []): Observable<JobsDurationStatistics[]> {
     let params = new HttpParams()
 
     for(let item of parameters) {
       params = params.append(item["key"], String(item["value"]))
     }
 
-    return this.http.get<JobsDurationStatistics>(this.durationsStatisticsUrl + "/jobs", { params: params })
+    return this.http.get<JobsDurationStatistics[]>(this.durationsStatisticsUrl + "/jobs", { params: params })
       .pipe(
         tap(workflowDurations => this.log('fetched JobsDurationStatistics')),
         catchError(this.handleError('getJobsDurationStatistics', undefined))
