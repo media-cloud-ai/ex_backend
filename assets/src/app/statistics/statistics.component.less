@@ -1,12 +1,21 @@
 @import '../colors';
 
 h1, h2,
+.job-statistics-filters,
 .workflow-statistics-filters {
   padding-left: 40px;
+  display: flex;
+  flex-wrap: wrap;
 }
 
+.job-filters-input,
 .workflow-filters-input {
   margin: 0px 10px;
+}
+
+.job-filter-chips {
+  flex: 1;
+  flex-basis: 100%;
 }
 
 .workflow-durations {

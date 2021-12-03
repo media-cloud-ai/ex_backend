@@ -44,3 +44,8 @@ export class DurationStatistics {
   max: McaiDurations
   min: McaiDurations
 }
+
+export class JobsDurationStatistics {
+  name: string
+  durations: DurationStatistics
+}
