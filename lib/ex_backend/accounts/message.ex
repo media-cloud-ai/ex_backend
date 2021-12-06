@@ -173,7 +173,12 @@ defmodule ExBackend.Accounts.Message do
   defp prep_mail(address) do
     new_email()
     |> to(address)
-    |> from("no-reply@media-io.com")
+    |> from(get_sender_email)
+  end
+
+  defp get_sender_email do
+    System.get_env("APP_SENDER_EMAIL") ||
+      Application.get_env(:ex_backend, :sender_email, "no-reply@media-io.com")
   end
 
   defp build_html_body(config, content) do
