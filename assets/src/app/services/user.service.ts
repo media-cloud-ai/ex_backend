@@ -70,16 +70,16 @@ export class UserService {
       )
   }
 
-  updateRights(user_id: number, rights: any) {
+  updateRoles(user_id: number, roles: string[]) {
     let params = {
       user: {
-        rights: rights
+        roles: roles
       }
     }
     return this.http.put<User>(this.usersUrl + '/' + user_id, params)
       .pipe(
-        tap(userPage => this.log('update Rights')),
-        catchError(this.handleError('updateRights', undefined))
+        tap(userPage => this.log('update Roles')),
+        catchError(this.handleError('updateRoles', undefined))
       )
   }
 

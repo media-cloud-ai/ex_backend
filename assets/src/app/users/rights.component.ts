@@ -32,12 +32,12 @@ export class RightsComponent {
   ) {}
 
   ngOnInit() {
-    if (this.user && this.user.rights) {
-      this.administrator = this.user.rights.includes('administrator')
-      this.technician = this.user.rights.includes('technician')
-      this.manager = this.user.rights.includes('manager')
-      this.editor = this.user.rights.includes('editor')
-      this.ftvstudio = this.user.rights.includes('ftvstudio')
+    if (this.user && this.user.roles) {
+      this.administrator = this.user.roles.includes('administrator')
+      this.technician = this.user.roles.includes('technician')
+      this.manager = this.user.roles.includes('manager')
+      this.editor = this.user.roles.includes('editor')
+      this.ftvstudio = this.user.roles.includes('ftvstudio')
     }
 
     this.applicationService.get()
@@ -74,30 +74,30 @@ export class RightsComponent {
     this.updateRight(event, user, ['editor'])
   }
 
-  updateRight(event, user, kind): void {
-    let rights = user.rights
-    if (rights === undefined) {
-      rights = []
+  updateRight(event, user: User, kind): void {
+    let roles = user.roles
+    if (roles === undefined) {
+      roles = []
     }
 
     if (event.checked === false) {
       for (let item of kind) {
-        let index = this.user.rights.indexOf(item)
+        let index = this.user.roles.indexOf(item)
         if (index > -1) {
-          rights.splice(index, 1)
+          roles.splice(index, 1)
         }
       }
     }
 
     if (event.checked === true) {
       for (let item of kind) {
-        if(!this.user.rights.includes(item))
-        rights.push(item)
+        if(!this.user.roles.includes(item))
+        roles.push(item)
       }
     }
-    console.log(rights);
+    console.log(roles);
 
-    this.userService.updateRights(user.id, rights)
+    this.userService.updateRoles(user.id, roles)
     .subscribe(response => {
     })
   }

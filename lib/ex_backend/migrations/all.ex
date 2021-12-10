@@ -139,5 +139,11 @@ defmodule ExBackend.Migration.All do
       20_210_930_160_000,
       ExBackend.Migration.AddUuidAndCredsToUser
     )
+
+    Ecto.Migrator.up(
+      ExBackend.Repo,
+      20_211_207_110_000,
+      ExBackend.Migration.ReplaceUserRightsPerRoles
+    )
   end
 end

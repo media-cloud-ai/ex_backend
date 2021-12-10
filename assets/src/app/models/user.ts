@@ -7,11 +7,21 @@ export class Confirm {
   info: Info
 }
 
+export class Right {
+  entity: string
+  action: string[]
+}
+
+export class Role {
+  name: string
+  rights: Right[]
+}
+
 export class User {
   email: string
   inserted_at: string
   password: string
-  rights: any
+  roles: string[]
   id: number
   uuid: string
   access_key_id: string

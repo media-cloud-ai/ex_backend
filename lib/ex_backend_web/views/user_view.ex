@@ -21,7 +21,7 @@ defmodule ExBackendWeb.UserView do
     %{
       id: user.id,
       email: user.email,
-      rights: user.rights,
+      roles: user.roles,
       confirmed_at: user.confirmed_at,
       inserted_at: user.inserted_at,
       uuid: user.uuid,
@@ -33,7 +33,7 @@ defmodule ExBackendWeb.UserView do
     %{
       id: user.id,
       email: user.email,
-      rights: user.rights,
+      roles: user.roles,
       confirmed_at: user.confirmed_at,
       inserted_at: user.inserted_at,
       uuid: user.uuid,

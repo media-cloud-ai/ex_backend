@@ -58,7 +58,7 @@ defmodule ExBackendWeb.Authorize do
         %Plug.Conn{assigns: %{current_user: current_user}} = conn,
         _opts
       ) do
-    (Enum.member?(current_user.rights, "administrator") and conn) || error(conn, :forbidden, 403)
+    (Enum.member?(current_user.roles, "administrator") and conn) || error(conn, :forbidden, 403)
   end
 
   def right_technician_check(%Plug.Conn{assigns: %{current_user: nil}} = conn, _opts) do
@@ -69,7 +69,7 @@ defmodule ExBackendWeb.Authorize do
         %Plug.Conn{assigns: %{current_user: current_user}} = conn,
         _opts
       ) do
-    (Enum.member?(current_user.rights, "technician") and conn) || error(conn, :forbidden, 403)
+    (Enum.member?(current_user.roles, "technician") and conn) || error(conn, :forbidden, 403)
   end
 
   def right_editor_check(%Plug.Conn{assigns: %{current_user: nil}} = conn, _opts) do
@@ -80,7 +80,7 @@ defmodule ExBackendWeb.Authorize do
         %Plug.Conn{assigns: %{current_user: current_user}} = conn,
         _opts
       ) do
-    (Enum.member?(current_user.rights, "editor") and conn) || error(conn, :forbidden, 403)
+    (Enum.member?(current_user.roles, "editor") and conn) || error(conn, :forbidden, 403)
   end
 
   def right_ftvstudio_check(%Plug.Conn{assigns: %{current_user: nil}} = conn, _opts) do
@@ -91,7 +91,7 @@ defmodule ExBackendWeb.Authorize do
         %Plug.Conn{assigns: %{current_user: current_user}} = conn,
         _opts
       ) do
-    (Enum.member?(current_user.rights, "ftvstudio") and conn) || error(conn, :forbidden, 403)
+    (Enum.member?(current_user.roles, "ftvstudio") and conn) || error(conn, :forbidden, 403)
   end
 
   def right_technician_or_ftvstudio_check(%Plug.Conn{assigns: %{current_user: nil}} = conn, _opts) do
@@ -102,8 +102,8 @@ defmodule ExBackendWeb.Authorize do
         %Plug.Conn{assigns: %{current_user: current_user}} = conn,
         _opts
       ) do
-    (Enum.member?(current_user.rights, "technician") and conn) ||
-      (Enum.member?(current_user.rights, "ftvstudio") and conn) ||
+    (Enum.member?(current_user.roles, "technician") and conn) ||
+      (Enum.member?(current_user.roles, "ftvstudio") and conn) ||
       error(conn, :forbidden, 403)
   end
 
