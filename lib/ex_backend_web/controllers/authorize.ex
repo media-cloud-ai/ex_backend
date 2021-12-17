@@ -33,7 +33,8 @@ defmodule ExBackendWeb.Authorize do
 
   def guest_check(%Plug.Conn{assigns: %{current_user: _current_user}} = conn, _opts) do
     put_status(conn, :unauthorized)
-    |> render(ExBackendWeb.AuthView, "logged_in.json", [])
+    |> put_view(ExBackendWeb.AuthView)
+    |> render("logged_in.json", [])
     |> halt
   end
 

@@ -1,23 +1,24 @@
 defmodule ExBackendWeb.AuthCase do
-  use Phoenix.ConnTest
   @moduledoc false
 
   import Ecto.Changeset
+  import Plug.Conn
+
   alias ExBackendWeb.Auth.Token
   alias ExBackend.{Accounts, Repo}
 
-  def add_user(email, rights \\ ["administrator"]) do
-    user = %{email: email, rights: rights}
+  def add_user(email, roles \\ ["administrator"]) do
+    user = %{email: email, roles: roles}
     {:ok, user} = Accounts.create_user(user)
     user
   end
 
-  def add_user_confirmed(email, rights \\ ["administrator"]) do
+  def add_user_confirmed(email, roles \\ ["administrator"]) do
     user = add_user(email)
     Accounts.update_password(user, %{password: "reallyHard2gue$$"})
 
     user
-    |> change(%{confirmed_at: DateTime.utc_now(), rights: rights})
+    |> change(%{confirmed_at: DateTime.utc_now(), roles: roles})
     |> Repo.update!()
   end
 

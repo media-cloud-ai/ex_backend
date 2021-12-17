@@ -85,7 +85,7 @@ defmodule ExBackend.AccountsTest do
     user = fixture(:user)
     {:ok, %User{}} = Accounts.update_credentials(user)
     user = Accounts.get(user.id)
-    <<head::binary-size(4)>> <> rest = user.access_key_id
+    <<head::binary-size(4)>> <> _rest = user.access_key_id
     assert head == "MCAI"
     assert String.length(user.access_key_id) == 20
     assert Regex.match?(~r/[^\d]/, user.access_key_id) == true
