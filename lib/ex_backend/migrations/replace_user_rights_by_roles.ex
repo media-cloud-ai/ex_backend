@@ -6,5 +6,4 @@ defmodule ExBackend.Migration.ReplaceUserRightsPerRoles do
   def change do
     rename(table(:users), :rights, to: :roles)
   end
-
 end
