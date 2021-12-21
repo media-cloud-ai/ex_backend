@@ -6,8 +6,8 @@ import {ActivatedRoute, Router} from '@angular/router'
 import {MatDialog} from '@angular/material/dialog'
 
 import {UserService} from '../services/user.service'
-import {UserPage} from '../models/page/user_page'
-import {User} from '../models/user'
+import {UserPage, RolePage} from '../models/page/user_page'
+import {User, Role, Right} from '../models/user'
 import {UserShowCredentialsDialogComponent} from './dialogs/user_show_credentials_dialog.component'
 
 @Component({
@@ -18,7 +18,12 @@ import {UserShowCredentialsDialogComponent} from './dialogs/user_show_credential
 
 export class UsersComponent {
   length = 1000
-  pageSize = 10
+  pageSizeOptions = [
+    20,
+    50,
+    100
+  ]
+  pageSize = this.pageSizeOptions[0];
   email: string
   password: string
   error_message: string
@@ -27,6 +32,11 @@ export class UsersComponent {
 
   pageEvent: PageEvent
   users: UserPage
+
+  roles: RolePage
+  rights: Right[] = []
+  available_permissions: string[]
+  already_set_entity: string[] = []
 
   constructor(
     private userService: UserService,
@@ -41,6 +51,7 @@ export class UsersComponent {
       .subscribe(params => {
         this.page = +params['page'] || 0
         this.getUsers(this.page)
+        this.getRoles(this.page)
       })
   }
 
@@ -60,9 +71,27 @@ export class UsersComponent {
     })
   }
 
+  getRoles(index): void {
+    this.userService.getRoles(index, this.pageSize)
+      .subscribe(roles => {
+        this.roles = roles;
+        for(let role of this.roles.data) {
+          role.rights.forEach((right) => this.rights.push(right));
+        }
+      });
+    this.userService.getRightDefinitions()
+    .subscribe(rightDefinitions => {
+        this.available_permissions = rightDefinitions.rights;
+      });
+  }
+
   eventGetUsers(event): void {
     this.router.navigate(['/users'], { queryParams: this.getQueryParamsForPage(event.pageIndex) })
     this.getUsers(event.pageIndex)
+  }
+
+  eventGetRoles(event): void {
+    this.getRoles(this.page);
   }
 
   inviteUser(): void {
@@ -106,5 +135,11 @@ export class UsersComponent {
       params['page'] = pageIndex
     }
     return params
+  }
+
+  roleHasChanged(role: Role) {
+    // console.log("roleHasChanged", role);
+    this.userService.updateRole(role).subscribe(role => console.log("Updated role:", role));
+    this.getRoles(this.page);
   }
 }

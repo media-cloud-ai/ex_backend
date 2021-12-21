@@ -1,0 +1,52 @@
+.role {
+  display: inline-flex;
+  width: 98%;
+  padding: 20px;
+
+  .name {
+    margin-right: 20px;
+    vertical-align: top;
+    text-align: right;
+    font-weight: bold;
+    min-width: 120px;
+    max-width: 160px;
+  }
+
+  .rights {
+    flex: 1;
+
+    .right,
+    .new-right {
+      display: flex;
+      margin: 5px;
+
+      .scope {
+        flex: 0.4;
+        font-family: monospace;
+      }
+
+      .permissions {
+        flex: 0.6;
+        line-height: 30px;
+        vertical-align: middle;
+        .permission {
+          width: 80px;
+        }
+      }
+
+      .actions {
+        width: 100px;
+        float: right;
+
+        button {
+          margin-left: 5px;
+        }
+      }
+    }
+
+    .new-right {
+      margin-top: 20px;
+    }
+
+  }
+}

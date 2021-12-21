@@ -10,11 +10,15 @@ export class Confirm {
 export class Right {
   entity: string
   action: string[]
+
+  constructor() {
+    this.action = [];
+  }
 }
 
 export class Role {
   name: string
-  rights: Right[]
+  rights: Right[];
 }
 
 export class User {
