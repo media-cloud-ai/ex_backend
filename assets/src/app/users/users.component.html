@@ -95,9 +95,43 @@
   <!-- ROLES -->
   <mat-tab label="Roles">
 
+    <div class=new>
+      <div class=title>
+        <i class="material-icons">add</i>
+        <label>
+          Add Role
+        </label>
+      </div>
+      <div class="form">
+        <mat-form-field class="role-name-input">
+          <input
+            matInput
+            type="text"
+            placeholder="Name"
+            [(ngModel)]="new_role_name"
+            >
+        </mat-form-field>
+        <button mat-button
+          color="primary"
+          (click)="createRole()"
+          [disabled]="!new_role_name">
+            <i class="material-icons">add</i>
+            Add role
+        </button>
+        <span class=message>
+          {{error_message}}
+        </span>
+      </div>
+    </div>
+
     <div *ngIf="roles" class="roles">
       <p *ngIf="roles.total == 0">No roles found.</p>
-      <role-component *ngFor="let role of roles.data" [role]=role (roleChange)="roleHasChanged($event)" [permissions]=available_permissions></role-component>
+      <role-component
+        *ngFor="let role of roles.data"
+        [role]=role
+        (roleChange)="roleHasChanged($event)"
+        [permissions]=available_permissions>
+      </role-component>
     </div>
 
     <mat-paginator

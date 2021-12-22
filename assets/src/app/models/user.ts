@@ -17,9 +17,31 @@ export class Right {
 }
 
 export class Role {
+  id?: number
   name: string
   rights: Right[];
+
+  constructor(name: string) {
+    this.name = name;
+    this.rights = [];
+  }
 }
+
+export enum RoleEventAction {
+  Update,
+  Delete
+}
+
+export class RoleEvent {
+  action: RoleEventAction
+  role: Role
+
+  constructor(action: RoleEventAction, role: Role) {
+    this.action = action;
+    this.role = role;
+  }
+}
+
 
 export class User {
   email: string

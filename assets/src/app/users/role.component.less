@@ -1,3 +1,5 @@
+@import '../colors';
+
 .role {
   display: inline-flex;
   width: 98%;
@@ -10,6 +12,13 @@
     font-weight: bold;
     min-width: 120px;
     max-width: 160px;
+
+    .identifier {
+      margin: 5px;
+      font-weight: normal;
+      font-style: italic;
+      color: @grey;
+    }
   }
 
   .rights {
@@ -19,24 +28,27 @@
     .new-right {
       display: flex;
       margin: 5px;
+      line-height: 50px;
+      vertical-align: middle;
 
       .scope {
         flex: 0.4;
         font-family: monospace;
+        max-width: 460px;
       }
 
       .permissions {
         flex: 0.6;
-        line-height: 30px;
-        vertical-align: middle;
+        max-width: 600px;
         .permission {
           width: 80px;
         }
       }
 
-      .actions {
-        width: 100px;
-        float: right;
+      .right-actions {
+        flex: 0.2;
+        max-width: 60px;
+        min-width: 100px;
 
         button {
           margin-left: 5px;
@@ -48,5 +60,16 @@
       margin-top: 20px;
     }
 
+  }
+
+  .role-actions {
+    max-width: 200px;
+    margin-top: auto;
+    text-align: right;
+
+    button {
+      margin: 5px;
+      width: 140px;
+    }
   }
 }

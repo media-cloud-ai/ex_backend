@@ -5,17 +5,16 @@ import {MatCheckboxModule} from '@angular/material/checkbox'
 import {ActivatedRoute, Router} from '@angular/router'
 
 import {UserService} from '../services/user.service'
-import {Role, Right} from '../models/user'
+import {Role, Right, RoleEvent, RoleEventAction} from '../models/user'
 
 @Component({
   selector: 'role-component',
   templateUrl: 'role.component.html',
   styleUrls: ['./role.component.less'],
 })
-
 export class RoleComponent {
   @Input() role: Role
-  @Output() roleChange = new EventEmitter<Role>();
+  @Output() roleChange = new EventEmitter<RoleEvent>();
 
   @Input() permissions: string[]
 
@@ -87,7 +86,7 @@ export class RoleComponent {
       this.role.rights.splice(index, 1);
     }
     console.log(this.role);
-    this.roleChange.emit(this.role);
+    this.roleChange.emit(new RoleEvent(RoleEventAction.Update, this.role));
   }
 
   updateRole() {
@@ -96,7 +95,11 @@ export class RoleComponent {
       this.new_right = undefined;
     }
 
-    this.roleChange.emit(this.role);
+    this.roleChange.emit(new RoleEvent(RoleEventAction.Update, this.role));
   }
 
+  deleteRole(role: Role) {
+    // TODO: ask for confirmation
+    this.roleChange.emit(new RoleEvent(RoleEventAction.Delete, this.role));
+  }
 }

@@ -117,10 +117,18 @@ export class UserService {
   }
 
   updateRole(role: Role): Observable<Role> {
-    return this.http.put<Role>(this.rolesUrl + '/' + role.name, role)
+    return this.http.put<Role>(this.rolesUrl + '/' + role.id, role)
       .pipe(
         tap(role => this.log('update Role')),
         catchError(this.handleError('updateRole', undefined))
+      )
+  }
+
+  deleteRole(role: Role): Observable<Role> {
+    return this.http.delete<Role>(this.rolesUrl + '/' + role.id)
+      .pipe(
+        tap(role => this.log('delete Role')),
+        catchError(this.handleError('deleteRole', undefined))
       )
   }
 

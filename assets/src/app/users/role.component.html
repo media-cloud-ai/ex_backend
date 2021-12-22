@@ -1,6 +1,9 @@
 <mat-divider></mat-divider>
 <div class="role">
-  <span class="name">{{ role.name | titlecase }}</span>
+  <span class="name">
+    <div>{{ role.name }}</div>
+    <div class="identifier">#{{ role.id }}</div>
+  </span>
 
   <span class="rights">
     <div
@@ -28,14 +31,16 @@
         </mat-checkbox>
       </span>
 
-      <span class="actions">
+      <span class="right-actions">
         <button
           mat-mini-fab
           (click)="deleteRight(right)"
-          color="warn">
+          color="warn"
+          title="Delete right">
           <mat-icon>delete</mat-icon>
         </button>
       </span>
+
     </div>
 
     <div class="new-right">
@@ -60,15 +65,28 @@
         </mat-checkbox>
       </span>
 
-      <span class="actions">
+      <span class="right-actions">
         <button
           mat-mini-fab
           *ngIf="role_is_being_edited"
           (click)="updateRole()"
-          color="primary">
+          color="primary"
+          title="Update role">
           <mat-icon>check</mat-icon>
         </button>
       </span>
+
     </div>
+  </span>
+
+    <span class="role-actions">
+    <button
+      mat-raised-button
+      (click)="deleteRole(role)"
+      color="warn"
+      title="Delete role">
+      Delete role
+      <mat-icon>delete</mat-icon>
+    </button>
   </span>
 </div>

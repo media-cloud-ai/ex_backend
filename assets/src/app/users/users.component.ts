@@ -7,7 +7,7 @@ import {MatDialog} from '@angular/material/dialog'
 
 import {UserService} from '../services/user.service'
 import {UserPage, RolePage} from '../models/page/user_page'
-import {User, Role, Right} from '../models/user'
+import {User, Role, Right, RoleEvent, RoleEventAction} from '../models/user'
 import {UserShowCredentialsDialogComponent} from './dialogs/user_show_credentials_dialog.component'
 
 @Component({
@@ -37,6 +37,7 @@ export class UsersComponent {
   rights: Right[] = []
   available_permissions: string[]
   already_set_entity: string[] = []
+  new_role_name: string
 
   constructor(
     private userService: UserService,
@@ -137,9 +138,21 @@ export class UsersComponent {
     return params
   }
 
-  roleHasChanged(role: Role) {
-    // console.log("roleHasChanged", role);
-    this.userService.updateRole(role).subscribe(role => console.log("Updated role:", role));
+  createRole() {
+    let role = new Role(this.new_role_name);
+    this.userService.createRole(role).subscribe(role => console.log("Created role:", role));
+    this.getRoles(this.page);
+  }
+
+  roleHasChanged(event: RoleEvent) {
+    if (event.action == RoleEventAction.Update) {
+      this.userService.updateRole(event.role).subscribe(role => console.log("Updated role:", role));
+    }
+
+    if (event.action == RoleEventAction.Delete) {
+      this.userService.deleteRole(event.role).subscribe(role => console.log("Deleted role:", role));
+    }
+
     this.getRoles(this.page);
   }
 }
