@@ -25,12 +25,12 @@
             <i class="material-icons">add</i> Invite
         </button>
         <span class=message>
-          {{error_message}}
+          {{user_error_message}}
         </span>
       </div>
     </div>
 
-    <ul *ngIf="users" class="users">
+    <ul *ngIf="users && roles" class="users">
       <li *ngIf="users.total == 0">No users found.</li>
       <li class="users-header">
         <span class="email">
@@ -45,6 +45,8 @@
         <span class="access_key_id">
           Access Key ID
         </span>
+        <span class="creds">
+        </span>
         <span class="actions">
         </span>
       </li>
@@ -52,7 +54,11 @@
         *ngFor="let user of users.data"
         class="user"
         >
-        <user-component [user]=user></user-component>
+        <user-component
+          [user]=user
+          [roles]=roles.data>
+        </user-component>
+
         <span class="creds">
           <button mat-raised-button
             color="primary"
@@ -70,6 +76,7 @@
             </button>
           </span>
         </ng-template>
+
         <span class="actions">
           <button mat-raised-button
             color="warn"
@@ -119,12 +126,12 @@
             Add role
         </button>
         <span class=message>
-          {{error_message}}
+          {{role_error_message}}
         </span>
       </div>
     </div>
 
-    <div *ngIf="roles" class="roles">
+    <div *ngIf="roles && available_permissions" class="roles">
       <p *ngIf="roles.total == 0">No roles found.</p>
       <role-component
         *ngFor="let role of roles.data"

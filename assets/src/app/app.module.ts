@@ -73,7 +73,6 @@ import {ParametersComponent}     from './workflows/details/parameters.component'
 import {RegisteriesComponent}    from './registeries/registeries.component'
 import {RegisteryComponent}      from './registeries/registery.component'
 import {RegisteryDetailComponent} from './registeries/registery_detail.component'
-import {RightsComponent}         from './users/rights.component'
 import {RoleComponent}           from './users/role.component'
 import {QueuesComponent}         from './amqp/queues.component'
 import {StatisticsComponent}     from './statistics/statistics.component'
@@ -94,6 +93,7 @@ import {StartIngestDialog} from './ingest/dialogs/start_ingest.component'
 import {JobDetailsDialogComponent} from './jobs/details/job_details_dialog.component'
 import {NewSubtitleDialogComponent} from './registeries/dialog/new_subtitle_dialog.component'
 import {RdfDialogComponent} from './catalog/rdf/rdf_dialog.component'
+import {RoleOrRightDeletionDialogComponent} from './users/dialogs/role_or_right_deletion_dialog.component'
 import {UserShowCredentialsDialogComponent} from './users/dialogs/user_show_credentials_dialog.component'
 import {WorkflowAbortDialogComponent} from './workflows/dialogs/workflow_abort_dialog.component'
 import {WorkflowDialogComponent} from './catalog/workflow/workflow_dialog.component'
@@ -199,8 +199,8 @@ const EX_BACKEND_DATE_FORMATS = {
     RegisteryComponent,
     RegisteriesComponent,
     RegisteryDetailComponent,
-    RightsComponent,
     RoleComponent,
+    RoleOrRightDeletionDialogComponent,
     StartIngestDialog,
     StatisticsComponent,
     StepProgressBarComponent,
@@ -228,8 +228,8 @@ const EX_BACKEND_DATE_FORMATS = {
     RdfDialogComponent,
     RegisteryComponent,
     RegisteryDetailComponent,
-    RightsComponent,
     RoleComponent,
+    RoleOrRightDeletionDialogComponent,
     StartIngestDialog,
     StepProgressBarComponent,
     StepRendererComponent,

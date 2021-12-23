@@ -8,6 +8,7 @@ import {MatDialog} from '@angular/material/dialog'
 import {UserService} from '../services/user.service'
 import {UserPage, RolePage} from '../models/page/user_page'
 import {User, Role, Right, RoleEvent, RoleEventAction} from '../models/user'
+import {RoleOrRightDeletionDialogComponent} from './dialogs/role_or_right_deletion_dialog.component'
 import {UserShowCredentialsDialogComponent} from './dialogs/user_show_credentials_dialog.component'
 
 @Component({
@@ -26,7 +27,7 @@ export class UsersComponent {
   pageSize = this.pageSizeOptions[0];
   email: string
   password: string
-  error_message: string
+  user_error_message: string
   page = 0
   sub = undefined
 
@@ -38,12 +39,13 @@ export class UsersComponent {
   available_permissions: string[]
   already_set_entity: string[] = []
   new_role_name: string
+  role_error_message: string
 
   constructor(
     private userService: UserService,
     private route: ActivatedRoute,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit() {
@@ -96,17 +98,16 @@ export class UsersComponent {
   }
 
   inviteUser(): void {
-    this.error_message = ''
+    this.user_error_message = ''
     this.userService.inviteUser(this.email)
     .subscribe(response => {
-      console.log(response)
       if (response === undefined) {
-        this.error_message = 'Unable to create user'
+        this.user_error_message = 'Unable to create user'
       } else {
         this.email = ''
         this.password = ''
-        this.getUsers(0)
       }
+      this.getUsers(0)
     })
   }
 
@@ -140,19 +141,43 @@ export class UsersComponent {
 
   createRole() {
     let role = new Role(this.new_role_name);
-    this.userService.createRole(role).subscribe(role => console.log("Created role:", role));
-    this.getRoles(this.page);
+    this.role_error_message = '';
+    this.userService.createRole(role).subscribe(role => {
+      if(!role) {
+        this.role_error_message = "Unable to create role";
+      }
+      this.getRoles(this.page);
+    });
   }
 
   roleHasChanged(event: RoleEvent) {
+
     if (event.action == RoleEventAction.Update) {
-      this.userService.updateRole(event.role).subscribe(role => console.log("Updated role:", role));
+      this.userService.updateRole(event.role).subscribe(role => {
+        // console.log("Updated role:", role);
+        this.getRoles(this.page);
+      });
     }
 
     if (event.action == RoleEventAction.Delete) {
-      this.userService.deleteRole(event.role).subscribe(role => console.log("Deleted role:", role));
+      // Ask for confirmation
+      let dialogRef = this.dialog.open(RoleOrRightDeletionDialogComponent, {data: {
+        'role': event.role
+      }})
+
+      dialogRef.afterClosed().subscribe(response => {
+        if(response) {
+          this.userService.deleteRole(event.role).subscribe(role => {
+            // console.log("Deleted role:", role);
+            this.userService.deleteUsersRole(event.role).subscribe(updatedUsers => {
+              // console.log("Updated role users:", updatedUsers);
+              this.getUsers(this.page);
+            })
+            this.getRoles(this.page);
+          });
+        }
+      })
     }
 
-    this.getRoles(this.page);
   }
 }

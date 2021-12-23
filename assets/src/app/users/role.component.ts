@@ -3,9 +3,11 @@ import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core'
 import {PageEvent} from '@angular/material/paginator'
 import {MatCheckboxModule} from '@angular/material/checkbox'
 import {ActivatedRoute, Router} from '@angular/router'
+import {MatDialog} from '@angular/material/dialog'
 
 import {UserService} from '../services/user.service'
 import {Role, Right, RoleEvent, RoleEventAction} from '../models/user'
+import {RoleOrRightDeletionDialogComponent} from './dialogs/role_or_right_deletion_dialog.component'
 
 @Component({
   selector: 'role-component',
@@ -14,9 +16,9 @@ import {Role, Right, RoleEvent, RoleEventAction} from '../models/user'
 })
 export class RoleComponent {
   @Input() role: Role
-  @Output() roleChange = new EventEmitter<RoleEvent>();
-
   @Input() permissions: string[]
+
+  @Output() roleChange = new EventEmitter<RoleEvent>();
 
   active_rights: Right[] = []
 
@@ -26,6 +28,7 @@ export class RoleComponent {
 
   constructor(
     private userService: UserService,
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit() {
@@ -81,12 +84,20 @@ export class RoleComponent {
   }
 
   deleteRight(right: Right) {
-    const index = this.role.rights.indexOf(right);
-    if (index > -1) {
-      this.role.rights.splice(index, 1);
-    }
-    console.log(this.role);
-    this.roleChange.emit(new RoleEvent(RoleEventAction.Update, this.role));
+    // Ask for confirmation
+    let dialogRef = this.dialog.open(RoleOrRightDeletionDialogComponent, {data: {
+        'right': right
+      }})
+
+    dialogRef.afterClosed().subscribe(response => {
+        if(response) {
+          const index = this.role.rights.indexOf(right);
+          if (index > -1) {
+            this.role.rights.splice(index, 1);
+          }
+          this.roleChange.emit(new RoleEvent(RoleEventAction.Update, this.role));
+        }
+      });
   }
 
   updateRole() {
