@@ -118,8 +118,7 @@ defmodule ExBackend.Accounts do
       Repo.all(total_query)
       |> List.first()
 
-    users =
-      Repo.all(query)
+    users = Repo.all(query)
 
     user_emails =
       users
@@ -127,6 +126,7 @@ defmodule ExBackend.Accounts do
         new_roles =
           user.roles
           |> List.delete(role_name)
+
         {user, %{roles: new_roles}}
       end)
       |> Enum.map(fn {user, new_roles} ->
