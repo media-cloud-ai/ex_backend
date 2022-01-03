@@ -7,7 +7,7 @@ defmodule ExBackendWeb.SessionView do
       user: %{
         id: user.id,
         email: user.email,
-        rights: user.rights
+        roles: user.roles
       }
     }
   end

@@ -1,20 +1,36 @@
-<span class="email">
-  {{user.email}}
-</span>
-<span class="rights">
-  <rights-component [user]=user></rights-component>
-</span>
-<span class="status">
-  <span class="state enabled" *ngIf="user.confirmed_at">
-    Enabled
+<div class="user">
+  <span class="email">
+    {{user.email}}
   </span>
-  <span class="state pending" *ngIf="!user.confirmed_at && !expired">
-    Pending from {{diff | duration : 'human'}}
+
+  <span class="roles">
+    <p *ngIf="roles.length == 0">No roles found!</p>
+    <span *ngFor="let role of roles">
+      <mat-checkbox
+        color="primary"
+        name="{{role.name}}"
+        [checked]="user.roles.includes(role.name)"
+        (change)="updateUserRoles($event)"
+        class="role"
+        >
+        {{ role.name }}
+      </mat-checkbox>
+    </span>
   </span>
-  <span class="state expired" *ngIf="!user.confirmed_at && expired">
-    Expired
+
+  <span class="status">
+    <span class="state enabled" *ngIf="user.confirmed_at">
+      Enabled
+    </span>
+    <span class="state pending" *ngIf="!user.confirmed_at && !expired">
+      Pending from {{diff | duration : 'human'}}
+    </span>
+    <span class="state expired" *ngIf="!user.confirmed_at && expired">
+      Expired
+    </span>
   </span>
-</span>
-<span class="access_key_id">
-  {{user.access_key_id}}
-</span>
+
+  <span class="access_key_id">
+    {{user.access_key_id}}
+  </span>
+</div>

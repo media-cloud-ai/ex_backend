@@ -12,7 +12,7 @@ export class AuthService {
   isLoggedIn = false
   token : string
   username : string
-  rights : any
+  roles : string[]
   redirectUrl: string
 
   private userLoggedInSource = new Subject<string>()
@@ -36,7 +36,7 @@ export class AuthService {
       var parsedUser = JSON.parse(currentUser)
       this.token = parsedUser.token
       this.username = parsedUser.username
-      this.rights = parsedUser.rights
+      this.roles = parsedUser.roles
     }
   }
 
@@ -55,23 +55,24 @@ export class AuthService {
 
     return this.http.post<Token>('/api/sessions', query).pipe(
       tap(response => {
+        console.log("Login: ", response);
         if (response && response.access_token) {
           this.cookieService.set('currentUser', JSON.stringify({
             username: email,
             token: response.access_token,
-            rights: response.user.rights
+            roles: response.user.roles
           }))
 
           this.isLoggedIn = true
           this.token = response.access_token
           this.username = email
-          this.rights = response.user.rights
+          this.roles = response.user.roles
           this.userLoggedInSource.next(email)
         } else {
           this.isLoggedIn = false
           this.token = undefined
           this.username = undefined
-          this.rights = undefined
+          this.roles = undefined
           this.userLoggedOutSource.next('')
           this.rightPanelSwitchSource.next('close')
         }
@@ -84,7 +85,7 @@ export class AuthService {
     this.isLoggedIn = false
     this.token = undefined
     this.username = undefined
-    this.rights = undefined
+    this.roles = undefined
     this.userLoggedOutSource.next('')
     this.cookieService.delete('currentUser')
     this.rightPanelSwitchSource.next('close')
@@ -100,42 +101,43 @@ export class AuthService {
   }
 
   hasAdministratorRight(): boolean {
-    if (!this.rights){
+    console.log("hasAdministratorRight", this.roles);
+    if (!this.roles){
       return false
     }
-    return this.rights.includes('administrator')
+    return this.roles.includes('administrator')
   }
 
   hasTechnicianRight(): boolean {
-    if (!this.rights){
+    if (!this.roles){
       return false
     }
-    return this.rights.includes('technician')
+    return this.roles.includes('technician')
   }
 
   hasEditorRight(): boolean {
-    if (!this.rights){
+    if (!this.roles){
       return false
     }
-    return this.rights.includes('editor')
+    return this.roles.includes('editor')
   }
 
   hasFtvStudioRight(): boolean {
-    if (!this.rights){
+    if (!this.roles){
       return false
     }
-    return this.rights.includes('ftvstudio')
+    return this.roles.includes('ftvstudio')
   }
 
   hasAnyRights(authorized_rights: string[]): boolean {
-    if (!this.rights){
+    if (!this.roles){
       return false
     }
     if (authorized_rights === undefined){
       return false
     }
-    let intersection = this.rights.filter(x => authorized_rights.includes(x))
-    return intersection.length
+    let intersection = this.roles.filter(x => authorized_rights.includes(x))
+    return intersection.length > 0
   }
 
   private handleError<T> (operation = 'operation', result?: T) {

@@ -10,7 +10,7 @@ defmodule ExBackendWeb.UserControllerTest do
 
   setup %{conn: conn} = config do
     if email = config[:login] do
-      user = add_user(email, config[:rights] || ["administrator"])
+      user = add_user(email, config[:roles] || ["administrator"])
       other = add_user("tony@example.com")
       conn = conn |> add_token_conn(user)
       {:ok, %{conn: conn, user: user, other: other}}
@@ -38,8 +38,8 @@ defmodule ExBackendWeb.UserControllerTest do
              "id" => user_id,
              "email" => "reg@example.com",
              "confirmed_at" => nil,
-             "rights" => ["administrator"],
-             "inserted_at" => inserted_at
+             "roles" => ["administrator"],
+             "inserted_at" => _inserted_at
            } = json_response(conn, 200)["data"]
 
     assert user_id == user.id
@@ -73,18 +73,18 @@ defmodule ExBackendWeb.UserControllerTest do
     assert json_response(conn, 422)["errors"] != %{}
   end
 
-  @tag login: "reg@example.com", rights: ["administrator"]
+  @tag login: "reg@example.com", roles: ["administrator"]
   test "generate credentials for chosen user when data is valid", %{conn: conn, user: user} do
     conn = post(conn, user_path(conn, :generate_credentials, id: user.id))
     assert json_response(conn, 200)["data"]["id"] == user.id
     updated_user = Accounts.get(user.id)
-    <<head::binary-size(4)>> <> rest = updated_user.access_key_id
+    <<head::binary-size(4)>> <> _rest = updated_user.access_key_id
     assert head == "MCAI"
     assert String.length(updated_user.access_key_id) == 20
     assert String.length(updated_user.secret_access_key) == 40
   end
 
-  @tag login: "reg@example.com", rights: ["technician", "editor"]
+  @tag login: "reg@example.com", roles: ["technician", "editor"]
   test "does not generate credentials for unauthorized user", %{
     conn: conn,
     user: user
@@ -105,26 +105,26 @@ defmodule ExBackendWeb.UserControllerTest do
     assert response(conn, 204)
   end
 
-  @tag login: "reg@example.com", rights: ["editor"]
-  test "check editor right on delete", %{conn: conn, other: other} do
+  @tag login: "reg@example.com", roles: ["editor"]
+  test "check editor role on delete", %{conn: conn, other: other} do
     conn = delete(conn, user_path(conn, :delete, other))
     assert response(conn, 403)
   end
 
-  @tag login: "reg@example.com", rights: ["technician"]
-  test "check technician right on delete", %{conn: conn, other: other} do
+  @tag login: "reg@example.com", roles: ["technician"]
+  test "check technician role on delete", %{conn: conn, other: other} do
     conn = delete(conn, user_path(conn, :delete, other))
     assert response(conn, 403)
   end
 
-  @tag login: "reg@example.com", rights: ["technician", "editor"]
-  test "check multi rights on delete", %{conn: conn, other: other} do
+  @tag login: "reg@example.com", roles: ["technician", "editor"]
+  test "check multi roles on delete", %{conn: conn, other: other} do
     conn = delete(conn, user_path(conn, :delete, other))
     assert response(conn, 403)
   end
 
-  @tag login: "reg@example.com", rights: ["administrator", "technician", "editor"]
-  test "check multi rights with administrator on delete", %{conn: conn, other: other} do
+  @tag login: "reg@example.com", roles: ["administrator", "technician", "editor"]
+  test "check multi roles with administrator on delete", %{conn: conn, other: other} do
     conn = delete(conn, user_path(conn, :delete, other))
     assert response(conn, 204)
   end

@@ -173,7 +173,7 @@ defmodule ExBackend.Accounts.Message do
   defp prep_mail(address) do
     new_email()
     |> to(address)
-    |> from(get_sender_email)
+    |> from(get_sender_email())
   end
 
   defp get_sender_email do
