@@ -1,0 +1,310 @@
+
+<h1>
+  Statistics
+</h1>
+
+
+<h2>
+  Workflows
+</h2>
+
+<div class="workflow-statistics-filters">
+  <form [formGroup]="workflowsForm" fxFlex fxLayout="column" autocomplete="off">
+    <mat-form-field class="workflow-filters-input">
+      <mat-select formControlName="selectedWorkflows" placeholder="Workflows" [(ngModel)]="workflowSelectedIdentifiers" multiple>
+        <mat-option *ngFor="let identifier of workflowIdentifiers" [value]="identifier" [ngClass]="identifier">
+          {{ identifier }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="workflowSelectedIdentifiers.length > 0" class="workflow-filters-input">
+      <mat-select formControlName="selectedVersion" placeholder="Version" [(ngModel)]="workflowSelectedVersions" multiple>
+        <mat-option *ngFor="let version of workflowVersions" [value]="version" [ngClass]="version">
+          {{ version }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="workflow-filters-input">
+      <mat-select formControlName="selectedStatus" placeholder="Status" [(ngModel)]="workflowSelectedStatuses" multiple>
+        <mat-option *ngFor="let state of workflowStatus" [value]="state.id" [ngClass]="state.id">
+          {{ state.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="workflow-filters-input">
+      <input formControlName="startDate" matInput [ngxMatDatetimePicker]="picker_workflow_start_date" placeholder="Start date"
+        name=start_date [(ngModel)]="worlkflowStartDate">
+      <mat-datepicker-toggle matSuffix [for]="picker_workflow_start_date"></mat-datepicker-toggle>
+      <ngx-mat-datetime-picker #picker_workflow_start_date [showSeconds]=true>
+      </ngx-mat-datetime-picker>
+    </mat-form-field>
+
+    <mat-form-field class="workflow-filters-input">
+      <input formControlName="endDate" matInput [ngxMatDatetimePicker]="picker_workflow_end_date" placeholder="End date"
+        name=end_date [(ngModel)]="worlkflowEndDate">
+      <mat-datepicker-toggle matSuffix [for]="picker_workflow_end_date"></mat-datepicker-toggle>
+      <ngx-mat-datetime-picker #picker_workflow_end_date [showSeconds]=true>
+      </ngx-mat-datetime-picker>
+    </mat-form-field>
+
+    <button mat-raised-button color="accent" (click)="getWorkflowStatistics()">
+      <i class="material-icons">search</i>
+      Search
+    </button>
+  </form>
+</div>
+
+<ul class="workflow-durations">
+  <li class="durations-header">
+    <span class="workflow-identifier">Identifier</span>
+    <span class="workflow-version">Version</span>
+    <span class="workflow-count">Count</span>
+    <span class="workflow-duration">Order pending</span>
+    <span class="workflow-duration">Processing</span>
+    <span class="workflow-duration">Response Pending</span>
+    <span class="workflow-duration">Total</span>
+  </li>
+  <li *ngFor="let item of workflowDurations" class="duration">
+    <span class="workflow-identifier">
+      <div>{{ item.workflow.identifier }}</div>
+    </span>
+    <span class="workflow-version">
+      <div>{{ item.workflow.version_major }}.{{ item.workflow.version_minor }}.{{ item.workflow.version_micro }}</div>
+    </span>
+    <span class="workflow-count">
+      <div>{{ item.durations.count }}</div>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count > 0">
+      <div class="workflow-duration-values">
+        <div class="minimum">Min: {{ item.durations.min.order_pending * 1000 | duration : 'timecode_ms' }}</div>
+        <div class="average">{{ item.durations.average.order_pending * 1000 | duration : 'timecode_ms' }}</div>
+        <div class="maximum">Max: {{ item.durations.max.order_pending * 1000 | duration : 'timecode_ms' }}</div>
+      </div>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count == 0">
+      <span class="workflow-duration-values">
+        <span class="average">-</span>
+      </span>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count > 0">
+      <div class="workflow-duration-values">
+        <div class="minimum">Min: {{ item.durations.min.processing * 1000 | duration : 'timecode_ms' }}</div>
+        <div class="average">{{ item.durations.average.processing * 1000 | duration : 'timecode_ms' }}</div>
+        <div class="maximum">Max: {{ item.durations.max.processing * 1000 | duration : 'timecode_ms' }}</div>
+      </div>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count == 0">
+      <span class="workflow-duration-values">
+        <span class="average">-</span>
+      </span>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count > 0">
+      <div class="workflow-duration-values">
+        <div class="minimum">Min: {{ item.durations.min.response_pending * 1000 | duration : 'timecode_ms' }}</div>
+        <div class="average">{{ item.durations.average.response_pending * 1000 | duration : 'timecode_ms' }}</div>
+        <div class="maximum">Max: {{ item.durations.max.response_pending * 1000 | duration : 'timecode_ms' }}</div>
+      </div>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count == 0">
+      <span class="workflow-duration-values">
+        <span class="average">-</span>
+      </span>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count > 0">
+      <div class="workflow-duration-values">
+        <div class="minimum">Min: {{ item.durations.min.total * 1000 | duration : 'timecode_ms' }}</div>
+        <div class="average">{{ item.durations.average.total * 1000 | duration : 'timecode_ms' }}</div>
+        <div class="maximum">Max: {{ item.durations.max.total * 1000 | duration : 'timecode_ms' }}</div>
+      </div>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count == 0">
+      <span class="workflow-duration-values">
+        <span class="average">-</span>
+      </span>
+    </span>
+  </li>
+</ul>
+
+<mat-paginator
+  class=paginator
+  showFirstLastButtons=true
+  [pageSize]="workflowStatisticsPageSize"
+  [pageIndex]="workflowStatisticsPage"
+  [pageSizeOptions]="pageSizeOptions"
+  [length]="workflowStatisticsPageTotal"
+  (page)="pageEvent = changeWorkflowStatisticsPage($event)">
+</mat-paginator>
+
+
+<br/>
+
+<h2>
+  Workers
+</h2>
+
+
+<div>
+  <form [formGroup]="jobsForm" fxFlex fxLayout="column" autocomplete="off" class="job-statistics-filters">
+    <mat-form-field class="job-filters-input">
+      <mat-select formControlName="selectedSteps" placeholder="Steps" [(ngModel)]="jobSelectedNames" multiple>
+        <mat-option *ngFor="let name of stepNames" [value]="name" [ngClass]="name">
+          {{ name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="job-filters-input">
+      <mat-select formControlName="selectedStatus" placeholder="Status" [(ngModel)]="jobSelectedStatus" multiple>
+        <mat-option *ngFor="let state of jobStatus" [value]="state.id" [ngClass]="state.id">
+          {{ state.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="job-filters-input">
+      <input formControlName="startDate" matInput [ngxMatDatetimePicker]="picker_job_start_date" placeholder="Start date"
+        name=start_date [(ngModel)]="jobStartDate">
+      <mat-datepicker-toggle matSuffix [for]="picker_job_start_date"></mat-datepicker-toggle>
+      <ngx-mat-datetime-picker #picker_job_start_date [showSeconds]=true>
+      </ngx-mat-datetime-picker>
+    </mat-form-field>
+
+    <mat-form-field class="job-filters-input">
+      <input formControlName="endDate" matInput [ngxMatDatetimePicker]="picker_job_end_date" placeholder="End date"
+        name=end_date [(ngModel)]="jobEndDate">
+      <mat-datepicker-toggle matSuffix [for]="picker_job_end_date"></mat-datepicker-toggle>
+      <ngx-mat-datetime-picker #picker_job_end_date [showSeconds]=true>
+      </ngx-mat-datetime-picker>
+    </mat-form-field>
+
+    <mat-form-field class="job-filters-input job-filter-chips" appearance="fill">
+      <mat-chip-list #instance_id_chip_list aria-label="Instance ID filter">
+        <mat-chip *ngFor="let instance_id of jobInstanceIDs" [selectable]="false"
+                 [removable]="true" (removed)="removeChip(jobInstanceIDs, instance_id)">
+          {{instance_id}}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <input placeholder="Worker instance IDs..."
+               [matChipInputFor]="instance_id_chip_list"
+               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+               [matChipInputAddOnBlur]="true"
+               (matChipInputTokenEnd)="addChip(jobInstanceIDs, $event)">
+      </mat-chip-list>
+    </mat-form-field>
+
+    <mat-form-field class="job-filters-input job-filter-chips" appearance="fill">
+      <mat-chip-list #worker_label_chip_list aria-label="Worker label filter">
+        <mat-chip *ngFor="let worker_label of jobWorkerLabels" [selectable]="false"
+                 [removable]="true" (removed)="removeChip(jobWorkerLabels, worker_label)">
+          {{worker_label}}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <input placeholder="Worker labels..."
+               [matChipInputFor]="worker_label_chip_list"
+               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+               [matChipInputAddOnBlur]="true"
+               (matChipInputTokenEnd)="addChip(jobWorkerLabels, $event)">
+      </mat-chip-list>
+    </mat-form-field>
+
+    <mat-form-field class="job-filters-input job-filter-chips" appearance="fill">
+      <mat-chip-list #worker_version_chip_list aria-label="Worker version filter">
+        <mat-chip *ngFor="let worker_version of jobWorkerVersions" [selectable]="false"
+                 [removable]="true" (removed)="removeChip(jobWorkerVersions, worker_version)">
+          {{worker_version}}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <input placeholder="Worker versions..."
+               [matChipInputFor]="worker_version_chip_list"
+               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+               [matChipInputAddOnBlur]="true"
+               (matChipInputTokenEnd)="addChip(jobWorkerVersions, $event)">
+      </mat-chip-list>
+    </mat-form-field>
+
+    <button mat-raised-button color="accent" (click)="getJobStatistics()">
+      <i class="material-icons">search</i>
+      Search
+    </button>
+  </form>
+</div>
+
+<ul class="workflow-durations">
+  <li class="durations-header">
+    <span class="workflow-identifier">Name</span>
+    <span class="workflow-count">Number of jobs</span>
+    <span class="workflow-duration">Order pending</span>
+    <span class="workflow-duration">Processing</span>
+    <span class="workflow-duration">Response Pending</span>
+    <span class="workflow-duration">Total</span>
+  </li>
+  <li *ngFor="let item of jobDurations" class="duration">
+    <span class="workflow-identifier">
+      <div>{{ item.name }}</div>
+    </span>
+    <span class="workflow-count">
+      <div>{{ item.durations.count }}</div>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count > 0">
+      <div class="workflow-duration-values">
+        <div class="minimum">Min: {{ item.durations.min.order_pending * 1000 | duration : 'timecode_ms' }}</div>
+        <div class="average">{{ item.durations.average.order_pending * 1000 | duration : 'timecode_ms' }}</div>
+        <div class="maximum">Max: {{ item.durations.max.order_pending * 1000 | duration : 'timecode_ms' }}</div>
+      </div>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count == 0">
+      <span class="workflow-duration-values">
+        <span class="average">-</span>
+      </span>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count > 0">
+      <div class="workflow-duration-values">
+        <div class="minimum">Min: {{ item.durations.min.processing * 1000 | duration : 'timecode_ms' }}</div>
+        <div class="average">{{ item.durations.average.processing * 1000 | duration : 'timecode_ms' }}</div>
+        <div class="maximum">Max: {{ item.durations.max.processing * 1000 | duration : 'timecode_ms' }}</div>
+      </div>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count == 0">
+      <span class="workflow-duration-values">
+        <span class="average">-</span>
+      </span>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count > 0">
+      <div class="workflow-duration-values">
+        <div class="minimum">Min: {{ item.durations.min.response_pending * 1000 | duration : 'timecode_ms' }}</div>
+        <div class="average">{{ item.durations.average.response_pending * 1000 | duration : 'timecode_ms' }}</div>
+        <div class="maximum">Max: {{ item.durations.max.response_pending * 1000 | duration : 'timecode_ms' }}</div>
+      </div>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count == 0">
+      <span class="workflow-duration-values">
+        <span class="average">-</span>
+      </span>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count > 0">
+      <div class="workflow-duration-values">
+        <div class="minimum">Min: {{ item.durations.min.total * 1000 | duration : 'timecode_ms' }}</div>
+        <div class="average">{{ item.durations.average.total * 1000 | duration : 'timecode_ms' }}</div>
+        <div class="maximum">Max: {{ item.durations.max.total * 1000 | duration : 'timecode_ms' }}</div>
+      </div>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count == 0">
+      <span class="workflow-duration-values">
+        <span class="average">-</span>
+      </span>
+    </span>
+  </li>
+</ul>
+
+<mat-paginator
+  class=paginator
+  showFirstLastButtons=true
+  [pageSize]="jobStatisticsPageSize"
+  [pageIndex]="jobStatisticsPage"
+  [pageSizeOptions]="pageSizeOptions"
+  [length]="jobStatisticsPageTotal"
+  (page)="pageEvent = changeJobStatisticsPage($event)">
+</mat-paginator>

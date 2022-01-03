@@ -24,6 +24,7 @@ defmodule ExBackendWeb.Router do
     post("/sessions", SessionController, :create)
     resources("/users", UserController, except: [:new, :edit])
     post("/users/generate_credentials", UserController, :generate_credentials)
+    delete("/users/roles/:name", UserController, :delete_role)
     resources("/watchers", WatcherController, except: [:new, :edit])
 
     post("/password_resets", PasswordResetController, :create)
