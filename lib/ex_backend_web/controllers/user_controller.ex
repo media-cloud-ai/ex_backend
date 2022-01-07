@@ -60,9 +60,8 @@ defmodule ExBackendWeb.UserController do
 
   def check_rights(%Plug.Conn{assigns: %{current_user: user}} = conn, %{
         "entity" => entity_name,
-        "action" => action,
+        "action" => action
       }) do
-
     with {:ok, authorized} <- Accounts.check_user_rights(user, entity_name, action) do
       json(conn, %{authorized: authorized})
     end

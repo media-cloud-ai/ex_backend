@@ -6,7 +6,7 @@ defmodule ExBackend.Accounts do
   import Ecto.{Query, Changeset}, warn: false
   alias Phauxth.Log
   alias ExBackend.{Accounts.User, Repo}
-  alias StepFlow.Controller.Helpers  
+  alias StepFlow.Controller.Helpers
 
   defp force_integer(param) when is_bitstring(param) do
     param
