@@ -24,15 +24,18 @@ export class WorkerStatus {
   current_job?: WorkerJobStatus
   description: string
   direct_messaging_queue_name: string
+  inserted_at: string
   instance_id: string
   label: string
   queue_name: string
   sdk_version?: string
   short_description?: string
   system_info?: WorkerSystemInfo
+  updated_at: string
   version: string
 }
 
 export class WorkersStatus {
+  total: number
   data: WorkerStatus[]
 }

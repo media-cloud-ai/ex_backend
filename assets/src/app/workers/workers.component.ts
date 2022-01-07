@@ -3,6 +3,9 @@ import {Component} from '@angular/core'
 import {ActivatedRoute, Router} from '@angular/router'
 import {MatDialog} from '@angular/material/dialog'
 
+import * as moment from 'moment'
+import {Moment} from 'moment'
+
 import {Message} from '../models/message'
 import {SocketService} from '../services/socket.service'
 import {WorkerService} from '../services/worker.service'
@@ -10,14 +13,28 @@ import {WorkflowService} from '../services/workflow.service'
 
 import {Worker, WorkerStatus} from '../models/worker'
 
+const OUTDATE_SECONDS_THRESHOLD = 3600;
+
 @Component({
   selector: 'workers-component',
   templateUrl: 'workers.component.html',
   styleUrls: ['workers.component.less']
 })
-
 export class WorkersComponent {
+  // paginator parameters
+  length = 1000
+  page = 0
+  pageSize = 10
+  pageSizeOptions = [
+    10,
+    20,
+    50,
+    100
+  ]
+
   connection: any
+  loading: boolean
+  last_worker_status_update: Moment
   workers: Worker[]
   workers_status: WorkerStatus[]
   selectedStatus = []
@@ -40,6 +57,7 @@ export class WorkersComponent {
   }
 
   ngOnInit() {
+    this.loading = true;
     this.sub = this.route
       .queryParams
       .subscribe(params => {
@@ -58,27 +76,14 @@ export class WorkersComponent {
           }
         })
 
-        this.workerService.getWorkerStatuses()
-        .subscribe(workerStatuses => {
-          if(workerStatuses) {
-            this.workers_status = workerStatuses.data;
-          }
-        })
+        this.getWorkerStatuses()
 
         this.socketService.initSocket()
         this.socketService.connectToChannel('notifications:all')
 
         this.connection = this.socketService.onWorkersStatusUpdated()
           .subscribe((message: Message) => {
-            this.workers_status = [];
-
-            var workers_status = message.body.content.data;
-            Object.entries(workers_status).forEach(
-              ([id, status]) => {
-                let worker_status = Object.assign(new WorkerStatus(), status);
-                this.workers_status.push(worker_status);
-              }
-            );
+            this.getWorkerStatuses();
           })
       });
   }
@@ -101,6 +106,31 @@ export class WorkersComponent {
     }
 
     return params
+  }
+
+  private getWorkerStatuses() {
+    this.loading = true;
+    this.workerService.getWorkerStatuses(this.page, this.pageSize)
+        .subscribe(workerStatuses => {
+          this.length = undefined;
+          if(workerStatuses) {
+            this.length = workerStatuses.total;
+            this.workers_status = workerStatuses.data;
+            this.last_worker_status_update = moment.utc();
+          }
+          this.loading = false;
+        })
+  }
+
+  isWorkerStatusOutdated(worker_status: WorkerStatus) {
+    let status_update = moment(worker_status.updated_at);
+    let diff = this.last_worker_status_update.diff(status_update);
+    let diff_seconds = moment.duration(diff).asSeconds();
+    return diff_seconds > OUTDATE_SECONDS_THRESHOLD;
+  }
+
+  getUpdateStatusClass(worker_status: WorkerStatus) {
+    return this.isWorkerStatusOutdated(worker_status) && worker_status.activity != "Terminated" ? "outdated": "up-to-date";
   }
 
   public stopProcess(id, job_id) {
@@ -138,5 +168,11 @@ export class WorkersComponent {
         console.log("Workflow:", workflow);
         this.router.navigate([`/workflows/${workflow.data.id}`]);
       });
+  }
+
+  changeWorkerStatusPage(event) {
+    this.page = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.getWorkerStatuses();
   }
 }

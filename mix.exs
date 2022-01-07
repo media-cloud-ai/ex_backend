@@ -79,7 +79,7 @@ defmodule ExBackend.Mixfile do
       {:comeonin, "~> 5.1"},
       {:cors_plug, "~> 2.0"},
       {:cowboy, "~> 2.9.0"},
-      {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:distillery, "~> 2.1"},
       {:ecto, "~> 3.6.1"},
       {:ecto_sql, "~> 3.6.1"},
@@ -108,7 +108,7 @@ defmodule ExBackend.Mixfile do
       {:ranch, "~> 1.8.0"},
       {:remote_dockers, "1.4.0"},
       {:sigaws, "~> 0.7.2"},
-      {:step_flow, "1.3.1"},
+      {:step_flow, "~> 1.4.0-rc2"},
       {:tesla, "~> 1.4.0"},
       {:timex, "~> 3.6"},
       {:uuid, "~> 1.1"}

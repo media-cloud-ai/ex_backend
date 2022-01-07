@@ -18,8 +18,9 @@ defmodule ExBackendWeb.ConnCase do
   using do
     quote do
       # Import conveniences for testing with connections
-      use Phoenix.ConnTest
       import ExBackendWeb.Router.Helpers
+      import Plug.Conn
+      import Phoenix.ConnTest
 
       # The default endpoint for testing
       @endpoint ExBackendWeb.Endpoint

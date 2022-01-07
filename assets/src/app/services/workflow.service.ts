@@ -34,8 +34,10 @@ export class WorkflowService {
     if (search) {
       params = params.append("search", search)
     }
-    for (let version of versions) {
-      params = params.append("versions[]", version)
+    if (versions) {
+      for (let version of versions) {
+        params = params.append("versions[]", version)
+      }
     }
     if (mode) {
       params = params.append("mode", mode)
