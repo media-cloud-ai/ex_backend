@@ -7,6 +7,8 @@ import {catchError, map, tap} from 'rxjs/operators'
 import {Token} from '../models/token'
 import 'rxjs/add/operator/do'
 
+import {UserService} from '../services/user.service'
+
 @Injectable()
 export class AuthService {
   isLoggedIn = false
@@ -28,6 +30,7 @@ export class AuthService {
   constructor(
     private cookieService: CookieService,
     private http: HttpClient,
+    private userService: UserService,
     public router: Router
   ) {
     var currentUser = this.cookieService.get('currentUser')
@@ -129,15 +132,22 @@ export class AuthService {
     return this.roles.includes('ftvstudio')
   }
 
-  hasAnyRights(authorized_rights: string[]): boolean {
+  hasAnyRights(entity: string, action: string): Observable<any> {
     if (!this.roles){
-      return false
+      return of(false)
     }
-    if (authorized_rights === undefined){
-      return false
+    if (entity === undefined || action == undefined){
+      return of(false)
     }
-    let intersection = this.roles.filter(x => authorized_rights.includes(x))
-    return intersection.length > 0
+    let params = new HttpParams()
+    params = params.append('entity', entity)
+    params = params.append('action', action)
+
+    return this.http.post<any>('/api/users/check_rights', params)
+      .pipe(
+        tap(userPage => this.log('Check Rights')),
+        catchError(this.handleError('checkRights', undefined))
+      )
   }
 
   private handleError<T> (operation = 'operation', result?: T) {

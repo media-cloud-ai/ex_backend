@@ -81,11 +81,11 @@ export class WorkflowDetailsComponent {
       if (this.can_abort && this.workflow.steps.some((s) => s.name === 'clean_workspace' && s.status !== 'queued')) {
         this.can_abort = false
       }
-
-      let authorized_to_abort = this.workflow.rights.find((r) => r.action === "abort")
-      if (authorized_to_abort !== undefined) {
-        this.right_abort = this.authService.hasAnyRights(authorized_to_abort.groups)
-      }
+      
+      this.authService.hasAnyRights("workflow::" + this.workflow.identifier, "abort").subscribe(
+        response => {
+          this.right_abort = response.authorized
+      })
     })
   }
 
