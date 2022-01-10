@@ -5,6 +5,7 @@ import { catchError, map, tap } from 'rxjs/operators'
 
 import {UserPage, RolePage, RightDefinitionsPage} from '../models/page/user_page'
 import {User, Confirm, Role} from '../models/user'
+import {AuthService} from '../authentication/auth.service'
 
 @Injectable()
 export class UserService {

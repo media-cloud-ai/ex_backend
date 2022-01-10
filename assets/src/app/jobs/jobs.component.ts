@@ -55,10 +55,15 @@ export class JobsComponent {
         this.getJobs(this.page)
       })
 
-      let authorized_to_retry = this.workflow.rights.find((r) => r.action === "retry")
-      if (authorized_to_retry !== undefined) {
-        this.right_retry = this.authService.hasAnyRights(authorized_to_retry.groups)
-      }
+      this.is_live = this.workflow.is_live
+
+      console.log(this.workflow.is_live)
+
+      this.authService.hasAnyRights("workflow::" + this.workflow.identifier, "retry").subscribe(
+       response => {
+          this.right_retry = response.authorized
+      })
+
   }
 
   ngOnDestroy() {
