@@ -30,7 +30,7 @@
       </div>
     </div>
 
-    <ul *ngIf="users && roles" class="users">
+    <ul *ngIf="users && all_roles" class="users">
       <li *ngIf="users.total == 0">No users found.</li>
       <li class="users-header">
         <span class="email">
@@ -56,7 +56,7 @@
         >
         <user-component
           [user]=user
-          [roles]=roles.data>
+          [roles]=all_roles.data>
         </user-component>
 
         <span class="creds">
@@ -154,5 +154,3 @@
   </mat-tab>
 
 </mat-tab-group>
-
-
