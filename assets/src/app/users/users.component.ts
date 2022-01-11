@@ -35,6 +35,7 @@ export class UsersComponent {
   users: UserPage
 
   roles: RolePage
+  all_roles: RolePage
   rights: Right[] = []
   available_permissions: string[]
   already_set_entity: string[] = []
@@ -55,6 +56,7 @@ export class UsersComponent {
         this.page = +params['page'] || 0
         this.getUsers(this.page)
         this.getRoles(this.page)
+        this.getAllRoles()
       })
   }
 
@@ -85,6 +87,13 @@ export class UsersComponent {
     this.userService.getRightDefinitions()
     .subscribe(rightDefinitions => {
         this.available_permissions = rightDefinitions.rights;
+      });
+  }
+
+  getAllRoles(): void {
+    this.userService.getAllRoles()
+      .subscribe(roles => {
+        this.all_roles = roles;
       });
   }
 
