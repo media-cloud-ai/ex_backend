@@ -58,6 +58,21 @@ defmodule ExBackendWeb.UserController do
     end
   end
 
+  def check_rights(%Plug.Conn{assigns: %{current_user: user}} = conn, %{
+        "entity" => entity_name,
+        "action" => action
+      }) do
+    with {:ok, authorized} <- Accounts.check_user_rights(user, entity_name, action) do
+      json(conn, %{authorized: authorized})
+    end
+  end
+
+  def delete_role(%Plug.Conn{assigns: %{current_user: _user}} = conn, %{"name" => role_name}) do
+    updated_users = Accounts.delete_users_role(%{role: role_name})
+
+    json(conn, updated_users)
+  end
+
   def delete(%Plug.Conn{assigns: %{current_user: user}} = conn, params) do
     selected_user = Accounts.get(Map.get(params, "id") |> String.to_integer())
 

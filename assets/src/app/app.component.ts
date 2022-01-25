@@ -143,6 +143,10 @@ export class AppComponent {
           'label': 'Credentials'
         })
         this.left_menu.push({
+          'link': '/statistics',
+          'label': 'Statistics'
+        })
+        this.left_menu.push({
           'link': '/users',
           'label': 'Users'
         })

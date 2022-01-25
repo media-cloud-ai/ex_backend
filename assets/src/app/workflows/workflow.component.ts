@@ -4,6 +4,7 @@ import {Router} from '@angular/router'
 import {MatDialog} from '@angular/material/dialog'
 
 import {AuthService} from '../authentication/auth.service'
+import {UserService} from '../services/user.service'
 import {WorkflowService} from '../services/workflow.service'
 import {Workflow, Step} from '../models/workflow'
 import {WorkflowAbortDialogComponent} from './dialogs/workflow_abort_dialog.component'
@@ -30,20 +31,20 @@ export class WorkflowComponent {
   ) {}
 
   ngOnInit() {
-    this.can_abort = this.workflow.steps.some((s) => s['status'] === 'processing')
+    this.can_abort = !this.workflow.steps.some((s) => s['jobs']['queued'] == 1) && this.workflow.steps.some((s) => s['status'] === "processing")
     if (this.can_abort && this.workflow.steps.some((s) => s.name === 'clean_workspace' && s['status'] !== 'queued')) {
       this.can_abort = false
     }
+    this.authService.hasAnyRights("workflow::" + this.workflow.identifier, "abort").subscribe(
+        response => {
+          this.right_abort = response.authorized
+      })
+    this.authService.hasAnyRights("workflow::" + this.workflow.identifier, "delete").subscribe(
+        response => {
+          this.right_delete = response.authorized
+      })
 
-    let authorized_to_abort = this.workflow.rights.find((r) => r.action === "abort")
-    if (authorized_to_abort !== undefined) {
-      this.right_abort = this.authService.hasAnyRights(authorized_to_abort.groups)
-    }
 
-    let authorized_to_delete = this.workflow.rights.find((r) => r.action === "delete")
-    if (authorized_to_delete !== undefined) {
-      this.right_delete = this.authService.hasAnyRights(authorized_to_delete.groups)
-    }
   }
 
   switchDetailed() {

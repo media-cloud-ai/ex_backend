@@ -77,15 +77,15 @@ export class WorkflowDetailsComponent {
       this.renderer = new WorkflowRenderer(this.workflow.steps)
       this.renderer.setStepFocus(this.step_focus);
 
-      this.can_abort = this.workflow.steps.some((s) => s['status'] === 'processing')
+      this.can_abort = !this.workflow.steps.some((s) => s['jobs']['queued'] == 1) && this.workflow.steps.some((s) => s['status'] === "processing")
       if (this.can_abort && this.workflow.steps.some((s) => s.name === 'clean_workspace' && s.status !== 'queued')) {
         this.can_abort = false
       }
-
-      let authorized_to_abort = this.workflow.rights.find((r) => r.action === "abort")
-      if (authorized_to_abort !== undefined) {
-        this.right_abort = this.authService.hasAnyRights(authorized_to_abort.groups)
-      }
+      
+      this.authService.hasAnyRights("workflow::" + this.workflow.identifier, "abort").subscribe(
+        response => {
+          this.right_abort = response.authorized
+      })
     })
   }
 
@@ -114,7 +114,10 @@ export class WorkflowDetailsComponent {
   }
 
   abort(workflow_id): void {
-    let dialogRef = this.dialog.open(WorkflowAbortDialogComponent, {data: {'workflow': this.workflow}})
+    let dialogRef = this.dialog.open(WorkflowAbortDialogComponent, {data: {
+      'workflow': this.workflow,
+      'message': 'abort'
+    }})
 
     dialogRef.afterClosed().subscribe(workflow => {
       if (workflow !== undefined) {

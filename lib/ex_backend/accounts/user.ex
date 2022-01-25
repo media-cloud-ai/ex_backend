@@ -10,7 +10,7 @@ defmodule ExBackend.Accounts.User do
     field(:email, :string)
     field(:password, :string, virtual: true)
     field(:password_hash, :string)
-    field(:rights, {:array, :string}, default: ["administrator"])
+    field(:roles, {:array, :string}, default: ["administrator"])
     field(:confirmed_at, :utc_datetime_usec)
     field(:reset_sent_at, :utc_datetime_usec)
     field(:uuid, :string)
@@ -24,14 +24,14 @@ defmodule ExBackend.Accounts.User do
     uuid = Ecto.UUID.generate()
 
     attrs =
-      if Map.get(attrs, :email) || Map.get(attrs, :rights) do
+      if Map.get(attrs, :email) || Map.get(attrs, :roles) do
         Map.put(attrs, :uuid, uuid)
       else
         Map.put(attrs, "uuid", uuid)
       end
 
     user
-    |> cast(attrs, [:email, :rights, :uuid])
+    |> cast(attrs, [:email, :roles, :uuid])
     |> validate_required([:email, :uuid])
     |> unique_email
   end

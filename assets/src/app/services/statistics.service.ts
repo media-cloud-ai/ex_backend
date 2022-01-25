@@ -5,12 +5,12 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http'
 import { Observable, of } from 'rxjs'
 import { catchError, map, tap } from 'rxjs/operators'
 
-import { WorkflowDurations, JobDurations } from '../models/statistics/duration'
+import { DurationStatistics, JobDurations, JobsDurationStatistics, WorkflowDurations } from '../models/statistics/duration'
 
 @Injectable()
 export class StatisticsService {
-  private statisticsUrl = '/api/step_flow/statistics'
-  private statisticsDurationsUrl = '/api/step_flow/statistics/durations'
+  private durationsUrl = '/api/step_flow/durations'
+  private durationsStatisticsUrl = '/api/step_flow/statistics/durations'
 
   constructor(private http: HttpClient) { }
 
@@ -18,10 +18,38 @@ export class StatisticsService {
     let params = new HttpParams()
     params = params.append('workflow_id', String(workflow_id))
 
-    return this.http.get<WorkflowDurations>(this.statisticsDurationsUrl + "/workflows", { params: params })
+    return this.http.get<WorkflowDurations>(this.durationsUrl + "/workflows", { params: params })
       .pipe(
         tap(workflowDurations => this.log('fetched WorkflowDurations')),
         catchError(this.handleError('getWorkflowDurations', undefined))
+      )
+  }
+
+  getWorkflowsDurationStatistics(parameters = []): Observable<DurationStatistics> {
+    let params = new HttpParams()
+
+    for(let item of parameters) {
+      params = params.append(item["key"], String(item["value"]))
+    }
+
+    return this.http.get<DurationStatistics>(this.durationsStatisticsUrl + "/workflows", { params: params })
+      .pipe(
+        tap(workflowDurations => this.log('fetched DurationStatistics')),
+        catchError(this.handleError('getWorkflowsDurationStatistics', undefined))
+      )
+  }
+
+  getJobsDurationStatistics(parameters = []): Observable<JobsDurationStatistics[]> {
+    let params = new HttpParams()
+
+    for(let item of parameters) {
+      params = params.append(item["key"], String(item["value"]))
+    }
+
+    return this.http.get<JobsDurationStatistics[]>(this.durationsStatisticsUrl + "/jobs", { params: params })
+      .pipe(
+        tap(workflowDurations => this.log('fetched JobsDurationStatistics')),
+        catchError(this.handleError('getJobsDurationStatistics', undefined))
       )
   }
 
@@ -29,7 +57,7 @@ export class StatisticsService {
     let params = new HttpParams()
     params = params.append('job_id', job_id)
 
-    return this.http.get<JobDurations>(this.statisticsDurationsUrl + "/jobs", { params: params })
+    return this.http.get<JobDurations>(this.durationsUrl + "/jobs", { params: params })
       .pipe(
         tap(jobDurations => this.log('fetched JobDurations')),
         catchError(this.handleError('getJobDurations', undefined))

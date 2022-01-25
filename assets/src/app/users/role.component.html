@@ -1,0 +1,92 @@
+<mat-divider></mat-divider>
+<div class="role">
+  <span class="name">
+    <div>{{ role.name }}</div>
+    <div class="identifier">#{{ role.id }}</div>
+  </span>
+
+  <span class="rights">
+    <div
+      *ngFor="let right of active_rights"
+      class="right"
+      >
+      <mat-form-field class="scope">
+        <input
+          matInput
+          [type]="text"
+          placeholder="Scope"
+          read-only
+          [(ngModel)]="right.entity"
+          >
+      </mat-form-field>
+
+      <span class="permissions">
+        <mat-checkbox
+          *ngFor="let permission of permissions"
+          class="permission"
+          name="{{permission}}"
+          (change)="editPermission($event, right)"
+          [checked]="right.action.indexOf(permission) > -1">
+          {{ permission }}
+        </mat-checkbox>
+      </span>
+
+      <span class="right-actions">
+        <button
+          mat-mini-fab
+          (click)="deleteRight(right)"
+          color="warn"
+          title="Delete right">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </span>
+
+    </div>
+
+    <div class="new-right">
+      <mat-form-field
+        class="scope">
+        <input
+          matInput
+          [type]="text"
+          (change)="editRightScope($event)"
+          placeholder="Declare new scope..."
+          >
+      </mat-form-field>
+
+      <span class="permissions">
+        <mat-checkbox
+          *ngFor="let permission of permissions"
+          (change)="editRightPermissions($event)"
+          name="{{permission}}"
+          [disabled]="!new_right"
+          class="permission">
+          {{ permission }}
+        </mat-checkbox>
+      </span>
+
+      <span class="right-actions">
+        <button
+          mat-mini-fab
+          *ngIf="role_is_being_edited"
+          (click)="updateRole()"
+          color="primary"
+          title="Update role">
+          <mat-icon>check</mat-icon>
+        </button>
+      </span>
+
+    </div>
+  </span>
+
+    <span class="role-actions">
+    <button
+      mat-raised-button
+      (click)="deleteRole(role)"
+      color="warn"
+      title="Delete role">
+      <mat-icon>delete</mat-icon>
+      Delete role
+    </button>
+  </span>
+</div>

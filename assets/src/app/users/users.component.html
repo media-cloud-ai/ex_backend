@@ -1,89 +1,156 @@
-<h1>
-  Users
-</h1>
+<mat-tab-group animationDuration="0ms">
 
-<div class=new>
-  <div class=title>
-    <i class="material-icons">add</i>
-    <label>
-      Add User
-    </label>
-  </div>
-  <div class="form">
-    <mat-form-field class="email-input">
-      <input
-        matInput
-        type="text"
-        placeholder="Email"
-        [(ngModel)]="email"
-        >
-    </mat-form-field>
-    <button mat-button
-      color="primary"
-      (click)="inviteUser()">
-        <i class="material-icons">add</i> Invite
-    </button>
-    <span class=message>
-      {{error_message}}
-    </span>
-  </div>
-</div>
+  <!-- USERS -->
+  <mat-tab label="Users" class="users-tab">
 
-<ul *ngIf="users" class="users">
-  <li *ngIf="users.total == 0">No users found.</li>
-  <li class="users-header">
-    <span class="email">
-      Email
-    </span>
-    <span class="rights">
-      Rights
-    </span>
-    <span class="status">
-      Status
-    </span>
-    <span class="access_key_id">
-      Access Key ID
-    </span>
-    <span class="actions">
-    </span>
-  </li>
-  <li
-    *ngFor="let user of users.data"
-    class="user"
-    >
-    <user-component [user]=user></user-component>
-    <span class="creds">
-      <button mat-raised-button
-        color="primary"
-        *ngIf="user.access_key_id; else notShow"
-        (click)="generateCredentials(user)">
-          <i class="material-icons">key</i> Regenerate
-      </button>
-    </span>
-    <ng-template #notShow>
-      <span class="creds">
-        <button mat-raised-button
+    <div class=new>
+      <div class=title>
+        <i class="material-icons">add</i>
+        <label>
+          Add User
+        </label>
+      </div>
+      <div class="form">
+        <mat-form-field class="email-input">
+          <input
+            matInput
+            type="text"
+            placeholder="Email"
+            [(ngModel)]="email"
+            >
+        </mat-form-field>
+        <button mat-button
           color="primary"
-          (click)="generateCredentials(user)">
-            <i class="material-icons">key</i> Generate Credentials
+          (click)="inviteUser()">
+            <i class="material-icons">add</i> Invite
         </button>
-      </span>
-    </ng-template>
-    <span class="actions">
-      <button mat-raised-button
-        color="warn"
-        (click)="removeUser(user.id)">
-          <i class="material-icons">delete</i> Delete
-      </button>
-    </span>
-  </li>
-</ul>
+        <span class=message>
+          {{user_error_message}}
+        </span>
+      </div>
+    </div>
 
-<mat-paginator
-  class="paginator"
-  showFirstLastButtons=true
-  [length]="length"
-  [pageSize]="pageSize"
-  [pageIndex]="page"
-  (page)="pageEvent = eventGetUsers($event)">
-</mat-paginator>
+    <ul *ngIf="users && all_roles" class="users">
+      <li *ngIf="users.total == 0">No users found.</li>
+      <li class="users-header">
+        <span class="email">
+          Email
+        </span>
+        <span class="roles">
+          Roles
+        </span>
+        <span class="status">
+          Status
+        </span>
+        <span class="access_key_id">
+          Access Key ID
+        </span>
+        <span class="creds">
+        </span>
+        <span class="actions">
+        </span>
+      </li>
+      <li
+        *ngFor="let user of users.data"
+        class="user"
+        >
+        <user-component
+          [user]=user
+          [roles]=all_roles.data>
+        </user-component>
+
+        <span class="creds">
+          <button mat-raised-button
+            color="primary"
+            *ngIf="user.access_key_id; else notShow"
+            (click)="generateCredentials(user)">
+              <i class="material-icons">key</i> Regenerate
+          </button>
+        </span>
+        <ng-template #notShow>
+          <span class="creds">
+            <button mat-raised-button
+              color="primary"
+              (click)="generateCredentials(user)">
+                <i class="material-icons">key</i> Generate Credentials
+            </button>
+          </span>
+        </ng-template>
+
+        <span class="actions">
+          <button mat-raised-button
+            color="warn"
+            (click)="removeUser(user.id)">
+              <i class="material-icons">delete</i> Delete
+          </button>
+        </span>
+      </li>
+    </ul>
+
+    <mat-paginator
+      class="paginator"
+      showFirstLastButtons=true
+      [length]="length"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      [pageIndex]="page"
+      (page)="pageEvent = eventGetUsers($event)">
+    </mat-paginator>
+
+  </mat-tab>
+
+  <!-- ROLES -->
+  <mat-tab label="Roles">
+
+    <div class=new>
+      <div class=title>
+        <i class="material-icons">add</i>
+        <label>
+          Add Role
+        </label>
+      </div>
+      <div class="form">
+        <mat-form-field class="role-name-input">
+          <input
+            matInput
+            type="text"
+            placeholder="Name"
+            [(ngModel)]="new_role_name"
+            >
+        </mat-form-field>
+        <button mat-button
+          color="primary"
+          (click)="createRole()"
+          [disabled]="!new_role_name">
+            <i class="material-icons">add</i>
+            Add role
+        </button>
+        <span class=message>
+          {{role_error_message}}
+        </span>
+      </div>
+    </div>
+
+    <div *ngIf="roles && available_permissions" class="roles">
+      <p *ngIf="roles.total == 0">No roles found.</p>
+      <role-component
+        *ngFor="let role of roles.data"
+        [role]=role
+        (roleChange)="roleHasChanged($event)"
+        [permissions]=available_permissions>
+      </role-component>
+    </div>
+
+    <mat-paginator
+      class="paginator"
+      showFirstLastButtons=true
+      [length]="length"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      [pageIndex]="page"
+      (page)="pageEvent = eventGetRoles($event)">
+    </mat-paginator>
+
+  </mat-tab>
+
+</mat-tab-group>

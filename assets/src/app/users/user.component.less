@@ -1,36 +1,44 @@
 @import '../colors';
 
-span.email,
-span.rights {
-  width: 200px;
-}
+.user {
+  display: flex;
+  width: 100%;
 
-span.status {
-  width: 100px;
-  .state {
-    color: @white;
-    padding: 5px;
-    border-radius: 5px;
+  .email {
+    width: 200px;
   }
 
-  .state.enabled {
-    background-color: @green;
+  .roles {
+    flex: 1;
+
+    .role {
+      min-width: 120px;
+    }
   }
 
-  .state.pending {
-    background-color: @blue;
+  .status {
+    flex: 0.6;
+    .state {
+      color: @white;
+      padding: 5px;
+      border-radius: 5px;
+    }
+
+    .state.enabled {
+      background-color: @green;
+    }
+
+    .state.pending {
+      background-color: @blue;
+    }
+
+    .state.expired {
+      background-color: @red;
+    }
   }
 
-  .state.expired {
-    background-color: @red;
+  .access_key_id {
+    flex: 0.6;
   }
-}
-
-span.access_key_id {
-  width: 100px;
-}
-
-span.actions {
-  width: 100px;
 }
 

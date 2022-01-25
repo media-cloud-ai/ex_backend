@@ -16,12 +16,13 @@ defmodule ExBackendWeb.ConfirmController do
             Accounts.confirm_user(user)
             message = "Your account has been confirmed"
             Accounts.Message.confirm_success(user.email)
-            render(conn, ExBackendWeb.ConfirmView, "info.json", %{info: message})
+            render(conn, "info.json", %{info: message})
 
           {:error, changeset} ->
             conn
             |> put_status(:unprocessable_entity)
-            |> render(ExBackendWeb.ChangesetView, "error.json", changeset: changeset)
+            |> put_view(ExBackendWeb.ChangesetView)
+            |> render("error.json", changeset: changeset)
         end
 
       {:error, _message} ->
