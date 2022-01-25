@@ -7,15 +7,15 @@ import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {StatisticsService} from '../services/statistics.service'
 import {WorkflowService} from '../services/workflow.service'
 import {DurationStatistics, JobsDurationStatistics} from '../models/statistics/duration'
-import {Workflow, Version} from '../models/workflow'
+import {Workflow, SimpleWorkflowDefinition, Version} from '../models/workflow'
 
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 
 class WorkflowDurationStatistics {
-  workflow: Workflow
+  workflow: SimpleWorkflowDefinition
   durations: DurationStatistics
 
-  constructor(workflow: Workflow, durations: DurationStatistics) {
+  constructor(workflow: SimpleWorkflowDefinition, durations: DurationStatistics) {
     this.workflow = workflow;
     this.durations = durations;
   }
@@ -48,7 +48,7 @@ export class StatisticsComponent {
   statistics: []
   workflowIdentifiers: Set<string>
   workflowVersions: Set<Version>
-  workflowDefinitions: Workflow[]
+  workflowDefinitions: SimpleWorkflowDefinition[]
   workflowDurations: Array<WorkflowDurationStatistics>
   workflowStatus = [
     { id: 'completed', label: 'Completed' },
@@ -134,44 +134,72 @@ export class StatisticsComponent {
       endDate: new FormControl('')
     })
 
-    this.workflowService.getWorkflowDefinitions(undefined, -1, undefined, undefined, undefined, "full_with_steps").subscribe((definitions) => {
-      this.workflowDefinitions = definitions.data;
-      this.workflowIdentifiers = new Set(this.workflowDefinitions.map((definition) => definition.identifier).sort());
-      this.stepNames = new Set(this.workflowDefinitions.map((definition) => definition.steps).reduce((acc, steps) => acc.concat(steps), []).map((step) => step.name).sort());
+    this.workflowService.getWorkflowDefinitions(undefined, -1, undefined, undefined, undefined, "simple").subscribe((definitions) => {
+      let workflowDefinitions = definitions.data
+        .filter((definition, index, array) =>
+          array.findIndex((other_def) =>
+            other_def.identifier == definition.identifier &&
+            other_def.version_major == definition.version_major &&
+            other_def.version_minor == definition.version_minor &&
+            other_def.version_micro == definition.version_micro
+            ) == index
+          )
+        .filter((definition) =>
+          definition.version_major != undefined &&
+          definition.version_minor != undefined &&
+          definition.version_micro != undefined
+          );
 
-      let sorted_versions = this.workflowDefinitions
-          .map((definition) => new Version(definition))
-          .sort(Version.compare);
-      this.workflowVersions = new Set(sorted_versions);
+      this.workflowDefinitions = [];
+      for (let definition of workflowDefinitions) {
+        let foundIndex = this.workflowDefinitions.findIndex((def) => def.identifier == definition.identifier);
+        if (foundIndex >= 0) {
+          this.workflowDefinitions[foundIndex].addVersion(new Version(definition));
+
+        } else {
+          this.workflowDefinitions.push(new SimpleWorkflowDefinition(definition));
+        }
+      }
+
+      this.workflowIdentifiers = new Set(this.workflowDefinitions.map((definition) => definition.identifier).sort());
 
       this.getWorkflowStatistics();
-      this.getJobStatistics();
 
+      let step_names = [];
+      for (let definition of this.workflowDefinitions) {
+        let versions = definition.versions.map((version) => version.toString());
+        this.workflowService.getWorkflowDefinitions(undefined, -1, undefined, definition.identifier, versions, "full_with_steps")
+          .subscribe((definitions) => {
+            step_names.push(
+              definitions.data
+                .map((definition) => definition.steps)
+                .reduce((acc, steps) => acc.concat(steps), [])
+                .map((step) => step.name)
+              );
+            this.stepNames = new Set(step_names.sort());
+          });
+      }
+
+      this.getJobStatistics();
     })
 
     this.workflowsForm.controls.selectedWorkflows.valueChanges.subscribe((change) => {
       if (change.length != this.workflowSelectedIdentifiers.length) {
         this.workflowSelectedVersions = [];
 
-        let sorted_filtered_versions = this.workflowDefinitions
-          .filter((definition) => change.includes(definition.identifier))
-          .map((definition) => new Version(definition))
-          .sort(Version.compare);
-
-        this.workflowVersions = new Set(sorted_filtered_versions);
+        let selectedDefinition = this.workflowDefinitions.find((definition) => change.includes(definition.identifier));
+        if (selectedDefinition) {
+          this.workflowVersions = new Set(selectedDefinition.versions);
+        }
       }
     });
   }
 
   private getWorkflowStatistics() {
-    let selected_definitions =
-      this.workflowDefinitions
-        .filter((definition) => this.workflowSelectedIdentifiers.length == 0 || this.workflowSelectedIdentifiers.includes(definition.identifier))
-        .filter((definition) => this.workflowSelectedVersions.length == 0 || this.workflowSelectedVersions.find(version => {
-          let workflowVersion = new Version(definition);
-          return version.equals(workflowVersion);
-        }))
-        .sort(Workflow.compare);
+    let selected_definitions = this.workflowDefinitions;
+    if (this.workflowSelectedIdentifiers.length > 0) {
+      selected_definitions = this.workflowDefinitions.filter((definition) => this.workflowSelectedIdentifiers.includes(definition.identifier));
+    }
 
     // Filter with pagination
     let offset = this.workflowStatisticsPage * this.workflowStatisticsPageSize;
@@ -181,29 +209,31 @@ export class StatisticsComponent {
     this.workflowDurations = new Array<WorkflowDurationStatistics>();
 
     for (let definition of selected_definitions) {
-      let params = [
-        { "key": "version_major", "value": definition.version_major },
-        { "key": "version_minor", "value": definition.version_minor },
-        { "key": "version_micro", "value": definition.version_micro },
-        { "key": "identifier", "value": definition.identifier },
-      ]
+      for (let version of definition.versions) {
+        let params = [
+          { "key": "version_major", "value": version.major },
+          { "key": "version_minor", "value": version.minor },
+          { "key": "version_micro", "value": version.micro },
+          { "key": "identifier", "value": definition.identifier },
+        ]
 
-      for (let status of this.workflowSelectedStatuses) {
-        params.push({ "key": "states[]", "value": status });
+        for (let status of this.workflowSelectedStatuses) {
+          params.push({ "key": "states[]", "value": status });
+        }
+
+        if (this.workflowStartDate) {
+          params.push({ "key": "after_date", "value": formatDate(this.workflowStartDate, "yyyy-MM-ddTHH:mm:ss", "fr") });
+        }
+
+        if (this.workflowEndDate) {
+          params.push({ "key": "before_date", "value": formatDate(this.workflowEndDate, "yyyy-MM-ddTHH:mm:ss", "fr") });
+        }
+
+        this.statisticsService.getWorkflowsDurationStatistics(params).subscribe((statistics) => {
+          this.workflowDurations.push(new WorkflowDurationStatistics(definition, statistics));
+          this.workflowDurations.sort(WorkflowDurationStatistics.compare);
+        })
       }
-
-      if (this.workflowStartDate) {
-        params.push({ "key": "after_date", "value": formatDate(this.workflowStartDate, "yyyy-MM-ddTHH:mm:ss", "fr") });
-      }
-
-      if (this.workflowEndDate) {
-        params.push({ "key": "before_date", "value": formatDate(this.workflowEndDate, "yyyy-MM-ddTHH:mm:ss", "fr") });
-      }
-
-      this.statisticsService.getWorkflowsDurationStatistics(params).subscribe((statistics) => {
-        this.workflowDurations.push(new WorkflowDurationStatistics(definition, statistics));
-        this.workflowDurations.sort(WorkflowDurationStatistics.compare);
-      })
     }
   }
 

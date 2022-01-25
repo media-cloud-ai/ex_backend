@@ -120,3 +120,19 @@ export class Version {
       return this.major + "." + this.minor + "." + this.micro;
   }
 }
+
+export class SimpleWorkflowDefinition {
+  identifier: string
+  versions: Version[]
+
+  constructor(workflow: Workflow) {
+    this.identifier = workflow.identifier;
+    this.versions = [];
+    this.versions.push(new Version(workflow));
+  }
+
+  public addVersion(version: Version) {
+    this.versions.push(version);
+    this.versions.sort(Version.compare);
+  }
+}
