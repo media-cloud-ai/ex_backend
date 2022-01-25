@@ -35,6 +35,7 @@ export class UsersComponent {
   users: UserPage
 
   roles: RolePage
+  roles_total = 1000
   all_roles: RolePage
   rights: Right[] = []
   available_permissions: string[]
@@ -80,8 +81,13 @@ export class UsersComponent {
     this.userService.getRoles(index, this.pageSize)
       .subscribe(roles => {
         this.roles = roles;
-        for(let role of this.roles.data) {
-          role.rights.forEach((right) => this.rights.push(right));
+        if (roles) {
+          this.roles_total = roles.total
+          for(let role of this.roles.data) {
+            role.rights.forEach((right) => this.rights.push(right));
+          }
+        } else {
+          this.roles_total = 0
         }
       });
     this.userService.getRightDefinitions()
@@ -98,12 +104,12 @@ export class UsersComponent {
   }
 
   eventGetUsers(event): void {
-    this.router.navigate(['/users'], { queryParams: this.getQueryParamsForPage(event.pageIndex) })
+    // this.router.navigate(['/users'], { queryParams: this.getQueryParamsForPage(event.pageIndex) })
     this.getUsers(event.pageIndex)
   }
 
   eventGetRoles(event): void {
-    this.getRoles(this.page);
+    this.getRoles(event.pageIndex);
   }
 
   inviteUser(): void {
