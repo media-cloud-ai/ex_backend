@@ -70,8 +70,8 @@ export class Workflow {
       return identifierComparison;
     }
 
-    let a_version = new Version(a);
-    let b_version = new Version(b);
+    let a_version = Version.from_workflow(a);
+    let b_version = Version.from_workflow(b);
 
     return Version.compare(a_version, b_version);
   }
@@ -87,10 +87,29 @@ export class Version {
   minor: number
   micro: number
 
-  constructor(workflow: Workflow) {
-    this.major = parseInt(workflow.version_major)
-    this.minor = parseInt(workflow.version_minor)
-    this.micro = parseInt(workflow.version_micro)
+  constructor(major: number, minor: number, micro: number) {
+    this.major = major;
+    this.minor = minor;
+    this.micro = micro;
+  }
+
+  static from_workflow(workflow: Workflow): Version {
+    return new Version(
+      parseInt(workflow.version_major),
+      parseInt(workflow.version_minor),
+      parseInt(workflow.version_micro));
+  }
+
+  static from_string(value: string): Version {
+    let items = value.split(".");
+    if (items.length != 3) {
+      console.error("Invalid version string", value);
+      return undefined;
+    }
+    return new Version(
+      parseInt(items[0]),
+      parseInt(items[1]),
+      parseInt(items[2]));
   }
 
   public equals(other: Version) : boolean {

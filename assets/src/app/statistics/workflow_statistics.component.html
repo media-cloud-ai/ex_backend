@@ -1,0 +1,144 @@
+
+<div class="workflow-statistics-filters">
+  <form [formGroup]="workflowsForm" fxFlex fxLayout="column" autocomplete="off">
+    <mat-form-field class="workflow-filters-input">
+      <mat-select formControlName="selectedWorkflows" placeholder="Workflows" [(ngModel)]="workflowSelectedIdentifiers" multiple>
+        <mat-option *ngFor="let identifier of workflowIdentifiers" [value]="identifier" [ngClass]="identifier">
+          {{ identifier }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="workflowSelectedIdentifiers.length > 0" class="workflow-filters-input">
+      <mat-select formControlName="selectedVersion" placeholder="Version" [(ngModel)]="workflowSelectedVersions" multiple>
+        <mat-option *ngFor="let version of workflowVersions" [value]="version" [ngClass]="version">
+          {{ version }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="workflow-filters-input">
+      <mat-select formControlName="selectedStatus" placeholder="Status" [(ngModel)]="workflowSelectedStatuses" multiple>
+        <mat-option *ngFor="let state of workflowStatus" [value]="state.id" [ngClass]="state.id">
+          {{ state.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="workflow-filters-input">
+      <input formControlName="startDate" matInput [ngxMatDatetimePicker]="picker_workflow_start_date" placeholder="Start date"
+        name=start_date [(ngModel)]="worlkflowStartDate">
+      <mat-datepicker-toggle matSuffix [for]="picker_workflow_start_date"></mat-datepicker-toggle>
+      <ngx-mat-datetime-picker #picker_workflow_start_date [showSeconds]=true>
+      </ngx-mat-datetime-picker>
+    </mat-form-field>
+
+    <mat-form-field class="workflow-filters-input">
+      <input formControlName="endDate" matInput [ngxMatDatetimePicker]="picker_workflow_end_date" placeholder="End date"
+        name=end_date [(ngModel)]="worlkflowEndDate">
+      <mat-datepicker-toggle matSuffix [for]="picker_workflow_end_date"></mat-datepicker-toggle>
+      <ngx-mat-datetime-picker #picker_workflow_end_date [showSeconds]=true>
+      </ngx-mat-datetime-picker>
+    </mat-form-field>
+
+    <button mat-raised-button color="accent" (click)="getWorkflowStatistics()">
+      <i class="material-icons">search</i>
+      Search
+    </button>
+  </form>
+</div>
+
+<div *ngIf="loading" class="loading">
+  <span>
+    <img src="/bundles/images/media-io.animated.svg" width="50px" height="50px" />
+  </span>
+  <span class=text>
+    Loading ...
+  </span>
+</div>
+
+<ul *ngIf="!loading" class="workflow-durations">
+  <li class="durations-header">
+    <span class="workflow-identifier">Identifier</span>
+    <span class="workflow-version">Version</span>
+    <span class="workflow-count">Count</span>
+    <span class="workflow-duration">Order pending</span>
+    <span class="workflow-duration">Processing</span>
+    <span class="workflow-duration">Response Pending</span>
+    <span class="workflow-duration">Total</span>
+  </li>
+
+  <li *ngIf="workflowDurations.length == 0" class="notfound">
+    No statistic found.
+  </li>
+
+  <li *ngFor="let item of workflowDurations" class="duration">
+    <span class="workflow-identifier">
+      <div>{{ item.identifier }}</div>
+    </span>
+    <span class="workflow-version">
+      <div>{{ item.version.toString() }}</div>
+    </span>
+    <span class="workflow-count">
+      <div>{{ item.durations.count }}</div>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count > 0">
+      <div class="workflow-duration-values">
+        <div class="minimum">Min: {{ item.durations.min.order_pending * 1000 | duration : 'timecode_ms' }}</div>
+        <div class="average">{{ item.durations.average.order_pending * 1000 | duration : 'timecode_ms' }}</div>
+        <div class="maximum">Max: {{ item.durations.max.order_pending * 1000 | duration : 'timecode_ms' }}</div>
+      </div>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count == 0">
+      <span class="workflow-duration-values">
+        <span class="average">-</span>
+      </span>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count > 0">
+      <div class="workflow-duration-values">
+        <div class="minimum">Min: {{ item.durations.min.processing * 1000 | duration : 'timecode_ms' }}</div>
+        <div class="average">{{ item.durations.average.processing * 1000 | duration : 'timecode_ms' }}</div>
+        <div class="maximum">Max: {{ item.durations.max.processing * 1000 | duration : 'timecode_ms' }}</div>
+      </div>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count == 0">
+      <span class="workflow-duration-values">
+        <span class="average">-</span>
+      </span>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count > 0">
+      <div class="workflow-duration-values">
+        <div class="minimum">Min: {{ item.durations.min.response_pending * 1000 | duration : 'timecode_ms' }}</div>
+        <div class="average">{{ item.durations.average.response_pending * 1000 | duration : 'timecode_ms' }}</div>
+        <div class="maximum">Max: {{ item.durations.max.response_pending * 1000 | duration : 'timecode_ms' }}</div>
+      </div>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count == 0">
+      <span class="workflow-duration-values">
+        <span class="average">-</span>
+      </span>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count > 0">
+      <div class="workflow-duration-values">
+        <div class="minimum">Min: {{ item.durations.min.total * 1000 | duration : 'timecode_ms' }}</div>
+        <div class="average">{{ item.durations.average.total * 1000 | duration : 'timecode_ms' }}</div>
+        <div class="maximum">Max: {{ item.durations.max.total * 1000 | duration : 'timecode_ms' }}</div>
+      </div>
+    </span>
+    <span class="workflow-duration" *ngIf="item.durations.count == 0">
+      <span class="workflow-duration-values">
+        <span class="average">-</span>
+      </span>
+    </span>
+  </li>
+</ul>
+
+<mat-paginator
+  class=paginator
+  showFirstLastButtons=true
+  [pageSize]="workflowStatisticsPageSize"
+  [pageIndex]="workflowStatisticsPage"
+  [pageSizeOptions]="pageSizeOptions"
+  [length]="workflowStatisticsPageTotal"
+  (page)="pageEvent = changeWorkflowStatisticsPage($event)">
+</mat-paginator>

@@ -45,7 +45,27 @@ export class DurationStatistics {
   min: McaiDurations
 }
 
-export class JobsDurationStatistics {
+export class WorkflowDurationStatistics {
+  data: WorkflowDurationStatisticsEntry[]
+  page: number
+  size: number
+  total: number
+}
+
+export class WorkflowDurationStatisticsEntry {
+  name: string
+  version: string
+  durations: DurationStatistics
+}
+
+export class JobDurationStatistics {
+  data: JobDurationStatisticsEntry[]
+  page: number
+  size: number
+  total: number
+}
+
+export class JobDurationStatisticsEntry {
   name: string
   durations: DurationStatistics
 }
