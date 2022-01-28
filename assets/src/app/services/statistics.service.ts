@@ -5,7 +5,7 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http'
 import { Observable, of } from 'rxjs'
 import { catchError, map, tap } from 'rxjs/operators'
 
-import { DurationStatistics, JobDurations, JobsDurationStatistics, WorkflowDurations } from '../models/statistics/duration'
+import { DurationStatistics, JobDurations, JobDurationStatistics, WorkflowDurations, WorkflowDurationStatistics } from '../models/statistics/duration'
 
 @Injectable()
 export class StatisticsService {
@@ -25,30 +25,30 @@ export class StatisticsService {
       )
   }
 
-  getWorkflowsDurationStatistics(parameters = []): Observable<DurationStatistics> {
+  getWorkflowsDurationStatistics(parameters = []): Observable<WorkflowDurationStatistics> {
     let params = new HttpParams()
 
     for(let item of parameters) {
       params = params.append(item["key"], String(item["value"]))
     }
 
-    return this.http.get<DurationStatistics>(this.durationsStatisticsUrl + "/workflows", { params: params })
+    return this.http.get<WorkflowDurationStatistics>(this.durationsStatisticsUrl + "/workflows", { params: params })
       .pipe(
-        tap(workflowDurations => this.log('fetched DurationStatistics')),
+        tap(workflowDurations => this.log('fetched WorkflowDurationStatistics')),
         catchError(this.handleError('getWorkflowsDurationStatistics', undefined))
       )
   }
 
-  getJobsDurationStatistics(parameters = []): Observable<JobsDurationStatistics[]> {
+  getJobDurationStatistics(parameters = []): Observable<JobDurationStatistics> {
     let params = new HttpParams()
 
     for(let item of parameters) {
       params = params.append(item["key"], String(item["value"]))
     }
 
-    return this.http.get<JobsDurationStatistics[]>(this.durationsStatisticsUrl + "/jobs", { params: params })
+    return this.http.get<JobDurationStatistics>(this.durationsStatisticsUrl + "/jobs", { params: params })
       .pipe(
-        tap(workflowDurations => this.log('fetched JobsDurationStatistics')),
+        tap(workflowDurations => this.log('fetched JobDurationStatistics')),
         catchError(this.handleError('getJobsDurationStatistics', undefined))
       )
   }

@@ -1,0 +1,85 @@
+@import '../colors';
+
+.job-statistics-filters{
+  padding-left: 40px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.job-filters-input {
+  margin: 0px 10px;
+}
+
+.job-filter-chips {
+  flex: 1;
+  flex-basis: 100%;
+}
+
+.loading {
+  text-align: center;
+  padding-top: 20px;
+
+  span {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  span.text {
+    font-size: 2em;
+    font-weight: bold;
+    padding-left: 15px;
+  }
+}
+
+.job-durations {
+
+  .durations-header,
+  .duration {
+    padding: 5px;
+    display: flex;
+    line-height: 36px;
+    vertical-align: middle; 
+
+    .job-identifier,
+    .job-duration,
+    {
+      flex: 1;
+    }
+
+    .job-duration,
+    .job-version,
+    .job-count, {
+      text-align: center;
+    }
+
+    .job-duration-values {
+      line-height: 14px;
+      border-color: @grey;
+      flex: 1;
+    }
+
+    .job-version,
+    .job-count, {
+      flex: 0.5;
+    }
+
+  }
+
+  .duration:nth-child(2n+1) {
+    background-color: @lightGrey;
+  }
+
+  .durations-header {
+    font-weight: bold;
+    background-color: @green;
+  }
+
+  .duration {
+    .minimum,
+    .maximum {
+      font-style: italic;
+      font-size: 10px;
+      color: @grey;
+    }
+  }
+
+}
