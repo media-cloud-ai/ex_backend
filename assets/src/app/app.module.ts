@@ -67,6 +67,7 @@ import {DashboardComponent}      from './dashboard/dashboard.component'
 import {DeclaredWorkersComponent} from './declared_workers/declared_workers.component'
 import {DurationComponent}       from './workflows/details/duration.component'
 import {IngestComponent}         from './ingest/ingest.component'
+import {JobStatisticsComponent}  from './statistics/job_statistics.component'
 import {JobsComponent}           from './jobs/jobs.component'
 import {LoginComponent}          from './login/login.component'
 import {ParametersComponent}     from './workflows/details/parameters.component'
@@ -85,6 +86,7 @@ import {WatchersComponent}       from './watchers/watchers.component'
 import {WorkflowComponent}       from './workflows/workflow.component'
 import {WorkflowDetailsComponent} from './workflows/details/workflow_details.component'
 import {WorkflowRendererComponent} from './workflows/renderer/workflow_renderer.component'
+import {WorkflowStatisticsComponent}       from './statistics/workflow_statistics.component'
 import {WorkflowStepDetailsComponent} from './workflows/details/workflow_step_details.component'
 import {WorkflowsComponent}      from './workflows/workflows.component'
 
@@ -190,8 +192,9 @@ const EX_BACKEND_DATE_FORMATS = {
     DeleteSubtitleDialog,
     DurationComponent,
     IngestComponent,
-    JobsComponent,
     JobDetailsDialogComponent,
+    JobStatisticsComponent,
+    JobsComponent,
     LoginComponent,
     NewSubtitleDialogComponent,
     ParametersComponent,
@@ -216,6 +219,7 @@ const EX_BACKEND_DATE_FORMATS = {
     WorkflowComponent,
     WorkflowDetailsComponent,
     WorkflowRendererComponent,
+    WorkflowStatisticsComponent,
     WorkflowStepDetailsComponent,
     WorkflowsComponent,
   ],
@@ -223,6 +227,7 @@ const EX_BACKEND_DATE_FORMATS = {
     DeleteSubtitleDialog,
     DurationComponent,
     JobDetailsDialogComponent,
+    JobStatisticsComponent,
     NewSubtitleDialogComponent,
     ParametersComponent,
     RdfDialogComponent,
@@ -241,6 +246,7 @@ const EX_BACKEND_DATE_FORMATS = {
     WorkflowAbortDialogComponent,
     WorkflowDialogComponent,
     WorkflowRendererComponent,
+    WorkflowStatisticsComponent,
     WorkflowStepDetailsComponent
   ],
   providers: [
