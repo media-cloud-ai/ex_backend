@@ -62,6 +62,7 @@ export class WorkflowsComponent {
        "file",
        "live"
       ],
+      search: undefined,
       status: [
         "completed",
         "error",
