@@ -71,6 +71,9 @@ export class WorkflowService {
       else
         params = params.append('is_live', "false")
     }
+    if (parameters.search) {
+      params = params.append('search', parameters.search)
+    }
     params = params.append('after_date', formatDate(parameters.start_date, "yyyy-MM-ddTHH:mm:ss", "fr"))
     params = params.append('before_date', formatDate(parameters.end_date, "yyyy-MM-ddTHH:mm:ss", "fr"))
 

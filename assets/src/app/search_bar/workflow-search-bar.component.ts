@@ -29,6 +29,7 @@ export class WorkflowSearchBarComponent {
     ],
     start_date: new Date(),
     end_date: new Date(),
+    search: undefined,
     status: [
       "completed",
       "error"
@@ -70,6 +71,7 @@ export class WorkflowSearchBarComponent {
       selectedWorkflows: new FormControl(''),
       startDate: new FormControl(''),
       endDate: new FormControl(''),
+      referenceSearch: new FormControl(''),
       detailedToggle: new FormControl('')
     });
 

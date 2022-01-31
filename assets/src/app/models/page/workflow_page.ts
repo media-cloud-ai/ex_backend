@@ -34,6 +34,7 @@ export class WorkflowQueryParams {
   mode: string[]
   start_date: any
   end_date: any
+  search?: string
   status: string[]
   detailed: boolean
   time_interval: number

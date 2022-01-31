@@ -37,6 +37,9 @@
     <ngx-mat-datetime-picker #picker_end_date [showSeconds]=true>
     </ngx-mat-datetime-picker>
   </mat-form-field>
+  <mat-form-field class="search-text-input">
+    <input formControlName="referenceSearch" matInput placeholder="Reference search..." [(ngModel)]="parameters.search">
+  </mat-form-field>
   <button mat-raised-button color="accent" (click)="searchWorkflows()">
     <i class="material-icons">search</i>
     Search
