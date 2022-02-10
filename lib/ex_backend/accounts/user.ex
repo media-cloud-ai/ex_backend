@@ -27,7 +27,7 @@ defmodule ExBackend.Accounts.User do
       if Map.get(attrs, :email) || Map.get(attrs, :roles) do
         Map.put(attrs, :uuid, uuid)
       else
-        Map.put(attrs, "uuid", uuid)
+        Map.put(attrs, :uuid, uuid)
       end
 
     user
