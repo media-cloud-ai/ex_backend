@@ -72,8 +72,7 @@ defmodule ExBackend.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:amqp, "~> 2.1.1"},
-      {:bcrypt_elixir, "~> 2.0"},
+      {:amqp, "~> 3.1.0"},
       {:bamboo, "~> 1.2"},
       {:blue_bird, "~> 0.4.1"},
       {:comeonin, "~> 5.1"},
