@@ -28,6 +28,9 @@ export class JobStatusPipe implements PipeTransform {
       if (jobStatus.state === 'error'){
         status = 'error'
       }
+      if (jobStatus.state === 'paused'){
+        return 'paused'
+      }
       if (jobStatus.state === 'skipped'){
         return 'skipped'
       }
