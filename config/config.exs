@@ -58,7 +58,6 @@ config :step_flow, StepFlow,
   endpoint: ExBackendWeb.Endpoint,
   workflow_definition: "./test/definitions"
 
-
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

@@ -73,6 +73,7 @@ defmodule ExBackend.Mixfile do
   defp deps do
     [
       {:amqp, "~> 3.1.0"},
+      {:bcrypt_elixir, "~> 2.0"},
       {:bamboo, "~> 1.2"},
       {:blue_bird, "~> 0.4.1"},
       {:comeonin, "~> 5.1"},
@@ -107,7 +108,9 @@ defmodule ExBackend.Mixfile do
       {:ranch, "~> 1.8.0"},
       {:remote_dockers, "1.4.0"},
       {:sigaws, "~> 0.7.2"},
-      {:step_flow, git: "https://gitlab.com/media-cloud-ai/backend/ex_step_flow", branch: "improvement/elixir_update"},
+      {:step_flow,
+       git: "https://gitlab.com/media-cloud-ai/backend/ex_step_flow",
+       branch: "improvement/elixir_update"},
       {:tesla, "~> 1.4.0"},
       {:timex, "~> 3.6"},
       {:uuid, "~> 1.1"}
