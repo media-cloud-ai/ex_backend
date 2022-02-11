@@ -55,8 +55,7 @@ config :step_flow, StepFlow,
     get_metrics: [],
     get_live_workers: [:user_check, :right_technician_check]
   ],
-  endpoint: ExBackendWeb.Endpoint,
-  workflow_definition: "./test/definitions"
+  endpoint: ExBackendWeb.Endpoint
 
 # Configures Elixir's Logger
 config :logger, :console,
