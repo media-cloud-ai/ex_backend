@@ -79,13 +79,37 @@
       <span class="count">{{getStepsCount()}} / {{getTotalSteps()}}</span>
     </span>
     <span
+      class="pause"
+      *ngIf="!can_resume">
+      <button
+        mat-raised-button
+        color="accent"
+        [disabled]=!can_pause
+        (click)="pause(workflow.id)"
+        >
+        <mat-icon>pause</mat-icon>
+        Pause
+      </button>
+    </span>
+    <span
+      class="resume"
+      *ngIf="!can_pause && can_resume">
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="resume(workflow.id)"
+        >
+        <mat-icon>play_arrow</mat-icon>
+        Resume
+      </button>
+    </span>
+    <span
       class="abort" *ngIf=!workflow.is_live>
       <button
         mat-raised-button
         color="warn"
-        [disabled]=!can_abort
+        [disabled]="!can_abort || !right_abort"
         (click)="abort(workflow.id)"
-        *ngIf="right_abort"
         >
         <mat-icon>cancel</mat-icon>
         Abort
@@ -96,9 +120,8 @@
       <button
         mat-raised-button
         color="warn"
-        [disabled]=!can_stop
+        [disabled]="!can_stop || !right_abort"
         (click)="stop(workflow.id)"
-        *ngIf="right_abort"
         >
         <mat-icon>stop</mat-icon>
         Stop
