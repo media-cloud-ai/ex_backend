@@ -83,7 +83,7 @@
       *ngIf="!can_resume">
       <button
         mat-raised-button
-        color="primary"
+        color="accent"
         [disabled]=!can_pause
         (click)="pause(workflow.id)"
         >
@@ -96,7 +96,7 @@
       *ngIf="!can_pause && can_resume">
       <button
         mat-raised-button
-        color="primary"
+        color="accent"
         (click)="resume(workflow.id)"
         >
         <mat-icon>play_arrow</mat-icon>
@@ -108,9 +108,8 @@
       <button
         mat-raised-button
         color="warn"
-        [disabled]=!can_abort
+        [disabled]="!can_abort || !right_abort"
         (click)="abort(workflow.id)"
-        *ngIf="right_abort"
         >
         <mat-icon>cancel</mat-icon>
         Abort
@@ -121,9 +120,8 @@
       <button
         mat-raised-button
         color="warn"
-        [disabled]=!can_stop
+        [disabled]="!can_stop || !right_abort"
         (click)="stop(workflow.id)"
-        *ngIf="right_abort"
         >
         <mat-icon>stop</mat-icon>
         Stop

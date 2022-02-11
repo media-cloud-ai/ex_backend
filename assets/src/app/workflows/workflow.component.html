@@ -43,10 +43,10 @@
       <button
         mat-raised-button
         color="primary"
+        title="Details"
         >
         <a routerLink="/workflows/{{workflow.id}}">
           <mat-icon>visibility</mat-icon>
-          Details
         </a>
       </button>
     </span>
@@ -55,12 +55,12 @@
       *ngIf="!can_resume">
       <button
         mat-raised-button
-        color="primary"
+        color="accent"
         [disabled]=!can_pause
         (click)="pause(workflow.id)"
+        title="Pause"
         >
         <mat-icon>pause</mat-icon>
-        Pause
       </button>
     </span>
     <span
@@ -68,45 +68,47 @@
       *ngIf="!can_pause && can_resume">
       <button
         mat-raised-button
-        color="primary"
+        color="accent"
         (click)="resume(workflow.id)"
+        title="Resume"
         >
         <mat-icon>play_arrow</mat-icon>
-        Resume
       </button>
     </span>
     <span
-      class="abort" *ngIf=!workflow.is_live>
+      class="abort"
+      *ngIf="!workflow.is_live">
       <button
         mat-raised-button
         color="warn"
-        [disabled]=!can_abort
+        [disabled]="!can_abort || !right_abort"
         (click)="abort(workflow.id)"
-        *ngIf="right_abort"
+        title="Abort"
         >
         <mat-icon>cancel</mat-icon>
-        Abort
       </button>
     </span>
     <span
-      class="stop" *ngIf=workflow.is_live>
+      class="stop"
+      *ngIf=workflow.is_live>
       <button
         mat-raised-button
         color="warn"
         [disabled]=!can_stop
         (click)="stop(workflow.id)"
+        title="Stop"
         >
         <mat-icon>stop</mat-icon>
-        Stop
       </button>
     </span>
     <span
       class="delete">
       <button
         mat-raised-button
+        [disabled]="!right_delete"
         color="warn"
         (click)="delete(workflow.id)"
-        *ngIf="right_delete"
+        title="Delete"
         >
         <mat-icon>delete_forever</mat-icon>
       </button>
