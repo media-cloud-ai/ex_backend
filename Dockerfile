@@ -1,4 +1,4 @@
-FROM elixir:1.11.4-alpine AS ex_builder
+FROM elixir:1.13.2-alpine AS ex_builder
 
 RUN apk update && \
     apk add --no-cache \
