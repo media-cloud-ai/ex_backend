@@ -16,7 +16,7 @@ for user <- users do
 end
 
 admin = ExBackend.Accounts.get_by(%{"email" => "admin@media-cloud.ai"})
-ExBackend.Accounts.update_user(admin, %{rights: ["administrator", "technician", "editor"]})
+ExBackend.Accounts.update_user(admin, %{"rights" => ["administrator", "technician", "editor"]})
 
 Code.eval_file("priv/repo/workflow_live.exs")
 Code.eval_file("priv/repo/workflow_with_statuses.exs")
