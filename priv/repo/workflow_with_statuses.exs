@@ -1,6 +1,6 @@
 
 workflow_definition = %{
-  schema_version: "1.8",
+  schema_version: "1.9",
   identifier: "dev_workflow",
   label: "Dev workflow",
   tags: ["dev"],
@@ -46,39 +46,6 @@ workflow_definition = %{
     }
   ],
   parameters: [
-  ],
-  rights: [
-    %{
-      action: "view",
-      groups: [
-        "administrator",
-        "technician",
-        "editor",
-      ]
-    },
-    %{
-      action: "create",
-      groups: [
-        "administrator",
-        "technician",
-        "editor",
-      ]
-    },
-    %{
-      action: "retry",
-      groups: [
-        "administrator",
-        "technician"
-      ]
-    },
-    %{
-      action: "abort",
-      groups: ["administrator"]
-    },
-    %{
-      action: "delete",
-      groups: ["administrator"]
-    }
   ]
 }
 
