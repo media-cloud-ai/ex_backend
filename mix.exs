@@ -52,6 +52,7 @@ defmodule ExBackend.Mixfile do
         :libvault,
         :phauxth,
         :phoenix_ecto,
+        :poison,
         :postgrex,
         :runtime_tools,
         :timex,
