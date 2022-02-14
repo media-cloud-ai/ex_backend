@@ -47,12 +47,12 @@ defmodule ExBackendWeb.S3Controller do
     secret_key =
       System.get_env("S3_SECRET_KEY") || Application.get_env(:ex_backend, :s3_secret_key)
 
-    date_key = :crypto.hmac(:sha256, "AWS4" <> secret_key, date)
-    date_region_key = :crypto.hmac(:sha256, date_key, region)
-    date_region_service_key = :crypto.hmac(:sha256, date_region_key, service)
-    signing_key = :crypto.hmac(:sha256, date_region_service_key, "aws4_request")
+    date_key = :crypto.mac(:hmac, :sha256, "AWS4" <> secret_key, date)
+    date_region_key = :crypto.mac(:hmac, :sha256, date_key, region)
+    date_region_service_key = :crypto.mac(:hmac, :sha256, date_region_key, service)
+    signing_key = :crypto.mac(:hmac, :sha256, date_region_service_key, "aws4_request")
 
-    signature = :crypto.hmac(:sha256, signing_key, string_to_sign)
+    signature = :crypto.mac(:hmac, :sha256, signing_key, string_to_sign)
     text(conn, signature |> Base.encode16(case: :lower))
   end
 

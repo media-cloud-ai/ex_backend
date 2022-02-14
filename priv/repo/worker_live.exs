@@ -6,7 +6,7 @@ groups = [
 ]
 
 {:ok, workflow} = StepFlow.Workflows.create_workflow(%{
-  schema_version: "1.8",
+  schema_version: "1.9",
   identifier: "dev_workflow_for_live_workers",
   label: "Dev Workflow for live workers",
   tags: ["dev"],
@@ -18,28 +18,6 @@ groups = [
   reference: "some-identifier",
   steps: [],
   parameters: [
-  ],
-  rights: [
-    %{
-      action: "view",
-      groups: groups
-    },
-    %{
-      action: "create",
-      groups: groups
-    },
-    %{
-      action: "retry",
-      groups: groups
-    },
-    %{
-      action: "abort",
-      groups: groups
-    },
-    %{
-      action: "delete",
-      groups: groups
-    }
   ]
 })
 

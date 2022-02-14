@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
@@ -115,10 +115,11 @@ config :ex_backend,
   docker_container_amqp_password: "mediacloudai"
 
 config :step_flow, StepFlow.Amqp,
-  hostname: "rabbitmq",
-  port: "5672",
-  username: "guest",
-  password: "guest"
+  hostname: "localhost",
+  port: "5678",
+  username: "mediacloudai",
+  password: "mediacloudai",
+  virtual_host: "media_cloud_ai_dev"
 
 config :httpotion, :default_timeout, 60000
 
