@@ -1,8 +1,8 @@
 <form [formGroup]="workflowsForm" fxFlex fxLayout="column" autocomplete="off">
   <mat-form-field>
     <mat-select formControlName="selectedStatus" placeholder="Status" [(ngModel)]="parameters.status" multiple>
-      <mat-option *ngFor="let state of status" [value]="state.id" [ngClass]="state.id" class="state-option">
-        {{ state.label }}
+      <mat-option *ngFor="let state of status" [value]="state" [ngClass]="state" class="state-option">
+        {{ state | titlecase }}
       </mat-option>
     </mat-select>
   </mat-form-field>

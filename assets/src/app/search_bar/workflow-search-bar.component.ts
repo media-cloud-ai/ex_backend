@@ -48,10 +48,6 @@ export class WorkflowSearchBarComponent {
   workflows = []
 
   status = [
-    { id: 'completed', label: 'Completed' },
-    { id: 'error', label: 'Error' },
-    { id: 'pending', label: 'Pending' },
-    { id: 'processing', label: 'Processing' },
   ]
 
   mode = [
@@ -74,6 +70,9 @@ export class WorkflowSearchBarComponent {
       referenceSearch: new FormControl(''),
       detailedToggle: new FormControl('')
     });
+
+    this.workflowService.getWorkflowStatus()
+      .subscribe(response => this.status = response.sort());
 
     this.allSelected = false;
 
