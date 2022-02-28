@@ -98,6 +98,7 @@ import {RdfDialogComponent} from './catalog/rdf/rdf_dialog.component'
 import {RoleOrRightDeletionDialogComponent} from './users/dialogs/role_or_right_deletion_dialog.component'
 import {UserShowCredentialsDialogComponent} from './users/dialogs/user_show_credentials_dialog.component'
 import {WorkflowAbortDialogComponent} from './workflows/dialogs/workflow_abort_dialog.component'
+import {WorkflowPauseDialogComponent} from './workflows/dialogs/workflow_pause_dialog.component'
 import {WorkflowDialogComponent} from './catalog/workflow/workflow_dialog.component'
 
 import {AuthService}             from './authentication/auth.service'
@@ -218,6 +219,7 @@ const EX_BACKEND_DATE_FORMATS = {
     WorkflowDialogComponent,
     WorkflowComponent,
     WorkflowDetailsComponent,
+    WorkflowPauseDialogComponent,
     WorkflowRendererComponent,
     WorkflowStatisticsComponent,
     WorkflowStepDetailsComponent,
@@ -245,6 +247,7 @@ const EX_BACKEND_DATE_FORMATS = {
     WorkflowComponent,
     WorkflowAbortDialogComponent,
     WorkflowDialogComponent,
+    WorkflowPauseDialogComponent,
     WorkflowRendererComponent,
     WorkflowStatisticsComponent,
     WorkflowStepDetailsComponent

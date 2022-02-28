@@ -9,6 +9,7 @@ import {WorkflowService} from '../../services/workflow.service'
 import {Workflow, Step} from '../../models/workflow'
 import {WorkflowRenderer} from '../../models/workflow_renderer'
 import {WorkflowAbortDialogComponent} from '../dialogs/workflow_abort_dialog.component'
+import {WorkflowPauseDialogComponent} from '../dialogs/workflow_pause_dialog.component'
 
 @Component({
   selector: 'workflow-details-component',
@@ -30,6 +31,8 @@ export class WorkflowDetailsComponent {
   messages: Message[] = []
   right_abort: boolean = false
   step_focus: Map<number, boolean> = new Map()
+
+  pause_post_action: any;
 
   constructor(
     private authService: AuthService,
@@ -94,6 +97,8 @@ export class WorkflowDetailsComponent {
       this.can_pause = this.can_abort && !has_at_least_one_paused_step && !is_last_step_processing;
       this.can_resume = has_at_least_one_paused_step;
 
+      this.pause_post_action = this.getPausePostAction();
+
       this.authService.hasAnyRights("workflow::" + this.workflow.identifier, "abort").subscribe(
         response => {
           this.right_abort = response.authorized
@@ -121,23 +126,38 @@ export class WorkflowDetailsComponent {
     return this.workflow.steps.length
   }
 
+  getPausePostAction(): any {
+    // Retrieve pause post-action
+    if (this.workflow.status.state == "paused") {
+      let paused_status =
+        this.workflow.jobs
+        .filter((job) => job.status.findIndex((status) => status.state == "paused") > -1)
+        .flatMap((job) => job.status)
+        .find((status) => status.state == "paused" && status.description != undefined)
+
+      if (paused_status) {
+        return paused_status.description;
+      }
+    }
+    return undefined;
+  }
+
   toggleParameters() {
     this.parameters_opened = !this.parameters_opened;
   }
 
   pause(workflow_id): void {
-    let dialogRef = this.dialog.open(WorkflowAbortDialogComponent, {data: {
+    let dialogRef = this.dialog.open(WorkflowPauseDialogComponent, {data: {
       'workflow': this.workflow,
       'message': 'pause'
     }})
 
-    dialogRef.afterClosed().subscribe(workflow => {
-      if (workflow !== undefined) {
-        console.log('Pause workflow!')
-        this.workflowService.sendWorkflowEvent(workflow.id, {event: 'pause'})
-        .subscribe(response => {
-          console.log(response)
-        })
+    dialogRef.afterClosed().subscribe(user_choice => {
+      if (user_choice !== undefined) {
+        this.workflowService.sendWorkflowEvent(user_choice.workflow.id, user_choice.event)
+          .subscribe(response => {
+            console.log(response)
+          })
       }
     })
   }

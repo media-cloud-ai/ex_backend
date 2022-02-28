@@ -1,0 +1,45 @@
+<h1 mat-dialog-title>Pausing workflow #{{ workflow.id }}</h1>
+
+<div mat-dialog-content
+  *ngIf=workflow
+  class="confirm">
+  <div *ngIf="type == 'pause'">Do you really want to pause workflow #{{ workflow.id }}?</div>
+  <div>
+    <span class="text">It will</span>
+
+    <mat-form-field class="action-select">
+      <mat-select (selectionChange)="onActionSelection($event)">
+        <mat-option *ngFor="let action of available_actions" [value]="action">
+          {{ action }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <span class="text">on</span>
+
+    <mat-form-field class="trigger-date-picker">
+      <input matInput [ngxMatDatetimePicker]="trigger_date_picker" [min]="now" name=trigger_date [(ngModel)]="date">
+      <mat-datepicker-toggle matSuffix [for]="trigger_date_picker"></mat-datepicker-toggle>
+      <ngx-mat-datetime-picker #trigger_date_picker [showSeconds]=true></ngx-mat-datetime-picker>
+    </mat-form-field>
+
+    <span>.</span>
+  </div>
+</div>
+
+<div mat-dialog-actions
+  align=end>
+  <button mat-button (click)="onNoClick()">
+    <mat-icon>clear</mat-icon>
+    Cancel
+  </button>
+  <button
+    mat-raised-button
+    (click)="onClose()"
+    color="primary"
+    [disabled]="!action || !date"
+    cdkFocusInitial>
+    <mat-icon>pause</mat-icon>
+    Yes, pause
+  </button>
+</div>

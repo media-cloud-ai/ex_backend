@@ -8,6 +8,7 @@ import {UserService} from '../services/user.service'
 import {WorkflowService} from '../services/workflow.service'
 import {Workflow, Step} from '../models/workflow'
 import {WorkflowAbortDialogComponent} from './dialogs/workflow_abort_dialog.component'
+import {WorkflowPauseDialogComponent} from './dialogs/workflow_pause_dialog.component'
 
 @Component({
   selector: 'workflow-component',
@@ -85,18 +86,16 @@ export class WorkflowComponent {
   }
 
   pause(workflow_id): void {
-    let dialogRef = this.dialog.open(WorkflowAbortDialogComponent, {data: {
-      'workflow': this.workflow,
-      'message': 'pause'
+    let dialogRef = this.dialog.open(WorkflowPauseDialogComponent, {data: {
+      'workflow': this.workflow
     }})
 
-    dialogRef.afterClosed().subscribe(workflow => {
-      if (workflow !== undefined) {
-        console.log('Pause workflow!')
-        this.workflowService.sendWorkflowEvent(workflow.id, {event: 'pause'})
-        .subscribe(response => {
-          console.log(response)
-        })
+    dialogRef.afterClosed().subscribe(user_choice => {
+      if (user_choice !== undefined) {
+        this.workflowService.sendWorkflowEvent(user_choice.workflow.id, user_choice.event)
+          .subscribe(response => {
+            console.log(response)
+          })
       }
     })
   }
