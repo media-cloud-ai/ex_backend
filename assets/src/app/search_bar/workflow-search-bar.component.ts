@@ -47,8 +47,7 @@ export class WorkflowSearchBarComponent {
 
   workflows = []
 
-  status = [
-  ]
+  status = []
 
   mode = [
     { id: 'file', label: 'Fichier' },
