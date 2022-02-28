@@ -4,6 +4,9 @@
 
   <h1>
     Workflow {{workflow.identifier}} #{{ workflow.id }}
+    <mat-chip color="primary" class="status" selected>
+      {{ workflow.status.state }}
+    </mat-chip>
   </h1>
 
   <div class="info">
