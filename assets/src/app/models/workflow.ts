@@ -1,3 +1,5 @@
+import { Job } from './job'
+
 
 export class JobsStatus {
   completed: number
@@ -6,6 +8,11 @@ export class JobsStatus {
   stopped: number
   skipped: number
   total: number
+}
+
+export class Status {
+  id: number
+  state: string
 }
 
 export class Parameter {
@@ -54,11 +61,13 @@ export class Workflow {
   version_minor?: string
   version_micro?: string
   is_live?: boolean
+  jobs?: Array<Job>
   tags?: string[]
   reference?: string
   created_at?: string
   artifacts?: Artifact[]
   rights?: Right[]
+  status?: Status
   steps?: Step[]
   workflow_id?: number
   user_uuid?: string
@@ -80,6 +89,8 @@ export class Workflow {
 export class WorkflowEvent {
   event: string
   job_id?: string
+  post_action?: string
+  trigger_at?: number
 }
 
 export class Version {

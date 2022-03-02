@@ -17,6 +17,7 @@ export class WorkflowService {
   private workflowsLauncher = '/api/step_flow/launch_workflow'
   private workflowDefinitionsUrl = '/api/step_flow/definitions'
   private statisticsUrl = '/api/step_flow/workflows_statistics'
+  private statusUrl = '/api/step_flow/workflows_status'
 
   constructor(private http: HttpClient) { }
 
@@ -153,6 +154,14 @@ export class WorkflowService {
       .pipe(
         tap(workflowPage => this.log('statistics Workflow')),
         catchError(this.handleError('getWorkflowStatistics', undefined))
+      )
+  }
+
+  getWorkflowStatus(): Observable<Array<String>> {
+    return this.http.get<Array<String>>(this.statusUrl)
+      .pipe(
+        tap(workflowPage => this.log('fetched Workflow Status')),
+        catchError(this.handleError('getWorkflowStatus', undefined))
       )
   }
 

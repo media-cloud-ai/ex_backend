@@ -63,12 +63,7 @@ export class WorkflowsComponent {
        "live"
       ],
       search: undefined,
-      status: [
-        "completed",
-        "error",
-        "pending",
-        "processing"
-      ],
+      status: [],
       detailed: false,
       time_interval: 1
     };

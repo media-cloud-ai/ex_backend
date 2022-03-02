@@ -4,6 +4,9 @@
 
   <h1>
     Workflow {{workflow.identifier}} #{{ workflow.id }}
+    <mat-chip color="primary" class="status" selected>
+      {{ workflow.status.state }}
+    </mat-chip>
   </h1>
 
   <div class="info">
@@ -72,6 +75,11 @@
       <div class="item">
         <label>Launched by: </label>
         <span>{{workflow.user_uuid}}</span>
+      </div>
+
+      <div class="item" *ngIf="pause_post_action">
+        <label>Will {{ pause_post_action.action }} at: </label>
+        <span>{{ pause_post_action.trigger_at+'Z' | date: 'yyyy-MM-dd HH:mm:ss' }}</span>
       </div>
     </span>
     <span class="steps-count">
