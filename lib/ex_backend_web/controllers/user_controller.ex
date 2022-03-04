@@ -23,12 +23,17 @@ defmodule ExBackendWeb.UserController do
     with {:ok, user} <- Accounts.create_user(user_params) do
       Log.info(%Log{user: user.id, message: "user created"})
 
-      Accounts.Message.confirm_request(email, token)
+      case Accounts.Message.confirm_request(email, token) do
+        {:ok, _} ->
+          conn
+          |> put_status(:created)
+          |> put_resp_header("location", user_path(conn, :show, user))
+          |> render("show.json", %{user: user, credentials: false})
 
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", user_path(conn, :show, user))
-      |> render("show.json", %{user: user, credentials: false})
+        {:error, _} ->
+          conn
+          |> send_resp(500, "Internal Server Error")
+      end
     end
   end
 
