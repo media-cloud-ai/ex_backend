@@ -1,6 +1,8 @@
 defmodule ExBackendWeb.UserController do
   use ExBackendWeb, :controller
 
+  require Logger
+
   import ExBackendWeb.Authorize
   alias ExBackend.Accounts
   alias ExBackendWeb.Auth.Token
@@ -30,7 +32,9 @@ defmodule ExBackendWeb.UserController do
           |> put_resp_header("location", user_path(conn, :show, user))
           |> render("show.json", %{user: user, credentials: false})
 
-        {:error, _} ->
+        {:error, error} ->
+          Logger.error("Email delivery failure: #{inspect(error)}")
+
           conn
           |> send_resp(500, "Internal Server Error")
       end
