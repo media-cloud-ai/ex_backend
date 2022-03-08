@@ -63,7 +63,7 @@ config :bcrypt_elixir, log_rounds: 4
 # config :pbkdf2_elixir, rounds: 1
 
 # Mailer test configuration
-config :ex_backend, ExBackend.Mailer, adapter: Bamboo.TestAdapter
+config :ex_backend, ExBackend.SMTPMailer, adapter: Bamboo.TestAdapter
 
 config :ex_video_factory,
   mode: :custom,

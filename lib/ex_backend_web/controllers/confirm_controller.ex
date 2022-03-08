@@ -1,6 +1,8 @@
 defmodule ExBackendWeb.ConfirmController do
   use ExBackendWeb, :controller
 
+  require Logger
+
   import ExBackendWeb.Authorize
   alias ExBackend.Accounts
   alias ExBackendWeb.Auth.Token
@@ -14,9 +16,7 @@ defmodule ExBackendWeb.ConfirmController do
         case Accounts.update_password(user, params) do
           {:ok, user} ->
             Accounts.confirm_user(user)
-            message = "Your account has been confirmed"
-            Accounts.Message.confirm_success(user.email)
-            render(conn, "info.json", %{info: message})
+            send_confirmation_email(conn, user)
 
           {:error, changeset} ->
             conn
@@ -27,6 +27,21 @@ defmodule ExBackendWeb.ConfirmController do
 
       {:error, _message} ->
         error(conn, :unauthorized, 401)
+    end
+  end
+
+  defp send_confirmation_email(conn, user) do
+    message = "Your account has been confirmed"
+
+    case Accounts.Message.confirm_success(user.email) do
+      {:ok, _sent_mail} ->
+        render(conn, "info.json", %{info: message})
+
+      {:error, error} ->
+        Logger.error("Email delivery failure: #{inspect(error)}")
+
+        conn
+        |> send_resp(500, "Internal Server Error")
     end
   end
 end
