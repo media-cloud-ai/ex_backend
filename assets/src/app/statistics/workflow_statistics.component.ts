@@ -118,14 +118,14 @@ export class WorkflowStatisticsComponent {
     this.loading = true;
     this.workflowDurations = new Array<WorkflowDurationStatistics>();
 
-    let selected_definitions = this.workflows.sort(Workflow.compare);
+    let selected_identifiers = new Set(this.workflows.sort(Workflow.compare).map((definition) => definition.identifier));
 
     let params = [];
     params.push({ "key": "page", "value": this.workflowStatisticsPage });
     params.push({ "key": "size", "value": this.workflowStatisticsPageSize });
 
-    for (let definition of selected_definitions) {
-      params.push({ "key": "workflow_id[]", "value": definition.identifier });
+    for (let identifier of selected_identifiers) {
+      params.push({ "key": "workflow_id[]", "value": identifier });
     }
 
     for (let status of this.workflowSelectedStatuses) {
