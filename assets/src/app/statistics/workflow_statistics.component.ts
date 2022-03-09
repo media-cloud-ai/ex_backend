@@ -16,7 +16,7 @@ import {WorkflowService} from '../services/workflow.service'
 })
 export class WorkflowStatisticsComponent {
 
-  readonly pageSizeOptions = [2, 10, 20, 50] as const;
+  readonly pageSizeOptions = [10, 20, 50] as const;
 
   @Input() workflows: Workflow[]
 
