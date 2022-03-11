@@ -85,8 +85,8 @@ config :ex_backend, ExBackend.SMTPMailer,
   # hostname e.g. "www.mydomain.com"
   hostname: {:system, "SMTP_HOSTNAME"},
   port: {:system, "SMTP_PORT"},
-  username: {:system, "SMTP_USERNAME"},
-  password: {:system, "SMTP_PASSWORD"},
+  username: {:system, "SMTP_USERNAME", ""},
+  password: {:system, "SMTP_PASSWORD", ""},
   # auth can be 'if_available' or 'always'
   auth: {:system, "SMTP_AUTH", "if_available"},
   # tls can be 'if_available', 'always' or 'never'
