@@ -1,4 +1,4 @@
-FROM elixir:1.13.2-alpine AS ex_builder
+FROM elixir:1.13.3-alpine AS ex_builder
 
 RUN apk update && \
     apk add --no-cache \
@@ -37,7 +37,7 @@ RUN mix deps.get && \
     cd .. && \
     mix phx.digest
 
-FROM alpine:3.11
+FROM alpine:3.15
 
 WORKDIR /app
 
@@ -46,7 +46,7 @@ ARG customAppPort=8080
 ENV PORT $customAppPort
 
 RUN apk update && \
-    apk add bash openssl curl
+    apk add bash openssl curl libstdc++
 
 COPY --from=ex_builder /app/_build/prod/rel/ex_backend .
 COPY --from=ex_builder /app/priv/static static/
