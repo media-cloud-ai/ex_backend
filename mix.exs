@@ -114,6 +114,7 @@ defmodule ExBackend.Mixfile do
       {:remote_dockers, "1.4.0"},
       {:sigaws, "~> 0.7.2"},
       {:step_flow, "1.6.1"},
+      {:sobelow, "~> 0.8", only: :dev},
       {:tesla, "~> 1.4.0"},
       {:timex, "~> 3.6"},
       {:uuid, "~> 1.1"}
@@ -146,6 +147,8 @@ defmodule ExBackend.Mixfile do
         "openapi.spec.json --spec ExBackendWeb.ApiSpec --start-app=false --pretty priv/static/backend_openapi.json"
       ],
       test: ["ecto.drop", "ecto.create --quiet", "ecto.migrate", "test"],
+      audit: ["deps.audit"],
+      "phx.audit": ["sobelow --exit medium"],
       version: &get_version/1
     ]
   end

@@ -6,12 +6,13 @@ defmodule ExBackendWeb.Router do
     plug(:fetch_session)
     plug(:fetch_flash)
     plug(:protect_from_forgery)
-    plug(:put_secure_browser_headers)
+    plug(:put_secure_browser_headers, %{"content-security-policy" => "default-src 'self'"})
   end
 
   pipeline :api do
     plug(:accepts, ["json"])
     plug(:fetch_session)
+    plug(:protect_from_forgery)
     plug(ExBackendWeb.Auth.TokenCookie)
     plug(OpenApiSpex.Plug.PutApiSpec, module: ExBackendWeb.ApiSpec)
   end
