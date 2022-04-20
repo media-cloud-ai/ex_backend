@@ -23,7 +23,11 @@ defmodule ExBackendWeb.SessionController do
     case Token.verify(params) do
       {:ok, user} ->
         token = Token.sign(%{"email" => user.email})
-        render(conn, "info.json", %{info: token, user: user})
+        cookie = "token=" <> token <> "; Path=/"
+
+        conn
+        |> put_resp_header("Set-Cookie", cookie)
+        |> render("info.json", %{info: token, user: user})
 
       {:error, _message} ->
         error(conn, :unauthorized, 401)

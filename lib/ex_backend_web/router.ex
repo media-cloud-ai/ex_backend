@@ -12,7 +12,7 @@ defmodule ExBackendWeb.Router do
   pipeline :api do
     plug(:accepts, ["json"])
     plug(:fetch_session)
-    plug(Phauxth.AuthenticateToken)
+    plug(ExBackendWeb.Auth.TokenCookie)
   end
 
   get("/app", ExBackendWeb.ApplicationController, :index)
