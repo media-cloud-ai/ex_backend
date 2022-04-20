@@ -7,18 +7,23 @@ variables:
   CONTAINER_IMAGE_NAME: media-cloud-ai/backend/ex_backend
 
 services:
-  - postgres:12.2-alpine
+  - postgres:14.4-alpine
   - rabbitmq:3.8.14-alpine
 
 stages:
     - test
     - publish
+    - scan
 
 include:
   - project: 'media-cloud-ai/ci/pipelines'
     file: 'elixir/elixir-publish-docker.yml'
   - project: 'media-cloud-ai/ci/pipelines'
     file: 'elixir/elixir-base.yml'
+  - template: Jobs/SAST.gitlab-ci.yml
+
+sast:
+  before_script: []
 
 mix_openapi:
   stage: test
