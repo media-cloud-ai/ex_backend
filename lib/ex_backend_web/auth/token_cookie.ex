@@ -7,7 +7,14 @@ defmodule ExBackendWeb.Auth.TokenCookie do
   end
 
   @impl true
-  def authenticate(_conn, _user_context, _opts) do
-    {:error, "No access token cookie"}
+  def authenticate(conn, user_context, opts) do
+    case get_req_header(conn, "authorization") do
+      [] ->
+        {:error, "No access token cookie"}
+      ["Bearer " <> token] ->
+        verify_token(token, user_context, opts)
+      [token] ->
+        verify_token(token, user_context, opts)
+    end
   end
 end
