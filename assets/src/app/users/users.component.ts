@@ -10,6 +10,7 @@ import {UserPage, RolePage} from '../models/page/user_page'
 import {User, Role, Right, RoleEvent, RoleEventAction} from '../models/user'
 import {RoleOrRightDeletionDialogComponent} from './dialogs/role_or_right_deletion_dialog.component'
 import {UserShowCredentialsDialogComponent} from './dialogs/user_show_credentials_dialog.component'
+import {UserShowValidationLinkDialogComponent} from './dialogs/user_show_validation_link_dialog.component'
 
 @Component({
   selector: 'users-component',
@@ -123,6 +124,19 @@ export class UsersComponent {
         this.password = ''
       }
       this.getUsers(0)
+    })
+  }
+
+  validationLink(user): void {
+    this.userService.generateValidationLink(user)
+    .subscribe(validation_link => {
+      let dialogRef = this.dialog.open(UserShowValidationLinkDialogComponent, {data: {
+        'user': user, 'validation_link': validation_link
+      }})
+
+      dialogRef.afterClosed().subscribe(response => {
+        this.getUsers(this.page)
+      })
     })
   }
 

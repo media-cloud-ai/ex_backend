@@ -97,6 +97,7 @@ import {NewSubtitleDialogComponent} from './registeries/dialog/new_subtitle_dial
 import {RdfDialogComponent} from './catalog/rdf/rdf_dialog.component'
 import {RoleOrRightDeletionDialogComponent} from './users/dialogs/role_or_right_deletion_dialog.component'
 import {UserShowCredentialsDialogComponent} from './users/dialogs/user_show_credentials_dialog.component'
+import {UserShowValidationLinkDialogComponent} from './users/dialogs/user_show_validation_link_dialog.component'
 import {WorkflowAbortDialogComponent} from './workflows/dialogs/workflow_abort_dialog.component'
 import {WorkflowPauseDialogComponent} from './workflows/dialogs/workflow_pause_dialog.component'
 import {WorkflowDialogComponent} from './catalog/workflow/workflow_dialog.component'
@@ -212,6 +213,7 @@ const EX_BACKEND_DATE_FORMATS = {
     UserComponent,
     UsersComponent,
     UserShowCredentialsDialogComponent,
+    UserShowValidationLinkDialogComponent,
     RdfDialogComponent,
     WatchersComponent,
     WorkflowAbortDialogComponent,
@@ -242,6 +244,7 @@ const EX_BACKEND_DATE_FORMATS = {
     SubtitleComponent,
     UserComponent,
     UserShowCredentialsDialogComponent,
+    UserShowValidationLinkDialogComponent,
     WatchersComponent,
     WorkflowComponent,
     WorkflowAbortDialogComponent,

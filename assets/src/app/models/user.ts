@@ -42,10 +42,14 @@ export class RoleEvent {
   }
 }
 
+export class ValidationLink{
+  validation_link: string
+}
 
 export class User {
   email: string
   inserted_at: string
+  confirmed_at: string
   password: string
   roles: string[]
   id: number
