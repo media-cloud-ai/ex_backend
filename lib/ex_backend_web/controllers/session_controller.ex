@@ -26,7 +26,7 @@ defmodule ExBackendWeb.SessionController do
         cookie = "token=" <> token <> "; Path=/"
 
         conn
-        |> put_resp_header("Set-Cookie", cookie)
+        |> put_resp_header("set-cookie", cookie)
         |> render("info.json", %{info: token, user: user})
 
       {:error, _message} ->
