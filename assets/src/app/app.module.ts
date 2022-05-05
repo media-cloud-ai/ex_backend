@@ -123,7 +123,6 @@ import {WorkflowService}         from './services/workflow.service'
 import {GenericModule}           from './generic/generic.module'
 import {PipesModule}             from './pipes/pipes.module'
 
-import {TokenInterceptor}        from './authentication/token.interceptor'
 import {ErrorInterceptor}        from './authentication/error.interceptor'
 
 import 'hammerjs/hammer' // for MatSlideToggleModule
@@ -269,11 +268,6 @@ const EX_BACKEND_DATE_FORMATS = {
     {
       provide: MAT_DATE_FORMATS,
       useValue: EX_BACKEND_DATE_FORMATS
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
-      multi: true
     },
     {
       provide: HTTP_INTERCEPTORS,

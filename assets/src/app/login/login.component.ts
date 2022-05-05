@@ -36,7 +36,7 @@ export class LoginComponent {
     this.authService.login(this.username, this.password)
     .subscribe(response => {
       this.message = ''
-      if (response && response.access_token) {
+      if (response && response.user) {
         let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : '/dashboard'
 
         let navigationExtras: NavigationExtras = {

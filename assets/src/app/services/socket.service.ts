@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core'
 import { Observable, Observer } from 'rxjs'
 import { Message } from '../models/message'
 import { AuthService } from '../authentication/auth.service'
-const { Socket } = require('phoenix')
+import { Socket } from 'phoenix'
 
 @Injectable()
 export class SocketService {
