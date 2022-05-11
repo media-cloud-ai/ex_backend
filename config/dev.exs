@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
@@ -75,9 +75,39 @@ config :step_flow, StepFlow.Repo,
 
 config :step_flow, StepFlow, workflow_definition: {:system, "STEP_FLOW_WORKFLOW_DIRECTORY"}
 
-config :ex_backend, ExBackend.Mailer,
+config :ex_backend, ExBackend.SendGridMailer,
   adapter: Bamboo.SendGridAdapter,
   api_key: {:system, "SENDGRID_API_KEY"}
+
+config :ex_backend, ExBackend.SMTPMailer,
+  adapter: Bamboo.SMTPAdapter,
+  server: {:system, "SMTP_SERVER"},
+  # hostname e.g. "www.mydomain.com"
+  hostname: {:system, "SMTP_HOSTNAME"},
+  port: {:system, "SMTP_PORT"},
+  username: {:system, "SMTP_USERNAME", ""},
+  password: {:system, "SMTP_PASSWORD", ""},
+  # auth can be 'if_available' or 'always'
+  auth: {:system, "SMTP_AUTH", "if_available"},
+  # tls can be 'if_available', 'always' or 'never'
+  tls: {:system, "SMTP_TLS", "if_available"},
+  # allowed_tls_versions: comma separated values (e.g. "tlsv1.1,tlsv1.2")
+  allowed_tls_versions: {:system, "SMTP_ALLOWED_TLS_VERSIONS", "tlsv1,tlsv1.1,tlsv1.2"},
+  # tls_log_level can be "critical", "error", "warning", "notice"
+  tls_log_level: String.to_atom(System.get_env("SMTP_TLS_LOG_LEVEL", "error")),
+  # tls_verify can be "verify_peer" or "verify_none"
+  tls_verify: String.to_atom(System.get_env("SMTP_TLS_VERIFY_PEER", "verify_peer")),
+  # tls_cacertfile is optional: path to the ca truststore
+  tls_cacertfile: {:system, "SMTP_TLS_CA_TRUSTSTORE"},
+  # tls_cacerts is optional: DER-encoded trusted certificates
+  tls_cacerts: {:system, "SMTP_TLS_CA_CERTS"},
+  # tls_depth is optional, tls certificate chain depth
+  tls_depth: {:system, "SMTP_TLS_DEPTH"},
+  # tls_verify_fun is disabled, since we found no way to set it from environment
+  # tls_verify_fun: {&:ssl_verify_hostname.verify_fun/3, check_hostname: "mydomain.com"},
+  ssl: {:system, "SMTP_SSL", false},
+  retries: {:system, "SMTP_RETRIES", 1},
+  no_mx_lookups: {:system, "SMTP_NO_MX_LOOKUPS", false}
 
 config :ex_backend,
   # app_identifier: "vidtext",
@@ -115,10 +145,11 @@ config :ex_backend,
   docker_container_amqp_password: "mediacloudai"
 
 config :step_flow, StepFlow.Amqp,
-  hostname: "rabbitmq",
-  port: "5672",
-  username: "guest",
-  password: "guest"
+  hostname: "localhost",
+  port: "5678",
+  username: "mediacloudai",
+  password: "mediacloudai",
+  virtual_host: "media_cloud_ai_dev"
 
 config :httpotion, :default_timeout, 60000
 

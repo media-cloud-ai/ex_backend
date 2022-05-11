@@ -10,6 +10,7 @@ export class Status {
   id: number
   state: string
   inserted_at: string
+  description: string
 }
 
 export class Job {

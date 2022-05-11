@@ -62,12 +62,8 @@ export class WorkflowsComponent {
        "file",
        "live"
       ],
-      status: [
-        "completed",
-        "error",
-        "pending",
-        "processing"
-      ],
+      search: undefined,
+      status: [],
       detailed: false,
       time_interval: 1
     };

@@ -1,4 +1,6 @@
 <h1 mat-dialog-title *ngIf="workflow && type == 'abort'">Aborting workflow #{{ workflow.id }}</h1>
+<h1 mat-dialog-title *ngIf="workflow && type == 'pause'">Pausing workflow #{{ workflow.id }}</h1>
+<h1 mat-dialog-title *ngIf="workflow && type == 'resume'">Resuming workflow #{{ workflow.id }}</h1>
 <h1 mat-dialog-title *ngIf="workflow && type == 'stop'">Stopping workflow #{{ workflow.id }}</h1>
 <h1
   mat-dialog-title
@@ -10,6 +12,8 @@
   class="confirm">
   <div *ngIf="type == 'stop'">Do you really want to stop this workflow #{{ workflow.id }}?</div>
   <div *ngIf="type == 'abort'">Do you really want to abort workflow #{{ workflow.id }}?</div>
+  <div *ngIf="type == 'pause'">Do you really want to pause workflow #{{ workflow.id }}?</div>
+  <div *ngIf="type == 'resume'">Do you really want to resume workflow #{{ workflow.id }}?</div>
   <div *ngIf="type == 'delete'">Do you really want to delete workflow #{{ workflow.id }}?</div>
   <div *ngIf="type == 'stop'" class="warning">
     <span>
@@ -46,6 +50,8 @@
     Yes,
     <span *ngIf="type == 'stop'">stop</span>
     <span *ngIf="type == 'abort'">abort</span>
+    <span *ngIf="type == 'pause'">pause</span>
+    <span *ngIf="type == 'resume'">resume</span>
     <span *ngIf="type == 'delete'">delete</span>
   </button>
 </div>

@@ -17,7 +17,7 @@ export class UserService {
 
   getUsers(page: number, per_page: number): Observable<UserPage> {
     let params = new HttpParams()
-    params = params.append('per_page', per_page.toString())
+    params = params.append('size', per_page.toString())
     if (page > 0) {
       params = params.append('page', String(page))
     }
@@ -88,7 +88,7 @@ export class UserService {
 
   getRoles(page: number, per_page: number): Observable<RolePage> {
     let params = new HttpParams()
-    params = params.append('per_page', per_page.toString())
+    params = params.append('size', per_page.toString())
     if (page > 0) {
       params = params.append('page', String(page))
     }

@@ -1,5 +1,8 @@
 defmodule ExBackendWeb.PasswordResetController do
   use ExBackendWeb, :controller
+
+  require Logger
+
   alias ExBackend.Accounts
   alias ExBackendWeb.Auth.Token
 
@@ -15,13 +18,21 @@ defmodule ExBackendWeb.PasswordResetController do
       user ->
         token = Token.sign(%{"email" => user.email})
 
-        Accounts.Message.reset_request(email, token)
-        message = "Check your inbox for instructions on how to reset your password"
+        case Accounts.Message.reset_request(email, token) do
+          {:ok, _sent_mail} ->
+            message = "Check your inbox for instructions on how to reset your password"
 
-        conn
-        |> put_status(:created)
-        |> put_view(ExBackendWeb.PasswordResetView)
-        |> render("info.json", %{info: message})
+            conn
+            |> put_status(:created)
+            |> put_view(ExBackendWeb.PasswordResetView)
+            |> render("info.json", %{info: message})
+
+          {:error, error} ->
+            Logger.error("Email delivery failure: #{inspect(error)}")
+
+            conn
+            |> send_resp(500, "Internal Server Error")
+        end
     end
   end
 
@@ -45,12 +56,20 @@ defmodule ExBackendWeb.PasswordResetController do
   end
 
   defp update_password({:ok, user}, conn, _params) do
-    Accounts.Message.reset_success(user.email)
-    message = "Your password has been reset"
+    case Accounts.Message.reset_success(user.email) do
+      {:ok, _sent_mail} ->
+        message = "Your password has been reset"
 
-    conn
-    |> put_view(ExBackendWeb.PasswordResetView)
-    |> render("info.json", %{info: message})
+        conn
+        |> put_view(ExBackendWeb.PasswordResetView)
+        |> render("info.json", %{info: message})
+
+      {:error, error} ->
+        Logger.error("Email delivery failure: #{inspect(error)}")
+
+        conn
+        |> send_resp(500, "Internal Server Error")
+    end
   end
 
   defp update_password({:error, %Ecto.Changeset{} = changeset}, conn, _params) do

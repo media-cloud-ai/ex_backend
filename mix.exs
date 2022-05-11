@@ -4,7 +4,7 @@ defmodule ExBackend.Mixfile do
   def project do
     [
       app: :ex_backend,
-      version: "1.4.0",
+      version: "1.5.0",
       elixir: "~> 1.9",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -52,6 +52,7 @@ defmodule ExBackend.Mixfile do
         :libvault,
         :phauxth,
         :phoenix_ecto,
+        :poison,
         :postgrex,
         :runtime_tools,
         :timex,
@@ -72,9 +73,10 @@ defmodule ExBackend.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:amqp, "~> 2.1.1"},
+      {:amqp, "~> 3.1.0"},
       {:bcrypt_elixir, "~> 2.0"},
-      {:bamboo, "~> 1.2"},
+      {:bamboo, "~> 2.2.0"},
+      {:bamboo_smtp, "~> 4.1.0"},
       {:blue_bird, "~> 0.4.1"},
       {:comeonin, "~> 5.1"},
       {:cors_plug, "~> 2.0"},
@@ -108,7 +110,7 @@ defmodule ExBackend.Mixfile do
       {:ranch, "~> 1.8.0"},
       {:remote_dockers, "1.4.0"},
       {:sigaws, "~> 0.7.2"},
-      {:step_flow, "~> 1.4.0"},
+      {:step_flow, "~> 1.5.0"},
       {:tesla, "~> 1.4.0"},
       {:timex, "~> 3.6"},
       {:uuid, "~> 1.1"}

@@ -1,8 +1,8 @@
-style: github
+style: gitlab
 template: CHANGELOG.tpl.md
 info:
   title: CHANGELOG
-  repository_url: https://github.com/media-cloud-ai/ex_backend
+  repository_url: https://gitlab.com/media-cloud-ai/backend/ex_backend
 options:
   commits:
     # filters:
@@ -18,10 +18,10 @@ options:
     #   perf: Performance Improvements
     #   refactor: Code Refactoring
   header:
-    pattern: "^((\\w+)\\s.*)$"
+    pattern: "^(\\w*)\\:\\s(.*)$"
     pattern_maps:
-      - Subject
       - Type
+      - Subject
   notes:
     keywords:
       - BREAKING CHANGE

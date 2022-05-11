@@ -67,6 +67,7 @@ import {DashboardComponent}      from './dashboard/dashboard.component'
 import {DeclaredWorkersComponent} from './declared_workers/declared_workers.component'
 import {DurationComponent}       from './workflows/details/duration.component'
 import {IngestComponent}         from './ingest/ingest.component'
+import {JobStatisticsComponent}  from './statistics/job_statistics.component'
 import {JobsComponent}           from './jobs/jobs.component'
 import {LoginComponent}          from './login/login.component'
 import {ParametersComponent}     from './workflows/details/parameters.component'
@@ -85,6 +86,7 @@ import {WatchersComponent}       from './watchers/watchers.component'
 import {WorkflowComponent}       from './workflows/workflow.component'
 import {WorkflowDetailsComponent} from './workflows/details/workflow_details.component'
 import {WorkflowRendererComponent} from './workflows/renderer/workflow_renderer.component'
+import {WorkflowStatisticsComponent}       from './statistics/workflow_statistics.component'
 import {WorkflowStepDetailsComponent} from './workflows/details/workflow_step_details.component'
 import {WorkflowsComponent}      from './workflows/workflows.component'
 
@@ -96,6 +98,7 @@ import {RdfDialogComponent} from './catalog/rdf/rdf_dialog.component'
 import {RoleOrRightDeletionDialogComponent} from './users/dialogs/role_or_right_deletion_dialog.component'
 import {UserShowCredentialsDialogComponent} from './users/dialogs/user_show_credentials_dialog.component'
 import {WorkflowAbortDialogComponent} from './workflows/dialogs/workflow_abort_dialog.component'
+import {WorkflowPauseDialogComponent} from './workflows/dialogs/workflow_pause_dialog.component'
 import {WorkflowDialogComponent} from './catalog/workflow/workflow_dialog.component'
 
 import {AuthService}             from './authentication/auth.service'
@@ -190,8 +193,9 @@ const EX_BACKEND_DATE_FORMATS = {
     DeleteSubtitleDialog,
     DurationComponent,
     IngestComponent,
-    JobsComponent,
     JobDetailsDialogComponent,
+    JobStatisticsComponent,
+    JobsComponent,
     LoginComponent,
     NewSubtitleDialogComponent,
     ParametersComponent,
@@ -215,7 +219,9 @@ const EX_BACKEND_DATE_FORMATS = {
     WorkflowDialogComponent,
     WorkflowComponent,
     WorkflowDetailsComponent,
+    WorkflowPauseDialogComponent,
     WorkflowRendererComponent,
+    WorkflowStatisticsComponent,
     WorkflowStepDetailsComponent,
     WorkflowsComponent,
   ],
@@ -223,6 +229,7 @@ const EX_BACKEND_DATE_FORMATS = {
     DeleteSubtitleDialog,
     DurationComponent,
     JobDetailsDialogComponent,
+    JobStatisticsComponent,
     NewSubtitleDialogComponent,
     ParametersComponent,
     RdfDialogComponent,
@@ -240,7 +247,9 @@ const EX_BACKEND_DATE_FORMATS = {
     WorkflowComponent,
     WorkflowAbortDialogComponent,
     WorkflowDialogComponent,
+    WorkflowPauseDialogComponent,
     WorkflowRendererComponent,
+    WorkflowStatisticsComponent,
     WorkflowStepDetailsComponent
   ],
   providers: [

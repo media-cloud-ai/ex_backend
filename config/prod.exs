@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 # For production, we often load configuration from external
 # sources, such as your system environment. For this reason,
@@ -87,9 +87,28 @@ config :step_flow, StepFlow.Repo,
   port: {:system, "DATABASE_PORT"},
   runtime_pool_size: {:system, "DATABASE_POOL_SIZE"}
 
-config :ex_backend, ExBackend.Mailer,
+config :ex_backend, ExBackend.SendGridMailer,
   adapter: Bamboo.SendGridAdapter,
   api_key: {:system, "SENDGRID_API_KEY"}
+
+config :ex_backend, ExBackend.SMTPMailer,
+  adapter: Bamboo.SMTPAdapter,
+  server: {:system, "SMTP_SERVER"},
+  hostname: {:system, "SMTP_HOSTNAME"},
+  port: {:system, "SMTP_PORT"},
+  username: {:system, "SMTP_USERNAME", ""},
+  password: {:system, "SMTP_PASSWORD", ""},
+  auth: {:system, "SMTP_AUTH", "if_available"},
+  tls: {:system, "SMTP_TLS", "if_available"},
+  allowed_tls_versions: {:system, "SMTP_ALLOWED_TLS_VERSIONS", "tlsv1,tlsv1.1,tlsv1.2"},
+  tls_log_level: String.to_atom(System.get_env("SMTP_TLS_LOG_LEVEL", "error")),
+  tls_verify: String.to_atom(System.get_env("SMTP_TLS_VERIFY_PEER", "verify_peer")),
+  tls_cacertfile: {:system, "SMTP_TLS_CA_TRUSTSTORE"},
+  tls_cacerts: {:system, "SMTP_TLS_CA_CERTS"},
+  tls_depth: {:system, "SMTP_TLS_DEPTH"},
+  ssl: {:system, "SMTP_SSL", false},
+  retries: {:system, "SMTP_RETRIES", 1},
+  no_mx_lookups: {:system, "SMTP_NO_MX_LOOKUPS", false}
 
 config :ex_backend,
   app_name: "Subtil",

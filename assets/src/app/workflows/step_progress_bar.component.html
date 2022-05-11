@@ -114,6 +114,19 @@
     </span>
   </span>
   <span
+    class="paused"
+    title="{{step.name | jobType}}: paused"
+    [ngStyle]="{'flex': step.jobs.paused}">
+    <span
+      *ngIf="step.jobs.paused && detailed && !step.label">
+      {{step.name | jobType}} ({{step.jobs.paused}}/{{step.jobs.total}})
+    </span>
+    <span
+      *ngIf="step.jobs.paused && detailed && step.label">
+      {{step.label}} ({{step.jobs.paused}}/{{step.jobs.total}})
+    </span>
+  </span>
+  <span
     class="queued"
     title="{{step.name | jobType}}: queued"
     [ngStyle]="{'flex': step.jobs.queued}">

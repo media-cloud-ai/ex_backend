@@ -38,6 +38,8 @@ export class JobsComponent {
   right_retry: boolean = false
   is_live: boolean = false
 
+  retryable_jobs = ['error', 'stopped'] as const;
+
   constructor(
     private authService: AuthService,
     private jobService: JobService,

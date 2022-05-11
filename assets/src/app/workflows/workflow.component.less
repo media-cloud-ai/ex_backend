@@ -53,15 +53,27 @@
 
   .details {
     align-content: flex-end;
-    padding: 0px 4px;
 
     a {
-      width: 70px;
-      display: flex;
+      display: inline-block;
+      height: 24px;
       align-items: center;
       justify-content: space-between;
       color: inherit;
       text-decoration: inherit;
+    }
+  }
+
+  .abort,
+  .stop,
+  .delete,
+  .pause,
+  .resume,
+  .details {
+    padding-bottom: 2px;
+    button {
+      min-width: 60px;
+      width: 60px;
     }
   }
 }
@@ -104,11 +116,6 @@
       }
     }
   }
-}
-
-.delete button {
-  min-width: 60px;
-  width: 60px;
 }
 
 i.open,
