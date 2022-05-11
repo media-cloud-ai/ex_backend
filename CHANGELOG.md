@@ -2,6 +2,35 @@
 ## [Unreleased]
 
 
+<a name="1.5.0"></a>
+## [1.5.0] - 2022-04-19
+### Feat
+- bump to 1.5.0
+
+
+<a name="1.5.0-rc1"></a>
+## [1.5.0-rc1] - 2022-04-19
+### Feat
+- bump to 1.5.0-rc1
+
+
+<a name="1.4.2-rc2"></a>
+## [1.4.2-rc2] - 2022-04-06
+### Feat
+- bump to 1.4.2-rc2
+- bump to 1.4.2-rc1
+
+### Fix
+- elixir templating bug
+
+
+<a name="1.4.2-rc1"></a>
+## [1.4.2-rc1] - 2022-02-22
+### Feat
+- bump to 1.4.2-rc1
+- add changelog
+
+
 <a name="1.4.1-rc1"></a>
 ## [1.4.1-rc1] - 2022-01-26
 ### Feat
@@ -292,7 +321,11 @@
 - generate only one time the datetime of uploaded content
 
 
-[Unreleased]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.4.1-rc1...HEAD
+[Unreleased]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.5.0...HEAD
+[1.5.0]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.5.0-rc1...1.5.0
+[1.5.0-rc1]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.4.2-rc2...1.5.0-rc1
+[1.4.2-rc2]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.4.2-rc1...1.4.2-rc2
+[1.4.2-rc1]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.4.1-rc1...1.4.2-rc1
 [1.4.1-rc1]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.4.0...1.4.1-rc1
 [1.4.0]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.4.0-rc3...1.4.0
 [1.4.0-rc3]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.4.0-rc2...1.4.0-rc3
