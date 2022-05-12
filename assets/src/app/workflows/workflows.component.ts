@@ -6,6 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { Message } from '../models/message'
 import { SocketService } from '../services/socket.service'
 import { WorkflowService } from '../services/workflow.service'
+import { StatisticsService } from '../services/statistics.service'
+import { WorkflowDurations } from '../models/statistics/duration'
 import { WorkflowPage } from '../models/page/workflow_page'
 import { WorkflowQueryParams } from '../models/page/workflow_page'
 
@@ -42,6 +44,7 @@ export class WorkflowsComponent {
 
   pageEvent: PageEvent
   workflows: WorkflowPage
+  durations: WorkflowDurations
   connection: any
   connections: any = []
   messages: Message[] = []
@@ -49,6 +52,7 @@ export class WorkflowsComponent {
   constructor(
     private socketService: SocketService,
     private workflowService: WorkflowService,
+    private statisticsService: StatisticsService,
     private route: ActivatedRoute,
   ) {
     let today = new Date();
@@ -125,6 +129,11 @@ export class WorkflowsComponent {
             this.updateWorkflow(message.body.workflow_id)
           })
       }
+
+      let workflow_ids = this.workflows.data.map((workflow) => workflow.id);
+      this.statisticsService.getWorkflowsDurations(workflow_ids).subscribe((response) => {
+        this.durations = response;
+      })
     })
   }
 
@@ -141,11 +150,25 @@ export class WorkflowsComponent {
       .subscribe(workflowData => {
         for (let i = 0; i < this.workflows.data.length; i++) {
           if (this.workflows.data[i].id === workflowData.data.id) {
-            this.workflows.data[i] = workflowData.data
+            this.statisticsService.getWorkflowDurations(workflow_id)
+              .subscribe(response => {
+                for (let j = 0; j < this.durations.data.length; j++) {
+                  if (this.durations.data[j].workflow_id === response.data[0].workflow_id) {
+                    this.durations.data[j] = response.data[0]
+                    this.workflows.data[i] = workflowData.data
+                    return
+                  }
+                }
+              });
             return
           }
         }
       })
+
+  }
+
+  private getWorkflowDuration(workflow_id) {
+    return this.durations.data.find((duration) => duration.workflow_id == workflow_id);
   }
 
   updateWorkflows(parameters: WorkflowQueryParams) {
