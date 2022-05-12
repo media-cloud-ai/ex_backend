@@ -7,6 +7,7 @@ import {AuthService} from '../authentication/auth.service'
 import {UserService} from '../services/user.service'
 import {WorkflowService} from '../services/workflow.service'
 import {Workflow, Step} from '../models/workflow'
+import {WorkflowDuration} from '../models/statistics/duration'
 import {WorkflowAbortDialogComponent} from './dialogs/workflow_abort_dialog.component'
 import {WorkflowPauseDialogComponent} from './dialogs/workflow_pause_dialog.component'
 
@@ -18,6 +19,7 @@ import {WorkflowPauseDialogComponent} from './dialogs/workflow_pause_dialog.comp
 
 export class WorkflowComponent {
   @Input() workflow: Workflow
+  @Input() duration: WorkflowDuration
   @Input() detailed = false
   can_abort: boolean
   can_stop: boolean = true

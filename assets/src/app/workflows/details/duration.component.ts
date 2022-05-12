@@ -3,7 +3,7 @@ import {Component, Input} from '@angular/core'
 import {Message} from '../../models/message'
 import {SocketService} from '../../services/socket.service'
 import {StatisticsService} from '../../services/statistics.service'
-import {WorkflowDurations, WorkflowDuration} from '../../models/statistics/duration'
+import {WorkflowDuration} from '../../models/statistics/duration'
 import {Workflow} from '../../models/workflow'
 
 import * as moment from 'moment'
@@ -15,11 +15,11 @@ import * as moment from 'moment'
 })
 
 export class DurationComponent {
-  duration: WorkflowDuration = undefined
   connection: any
 
   @Input() workflow: Workflow
   @Input() display: string
+  @Input() duration: WorkflowDuration = undefined
 
   constructor(
     private socketService: SocketService,
@@ -27,7 +27,9 @@ export class DurationComponent {
   ) {}
 
   ngOnInit() {
-    this.getDurations(this.workflow.id);
+    if(this.duration == undefined) {
+      this.getDurations(this.workflow.id);
+    }
 
     if (this.isFullMode()) {
       this.socketService.initSocket();
