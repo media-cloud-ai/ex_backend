@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs'
 import { catchError, map, tap } from 'rxjs/operators'
 
 import {UserPage, RolePage, RightDefinitionsPage} from '../models/page/user_page'
-import {User, Confirm, Role} from '../models/user'
+import {User, Confirm, Role, ValidationLink} from '../models/user'
 import {AuthService} from '../authentication/auth.service'
 
 @Injectable()
@@ -41,6 +41,16 @@ export class UserService {
         catchError(this.handleError('inviteUser', undefined))
       )
   }
+
+  generateValidationLink(user: User): Observable<ValidationLink> {
+    let params = new HttpParams()
+    params = params.append('id', user.id.toString())
+    return this.http.post<User>(this.usersUrl + '/generate_validation_link', params)
+      .pipe(
+        tap(userPage => this.log('Generate validation link')),
+        catchError(this.handleError('generateValidationLink', undefined))
+      )
+    }
 
   generateCredentials(user: User): Observable<User> {
     let params = new HttpParams()

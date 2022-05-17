@@ -17,6 +17,7 @@ defmodule ExBackendWeb.ConfirmController do
           {:ok, user} ->
             Accounts.confirm_user(user)
             send_confirmation_email(conn, user)
+            render(conn, "info.json", %{info: "Your account has been confirmed"})
 
           {:error, changeset} ->
             conn
