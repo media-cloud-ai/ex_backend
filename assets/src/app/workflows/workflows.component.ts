@@ -120,6 +120,8 @@ export class WorkflowsComponent {
         return
       }
 
+      workflowPage.data = workflowPage.data.filter(workflow => workflow.deleted === false)
+      workflowPage.total = workflowPage.data.length
       this.workflows = workflowPage
       this.length = workflowPage.total
       this.loading = false
