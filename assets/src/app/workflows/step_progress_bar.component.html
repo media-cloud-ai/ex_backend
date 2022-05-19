@@ -116,14 +116,15 @@
   <span
     class="paused"
     title="{{step.name | jobType}}: paused"
-    [ngStyle]="{'flex': step.jobs.paused}">
-    <span
-      *ngIf="step.jobs.paused && detailed && !step.label">
-      {{step.name | jobType}} ({{step.jobs.paused}}/{{step.jobs.total}})
+    *ngIf="workflow.status.state == 'paused' && !step.jobs.total"
+    [ngStyle]="{'flex': 1}">
+   <span
+      *ngIf="detailed && !step.label">
+      {{step.name | jobType}}
     </span>
     <span
-      *ngIf="step.jobs.paused && detailed && step.label">
-      {{step.label}} ({{step.jobs.paused}}/{{step.jobs.total}})
+      *ngIf="detailed && step.label">
+      {{step.label}}
     </span>
   </span>
   <span
@@ -142,6 +143,7 @@
   <span
     class="future"
     *ngIf="
+      workflow.status.state != 'paused' &&
       !is_live &&
       !step.jobs.queued &&
       !step.jobs.errors &&

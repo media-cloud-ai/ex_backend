@@ -84,7 +84,8 @@ export class WorkflowDetailsComponent {
 
       let has_at_least_one_queued_job = this.workflow.steps.some((s) => s['jobs']['queued'] == 1)
       let has_at_least_one_processing_step = this.workflow.steps.some((s) => s['status'] === "processing");
-      let has_at_least_one_paused_step = this.workflow.steps.some((s) => s['status'] === "paused");
+
+      let is_paused = ["pausing", "paused"].includes(this.workflow.status.state);
 
       this.can_abort = !has_at_least_one_queued_job && has_at_least_one_processing_step
       if (this.can_abort && this.workflow.steps.some((s) => s.name === 'clean_workspace' && s.status !== 'queued')) {
@@ -94,8 +95,8 @@ export class WorkflowDetailsComponent {
       let last_step = this.workflow.steps[this.workflow.steps.length - 1];
       let is_last_step_processing = last_step['status'] === "processing";
 
-      this.can_pause = this.can_abort && !has_at_least_one_paused_step && !is_last_step_processing;
-      this.can_resume = has_at_least_one_paused_step;
+      this.can_pause = this.can_abort && !is_paused && !is_last_step_processing;
+      this.can_resume = is_paused;
 
       this.pause_post_action = this.getPausePostAction();
 
@@ -129,15 +130,7 @@ export class WorkflowDetailsComponent {
   getPausePostAction(): any {
     // Retrieve pause post-action
     if (this.workflow.status.state == "paused") {
-      let paused_status =
-        this.workflow.jobs
-        .filter((job) => job.status.findIndex((status) => status.state == "paused") > -1)
-        .flatMap((job) => job.status)
-        .find((status) => status.state == "paused" && status.description != undefined)
-
-      if (paused_status) {
-        return paused_status.description;
-      }
+      return this.workflow.status.description;
     }
     return undefined;
   }
