@@ -13,6 +13,7 @@ export class JobsStatus {
 export class Status {
   id: number
   state: string
+  description?: string
 }
 
 export class Parameter {
