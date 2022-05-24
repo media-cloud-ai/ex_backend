@@ -53,6 +53,12 @@ export class Right {
   groups: string[]
 }
 
+export class NotificationHook {
+  label?: string
+  endpoint?: string
+  credentials?: string
+}
+
 export class Workflow {
   id?: number
   identifier?: string
@@ -71,6 +77,7 @@ export class Workflow {
   steps?: Step[]
   workflow_id?: number
   user_uuid?: string
+  notification_hooks?: Array<NotificationHook>
 
   static compare(a: Workflow, b: Workflow) {
     let identifierComparison = a.identifier.localeCompare(b.identifier);

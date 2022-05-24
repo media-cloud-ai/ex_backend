@@ -10,6 +10,7 @@ import {Workflow, Step} from '../../models/workflow'
 import {WorkflowRenderer} from '../../models/workflow_renderer'
 import {WorkflowAbortDialogComponent} from '../dialogs/workflow_abort_dialog.component'
 import {WorkflowPauseDialogComponent} from '../dialogs/workflow_pause_dialog.component'
+import { isObject } from 'rxjs/internal/util/isObject'
 
 @Component({
   selector: 'workflow-details-component',
@@ -27,6 +28,7 @@ export class WorkflowDetailsComponent {
   can_pause: boolean = false
   can_resume: boolean = false
   parameters_opened: boolean = false
+  notification_hooks_opened: boolean = false
   connection: any
   messages: Message[] = []
   right_abort: boolean = false
@@ -144,6 +146,10 @@ export class WorkflowDetailsComponent {
 
   toggleParameters() {
     this.parameters_opened = !this.parameters_opened;
+  }
+
+  toggleNotificationHooks() {
+    this.notification_hooks_opened = !this.notification_hooks_opened;
   }
 
   pause(workflow_id): void {
