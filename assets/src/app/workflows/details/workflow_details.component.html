@@ -92,9 +92,11 @@
             <div class="notification_hook {{notification_hook.label}} {{notification_hook.status}}">
               <hr>
               <label>Endpoint</label>
-              <span>{{notification_hook.label}}</span>
-              <label>Status</label>
-              <span>{{notification_hook.status}}</span>
+              <span>{{notification_hook.label | titlecase}}</span>
+              <label [ngClass]="{
+                'error' : notification_hook.status == 'error',
+                'ok' : notification_hook.status == 'ok'}">Status</label>
+              <span>{{notification_hook.status | titlecase}}</span>
             </div>
           </span>
         </div>

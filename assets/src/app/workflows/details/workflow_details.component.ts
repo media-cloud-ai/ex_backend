@@ -10,7 +10,6 @@ import {Workflow, Step} from '../../models/workflow'
 import {WorkflowRenderer} from '../../models/workflow_renderer'
 import {WorkflowAbortDialogComponent} from '../dialogs/workflow_abort_dialog.component'
 import {WorkflowPauseDialogComponent} from '../dialogs/workflow_pause_dialog.component'
-import { isObject } from 'rxjs/internal/util/isObject'
 
 @Component({
   selector: 'workflow-details-component',
