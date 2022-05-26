@@ -27,6 +27,7 @@ export class WorkflowDetailsComponent {
   can_pause: boolean = false
   can_resume: boolean = false
   parameters_opened: boolean = false
+  notification_hooks_opened: boolean = false
   connection: any
   messages: Message[] = []
   right_abort: boolean = false
@@ -137,6 +138,10 @@ export class WorkflowDetailsComponent {
 
   toggleParameters() {
     this.parameters_opened = !this.parameters_opened;
+  }
+
+  toggleNotificationHooks() {
+    this.notification_hooks_opened = !this.notification_hooks_opened;
   }
 
   pause(workflow_id): void {

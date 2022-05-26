@@ -70,6 +70,37 @@
     </span>
     <span class="duration">
       <duration-component [workflow]=workflow display="full"></duration-component>
+      <div class="notification_hooks">
+        <span class="expander">
+          <i class="material-icons open"
+            [ngClass]="{disabled: disabled}"
+            *ngIf="!notification_hooks_opened"
+            (click)="toggleNotificationHooks()"
+            title="Show notification_hooks"
+            >expand_more</i>
+
+          <i class="material-icons close"
+            [ngClass]="{disabled: disabled}"
+            *ngIf="notification_hooks_opened"
+            (click)="toggleNotificationHooks()"
+            title="Hide notification_hooks"
+            >expand_less</i>
+        </span>
+        <label>Workflow notification hooks:</label>
+        <div *ngIf=notification_hooks_opened>
+          <span *ngFor="let notification_hook of workflow.notification_hooks">
+            <div class="notification_hook {{notification_hook.label}} {{notification_hook.status}}">
+              <hr>
+              <label>Endpoint</label>
+              <span>{{notification_hook.label | titlecase}}</span>
+              <label>Status</label>
+              <span [ngClass]="{
+                'error' : notification_hook.status == 'error',
+                'ok' : notification_hook.status == 'ok'}">{{notification_hook.status | titlecase}}</span>
+            </div>
+          </span>
+        </div>
+      </div>
     </span>
     <span class="user-launch">
       <div class="item">
