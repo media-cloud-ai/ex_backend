@@ -206,7 +206,7 @@ export class OrdersComponent {
   private playS3Media(directory, filename) {
     this.s3Service.getConfiguration().subscribe(response => {
       const manifest_path = response.vod_endpoint + "/" + response.bucket + "/" + directory + "/" + filename + "/manifest.mpd"
-      const full_url = "http://cathodique.magneto.build.ftven.net/?env=prod&src=%5B%22" + manifest_path + "%22%5D"
+      const full_url = "" + manifest_path + "%22%5D"
       window.open(full_url, "_blank");
     });
   }
@@ -238,7 +238,7 @@ export class OrdersComponent {
 
     this.s3Service.getConfiguration().subscribe(response => {
       const manifest_path = response.vod_endpoint + "/" + response.bucket + "/" + directory + "," + mp4_file_name + "," + ttml_file_name + ",.urlset/manifest.mpd"
-      const full_url = "http://cathodique.magneto.build.ftven.net/?gitrefname=poc/subtil/ttml_rendering&env=prod&src=%5B%22" + manifest_path + "%22%5D"
+      const full_url = "" + manifest_path + "%22%5D"
 
       window.open(full_url, "_blank");
     });

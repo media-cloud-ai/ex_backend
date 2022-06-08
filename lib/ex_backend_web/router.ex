@@ -35,19 +35,6 @@ defmodule ExBackendWeb.Router do
       forward("/", Plug)
     end
 
-    resources("/catalog", CatalogController, except: [:new, :edit])
-
-    scope "/docker", Docker do
-      post("/test", NodeController, :test)
-      resources("/nodes", NodeController, except: [:new, :edit])
-      resources("/images", ImagesController, except: [:new, :edit])
-
-      resources "/containers", ContainersController, except: [:new, :edit] do
-        post("/start", ContainersController, :start)
-        post("/stop", ContainersController, :stop)
-      end
-    end
-
     scope "/amqp", Amqp do
       get("/queues", AmqpController, :queues)
       get("/connections", AmqpController, :connections)

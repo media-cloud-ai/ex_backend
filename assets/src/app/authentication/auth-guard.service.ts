@@ -27,15 +27,6 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   checkLogin(url: string): boolean {
     if (this.authService.isLoggedIn) {
       // console.log("Check URL ", url)
-      if (url.startsWith('/catalog')) {
-        if (this.authService.hasTechnicianRight() ||
-          this.authService.hasFtvStudioRight()) {
-          return true
-        } else {
-          this.router.navigate(['/dashboard'])
-          return false
-        }
-      }
       if (url.startsWith('/watchers') ||
         url.startsWith('/workers')
         ) {

@@ -24,7 +24,6 @@ export class AppComponent {
   right_administrator: boolean
   right_technician: boolean
   right_editor: boolean
-  right_ftvstudio: boolean
 
   subIn: Subscription
   subOut: Subscription
@@ -49,7 +48,6 @@ export class AppComponent {
         this.right_administrator = this.authService.hasAdministratorRight()
         this.right_technician = this.authService.hasTechnicianRight()
         this.right_editor = this.authService.hasEditorRight()
-        this.right_ftvstudio = this.authService.hasFtvStudioRight()
         this.menu_opened = !this.breakpointObserver.isMatched('(max-width: 599px)')
         this.updateLeftMenu()
       })
@@ -62,7 +60,6 @@ export class AppComponent {
         this.right_administrator = false
         this.right_technician = false
         this.right_editor = false
-        this.right_ftvstudio = false
         this.updateLeftMenu()
       })
 
@@ -72,7 +69,6 @@ export class AppComponent {
       this.right_administrator = this.authService.hasAdministratorRight()
       this.right_technician = this.authService.hasTechnicianRight()
       this.right_editor = this.authService.hasEditorRight()
-      this.right_ftvstudio = this.authService.hasFtvStudioRight()
       this.menu_opened = !this.breakpointObserver.isMatched('(max-width: 599px)')
       this.updateLeftMenu()
     }
@@ -98,15 +94,6 @@ export class AppComponent {
         'link': '/workflows',
         'label': 'Workflows'
       }]
-
-      if (this.right_technician || this.right_ftvstudio) {
-        if (this.application && this.application.identifier === 'subtil') {
-          this.left_menu.push({
-            'link': '/catalog',
-            'label': 'Catalog'
-          })
-        }
-      }
 
       if (this.application && this.application.identifier === 'vidtext') {
         this.left_menu.push({

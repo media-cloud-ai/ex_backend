@@ -288,8 +288,7 @@
 ## [0.0.6] - 2020-03-09
 ### Order
 - fix html material binding
-- display "FranceTélévisions Audio" workflows download button
-- add first version of FTV dialog enhancement workflow
+- add first version of dialog enhancement workflow
 - display process status on start
 - handle number type parameters
 
