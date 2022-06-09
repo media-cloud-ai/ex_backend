@@ -25,9 +25,6 @@
 
 <div *ngIf="workflows">
   <div *ngFor="let workflow of workflows.data" class=workflow>
-    <span class="reference" (click)="goToWorkflow(workflow)" [ngClass]="{'technician': technician}">
-      <video-title-component [id]=workflow.reference></video-title-component>
-    </span>
     <span class="workflowType">
       {{workflow.identifier}}
     </span>

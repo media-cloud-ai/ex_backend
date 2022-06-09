@@ -10,7 +10,6 @@ import {CanDeactivateGuard} from './authentication/can-deactivate-guard.service'
 import {AuthGuard} from './authentication/auth-guard.service'
 import {AuthService} from './authentication/auth.service'
 
-import {CatalogComponent} from './catalog/catalog.component'
 import {ConfirmComponent} from './confirm/confirm.component'
 import {DashboardComponent} from './dashboard/dashboard.component'
 import {DeclaredWorkersComponent} from './declared_workers/declared_workers.component'
@@ -34,10 +33,6 @@ import {WorkersModule} from './workers/workers.module'
 const appRoutes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   {
-    path: 'catalog',
-    component: CatalogComponent,
-    canActivate: [AuthGuard]
-  },  {
     path: 'documentation',
     loadChildren: () => DocumentationModule,
     canActivate: [AuthGuard]

@@ -6,13 +6,3 @@
 <div *ngIf="application && application.identifier == 'subtil' && ! video && loading">
   <img src="/bundles/images/media-io.animated.svg" width="20px" height="20px" />
 </div>
-<div
-  class="link video {{video.channel}}"
-  *ngIf="application && application.identifier == 'subtil' && video"
-  (click)="gotoVideo(id)"
-  >
-  {{video.title}}
-  <span *ngIf=video.additional_title>
-    - {{video.additional_title}}
-  </span>
-</div>

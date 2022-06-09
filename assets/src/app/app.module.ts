@@ -61,7 +61,6 @@ import {SocketModule}            from './socket.module'
 import {WorkersModule}            from './workers/workers.module'
 import {SearchBarModule}      from './search_bar/search_bar.module'
 
-import {CatalogComponent}        from './catalog/catalog.component'
 import {ConfirmComponent}        from './confirm/confirm.component'
 import {DashboardComponent}      from './dashboard/dashboard.component'
 import {DeclaredWorkersComponent} from './declared_workers/declared_workers.component'
@@ -94,24 +93,20 @@ import {DeleteSubtitleDialog} from './registeries/dialog/delete_subtitle_dialog.
 import {StartIngestDialog} from './ingest/dialogs/start_ingest.component'
 import {JobDetailsDialogComponent} from './jobs/details/job_details_dialog.component'
 import {NewSubtitleDialogComponent} from './registeries/dialog/new_subtitle_dialog.component'
-import {RdfDialogComponent} from './catalog/rdf/rdf_dialog.component'
 import {RoleOrRightDeletionDialogComponent} from './users/dialogs/role_or_right_deletion_dialog.component'
 import {UserShowCredentialsDialogComponent} from './users/dialogs/user_show_credentials_dialog.component'
 import {WorkflowAbortDialogComponent} from './workflows/dialogs/workflow_abort_dialog.component'
 import {WorkflowPauseDialogComponent} from './workflows/dialogs/workflow_pause_dialog.component'
-import {WorkflowDialogComponent} from './catalog/workflow/workflow_dialog.component'
 
 import {AuthService}             from './authentication/auth.service'
 import {AmqpService}             from './services/amqp.service'
 import {ApplicationService}      from './services/application.service'
-import {CatalogService}          from './services/catalog.service'
 import {CredentialService}       from './services/credential.service'
 import {DocumentationService}    from './services/documentation.service'
 import {DeclaredWorkersService}    from './services/declared_workers.service'
 import {IMDbService}             from './services/imdb.service'
 import {JobService}              from './services/job.service'
 import {MouseMoveService}        from './services/mousemove.service'
-import {RdfService}              from './services/rdf.service'
 import {RegisteryService}        from './services/registery.service'
 import {StatisticsService}       from './services/statistics.service'
 import {S3Service}               from './services/s3.service'
@@ -186,7 +181,6 @@ const EX_BACKEND_DATE_FORMATS = {
   ],
   declarations: [
     AppComponent,
-    CatalogComponent,
     ConfirmComponent,
     DashboardComponent,
     DeclaredWorkersComponent,
@@ -213,10 +207,8 @@ const EX_BACKEND_DATE_FORMATS = {
     UserComponent,
     UsersComponent,
     UserShowCredentialsDialogComponent,
-    RdfDialogComponent,
     WatchersComponent,
     WorkflowAbortDialogComponent,
-    WorkflowDialogComponent,
     WorkflowComponent,
     WorkflowDetailsComponent,
     WorkflowPauseDialogComponent,
@@ -232,7 +224,6 @@ const EX_BACKEND_DATE_FORMATS = {
     JobStatisticsComponent,
     NewSubtitleDialogComponent,
     ParametersComponent,
-    RdfDialogComponent,
     RegisteryComponent,
     RegisteryDetailComponent,
     RoleComponent,
@@ -246,7 +237,6 @@ const EX_BACKEND_DATE_FORMATS = {
     WatchersComponent,
     WorkflowComponent,
     WorkflowAbortDialogComponent,
-    WorkflowDialogComponent,
     WorkflowPauseDialogComponent,
     WorkflowRendererComponent,
     WorkflowStatisticsComponent,
@@ -283,7 +273,6 @@ const EX_BACKEND_DATE_FORMATS = {
     AmqpService,
     ApplicationService,
     AuthService,
-    CatalogService,
     CookieService,
     CredentialService,
     DeclaredWorkersService,
@@ -291,7 +280,6 @@ const EX_BACKEND_DATE_FORMATS = {
     IMDbService,
     JobService,
     MouseMoveService,
-    RdfService,
     RegisteryService,
     StatisticsService,
     S3Service,

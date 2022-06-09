@@ -25,7 +25,6 @@ import {MatToolbarModule} from '@angular/material/toolbar'
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatChipsModule} from '@angular/material/chips';
 
-import {GenericModule} from '../generic/generic.module'
 import {PipesModule} from '../pipes/pipes.module'
 import {SearchBarModule}      from '../search_bar/search_bar.module'
 
@@ -40,7 +39,6 @@ export const ROUTES: Routes = [
   imports: [
     CommonModule,
     FormsModule,
-    GenericModule,
     MatButtonModule,
     MatDialogModule,
     MatIconModule,

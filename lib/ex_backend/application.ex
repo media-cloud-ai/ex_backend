@@ -25,13 +25,6 @@ defmodule ExBackend.Application do
     "editor" => [
       %Right{entity: "workflow::*", action: ["create", "delete", "view"]},
       %Right{entity: "workers::*", action: ["view"]}
-    ],
-    "ftvstudio" => [
-      %Right{
-        entity: "workflow::*",
-        action: ["abort", "create", "retry", "stop", "update", "view"]
-      },
-      %Right{entity: "workers::*", action: ["view"]}
     ]
   }
 

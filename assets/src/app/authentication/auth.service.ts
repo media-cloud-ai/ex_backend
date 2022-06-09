@@ -125,13 +125,6 @@ export class AuthService {
     return this.roles.includes('editor')
   }
 
-  hasFtvStudioRight(): boolean {
-    if (!this.roles){
-      return false
-    }
-    return this.roles.includes('ftvstudio')
-  }
-
   hasAnyRights(entity: string, action: string): Observable<any> {
     if (!this.roles){
       return of(false)
