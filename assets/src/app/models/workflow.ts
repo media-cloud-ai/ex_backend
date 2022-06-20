@@ -54,10 +54,17 @@ export class Right {
   groups: string[]
 }
 
+export class NotificationStatus {
+  condition?: string
+  response?: any
+  timestamp?: string
+}
+
 export class NotificationHook {
   label?: string
   endpoint?: string
   credentials?: string
+  status?: NotificationStatus[]
 }
 
 export class Workflow {

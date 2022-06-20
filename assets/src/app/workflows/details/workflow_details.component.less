@@ -130,7 +130,7 @@ mat-chip-list {
 
 .notification_hook {
   padding-left: 10px;
-  line-height: 15px;
+  line-height: 1.2em;
   border-left: 4px solid @lightGrey;
 
   label {
@@ -151,11 +151,11 @@ mat-chip-list {
     color: @red;
   }
 
-  span {
-    display: inline-block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 40%;
+  label span {
+      display: block;
+      font-weight: normal;
+      // overflow: hidden;
+      // text-overflow: ellipsis;
+      // max-width: 40%;
   }
 }
