@@ -3,6 +3,60 @@
 .details {
   font-family: sans-serif;
 
+
+  .job_hooks {
+    display: block;
+    padding-bottom: 0.5em;
+
+    .expander {
+      align-content: flex-start;
+
+      i {
+        vertical-align: middle;
+        cursor: pointer;
+      }
+
+      i.disabled {
+        color: #ddd;
+      }
+    }
+
+    label.endpoint {
+      font-weight: bold;
+      display: inline-block;
+      padding-bottom: 0.3em;
+    }
+
+    .ok {
+      color: @green;
+    }
+
+    .error {
+      color: @red;
+    }
+  }
+
+  .status_hook {
+
+    label.endpoint, span.endpoint{
+      font-weight: bold;
+    }
+
+    label.endpoint {
+      width: 200px;
+    }
+
+    span.condition, span.timestamp {
+      width: 200px;
+      padding-left: 1.5em
+    }
+
+    label,
+    span {
+      display: inline-block;
+    }
+  }
+
   .status {
     padding: 5px 0px;
     font-weight: bold;

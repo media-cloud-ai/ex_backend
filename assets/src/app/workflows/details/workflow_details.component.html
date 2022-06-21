@@ -92,11 +92,15 @@
             <div class="notification_hook {{notification_hook.label}} {{notification_hook.status}}">
               <hr>
               <label>Endpoint</label>
-              <span>{{notification_hook.label | titlecase}}</span>
-              <label>Status</label>
-              <span [ngClass]="{
-                'error' : notification_hook.status == 'error',
-                'ok' : notification_hook.status == 'ok'}">{{notification_hook.status | titlecase}}</span>
+              <span class="hook_detail" *ngFor="let notification_status of notification_hook.status">
+              <label *ngIf="(notification_status.condition.includes('workflow'))">{{notification_hook.label | titlecase}}</label>
+                <hr *ngIf="(notification_status.condition.includes('workflow'))">
+                <label *ngIf="(notification_status.condition.includes('workflow'))">Condition <span>{{notification_status.condition}}</span></label>
+                <label *ngIf="(notification_status.condition.includes('workflow'))">Timestamp <span>{{notification_status.timestamp}}</span></label>
+                <label *ngIf="(notification_status.condition.includes('workflow'))">Status <span [ngClass]="{
+                  'error' : notification_status.response != 200,
+                  'ok' : notification_status.response == 200}">{{notification_status.response}}</span></label>
+              </span>
             </div>
           </span>
         </div>
