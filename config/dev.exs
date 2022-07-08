@@ -118,7 +118,7 @@ config :ex_backend,
   app_identifier: "subtil",
   app_label: "DaIA",
   app_logo: "DaIA_logo.png",
-  app_company: "FranceTélévisions",
+  app_company: "MyCompany",
   app_company_logo: "logo_id_2018_fushia13_2lignes.png",
   hostname: "localhost",
   port: 4000,
@@ -152,11 +152,6 @@ config :step_flow, StepFlow.Amqp,
   virtual_host: "media_cloud_ai_dev"
 
 config :httpotion, :default_timeout, 60000
-
-config :ex_video_factory,
-  mode: :custom,
-  # endpoint: "http://127.0.0.1:4001/api/"
-  endpoint: "https://gatewayvf.webservices.francetelevisions.fr/v1/"
 
 # Finally import the config/prod.secret.exs
 # with the private section for passwords
