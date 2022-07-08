@@ -55,6 +55,11 @@ defmodule ExBackendWeb.UserController do
     render(conn, "show.json", %{user: user, credentials: false})
   end
 
+  def get_by_uuid(%Plug.Conn{assigns: %{current_user: user}} = conn, %{"uuid" => uuid}) do
+    user = (uuid == to_string(user.uuid) and user) || Accounts.get_by(%{"uuid" => uuid})
+    render(conn, "show.json", %{user: user, credentials: false})
+  end
+
   def update(%Plug.Conn{assigns: %{current_user: _user}} = conn, %{
         "id" => id,
         "user" => user_params

@@ -32,6 +32,7 @@ export class WorkflowDetailsComponent {
   messages: Message[] = []
   right_abort: boolean = false
   step_focus: Map<number, boolean> = new Map()
+  user_email: String
 
   pause_post_action: any;
 
@@ -105,6 +106,12 @@ export class WorkflowDetailsComponent {
         response => {
           this.right_abort = response.authorized
       })
+
+      this.userService.getUserByUuid(this.workflow.user_uuid).subscribe(
+          response => {
+            console.log(response)
+            this.user_email = response.data.email
+          })
     })
   }
 

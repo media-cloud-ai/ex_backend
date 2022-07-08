@@ -29,6 +29,14 @@ export class UserService {
       )
   }
 
+  getUserByUuid(uuid: string): Observable<any> {
+    return this.http.get<User>(this.usersUrl + "/search/" + uuid)
+      .pipe(
+        tap(userPage => this.log('fetched User')),
+        catchError(this.handleError('getUsers', undefined))
+      )
+  }
+
   inviteUser(email: string): Observable<User> {
     let params = {
       user: {

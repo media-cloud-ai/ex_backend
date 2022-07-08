@@ -60,6 +60,10 @@ defmodule ExBackend.Accounts do
     Repo.get_by(User, email: email)
   end
 
+  def get_by(%{"uuid" => uuid}) do
+    Repo.get_by(User, uuid: uuid)
+  end
+
   def create_user(attrs) do
     %User{}
     |> User.changeset(attrs)

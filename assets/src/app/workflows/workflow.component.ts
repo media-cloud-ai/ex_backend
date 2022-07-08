@@ -4,6 +4,7 @@ import {Router} from '@angular/router'
 import {MatDialog} from '@angular/material/dialog'
 
 import {AuthService} from '../authentication/auth.service'
+import {User} from '../models/user'
 import {UserService} from '../services/user.service'
 import {WorkflowService} from '../services/workflow.service'
 import {Workflow, Step} from '../models/workflow'
@@ -27,10 +28,12 @@ export class WorkflowComponent {
   can_resume: boolean = false
   right_abort: boolean = false
   right_delete: boolean = false
+  user: User
 
   constructor(
     private authService: AuthService,
     private router: Router,
+    private userService: UserService,
     private workflowService: WorkflowService,
     public dialog: MatDialog
   ) {}
@@ -51,6 +54,11 @@ export class WorkflowComponent {
 
     this.can_pause = this.can_abort && !is_paused && !is_last_step_processing;
     this.can_resume = is_paused;
+
+    this.userService.getUserByUuid(this.workflow.user_uuid).subscribe(
+        response => {
+          this.user = response.data
+        })
 
     this.authService.hasAnyRights("workflow::" + this.workflow.identifier, "abort").subscribe(
         response => {
