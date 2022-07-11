@@ -32,7 +32,6 @@ defmodule ExBackendWeb.CredentialController do
     #     token: local_token
     #   )
 
-    # Vault.read(vault, "secret/FTP_FranceTV_Akamai")
     # Vault.list(vault, "secret/")
 
     credentials = Credentials.list_credentials(params)

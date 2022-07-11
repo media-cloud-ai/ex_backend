@@ -84,30 +84,6 @@ defmodule ExBackendWeb.Authorize do
     (Enum.member?(current_user.roles, "editor") and conn) || error(conn, :forbidden, 403)
   end
 
-  def right_ftvstudio_check(%Plug.Conn{assigns: %{current_user: nil}} = conn, _opts) do
-    error(conn, :unauthorized, 401)
-  end
-
-  def right_ftvstudio_check(
-        %Plug.Conn{assigns: %{current_user: current_user}} = conn,
-        _opts
-      ) do
-    (Enum.member?(current_user.roles, "ftvstudio") and conn) || error(conn, :forbidden, 403)
-  end
-
-  def right_technician_or_ftvstudio_check(%Plug.Conn{assigns: %{current_user: nil}} = conn, _opts) do
-    error(conn, :unauthorized, 401)
-  end
-
-  def right_technician_or_ftvstudio_check(
-        %Plug.Conn{assigns: %{current_user: current_user}} = conn,
-        _opts
-      ) do
-    (Enum.member?(current_user.roles, "technician") and conn) ||
-      (Enum.member?(current_user.roles, "ftvstudio") and conn) ||
-      error(conn, :forbidden, 403)
-  end
-
   def error(conn, status, code) do
     put_status(conn, status)
     |> put_view(ExBackendWeb.AuthView)

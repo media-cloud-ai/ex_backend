@@ -116,8 +116,8 @@ export class JobsComponent {
     return undefined;
   }
 
-  displayJobDetails(job: Job) {
-    this.dialog.open(JobDetailsDialogComponent, { data: job })
+  displayJobDetails(job: Job, workflow: Workflow) {
+    this.dialog.open(JobDetailsDialogComponent, {data: {job: job, workflow: workflow}})
   }
 
   retryJob(job: Job) {

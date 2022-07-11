@@ -4,8 +4,6 @@ import { CommonModule } from '@angular/common';
 import {AudioTypePipe}           from './audio_type.pipe';
 import {BasenamePipe}            from './basename.pipe';
 import {BytesPipe}               from './bytes.pipe';
-import {DockerImagePipe}         from './docker_image.pipe';
-import {DockerImageVersionPipe}  from './docker_image_version.pipe';
 import {DurationPipe}            from './duration.pipe';
 import {IconForJobPipe}          from './icon_for_job.pipe';
 import {JobDurationPipe}         from './job_duration.pipe'
@@ -29,8 +27,6 @@ import {VideoTypePipe}           from './video_type.pipe'
     AudioTypePipe,
     BasenamePipe,
     BytesPipe,
-    DockerImagePipe,
-    DockerImageVersionPipe,
     DurationPipe,
     IconForJobPipe,
     JobDurationPipe,
@@ -49,8 +45,6 @@ import {VideoTypePipe}           from './video_type.pipe'
     AudioTypePipe,
     BasenamePipe,
     BytesPipe,
-    DockerImagePipe,
-    DockerImageVersionPipe,
     DurationPipe,
     IconForJobPipe,
     JobDurationPipe,

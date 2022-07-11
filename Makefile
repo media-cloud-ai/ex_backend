@@ -6,12 +6,11 @@ ifeq ($(shell test -e $(ENVFILE) && echo -n yes),yes)
 	export
 endif
 
-DOCKER_REGISTRY?=
-DOCKER_IMG_NAME?=ftvsubtil/ex_backend
-ifneq ($(DOCKER_REGISTRY), ) 
+DOCKER_REGISTRY?=registry.gitlab.com
+DOCKER_IMG_NAME?=media-cloud-ai/backend/ex_backend
+ifneq ($(DOCKER_REGISTRY), )
 	DOCKER_IMG_NAME := /${DOCKER_IMG_NAME}
 endif
-VERSION=1.0.0
 
 docker-build:
 	@docker build -t ${DOCKER_REGISTRY}${DOCKER_IMG_NAME}:${VERSION} .
@@ -23,7 +22,7 @@ docker-clean:
 
 docker-registry-login:
 	@docker login --username "${DOCKER_REGISTRY_LOGIN}" -p"${DOCKER_REGISTRY_PWD}" ${DOCKER_REGISTRY}
-	
+
 docker-push-registry:
 	@docker push ${DOCKER_REGISTRY}${DOCKER_IMG_NAME}:${VERSION}
 	@docker push ${DOCKER_REGISTRY}${DOCKER_IMG_NAME}:${CI_COMMIT_SHORT_SHA}
@@ -33,4 +32,3 @@ up:
 
 version:
 	@echo ${VERSION}
-

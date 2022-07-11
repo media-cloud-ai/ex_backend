@@ -108,10 +108,6 @@ export class WorkflowDetailsComponent {
     })
   }
 
-  goToVideo(video_id): void {
-    this.router.navigate(['/catalog'], { queryParams: {video_id: video_id} })
-  }
-
   getStepsCount(): string {
     let count = 0
     for (let step of this.workflow.steps) {

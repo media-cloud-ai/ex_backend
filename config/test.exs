@@ -64,7 +64,3 @@ config :bcrypt_elixir, log_rounds: 4
 
 # Mailer test configuration
 config :ex_backend, ExBackend.SMTPMailer, adapter: Bamboo.TestAdapter
-
-config :ex_video_factory,
-  mode: :custom,
-  endpoint: "https://gatewayvf.webservices.francetelevisions.fr/v1/"
