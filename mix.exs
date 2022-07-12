@@ -129,6 +129,13 @@ defmodule ExBackend.Mixfile do
       "ecto.setup": ["ecto.create"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       audit: ["deps.audit"],
+      checks: [
+        "ecto.create --quiet",
+        "test",
+        "format --check-formatted",
+        "credo --strict",
+        "deps.audit"
+      ],
       dev: ["ecto.drop", "ecto.setup", "phx.server -r priv/repo/seeds.exs"],
       test: ["ecto.create --quiet", "ecto.migrate", "test"],
       version: &get_version/1
