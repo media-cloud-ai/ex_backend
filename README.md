@@ -53,13 +53,20 @@ mix dev
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
+### Check backend code
+
+The following command launches the database initialisation, the test execution, the code format check and the code
+static analyse:
+```
+mix checks
+```
+
 ### Check dependencies vulnerability
 
 Launch the dependencies security audit running the following command:
 ```
 mix audit
 ```
-
 
 ## Makefile targets
 
