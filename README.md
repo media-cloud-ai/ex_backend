@@ -53,6 +53,14 @@ mix dev
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
+### Check dependencies vulnerability
+
+Launch the dependencies security audit running the following command:
+```
+mix audit
+```
+
+
 ## Makefile targets
 
 Commands below will be used for both stacks (backend & workers):

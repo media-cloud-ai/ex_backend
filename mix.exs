@@ -98,6 +98,7 @@ defmodule ExBackend.Mixfile do
       {:jason, "~> 1.1"},
       {:lager, "3.8.0"},
       {:libvault, "~> 0.2.1"},
+      {:mix_audit, "~> 1.0", only: [:dev, :test], runtime: false},
       {:phoenix, "~> 1.5.3"},
       {:phoenix_ecto, "~> 4.0"},
       {:phoenix_html, "~> 2.10"},
@@ -127,6 +128,7 @@ defmodule ExBackend.Mixfile do
     [
       "ecto.setup": ["ecto.create"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
+      audit: ["deps.audit"],
       dev: ["ecto.drop", "ecto.setup", "phx.server -r priv/repo/seeds.exs"],
       test: ["ecto.create --quiet", "ecto.migrate", "test"],
       version: &get_version/1
