@@ -69,6 +69,8 @@ ts_format:
 
 mix_audit:sobelow:
   stage: test
+  variables:
+    - ENV: dev
   script:
     - mix phx.audit
 
