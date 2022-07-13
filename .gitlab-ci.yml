@@ -82,8 +82,8 @@ container_scanning:
     # https://docs.gitlab.com/ee/user/application_security/container_scanning/index.html#overriding-the-container-scanning-template
     # https://docs.gitlab.com/ee/user/application_security/container_scanning/#vulnerability-allowlisting
     # CS_DEFAULT_BRANCH_IMAGE: $CONTAINER_REGISTRY/$CONTAINER_IMAGE_NAME:$IMAGE_TAG
-    CS_DEFAULT_BRANCH_IMAGE: registry.gitlab.com/media-cloud-ai/backend/ex_backend:1.5.0
-    GIT_STRATEGY: none
+    DOCKER_IMAGE: registry.gitlab.com/media-cloud-ai/backend/ex_backend:1.5.0
+    GIT_STRATEGY: fetch
   allow_failure: true
   artifacts:
     reports:
