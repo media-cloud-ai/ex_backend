@@ -9,7 +9,7 @@ defmodule ExBackend.Mixfile do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       test_coverage: [tool: ExCoveralls],
-      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
+      compilers: [:phoenix] ++ Mix.compilers(),
       preferred_cli_env: [
         coveralls: :test,
         "coveralls.detail": :test,
@@ -41,6 +41,8 @@ defmodule ExBackend.Mixfile do
     [
       mod: {ExBackend.Application, []},
       extra_applications: [
+        :lager,
+        :logger,
         :amqp,
         :bamboo,
         :bcrypt_elixir,
@@ -48,7 +50,6 @@ defmodule ExBackend.Mixfile do
         :ecto_sql,
         :httpoison,
         :jason,
-        :logger,
         :libvault,
         :phauxth,
         :phoenix_ecto,

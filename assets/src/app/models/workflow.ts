@@ -139,7 +139,7 @@ export class Version {
   }
 
   public equals(other: Version) : boolean {
-      return this.major === other.major && this.minor === other.minor && this.minor === other.minor;
+      return this.major === other.major && this.minor === other.minor && this.micro === other.micro;
   }
 
   static compare(a: Version, b: Version) {

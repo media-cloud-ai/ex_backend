@@ -38,7 +38,7 @@ export class WorkflowStatisticsComponent {
 
   workflowSelectedIdentifiers: string[] = []
   workflowSelectedVersions: Version[] = []
-  workflowSelectedStatuses = ["completed"]
+  workflowSelectedStatuses = []
 
   workflowStartDate: Date
   workflowEndDate: Date
@@ -118,31 +118,39 @@ export class WorkflowStatisticsComponent {
     this.loading = true;
     this.workflowDurations = new Array<WorkflowDurationStatistics>();
 
-    let selected_identifiers = new Set(this.workflows.sort(Workflow.compare).map((definition) => definition.identifier));
+    let selected_identifiers =
+      new Set(this.workflows
+        .sort(Workflow.compare)
+        .map((definition) => definition.identifier)
+        .filter(identifier => this.workflowsForm.value.selectedWorkflows.includes(identifier)));
 
     let params = [];
     params.push({ "key": "page", "value": this.workflowStatisticsPage });
     params.push({ "key": "size", "value": this.workflowStatisticsPageSize });
 
     for (let identifier of selected_identifiers) {
-      params.push({ "key": "workflow_id[]", "value": identifier });
+      params.push({ "key": "workflow_ids[]", "value": identifier });
+    }
+
+    for (let version of this.workflowsForm.value.selectedVersion) {
+      params.push({ "key": "version[]", "value": version });
     }
 
     for (let status of this.workflowSelectedStatuses) {
       params.push({ "key": "states[]", "value": status });
     }
 
-    if (this.workflowStartDate) {
-      params.push({ "key": "after_date", "value": formatDate(this.workflowStartDate, "yyyy-MM-ddTHH:mm:ss", "fr") });
+    if (this.workflowsForm.value.startDate) {
+      params.push({ "key": "after_date", "value": formatDate(this.workflowsForm.value.startDate, "yyyy-MM-ddTHH:mm:ss", "fr") });
     }
 
-    if (this.workflowEndDate) {
-      params.push({ "key": "before_date", "value": formatDate(this.workflowEndDate, "yyyy-MM-ddTHH:mm:ss", "fr") });
+    if (this.workflowsForm.value.endDate) {
+      params.push({ "key": "before_date", "value": formatDate(this.workflowsForm.value.endDate, "yyyy-MM-ddTHH:mm:ss", "fr") });
     }
 
     this.statisticsService.getWorkflowsDurationStatistics(params)
       .subscribe((statistics) => {
-        // console.log("[WorkflowDurationStatistics] statistics: ", statistics);
+        //console.log("[WorkflowDurationStatistics] statistics: ", statistics);
         this.loading = false;
 
         this.workflowDurations =
