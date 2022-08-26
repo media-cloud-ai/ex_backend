@@ -5,6 +5,8 @@ import {MatDialog} from '@angular/material/dialog'
 import {Message} from '../../models/message'
 import {AuthService} from '../../authentication/auth.service'
 import {SocketService} from '../../services/socket.service'
+import {User} from '../../models/user'
+import {UserService} from '../../services/user.service'
 import {WorkflowService} from '../../services/workflow.service'
 import {Workflow, Step} from '../../models/workflow'
 import {WorkflowRenderer} from '../../models/workflow_renderer'
@@ -32,12 +34,14 @@ export class WorkflowDetailsComponent {
   messages: Message[] = []
   right_abort: boolean = false
   step_focus: Map<number, boolean> = new Map()
+  user_email: String
 
   pause_post_action: any;
 
   constructor(
     private authService: AuthService,
     private socketService: SocketService,
+    private userService: UserService,
     private workflowService: WorkflowService,
     private route: ActivatedRoute,
     private router: Router,
@@ -105,6 +109,11 @@ export class WorkflowDetailsComponent {
         response => {
           this.right_abort = response.authorized
       })
+
+      this.userService.getUserByUuid(this.workflow.user_uuid).subscribe(
+          response => {
+            this.user_email = response.data.email
+          })
     })
   }
 

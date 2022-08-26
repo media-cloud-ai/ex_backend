@@ -23,6 +23,7 @@ defmodule ExBackendWeb.Router do
 
     post("/sessions", SessionController, :create)
     resources("/users", UserController, except: [:new, :edit])
+    get("/users/search/:uuid", UserController, :get_by_uuid)
     post("/users/generate_credentials", UserController, :generate_credentials)
     post("/users/generate_validation_link", UserController, :generate_validation_link)
     delete("/users/roles/:name", UserController, :delete_role)

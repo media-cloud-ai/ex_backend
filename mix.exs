@@ -76,7 +76,7 @@ defmodule ExBackend.Mixfile do
       {:amqp, "~> 3.1.0"},
       {:bcrypt_elixir, "~> 2.0"},
       {:bamboo, "~> 2.2.0"},
-      {:bamboo_smtp, "~> 4.1.0"},
+      {:bamboo_smtp, "~> 4.2.1"},
       {:blue_bird, "~> 0.4.1"},
       {:comeonin, "~> 5.1"},
       {:cors_plug, "~> 2.0"},
