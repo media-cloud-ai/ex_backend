@@ -33,7 +33,7 @@ export class UserService {
     return this.http.get<User>(this.usersUrl + "/search/" + uuid)
       .pipe(
         tap(userPage => this.log('fetched User')),
-        catchError(this.handleError('getUsers', undefined))
+        catchError(this.handleError('getUserByUuid', undefined))
       )
   }
 

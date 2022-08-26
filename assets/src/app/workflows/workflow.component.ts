@@ -28,7 +28,7 @@ export class WorkflowComponent {
   can_resume: boolean = false
   right_abort: boolean = false
   right_delete: boolean = false
-  user: User
+  user_email: String
 
   constructor(
     private authService: AuthService,
@@ -57,7 +57,7 @@ export class WorkflowComponent {
 
     this.userService.getUserByUuid(this.workflow.user_uuid).subscribe(
         response => {
-          this.user = response.data
+          this.user_email = response.data.email
         })
 
     this.authService.hasAnyRights("workflow::" + this.workflow.identifier, "abort").subscribe(

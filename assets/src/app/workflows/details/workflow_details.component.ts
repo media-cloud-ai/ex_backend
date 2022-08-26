@@ -5,6 +5,8 @@ import {MatDialog} from '@angular/material/dialog'
 import {Message} from '../../models/message'
 import {AuthService} from '../../authentication/auth.service'
 import {SocketService} from '../../services/socket.service'
+import {User} from '../../models/user'
+import {UserService} from '../../services/user.service'
 import {WorkflowService} from '../../services/workflow.service'
 import {Workflow, Step} from '../../models/workflow'
 import {WorkflowRenderer} from '../../models/workflow_renderer'
@@ -39,6 +41,7 @@ export class WorkflowDetailsComponent {
   constructor(
     private authService: AuthService,
     private socketService: SocketService,
+    private userService: UserService,
     private workflowService: WorkflowService,
     private route: ActivatedRoute,
     private router: Router,
@@ -109,7 +112,6 @@ export class WorkflowDetailsComponent {
 
       this.userService.getUserByUuid(this.workflow.user_uuid).subscribe(
           response => {
-            console.log(response)
             this.user_email = response.data.email
           })
     })
