@@ -6,7 +6,7 @@ defmodule ExBackendWeb.PasswordResetControllerTest do
   @update_attrs %{email: "gladys@example.com", password: "^hEsdg*F899"}
 
   setup %{conn: conn} do
-    user = add_reset_user("gladys@example.com")
+    user = add_reset_user("gladys", "gladys@example.com")
     {:ok, %{conn: conn, user: user}}
   end
 

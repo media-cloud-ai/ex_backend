@@ -3,13 +3,17 @@ defmodule ExBackendWeb.SessionControllerTest do
 
   import ExBackendWeb.AuthCase
 
-  @create_attrs %{email: "robin@example.com", password: "reallyHard2gue$$"}
-  @invalid_attrs %{email: "robin@example.com", password: "cannotGue$$it"}
-  @unconfirmed_attrs %{email: "lancelot@example.com", password: "reallyHard2gue$$"}
+  @create_attrs %{name: "robin", email: "robin@example.com", password: "reallyHard2gue$$"}
+  @invalid_attrs %{name: "robin", email: "robin@example.com", password: "cannotGue$$it"}
+  @unconfirmed_attrs %{
+    name: "lancelot",
+    email: "lancelot@example.com",
+    password: "reallyHard2gue$$"
+  }
 
   setup %{conn: conn} do
-    add_user("lancelot@example.com")
-    user = add_user_confirmed("robin@example.com")
+    add_user("lancelot", "lancelot@example.com")
+    user = add_user_confirmed("robin", "robin@example.com")
     {:ok, %{conn: conn, user: user}}
   end
 

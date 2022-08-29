@@ -4,7 +4,7 @@ defmodule ExBackend.AccountsTest do
   alias ExBackend.Accounts
   alias ExBackend.Accounts.User
 
-  @create_attrs %{email: "fred@example.com", password: "reallyHard2gue$$"}
+  @create_attrs %{name: "fred", email: "fred@example.com", password: "reallyHard2gue$$"}
   @update_attrs %{email: "frederick@example.com"}
   @invalid_attrs %{email: "", password: ""}
 
