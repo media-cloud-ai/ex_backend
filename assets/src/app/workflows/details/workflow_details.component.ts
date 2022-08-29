@@ -34,7 +34,7 @@ export class WorkflowDetailsComponent {
   messages: Message[] = []
   right_abort: boolean = false
   step_focus: Map<number, boolean> = new Map()
-  user_email: String
+  user_name: String
 
   pause_post_action: any;
 
@@ -112,7 +112,10 @@ export class WorkflowDetailsComponent {
 
       this.userService.getUserByUuid(this.workflow.user_uuid).subscribe(
           response => {
-            this.user_email = response.data.email
+            this.user_name = response.data.email
+            if (response.data.name) {
+              this.user_name = response.data.name
+            }
           })
     })
   }
