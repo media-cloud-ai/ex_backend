@@ -79,7 +79,7 @@ defmodule ExBackend.Application do
 
     if !is_nil(root_email) && !is_nil(root_password) &&
          is_nil(ExBackend.Accounts.get_by(%{"email" => root_email})) do
-      user = %{email: root_email, roles: ["administrator"]}
+      user = %{email: root_email, roles: ["administrator"], name: "root"}
 
       {:ok, user} = ExBackend.Accounts.create_user(user)
       {:ok, user} = ExBackend.Accounts.update_password(user, %{password: root_password})

@@ -145,5 +145,11 @@ defmodule ExBackend.Migration.All do
       20_211_207_110_000,
       ExBackend.Migration.ReplaceUserRightsPerRoles
     )
+
+    Ecto.Migrator.up(
+      ExBackend.Repo,
+      20_220_826_170_000,
+      ExBackend.Migration.AddNameToUser
+    )
   end
 end

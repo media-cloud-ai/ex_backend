@@ -10,12 +10,13 @@ defmodule ExBackend.Accounts.User do
     field(:email, :string)
     field(:password, :string, virtual: true)
     field(:password_hash, :string)
-    field(:roles, {:array, :string}, default: ["administrator"])
+    field(:roles, {:array, :string}, default: [])
     field(:confirmed_at, :utc_datetime_usec)
     field(:reset_sent_at, :utc_datetime_usec)
     field(:uuid, :string)
     field(:access_key_id, :string)
     field(:secret_access_key, :string)
+    field(:name, :string)
 
     timestamps()
   end
@@ -31,8 +32,8 @@ defmodule ExBackend.Accounts.User do
       end
 
     user
-    |> cast(attrs, [:email, :roles, :uuid])
-    |> validate_required([:email, :uuid])
+    |> cast(attrs, [:email, :name, :roles, :uuid])
+    |> validate_required([:email, :name, :uuid])
     |> unique_email
   end
 
