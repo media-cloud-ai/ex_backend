@@ -11,6 +11,14 @@
         </label>
       </div>
       <div class="form">
+        <mat-form-field class="name-input">
+          <input
+            matInput
+            type="text"
+            placeholder="Name"
+            [(ngModel)]="name"
+            >
+        </mat-form-field>
         <mat-form-field class="email-input">
           <input
             matInput
@@ -36,6 +44,9 @@
     <ul *ngIf="users && all_roles" class="users">
       <li *ngIf="users.total == 0">No users found.</li>
       <li class="users-header">
+        <span class="name">
+          Name
+        </span>
         <span class="email">
           Email
         </span>

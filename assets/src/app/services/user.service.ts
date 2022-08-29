@@ -37,10 +37,11 @@ export class UserService {
       )
   }
 
-  inviteUser(email: string): Observable<User> {
+  inviteUser(email: string, name: string): Observable<User> {
     let params = {
       user: {
-        email: email
+        email: email,
+        name: name,
       }
     }
     return this.http.post<User>(this.usersUrl, params)

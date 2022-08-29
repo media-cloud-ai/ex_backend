@@ -27,6 +27,7 @@ export class UsersComponent {
   ]
   pageSize = this.pageSizeOptions[0];
   email: string
+  name: string
   password: string
   user_error_message: string
   page = 0
@@ -115,12 +116,13 @@ export class UsersComponent {
 
   inviteUser(): void {
     this.user_error_message = ''
-    this.userService.inviteUser(this.email)
+    this.userService.inviteUser(this.email, this.name)
     .subscribe(response => {
       if (response === undefined) {
         this.user_error_message = 'Unable to create user'
       } else {
         this.email = ''
+        this.name = ''
         this.password = ''
       }
       this.getUsers(0)
