@@ -6,6 +6,7 @@ defmodule ExBackendWeb.SessionView do
       access_token: token,
       user: %{
         id: user.id,
+        name: user.name,
         email: user.email,
         roles: user.roles
       }

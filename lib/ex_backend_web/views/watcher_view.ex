@@ -17,7 +17,8 @@ defmodule ExBackendWeb.WatcherView do
     %{
       user: %{
         id: watcher.user.id,
-        email: watcher.user.email
+        email: watcher.user.email,
+        name: watcher.user.name
       },
       connections: watcher.connections
     }
