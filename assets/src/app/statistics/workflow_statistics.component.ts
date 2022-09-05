@@ -122,7 +122,7 @@ export class WorkflowStatisticsComponent {
       new Set(this.workflows
         .sort(Workflow.compare)
         .map((definition) => definition.identifier)
-        .filter(identifier => this.workflowsForm.value.selectedWorkflows.includes(identifier)));
+        .filter(identifier => this.workflowSelectedIdentifiers.includes(identifier)));
 
     let params = [];
     params.push({ "key": "page", "value": this.workflowStatisticsPage });
@@ -132,7 +132,7 @@ export class WorkflowStatisticsComponent {
       params.push({ "key": "workflow_ids[]", "value": identifier });
     }
 
-    for (let version of this.workflowsForm.value.selectedVersion) {
+    for (let version of this.workflowSelectedVersions) {
       params.push({ "key": "version[]", "value": version });
     }
 
@@ -140,12 +140,12 @@ export class WorkflowStatisticsComponent {
       params.push({ "key": "states[]", "value": status });
     }
 
-    if (this.workflowsForm.value.startDate) {
-      params.push({ "key": "after_date", "value": formatDate(this.workflowsForm.value.startDate, "yyyy-MM-ddTHH:mm:ss", "fr") });
+    if (this.workflowStartDate) {
+      params.push({ "key": "after_date", "value": formatDate(this.workflowStartDate, "yyyy-MM-ddTHH:mm:ss", "fr") });
     }
 
-    if (this.workflowsForm.value.endDate) {
-      params.push({ "key": "before_date", "value": formatDate(this.workflowsForm.value.endDate, "yyyy-MM-ddTHH:mm:ss", "fr") });
+    if (this.workflowEndDate) {
+      params.push({ "key": "before_date", "value": formatDate(this.workflowEndDate, "yyyy-MM-ddTHH:mm:ss", "fr") });
     }
 
     this.statisticsService.getWorkflowsDurationStatistics(params)
