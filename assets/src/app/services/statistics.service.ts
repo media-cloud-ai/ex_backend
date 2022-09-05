@@ -39,6 +39,7 @@ export class StatisticsService {
   }
 
   getWorkflowsDurationStatistics(parameters = []): Observable<WorkflowDurationStatistics> {
+    //console.log("[getWorkflowDurationStatistics] parameters: ", parameters);
     let params = new HttpParams()
 
     for(let item of parameters) {

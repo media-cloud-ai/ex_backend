@@ -27,7 +27,7 @@
 
     <mat-form-field class="workflow-filters-input">
       <input formControlName="startDate" matInput [ngxMatDatetimePicker]="picker_workflow_start_date" placeholder="Start date"
-        name=start_date [(ngModel)]="worlkflowStartDate">
+        name=start_date [(ngModel)]="workflowStartDate">
       <mat-datepicker-toggle matSuffix [for]="picker_workflow_start_date"></mat-datepicker-toggle>
       <ngx-mat-datetime-picker #picker_workflow_start_date [showSeconds]=true>
       </ngx-mat-datetime-picker>
@@ -35,7 +35,7 @@
 
     <mat-form-field class="workflow-filters-input">
       <input formControlName="endDate" matInput [ngxMatDatetimePicker]="picker_workflow_end_date" placeholder="End date"
-        name=end_date [(ngModel)]="worlkflowEndDate">
+        name=end_date [(ngModel)]="workflowEndDate">
       <mat-datepicker-toggle matSuffix [for]="picker_workflow_end_date"></mat-datepicker-toggle>
       <ngx-mat-datetime-picker #picker_workflow_end_date [showSeconds]=true>
       </ngx-mat-datetime-picker>
