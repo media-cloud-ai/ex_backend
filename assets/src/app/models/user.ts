@@ -56,4 +56,7 @@ export class User {
   uuid: string
   access_key_id: string
   secret_access_key: string
+  first_name: string
+  last_name: string
+  username: string
 }

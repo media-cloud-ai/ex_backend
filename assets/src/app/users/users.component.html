@@ -11,6 +11,22 @@
         </label>
       </div>
       <div class="form">
+        <mat-form-field class="first-name-input">
+          <input
+            matInput
+            type="text"
+            placeholder="First Name"
+            [(ngModel)]="first_name"
+            >
+        </mat-form-field>
+        <mat-form-field class="last-name-input">
+          <input
+            matInput
+            type="text"
+            placeholder="Last Name"
+            [(ngModel)]="last_name"
+            >
+        </mat-form-field>
         <mat-form-field class="email-input">
           <input
             matInput
@@ -36,6 +52,9 @@
     <ul *ngIf="users && all_roles" class="users">
       <li *ngIf="users.total == 0">No users found.</li>
       <li class="users-header">
+        <span class="name">
+          Name
+        </span>
         <span class="email">
           Email
         </span>
@@ -67,7 +86,7 @@
             color="primary"
             *ngIf="user.access_key_id; else notShow"
             (click)="generateCredentials(user)">
-              <i class="material-icons">key</i> Regenerate
+              Regenerate <i class="material-icons">key</i>
           </button>
         </span>
         <ng-template #notShow>
@@ -76,7 +95,7 @@
               color="primary"
               *ngIf="user.confirmed_at; else confirmation"
               (click)="generateCredentials(user)">
-                <i class="material-icons">key</i> Generate Credentials
+                Generate <i class="material-icons">key</i>
             </button>
           </span>
         </ng-template>
@@ -92,9 +111,18 @@
 
         <span class="actions">
           <button mat-raised-button
+            color="primary"
+            *ngIf="right_administrator && user.id != 1"
+            (click)="editUser(user)">
+              <i class="material-icons">mode_edit</i></button>
+        </span>
+
+        <span class="actions">
+          <button mat-raised-button
             color="warn"
+            *ngIf="right_administrator && user.id != 1"
             (click)="removeUser(user.id)">
-              <i class="material-icons">delete</i> Delete
+              <i class="material-icons">delete</i>
           </button>
         </span>
       </li>

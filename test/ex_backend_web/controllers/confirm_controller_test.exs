@@ -4,7 +4,7 @@ defmodule ExBackendWeb.ConfirmControllerTest do
   import ExBackendWeb.AuthCase
 
   setup %{conn: conn} do
-    add_user("arthur@example.com")
+    add_user("Arthur", "Simmons", "arthur@example.com")
     {:ok, %{conn: conn}}
   end
 

@@ -1,6 +1,13 @@
 <div class="user">
+  <span class="name">
+    <div *ngIf="user.username; else email">
+      <p>{{user.first_name}} {{user.last_name}}</p> <i>@{{user.username}}</i>
+    </div>
+    <ng-template #email>{{user.email}}</ng-template>
+  </span>
+
   <span class="email">
-    {{user.email}}
+    <p>{{user.email}}</p>
   </span>
 
   <span class="roles">

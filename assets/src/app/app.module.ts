@@ -94,6 +94,7 @@ import {StartIngestDialog} from './ingest/dialogs/start_ingest.component'
 import {JobDetailsDialogComponent} from './jobs/details/job_details_dialog.component'
 import {NewSubtitleDialogComponent} from './registeries/dialog/new_subtitle_dialog.component'
 import {RoleOrRightDeletionDialogComponent} from './users/dialogs/role_or_right_deletion_dialog.component'
+import {UserEditionDialogComponent} from './users/dialogs/user_edition_dialog.component'
 import {UserShowCredentialsDialogComponent} from './users/dialogs/user_show_credentials_dialog.component'
 import {UserShowValidationLinkDialogComponent} from './users/dialogs/user_show_validation_link_dialog.component'
 import {WorkflowAbortDialogComponent} from './workflows/dialogs/workflow_abort_dialog.component'
@@ -206,6 +207,7 @@ const EX_BACKEND_DATE_FORMATS = {
     SubtitleComponent,
     UserComponent,
     UsersComponent,
+    UserEditionDialogComponent,
     UserShowCredentialsDialogComponent,
     UserShowValidationLinkDialogComponent,
     WatchersComponent,
@@ -234,6 +236,7 @@ const EX_BACKEND_DATE_FORMATS = {
     StepRendererComponent,
     SubtitleComponent,
     UserComponent,
+    UserEditionDialogComponent,
     UserShowCredentialsDialogComponent,
     UserShowValidationLinkDialogComponent,
     WatchersComponent,

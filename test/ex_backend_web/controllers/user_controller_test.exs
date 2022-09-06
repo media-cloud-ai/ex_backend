@@ -5,14 +5,19 @@ defmodule ExBackendWeb.UserControllerTest do
   import ExBackendWeb.Auth.Token
   alias ExBackend.Accounts
 
-  @create_attrs %{email: "bill@example.com", password: "hard2guess"}
+  @create_attrs %{
+    first_name: "Bill",
+    last_name: "Smith",
+    email: "bill@example.com",
+    password: "hard2guess"
+  }
   @update_attrs %{email: "william@example.com"}
   @invalid_attrs %{email: nil}
 
   setup %{conn: conn} = config do
     if email = config[:login] do
-      user = add_user(email, config[:roles] || ["administrator"])
-      other = add_user("tony@example.com")
+      user = add_user("Bill", "Smith", email, config[:roles] || ["administrator"])
+      other = add_user("Tony", "Stank", "tony@example.com")
       conn = conn |> add_token_conn(user)
       {:ok, %{conn: conn, user: user, other: other}}
     else
