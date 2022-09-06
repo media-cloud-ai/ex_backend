@@ -6,18 +6,19 @@
 #
 
 users = [
-  %{email: "technician@media-cloud.ai", password: "technician", roles: ["technician"], name: "technician"},
-  %{email: "editor@media-cloud.ai", password: "editor", roles: ["editor"], name: "editor"}
+  %{email: "technician@media-cloud.ai", password: "mediacloudai", roles: ["technician"], first_name: "MCAI", last_name: "Technician", username: "technician"},
+  %{email: "editor@media-cloud.ai", password: "mediacloudai", roles: ["editor"], first_name: "MCAI", last_name: "Editor", username: "editor"}
 ]
 
-for user <- users do
-  {:ok, user} = ExBackend.Accounts.create_user(user)
+for attrs <- users do
+  {:ok, user} = ExBackend.Accounts.create_user(attrs)
+  ExBackend.Accounts.update_password(user, attrs)
   ExBackend.Accounts.confirm_user(user)
 end
 
 admin = ExBackend.Accounts.get_by(%{"email" => "admin@media-cloud.ai"})
 ExBackend.Accounts.update_user(admin, %{"roles" => ["administrator"]})
 
-Code.eval_file("priv/repo/workflow_live.exs")
-Code.eval_file("priv/repo/workflow_with_statuses.exs")
-Code.eval_file("priv/repo/worker_live.exs")
+Code.eval_string(EEx.eval_file("priv/repo/workflow_live.eex", uuid: admin.uuid))
+Code.eval_string(EEx.eval_file("priv/repo/workflow_with_statuses.eex", uuid: admin.uuid))
+Code.eval_string(EEx.eval_file("priv/repo/worker_live.eex", uuid: admin.uuid))
