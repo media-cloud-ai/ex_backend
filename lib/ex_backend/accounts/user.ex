@@ -38,7 +38,7 @@ defmodule ExBackend.Accounts.User do
       end
 
     attrs =
-      if Map.get(attrs, :username) || Map.get(attrs, "username") do
+      if ExBackend.Map.get_by_key_or_atom(attrs, :username) do
         attrs
       else
         if Map.get(attrs, :first_name) && Map.get(attrs, :last_name) do
