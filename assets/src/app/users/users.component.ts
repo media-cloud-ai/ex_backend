@@ -5,10 +5,12 @@ import {PageEvent} from '@angular/material/paginator'
 import {ActivatedRoute, Router} from '@angular/router'
 import {MatDialog} from '@angular/material/dialog'
 
+import {AuthService} from '../authentication/auth.service'
 import {UserService} from '../services/user.service'
 import {UserPage, RolePage} from '../models/page/user_page'
 import {User, Role, Right, RoleEvent, RoleEventAction} from '../models/user'
 import {RoleOrRightDeletionDialogComponent} from './dialogs/role_or_right_deletion_dialog.component'
+import {UserEditionDialogComponent} from './dialogs/user_edition_dialog.component'
 import {UserShowCredentialsDialogComponent} from './dialogs/user_show_credentials_dialog.component'
 import {UserShowValidationLinkDialogComponent} from './dialogs/user_show_validation_link_dialog.component'
 
@@ -27,7 +29,8 @@ export class UsersComponent {
   ]
   pageSize = this.pageSizeOptions[0];
   email: string
-  name: string
+  first_name: string
+  last_name: string
   password: string
   user_error_message: string
   page = 0
@@ -40,6 +43,7 @@ export class UsersComponent {
   roles_total = 1000
   all_roles: RolePage
   rights: Right[] = []
+  right_administrator: boolean
   available_permissions: string[]
   already_set_entity: string[] = []
   new_role_name: string
@@ -50,9 +54,11 @@ export class UsersComponent {
     private route: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog,
+    public authService: AuthService,
   ) {}
 
   ngOnInit() {
+    this.right_administrator = this.authService.hasAdministratorRight()
     this.sub = this.route
       .queryParams
       .subscribe(params => {
@@ -116,13 +122,14 @@ export class UsersComponent {
 
   inviteUser(): void {
     this.user_error_message = ''
-    this.userService.inviteUser(this.email, this.name)
+    this.userService.inviteUser(this.email, this.first_name, this.last_name)
     .subscribe(response => {
       if (response === undefined) {
         this.user_error_message = 'Unable to create user'
       } else {
         this.email = ''
-        this.name = ''
+        this.first_name = ''
+        this.last_name = ''
         this.password = ''
       }
       this.getUsers(0)
@@ -152,6 +159,16 @@ export class UsersComponent {
       dialogRef.afterClosed().subscribe(response => {
         this.getUsers(this.page)
       })
+    })
+  }
+
+  editUser(user): void {
+    let dialogRef = this.dialog.open(UserEditionDialogComponent, {data: {
+      'user': user
+    }})
+
+    dialogRef.afterClosed().subscribe(response => {
+      this.getUsers(this.page)
     })
   }
 

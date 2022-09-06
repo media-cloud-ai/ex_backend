@@ -5,7 +5,9 @@ defmodule ExBackend.Migration.AddNameToUser do
 
   def change do
     alter table(:users) do
-      add(:name, :string)
+      add(:first_name, :string)
+      add(:last_name, :string)
+      add(:username, :string)
     end
   end
 end

@@ -16,7 +16,9 @@ defmodule ExBackend.Accounts.User do
     field(:uuid, :string)
     field(:access_key_id, :string)
     field(:secret_access_key, :string)
-    field(:name, :string)
+    field(:first_name, :string)
+    field(:last_name, :string)
+    field(:username, :string)
 
     timestamps()
   end
@@ -25,15 +27,44 @@ defmodule ExBackend.Accounts.User do
     uuid = Ecto.UUID.generate()
 
     attrs =
-      if Map.get(attrs, :email) || Map.get(attrs, :roles) do
-        Map.put(attrs, :uuid, uuid)
+      if user.uuid == nil do
+        if Map.get(attrs, :email) || Map.get(attrs, :roles) do
+          Map.put(attrs, :uuid, uuid)
+        else
+          Map.put(attrs, "uuid", uuid)
+        end
       else
-        Map.put(attrs, "uuid", uuid)
+        attrs
+      end
+
+    attrs =
+      if Map.get(attrs, :username) || Map.get(attrs, "username") do
+        attrs
+      else
+        if Map.get(attrs, :first_name) && Map.get(attrs, :last_name) do
+          username =
+            String.downcase(
+              String.at(Map.get(attrs, :first_name), 0) <> Map.get(attrs, :last_name)
+            )
+
+          Map.put(attrs, :username, username)
+        else
+          if Map.get(attrs, "first_name") && Map.get(attrs, "last_name") do
+            username =
+              String.downcase(
+                String.at(Map.get(attrs, "first_name"), 0) <> Map.get(attrs, "last_name")
+              )
+
+            Map.put(attrs, "username", username)
+          else
+            attrs
+          end
+        end
       end
 
     user
-    |> cast(attrs, [:email, :name, :roles, :uuid])
-    |> validate_required([:email, :name, :uuid])
+    |> cast(attrs, [:email, :first_name, :last_name, :username, :roles, :uuid])
+    |> validate_required([:email, :first_name, :last_name, :username, :uuid])
     |> unique_email
   end
 

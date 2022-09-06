@@ -37,17 +37,35 @@ export class UserService {
       )
   }
 
-  inviteUser(email: string, name: string): Observable<User> {
+  inviteUser(email: string, first_name: string, last_name: string): Observable<User> {
     let params = {
       user: {
         email: email,
-        name: name,
+        first_name: first_name,
+        last_name: last_name,
       }
     }
+
     return this.http.post<User>(this.usersUrl, params)
       .pipe(
         tap(userPage => this.log('invite User')),
         catchError(this.handleError('inviteUser', undefined))
+      )
+  }
+
+  updateUser(id: number, first_name: string, last_name: string): Observable<User> {
+    let params = {
+      id: id,
+      user: {
+        first_name: first_name,
+        last_name: last_name,
+      }
+    }
+
+    return this.http.put<User>(this.usersUrl + "/" + id, params)
+      .pipe(
+        tap(userPage => this.log('update User')),
+        catchError(this.handleError('updateUser', undefined))
       )
   }
 

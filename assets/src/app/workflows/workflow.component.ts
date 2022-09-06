@@ -28,6 +28,8 @@ export class WorkflowComponent {
   can_resume: boolean = false
   right_abort: boolean = false
   right_delete: boolean = false
+  first_name: String
+  last_name: String
   user_name: String
 
   constructor(
@@ -58,8 +60,10 @@ export class WorkflowComponent {
     this.userService.getUserByUuid(this.workflow.user_uuid).subscribe(
         response => {
           this.user_name = response.data.email
-          if (response.data.name) {
-            this.user_name = response.data.name
+          if (response.data.first_name && response.data.last_name) {
+            this.first_name = response.data.first_name
+            this.last_name = response.data.last_name
+            this.user_name = response.data.username
           }
         })
 
