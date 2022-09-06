@@ -137,7 +137,7 @@ defmodule ExBackend.Mixfile do
         "deps.audit"
       ],
       dev: ["ecto.drop", "ecto.setup", "phx.server -r priv/repo/seeds.exs"],
-      test: ["ecto.create --quiet", "ecto.migrate", "test"],
+      test: ["ecto.drop", "ecto.create --quiet", "ecto.migrate", "test"],
       version: &get_version/1
     ]
   end

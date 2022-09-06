@@ -7,14 +7,14 @@ defmodule ExBackendWeb.AuthCase do
   alias ExBackendWeb.Auth.Token
   alias ExBackend.{Accounts, Repo}
 
-  def add_user(name, email, roles \\ []) do
-    user = %{name: name, email: email, roles: roles}
+  def add_user(first_name, last_name, email, roles \\ []) do
+    user = %{first_name: first_name, last_name: last_name, email: email, roles: roles}
     {:ok, user} = Accounts.create_user(user)
     user
   end
 
-  def add_user_confirmed(name, email, roles \\ []) do
-    user = add_user(name, email)
+  def add_user_confirmed(first_name, last_name, email, roles \\ []) do
+    user = add_user(first_name, last_name, email, roles)
     Accounts.update_password(user, %{password: "reallyHard2gue$$"})
 
     user
@@ -22,8 +22,8 @@ defmodule ExBackendWeb.AuthCase do
     |> Repo.update!()
   end
 
-  def add_reset_user(name, email) do
-    add_user(name, email)
+  def add_reset_user(first_name, last_name, email) do
+    add_user(first_name, last_name, email)
     |> change(%{confirmed_at: DateTime.utc_now()})
     |> change(%{reset_sent_at: DateTime.utc_now()})
     |> Repo.update!()
