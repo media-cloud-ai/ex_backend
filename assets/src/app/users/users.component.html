@@ -112,7 +112,7 @@
         <span class="actions">
           <button mat-raised-button
             color="primary"
-            *ngIf="right_administrator && user.id != 1"
+            *ngIf="right_administrator && (user.id != 1 || current_user_id == 1)"
             (click)="editUser(user)">
               <i class="material-icons">mode_edit</i></button>
         </span>
@@ -120,7 +120,7 @@
         <span class="actions">
           <button mat-raised-button
             color="warn"
-            *ngIf="right_administrator && user.id != 1"
+            *ngIf="right_administrator && (user.id != 1 || current_user_id == 1)"
             (click)="removeUser(user.id)">
               <i class="material-icons">delete</i>
           </button>
