@@ -6,7 +6,7 @@ defmodule ExBackend.Accounts do
   import Ecto.{Query, Changeset}, warn: false
   alias Phauxth.Log
   alias ExBackend.{Accounts.User, Repo}
-  alias StepFlow.Controller.Helpers
+  alias StepFlow.Controllers.Roles
 
   defp force_integer(param) when is_bitstring(param) do
     param
@@ -111,7 +111,7 @@ defmodule ExBackend.Accounts do
   end
 
   def check_user_rights(user, entity, action) do
-    {:ok, Helpers.has_right?(entity, user, action)}
+    {:ok, Roles.has_right?(user.roles, entity, action)}
   end
 
   def delete_users_role(%{role: role_name}) do

@@ -13,6 +13,7 @@ import {UserService} from '../services/user.service'
 export class AuthService {
   isLoggedIn = false
   username : string
+  user_id: number
   roles : string[]
   redirectUrl: string
 
@@ -39,6 +40,7 @@ export class AuthService {
       this.isLoggedIn = true
       var parsedUser = JSON.parse(currentUser)
       this.username = parsedUser.username
+      this.user_id = parsedUser.user_id
       this.roles = parsedUser.roles
     }
   }
@@ -50,6 +52,7 @@ export class AuthService {
   login(email, password): Observable<Token> {
     this.isLoggedIn = false
     this.username = undefined
+    this.user_id = undefined
     const query = {session: {
       email: email,
       password: password
@@ -61,17 +64,20 @@ export class AuthService {
         if (response && response.user) {
           this.cookieService.set('currentUser', JSON.stringify({
             username: email,
+            user_id: response.user.id,
             roles: response.user.roles
           }))
 
           this.isLoggedIn = true
           this.username = email
           this.roles = response.user.roles
+          this.user_id = response.user.id
           this.userLoggedInSource.next(email)
         } else {
           this.isLoggedIn = false
           this.username = undefined
           this.roles = undefined
+          this.user_id = undefined
           this.userLoggedOutSource.next('')
           this.rightPanelSwitchSource.next('close')
         }
@@ -84,6 +90,7 @@ export class AuthService {
     this.isLoggedIn = false
     this.username = undefined
     this.roles = undefined
+    this.user_id = undefined
     this.userLoggedOutSource.next('')
     this.cookieService.delete('token')
     this.cookieService.delete('currentUser')
@@ -97,6 +104,10 @@ export class AuthService {
 
   getUsername(): string {
     return this.username
+  }
+
+  getId(): number {
+    return this.user_id
   }
 
   hasAdministratorRight(): boolean {

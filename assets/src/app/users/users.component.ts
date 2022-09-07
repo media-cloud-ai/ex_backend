@@ -48,6 +48,7 @@ export class UsersComponent {
   already_set_entity: string[] = []
   new_role_name: string
   role_error_message: string
+  current_user_id : number
 
   constructor(
     private userService: UserService,
@@ -59,6 +60,7 @@ export class UsersComponent {
 
   ngOnInit() {
     this.right_administrator = this.authService.hasAdministratorRight()
+    this.current_user_id = this.authService.getId()
     this.sub = this.route
       .queryParams
       .subscribe(params => {
