@@ -112,7 +112,8 @@ defmodule ExBackend.Mixfile do
       {:ranch, "~> 1.8.0"},
       {:remote_dockers, "1.4.0"},
       {:sigaws, "~> 0.7.2"},
-      {:step_flow, "~> 1.5.0"},
+      {:step_flow,
+       git: "https://gitlab.com/media-cloud-ai/backend/ex_step_flow.git", branch: "develop"},
       {:tesla, "~> 1.4.0"},
       {:timex, "~> 3.6"},
       {:uuid, "~> 1.1"}
