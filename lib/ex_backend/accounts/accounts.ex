@@ -111,7 +111,12 @@ defmodule ExBackend.Accounts do
   end
 
   def check_user_rights(user, entity, action) do
-    {:ok, Roles.has_right?(user.roles, entity, action)}
+    has_right =
+      user.roles
+      |> Enum.map(fn role -> StepFlow.Roles.get_by(%{"name" => role}) end)
+      |> Roles.has_right?(entity, action)
+
+    {:ok, has_right}
   end
 
   def delete_users_role(%{role: role_name}) do
