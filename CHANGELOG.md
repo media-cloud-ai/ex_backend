@@ -2,73 +2,87 @@
 ## [Unreleased]
 
 
+<a name="1.6.0"></a>
+## [1.6.0] - 2022-09-13
+### Authentication
+- check authorization request header if no cookie is present
+
+### CI
+- Add dependencies security audit
+
+### Clean
+- removing unused components
+
+### Deps
+- update bamboo for hut to use rebar3
+
+### Feat
+- bump to 1.6.0
+- add arobase for username in user page and username hovering
+- add view to edit user first and last name
+- add first and last name to user
+- print username in workflows
+- add new user with name and email
+- add name to user
+- show email instead of uuid in detailed workflow view
+- show email instead of uuid in ui
+- hooks views
+- colors
+- backend update for notification hooks
+- get the validate account link
+
+### Fix
+- get roles by names for rights checking
+- allow root to modify its name in ui
+- changed has right method calling
+- bring modification to administrator name
+- fix form values references
+- correct views containing user with username
+- fix the identifier, version and date filters for the workflows duration statistics table
+- remove lines related to deleted workflows treatment in assets
+- color on statuses
+
+### Mix
+- add dependencies audit step in checks alias
+- add the checks alias to run multiple code analyzis
+
+### README
+- describe security audit command line
+
+### Style
+- reduce complexity of structure
+
+### Test
+- reflect first and last names in tests
+- repercuting modification to dev seed
+- add usernames in test
+
+
 <a name="1.5.0"></a>
-## [1.5.0] - 2022-04-19
+## [1.5.0] - 2022-05-11
 ### Feat
 - bump to 1.5.0
-
-
-<a name="1.5.0-rc1"></a>
-## [1.5.0-rc1] - 2022-04-19
-### Feat
-- bump to 1.5.0-rc1
-
-
-<a name="1.4.2-rc2"></a>
-## [1.4.2-rc2] - 2022-04-06
-### Feat
-- bump to 1.4.2-rc2
-- bump to 1.4.2-rc1
+- add changelog
 
 ### Fix
 - elixir templating bug
-
-
-<a name="1.4.2-rc1"></a>
-## [1.4.2-rc1] - 2022-02-22
-### Feat
-- bump to 1.4.2-rc1
-- add changelog
-
-
-<a name="1.4.1-rc1"></a>
-## [1.4.1-rc1] - 2022-01-26
-### Feat
-- bump to 1.4.1-rc1
 
 
 <a name="1.4.0"></a>
 ## [1.4.0] - 2022-01-25
 ### Feat
 - bump to stepflow 1.4.0
-
-
-<a name="1.4.0-rc3"></a>
-## [1.4.0-rc3] - 2022-01-11
-### Feat
 - bump to 1.4.0-rc3
+- bump to 1.4.0-rc2
+- bump to 1.4.0-rc3
+- bump stepflow version to 1.4.0-rc2
 
 ### Fix
 - fetch all role for user not only current page
-
-
-<a name="1.4.0-rc2"></a>
-## [1.4.0-rc2] - 2022-01-10
-### Feat
-- bump to 1.4.0-rc2
-
-### Fix
 - rights check in ui
 
 ### Style
 - format
-
-
-<a name="1.4.0-rc1"></a>
-## [1.4.0-rc1] - 2022-01-07
-### Feat
-- bump to 1.4.0-rc3
-- bump stepflow version to 1.4.0-rc2
 
 
 <a name="1.3.1"></a>
@@ -288,7 +302,8 @@
 ## [0.0.6] - 2020-03-09
 ### Order
 - fix html material binding
-- add first version of dialog enhancement workflow
+- display "FranceTélévisions Audio" workflows download button
+- add first version of FTV dialog enhancement workflow
 - display process status on start
 - handle number type parameters
 
@@ -320,16 +335,10 @@
 - generate only one time the datetime of uploaded content
 
 
-[Unreleased]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.5.0...HEAD
-[1.5.0]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.5.0-rc1...1.5.0
-[1.5.0-rc1]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.4.2-rc2...1.5.0-rc1
-[1.4.2-rc2]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.4.2-rc1...1.4.2-rc2
-[1.4.2-rc1]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.4.1-rc1...1.4.2-rc1
-[1.4.1-rc1]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.4.0...1.4.1-rc1
-[1.4.0]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.4.0-rc3...1.4.0
-[1.4.0-rc3]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.4.0-rc2...1.4.0-rc3
-[1.4.0-rc2]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.4.0-rc1...1.4.0-rc2
-[1.4.0-rc1]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.3.1...1.4.0-rc1
+[Unreleased]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.6.0...HEAD
+[1.6.0]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.5.0...1.6.0
+[1.5.0]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.4.0...1.5.0
+[1.4.0]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.3.1...1.4.0
 [1.3.1]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.3.0...1.3.1
 [1.3.0]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.2.0...1.3.0
 [1.2.0]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.1.0...1.2.0
