@@ -12,8 +12,8 @@ import {UserService} from '../services/user.service'
 @Injectable()
 export class AuthService {
   isLoggedIn = false
-  token : string
   username : string
+  user_id: number
   roles : string[]
   redirectUrl: string
 
@@ -33,12 +33,14 @@ export class AuthService {
     private userService: UserService,
     public router: Router
   ) {
+    let access_token = this.getToken()
     var currentUser = this.cookieService.get('currentUser')
-    if (currentUser !== undefined && currentUser !== '') {
+    if (access_token !== undefined && access_token !== '' &&
+      currentUser !== undefined && currentUser !== '') {
       this.isLoggedIn = true
       var parsedUser = JSON.parse(currentUser)
-      this.token = parsedUser.token
       this.username = parsedUser.username
+      this.user_id = parsedUser.user_id
       this.roles = parsedUser.roles
     }
   }
@@ -49,8 +51,8 @@ export class AuthService {
 
   login(email, password): Observable<Token> {
     this.isLoggedIn = false
-    this.token = undefined
     this.username = undefined
+    this.user_id = undefined
     const query = {session: {
       email: email,
       password: password
@@ -59,23 +61,23 @@ export class AuthService {
     return this.http.post<Token>('/api/sessions', query).pipe(
       tap(response => {
         console.log("Login: ", response);
-        if (response && response.access_token) {
+        if (response && response.user) {
           this.cookieService.set('currentUser', JSON.stringify({
             username: email,
-            token: response.access_token,
+            user_id: response.user.id,
             roles: response.user.roles
           }))
 
           this.isLoggedIn = true
-          this.token = response.access_token
           this.username = email
           this.roles = response.user.roles
+          this.user_id = response.user.id
           this.userLoggedInSource.next(email)
         } else {
           this.isLoggedIn = false
-          this.token = undefined
           this.username = undefined
           this.roles = undefined
+          this.user_id = undefined
           this.userLoggedOutSource.next('')
           this.rightPanelSwitchSource.next('close')
         }
@@ -84,23 +86,28 @@ export class AuthService {
     )
   }
 
-  logout(): void {
+  logout(clean_cookies = true): void {
     this.isLoggedIn = false
-    this.token = undefined
     this.username = undefined
     this.roles = undefined
+    this.user_id = undefined
     this.userLoggedOutSource.next('')
+    this.cookieService.delete('token')
     this.cookieService.delete('currentUser')
     this.rightPanelSwitchSource.next('close')
     this.router.navigate(['/login'])
   }
 
   getToken(): string {
-    return this.token
+    return this.cookieService.get('token');
   }
 
   getUsername(): string {
     return this.username
+  }
+
+  getId(): number {
+    return this.user_id
   }
 
   hasAdministratorRight(): boolean {

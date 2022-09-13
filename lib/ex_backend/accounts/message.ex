@@ -33,7 +33,7 @@ defmodule ExBackend.Accounts.Message do
   import Bamboo.Email
   alias ExBackend.Mailer
 
-  defp get_url_base do
+  def get_url_base do
     hostname = get_hostname()
 
     ssl = get_ssl()
@@ -75,7 +75,7 @@ defmodule ExBackend.Accounts.Message do
       {"true", 443} -> ""
       {true, "443"} -> ""
       {"true", "443"} -> ""
-      ext_port -> ":" <> ext_port
+      ext_port -> ":" <> to_string(elem(ext_port, 1))
     end
   end
 
@@ -105,7 +105,7 @@ defmodule ExBackend.Accounts.Message do
           <td align="center" bgcolor="#348eda"
             style="box-sizing: border-box; padding: 0; font-family: 'Open Sans', 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 16px; vertical-align: top; background-color: #348eda; border-radius: 2px; text-align: center;"
             valign="top">
-            <a href="#{hostname}/confirm?key=#{key}"
+            <a href="#{hostname}/validate?key=#{key}"
               style="box-sizing: border-box; border-color: #348eda; font-weight: 400; text-decoration: none; display: inline-block; margin: 0; color: #ffffff; background-color: #348eda; border: solid 1px #348eda; border-radius: 2px; cursor: pointer; font-size: 14px; padding: 12px 45px;">
               Confirm Email Address
             </a>

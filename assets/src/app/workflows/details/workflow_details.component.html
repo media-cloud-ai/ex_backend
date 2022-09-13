@@ -70,11 +70,46 @@
     </span>
     <span class="duration">
       <duration-component [workflow]=workflow display="full"></duration-component>
+      <div class="notification_hooks">
+        <span class="expander">
+          <i class="material-icons open"
+            [ngClass]="{disabled: disabled}"
+            *ngIf="!notification_hooks_opened"
+            (click)="toggleNotificationHooks()"
+            title="Show notification_hooks"
+            >expand_more</i>
+
+          <i class="material-icons close"
+            [ngClass]="{disabled: disabled}"
+            *ngIf="notification_hooks_opened"
+            (click)="toggleNotificationHooks()"
+            title="Hide notification_hooks"
+            >expand_less</i>
+        </span>
+        <label>Workflow notification hooks:</label>
+        <div *ngIf=notification_hooks_opened>
+          <span *ngFor="let notification_hook of workflow.notification_hooks">
+            <div class="notification_hook {{notification_hook.label}} {{notification_hook.status}}">
+              <hr>
+              <label>Endpoint</label>
+              <span class="hook_detail" *ngFor="let notification_status of notification_hook.status">
+              <label *ngIf="(notification_status.condition.includes('workflow'))">{{notification_hook.label | titlecase}}</label>
+                <hr *ngIf="(notification_status.condition.includes('workflow'))">
+                <label *ngIf="(notification_status.condition.includes('workflow'))">Condition <span>{{notification_status.condition}}</span></label>
+                <label *ngIf="(notification_status.condition.includes('workflow'))">Timestamp <span>{{notification_status.timestamp}}</span></label>
+                <label *ngIf="(notification_status.condition.includes('workflow'))">Status <span [ngClass]="{
+                  'error' : notification_status.response != 200,
+                  'ok' : notification_status.response == 200}">{{notification_status.response}}</span></label>
+              </span>
+            </div>
+          </span>
+        </div>
+      </div>
     </span>
     <span class="user-launch">
-      <div class="item">
+      <div title="@{{user_name}}" class="item">
         <label>Launched by: </label>
-        <span>{{workflow.user_uuid}}</span>
+        <span>{{first_name}} {{last_name}}</span>
       </div>
 
       <div class="item" *ngIf="pause_post_action">

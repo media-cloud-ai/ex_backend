@@ -25,7 +25,10 @@ defmodule ExBackendWeb.UserView do
       confirmed_at: user.confirmed_at,
       inserted_at: user.inserted_at,
       uuid: user.uuid,
-      access_key_id: user.access_key_id
+      access_key_id: user.access_key_id,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      username: user.username
     }
   end
 
@@ -38,7 +41,10 @@ defmodule ExBackendWeb.UserView do
       inserted_at: user.inserted_at,
       uuid: user.uuid,
       access_key_id: user.access_key_id,
-      secret_access_key: user.secret_access_key
+      secret_access_key: user.secret_access_key,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      username: user.username
     }
   end
 end

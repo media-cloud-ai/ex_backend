@@ -10,12 +10,15 @@ defmodule ExBackend.Accounts.User do
     field(:email, :string)
     field(:password, :string, virtual: true)
     field(:password_hash, :string)
-    field(:roles, {:array, :string}, default: ["administrator"])
+    field(:roles, {:array, :string}, default: [])
     field(:confirmed_at, :utc_datetime_usec)
     field(:reset_sent_at, :utc_datetime_usec)
     field(:uuid, :string)
     field(:access_key_id, :string)
     field(:secret_access_key, :string)
+    field(:first_name, :string)
+    field(:last_name, :string)
+    field(:username, :string)
 
     timestamps()
   end
@@ -24,15 +27,44 @@ defmodule ExBackend.Accounts.User do
     uuid = Ecto.UUID.generate()
 
     attrs =
-      if Map.get(attrs, :email) || Map.get(attrs, :roles) do
-        Map.put(attrs, :uuid, uuid)
+      if user.uuid == nil do
+        if Map.get(attrs, :email) || Map.get(attrs, :roles) do
+          Map.put(attrs, :uuid, uuid)
+        else
+          Map.put(attrs, "uuid", uuid)
+        end
       else
-        Map.put(attrs, "uuid", uuid)
+        attrs
+      end
+
+    attrs =
+      if ExBackend.Map.get_by_key_or_atom(attrs, :username) do
+        attrs
+      else
+        if Map.get(attrs, :first_name) && Map.get(attrs, :last_name) do
+          username =
+            String.downcase(
+              String.at(Map.get(attrs, :first_name), 0) <> Map.get(attrs, :last_name)
+            )
+
+          Map.put(attrs, :username, username)
+        else
+          if Map.get(attrs, "first_name") && Map.get(attrs, "last_name") do
+            username =
+              String.downcase(
+                String.at(Map.get(attrs, "first_name"), 0) <> Map.get(attrs, "last_name")
+              )
+
+            Map.put(attrs, "username", username)
+          else
+            attrs
+          end
+        end
       end
 
     user
-    |> cast(attrs, [:email, :roles, :uuid])
-    |> validate_required([:email, :uuid])
+    |> cast(attrs, [:email, :first_name, :last_name, :username, :roles, :uuid])
+    |> validate_required([:email, :first_name, :last_name, :username, :uuid])
     |> unique_email
   end
 

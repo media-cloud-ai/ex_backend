@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs'
 import { catchError, map, tap } from 'rxjs/operators'
 
 import {UserPage, RolePage, RightDefinitionsPage} from '../models/page/user_page'
-import {User, Confirm, Role} from '../models/user'
+import {User, Confirm, Role, ValidationLink} from '../models/user'
 import {AuthService} from '../authentication/auth.service'
 
 @Injectable()
@@ -29,18 +29,55 @@ export class UserService {
       )
   }
 
-  inviteUser(email: string): Observable<User> {
+  getUserByUuid(uuid: string): Observable<any> {
+    return this.http.get<User>(this.usersUrl + "/search/" + uuid)
+      .pipe(
+        tap(userPage => this.log('fetched User')),
+        catchError(this.handleError('getUserByUuid', undefined))
+      )
+  }
+
+  inviteUser(email: string, first_name: string, last_name: string): Observable<User> {
     let params = {
       user: {
-        email: email
+        email: email,
+        first_name: first_name,
+        last_name: last_name,
       }
     }
+
     return this.http.post<User>(this.usersUrl, params)
       .pipe(
         tap(userPage => this.log('invite User')),
         catchError(this.handleError('inviteUser', undefined))
       )
   }
+
+  updateUser(id: number, first_name: string, last_name: string): Observable<User> {
+    let params = {
+      id: id,
+      user: {
+        first_name: first_name,
+        last_name: last_name,
+      }
+    }
+
+    return this.http.put<User>(this.usersUrl + "/" + id, params)
+      .pipe(
+        tap(userPage => this.log('update User')),
+        catchError(this.handleError('updateUser', undefined))
+      )
+  }
+
+  generateValidationLink(user: User): Observable<ValidationLink> {
+    let params = new HttpParams()
+    params = params.append('id', user.id.toString())
+    return this.http.post<User>(this.usersUrl + '/generate_validation_link', params)
+      .pipe(
+        tap(userPage => this.log('Generate validation link')),
+        catchError(this.handleError('generateValidationLink', undefined))
+      )
+    }
 
   generateCredentials(user: User): Observable<User> {
     let params = new HttpParams()

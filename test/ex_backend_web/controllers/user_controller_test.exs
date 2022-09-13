@@ -2,16 +2,22 @@ defmodule ExBackendWeb.UserControllerTest do
   use ExBackendWeb.ConnCase
 
   import ExBackendWeb.AuthCase
+  import ExBackendWeb.Auth.Token
   alias ExBackend.Accounts
 
-  @create_attrs %{email: "bill@example.com", password: "hard2guess"}
+  @create_attrs %{
+    first_name: "Bill",
+    last_name: "Smith",
+    email: "bill@example.com",
+    password: "hard2guess"
+  }
   @update_attrs %{email: "william@example.com"}
   @invalid_attrs %{email: nil}
 
   setup %{conn: conn} = config do
     if email = config[:login] do
-      user = add_user(email, config[:roles] || ["administrator"])
-      other = add_user("tony@example.com")
+      user = add_user("Bill", "Smith", email, config[:roles] || ["administrator"])
+      other = add_user("Tony", "Stank", "tony@example.com")
       conn = conn |> add_token_conn(user)
       {:ok, %{conn: conn, user: user, other: other}}
     else
@@ -127,5 +133,42 @@ defmodule ExBackendWeb.UserControllerTest do
   test "check multi roles with administrator on delete", %{conn: conn, other: other} do
     conn = delete(conn, user_path(conn, :delete, other))
     assert response(conn, 204)
+  end
+
+  @tag login: "reg@example.com", roles: ["technician"]
+  test "check validation link fails when not an administrator", %{
+    conn: conn,
+    user: user
+  } do
+    conn = post(conn, user_path(conn, :generate_validation_link, id: user.id))
+    assert json_response(conn, 403)["errors"] != %{}
+  end
+
+  @tag login: "reg@example.com", roles: ["administrator"]
+  test "check validation link fails if user id does not exist", %{
+    conn: conn,
+    user: user
+  } do
+    catch_error(post(conn, user_path(conn, :generate_validation_link, id: "2000")))
+  end
+
+  @tag login: "reg@example.com", roles: ["administrator"]
+  test "check validation link success", %{
+    conn: conn,
+    user: user
+  } do
+    conn = post(conn, user_path(conn, :generate_validation_link, id: user.id))
+    request = json_response(conn, 200)["validation_link"]
+
+    test =
+      case verify(%{"key" => Enum.at(String.split(request, "="), 1)}) do
+        {:ok, user} ->
+          user.email
+
+        _ ->
+          "Error"
+      end
+
+    assert test == "reg@example.com"
   end
 end

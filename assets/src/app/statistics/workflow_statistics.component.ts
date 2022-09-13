@@ -38,7 +38,7 @@ export class WorkflowStatisticsComponent {
 
   workflowSelectedIdentifiers: string[] = []
   workflowSelectedVersions: Version[] = []
-  workflowSelectedStatuses = ["completed"]
+  workflowSelectedStatuses = []
 
   workflowStartDate: Date
   workflowEndDate: Date
@@ -118,14 +118,22 @@ export class WorkflowStatisticsComponent {
     this.loading = true;
     this.workflowDurations = new Array<WorkflowDurationStatistics>();
 
-    let selected_identifiers = new Set(this.workflows.sort(Workflow.compare).map((definition) => definition.identifier));
+    let selected_identifiers =
+      new Set(this.workflows
+        .sort(Workflow.compare)
+        .map((definition) => definition.identifier)
+        .filter(identifier => this.workflowSelectedIdentifiers.includes(identifier)));
 
     let params = [];
     params.push({ "key": "page", "value": this.workflowStatisticsPage });
     params.push({ "key": "size", "value": this.workflowStatisticsPageSize });
 
     for (let identifier of selected_identifiers) {
-      params.push({ "key": "workflow_id[]", "value": identifier });
+      params.push({ "key": "workflow_ids[]", "value": identifier });
+    }
+
+    for (let version of this.workflowSelectedVersions) {
+      params.push({ "key": "version[]", "value": version });
     }
 
     for (let status of this.workflowSelectedStatuses) {
@@ -142,7 +150,7 @@ export class WorkflowStatisticsComponent {
 
     this.statisticsService.getWorkflowsDurationStatistics(params)
       .subscribe((statistics) => {
-        // console.log("[WorkflowDurationStatistics] statistics: ", statistics);
+        //console.log("[WorkflowDurationStatistics] statistics: ", statistics);
         this.loading = false;
 
         this.workflowDurations =

@@ -94,7 +94,9 @@ import {StartIngestDialog} from './ingest/dialogs/start_ingest.component'
 import {JobDetailsDialogComponent} from './jobs/details/job_details_dialog.component'
 import {NewSubtitleDialogComponent} from './registeries/dialog/new_subtitle_dialog.component'
 import {RoleOrRightDeletionDialogComponent} from './users/dialogs/role_or_right_deletion_dialog.component'
+import {UserEditionDialogComponent} from './users/dialogs/user_edition_dialog.component'
 import {UserShowCredentialsDialogComponent} from './users/dialogs/user_show_credentials_dialog.component'
+import {UserShowValidationLinkDialogComponent} from './users/dialogs/user_show_validation_link_dialog.component'
 import {WorkflowAbortDialogComponent} from './workflows/dialogs/workflow_abort_dialog.component'
 import {WorkflowPauseDialogComponent} from './workflows/dialogs/workflow_pause_dialog.component'
 
@@ -118,7 +120,6 @@ import {WorkflowService}         from './services/workflow.service'
 import {GenericModule}           from './generic/generic.module'
 import {PipesModule}             from './pipes/pipes.module'
 
-import {TokenInterceptor}        from './authentication/token.interceptor'
 import {ErrorInterceptor}        from './authentication/error.interceptor'
 
 import 'hammerjs/hammer' // for MatSlideToggleModule
@@ -206,7 +207,9 @@ const EX_BACKEND_DATE_FORMATS = {
     SubtitleComponent,
     UserComponent,
     UsersComponent,
+    UserEditionDialogComponent,
     UserShowCredentialsDialogComponent,
+    UserShowValidationLinkDialogComponent,
     WatchersComponent,
     WorkflowAbortDialogComponent,
     WorkflowComponent,
@@ -233,7 +236,9 @@ const EX_BACKEND_DATE_FORMATS = {
     StepRendererComponent,
     SubtitleComponent,
     UserComponent,
+    UserEditionDialogComponent,
     UserShowCredentialsDialogComponent,
+    UserShowValidationLinkDialogComponent,
     WatchersComponent,
     WorkflowComponent,
     WorkflowAbortDialogComponent,
@@ -259,11 +264,6 @@ const EX_BACKEND_DATE_FORMATS = {
     {
       provide: MAT_DATE_FORMATS,
       useValue: EX_BACKEND_DATE_FORMATS
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
-      multi: true
     },
     {
       provide: HTTP_INTERCEPTORS,

@@ -30,10 +30,10 @@
       </span>
     </span>
     <span class="duration">
-      <duration-component [workflow]=workflow display="simple"></duration-component>
+      <duration-component [workflow]=workflow display="simple" [duration]=duration></duration-component>
     </span>
-    <span class="user">
-      {{workflow.user_uuid}}
+    <span title="@{{user_name}}" class="user">
+      {{first_name}} {{last_name}}
     </span>
     <span class="steps-count">
       <span class="label">Steps:</span>

@@ -118,3 +118,44 @@ mat-chip-list {
     display: inline-block;
   }
 }
+
+.notification_hooks {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  i {
+    vertical-align: middle;
+    cursor: pointer;
+  }
+}
+
+.notification_hook {
+  padding-left: 10px;
+  line-height: 1.2em;
+  border-left: 4px solid @lightGrey;
+
+  label {
+    max-width: 40%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: bold;
+    min-width: 150px;
+    display: inline-block;
+  }
+
+  .ok {
+    color: @green;
+  }
+
+  .error {
+    color: @red;
+  }
+
+  label span {
+      display: block;
+      font-weight: normal;
+      // overflow: hidden;
+      // text-overflow: ellipsis;
+      // max-width: 40%;
+  }
+}

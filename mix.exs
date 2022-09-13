@@ -4,12 +4,12 @@ defmodule ExBackend.Mixfile do
   def project do
     [
       app: :ex_backend,
-      version: "1.5.0",
+      version: "1.6.0",
       elixir: "~> 1.9",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       test_coverage: [tool: ExCoveralls],
-      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
+      compilers: [:phoenix] ++ Mix.compilers(),
       preferred_cli_env: [
         coveralls: :test,
         "coveralls.detail": :test,
@@ -41,6 +41,8 @@ defmodule ExBackend.Mixfile do
     [
       mod: {ExBackend.Application, []},
       extra_applications: [
+        :lager,
+        :logger,
         :amqp,
         :bamboo,
         :bcrypt_elixir,
@@ -48,7 +50,6 @@ defmodule ExBackend.Mixfile do
         :ecto_sql,
         :httpoison,
         :jason,
-        :logger,
         :libvault,
         :phauxth,
         :phoenix_ecto,
@@ -76,7 +77,7 @@ defmodule ExBackend.Mixfile do
       {:amqp, "~> 3.1.0"},
       {:bcrypt_elixir, "~> 2.0"},
       {:bamboo, "~> 2.2.0"},
-      {:bamboo_smtp, "~> 4.1.0"},
+      {:bamboo_smtp, "~> 4.2.1"},
       {:blue_bird, "~> 0.4.1"},
       {:comeonin, "~> 5.1"},
       {:cors_plug, "~> 2.0"},
@@ -98,6 +99,7 @@ defmodule ExBackend.Mixfile do
       {:jason, "~> 1.1"},
       {:lager, "3.8.0"},
       {:libvault, "~> 0.2.1"},
+      {:mix_audit, "~> 1.0", only: [:dev, :test], runtime: false},
       {:phoenix, "~> 1.5.3"},
       {:phoenix_ecto, "~> 4.0"},
       {:phoenix_html, "~> 2.10"},
@@ -110,7 +112,7 @@ defmodule ExBackend.Mixfile do
       {:ranch, "~> 1.8.0"},
       {:remote_dockers, "1.4.0"},
       {:sigaws, "~> 0.7.2"},
-      {:step_flow, "~> 1.5.0"},
+      {:step_flow, "1.6.0"},
       {:tesla, "~> 1.4.0"},
       {:timex, "~> 3.6"},
       {:uuid, "~> 1.1"}
@@ -127,8 +129,16 @@ defmodule ExBackend.Mixfile do
     [
       "ecto.setup": ["ecto.create"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
+      audit: ["deps.audit"],
+      checks: [
+        "ecto.create --quiet",
+        "test",
+        "format --check-formatted",
+        "credo --strict",
+        "deps.audit"
+      ],
       dev: ["ecto.drop", "ecto.setup", "phx.server -r priv/repo/seeds.exs"],
-      test: ["ecto.create --quiet", "ecto.migrate", "test"],
+      test: ["ecto.drop", "ecto.create --quiet", "ecto.migrate", "test"],
       version: &get_version/1
     ]
   end

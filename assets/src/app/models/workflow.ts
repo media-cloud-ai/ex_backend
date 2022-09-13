@@ -13,6 +13,7 @@ export class JobsStatus {
 export class Status {
   id: number
   state: string
+  description?: string
 }
 
 export class Parameter {
@@ -53,6 +54,19 @@ export class Right {
   groups: string[]
 }
 
+export class NotificationStatus {
+  condition?: string
+  response?: any
+  timestamp?: string
+}
+
+export class NotificationHook {
+  label?: string
+  endpoint?: string
+  credentials?: string
+  status?: NotificationStatus[]
+}
+
 export class Workflow {
   id?: number
   identifier?: string
@@ -71,6 +85,7 @@ export class Workflow {
   steps?: Step[]
   workflow_id?: number
   user_uuid?: string
+  notification_hooks?: Array<NotificationHook>
 
   static compare(a: Workflow, b: Workflow) {
     let identifierComparison = a.identifier.localeCompare(b.identifier);
@@ -124,7 +139,7 @@ export class Version {
   }
 
   public equals(other: Version) : boolean {
-      return this.major === other.major && this.minor === other.minor && this.minor === other.minor;
+      return this.major === other.major && this.minor === other.minor && this.micro === other.micro;
   }
 
   static compare(a: Version, b: Version) {

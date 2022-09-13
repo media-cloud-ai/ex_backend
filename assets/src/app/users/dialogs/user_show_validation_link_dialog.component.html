@@ -1,0 +1,25 @@
+<h1 mat-dialog-title class=title-link>Validation link for {{ user.email }}</h1>
+
+<div mat-dialog-content class=link>
+  <span>
+    <mat-icon color="primary">key</mat-icon>
+  </span>
+  <span> Validation link: <br>
+     {{validation_link}}</span>
+</div>
+<div>
+  <button mat-raised-button [cdkCopyToClipboard]="CopyValidationLink()" color="primary">Copy</button>
+</div>
+
+<div mat-dialog-actions 
+  align=end>
+  <button
+    mat-raised-button
+    (click)="onClose()"
+    color="primary"
+    cdkFocusInitial>
+    <mat-icon>check</mat-icon>
+    Close
+  </button>
+</div>
+

@@ -5,6 +5,7 @@ import {Job} from '../../models/job'
 import {JobDurations, JobDuration} from '../../models/statistics/duration'
 import {WorkerService} from '../../services/worker.service'
 import {StatisticsService} from '../../services/statistics.service'
+import {Workflow} from '../../models/workflow'
 
 @Component({
   selector: 'job_details_dialog',
@@ -13,6 +14,7 @@ import {StatisticsService} from '../../services/statistics.service'
 })
 export class JobDetailsDialogComponent {
   job: Job
+  workflow: Workflow
   duration: JobDuration
 
   constructor(
@@ -22,7 +24,8 @@ export class JobDetailsDialogComponent {
     private statisticsService: StatisticsService,
     private router: Router,
    ) {
-    this.job = data
+    this.job = data.job
+    this.workflow = data.workflow
 
     this.statisticsService.getJobDurations(this.job.id)
     .subscribe(response => {

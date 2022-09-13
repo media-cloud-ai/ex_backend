@@ -25,7 +25,21 @@ export class StatisticsService {
       )
   }
 
+  getWorkflowsDurations(workflow_ids: number[]): Observable<WorkflowDurations> {
+    let params = new HttpParams()
+    for (let workflow_id of workflow_ids) {
+      params = params.append('ids[]', String(workflow_id))
+    }
+
+    return this.http.get<WorkflowDurations>(this.durationsUrl + "/workflows", { params: params })
+      .pipe(
+        tap(workflowDurations => this.log('fetched WorkflowDurations')),
+        catchError(this.handleError('getWorkflowsDurations', undefined))
+      )
+  }
+
   getWorkflowsDurationStatistics(parameters = []): Observable<WorkflowDurationStatistics> {
+    //console.log("[getWorkflowDurationStatistics] parameters: ", parameters);
     let params = new HttpParams()
 
     for(let item of parameters) {

@@ -18,7 +18,6 @@ export class UserShowCredentialsDialogComponent {
     private clipboard: Clipboard,
     @Inject(MAT_DIALOG_DATA) public data: any) {
 
-    console.log(data)
     this.user = data.user.data
     this.type = data.message
   }

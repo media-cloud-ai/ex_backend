@@ -23,7 +23,8 @@ defmodule ExBackendWeb.WorkflowView do
       tags: workflow.tags,
       reference: workflow.reference,
       flow: workflow.flow,
-      created_at: workflow.inserted_at
+      created_at: workflow.inserted_at,
+      notification_hooks: workflow.notification_hooks
     }
 
     result =

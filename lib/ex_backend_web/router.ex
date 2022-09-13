@@ -12,7 +12,7 @@ defmodule ExBackendWeb.Router do
   pipeline :api do
     plug(:accepts, ["json"])
     plug(:fetch_session)
-    plug(Phauxth.AuthenticateToken)
+    plug(ExBackendWeb.Auth.TokenCookie)
   end
 
   get("/app", ExBackendWeb.ApplicationController, :index)
@@ -23,7 +23,9 @@ defmodule ExBackendWeb.Router do
 
     post("/sessions", SessionController, :create)
     resources("/users", UserController, except: [:new, :edit])
+    get("/users/search/:uuid", UserController, :get_by_uuid)
     post("/users/generate_credentials", UserController, :generate_credentials)
+    post("/users/generate_validation_link", UserController, :generate_validation_link)
     delete("/users/roles/:name", UserController, :delete_role)
     post("/users/check_rights", UserController, :check_rights)
     resources("/watchers", WatcherController, except: [:new, :edit])

@@ -9,7 +9,7 @@ workflow_definition = %{
   version_major: 6,
   version_minor: 5,
   version_micro: 4,
-  user_uuid: "toto_live",
+  user_uuid: "<%= uuid %>",
   reference: "some-identifier",
   steps: [
     %{
@@ -39,5 +39,6 @@ workflow_definition = %{
 }
 
 {:ok, workflow} = StepFlow.Workflows.create_workflow(workflow_definition)
+StepFlow.Workflows.Status.define_workflow_status(workflow.id, :created_workflow)
 
 {:ok, "started"} = StepFlow.Step.start_next(workflow)

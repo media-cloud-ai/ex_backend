@@ -20,7 +20,7 @@
     No workflow found.
   </li>
   <li *ngFor="let workflow of workflows.data" class="workflow">
-    <workflow-component [workflow]=workflow [detailed]=parameters.detailed></workflow-component>
+    <workflow-component *ngIf=durations [workflow]=workflow [detailed]=parameters.detailed [duration]=getWorkflowDuration(workflow.id)></workflow-component>
   </li>
 </ul>
 

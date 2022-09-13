@@ -15,11 +15,13 @@ groups = [
   version_major: 6,
   version_minor: 5,
   version_micro: 4,
+  user_uuid: "<%= uuid %>",
   reference: "some-identifier",
   steps: [],
   parameters: [
   ]
 })
+StepFlow.Workflows.Status.define_workflow_status(workflow.id, :created_workflow)
 
 {:ok, job} = StepFlow.Jobs.create_job(%{
   name: "my_live_step",
