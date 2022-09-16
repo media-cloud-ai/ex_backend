@@ -40,15 +40,15 @@
       <span class="count">{{getStepsCount()}} / {{getTotalSteps()}}</span>
     </span>
     <span class="details">
-      <button
-        mat-raised-button
-        color="primary"
-        title="Details"
-        >
-        <a routerLink="/workflows/{{workflow.id}}">
-          <mat-icon>visibility</mat-icon>
-        </a>
-      </button>
+      <a routerLink="/workflows/{{workflow.id}}">
+        <button
+          mat-raised-button
+          color="primary"
+          title="Details"
+          >
+            <mat-icon>visibility</mat-icon>
+          </button>
+      </a>
     </span>
     <span
       class="pause"
