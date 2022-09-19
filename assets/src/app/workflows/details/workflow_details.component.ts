@@ -10,7 +10,7 @@ import {UserService} from '../../services/user.service'
 import {WorkflowService} from '../../services/workflow.service'
 import {Workflow, Step} from '../../models/workflow'
 import {WorkflowRenderer} from '../../models/workflow_renderer'
-import {WorkflowAbortDialogComponent} from '../dialogs/workflow_abort_dialog.component'
+import {WorkflowActionsDialogComponent} from '../dialogs/workflow_actions_dialog.component'
 import {WorkflowPauseDialogComponent} from '../dialogs/workflow_pause_dialog.component'
 
 @Component({
@@ -181,7 +181,7 @@ export class WorkflowDetailsComponent {
   }
 
   abort(workflow_id): void {
-    let dialogRef = this.dialog.open(WorkflowAbortDialogComponent, {data: {
+    let dialogRef = this.dialog.open(WorkflowActionsDialogComponent, {data: {
       'workflow': this.workflow,
       'message': 'abort'
     }})
@@ -198,7 +198,7 @@ export class WorkflowDetailsComponent {
   }
 
   resume(workflow_id): void {
-    let dialogRef = this.dialog.open(WorkflowAbortDialogComponent, {data: {
+    let dialogRef = this.dialog.open(WorkflowActionsDialogComponent, {data: {
       'workflow': this.workflow,
       'message': 'resume'
     }})
@@ -215,7 +215,7 @@ export class WorkflowDetailsComponent {
   }
 
   stop(workflow_id): void {
-    let dialogRef = this.dialog.open(WorkflowAbortDialogComponent, {data: {'workflow': this.workflow}})
+    let dialogRef = this.dialog.open(WorkflowActionsDialogComponent, {data: {'workflow': this.workflow}})
 
     dialogRef.afterClosed().subscribe(workflow => {
       if (workflow !== undefined) {
@@ -229,7 +229,7 @@ export class WorkflowDetailsComponent {
   }
 
   delete(workflow_id): void {
-    let dialogRef = this.dialog.open(WorkflowAbortDialogComponent, {data: {
+    let dialogRef = this.dialog.open(WorkflowActionsDialogComponent, {data: {
       'workflow': this.workflow,
       'message': 'delete'
     }})
