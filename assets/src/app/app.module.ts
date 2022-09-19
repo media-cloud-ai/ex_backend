@@ -97,7 +97,7 @@ import {RoleOrRightDeletionDialogComponent} from './users/dialogs/role_or_right_
 import {UserEditionDialogComponent} from './users/dialogs/user_edition_dialog.component'
 import {UserShowCredentialsDialogComponent} from './users/dialogs/user_show_credentials_dialog.component'
 import {UserShowValidationLinkDialogComponent} from './users/dialogs/user_show_validation_link_dialog.component'
-import {WorkflowAbortDialogComponent} from './workflows/dialogs/workflow_abort_dialog.component'
+import {WorkflowActionsDialogComponent} from './workflows/dialogs/workflow_actions_dialog.component'
 import {WorkflowPauseDialogComponent} from './workflows/dialogs/workflow_pause_dialog.component'
 
 import {AuthService}             from './authentication/auth.service'
@@ -211,7 +211,7 @@ const EX_BACKEND_DATE_FORMATS = {
     UserShowCredentialsDialogComponent,
     UserShowValidationLinkDialogComponent,
     WatchersComponent,
-    WorkflowAbortDialogComponent,
+    WorkflowActionsDialogComponent,
     WorkflowComponent,
     WorkflowDetailsComponent,
     WorkflowPauseDialogComponent,
@@ -241,7 +241,7 @@ const EX_BACKEND_DATE_FORMATS = {
     UserShowValidationLinkDialogComponent,
     WatchersComponent,
     WorkflowComponent,
-    WorkflowAbortDialogComponent,
+    WorkflowActionsDialogComponent,
     WorkflowPauseDialogComponent,
     WorkflowRendererComponent,
     WorkflowStatisticsComponent,

@@ -3,17 +3,17 @@ import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog'
 import {Workflow} from '../../models/workflow'
 
 @Component({
-  selector: 'workflow_abort_dialog',
-  templateUrl: 'workflow_abort_dialog.component.html',
-  styleUrls: ['./workflow_abort_dialog.component.less'],
+  selector: 'workflow_actions_dialog',
+  templateUrl: 'workflow_actions_dialog.component.html',
+  styleUrls: ['./workflow_actions_dialog.component.less'],
 })
-export class WorkflowAbortDialogComponent {
+export class WorkflowActionsDialogComponent {
 
   workflow: Workflow
   type: string
 
   constructor(
-    public dialogRef: MatDialogRef<WorkflowAbortDialogComponent>,
+    public dialogRef: MatDialogRef<WorkflowActionsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
 
     console.log(data)

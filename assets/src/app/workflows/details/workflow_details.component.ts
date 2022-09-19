@@ -10,7 +10,7 @@ import {UserService} from '../../services/user.service'
 import {WorkflowService} from '../../services/workflow.service'
 import {Workflow, Step} from '../../models/workflow'
 import {WorkflowRenderer} from '../../models/workflow_renderer'
-import {WorkflowAbortDialogComponent} from '../dialogs/workflow_abort_dialog.component'
+import {WorkflowActionsDialogComponent} from '../dialogs/workflow_actions_dialog.component'
 import {WorkflowPauseDialogComponent} from '../dialogs/workflow_pause_dialog.component'
 
 @Component({
@@ -28,11 +28,13 @@ export class WorkflowDetailsComponent {
   can_stop: boolean = true
   can_pause: boolean = false
   can_resume: boolean = false
+  can_delete: boolean = false
   parameters_opened: boolean = false
   notification_hooks_opened: boolean = false
   connection: any
   messages: Message[] = []
   right_abort: boolean = false
+  right_delete: boolean = false
   step_focus: Map<number, boolean> = new Map()
   first_name: String
   last_name: String
@@ -104,12 +106,18 @@ export class WorkflowDetailsComponent {
 
       this.can_pause = this.can_abort && !is_paused && !is_last_step_processing;
       this.can_resume = is_paused;
+      this.can_delete = !this.workflow.deleted
 
       this.pause_post_action = this.getPausePostAction();
 
       this.authService.hasAnyRights("workflow::" + this.workflow.identifier, "abort").subscribe(
         response => {
           this.right_abort = response.authorized
+      })
+
+      this.authService.hasAnyRights("workflow::" + this.workflow.identifier, "delete").subscribe(
+        response => {
+          this.right_delete = response.authorized
       })
 
       this.userService.getUserByUuid(this.workflow.user_uuid).subscribe(
@@ -173,7 +181,7 @@ export class WorkflowDetailsComponent {
   }
 
   abort(workflow_id): void {
-    let dialogRef = this.dialog.open(WorkflowAbortDialogComponent, {data: {
+    let dialogRef = this.dialog.open(WorkflowActionsDialogComponent, {data: {
       'workflow': this.workflow,
       'message': 'abort'
     }})
@@ -190,7 +198,7 @@ export class WorkflowDetailsComponent {
   }
 
   resume(workflow_id): void {
-    let dialogRef = this.dialog.open(WorkflowAbortDialogComponent, {data: {
+    let dialogRef = this.dialog.open(WorkflowActionsDialogComponent, {data: {
       'workflow': this.workflow,
       'message': 'resume'
     }})
@@ -207,7 +215,7 @@ export class WorkflowDetailsComponent {
   }
 
   stop(workflow_id): void {
-    let dialogRef = this.dialog.open(WorkflowAbortDialogComponent, {data: {'workflow': this.workflow}})
+    let dialogRef = this.dialog.open(WorkflowActionsDialogComponent, {data: {'workflow': this.workflow}})
 
     dialogRef.afterClosed().subscribe(workflow => {
       if (workflow !== undefined) {
@@ -215,6 +223,22 @@ export class WorkflowDetailsComponent {
         this.workflowService.sendWorkflowEvent(workflow.id, {event: 'stop'})
         .subscribe(response => {
           console.log(response)
+        })
+      }
+    })
+  }
+
+  delete(workflow_id): void {
+    let dialogRef = this.dialog.open(WorkflowActionsDialogComponent, {data: {
+      'workflow': this.workflow,
+      'message': 'delete'
+    }})
+
+    dialogRef.afterClosed().subscribe(workflow => {
+      if (workflow !== undefined) {
+        this.workflowService.sendWorkflowEvent(workflow.id, {event: 'delete'})
+        .subscribe(response => {
+          window.location.reload()
         })
       }
     })
