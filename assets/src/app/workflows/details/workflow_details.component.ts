@@ -238,7 +238,6 @@ export class WorkflowDetailsComponent {
       if (workflow !== undefined) {
         this.workflowService.sendWorkflowEvent(workflow.id, {event: 'delete'})
         .subscribe(response => {
-          console.log(response)
           window.location.reload()
         })
       }
