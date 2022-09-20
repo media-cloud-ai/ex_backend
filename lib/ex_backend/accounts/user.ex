@@ -4,6 +4,7 @@ defmodule ExBackend.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
   alias ExBackend.Accounts.User
+  alias ExBackend.Filters
   alias ExBackend.Repo
 
   schema "users" do
@@ -19,6 +20,7 @@ defmodule ExBackend.Accounts.User do
     field(:first_name, :string)
     field(:last_name, :string)
     field(:username, :string)
+    has_many(:filters, Filters, on_delete: :delete_all)
 
     timestamps()
   end
@@ -143,5 +145,13 @@ defmodule ExBackend.Accounts.User do
     else
       creds
     end
+  end
+
+  def set_workflow_filters(%User{} = user, filters) do
+    user
+    |> User.changeset(%{
+      workflow_filters: filters
+    })
+    |> Repo.update()
   end
 end

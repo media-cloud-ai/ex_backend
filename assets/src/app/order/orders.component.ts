@@ -63,8 +63,10 @@ export class OrdersComponent {
         "file",
         "live"
       ],
-      start_date: yesterday,
-      end_date: today,
+      selectedDateRange: {
+        startDate: yesterday,
+        endDate: today,
+      },
       status: [
         "completed"
       ],

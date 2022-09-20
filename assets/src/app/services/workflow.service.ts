@@ -13,7 +13,7 @@ import { StartWorkflowDefinition } from '../models/startWorkflowDefinition'
 export class WorkflowService {
   private workflowUrl = '/api/workflow'
   private workflowsUrl = '/api/step_flow/workflows'
-  private workflowIdentifiersUrl = '/api/step_flow/definitions_identifiers'
+  private workflowFiltersUrl = 'api/worfklow_filters'
   private workflowsLauncher = '/api/step_flow/launch_workflow'
   private workflowDefinitionsUrl = '/api/step_flow/definitions'
   private statisticsUrl = '/api/step_flow/workflows_statistics'
@@ -75,8 +75,8 @@ export class WorkflowService {
     if (parameters.search) {
       params = params.append('search', parameters.search)
     }
-    params = params.append('after_date', formatDate(parameters.start_date, "yyyy-MM-ddTHH:mm:ss", "fr"))
-    params = params.append('before_date', formatDate(parameters.end_date, "yyyy-MM-ddTHH:mm:ss", "fr"))
+    params = params.append('after_date', formatDate(parameters.selectedDateRange.startDate, "yyyy-MM-ddTHH:mm:ss", "fr"))
+    params = params.append('before_date', formatDate(parameters.selectedDateRange.endDate, "yyyy-MM-ddTHH:mm:ss", "fr"))
 
     return this.http.get<WorkflowPage>(this.workflowsUrl, { params: params })
       .pipe(
@@ -147,8 +147,8 @@ export class WorkflowService {
       else
         params = params.append('is_live', "false")
     }
-    params = params.append('start_date', parameters.start_date.toISOString())
-    params = params.append('end_date', parameters.end_date.toISOString())
+    params = params.append('start_date', parameters.selectedDateRange.startDate.toISOString())
+    params = params.append('end_date', parameters.selectedDateRange.endDate.toISOString())
 
     return this.http.get<Workflow>(this.statisticsUrl, { params: params })
       .pipe(
