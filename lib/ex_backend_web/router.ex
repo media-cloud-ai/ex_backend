@@ -23,6 +23,9 @@ defmodule ExBackendWeb.Router do
 
     post("/sessions", SessionController, :create)
     resources("/users", UserController, except: [:new, :edit])
+    get("/users/filters/workflow", UserController, :get_workflow_filters)
+    post("/users/filters/workflow", UserController, :save_workflow_filters)
+    delete("/users/filters/workflow/:filter_id", UserController, :delete_workflow_filters)
     get("/users/search/:uuid", UserController, :get_by_uuid)
     post("/users/generate_credentials", UserController, :generate_credentials)
     post("/users/generate_validation_link", UserController, :generate_validation_link)

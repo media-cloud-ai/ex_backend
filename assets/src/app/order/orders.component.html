@@ -6,7 +6,7 @@
 </button>
 
 <div class=search>
-  <workflow-search-bar (parametersEvent)="updateWorkflows($event)"></workflow-search-bar>
+  <workflow-search-bar [parameters]="parameters" (parametersEvent)="updateWorkflows($event)"></workflow-search-bar>
 </div>
 
 <div class=workflow-header>

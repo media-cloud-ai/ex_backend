@@ -2,7 +2,7 @@ mat-form-field {
 	width: 19%;
 	align-items: left;
 	margin: 0% 0.5% 0% 0.5%;
-  }
+}
 
 mat-slide-toggle {
 	width: 9%;
@@ -16,11 +16,62 @@ mat-raised-button {
 	margin: 0% 0.5% 0% 0.5%;
 }
 
+mat-expansion-panel-header {
+	height: 25px;
+}
+
+mat-expansion-panel-header:hover {
+	background-color: lightgrey;
+}
+
+mat-expansion-panel-header.mat-expanded {
+    height: 25px;
+}
+
+mat-expansion-panel-header.mat-expanded i {
+    transform: rotate(180deg);
+	transition-duration: 0.3s;
+}
+
+mat-panel-title {
+	justify-content: center;
+}
+
+.date-picker {
+	background-color: transparent;
+	border: none;
+	border-bottom: 1px solid;
+	width: 19%;
+	height: 20px;
+	margin: 0% 0.5% 0% 0.5%;
+}
+
+.search-line {
+	text-align: center;
+}
+
+.search-line-expand {
+	text-align: center;
+	margin-left: 50px;
+	margin-right: 50px;
+}
+
+.search-line-options {
+	margin-top: 20px;
+	margin-left: 50px;
+	margin-right: 50px;
+}
+
+.delete-filter {
+	position: absolute;
+	right: 0px;
+}
+
 @media only screen and (max-width: 768px) {
 	mat-form-field {
 		width: 98%;
 		margin: 0% 1% 0% 1%;
-	  }
+	}
 	
 	mat-slide-toggle {
 		width: 48%;
@@ -29,6 +80,11 @@ mat-raised-button {
 	
 	mat-raised-button {
 		width: 48%;
+		margin: 0% 1% 0% 1%;
+	}
+
+	.date-picker {
+		width: 98%;
 		margin: 0% 1% 0% 1%;
 	}
   }

@@ -75,10 +75,13 @@ export class DashboardComponent {
     let today = new Date();
     let yesterday = new Date();
     yesterday.setDate(today.getDate() - 1);
+
     this.parameters = {
       identifiers: [],
-      start_date: yesterday,
-      end_date: today,
+      selectedDateRange: {
+        startDate: yesterday,
+        endDate: today,
+      },
       mode: [
         "file",
         "live"

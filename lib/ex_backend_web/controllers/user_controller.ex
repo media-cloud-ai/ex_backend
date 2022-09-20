@@ -5,13 +5,14 @@ defmodule ExBackendWeb.UserController do
 
   import ExBackendWeb.Authorize
   alias ExBackend.Accounts
+  alias ExBackend.Filters
   alias ExBackendWeb.Auth.Token
   alias Phauxth.Log
 
   action_fallback(ExBackendWeb.FallbackController)
 
   # the following plugs are defined in the controllers/authorize.ex file
-  plug(:user_check when action in [:index, :show, :update, :delete])
+  plug(:user_check when action in [:index, :show, :update, :delete, :get_workflow_filters])
 
   plug(
     :right_administrator_check
@@ -114,6 +115,38 @@ defmodule ExBackendWeb.UserController do
       send_resp(conn, :no_content, "")
     else
       send_resp(conn, 403, "unable to delete yourself")
+    end
+  end
+
+  def get_workflow_filters(%Plug.Conn{assigns: %{current_user: user}} = conn, param) do
+    filters = Filters.list_workflow_filter_for_user(%{"user_id" => user.id})
+    json(conn, filters)
+  end
+
+  def save_workflow_filters(%Plug.Conn{assigns: %{current_user: user}} = conn, %{
+        "filter_name" => filter_name,
+        "filters" => filters
+      }) do
+    Filters.save_user_workflow_filters(%{
+      "user_id" => user.id,
+      "type" => :workflow,
+      "name" => filter_name,
+      "filters" => filters
+    })
+
+    send_resp(conn, 200, "User workflow filters properly saved")
+  end
+
+  def delete_workflow_filters(%Plug.Conn{assigns: %{current_user: user}} = conn, %{
+        "filter_id" => filter_id
+      }) do
+    filter = Filters.get(filter_id |> String.to_integer())
+
+    if filter.user_id == user.id do
+      {:ok, _filter} = Filters.delete_user_workflow_filter(filter)
+      send_resp(conn, :no_content, "")
+    else
+      send_resp(conn, 403, "unable to delete a filter that you don't own")
     end
   end
 end
