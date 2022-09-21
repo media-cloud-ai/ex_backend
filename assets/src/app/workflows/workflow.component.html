@@ -50,69 +50,71 @@
           </button>
       </a>
     </span>
-    <span
-      class="pause"
-      *ngIf="!can_resume">
-      <button
-        mat-raised-button
-        color="accent"
-        [disabled]=!can_pause
-        (click)="pause(workflow.id)"
-        title="Pause"
-        >
-        <mat-icon>pause</mat-icon>
-      </button>
-    </span>
-    <span
-      class="resume"
-      *ngIf="!can_pause && can_resume">
-      <button
-        mat-raised-button
-        color="accent"
-        (click)="resume(workflow.id)"
-        title="Resume"
-        >
-        <mat-icon>play_arrow</mat-icon>
-      </button>
-    </span>
-    <span
-      class="abort"
-      *ngIf="!workflow.is_live">
-      <button
-        mat-raised-button
-        color="warn"
-        [disabled]="!can_abort || !right_abort"
-        (click)="abort(workflow.id)"
-        title="Abort"
-        >
-        <mat-icon>cancel</mat-icon>
-      </button>
-    </span>
-    <span
-      class="stop"
-      *ngIf=workflow.is_live>
-      <button
-        mat-raised-button
-        color="warn"
-        [disabled]=!can_stop
-        (click)="stop(workflow.id)"
-        title="Stop"
-        >
-        <mat-icon>stop</mat-icon>
-      </button>
-    </span>
-    <span
-      class="delete">
-      <button
-        mat-raised-button
-        [disabled]="!right_delete"
-        color="warn"
-        (click)="delete(workflow.id)"
-        title="Delete"
-        >
-        <mat-icon>delete_forever</mat-icon>
-      </button>
-    </span>
+    <button mat-button [matMenuTriggerFor]="moreActions"
+      (click)="onMoreActionsToggle()"
+      >
+      <span class="material-icons">
+        more_horiz
+      </span>
+    </button>
+      <mat-menu #moreActions="matMenu">
+        <button
+          mat-menu-item
+          *ngIf="!can_resume"
+          color="accent"
+          [disabled]=!can_pause
+          (click)="pause(workflow.id)"
+          title="Pause"
+          >
+          <mat-icon class="pause-icon" color=primary>pause</mat-icon>
+          <span class="v-align-middle">Pause</span>
+        </button>
+        <button
+          mat-menu-item
+          *ngIf="!can_pause && can_resume"
+          color="accent"
+          (click)="resume(workflow.id)"
+          title="Resume"
+          >
+          <mat-icon class="v-align-middle" color=primary>play_arrow</mat-icon>
+          <span class="v-align-middle">Resume</span>
+        </button>
+        <button
+          mat-menu-item
+          class="abort"
+          *ngIf="!workflow.is_live"
+          color="warn"
+          [disabled]="!can_abort || !right_abort"
+          (click)="abort(workflow.id)"
+          title="Abort"
+          >
+          <mat-icon class="v-align-middle" color=warn>cancel</mat-icon>
+          <span class="v-align-middle">Abort</span>
+        </button>
+        <button
+          mat-menu-item
+          class="stop"
+          *ngIf=workflow.is_live
+          color="warn"
+          [disabled]=!can_stop
+          (click)="stop(workflow.id)"
+          title="Stop"
+          >
+          <mat-icon class="v-align-middle" color=warn>stop</mat-icon>
+          <span class="v-align-middle">Stop</span>
+        </button>
+        <button
+          mat-menu-item
+          class="delete"
+          [disabled]="!right_delete"
+          color="warn"
+          (click)="delete(workflow.id)"
+          title="Delete"
+          >
+          <mat-icon class="v-align-middle" color=warn>delete</mat-icon>
+          <span class="v-align-middle">Delete</span>
+        </button>
+      </mat-menu>
   </div>
   <div *ngIf="workflow" class=steps>
     <div
@@ -121,7 +123,9 @@
       <step-progress-bar-component
         [step]=step
         [workflow]=workflow
-        [detailed]=detailed>
+        [detailed]=detailed
+        [right_retry]=right_retry
+        [is_live]=workflow.is_live>
       </step-progress-bar-component>
     </div>
   </div>
