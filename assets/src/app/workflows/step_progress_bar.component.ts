@@ -17,8 +17,8 @@ export class StepProgressBarComponent {
   @Input() step: Step
   @Input() workflow: Workflow
   @Input() detailed: boolean
-  right_retry: boolean = false
-  is_live: boolean = false
+  @Input() right_retry: boolean
+  @Input() is_live: boolean
 
   constructor(
     private authService: AuthService,
@@ -26,16 +26,6 @@ export class StepProgressBarComponent {
     private jobService: JobService,
     private workflowService: WorkflowService,
   ){}
-
-  ngOnInit() {
-    if (this.workflow !== undefined) {
-      this.is_live = this.workflow.is_live
-      this.authService.hasAnyRights("workflow::" + this.workflow.identifier, "retry").subscribe(
-        response => {
-          this.right_retry = response.authorized
-      })
-    }
-  }
 
   retry(step) {
     const workflowService = this.workflowService;
