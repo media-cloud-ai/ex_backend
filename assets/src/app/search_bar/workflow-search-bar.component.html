@@ -1,39 +1,39 @@
 <form [formGroup]="workflowsForm" fxFlex fxLayout="column" autocomplete="off">
   <div class="search-line">
-    <mat-form-field>
-      <mat-select formControlName="selectedPreset" placeholder="Saved filters" [(ngModel)]="selectedPreset" (selectionChange)="presetChanged()">
-        <mat-option *ngFor="let f of workflow_filters" [value]="f.filter" class="filter-option">
-          {{ f.name }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <input
-      ngxDaterangepickerMd
-      type="text"
-      class="date-picker"
-      formControlName="selectedDateRange"
-      [timePicker]="true"
-      [timePickerSeconds]="true"
-      [timePicker24Hour]="true"
-      [locale]="{ format: 'DD MMM YYYY HH:mm:ss', firstDay: 1 }"
-      [ranges]="ranges"
-      [showCustomRangeLabel]="true"
-      [keepCalendarOpeningWithRange]="true"
-      [alwaysShowCalendars]="true"
-      placeholder="Choose date"
-      [(ngModel)]="parameters.selectedDateRange"
-      (datesUpdated)="searchWorkflows()"
-    />
- 
-    <button mat-button color="primary" (click)="clearFilters()">
-      <i class="material-icons">clear</i>
-      Clear filters
-    </button>
-    <button mat-button color="primary" (click)="expandFilters()">
-      <i id="expand-icon" class="material-icons">keyboard_double_arrow_down</i>
-      Expand
-    </button>
-  </div>
+      <mat-form-field>
+        <mat-select formControlName="selectedPreset" placeholder="Saved filters" [(ngModel)]="selectedPreset" (selectionChange)="presetChanged()">
+          <mat-option *ngFor="let f of workflow_filters" [value]="f.filter" class="filter-option">
+            {{ f.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <input
+        ngxDaterangepickerMd
+        type="text"
+        class="date-picker"
+        formControlName="selectedDateRange"
+        [timePicker]="true"
+        [timePickerSeconds]="true"
+        [timePicker24Hour]="true"
+        [locale]="{ format: 'DD MMM YYYY HH:mm:ss', firstDay: 1 }"
+        [ranges]="ranges"
+        [showCustomRangeLabel]="true"
+        [keepCalendarOpeningWithRange]="true"
+        [alwaysShowCalendars]="true"
+        placeholder="Choose date"
+        [(ngModel)]="parameters.selectedDateRange"
+        (datesUpdated)="searchWorkflows()"
+      />
+   
+      <button mat-button color="primary" (click)="clearFilters()">
+        <i class="material-icons">clear</i>
+        Clear filters
+      </button>
+      <button mat-button color="primary" (click)="expandFilters()">
+        <i id="expand-icon" class="material-icons">keyboard_double_arrow_down</i>
+        Expand
+      </button>
+    </div>
 
   <div id="filter-line">
     <div>
@@ -79,7 +79,7 @@
         <i class="material-icons">settings</i>
         Manage filters
       </button>
-    </div>.
+    </div>
   </div>
     
   <div class="search-line-options">
