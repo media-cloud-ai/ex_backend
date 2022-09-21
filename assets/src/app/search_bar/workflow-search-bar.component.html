@@ -29,62 +29,59 @@
       <i class="material-icons">clear</i>
       Clear filters
     </button>
+    <button mat-button color="primary" (click)="expandFilters()">
+      <i id="expand-icon" class="material-icons">keyboard_double_arrow_down</i>
+      Expand
+    </button>
   </div>
 
-  <div class="search-line-expand">
-    <mat-expansion-panel hideToggle>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          <i class="material-icons">keyboard_double_arrow_down</i>
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <div>
-        <mat-form-field>
-          <mat-select formControlName="selectedStatus" placeholder="Status" [(ngModel)]="parameters.status" multiple>
-            <!-- <mat-option (click)="toggleAllSelection()" [value]="0">All</mat-option> -->
-            <mat-option *ngFor="let state of status" [value]="state" [ngClass]="state" class="state-option">
-              {{ state | titlecase }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-select formControlName="selectedMode" placeholder="Mode" [(ngModel)]="parameters.mode" multiple>
-            <mat-option *ngFor="let modus of mode" [value]="modus.id" [ngClass]="modus.id" class="state-option">
-              {{ modus.label }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-select formControlName="selectedWorkflows" placeholder="Workflows" [(ngModel)]="parameters.identifiers"
-            multiple>
-            <mat-option (click)="toggleAllSelection()" [value]="0">All</mat-option>
-            <mat-option *ngFor="let workflow of workflows" [value]="workflow.id" [ngClass]="workflow.id"
-              (click)="toggleOne()" class="workflow-option">
-              {{ workflow.label }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field class="search-text-input">
-          <input formControlName="referenceSearch" matInput placeholder="Reference search..." [(ngModel)]="parameters.search">
-        </mat-form-field>
-      </div>
-      <div>
-        <button mat-raised-button color="accent" (click)="searchWorkflows()">
-          <i class="material-icons">search</i>
-          Search
-        </button>
-        <button mat-button color="primary" (click)="openSaveDialog()">
-          <i class="material-icons">save</i>
-          Save filters
-        </button>
-        <button mat-button color="primary" (click)="openManageDialog()">
-          <i class="material-icons">settings</i>
-          Manage filters
-        </button>
-      </div>
-    </mat-expansion-panel>
-      
+  <div id="filter-line">
+    <div>
+      <mat-form-field>
+        <mat-select formControlName="selectedStatus" placeholder="Status" [(ngModel)]="parameters.status" multiple>
+          <!-- <mat-option (click)="toggleAllSelection()" [value]="0">All</mat-option> -->
+          <mat-option *ngFor="let state of status" [value]="state" [ngClass]="state" class="state-option">
+            {{ state | titlecase }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select formControlName="selectedMode" placeholder="Mode" [(ngModel)]="parameters.mode" multiple>
+          <mat-option *ngFor="let modus of mode" [value]="modus.id" [ngClass]="modus.id" class="state-option">
+            {{ modus.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select formControlName="selectedWorkflows" placeholder="Workflows" [(ngModel)]="parameters.identifiers"
+          multiple>
+          <mat-option (click)="toggleAllSelection()" [value]="0">All</mat-option>
+          <mat-option *ngFor="let workflow of workflows" [value]="workflow.id" [ngClass]="workflow.id"
+            (click)="toggleOne()" class="workflow-option">
+            {{ workflow.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="search-text-input">
+        <input formControlName="referenceSearch" matInput placeholder="Reference search..." [(ngModel)]="parameters.search">
+      </mat-form-field>
+    </div>
+    <div>
+      <button mat-raised-button color="accent" (click)="searchWorkflows()">
+        <i class="material-icons">search</i>
+        Search
+      </button>
+      <button mat-button color="primary" (click)="openSaveDialog()">
+        <i class="material-icons">save</i>
+        Save filters
+      </button>
+      <button mat-button color="primary" (click)="openManageDialog()">
+        <i class="material-icons">settings</i>
+        Manage filters
+      </button>
+    </div>.
   </div>
+    
   <div class="search-line-options">
     <mat-slide-toggle *ngIf="showDetailedToggle" formControlName="detailedToggle" color="primary" [checked]="parameters.detailed" [(ngModel)]="parameters.detailed" (change)="toggleDetailed()">
       Detailed

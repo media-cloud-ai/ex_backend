@@ -247,6 +247,16 @@ export class WorkflowSearchBarComponent {
     this.searchWorkflows()
   }
 
+  expandFilters(): void {
+    if (document.getElementById("filter-line").classList.contains("expanded")) {
+      document.getElementById("filter-line").classList.remove("expanded")
+      document.getElementById("expand-icon").classList.remove("expanded")
+    } else {
+      document.getElementById("filter-line").classList.add("expanded")
+      document.getElementById("expand-icon").classList.add("expanded")
+    }
+  }
+
   openSaveDialog(): void {
     const dialogRef = this.filtersNameDialog.open(WorkflowFiltersNameDialog, {
       width: '500px',
