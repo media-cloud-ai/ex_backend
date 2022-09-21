@@ -1,6 +1,9 @@
 <h1>Filters management</h1>
 <mat-selection-list>
-    <mat-list-item *ngFor="let filter of data.filters">
+  <mat-list-item *ngIf="data.filters.length == 0">
+    No filter found.
+  </mat-list-item>
+  <mat-list-item *ngFor="let filter of data.filters">
         <div class="line-filter">
             <span>
                 {{filter.name}}
@@ -12,5 +15,12 @@
                 <i class="material-icons">delete</i>
             </button>
         </div>
-        </mat-list-item>
+  </mat-list-item>
 </mat-selection-list>
+
+<div mat-dialog-actions
+  align=end>
+  <button mat-raised-button color="primary" (click)="onNoClick()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
