@@ -79,9 +79,9 @@ export class WorkflowsComponent {
     };
 
     this.route.queryParamMap.subscribe(params => {
-      this.parameters.mode = params.getAll("mode") || ["file","live"]
-      this.parameters.status = params.getAll("status") || []
-      this.parameters.identifiers = params.getAll("identifiers") || []
+      this.parameters.mode = params.getAll("mode").length > 0 ?  params.getAll("mode") : ["file","live"]
+      this.parameters.status = params.getAll("status")
+      this.parameters.identifiers = params.getAll("identifiers")
       this.parameters.search = params.getAll("search").toString() || undefined
       this.parameters.selectedDateRange.startDate = params.get("start_date") != undefined ? moment(params.get("start_date"), moment.ISO_8601).toDate() : yesterday;
       this.parameters.selectedDateRange.endDate =  params.get("end_date") != undefined ? moment(params.get("end_date"), moment.ISO_8601).toDate() : today;
@@ -92,7 +92,6 @@ export class WorkflowsComponent {
     .subscribe(params => {
       this.page = +params['page'] || 0
       this.pageSize = +params['per_page'] || 10
-      this.getWorkflows(this.page, this.pageSize, this.parameters)
 
       this.socketService.initSocket()
       this.socketService.connectToChannel('notifications:all')

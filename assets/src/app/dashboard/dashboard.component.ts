@@ -118,11 +118,10 @@ export class DashboardComponent {
       .subscribe(application => {
         this.application = application
       })
-
-    this.updateWorkflows(this.parameters)
   }
 
   updateWorkflows(parameters: WorkflowQueryParams) {
+    this.parameters = parameters
     this.barChartData = undefined
     this.workflowService.getWorkflowStatistics(parameters)
       .subscribe(response => {
