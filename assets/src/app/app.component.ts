@@ -48,7 +48,7 @@ export class AppComponent {
         this.right_administrator = this.authService.hasAdministratorRight()
         this.right_technician = this.authService.hasTechnicianRight()
         this.right_editor = this.authService.hasEditorRight()
-        this.menu_opened = !this.breakpointObserver.isMatched('(max-width: 599px)')
+        this.menu_opened = false
         this.updateLeftMenu()
       })
     this.subOut = this.authService.userLoggedOut$.subscribe(
@@ -69,7 +69,7 @@ export class AppComponent {
       this.right_administrator = this.authService.hasAdministratorRight()
       this.right_technician = this.authService.hasTechnicianRight()
       this.right_editor = this.authService.hasEditorRight()
-      this.menu_opened = !this.breakpointObserver.isMatched('(max-width: 599px)')
+      this.menu_opened = false
       this.updateLeftMenu()
     }
 

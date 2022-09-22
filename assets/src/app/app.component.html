@@ -21,7 +21,7 @@
       </mat-toolbar-row>
     </mat-toolbar>
 
-    <mat-sidenav-container class="example-container">
+    <mat-sidenav-container (backdropClick)="openRightPanel()" class="example-container">
       <mat-sidenav mode="side" opened="true" *ngIf="menu_opened && loggedIn"
         class="docs-component-viewer-sidenav mat-drawer mat-sidenav ng-tns-c13-1 ng-trigger ng-trigger-transform mat-drawer-side ng-star-inserted">
         <ul>
@@ -34,7 +34,17 @@
             </li>
           </a>
         </ul>
-        <div class="bottomStick">
+        <ul>
+          <a mat-list-item
+              routerLink='/help'
+              class="help">
+              <li class="ng-star-inserted" routerLinkActive="active-list-item">
+                <mat-icon>help_outline</mat-icon>
+                &nbsp;Help
+              </li>
+          </a>
+        </ul>
+        <div class="bottom-stick">
           <button
             mat-icon-button (click)="switchMenu()"
             class="menu-button"
@@ -54,7 +64,16 @@
             </li>
           </a>
         </ul>
-        <div class="bottomStickSmall">
+        <ul>
+          <a mat-list-item
+              routerLink='/help'
+              class="help-small">
+              <li class="ng-star-inserted" routerLinkActive="active-list-item">
+                <mat-icon>help_outline</mat-icon>
+              </li>
+          </a>
+        </ul>
+        <div class="bottom-stick-small">
           <button
             mat-icon-button (click)="switchMenu()"
             class="menu-button-rotated"
@@ -70,7 +89,7 @@
         <router-outlet></router-outlet>
       </mat-sidenav-content>
 
-      <mat-sidenav mode="side" position="end" opened="true" *ngIf="right_panel_opened && loggedIn"
+      <mat-sidenav mode="over" #sidenav (keydown.escape)="openRightPanel()" disableClose position="end" opened="true" *ngIf="right_panel_opened && loggedIn"
         class="docs-component-viewer-sidenav-reverse mat-drawer mat-sidenav ng-tns-c13-1 ng-trigger ng-trigger-transform mat-drawer-side ng-star-inserted">
         <ul>
           <li class="ng-star-inserted"

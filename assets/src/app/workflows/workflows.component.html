@@ -1,14 +1,6 @@
-<div>
-  <h1>
-  Workflows
-  </h1>
-  
-  <div class=search>
-    <workflow-search-bar [parameters]="parameters" [showDetailedToggle]=true (detailedEvent)="toogleDetailed($event)"
-      (parametersEvent)="updateWorkflows($event)"></workflow-search-bar>
-  </div>
-
-
+<div class=search>
+  <workflow-search-bar [parameters]="parameters" [showDetailedToggle]=true (detailedEvent)="toogleDetailed($event)"
+    (parametersEvent)="updateWorkflows($event)"></workflow-search-bar>
 </div>
 
 <div *ngIf="loading" class="loading">
