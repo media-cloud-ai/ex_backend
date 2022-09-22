@@ -4,12 +4,6 @@
     <mat-toolbar class="mat-toolbar mat-primary mat-toolbar-multiple-rows"
     [ngClass]="{logout: !loggedIn}">
       <mat-toolbar-row class="mat-toolbar-row">
-        <button
-          mat-icon-button (click)="switchMenu()"
-          class="icon_menu"
-          *ngIf=loggedIn>
-          <mat-icon>menu</mat-icon>
-        </button>
         <span class=home>
           <a class=title routerLink='/'
             *ngIf=application>
@@ -21,24 +15,53 @@
         <span (click)="openRightPanel()"
           *ngIf=loggedIn
           class="user_settings">
-          <label>{{username}}</label>
-          <i class="material-icons">settings</i>
+          <i style="color: white;">{{username}}</i>
+          &nbsp;<i class="material-icons" style="font-size:35px; color: white;">account_circle</i>
         </span>
       </mat-toolbar-row>
     </mat-toolbar>
 
-    <mat-sidenav-container class="docs-component-viewer-sidenav-container mat-drawer-container mat-sidenav-container">
-      <mat-sidenav mode="side" opened="{{menu_opened}}"
+    <mat-sidenav-container class="example-container">
+      <mat-sidenav mode="side" opened="true" *ngIf="menu_opened && loggedIn"
         class="docs-component-viewer-sidenav mat-drawer mat-sidenav ng-tns-c13-1 ng-trigger ng-trigger-transform mat-drawer-side ng-star-inserted">
         <ul>
-          <a
+          <a mat-list-item
             *ngFor="let item of left_menu"
               routerLink='{{item.link}}'>
-            <li class="ng-star-inserted">
-              {{item.label}}
+            <li class="ng-star-inserted" routerLinkActive="active-list-item">
+              <mat-icon vertical-align:middle>{{item.icon}}</mat-icon>
+              &nbsp;{{item.label}}
             </li>
           </a>
         </ul>
+        <div class="bottomStick">
+          <button
+            mat-icon-button (click)="switchMenu()"
+            class="menu-button"
+            *ngIf=loggedIn>
+            <mat-icon style="font-size:35px;">expand_more</mat-icon>
+          </button>
+        </div>
+        </mat-sidenav>
+        <mat-sidenav mode="side" opened="true" *ngIf="!menu_opened && loggedIn" [@.disabled]="true"
+          class="docs-component-viewer-sidenav-small mat-drawer mat-sidenav ng-tns-c13-1 ng-trigger ng-trigger-transform mat-drawer-side ng-star-inserted">
+        <ul>
+          <a mat-list-item
+            *ngFor="let item of left_menu"
+              routerLink='{{item.link}}'>
+            <li class="ng-star-inserted" routerLinkActive="active-list-item">
+              <mat-icon>{{item.icon}}</mat-icon>
+            </li>
+          </a>
+        </ul>
+        <div class="bottomStickSmall">
+          <button
+            mat-icon-button (click)="switchMenu()"
+            class="menu-button-rotated"
+            *ngIf=loggedIn>
+            <mat-icon style="font-size:35px;">expand_more</mat-icon>
+          </button>
+        </div>
       </mat-sidenav>
       <mat-sidenav-content
         class="mat-drawer-content mat-sidenav-content ng-star-inserted"
@@ -47,16 +70,19 @@
         <router-outlet></router-outlet>
       </mat-sidenav-content>
 
-      <mat-sidenav mode="side" position="end" opened="{{right_panel_opened}}"
-        class="docs-component-viewer-sidenav mat-drawer mat-sidenav ng-tns-c13-1 ng-trigger ng-trigger-transform mat-drawer-side ng-star-inserted">
+      <mat-sidenav mode="side" position="end" opened="true" *ngIf="right_panel_opened && loggedIn"
+        class="docs-component-viewer-sidenav-reverse mat-drawer mat-sidenav ng-tns-c13-1 ng-trigger ng-trigger-transform mat-drawer-side ng-star-inserted">
         <ul>
           <li class="ng-star-inserted"
-            (click)="documentation()">
+            routerLink='/documentation'
+            routerLinkActive="active-list-item"
+            >
             <i class="material-icons">developer_mode</i>
             API Documentation
           </li>
           <li class="ng-star-inserted"
-            (click)="declaredWorkers()">
+            routerLink='/declared-workers'
+            routerLinkActive="active-list-item">
             <i class="material-icons">playlist_add_check</i>
             Declared workers
           </li>
