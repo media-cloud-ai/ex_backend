@@ -165,16 +165,17 @@ export class WorkflowSearchBarComponent {
     this.allSelected = false;
 
     this.workflowService.getWorkflowDefinitions(undefined, -1, "view", undefined, ["latest"], "simple")
-      .subscribe(response => {
+    .subscribe(response => {
         for (var index = 0; index < response.data.length; ++index) {
           this.workflows.push({
             id: response.data[index].identifier,
             label: response.data[index].label
           });
+          this.parameters.identifiers.push(response.data[index].identifier)
         }
         this.toggleAllSelection();
+        this.searchWorkflows()
      });
-
   }
 
   sortFiltersName(a, b) {
