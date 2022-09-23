@@ -42,7 +42,7 @@ export class AuthService {
       currentUser !== undefined && currentUser !== '') {
       this.isLoggedIn = true
       var parsedUser = JSON.parse(currentUser)
-      this.username = parsedUser.email
+      this.email = parsedUser.email
       this.username = parsedUser.username
       this.first_name = parsedUser.first_name
       this.last_name = parsedUser.last_name
