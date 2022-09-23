@@ -12,7 +12,10 @@ import {UserService} from '../services/user.service'
 @Injectable()
 export class AuthService {
   isLoggedIn = false
+  email: string
   username : string
+  first_name : string
+  last_name : string
   user_id: number
   roles : string[]
   redirectUrl: string
@@ -39,7 +42,10 @@ export class AuthService {
       currentUser !== undefined && currentUser !== '') {
       this.isLoggedIn = true
       var parsedUser = JSON.parse(currentUser)
+      this.email = parsedUser.email
       this.username = parsedUser.username
+      this.first_name = parsedUser.first_name
+      this.last_name = parsedUser.last_name
       this.user_id = parsedUser.user_id
       this.roles = parsedUser.roles
     }
@@ -51,7 +57,10 @@ export class AuthService {
 
   login(email, password): Observable<Token> {
     this.isLoggedIn = false
+    this.email = undefined
     this.username = undefined
+    this.first_name = undefined
+    this.last_name = undefined
     this.user_id = undefined
     const query = {session: {
       email: email,
@@ -63,19 +72,28 @@ export class AuthService {
         console.log("Login: ", response);
         if (response && response.user) {
           this.cookieService.set('currentUser', JSON.stringify({
-            username: email,
+            email: email,
+            username: response.user.username,
+            first_name: response.user.first_name,
+            last_name: response.user.last_name,
             user_id: response.user.id,
             roles: response.user.roles
           }))
 
           this.isLoggedIn = true
-          this.username = email
+          this.email = response.user.email
+          this.username = response.user.username,
+          this.first_name = response.user.first_name,
+          this.last_name = response.user.last_name,
           this.roles = response.user.roles
           this.user_id = response.user.id
           this.userLoggedInSource.next(email)
         } else {
           this.isLoggedIn = false
+          this.email = undefined
           this.username = undefined
+          this.first_name = undefined
+          this.last_name = undefined
           this.roles = undefined
           this.user_id = undefined
           this.userLoggedOutSource.next('')
@@ -88,7 +106,10 @@ export class AuthService {
 
   logout(clean_cookies = true): void {
     this.isLoggedIn = false
+    this.email = undefined
     this.username = undefined
+    this.first_name = undefined
+    this.last_name = undefined
     this.roles = undefined
     this.user_id = undefined
     this.userLoggedOutSource.next('')
@@ -103,7 +124,7 @@ export class AuthService {
   }
 
   getUsername(): string {
-    return this.username
+    return this.first_name + ' ' + this.last_name
   }
 
   getId(): number {

@@ -8,6 +8,7 @@
   bottom: 0;
   font-size: 12px;
   font-family: Roboto,"Helvetica Neue",sans-serif;
+
   main {
     height: 100%;
     .mat-drawer-container.mat-sidenav-container {
@@ -26,6 +27,11 @@
       .mat-drawer-content.mat-sidenav-content.loggedIn {
         padding: 10px;
       }
+    }
+
+    .settings-button {
+      justify-content: flex-end;
+      display: flex;
     }
   }
 }
@@ -89,6 +95,7 @@ a:link, a:visited {
   .spacer {
     flex: 1 1 auto;
   }
+
   .logo {
     padding-left: 10px;
     padding-right: 10px;
@@ -102,10 +109,12 @@ a:link, a:visited {
 
 .docs-component-viewer-sidenav {
   padding-bottom: 72px;
-  width: 240px;
   bottom: 0;
   overflow: auto;
   height: 100%;
+  background: -moz-linear-gradient(-45deg, #095487 0%, #095487 100%) !important;
+  background: -webkit-linear-gradient(-45deg, #095487 0%, #095487 100%) !important;
+  background: linear-gradient(45deg, #095487 0%, #095487 100%) !important;
 
   ul {
     list-style: none;
@@ -113,7 +122,6 @@ a:link, a:visited {
 
     li {
       border-bottom-width: 1px;
-      border-bottom-style: solid;
       margin: 0;
       padding: 0;
       border-color: rgba(0,0,0,.06);
@@ -123,10 +131,10 @@ a:link, a:visited {
       font-size: 14px;
       font-weight: 400;
       line-height: 47px;
-      transition: all .3s;
-      padding: 0 16px;
+      padding: 0 20px;
       position: relative;
       cursor: pointer;
+      color: white;
       i {
         vertical-align: middle;
       }
@@ -138,6 +146,132 @@ a:link, a:visited {
   }
 }
 
-.docs-component-viewer-sidenav, .docs-component-viewer-sidenav.mat-sidenav-opened {
-  box-shadow: 3px 0 6px rgba(0,0,0,.24);
+.docs-component-viewer-sidenav-small {
+  padding-bottom: 72px;
+  width: 70px;
+  bottom: 0;
+  overflow: auto;
+  height: 100%;
+  background: -moz-linear-gradient(-45deg, #095487 0%, #095487 100%) !important;
+  background: -webkit-linear-gradient(-45deg, #095487 0%, #095487 100%) !important;
+  background: linear-gradient(135deg, #095487 0%, #095487 100%) !important;
+
+  ul {
+    list-style: none;
+    padding: 0;
+
+    li {
+      border-bottom-width: 1px;
+      margin: 0;
+      padding: 0;
+      border-color: rgba(0,0,0,.06);
+      color: rgba(0,0,0,.54);
+      box-sizing: border-box;
+      display: block;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 47px;
+      padding: 0 20px;
+      position: relative;
+      cursor: pointer;
+      color: white;
+      i {
+        vertical-align: middle;
+      }
+    }
+
+    li:hover {
+      background-color: @lightBlue;
+    }
+  }
+}
+
+.docs-component-viewer-sidenav-reverse {
+  padding-bottom: 20px;
+  bottom: 0;
+  overflow: auto;
+  height: 160px;
+  background: -moz-linear-gradient(-45deg, #007855 0%, #0D8A57 100%) !important;
+  background: -webkit-linear-gradient(-45deg, #007855 0%, #0D8A57 100%) !important;
+  background: linear-gradient(45deg, #007855 0%, #0D8A57 100%) !important;
+
+  ul {
+    list-style: none;
+    padding: 0;
+
+    li {
+      border-bottom-width: 1px;
+      margin: 0;
+      padding: 0;
+      border-color: rgba(0,0,0,.06);
+      color: rgba(0,0,0,.54);
+      box-sizing: border-box;
+      display: block;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 47px;
+      padding: 0 20px;
+      position: relative;
+      cursor: pointer;
+      color: white;
+      i {
+        vertical-align: middle;
+      }
+    }
+
+    li:hover {
+      background-color: @lightBlue;
+    }
+  }
+}
+
+.material-icons {
+  vertical-align: middle;
+}
+
+.active-list-item {
+  .material-icons {
+    transform: scale(1.1);
+  }
+  color: @secondColor !important;
+  box-shadow:inset 5px 0px 0px 0px @secondColor !important;
+}
+
+.menu-button {
+  transform: rotate(180deg);
+}
+.menu-button-rotated {
+  transform: rotate(0deg);
+}
+
+.help{
+  position:absolute;
+  bottom:0;
+  padding-bottom: 60px;
+  color: white;
+}
+
+.help-small{
+  position:absolute;
+  bottom:0;
+  padding-bottom: 60px;
+  color: white;
+}
+
+.bottom-stick{
+  position:absolute;
+  bottom:0;
+  right:0;
+  padding-right: 20px;
+  padding-bottom: 10px;
+  color: white;
+}
+
+.bottom-stick-small{
+  position:absolute;
+  bottom:0;
+  right:0;
+  padding-right: 20px;
+  padding-bottom: 10px;
+  color: white;
 }

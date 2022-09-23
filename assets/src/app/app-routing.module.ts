@@ -13,6 +13,7 @@ import {AuthService} from './authentication/auth.service'
 import {ConfirmComponent} from './confirm/confirm.component'
 import {DashboardComponent} from './dashboard/dashboard.component'
 import {DeclaredWorkersComponent} from './declared_workers/declared_workers.component'
+import {HelpComponent} from './help/help.component'
 import {IngestComponent} from './ingest/ingest.component'
 import {JobsComponent} from './jobs/jobs.component'
 import {LoginComponent} from './login/login.component'
@@ -116,6 +117,10 @@ const appRoutes: Routes = [
     component: DeclaredWorkersComponent,
     canActivate: [AuthGuard]
   },
+  {
+    path: 'help',
+    component: HelpComponent
+  }
 ]
 
 @NgModule({

@@ -66,6 +66,7 @@ import {DashboardComponent}      from './dashboard/dashboard.component'
 import {DeclaredWorkersComponent} from './declared_workers/declared_workers.component'
 import {DurationComponent}       from './workflows/details/duration.component'
 import {IngestComponent}         from './ingest/ingest.component'
+import {HelpComponent}           from './help/help.component'
 import {JobStatisticsComponent}  from './statistics/job_statistics.component'
 import {JobsComponent}           from './jobs/jobs.component'
 import {LoginComponent}          from './login/login.component'
@@ -187,6 +188,7 @@ const EX_BACKEND_DATE_FORMATS = {
     DeclaredWorkersComponent,
     DeleteSubtitleDialog,
     DurationComponent,
+    HelpComponent,
     IngestComponent,
     JobDetailsDialogComponent,
     JobStatisticsComponent,
