@@ -68,7 +68,7 @@
         <router-outlet></router-outlet>
       </mat-sidenav-content>
       
-      <mat-sidenav mode="over" #sidenav (keydown.escape)="openRightPanel()" disableClose position="end" opened="true" *ngIf="right_panel_opened && loggedIn"
+      <mat-sidenav mode="over" #sidenav (keydown.escape)="openRightPanel()" position="end" [opened]="right_panel_opened" *ngIf="loggedIn"
         class="docs-component-viewer-sidenav-reverse mat-drawer mat-sidenav ng-tns-c13-1 ng-trigger ng-trigger-transform mat-drawer-side ng-star-inserted">
         <ul>
           <li class="ng-star-inserted"
@@ -83,14 +83,13 @@
           routerLinkActive="active-list-item">
           <i class="material-icons">playlist_add_check</i>
           Declared workers
-        </li>
-        <li class="ng-star-inserted"
-        (click)="logout()">
-        <i class="material-icons">power_settings_new</i>
-        Logout
-      </li>
-    </ul>
-  </mat-sidenav>
-</mat-sidenav-container>
+          </li>
+          <li class="ng-star-inserted" (click)="logout()">
+          <i class="material-icons">power_settings_new</i>
+          Logout
+          </li>
+        </ul>
+      </mat-sidenav>
+    </mat-sidenav-container>
   </main>
 </div>

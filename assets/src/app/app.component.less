@@ -109,6 +109,8 @@ a:link, a:visited {
 
 .docs-component-viewer-sidenav {
   overflow: auto;
+  max-width: 500px;
+  transition: 1s !important;
   background: -moz-linear-gradient(-45deg, #095487 0%, #095487 100%) !important;
   background: -webkit-linear-gradient(-45deg, #095487 0%, #095487 100%) !important;
   background: linear-gradient(45deg, #095487 0%, #095487 100%) !important;
@@ -207,18 +209,17 @@ a:link, a:visited {
   overflow-y: hidden !important;
 }
 
-mat-sidenav {
-  max-width: 500px;
-  transition-duration: 1s !important;
-}
-
 .small_menu {
   max-width: 70px;
-  transition: width 0.3s ease-in-out;
+}
+
+.mat-sidenav-content {
+  transition: margin-left 0.3s !important;
 }
 
 .reduced_menu {
   margin-left: 70px !important;
+  transition: margin-left 0.3s !important;
 }
 
 .menu_label {
@@ -229,7 +230,6 @@ mat-sidenav {
 
 .menu_label_expanded {
   max-width: 0px;
-  transition: width 0.5s linear;
 }
 
 .menu_button {
@@ -238,7 +238,7 @@ mat-sidenav {
 
 .icon-stick{
   height: 47px;
-  font-size: 35px !important;
+  font-size: 30px !important;
   color: white;
 }
 
