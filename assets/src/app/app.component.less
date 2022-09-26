@@ -108,10 +108,7 @@ a:link, a:visited {
 }
 
 .docs-component-viewer-sidenav {
-  padding-bottom: 72px;
-  bottom: 0;
   overflow: auto;
-  height: 100%;
   background: -moz-linear-gradient(-45deg, #095487 0%, #095487 100%) !important;
   background: -webkit-linear-gradient(-45deg, #095487 0%, #095487 100%) !important;
   background: linear-gradient(45deg, #095487 0%, #095487 100%) !important;
@@ -119,24 +116,33 @@ a:link, a:visited {
   ul {
     list-style: none;
     padding: 0;
+    height: calc(100% - 25px);
+    flex-direction: column;
+    display: flex;
+
+    .spacer {
+      flex: 1;
+    }
+
 
     li {
       border-bottom-width: 1px;
       margin: 0;
-      padding: 0;
+      padding: 0 20px;
       border-color: rgba(0,0,0,.06);
       color: rgba(0,0,0,.54);
       box-sizing: border-box;
-      display: block;
+      display: flex;
       font-size: 14px;
       font-weight: 400;
       line-height: 47px;
-      padding: 0 20px;
-      position: relative;
       cursor: pointer;
       color: white;
-      i {
+      height: 47px;
+
+      mat-icon {
         vertical-align: middle;
+        line-height: 47px !important;
       }
     }
 
@@ -165,7 +171,6 @@ a:link, a:visited {
       border-color: rgba(0,0,0,.06);
       color: rgba(0,0,0,.54);
       box-sizing: border-box;
-      display: block;
       font-size: 14px;
       font-weight: 400;
       line-height: 47px;
@@ -173,9 +178,11 @@ a:link, a:visited {
       position: relative;
       cursor: pointer;
       color: white;
-      i {
+
+      mat-icon {
         vertical-align: middle;
       }
+
     }
 
     li:hover {
@@ -200,6 +207,16 @@ a:link, a:visited {
   overflow-y: hidden !important;
 }
 
+mat-sidenav {
+  max-width: 500px;
+  transition-duration: 1s !important;
+}
+
+.small_menu {
+  max-width: 70px;
+  transition: width 0.3s ease-in-out;
+}
+
 .reduced_menu {
   margin-left: 70px !important;
 }
@@ -207,6 +224,7 @@ a:link, a:visited {
 .menu_label {
   display: inline-block;
   padding-left: 10px;
+  overflow-x: hidden;
 }
 
 .menu_label_expanded {
@@ -214,20 +232,22 @@ a:link, a:visited {
   transition: width 0.5s linear;
 }
 
+.menu_button {
+  width: 100%;
+}
 
-.menu-button {
+.icon-stick{
+  height: 47px;
+  font-size: 35px !important;
+  color: white;
+}
+
+.icon_stick_rotated {
   transform: rotate(180deg);
   float: right;
 }
 
-.menu_rotated_button {
-  transform: rotate(0deg);
-}
-
 .help{
-  position:absolute;
-  bottom:0;
-  padding-bottom: 60px;
   color: white;
 }
 
@@ -235,24 +255,5 @@ a:link, a:visited {
   position:absolute;
   bottom:0;
   padding-bottom: 60px;
-  color: white;
-}
-
-.bottom-stick{
-  width: 100%;
-  position:absolute;
-  bottom:0;
-  right:0;
-  padding-right: 20px;
-  padding-bottom: 10px;
-  color: white;
-}
-
-.bottom-stick-small{
-  position:absolute;
-  bottom:0;
-  right:0;
-  padding-right: 20px;
-  padding-bottom: 10px;
   color: white;
 }
