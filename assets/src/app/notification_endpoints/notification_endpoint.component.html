@@ -1,0 +1,66 @@
+<div class=notification_endpoint>
+  <mat-form-field class=input>
+    <input
+      matInput
+      type="text"
+      placeholder="Placeholder"
+      disabled
+      [(ngModel)]="data.endpoint_placeholder"
+      >
+  </mat-form-field>
+  <mat-form-field class=input>
+    <input
+      matInput
+      [type]="text"
+      placeholder="URL"
+      disabled
+      [(ngModel)]="data.endpoint_url"
+      >
+  </mat-form-field>
+  <mat-form-field class=input>
+    <input
+      matInput
+      [type]="pwd_type"
+      placeholder="No credentials associated"
+      disabled
+      [(ngModel)]="data.endpoint_credentials"
+      >
+  </mat-form-field>
+  <mat-form-field class="input date">
+    <input
+      matInput
+      [type]="date"
+      placeholder="Date"
+      disabled
+      (ngModelChange)="data.inserted_at=$event"
+      [ngModel]="data.inserted_at+'Z' | date: 'yyyy-MM-dd HH:mm:ss'"
+      >
+  </mat-form-field>
+  <span class=mask>
+    <button
+      *ngIf="pwd_type == 'password'"
+      mat-button
+      color="primary"
+      (click)="mask(true)"
+      >
+      <mat-icon>visibility</mat-icon>
+    </button>
+    <button
+      *ngIf="pwd_type != 'password'"
+      mat-button
+      color="primary"
+      (click)="mask(false)"
+      >
+      <mat-icon>visibility_off</mat-icon>
+    </button>
+  </span>
+  <span class=delete>
+    <button
+      mat-button
+      color="warn"
+      (click)="delete()"
+      >
+      <mat-icon>delete_forever</mat-icon>
+    </button>
+  </span>
+</div>

@@ -115,6 +115,11 @@ export class AppComponent {
           'icon': 'vpn_key',
         })
         this.left_menu.push({
+          'link': '/notification_endpoints',
+          'label': 'Notification Endpoints',
+          'icon': 'where_to_vote',
+        })
+        this.left_menu.push({
           'link': '/users',
           'label': 'Administration',
           'icon': 'group'
