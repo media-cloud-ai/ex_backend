@@ -108,10 +108,9 @@ a:link, a:visited {
 }
 
 .docs-component-viewer-sidenav {
-  padding-bottom: 72px;
-  bottom: 0;
   overflow: auto;
-  height: 100%;
+  max-width: 500px;
+  transition: 1s !important;
   background: -moz-linear-gradient(-45deg, #095487 0%, #095487 100%) !important;
   background: -webkit-linear-gradient(-45deg, #095487 0%, #095487 100%) !important;
   background: linear-gradient(45deg, #095487 0%, #095487 100%) !important;
@@ -119,64 +118,33 @@ a:link, a:visited {
   ul {
     list-style: none;
     padding: 0;
+    height: calc(100% - 25px);
+    flex-direction: column;
+    display: flex;
+
+    .spacer {
+      flex: 1;
+    }
+
 
     li {
       border-bottom-width: 1px;
       margin: 0;
-      padding: 0;
+      padding: 0 20px;
       border-color: rgba(0,0,0,.06);
       color: rgba(0,0,0,.54);
       box-sizing: border-box;
-      display: block;
+      display: flex;
       font-size: 14px;
       font-weight: 400;
       line-height: 47px;
-      padding: 0 20px;
-      position: relative;
       cursor: pointer;
       color: white;
-      i {
+      height: 47px;
+
+      mat-icon {
         vertical-align: middle;
-      }
-    }
-
-    li:hover {
-      background-color: @lightBlue;
-    }
-  }
-}
-
-.docs-component-viewer-sidenav-small {
-  padding-bottom: 72px;
-  width: 70px;
-  bottom: 0;
-  overflow: auto;
-  height: 100%;
-  background: -moz-linear-gradient(-45deg, #095487 0%, #095487 100%) !important;
-  background: -webkit-linear-gradient(-45deg, #095487 0%, #095487 100%) !important;
-  background: linear-gradient(135deg, #095487 0%, #095487 100%) !important;
-
-  ul {
-    list-style: none;
-    padding: 0;
-
-    li {
-      border-bottom-width: 1px;
-      margin: 0;
-      padding: 0;
-      border-color: rgba(0,0,0,.06);
-      color: rgba(0,0,0,.54);
-      box-sizing: border-box;
-      display: block;
-      font-size: 14px;
-      font-weight: 400;
-      line-height: 47px;
-      padding: 0 20px;
-      position: relative;
-      cursor: pointer;
-      color: white;
-      i {
-        vertical-align: middle;
+        line-height: 47px !important;
       }
     }
 
@@ -187,10 +155,9 @@ a:link, a:visited {
 }
 
 .docs-component-viewer-sidenav-reverse {
-  padding-bottom: 20px;
   bottom: 0;
   overflow: auto;
-  height: 160px;
+  height: 180px;
   background: -moz-linear-gradient(-45deg, #007855 0%, #0D8A57 100%) !important;
   background: -webkit-linear-gradient(-45deg, #007855 0%, #0D8A57 100%) !important;
   background: linear-gradient(45deg, #007855 0%, #0D8A57 100%) !important;
@@ -206,7 +173,6 @@ a:link, a:visited {
       border-color: rgba(0,0,0,.06);
       color: rgba(0,0,0,.54);
       box-sizing: border-box;
-      display: block;
       font-size: 14px;
       font-weight: 400;
       line-height: 47px;
@@ -214,9 +180,11 @@ a:link, a:visited {
       position: relative;
       cursor: pointer;
       color: white;
-      i {
+
+      mat-icon {
         vertical-align: middle;
       }
+
     }
 
     li:hover {
@@ -237,17 +205,49 @@ a:link, a:visited {
   box-shadow:inset 5px 0px 0px 0px @secondColor !important;
 }
 
-.menu-button {
-  transform: rotate(180deg);
+.mat-drawer-inner-container {
+  overflow-y: hidden !important;
 }
-.menu-button-rotated {
-  transform: rotate(0deg);
+
+.small_menu {
+  max-width: 70px;
+}
+
+.mat-sidenav-content {
+  transition: margin-left 0.3s !important;
+}
+
+.reduced_menu {
+  margin-left: 70px !important;
+  transition: margin-left 0.3s !important;
+}
+
+.menu_label {
+  display: inline-block;
+  padding-left: 10px;
+  overflow-x: hidden;
+}
+
+.menu_label_expanded {
+  max-width: 0px;
+}
+
+.menu_button {
+  width: 100%;
+}
+
+.icon-stick{
+  height: 47px;
+  font-size: 30px !important;
+  color: white;
+}
+
+.icon_stick_rotated {
+  transform: rotate(180deg);
+  float: right;
 }
 
 .help{
-  position:absolute;
-  bottom:0;
-  padding-bottom: 60px;
   color: white;
 }
 
@@ -255,23 +255,5 @@ a:link, a:visited {
   position:absolute;
   bottom:0;
   padding-bottom: 60px;
-  color: white;
-}
-
-.bottom-stick{
-  position:absolute;
-  bottom:0;
-  right:0;
-  padding-right: 20px;
-  padding-bottom: 10px;
-  color: white;
-}
-
-.bottom-stick-small{
-  position:absolute;
-  bottom:0;
-  right:0;
-  padding-right: 20px;
-  padding-bottom: 10px;
   color: white;
 }

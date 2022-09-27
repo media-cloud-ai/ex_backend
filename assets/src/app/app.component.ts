@@ -17,7 +17,7 @@ import {ApplicationService} from './services/application.service'
 
 export class AppComponent {
   loggedIn: boolean
-  menu_opened: boolean = false
+  menu_expanded: boolean = true
   right_panel_opened: boolean = false
   username: string
   application: Application
@@ -48,13 +48,13 @@ export class AppComponent {
         this.right_administrator = this.authService.hasAdministratorRight()
         this.right_technician = this.authService.hasTechnicianRight()
         this.right_editor = this.authService.hasEditorRight()
-        this.menu_opened = false
+        this.menu_expanded = true
         this.updateLeftMenu()
       })
     this.subOut = this.authService.userLoggedOut$.subscribe(
       username => {
         this.loggedIn = false
-        this.menu_opened = false
+        this.menu_expanded = true
         this.right_panel_opened = false
         this.username = ''
         this.right_administrator = false
@@ -69,7 +69,7 @@ export class AppComponent {
       this.right_administrator = this.authService.hasAdministratorRight()
       this.right_technician = this.authService.hasTechnicianRight()
       this.right_editor = this.authService.hasEditorRight()
-      this.menu_opened = false
+      this.menu_expanded = true
       this.updateLeftMenu()
     }
 
@@ -161,7 +161,7 @@ export class AppComponent {
   }
 
   switchMenu() {
-    this.menu_opened = !this.menu_opened
+    this.menu_expanded = !this.menu_expanded
   }
 
   openRightPanel() {
