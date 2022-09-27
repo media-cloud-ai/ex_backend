@@ -12,6 +12,7 @@ import { Application } from '../models/application'
 import { WorkflowQueryParams } from '../models/page/workflow_page'
 
 import { Chart } from 'angular-highcharts';
+import { Options } from 'highcharts';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -110,7 +111,7 @@ export class DashboardComponent {
       processing: [],
     }
 
-    this.historyChart = new Chart({
+    let options: Options = {
       chart: {
           type: 'column',
       },
@@ -120,7 +121,7 @@ export class DashboardComponent {
       xAxis: {
         labels: {
           formatter: function() {
-            return this.value.slice(0, 16);
+            return String(this.value).slice(0, 16);
           }
         },
       },
@@ -139,6 +140,7 @@ export class DashboardComponent {
           },
           allowDecimals: false
       },
+      series: [],
       tooltip: {
           headerFormat: '<b>{point.x}</b><br/>',
           pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
@@ -151,8 +153,9 @@ export class DashboardComponent {
               }
           }
       }
-    });
+    }
 
+    
     if (data != undefined) {
       data.bins.reverse().map(bin => {
         x_labels.push(bin["start_date"])
@@ -160,19 +163,22 @@ export class DashboardComponent {
           series[s].push(bin[s])
         }
       })
-
-      this.historyChart.options.xAxis.categories = x_labels;
-
+      
+      options.xAxis["categories"] = x_labels;
+      
       for (let s of this.series){
         if (this.parameters.status.includes(s)) {
-          this.historyChart.addSeries({
+          options["series"].push({
             name: s,
             data: series[s],
-            color: this.colors[s]
-          }, true, true)
+            color: this.colors[s],
+            type: 'column'
+          })
         }
       }
     }
+    
+    this.historyChart = new Chart(options);
   }
 
   rangeChanged(event){
