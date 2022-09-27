@@ -14,6 +14,7 @@ import {AppComponent}     from './app.component'
 
 import {MatAutocompleteModule} from '@angular/material/autocomplete'
 import {MatButtonModule} from '@angular/material/button'
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatCardModule} from '@angular/material/card'
 import {MatCheckboxModule} from '@angular/material/checkbox'
 import {MatChipsModule} from '@angular/material/chips'
@@ -56,6 +57,8 @@ import {
 import {RouterModule, Routes}    from '@angular/router'
 import {CookieService}           from 'ngx-cookie-service'
 
+import { ChartModule } from 'angular-highcharts';
+
 import {AppRoutingModule}        from './app-routing.module'
 import {SocketModule}            from './socket.module'
 import {WorkersModule}            from './workers/workers.module'
@@ -66,6 +69,7 @@ import {DashboardComponent}      from './dashboard/dashboard.component'
 import {DeclaredWorkersComponent} from './declared_workers/declared_workers.component'
 import {DurationComponent}       from './workflows/details/duration.component'
 import {IngestComponent}         from './ingest/ingest.component'
+import {HelpComponent}           from './help/help.component'
 import {JobStatisticsComponent}  from './statistics/job_statistics.component'
 import {JobsComponent}           from './jobs/jobs.component'
 import {LoginComponent}          from './login/login.component'
@@ -146,11 +150,13 @@ const EX_BACKEND_DATE_FORMATS = {
     BrowserAnimationsModule,
     BrowserModule,
     ChartsModule,
+    ChartModule,
     GenericModule,
     FormsModule,
     HttpClientModule,
     MatAutocompleteModule,
     MatButtonModule,
+    MatButtonToggleModule,
     MatCardModule,
     MatCheckboxModule,
     MatChipsModule,
@@ -187,6 +193,7 @@ const EX_BACKEND_DATE_FORMATS = {
     DeclaredWorkersComponent,
     DeleteSubtitleDialog,
     DurationComponent,
+    HelpComponent,
     IngestComponent,
     JobDetailsDialogComponent,
     JobStatisticsComponent,

@@ -9,44 +9,22 @@ import { ApplicationService } from '../services/application.service'
 import { WorkflowService } from '../services/workflow.service'
 import { Application } from '../models/application'
 
-import { WorkflowHistory, WorkflowQueryParams } from '../models/page/workflow_page'
+import { WorkflowQueryParams } from '../models/page/workflow_page'
 
-
-
-import { ChartDataSets, ChartOptions } from 'chart.js';
-import { Label } from 'ng2-charts';
-
+import { Chart } from 'angular-highcharts';
+import { Options } from 'highcharts';
 
 registerLocaleData(localeFr, 'fr');
 
 @Component({
   selector: 'dashboard-component',
   templateUrl: 'dashboard.component.html',
-  styleUrls: ['./dashboard.component.less'],
+  styleUrls: ['./dashboard.component.less']
 })
 
 export class DashboardComponent {
-  public barChartData: ChartDataSets[];
-  public barChartLabels: Label[];
-  public barChartOptions: ChartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      xAxes: [{
-        type: 'time',
-        time: {
-          displayFormats: {
-            minute: "YYYY-MM-DD HH:mm"
-          },
-          parser: "YYYY-MM-DD HH:mm:SS"
-        }
-      }]
-    }
-  };
-  public barChartLegend = true;
-  public barChartType = 'bar';
-  public barChartPlugins = [];
-
+  public categories = [];
+  public historyChart: Chart;
 
   right_administrator: boolean
   right_technician: boolean
@@ -56,16 +34,16 @@ export class DashboardComponent {
   subIn: Subscription
   subOut: Subscription
 
+  series = ["error", "completed", "pending", "processing"];
+
   colors = {
-    error: "#ff3719",
+    error: "#FF3719",
     completed: "#87b209",
     pending: "#88497e",
     processing: "#3864AA"
   }
 
   parameters: WorkflowQueryParams;
-
-  data: any;
 
   constructor(
     private applicationService: ApplicationService,
@@ -94,6 +72,7 @@ export class DashboardComponent {
       time_interval: 3600
     };
   }
+
   ngOnInit() {
     this.subIn = this.authService.userLoggedIn$.subscribe(
       username => {
@@ -117,29 +96,103 @@ export class DashboardComponent {
     this.applicationService.get()
       .subscribe(application => {
         this.application = application
-      })
+      })    
 
+    this.drawHistoryChart();
+  }
+
+  drawHistoryChart(data?): void {
+
+    let x_labels = [];
+    let series = {
+      completed: [],
+      error: [],
+      pending: [],
+      processing: [],
+    }
+
+    let options: Options = {
+      chart: {
+          type: 'column',
+      },
+      title: {
+          text: '',
+      },
+      xAxis: {
+        labels: {
+          formatter: function() {
+            return String(this.value).slice(0, 16);
+          }
+        },
+      },
+      yAxis: {
+          min: 0,
+          title: {
+              text: 'Count of workflows'
+          },
+          stackLabels: {
+              enabled: true,
+              style: {
+                  fontWeight: 'bold',
+                  color: 'gray',
+                  textOutline: 'none'
+              }
+          },
+          allowDecimals: false
+      },
+      series: [],
+      tooltip: {
+          headerFormat: '<b>{point.x}</b><br/>',
+          pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+      },
+      plotOptions: {
+          column: {
+              stacking: 'normal',
+              dataLabels: {
+                  enabled: true
+              }
+          }
+      }
+    }
+
+    
+    if (data != undefined) {
+      data.bins.reverse().map(bin => {
+        x_labels.push(bin["start_date"])
+        for (let s of this.series){
+          series[s].push(bin[s])
+        }
+      })
+      
+      options.xAxis["categories"] = x_labels;
+      
+      for (let s of this.series){
+        if (this.parameters.status.includes(s)) {
+          options["series"].push({
+            name: s,
+            data: series[s],
+            color: this.colors[s],
+            type: 'column'
+          })
+        }
+      }
+    }
+    
+    this.historyChart = new Chart(options);
+  }
+
+  rangeChanged(event){
+    this.parameters.time_interval = parseInt(event.value)
     this.updateWorkflows(this.parameters)
   }
 
   updateWorkflows(parameters: WorkflowQueryParams) {
-    this.barChartData = undefined
+    this.parameters = parameters
+    
     this.workflowService.getWorkflowStatistics(parameters)
       .subscribe(response => {
-        this.barChartData = parameters.status.map(state => (
-          {
-            label: state,
-            fill: false,
-            borderColor: this.colors[state],
-            backgroundColor: this.colors[state],
-            pointBorderColor: this.colors[state],
-            pointBackgroundColor: this.colors[state],
-            data: response.data.bins.map(bin => ({
-              y: bin[state],
-              t: bin.end_date
-            }))
-          }));
-        this.barChartLabels = response.data.bins.map(bin => (bin.end_date));
+        this.historyChart.destroy();
+        this.drawHistoryChart(response.data);
       })
   }
 }

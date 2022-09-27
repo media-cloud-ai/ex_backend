@@ -17,7 +17,7 @@ import {ApplicationService} from './services/application.service'
 
 export class AppComponent {
   loggedIn: boolean
-  menu_opened: boolean = false
+  menu_expanded: boolean = true
   right_panel_opened: boolean = false
   username: string
   application: Application
@@ -48,13 +48,13 @@ export class AppComponent {
         this.right_administrator = this.authService.hasAdministratorRight()
         this.right_technician = this.authService.hasTechnicianRight()
         this.right_editor = this.authService.hasEditorRight()
-        this.menu_opened = !this.breakpointObserver.isMatched('(max-width: 599px)')
+        this.menu_expanded = true
         this.updateLeftMenu()
       })
     this.subOut = this.authService.userLoggedOut$.subscribe(
       username => {
         this.loggedIn = false
-        this.menu_opened = false
+        this.menu_expanded = true
         this.right_panel_opened = false
         this.username = ''
         this.right_administrator = false
@@ -69,7 +69,7 @@ export class AppComponent {
       this.right_administrator = this.authService.hasAdministratorRight()
       this.right_technician = this.authService.hasTechnicianRight()
       this.right_editor = this.authService.hasEditorRight()
-      this.menu_opened = !this.breakpointObserver.isMatched('(max-width: 599px)')
+      this.menu_expanded = true
       this.updateLeftMenu()
     }
 
@@ -86,21 +86,47 @@ export class AppComponent {
   updateLeftMenu() {
     // console.log(this.loggedIn);
     if (this.loggedIn) {
-      this.left_menu = [{
-        'link': '/orders',
-        'label': 'Commandes'
+      this.left_menu = [
+      {
+        'link': '/orders/new',
+        'label': 'Orders',
+        'icon': 'post_add'
       },
       {
         'link': '/workflows',
-        'label': 'Workflows'
+        'label': 'Workflows',
+        'icon': 'account_tree'
+      },
+      {
+        'link': '/dashboard',
+        'label': 'Dashboard',
+        'icon': 'dashboard'
       }]
+
+      if (this.right_administrator) {
+        this.left_menu.push({
+          'link': '/statistics',
+          'label': 'Statistics',
+          'icon': 'insights'
+        })
+        this.left_menu.push({
+          'link': '/credentials',
+          'label': 'Credentials',
+          'icon': 'vpn_key',
+        })
+        this.left_menu.push({
+          'link': '/users',
+          'label': 'Administration',
+          'icon': 'group'
+        })
+      }
 
       if (this.application && this.application.identifier === 'vidtext') {
         this.left_menu.push({
           'link': '/ingest',
           'label': 'Ingest'
         })
-        if (this.right_editor) {
+        if (this.right_editor || this.right_administrator) {
           this.left_menu.push({
             'link': '/registeries',
             'label': 'Catalog'
@@ -112,33 +138,19 @@ export class AppComponent {
       if (this.right_technician) {
         this.left_menu.push({
           'link': '/workers',
-          'label': 'Workers'
+          'label': 'Workers',
+          'icon': 'engineering'
         })
       }
 
       if (this.application && this.application.identifier === 'vidtext') {
-        if (this.right_technician) {
+        if (this.right_technician || this.right_administrator) {
           this.left_menu.push({
             'link': '/watchers',
             'label': 'Watchers'
           })
         }
       }
-      if (this.right_administrator) {
-        this.left_menu.push({
-          'link': '/credentials',
-          'label': 'Credentials'
-        })
-        this.left_menu.push({
-          'link': '/statistics',
-          'label': 'Statistics'
-        })
-        this.left_menu.push({
-          'link': '/users',
-          'label': 'Users'
-        })
-      }
-
     } else {
       this.left_menu = []
     }
@@ -149,7 +161,7 @@ export class AppComponent {
   }
 
   switchMenu() {
-    this.menu_opened = !this.menu_opened
+    this.menu_expanded = !this.menu_expanded
   }
 
   openRightPanel() {
