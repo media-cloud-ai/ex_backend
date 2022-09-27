@@ -14,6 +14,7 @@ import {AppComponent}     from './app.component'
 
 import {MatAutocompleteModule} from '@angular/material/autocomplete'
 import {MatButtonModule} from '@angular/material/button'
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatCardModule} from '@angular/material/card'
 import {MatCheckboxModule} from '@angular/material/checkbox'
 import {MatChipsModule} from '@angular/material/chips'
@@ -55,6 +56,8 @@ import {
 
 import {RouterModule, Routes}    from '@angular/router'
 import {CookieService}           from 'ngx-cookie-service'
+
+import { ChartModule } from 'angular-highcharts';
 
 import {AppRoutingModule}        from './app-routing.module'
 import {SocketModule}            from './socket.module'
@@ -147,11 +150,13 @@ const EX_BACKEND_DATE_FORMATS = {
     BrowserAnimationsModule,
     BrowserModule,
     ChartsModule,
+    ChartModule,
     GenericModule,
     FormsModule,
     HttpClientModule,
     MatAutocompleteModule,
     MatButtonModule,
+    MatButtonToggleModule,
     MatCardModule,
     MatCheckboxModule,
     MatChipsModule,
