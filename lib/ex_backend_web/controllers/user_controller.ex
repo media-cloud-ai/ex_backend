@@ -1,5 +1,6 @@
 defmodule ExBackendWeb.UserController do
   use ExBackendWeb, :controller
+  use PhoenixSwagger
 
   require Logger
 
@@ -18,6 +19,12 @@ defmodule ExBackendWeb.UserController do
     :right_administrator_check
     when action in [:update, :delete, :generate_credentials, :generate_validation_link]
   )
+
+  swagger_path :index do
+  get "/users"
+  description "List users"
+  response 200, "Success"
+  end
 
   def index(conn, params) do
     users = Accounts.list_users(params)

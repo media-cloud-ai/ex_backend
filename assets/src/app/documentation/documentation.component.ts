@@ -1,24 +1,40 @@
-
-import {Component} from '@angular/core'
-import {DocumentationService} from '../services/documentation.service'
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
+import { SwaggerUIBundle, SwaggerUIStandalonePreset } from 'swagger-ui-dist';
 
 @Component({
   selector: 'documentation-component',
   templateUrl: 'documentation.component.html',
   styleUrls: ['./documentation.component.less'],
+  encapsulation: ViewEncapsulation.None,
 })
+export class DocumentationComponent implements AfterViewInit {
+  @ViewChild('swagger') swaggerDom: ElementRef<HTMLDivElement>;
 
-export class DocumentationComponent {
-  documentation: any
-
-  constructor(
-    private documentationService: DocumentationService
-  ) {}
-
-  ngOnInit() {
-    this.documentationService.getDocumentation()
-    .subscribe(response => {
-      this.documentation = response
-    })
+  ngAfterViewInit() {
+    SwaggerUIBundle({
+      urls: [
+        {
+          name: 'MCAI Backend',
+          url: 'http://localhost:4000/swagger/backend/backend_swagger.json'
+        },
+        {
+          name: 'Step Flow',
+          url: 'http://localhost:4000/swagger/step_flow/step_flow_swagger.json'
+        }
+      ],
+      domNode: this.swaggerDom.nativeElement,
+      deepLinking: true,
+      presets: [
+        SwaggerUIBundle.presets.apis,
+        SwaggerUIStandalonePreset
+      ],
+      layout: 'StandaloneLayout'
+    });
   }
 }

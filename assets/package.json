@@ -37,6 +37,7 @@
     "rxjs": "^6.6.6",
     "rxjs-compat": "^6.6.6",
     "sax": "^1.2.4",
+    "swagger-ui-dist": "3.48.0",
     "ts-subtitle": "^0.0.6",
     "zone.js": "^0.10.2"
   },
