@@ -88,7 +88,7 @@ export class AppComponent {
     if (this.loggedIn) {
       this.left_menu = [
       {
-        'link': '/orders',
+        'link': '/orders/new',
         'label': 'Orders',
         'icon': 'post_add'
       },
