@@ -17,5 +17,7 @@ stages:
 include:
   - project: 'media-cloud-ai/ci/pipelines'
     file: 'elixir/elixir-publish-docker.yml'
+    ref: ci/use-new-runner-conf
   - project: 'media-cloud-ai/ci/pipelines'
     file: 'elixir/elixir-base.yml'
+    ref: ci/use-new-runner-conf
