@@ -85,7 +85,7 @@ defmodule ExBackendWeb.Router do
   def swagger_info do
     %{
       info: %{
-        version: Mix.Project.config[:version],
+        version: Mix.Project.config()[:version],
         title: "MCAI Backend"
       }
     }
