@@ -111,7 +111,7 @@ config :ex_backend, ExBackend.SMTPMailer,
   no_mx_lookups: {:system, "SMTP_NO_MX_LOOKUPS", false}
 
 config :ex_backend,
-  app_name: "Subtil",
+  app_name: System.get_env("APP_IDENTIFIER", "MCAI BACKEND"),
   hostname: {:system, "EXPOSED_DOMAIN_NAME"},
   port: 443,
   ssl: true,
