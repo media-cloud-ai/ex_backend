@@ -51,6 +51,7 @@ defmodule ExBackendWeb.Router do
     get("/imdb/:id", ImdbController, :show)
 
     resources("/credentials", CredentialController, except: [:new, :edit])
+    get("/credentials/search/:key", CredentialController, :get_by_key)
 
     get("/documentation", DocumentationController, :index)
 
@@ -63,9 +64,30 @@ defmodule ExBackendWeb.Router do
   get("/stream/:content/:filename", ExBackendWeb.PlayerController, :index)
   options("/stream/:content/:filename", ExBackendWeb.PlayerController, :options)
 
+  scope "/swagger" do
+    forward("/backend", PhoenixSwagger.Plug.SwaggerUI,
+      otp_app: :ex_backend,
+      swagger_file: "backend_swagger.json"
+    )
+
+    forward("/step_flow", ExBackendWeb.StepFlowSwagger,
+      otp_app: :ex_backend,
+      swagger_file: "step_flow_swagger.json"
+    )
+  end
+
   scope "/", ExBackendWeb do
     pipe_through(:browser)
 
     get("/*path", PageController, :index)
+  end
+
+  def swagger_info do
+    %{
+      info: %{
+        version: Mix.Project.config()[:version],
+        title: "MCAI Backend"
+      }
+    }
   end
 end

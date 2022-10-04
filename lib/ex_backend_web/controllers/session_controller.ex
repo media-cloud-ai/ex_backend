@@ -1,22 +1,77 @@
 defmodule ExBackendWeb.SessionController do
   use ExBackendWeb, :controller
+  use PhoenixSwagger
 
   import ExBackendWeb.Authorize
   alias ExBackendWeb.Auth.Token
 
   plug(:guest_check when action in [:create])
 
-  api :POST, "/api/sessions" do
-    title("Create a new session")
-    description(~s(Login a user with credentials to get the JWT token<br/>
-    <h4>To get the token:</h4>
-    <pre class=code>MIO_TOKEN=`curl -H \"Content-Type: application/json\" -d '{\"session\": {\"email\": \"user@media-io.com\", \"password\": \"secret_password\"} }' https://backend.media-io.com/api/sessions | jq -r \".access_token\"`</pre>
-    ))
+  def swagger_definitions do
+    %{
+      Session:
+        swagger_schema do
+          title("Session")
+          description("A MCAI Backend API Session")
 
-    parameter(:session, :map,
-      optional: false,
-      description: "Map with required parameters email and password"
-    )
+          properties do
+            access_token(:string, "API Access token")
+            user(:User, "User infos")
+          end
+
+          example(%{
+            access_token: "SFMyNTY.xxxxxxxxxxx",
+            user: %{
+              email: "admin@media-cloud.ai",
+              first_name: "MCAI",
+              id: 1,
+              last_name: "Admin",
+              roles: [
+                "administrator",
+                "editor",
+                "manager",
+                "technician"
+              ],
+              username: "Admin"
+            }
+          })
+        end,
+      Identification:
+        swagger_schema do
+          title("Identification")
+          description("Informations for identification")
+
+          properties do
+            access_key_id(:string, "Users access key")
+            secret_access_key(:string, "Users secret key")
+            email(:string, "Users email")
+            password(:string, "Users password")
+          end
+        end
+    }
+  end
+
+  swagger_path :create do
+    post("/api/session")
+    summary("Create a session")
+    description("Log in a user with credentials to get the JWT token")
+    produces("application/json")
+    tag("Authentication")
+    operation_id("session")
+
+    parameters do
+      session(
+        :query,
+        :Identification,
+        "Map with user infos (email/password OR access/secret keys)",
+        required: true
+      )
+    end
+
+    security([%{Bearer: []}])
+    response(200, "OK", Schema.ref(:Session))
+    response(401, "Unauthorized - Already logged in")
+    response(403, "Unauthorized")
   end
 
   def create(conn, %{"session" => params}) do

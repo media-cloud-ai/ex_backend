@@ -1,5 +1,6 @@
 defmodule ExBackendWeb.UserController do
   use ExBackendWeb, :controller
+  use PhoenixSwagger
 
   require Logger
 
@@ -18,6 +19,108 @@ defmodule ExBackendWeb.UserController do
     :right_administrator_check
     when action in [:update, :delete, :generate_credentials, :generate_validation_link]
   )
+
+  def swagger_definitions do
+    %{
+      User:
+        swagger_schema do
+          title("User")
+          description("A user of MCAI Backend")
+
+          properties do
+            access_key_id(:string, "API Access key ID")
+            confirmed_at(:string, "Users confirmation date")
+            email(:string, "Users email")
+            first_name(:string, "Users first name")
+            id(:string, "Unique identifier in database")
+            inserted_at(:string, "Users insertion date")
+            last_name(:string, "Users last name")
+            roles(:array, "Users attached roles")
+            username(:string, "Username")
+            address(:string, "Home address")
+            uuid(:string, "Unique identifier")
+
+            secret_access_key(
+              :string,
+              "API Secret access key (only present when generating credentials)"
+            )
+          end
+
+          example(%{
+            access_key_id: "MCAIYTDAEPDJEMS0K02M",
+            confirmed_at: "2022-09-23T21:30:15.000000Z",
+            email: "editor@media-cloud.ai",
+            first_name: "MCAI",
+            id: 3,
+            inserted_at: "2022-09-23T21:30:15",
+            last_name: "Editor",
+            roles: [
+              "editor"
+            ],
+            username: "editor",
+            uuid: "783e6266-f358-4afb-923c-2afd2266ded8",
+            secret_access_key: "xxxxxxxxxxxxx"
+          })
+        end,
+      Users:
+        swagger_schema do
+          title("Users")
+          description("A collection of Users")
+          type(:array)
+          items(Schema.ref(:User))
+        end,
+      Authorized:
+        swagger_schema do
+          title("Authorized")
+          description("Authorization response")
+
+          properties do
+            authorized(:bool, "If authorized to do action on given entity")
+          end
+
+          example(%{
+            authorized: true
+          })
+        end,
+      ValidationLink:
+        swagger_schema do
+          title("Validation Link")
+          description("Validation Link for inscription validation")
+
+          properties do
+            authorized(:string, "Link")
+          end
+
+          example(%{
+            validation_link: "http://media-cloud.ai/confirm?key=SFMyNTY.xxxxxxxxxxxxxxx"
+          })
+        end,
+      Emails:
+        swagger_schema do
+          title("Accounts emails")
+          description("Emails from accounts")
+          type(:array)
+          items(%Schema{type: :string})
+
+          example([
+            "admin@media-cloud.ai",
+            "technician@media-cloud.ai"
+          ])
+        end
+    }
+  end
+
+  swagger_path :index do
+    get("/api/users")
+    summary("List users")
+    description("List all users registered in MCAI Backend")
+    produces("application/json")
+    tag("Users")
+    operation_id("list_users")
+    security([%{Bearer: []}])
+    response(200, "OK", Schema.ref(:Users))
+    response(403, "Unauthorized")
+  end
 
   def index(conn, params) do
     users = Accounts.list_users(params)
@@ -51,9 +154,43 @@ defmodule ExBackendWeb.UserController do
     end
   end
 
+  swagger_path :show do
+    get("/api/users/{id}")
+    summary("Get user (id)")
+    description("Get a user by id")
+    produces("application/json")
+    tag("Users")
+    operation_id("get_user_by_id")
+
+    parameters do
+      id(:path, :integer, "User ID", required: true)
+    end
+
+    security([%{Bearer: []}])
+    response(200, "OK", Schema.ref(:User))
+    response(403, "Unauthorized")
+  end
+
   def show(%Plug.Conn{assigns: %{current_user: user}} = conn, %{"id" => id}) do
     user = (id == to_string(user.id) and user) || Accounts.get(id)
     render(conn, "show.json", %{user: user, credentials: false})
+  end
+
+  swagger_path :get_by_uuid do
+    get("/api/users/search/{uuid}")
+    summary("Get user (uuid)")
+    description("Get a user by uuid")
+    produces("application/json")
+    tag("Users")
+    operation_id("get_user_by_uuid")
+
+    parameters do
+      uuid(:path, :string, "User UUID", required: true)
+    end
+
+    security([%{Bearer: []}])
+    response(200, "OK", Schema.ref(:User))
+    response(403, "Unauthorized")
   end
 
   def get_by_uuid(%Plug.Conn{assigns: %{current_user: user}} = conn, %{"uuid" => uuid}) do
@@ -72,6 +209,23 @@ defmodule ExBackendWeb.UserController do
     end
   end
 
+  swagger_path :generate_credentials do
+    post("/api/users/generate_credentials")
+    summary("Generate credentials")
+    description("Generate credentials for a user")
+    produces("application/json")
+    tag("Users")
+    operation_id("generate_credentials")
+
+    parameters do
+      id(:query, :integer, "User ID", required: true)
+    end
+
+    security([%{Bearer: []}])
+    response(200, "OK", Schema.ref(:User))
+    response(403, "Unauthorized")
+  end
+
   def generate_credentials(%Plug.Conn{assigns: %{current_user: _user}} = conn, %{
         "id" => id
       }) do
@@ -82,6 +236,24 @@ defmodule ExBackendWeb.UserController do
     end
   end
 
+  swagger_path :check_rights do
+    post("/api/users/check_rights")
+    summary("Check rights")
+    description("Check users rights for action on entity")
+    produces("application/json")
+    tag("Users")
+    operation_id("check_rights")
+
+    parameters do
+      entity(:query, :string, "Entity", required: true)
+      action(:query, :string, "Action", required: true)
+    end
+
+    security([%{Bearer: []}])
+    response(200, "OK", Schema.ref(:Authorized))
+    response(403, "Unauthorized")
+  end
+
   def check_rights(%Plug.Conn{assigns: %{current_user: user}} = conn, %{
         "entity" => entity_name,
         "action" => action
@@ -89,6 +261,23 @@ defmodule ExBackendWeb.UserController do
     with {:ok, authorized} <- Accounts.check_user_rights(user, entity_name, action) do
       json(conn, %{authorized: authorized})
     end
+  end
+
+  swagger_path :generate_validation_link do
+    post("/api/users/generate_validation_link")
+    summary("Generate validation link")
+    description("Generate validation link for user")
+    produces("application/json")
+    tag("Users")
+    operation_id("generate_validation_link")
+
+    parameters do
+      id(:query, :integer, "User ID", required: true)
+    end
+
+    security([%{Bearer: []}])
+    response(200, "OK", Schema.ref(:ValidationLink))
+    response(403, "Unauthorized")
   end
 
   def generate_validation_link(%Plug.Conn{assigns: %{current_user: user}} = conn, %{
@@ -101,10 +290,44 @@ defmodule ExBackendWeb.UserController do
     json(conn, %{validation_link: validation_link})
   end
 
+  swagger_path :delete_role do
+    PhoenixSwagger.Path.delete("/api/users/roles/{name}")
+    summary("Delete role")
+    description("Delete role by name")
+    produces("application/json")
+    tag("Users")
+    operation_id("delete_role")
+
+    parameters do
+      name(:path, :string, "Role name", required: true)
+    end
+
+    security([%{Bearer: []}])
+    response(200, "OK", Schema.ref(:Emails))
+    response(403, "Unauthorized")
+  end
+
   def delete_role(%Plug.Conn{assigns: %{current_user: _user}} = conn, %{"name" => role_name}) do
     updated_users = Accounts.delete_users_role(%{role: role_name})
 
     json(conn, updated_users)
+  end
+
+  swagger_path :delete do
+    PhoenixSwagger.Path.delete("/api/users")
+    summary("Delete user")
+    description("Delete user by id")
+    produces("application/json")
+    tag("Users")
+    operation_id("delete_user")
+
+    parameters do
+      id(:query, :integer, "User ID", required: true)
+    end
+
+    security([%{Bearer: []}])
+    response(204, "No Content")
+    response(403, "Unauthorized")
   end
 
   def delete(%Plug.Conn{assigns: %{current_user: user}} = conn, params) do

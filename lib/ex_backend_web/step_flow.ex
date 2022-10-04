@@ -3,3 +3,14 @@ defmodule ExBackendWeb.StepFlow.Plug do
 
   use StepFlow.Plug
 end
+
+defmodule ExBackendWeb.StepFlowSwagger do
+  @moduledoc false
+
+  use Plug.Builder
+
+  plug(PhoenixSwagger.Plug.SwaggerUI,
+    otp_app: :ex_backend,
+    swagger_file: "step_flow_swagger.json"
+  )
+end
