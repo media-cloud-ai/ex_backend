@@ -2,9 +2,13 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  Inject,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import {
+  DOCUMENT
+} from '@angular/common';
 import { SwaggerUIBundle, SwaggerUIStandalonePreset } from 'swagger-ui-dist';
 
 @Component({
@@ -13,7 +17,10 @@ import { SwaggerUIBundle, SwaggerUIStandalonePreset } from 'swagger-ui-dist';
   styleUrls: ['./documentation.component.less'],
   encapsulation: ViewEncapsulation.None,
 })
+
 export class DocumentationComponent implements AfterViewInit {
+  constructor(@Inject(DOCUMENT) private document: Document) {}
+
   @ViewChild('swagger') swaggerDom: ElementRef<HTMLDivElement>;
 
   ngAfterViewInit() {
@@ -21,11 +28,11 @@ export class DocumentationComponent implements AfterViewInit {
       urls: [
         {
           name: 'MCAI Backend',
-          url: 'http://localhost:4000/swagger/backend/backend_swagger.json'
+          url: this.document.location.origin+'/swagger/backend/backend_swagger.json'
         },
         {
-          name: 'Step Flow',
-          url: 'http://localhost:4000/swagger/step_flow/step_flow_swagger.json'
+          name: 'StepFlow',
+          url: this.document.location.origin+'/swagger/step_flow/step_flow_swagger.json'
         }
       ],
       domNode: this.swaggerDom.nativeElement,

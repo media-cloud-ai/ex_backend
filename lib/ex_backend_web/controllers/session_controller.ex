@@ -54,7 +54,7 @@ defmodule ExBackendWeb.SessionController do
   swagger_path :create do
     post("/api/session")
     summary("Create a session")
-    description("Login a user with credentials to get the JWT token")
+    description("Log in a user with credentials to get the JWT token")
     produces("application/json")
     tag("Authentication")
     operation_id("session")

@@ -53,7 +53,7 @@ defmodule ExBackendWeb.CredentialController do
 
     parameters do
       page(:query, :integer, "Index of the page")
-      size(:query, :integer, "Size per page")
+      size(:query, :integer, "Number of items")
       key(:query, :string, "Search by key")
     end
 
