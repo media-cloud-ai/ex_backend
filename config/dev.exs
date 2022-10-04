@@ -110,12 +110,7 @@ config :ex_backend, ExBackend.SMTPMailer,
   no_mx_lookups: {:system, "SMTP_NO_MX_LOOKUPS", false}
 
 config :ex_backend,
-  # app_identifier: "vidtext",
-  # app_label: "VidText",
-  # app_logo: "logo_vidtext.png",
-  # app_company: "EBU T&I",
-  # app_company_logo: "logo_ebu.png",
-  app_identifier: "subtil",
+  app_identifier: System.get_env("APP_IDENTIFIER", "MCAI BACKEND"),
   app_label: "DaIA",
   app_logo: "DaIA_logo.png",
   app_company: "MyCompany",

@@ -31,7 +31,7 @@ config :step_flow, StepFlow.Repo,
 config :step_flow, StepFlow, workers_work_directory: "/data"
 
 config :ex_backend,
-  app_name: "Subtil",
+  app_name: System.get_env("APP_IDENTIFIER", "MCAI BACKEND"),
   hostname: "http://localhost:4000",
   port: 4000,
   ssl: false,
