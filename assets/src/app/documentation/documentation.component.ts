@@ -19,23 +19,36 @@ import { SwaggerUIBundle, SwaggerUIStandalonePreset } from 'swagger-ui-dist';
 })
 
 export class DocumentationComponent implements AfterViewInit {
-  constructor(@Inject(DOCUMENT) private document: Document) {}
+  constructor(@Inject(DOCUMENT) private document: Document) { }
 
-  @ViewChild('swagger') swaggerDom: ElementRef<HTMLDivElement>;
+  @ViewChild('swagger_backend') swaggerDomBackend: ElementRef<HTMLDivElement>;
+  @ViewChild('swagger_stepflow') swaggerDomStepFlow: ElementRef<HTMLDivElement>;
 
   ngAfterViewInit() {
     SwaggerUIBundle({
       urls: [
         {
           name: 'MCAI Backend',
-          url: this.document.location.origin+'/swagger/backend/backend_swagger.json'
-        },
-        {
-          name: 'StepFlow',
-          url: this.document.location.origin+'/swagger/step_flow/step_flow_swagger.json'
+          url: this.document.location.origin + '/swagger/backend/backend_swagger.json'
         }
       ],
-      domNode: this.swaggerDom.nativeElement,
+      domNode: this.swaggerDomBackend.nativeElement,
+      deepLinking: true,
+      presets: [
+        SwaggerUIBundle.presets.apis,
+        SwaggerUIStandalonePreset
+      ],
+      layout: 'StandaloneLayout'
+    });
+
+    SwaggerUIBundle({
+      urls: [
+        {
+          name: 'StepFlow',
+          url: this.document.location.origin + '/swagger/step_flow/step_flow_swagger.json'
+        }
+      ],
+      domNode: this.swaggerDomStepFlow.nativeElement,
       deepLinking: true,
       presets: [
         SwaggerUIBundle.presets.apis,

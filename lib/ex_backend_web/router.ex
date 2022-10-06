@@ -86,7 +86,7 @@ defmodule ExBackendWeb.Router do
     %{
       info: %{
         version: Mix.Project.config()[:version],
-        title: "MCAI Backend"
+        title: "Backend API documentation"
       }
     }
   end

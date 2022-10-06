@@ -28,6 +28,12 @@ mix ecto.create && mix ecto.migrate
 # update the config/dev.secret.exs
 ```
 
+ * Generate Swagger documentation (optional)
+
+```
+mix phx.swagger.generate
+```
+
 ### Front-end installation:
 
 Install Node.js dependencies with :

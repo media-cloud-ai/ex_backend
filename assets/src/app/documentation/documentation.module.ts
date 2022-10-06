@@ -12,6 +12,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatSelectModule} from '@angular/material/select';
 import {MatSliderModule} from '@angular/material/slider';
+import { MatTabsModule } from '@angular/material/tabs';
 
 import {PipesModule} from '../pipes/pipes.module'
 
@@ -30,6 +31,7 @@ export const ROUTES: Routes = [
     MatProgressSpinnerModule,
     MatSelectModule,
     MatSliderModule,
+    MatTabsModule,
     PipesModule,
     RouterModule.forChild(ROUTES)
   ],
