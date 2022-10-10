@@ -2,8 +2,9 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core'
 
 
-import {NotificationEndpointService} from '../services/notification_endpoint.service'
-import {NotificationEndpoint} from '../models/notification_endpoint'
+import {NotificationEndpointService} from '../../services/notification_endpoint.service'
+import {NotificationEndpoint} from '../../models/notification_endpoint'
+import { PwdType } from '../../models/pwd_type';
 
 @Component({
   selector: 'notification_endpoint-component',
@@ -15,7 +16,7 @@ export class NotificationEndpointComponent {
   @Input() data: NotificationEndpoint
   @Output() deleted: EventEmitter<NotificationEndpoint> = new EventEmitter<NotificationEndpoint>();
 
-  pwd_type = "password"
+  pwd_type = PwdType.Password
 
   constructor(
     private notificationEndpointService: NotificationEndpointService,
@@ -23,9 +24,9 @@ export class NotificationEndpointComponent {
 
   mask(mode) {
     if(mode === true) {
-      this.pwd_type = "text"
+      this.pwd_type = PwdType.Text
     } else {
-      this.pwd_type = "password"
+      this.pwd_type = PwdType.Password
     }
   }
 

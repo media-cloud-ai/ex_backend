@@ -1,8 +1,8 @@
 
-import {Component} from '@angular/core'
+import {Component, OnInit} from '@angular/core'
 
-import {NotificationEndpointService} from '../services/notification_endpoint.service'
-import {NotificationEndpoint} from '../models/notification_endpoint'
+import {NotificationEndpointService} from '../../services/notification_endpoint.service'
+import {NotificationEndpoint} from '../../models/notification_endpoint'
 
 @Component({
   selector: 'notification_endpoints-component',
@@ -29,8 +29,7 @@ export class NotificationEndpointsComponent {
     this.notificationEndpointService.getNotificationEndpoints()
     .subscribe(notificationEndpointPage => {
       this.notificationEndpoints = notificationEndpointPage.data.sort((a, b) =>
-      (a.endpoint_placeholder > b.endpoint_placeholder) ? 1 :
-      ((b.endpoint_placeholder > a.endpoint_placeholder) ? -1 : 0));
+      a.endpoint_placeholder.localeCompare(b.endpoint_placeholder));
     })
   }
 

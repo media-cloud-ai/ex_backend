@@ -22,13 +22,13 @@ export class NotificationEndpointService {
   }
 
   createNotificationEndpoint(
-    endpoint_placeholder: string, 
+    endpoint_placeholder: string,
     endpoint_url: string,
     endpoint_credentials?: string
-    ): 
+    ):
     Observable<NotificationEndpoint> {
     let params = {}
-    if (typeof(endpoint_credentials) !== 'undefined') {
+    if (endpoint_credentials !== undefined) {
       params = {
         endpoint_placeholder: endpoint_placeholder,
         endpoint_url: endpoint_url,

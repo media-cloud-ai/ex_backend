@@ -110,14 +110,9 @@ export class AppComponent {
           'icon': 'insights'
         })
         this.left_menu.push({
-          'link': '/credentials',
-          'label': 'Credentials',
-          'icon': 'vpn_key',
-        })
-        this.left_menu.push({
-          'link': '/notification_endpoints',
-          'label': 'Notification Endpoints',
-          'icon': 'where_to_vote',
+          'link': '/secrets',
+          'label': 'Secrets',
+          'icon': 'settings'
         })
         this.left_menu.push({
           'link': '/users',
