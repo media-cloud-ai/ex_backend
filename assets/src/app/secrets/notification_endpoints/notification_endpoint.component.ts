@@ -1,9 +1,9 @@
 
-import {Component, EventEmitter, Input, Output} from '@angular/core'
+import { Component, EventEmitter, Input, Output } from '@angular/core'
 
 
-import {NotificationEndpointService} from '../../services/notification_endpoint.service'
-import {NotificationEndpoint} from '../../models/notification_endpoint'
+import { NotificationEndpointService } from '../../services/notification_endpoint.service'
+import { NotificationEndpoint } from '../../models/notification_endpoint'
 import { PwdType } from '../../models/pwd_type';
 
 @Component({
@@ -20,20 +20,20 @@ export class NotificationEndpointComponent {
 
   constructor(
     private notificationEndpointService: NotificationEndpointService,
-  ) {}
+  ) { }
 
   mask(mode) {
-    if(mode === true) {
-      this.pwd_type = PwdType.Text
-    } else {
+    if (mode === true) {
       this.pwd_type = PwdType.Password
+    } else {
+      this.pwd_type = PwdType.Text
     }
   }
 
   delete() {
     this.notificationEndpointService.removeNotificationEndpoint(this.data.endpoint_placeholder)
-    .subscribe(notificationEndpoint => {
-      this.deleted.next(this.data)
-    })
+      .subscribe(notificationEndpoint => {
+        this.deleted.next(this.data)
+      })
   }
 }
