@@ -113,6 +113,7 @@ import {DeclaredWorkersService}    from './services/declared_workers.service'
 import {IMDbService}             from './services/imdb.service'
 import {JobService}              from './services/job.service'
 import {MouseMoveService}        from './services/mousemove.service'
+import {NotificationEndpointService}       from './services/notification_endpoint.service'
 import {RegisteryService}        from './services/registery.service'
 import {StatisticsService}       from './services/statistics.service'
 import {S3Service}               from './services/s3.service'
@@ -287,6 +288,7 @@ const EX_BACKEND_DATE_FORMATS = {
     IMDbService,
     JobService,
     MouseMoveService,
+    NotificationEndpointService,
     RegisteryService,
     StatisticsService,
     S3Service,

@@ -38,7 +38,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         }
       }
       if (url.startsWith('/users') ||
-        url.startsWith('/credentials') ||
+        url.startsWith('/secrets') ||
         url.startsWith('/statistics')
         ) {
         if (this.authService.hasAdministratorRight()) {

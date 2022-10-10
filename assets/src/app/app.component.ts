@@ -110,9 +110,9 @@ export class AppComponent {
           'icon': 'insights'
         })
         this.left_menu.push({
-          'link': '/credentials',
-          'label': 'Credentials',
-          'icon': 'vpn_key',
+          'link': '/secrets',
+          'label': 'Secrets',
+          'icon': 'settings'
         })
         this.left_menu.push({
           'link': '/users',

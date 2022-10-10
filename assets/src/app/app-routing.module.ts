@@ -25,10 +25,10 @@ import {WatchersComponent} from './watchers/watchers.component'
 import {WorkflowDetailsComponent} from './workflows/details/workflow_details.component'
 import {WorkflowsComponent} from './workflows/workflows.component'
 
-import {CredentialsModule} from './credentials/credentials.module'
 import {DocumentationModule} from './documentation/documentation.module'
 import {OrderModule} from './order/order.module'
 import {PlayerModule} from './player/player.module'
+import {SecretsModule} from './secrets/secrets.module';
 import {WorkersModule} from './workers/workers.module'
 
 const appRoutes: Routes = [
@@ -41,11 +41,6 @@ const appRoutes: Routes = [
   {
     path: 'confirm',
     component: ConfirmComponent
-  },
-  {
-    path: 'credentials',
-    loadChildren: () => CredentialsModule,
-    canActivate: [AuthGuard]
   },
   {
     path: 'dashboard',
@@ -80,6 +75,11 @@ const appRoutes: Routes = [
   {
     path: 'registeries/:id',
     component: RegisteryDetailComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'secrets',
+    loadChildren: () => SecretsModule,
     canActivate: [AuthGuard]
   },
   {
