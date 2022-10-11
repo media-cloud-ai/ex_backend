@@ -27,7 +27,7 @@ defmodule ExBackend.Accounts.MessageTest do
     {:ok, sent_email} = Message.reset_request(email, key)
     assert sent_email.subject =~ "Reset your password"
     assert sent_email.text_body =~ "Reset your password at "
-    assert sent_email.text_body =~ "/password_resets/edit?key="
+    assert sent_email.text_body =~ "/reset_password?key="
     assert_delivered_email(sent_email)
   end
 

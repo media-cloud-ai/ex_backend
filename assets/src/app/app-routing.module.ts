@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core'
+import { NgModule } from '@angular/core'
 import {
   PreloadAllModules,
   RouterModule,
@@ -6,30 +6,31 @@ import {
 } from '@angular/router'
 import { BrowserModule } from '@angular/platform-browser';
 
-import {CanDeactivateGuard} from './authentication/can-deactivate-guard.service'
-import {AuthGuard} from './authentication/auth-guard.service'
-import {AuthService} from './authentication/auth.service'
+import { CanDeactivateGuard } from './authentication/can-deactivate-guard.service'
+import { AuthGuard } from './authentication/auth-guard.service'
+import { AuthService } from './authentication/auth.service'
 
-import {ConfirmComponent} from './confirm/confirm.component'
-import {DashboardComponent} from './dashboard/dashboard.component'
-import {DeclaredWorkersComponent} from './declared_workers/declared_workers.component'
-import {HelpComponent} from './help/help.component'
-import {IngestComponent} from './ingest/ingest.component'
-import {JobsComponent} from './jobs/jobs.component'
-import {LoginComponent} from './login/login.component'
-import {RegisteriesComponent} from './registeries/registeries.component'
-import {RegisteryDetailComponent} from './registeries/registery_detail.component'
-import {StatisticsComponent} from './statistics/statistics.component'
-import {UsersComponent} from './users/users.component'
-import {WatchersComponent} from './watchers/watchers.component'
-import {WorkflowDetailsComponent} from './workflows/details/workflow_details.component'
-import {WorkflowsComponent} from './workflows/workflows.component'
+import { ConfirmComponent } from './confirm/confirm.component'
+import { DashboardComponent } from './dashboard/dashboard.component'
+import { DeclaredWorkersComponent } from './declared_workers/declared_workers.component'
+import { HelpComponent } from './help/help.component'
+import { IngestComponent } from './ingest/ingest.component'
+import { JobsComponent } from './jobs/jobs.component'
+import { LoginComponent } from './login/login.component'
+import { RegisteriesComponent } from './registeries/registeries.component'
+import { RegisteryDetailComponent } from './registeries/registery_detail.component'
+import { ResetPasswordComponent } from './reset_password/reset_password.component';
+import { StatisticsComponent } from './statistics/statistics.component'
+import { UsersComponent } from './users/users.component'
+import { WatchersComponent } from './watchers/watchers.component'
+import { WorkflowDetailsComponent } from './workflows/details/workflow_details.component'
+import { WorkflowsComponent } from './workflows/workflows.component'
 
-import {DocumentationModule} from './documentation/documentation.module'
-import {OrderModule} from './order/order.module'
-import {PlayerModule} from './player/player.module'
-import {SecretsModule} from './secrets/secrets.module';
-import {WorkersModule} from './workers/workers.module'
+import { DocumentationModule } from './documentation/documentation.module'
+import { OrderModule } from './order/order.module'
+import { PlayerModule } from './player/player.module'
+import { SecretsModule } from './secrets/secrets.module';
+import { WorkersModule } from './workers/workers.module'
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -76,6 +77,10 @@ const appRoutes: Routes = [
     path: 'registeries/:id',
     component: RegisteryDetailComponent,
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'reset_password',
+    component: ResetPasswordComponent
   },
   {
     path: 'secrets',
@@ -143,4 +148,4 @@ const appRoutes: Routes = [
   ]
 })
 
-export class AppRoutingModule {}
+export class AppRoutingModule { }

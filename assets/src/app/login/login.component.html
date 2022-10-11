@@ -1,8 +1,6 @@
 <div class=content>
   <div class=logo>
-    <span
-      class="version"
-      *ngIf="application">
+    <span class="version" *ngIf="application">
       {{application.version}}
     </span>
   </div>
@@ -13,38 +11,27 @@
     </span>
     <div>
       <mat-form-field class="search-text-input">
-        <input
-          matInput
-          type="text"
-          placeholder="Username"
-          name=username
-          [(ngModel)]="username"
-          >
+        <input matInput type="text" placeholder="Username" name=username [(ngModel)]="username">
       </mat-form-field>
     </div>
     <div>
       <mat-form-field class="search-text-input">
-        <input
-          matInput
-          type="password"
-          placeholder="Password"
-          name=password
-          [(ngModel)]="password"
-          >
+        <input matInput type="password" placeholder="Password" name=password [(ngModel)]="password">
       </mat-form-field>
     </div>
     <div class="button submit">
-      <button
-        mat-button
-        color="primary"
-        type="submit"
-        >
+      <button mat-button color="primary" type="submit">
         <mat-icon>chevron_right</mat-icon>
         Login
       </button>
     </div>
     <div class=message>
       {{message}}
+    </div>
+    <div class="reset" (click)="openResetPasswordDialog()">
+      <button mat-button color="primary" type="button">
+        Reset password
+      </button>
     </div>
   </form>
 </div>
