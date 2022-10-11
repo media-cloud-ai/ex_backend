@@ -77,6 +77,7 @@ import { ParametersComponent } from './workflows/details/parameters.component'
 import { RegisteriesComponent } from './registeries/registeries.component'
 import { RegisteryComponent } from './registeries/registery.component'
 import { RegisteryDetailComponent } from './registeries/registery_detail.component'
+import { ResetPasswordComponent } from './reset_password/reset_password.component'
 import { RoleComponent } from './users/role.component'
 import { QueuesComponent } from './amqp/queues.component'
 import { StatisticsComponent } from './statistics/statistics.component'
@@ -94,6 +95,7 @@ import { WorkflowStepDetailsComponent } from './workflows/details/workflow_step_
 import { WorkflowsComponent } from './workflows/workflows.component'
 
 import { DeleteSubtitleDialog } from './registeries/dialog/delete_subtitle_dialog.component'
+import { EnterEmailDialogComponent } from './login/dialogs/enter_email_dialog.component'
 import { StartIngestDialog } from './ingest/dialogs/start_ingest.component'
 import { JobDetailsDialogComponent } from './jobs/details/job_details_dialog.component'
 import { NewSubtitleDialogComponent } from './registeries/dialog/new_subtitle_dialog.component'
@@ -194,6 +196,7 @@ const EX_BACKEND_DATE_FORMATS = {
     DeclaredWorkersComponent,
     DeleteSubtitleDialog,
     DurationComponent,
+    EnterEmailDialogComponent,
     HelpComponent,
     IngestComponent,
     JobDetailsDialogComponent,
@@ -206,6 +209,7 @@ const EX_BACKEND_DATE_FORMATS = {
     RegisteryComponent,
     RegisteriesComponent,
     RegisteryDetailComponent,
+    ResetPasswordComponent,
     RoleComponent,
     RoleOrRightDeletionDialogComponent,
     StartIngestDialog,
@@ -231,6 +235,7 @@ const EX_BACKEND_DATE_FORMATS = {
   entryComponents: [
     DeleteSubtitleDialog,
     DurationComponent,
+    EnterEmailDialogComponent,
     JobDetailsDialogComponent,
     JobStatisticsComponent,
     NewSubtitleDialogComponent,

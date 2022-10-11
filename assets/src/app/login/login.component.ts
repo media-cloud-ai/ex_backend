@@ -9,6 +9,9 @@ import { Application } from '../models/application'
 import { ApplicationService } from '../services/application.service'
 import { AuthService } from '../authentication/auth.service'
 
+import { MatDialog } from '@angular/material/dialog'
+import { EnterEmailDialogComponent } from './dialogs/enter_email_dialog.component'
+
 @Component({
   selector: 'login-component',
   templateUrl: 'login.component.html',
@@ -24,6 +27,7 @@ export class LoginComponent {
   constructor(
     private applicationService: ApplicationService,
     public authService: AuthService,
+    private dialog: MatDialog,
     public router: Router) { }
 
   ngOnInit() {
@@ -53,5 +57,13 @@ export class LoginComponent {
 
   logout() {
     this.authService.logout()
+  }
+
+  openResetPasswordDialog(): void {
+    let dialogRef = this.dialog.open(EnterEmailDialogComponent, {
+      data: {
+        'email': '', 'message': ''
+      }
+    })
   }
 }

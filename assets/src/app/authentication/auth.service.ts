@@ -6,6 +6,8 @@ import { Observable, of, Subject, Subscription } from 'rxjs'
 import { catchError, map, tap } from 'rxjs/operators'
 import 'rxjs/add/operator/do'
 
+import { Confirm } from '../models/user'
+import { PasswordReset } from '../models/password_reset'
 import { Token } from '../models/token'
 import { UserService } from '../services/user.service'
 
@@ -170,6 +172,35 @@ export class AuthService {
       .pipe(
         tap(userPage => this.log('Check Rights')),
         catchError(this.handleError('checkRights', undefined))
+      )
+  }
+
+  resetPassword(email: string): Observable<PasswordReset> {
+    let params = {
+      password_reset: {
+        email: email
+      }
+    }
+
+    return this.http.post<PasswordReset>('/api/password_resets', params)
+      .pipe(
+        tap(userPage => this.log('Reset password')),
+        catchError(this.handleError('resetPassword', undefined))
+      )
+  }
+
+  confirmResetPassword(password: string, key: string): Observable<Confirm> {
+    let params = {
+      password_reset: {
+        password: password,
+        key: key
+      }
+    }
+
+    return this.http.put<Confirm>('/api/password_resets/update', params)
+      .pipe(
+        tap(user => this.log('fetched Confirm User')),
+        catchError(this.handleError('confirm', undefined))
       )
   }
 

@@ -137,7 +137,7 @@ defmodule ExBackend.Accounts.Message do
 
     prep_mail(address)
     |> subject("[#{app_label} Backend] Reset your password")
-    |> text_body("Reset your password at " <> hostname <> "/password_resets/edit?key=#{key}")
+    |> text_body("Reset your password at " <> hostname <> "/reset_password?key=#{key}")
     |> Mailer.deliver_now()
   end
 

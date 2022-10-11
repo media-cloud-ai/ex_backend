@@ -3,17 +3,20 @@ defmodule ExBackendWeb.PasswordResetController do
 
   require Logger
 
+  import ExBackendWeb.Authorize
   alias ExBackend.Accounts
   alias ExBackendWeb.Auth.Token
+
+  plug(:guest_check when action in [:create, :update])
 
   def create(conn, %{"password_reset" => %{"email" => email}}) do
     case Accounts.create_password_reset(%{"email" => email}) do
       nil ->
-        message = "unable to found user based on email address"
+        message = "Could not find an user based on this address"
 
-        put_status(conn, :unprocessable_entity)
+        conn
         |> put_view(ExBackendWeb.PasswordResetView)
-        |> render("error.json", error: message)
+        |> render("error.json", %{error: message})
 
       user ->
         token = Token.sign(%{"email" => user.email})
@@ -41,7 +44,7 @@ defmodule ExBackendWeb.PasswordResetController do
       {:ok, nil} ->
         put_status(conn, :unprocessable_entity)
         |> put_view(ExBackendWeb.PasswordResetView)
-        |> render("error.json", error: "unable to found user in the database")
+        |> render("error.json", error: "Could not find the user in the database")
 
       {:ok, user} ->
         user

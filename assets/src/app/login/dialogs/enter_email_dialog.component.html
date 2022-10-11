@@ -1,0 +1,16 @@
+<form class="reset" (ngSubmit)="resetPassword()" #heroForm="ngForm">
+    <div>
+        <mat-form-field class="search-text-input">
+            <input matInput type="text" placeholder="Your mail adress" name=email [(ngModel)]="email">
+        </mat-form-field>
+    </div>
+    <div class="button submit">
+        <button mat-button color="primary" type="submit">
+            <mat-icon></mat-icon>
+            Reset password
+        </button>
+    </div>
+    <div class=message [ngStyle]="{'color': message_color}">
+        {{message}}
+    </div>
+</form>

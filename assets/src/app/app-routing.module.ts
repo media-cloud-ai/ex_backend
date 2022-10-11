@@ -19,6 +19,7 @@ import { JobsComponent } from './jobs/jobs.component'
 import { LoginComponent } from './login/login.component'
 import { RegisteriesComponent } from './registeries/registeries.component'
 import { RegisteryDetailComponent } from './registeries/registery_detail.component'
+import { ResetPasswordComponent } from './reset_password/reset_password.component';
 import { StatisticsComponent } from './statistics/statistics.component'
 import { UsersComponent } from './users/users.component'
 import { WatchersComponent } from './watchers/watchers.component'
@@ -76,6 +77,10 @@ const appRoutes: Routes = [
     path: 'registeries/:id',
     component: RegisteryDetailComponent,
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'reset_password',
+    component: ResetPasswordComponent
   },
   {
     path: 'secrets',
