@@ -1,23 +1,23 @@
-import {Injectable, Component, OnDestroy} from '@angular/core'
-import {Router} from '@angular/router'
-import {HttpClient, HttpParams, HttpHeaders} from '@angular/common/http'
-import {CookieService} from 'ngx-cookie-service'
-import {Observable, of, Subject, Subscription} from 'rxjs'
-import {catchError, map, tap} from 'rxjs/operators'
-import {Token} from '../models/token'
+import { Injectable, Component, OnDestroy } from '@angular/core'
+import { Router } from '@angular/router'
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http'
+import { CookieService } from 'ngx-cookie-service'
+import { Observable, of, Subject, Subscription } from 'rxjs'
+import { catchError, map, tap } from 'rxjs/operators'
 import 'rxjs/add/operator/do'
 
-import {UserService} from '../services/user.service'
+import { Token } from '../models/token'
+import { UserService } from '../services/user.service'
 
 @Injectable()
 export class AuthService {
   isLoggedIn = false
   email: string
-  username : string
-  first_name : string
-  last_name : string
+  username: string
+  first_name: string
+  last_name: string
   user_id: number
-  roles : string[]
+  roles: string[]
   redirectUrl: string
 
   private userLoggedInSource = new Subject<string>()
@@ -62,10 +62,12 @@ export class AuthService {
     this.first_name = undefined
     this.last_name = undefined
     this.user_id = undefined
-    const query = {session: {
-      email: email,
-      password: password
-    }}
+    const query = {
+      session: {
+        email: email,
+        password: password
+      }
+    }
 
     return this.http.post<Token>('/api/sessions', query).pipe(
       tap(response => {
@@ -83,9 +85,9 @@ export class AuthService {
           this.isLoggedIn = true
           this.email = response.user.email
           this.username = response.user.username,
-          this.first_name = response.user.first_name,
-          this.last_name = response.user.last_name,
-          this.roles = response.user.roles
+            this.first_name = response.user.first_name,
+            this.last_name = response.user.last_name,
+            this.roles = response.user.roles
           this.user_id = response.user.id
           this.userLoggedInSource.next(email)
         } else {
@@ -133,31 +135,31 @@ export class AuthService {
 
   hasAdministratorRight(): boolean {
     console.log("hasAdministratorRight", this.roles);
-    if (!this.roles){
+    if (!this.roles) {
       return false
     }
     return this.roles.includes('administrator')
   }
 
   hasTechnicianRight(): boolean {
-    if (!this.roles){
+    if (!this.roles) {
       return false
     }
     return this.roles.includes('technician')
   }
 
   hasEditorRight(): boolean {
-    if (!this.roles){
+    if (!this.roles) {
       return false
     }
     return this.roles.includes('editor')
   }
 
   hasAnyRights(entity: string, action: string): Observable<any> {
-    if (!this.roles){
+    if (!this.roles) {
       return of(false)
     }
-    if (entity === undefined || action == undefined){
+    if (entity === undefined || action == undefined) {
       return of(false)
     }
     let params = new HttpParams()
@@ -171,7 +173,7 @@ export class AuthService {
       )
   }
 
-  private handleError<T> (operation = 'operation', result?: T) {
+  private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error)
       this.log(`${operation} failed: ${error.message}`)

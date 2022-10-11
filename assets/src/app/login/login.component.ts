@@ -1,17 +1,18 @@
 
-import {Component}   from '@angular/core'
+import { Component } from '@angular/core'
 import {
   NavigationExtras,
   Router,
 } from '@angular/router'
-import {Application} from '../models/application'
-import {ApplicationService} from '../services/application.service'
-import {AuthService} from '../authentication/auth.service'
+
+import { Application } from '../models/application'
+import { ApplicationService } from '../services/application.service'
+import { AuthService } from '../authentication/auth.service'
 
 @Component({
-    selector: 'login-component',
-    templateUrl: 'login.component.html',
-    styleUrls: ['./login.component.less'],
+  selector: 'login-component',
+  templateUrl: 'login.component.html',
+  styleUrls: ['./login.component.less'],
 })
 
 export class LoginComponent {
@@ -23,33 +24,33 @@ export class LoginComponent {
   constructor(
     private applicationService: ApplicationService,
     public authService: AuthService,
-    public router: Router) {}
+    public router: Router) { }
 
   ngOnInit() {
     this.applicationService.get()
-    .subscribe(response => {
-      this.application = response
-    })
+      .subscribe(response => {
+        this.application = response
+      })
   }
 
   login() {
     this.authService.login(this.username, this.password)
-    .subscribe(response => {
-      this.message = ''
-      if (response && response.user) {
-        let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : '/dashboard'
+      .subscribe(response => {
+        this.message = ''
+        if (response && response.user) {
+          let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : '/dashboard'
 
-        let navigationExtras: NavigationExtras = {
-          queryParamsHandling: 'preserve',
-          preserveFragment: true
+          let navigationExtras: NavigationExtras = {
+            queryParamsHandling: 'preserve',
+            preserveFragment: true
+          }
+          this.router.navigate([redirect], navigationExtras)
+        } else {
+          this.message = 'Bad username and/or password'
         }
-        this.router.navigate([redirect], navigationExtras)
-      } else {
-        this.message = 'Bad username and/or password'
-      }
-    })
+      })
   }
- 
+
   logout() {
     this.authService.logout()
   }
