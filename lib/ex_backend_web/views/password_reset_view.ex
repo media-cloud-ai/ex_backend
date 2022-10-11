@@ -6,6 +6,6 @@ defmodule ExBackendWeb.PasswordResetView do
   end
 
   def render("error.json", %{error: message}) do
-    %{error: message}
+    %{custom_error_message: message}
   end
 end

@@ -7,7 +7,7 @@ import { catchError, map, tap } from 'rxjs/operators'
 import 'rxjs/add/operator/do'
 
 import { Confirm } from '../models/user'
-import { PasswordReset } from '../models/password_reset'
+import { PasswordReset, PasswordResetError } from '../models/password_reset'
 import { Token } from '../models/token'
 import { UserService } from '../services/user.service'
 
@@ -175,7 +175,7 @@ export class AuthService {
       )
   }
 
-  resetPassword(email: string): Observable<PasswordReset> {
+  passwordResetRequest(email: string): Observable<PasswordReset> {
     let params = {
       password_reset: {
         email: email
@@ -185,8 +185,7 @@ export class AuthService {
     return this.http.post<PasswordReset>('/api/password_resets', params)
       .pipe(
         tap(userPage => this.log('Reset password')),
-        catchError(this.handleError('resetPassword', undefined))
-      )
+        catchError(err => this.handleErrorPasswordReset(err)))
   }
 
   confirmResetPassword(password: string, key: string): Observable<Confirm> {
@@ -199,8 +198,8 @@ export class AuthService {
 
     return this.http.put<Confirm>('/api/password_resets/update', params)
       .pipe(
-        tap(user => this.log('fetched Confirm User')),
-        catchError(this.handleError('confirm', undefined))
+        tap(user => this.log('fetched Confirm Password Reset')),
+        catchError(this.handleError('confirmResetPassword', undefined))
       )
   }
 
@@ -210,6 +209,12 @@ export class AuthService {
       this.log(`${operation} failed: ${error.message}`)
       return of(result as T)
     }
+  }
+
+  private handleErrorPasswordReset(err_object: PasswordResetError): Observable<PasswordReset> {
+    console.error(err_object);
+    this.log(err_object.message);
+    return of(new PasswordReset('', err_object.error.custom_error_message))
   }
 
   private log(message: string) {

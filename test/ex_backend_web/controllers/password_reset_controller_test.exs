@@ -19,7 +19,7 @@ defmodule ExBackendWeb.PasswordResetControllerTest do
   test "create function fails for no user", %{conn: conn} do
     invalid_attrs = %{email: "prettylady@example.com"}
     conn = post(conn, password_reset_path(conn, :create), password_reset: invalid_attrs)
-    assert json_response(conn, 200)["error"] != nil
+    assert json_response(conn, 404)["errors"] != %{}
   end
 
   test "reset password succeeds for correct key", %{conn: conn} do

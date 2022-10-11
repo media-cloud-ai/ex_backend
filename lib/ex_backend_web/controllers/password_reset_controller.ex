@@ -15,8 +15,9 @@ defmodule ExBackendWeb.PasswordResetController do
         message = "Could not find an user based on this address"
 
         conn
+        |> put_status(:not_found)
         |> put_view(ExBackendWeb.PasswordResetView)
-        |> render("error.json", %{error: message})
+        |> render("error.json", error: message)
 
       user ->
         token = Token.sign(%{"email" => user.email})
@@ -28,7 +29,7 @@ defmodule ExBackendWeb.PasswordResetController do
             conn
             |> put_status(:created)
             |> put_view(ExBackendWeb.PasswordResetView)
-            |> render("info.json", %{info: message})
+            |> render("info.json", info: message)
 
           {:error, error} ->
             Logger.error("Email delivery failure: #{inspect(error)}")

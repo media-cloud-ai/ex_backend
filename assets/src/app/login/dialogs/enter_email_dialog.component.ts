@@ -25,9 +25,8 @@ export class EnterEmailDialogComponent {
     }
 
     resetPassword(): void {
-        this.authService.resetPassword(this.email)
+        this.authService.passwordResetRequest(this.email)
             .subscribe(passwordReset => {
-                console.log(passwordReset)
                 if (passwordReset.error != null) {
                     console.log(passwordReset)
                     this.message = passwordReset.error
