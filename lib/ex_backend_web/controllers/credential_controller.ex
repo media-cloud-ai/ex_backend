@@ -112,15 +112,15 @@ defmodule ExBackendWeb.CredentialController do
   end
 
   swagger_path :show do
-    get("/api/credentials/{id}")
-    summary("Get credential (id)")
-    description("Get a credential by id")
+    get("/api/credentials/{key}")
+    summary("Get credential (key)")
+    description("Get a credential by key")
     produces("application/json")
     tag("Credentials")
-    operation_id("get_credential_by_id")
+    operation_id("get_credential_by_key")
 
     parameters do
-      id(:path, :integer, "Credential ID", required: true)
+      id(:path, :integer, "Credential key", required: true)
     end
 
     security([%{Bearer: []}])
@@ -129,20 +129,20 @@ defmodule ExBackendWeb.CredentialController do
   end
 
   def show(conn, %{"id" => id}) do
-    credential = Credentials.get_credential!(id)
+    credential = Credentials.get_credential_by_key!(id)
     render(conn, "show.json", credential: credential)
   end
 
   swagger_path :get_by_key do
-    get("/api/credentials/search/{key}")
-    summary("Get credential (key)")
-    description("Get a credential by key")
+    get("/api/credentials/search/{id}")
+    summary("Get credential (id)")
+    description("Get a credential by id")
     produces("application/json")
     tag("Credentials")
-    operation_id("get_credential_by_key")
+    operation_id("get_credential_by_id")
 
     parameters do
-      key(:path, :string, "Credential Key", required: true)
+      id(:path, :string, "Credential ID", required: true)
     end
 
     security([%{Bearer: []}])
@@ -150,8 +150,8 @@ defmodule ExBackendWeb.CredentialController do
     response(403, "Unauthorized")
   end
 
-  def get_by_key(conn, %{"key" => key}) do
-    credential = Credentials.get_credential_by_key!(key)
+  def get_by_id(conn, %{"id" => id}) do
+    credential = Credentials.get_credential!(id)
     render(conn, "show.json", credential: credential)
   end
 
