@@ -51,7 +51,7 @@ defmodule ExBackendWeb.Router do
     get("/imdb/:id", ImdbController, :show)
 
     resources("/credentials", CredentialController, except: [:new, :edit])
-    get("/credentials/search/:key", CredentialController, :get_by_key)
+    get("/credentials/search/:id", CredentialController, :get_by_id)
 
     get("/documentation", DocumentationController, :index)
 
