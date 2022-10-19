@@ -3,6 +3,7 @@ import { Job } from './job'
 
 export class JobsStatus {
   completed: number
+  dropped: number
   errors: number
   queued: number
   stopped: number

@@ -116,7 +116,7 @@
   <span
     class="paused"
     title="{{step.name | jobType}}: paused"
-    *ngIf="workflow.status.state == 'paused' && !step.jobs.total"
+    *ngIf="step.status == 'paused' && step.jobs.total"
     [ngStyle]="{'flex': 1}">
    <span
       *ngIf="detailed && !step.label">

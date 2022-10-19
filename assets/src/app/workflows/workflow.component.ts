@@ -54,6 +54,7 @@ export class WorkflowComponent {
   }
 
   onMoreActionsToggle() {
+    let is_paused = ["pausing", "paused"].includes(this.workflow.status.state);
     let has_at_least_one_queued_job = this.workflow.steps.some((s) => s['jobs']['queued'] == 1)
     let has_at_least_one_processing_step = this.workflow.steps.some((s) => s['status'] === "processing");
 
@@ -66,11 +67,12 @@ export class WorkflowComponent {
     }
 
     let last_step = this.workflow.steps[this.workflow.steps.length - 1];
-    let is_last_step_processing = last_step['status'] === "processing";
-    let is_workflow_finished = this.workflow.artifacts.length > 0;
+    let is_last_step_processing = last_step['jobs']['processing'] == 1;
+    let is_finished = this.workflow.artifacts.length > 0;
 
-    this.can_pause = !is_workflow_finished && !has_at_least_one_skipped_step && !has_at_least_one_paused_step && !is_last_step_processing;
+    this.can_pause = !is_finished && (has_at_least_one_queued_job || has_at_least_one_processing_step) && !is_paused && !is_last_step_processing;
     this.can_resume = has_at_least_one_paused_step;
+    this.can_delete = !this.workflow.deleted
 
     this.authService.hasAnyRights("workflow::" + this.workflow.identifier, "abort").subscribe(
         response => {

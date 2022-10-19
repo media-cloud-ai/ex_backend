@@ -73,6 +73,10 @@ ul.jobs {
       background-size: 20px 20px;
     }
 
+    .status.dropped {
+      color: @grey;
+    }
+
     .bar {
       height: 5px;
     }
@@ -108,5 +112,8 @@ ul.jobs {
   }
   li.stopped .bar {
     background-color: @yellow;
+  }
+  li.dropped .bar {
+    background-color: @grey;
   }
 }

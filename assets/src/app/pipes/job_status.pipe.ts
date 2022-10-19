@@ -37,6 +37,12 @@ export class JobStatusPipe implements PipeTransform {
       if (jobStatus.state === 'stopped'){
         return 'stopped'
       }
+      if (jobStatus.state === 'queued'){
+        return 'queued'
+      }
+      if (jobStatus.state === 'dropped'){
+        return 'dropped'
+      }
       if (status != "error" && jobStatus.state === 'retrying'){
         if (!jobProgression || jobProgression.datetime < jobStatus.inserted_at) {
           return "queued"
