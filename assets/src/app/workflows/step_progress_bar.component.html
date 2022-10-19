@@ -128,7 +128,22 @@
     </span>
   </span>
   <span
+    *ngIf="!workflow || !workflow.status || workflow.status.state != 'paused'"
     class="queued"
+    title="{{step.name | jobType}}: queued"
+    [ngStyle]="{'flex': step.jobs.queued}">
+    <span
+      *ngIf="step.jobs.queued && detailed && !step.label">
+      {{step.name | jobType}} ({{step.jobs.queued}}/{{step.jobs.total}})
+    </span>
+    <span
+      *ngIf="step.jobs.queued && detailed && step.label">
+      {{step.label}} ({{step.jobs.queued}}/{{step.jobs.total}})
+    </span>
+  </span>
+  <span
+    *ngIf="workflow && workflow.status && workflow.status.state == 'paused'"
+    class="black-listed"
     title="{{step.name | jobType}}: queued"
     [ngStyle]="{'flex': step.jobs.queued}">
     <span
