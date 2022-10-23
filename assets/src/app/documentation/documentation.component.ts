@@ -29,7 +29,7 @@ export class DocumentationComponent implements AfterViewInit {
       urls: [
         {
           name: 'MCAI Backend',
-          url: this.document.location.origin + '/swagger/backend/backend_swagger.json'
+          url: this.document.location.origin + '/api/backend/openapi'
         }
       ],
       domNode: this.swaggerDomBackend.nativeElement,
@@ -45,7 +45,7 @@ export class DocumentationComponent implements AfterViewInit {
       urls: [
         {
           name: 'StepFlow',
-          url: this.document.location.origin + '/swagger/step_flow/step_flow_swagger.json'
+          url: this.document.location.origin + '/api/step_flow/openapi'
         }
       ],
       domNode: this.swaggerDomStepFlow.nativeElement,

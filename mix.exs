@@ -100,6 +100,7 @@ defmodule ExBackend.Mixfile do
       {:lager, "3.8.0"},
       {:libvault, "~> 0.2.1"},
       {:mix_audit, "~> 1.0", only: [:dev, :test], runtime: false},
+      {:open_api_spex, "~> 3.13"},
       {:phoenix, "~> 1.5.3"},
       {:phoenix_ecto, "~> 4.0"},
       {:phoenix_html, "~> 2.10"},
@@ -138,6 +139,12 @@ defmodule ExBackend.Mixfile do
         "deps.audit"
       ],
       dev: ["ecto.drop", "ecto.setup", "phx.server -r priv/repo/seeds.exs"],
+      "docs.stepflow": [
+        "openapi.spec.json --spec StepFlow.ApiSpec --start-app=false --pretty priv/static/step_flow_openapi.json"
+      ],
+      "docs.backend": [
+        "openapi.spec.json --spec ExBackendWeb.ApiSpec --start-app=false --pretty priv/static/backend_openapi.json"
+      ],
       test: ["ecto.drop", "ecto.create --quiet", "ecto.migrate", "test"],
       version: &get_version/1
     ]

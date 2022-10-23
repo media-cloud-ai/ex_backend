@@ -13,6 +13,7 @@ defmodule ExBackendWeb.Router do
     plug(:accepts, ["json"])
     plug(:fetch_session)
     plug(ExBackendWeb.Auth.TokenCookie)
+    plug(OpenApiSpex.Plug.PutApiSpec, module: ExBackendWeb.ApiSpec)
   end
 
   get("/app", ExBackendWeb.ApplicationController, :index)
@@ -21,7 +22,10 @@ defmodule ExBackendWeb.Router do
   scope "/api", ExBackendWeb do
     pipe_through(:api)
 
+    # Session APIs
     post("/sessions", SessionController, :create)
+
+    # Users APIs
     resources("/users", UserController, except: [:new, :edit])
     get("/users/filters/workflow", UserController, :get_workflow_filters)
     post("/users/filters/workflow", UserController, :save_workflow_filters)
@@ -31,63 +35,62 @@ defmodule ExBackendWeb.Router do
     post("/users/generate_validation_link", UserController, :generate_validation_link)
     delete("/users/roles/:name", UserController, :delete_role)
     post("/users/check_rights", UserController, :check_rights)
-    resources("/watchers", WatcherController, except: [:new, :edit])
 
+    # Watchers APIs
+    get("/watchers", WatcherController, :index)
+
+    # Passwords APIs
     post("/password_resets", PasswordResetController, :create)
     put("/password_resets/update", PasswordResetController, :update)
 
+    # StepFlow APIs
     scope "/step_flow", StepFlow do
       forward("/", Plug)
     end
 
+    # AMQP APIs
     scope "/amqp", Amqp do
       get("/queues", AmqpController, :queues)
       get("/connections", AmqpController, :connections)
     end
 
+    # Persons APIs
     resources("/persons", PersonController, except: [:new, :edit])
 
+    #  IMDB APIs
     get("/imdb/search/:query", ImdbController, :index)
     get("/imdb/:id", ImdbController, :show)
 
+    # Credentials APIs
     resources("/credentials", CredentialController, except: [:new, :edit])
-    get("/credentials/search/:id", CredentialController, :get_by_id)
 
-    get("/documentation", DocumentationController, :index)
-
+    # S3 APIs
     get("/s3_config", S3Controller, :config)
     get("/s3_signer", S3Controller, :signer)
     get("/s3_presign_url", S3Controller, :presign_url)
   end
 
+  # Open API JSON endpoint
+  scope "/api/backend" do
+    pipe_through(:api)
+    get("/openapi", OpenApiSpex.Plug.RenderSpec, [])
+  end
+
+  # Streams endpoints
   get("/stream/:content/manifest.mpd", ExBackendWeb.PlayerController, :manifest)
   get("/stream/:content/:filename", ExBackendWeb.PlayerController, :index)
   options("/stream/:content/:filename", ExBackendWeb.PlayerController, :options)
 
+  # Swagger UI
   scope "/swagger" do
-    forward("/backend", PhoenixSwagger.Plug.SwaggerUI,
-      otp_app: :ex_backend,
-      swagger_file: "backend_swagger.json"
-    )
+    forward("/backend", OpenApiSpex.Plug.SwaggerUI, path: "/api/openapi")
 
-    forward("/step_flow", ExBackendWeb.StepFlowSwagger,
-      otp_app: :ex_backend,
-      swagger_file: "step_flow_swagger.json"
-    )
+    forward("/step_flow", ExBackendWeb.StepFlowSwaggerUI, path: "/api/step_flow/openapi")
   end
 
   scope "/", ExBackendWeb do
     pipe_through(:browser)
 
     get("/*path", PageController, :index)
-  end
-
-  def swagger_info do
-    %{
-      info: %{
-        version: Mix.Project.config()[:version],
-        title: "Backend API documentation"
-      }
-    }
   end
 end
