@@ -1,14 +1,28 @@
 defmodule ExBackendWeb.WatcherController do
   use ExBackendWeb, :controller
+  use OpenApiSpex.ControllerSpecs
 
   import ExBackendWeb.Authorize
   alias ExBackend.Accounts
+  alias ExBackendWeb.OpenApiSchemas
+
+  tags ["Watchers"]
+  security [%{"authorization" => %OpenApiSpex.SecurityScheme{type: "http", scheme: "bearer"}}]
 
   action_fallback(ExBackendWeb.FallbackController)
 
   # the following plugs are defined in the controllers/authorize.ex file
   plug(:user_check when action in [:index, :show, :update, :delete])
   plug(:right_administrator_check when action in [:update, :delete])
+
+  operation :index,
+    summary: "List user connections",
+    description: "List all user connections to MCAI Backend",
+    type: :object,
+    responses: [
+      ok: {"Watchers", "application/json", OpenApiSchemas.Watchers.Watchers},
+      forbidden: "Forbidden"
+    ]
 
   def index(conn, _params) do
     watchers =

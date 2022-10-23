@@ -1,11 +1,15 @@
 defmodule ExBackendWeb.CredentialController do
   use ExBackendWeb, :controller
-  use PhoenixSwagger
+  use OpenApiSpex.ControllerSpecs
 
   import ExBackendWeb.Authorize
 
   alias ExBackend.Credentials
   alias ExBackend.Credentials.Credential
+  alias ExBackendWeb.OpenApiSchemas
+
+  tags ["Credentials"]
+  security [%{"authorization" => %OpenApiSpex.SecurityScheme{type: "http", scheme: "bearer"}}]
 
   action_fallback(ExBackendWeb.FallbackController)
 
@@ -13,54 +17,14 @@ defmodule ExBackendWeb.CredentialController do
   plug(:user_check when action in [:index, :show, :delete])
   plug(:right_administrator_check when action in [:index, :show, :delete])
 
-  def swagger_definitions do
-    %{
-      Credential:
-        swagger_schema do
-          title("Credential")
-          description("A credential of MCAI Backend")
-
-          properties do
-            id(:string, "Unique identifier in database")
-            inserted_at(:string, "Credential insertion date")
-            key(:string, "Credential Key")
-            value(:string, "Credential Value")
-          end
-
-          example(%{
-            id: 1,
-            inserted_at: "2022-09-30T15:56:35",
-            key: "key",
-            value: "value"
-          })
-        end,
-      Credentials:
-        swagger_schema do
-          title("Credentials")
-          description("A collection of Credentials")
-          type(:array)
-          items(Schema.ref(:Credential))
-        end
-    }
-  end
-
-  swagger_path :index do
-    get("/api/credentials")
-    summary("List all credentials")
-    description("Retrieve all credentials")
-    produces("application/json")
-    tag("Credentials")
-
-    parameters do
-      page(:query, :integer, "Index of the page")
-      size(:query, :integer, "Number of items")
-      key(:query, :string, "Search by key")
-    end
-
-    security([%{Bearer: []}])
-    response(200, "OK", Schema.ref(:Credentials))
-    response(403, "Unauthorized")
-  end
+  operation :index,
+    summary: "List all credentials",
+    description: "Retrieve all credentials",
+    type: :object,
+    responses: [
+      ok: {"Credentials", "application/json", OpenApiSchemas.Credentials.Credentials},
+      forbidden: "Forbidden"
+    ]
 
   def index(conn, params) do
     # local_token = "mediacloudai"
@@ -79,23 +43,16 @@ defmodule ExBackendWeb.CredentialController do
     render(conn, "index.json", credentials: credentials)
   end
 
-  swagger_path :create do
-    post("/api/credentials")
-    summary("Create credential")
-    description("Create credential")
-    produces("application/json")
-    tag("Credentials")
-
-    parameters do
-      key(:query, :string, "Key")
-      value(:query, :string, "Value")
-    end
-
-    security([%{Bearer: []}])
-    response(201, "Created", Schema.ref(:Credential))
-    response(403, "Unauthorized")
-    response(422, "Unprocessable Entity")
-  end
+  operation :create,
+    summary: "Create credential",
+    description: "Create credential",
+    type: :object,
+    request_body:
+      {"Credential Body", "application/json", OpenApiSchemas.Credentials.CredentialBody},
+    responses: [
+      ok: {"Credential", "application/json", OpenApiSchemas.Credentials.Credential},
+      forbidden: "Forbidden"
+    ]
 
   def create(conn, credential_params) do
     case Credentials.create_credential(credential_params) do
@@ -111,43 +68,34 @@ defmodule ExBackendWeb.CredentialController do
     end
   end
 
-  swagger_path :show do
-    get("/api/credentials/{key}")
-    summary("Get credential (key)")
-    description("Get a credential by key")
-    produces("application/json")
-    tag("Credentials")
-    operation_id("get_credential_by_key")
+  operation :show,
+    summary: "Get credential",
+    description: "Get a credential by id or key",
+    type: :object,
+    parameters: [
+      id: [
+        in: :path,
+        description: "Credential ID or key",
+        type: :integer,
+        example: 1
+      ]
+    ],
+    responses: [
+      ok: {"Credential", "application/json", OpenApiSchemas.Credentials.Credential},
+      forbidden: "Forbidden",
+      not_found: "Not Found"
+    ]
 
-    parameters do
-      id(:path, :integer, "Credential key", required: true)
+  def show(conn, %{"id" => identifier}) do
+    case Integer.parse(identifier) do
+      {id, ""} -> get_by_id(conn, %{"id" => id})
+      _ -> get_by_key(conn, %{"id" => identifier})
     end
-
-    security([%{Bearer: []}])
-    response(200, "OK", Schema.ref(:Credential))
-    response(403, "Unauthorized")
   end
 
-  def show(conn, %{"id" => id}) do
-    credential = Credentials.get_credential_by_key!(id)
+  def get_by_key(conn, %{"id" => key}) do
+    credential = Credentials.get_credential_by_key!(key)
     render(conn, "show.json", credential: credential)
-  end
-
-  swagger_path :get_by_key do
-    get("/api/credentials/search/{id}")
-    summary("Get credential (id)")
-    description("Get a credential by id")
-    produces("application/json")
-    tag("Credentials")
-    operation_id("get_credential_by_id")
-
-    parameters do
-      id(:path, :string, "Credential ID", required: true)
-    end
-
-    security([%{Bearer: []}])
-    response(200, "OK", Schema.ref(:Credential))
-    response(403, "Unauthorized")
   end
 
   def get_by_id(conn, %{"id" => id}) do
@@ -155,22 +103,23 @@ defmodule ExBackendWeb.CredentialController do
     render(conn, "show.json", credential: credential)
   end
 
-  swagger_path :delete do
-    PhoenixSwagger.Path.delete("/api/credentials/{id}")
-    summary("Delete credential")
-    description("Delete credential by id")
-    produces("application/json")
-    tag("Credentials")
-    operation_id("delete_user")
-
-    parameters do
-      id(:path, :integer, "Credential ID", required: true)
-    end
-
-    security([%{Bearer: []}])
-    response(204, "No Content")
-    response(403, "Unauthorized")
-  end
+  operation :delete,
+    summary: "Delete credential",
+    description: "Delete credential by id or key",
+    type: :object,
+    parameters: [
+      id: [
+        in: :path,
+        description: "Credential ID or key",
+        type: :integer,
+        example: 1
+      ]
+    ],
+    responses: [
+      no_content: "No Content",
+      forbidden: "Forbidden",
+      not_found: "Not Found"
+    ]
 
   def delete(conn, %{"id" => id}) do
     credential = Credentials.get_credential!(id)
@@ -179,4 +128,6 @@ defmodule ExBackendWeb.CredentialController do
       send_resp(conn, :no_content, "")
     end
   end
+
+  operation :update, false
 end
