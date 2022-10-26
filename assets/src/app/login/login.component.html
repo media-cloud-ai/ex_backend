@@ -19,6 +19,11 @@
         <input matInput type="password" placeholder="Password" name=password [(ngModel)]="password">
       </mat-form-field>
     </div>
+    <div>
+      <p class="reset" (click)="openResetPasswordDialog()">
+          Forgot your password ?
+      </p>
+    </div>
     <div class="button submit">
       <button mat-button color="primary" type="submit">
         <mat-icon>chevron_right</mat-icon>
@@ -27,11 +32,6 @@
     </div>
     <div class=message>
       {{message}}
-    </div>
-    <div class="reset" (click)="openResetPasswordDialog()">
-      <button mat-button color="primary" type="button">
-        Reset password
-      </button>
     </div>
   </form>
 </div>
