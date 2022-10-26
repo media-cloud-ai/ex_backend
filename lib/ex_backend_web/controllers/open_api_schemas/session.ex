@@ -19,16 +19,16 @@ defmodule ExBackendWeb.OpenApiSchemas.Sessions do
       example: %{
         access_token: "SFMyNTY.xxxxxxxxxxx",
         user: %{
-          email: "toto@media-cloud.ai",
+          email: "test@media-cloud.ai",
           first_name: "Test",
           id: 1,
-          last_name: "Toto",
+          last_name: "Test",
           roles: [
             "editor",
             "manager",
             "technician"
           ],
-          username: "Toto"
+          username: "Test"
         }
       }
     })
@@ -40,13 +40,13 @@ defmodule ExBackendWeb.OpenApiSchemas.Sessions do
 
     OpenApiSpex.schema(%{
       title: "Session Body",
-      description: "Informations for identification",
+      description: "Information for identification",
       type: :object,
       properties: %{
-        access_key_id: %Schema{type: :string, description: "Users access key"},
-        secret_access_key: %Schema{type: :string, description: "Users secret key"},
-        email: %Schema{type: :string, description: "Users email"},
-        password: %Schema{type: :string, description: "Users password"}
+        access_key_id: %Schema{type: :string, description: "User access key"},
+        secret_access_key: %Schema{type: :string, description: "User secret key"},
+        email: %Schema{type: :string, description: "User email"},
+        password: %Schema{type: :string, description: "User password"}
       },
       example: %{
         access_key_id: "MCAIxxxxxxxxxxxxxxxxxx",

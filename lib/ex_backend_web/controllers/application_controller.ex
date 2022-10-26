@@ -15,7 +15,7 @@ defmodule ExBackendWeb.ApplicationController do
 
   operation :index,
     summary: "Describe MCAI Backend",
-    description: "Gives MCAI Backend application informations",
+    description: "Gives MCAI Backend application information",
     type: :object,
     responses: [
       ok: {"Application", "application/json", OpenApiSchemas.Application.Application},

@@ -13,15 +13,15 @@ defmodule ExBackendWeb.OpenApiSchemas.Users do
       type: :object,
       properties: %{
         access_key_id: %Schema{type: :string, description: "API Access key ID"},
-        confirmed_at: %Schema{type: :string, description: "Users confirmation date"},
-        email: %Schema{type: :string, description: "Users email"},
-        first_name: %Schema{type: :string, description: "Users first name"},
-        id: %Schema{type: :integer, description: "Users ID"},
-        inserted_at: %Schema{type: :string, description: "Users insertion date"},
-        last_name: %Schema{type: :string, description: "Users last name"},
+        confirmed_at: %Schema{type: :string, description: "User confirmation date"},
+        email: %Schema{type: :string, description: "User email"},
+        first_name: %Schema{type: :string, description: "User first name"},
+        id: %Schema{type: :integer, description: "User ID"},
+        inserted_at: %Schema{type: :string, description: "User insertion date"},
+        last_name: %Schema{type: :string, description: "User last name"},
         roles: %Schema{
           type: :array,
-          description: "Users attached roles",
+          description: "User attached roles",
           items: %Schema{type: :string}
         },
         username: %Schema{type: :string, description: "Username"},
@@ -53,13 +53,13 @@ defmodule ExBackendWeb.OpenApiSchemas.Users do
       description: "A MCAI Backend user",
       type: :object,
       properties: %{
-        email: %Schema{type: :string, description: "Users email"},
-        first_name: %Schema{type: :string, description: "Users first name"},
-        id: %Schema{type: :integer, description: "Users ID"},
-        last_name: %Schema{type: :string, description: "Users last name"},
+        email: %Schema{type: :string, description: "User email"},
+        first_name: %Schema{type: :string, description: "User first name"},
+        id: %Schema{type: :integer, description: "User ID"},
+        last_name: %Schema{type: :string, description: "User last name"},
         roles: %Schema{
           type: :array,
-          description: "Users attached roles",
+          description: "User attached roles",
           items: %Schema{type: :string}
         },
         username: %Schema{type: :string, description: "Username"}
@@ -87,15 +87,15 @@ defmodule ExBackendWeb.OpenApiSchemas.Users do
       type: :object,
       properties: %{
         access_key_id: %Schema{type: :string, description: "API Access key ID"},
-        confirmed_at: %Schema{type: :string, description: "Users confirmation date"},
-        email: %Schema{type: :string, description: "Users email"},
-        first_name: %Schema{type: :string, description: "Users first name"},
-        id: %Schema{type: :integer, description: "Users ID"},
-        inserted_at: %Schema{type: :string, description: "Users insertion date"},
-        last_name: %Schema{type: :string, description: "Users last name"},
+        confirmed_at: %Schema{type: :string, description: "User confirmation date"},
+        email: %Schema{type: :string, description: "User email"},
+        first_name: %Schema{type: :string, description: "User first name"},
+        id: %Schema{type: :integer, description: "User ID"},
+        inserted_at: %Schema{type: :string, description: "User insertion date"},
+        last_name: %Schema{type: :string, description: "User last name"},
         roles: %Schema{
           type: :array,
-          description: "Users attached roles",
+          description: "User attached roles",
           items: %Schema{type: :string}
         },
         username: %Schema{type: :string, description: "Username"},
@@ -155,7 +155,7 @@ defmodule ExBackendWeb.OpenApiSchemas.Users do
 
     OpenApiSpex.schema(%{
       title: "Validation Link",
-      description: "Validation Link for inscription validation",
+      description: "Validation Link for registration validation",
       type: :object,
       properties: %{
         authorized: %Schema{type: :string, description: "Link"}
@@ -187,8 +187,8 @@ defmodule ExBackendWeb.OpenApiSchemas.Users do
     require OpenApiSpex
 
     OpenApiSpex.schema(%{
-      title: "Date Range",
-      description: "Date Range",
+      title: "Datetime Range",
+      description: "Datetime Range",
       type: :object,
       properties: %{
         endDate: %Schema{type: :string, description: "End date"},
@@ -207,16 +207,16 @@ defmodule ExBackendWeb.OpenApiSchemas.Users do
 
     OpenApiSpex.schema(%{
       title: "Filter",
-      description: "Users Filter",
+      description: "User Filter",
       type: :object,
       properties: %{
         detailed: %Schema{type: :bool, description: "Detailed view on workflows"},
         identifiers: %Schema{
           type: :array,
-          description: "Workflows identifiers",
+          description: "Workflow identifiers",
           items: %Schema{type: :string}
         },
-        mode: %Schema{type: :array, description: "Workflows modes", items: %Schema{type: :string}},
+        mode: %Schema{type: :array, description: "Workflow modes", items: %Schema{type: :string}},
         selectedDateRange: DateRange.schema(),
         time_interval: %Schema{type: :integer, description: "Time interval"}
       },
@@ -247,14 +247,14 @@ defmodule ExBackendWeb.OpenApiSchemas.Users do
 
     OpenApiSpex.schema(%{
       title: "Filters",
-      description: "Users Filters",
+      description: "User Filters",
       type: :array,
       items: %Schema{
         type: :object,
         properties: %{
           filter: Filter.schema(),
-          id: %Schema{type: :integer, description: "Filters ID"},
-          name: %Schema{type: :string, description: "Filters name"}
+          id: %Schema{type: :integer, description: "Filter ID"},
+          name: %Schema{type: :string, description: "Filter name"}
         }
       },
       example: [
@@ -289,14 +289,14 @@ defmodule ExBackendWeb.OpenApiSchemas.Users do
     require OpenApiSpex
 
     OpenApiSpex.schema(%{
-      title: "Filters Body",
-      description: "Filters Body",
+      title: "Filter Body",
+      description: "Filter Body",
       type: :array,
       items: %Schema{
         type: :object,
         properties: %{
           filters: Filter.schema(),
-          filter_name: %Schema{type: :string, description: "Filters name"}
+          filter_name: %Schema{type: :string, description: "Filter name"}
         }
       },
       example: %{
@@ -329,12 +329,12 @@ defmodule ExBackendWeb.OpenApiSchemas.Users do
 
     OpenApiSpex.schema(%{
       title: "ID Body",
-      description: "Users ID Body",
+      description: "User ID Body",
       type: :array,
       items: %Schema{
         type: :object,
         properties: %{
-          id: %Schema{type: :integer, description: "Users ID"}
+          id: %Schema{type: :integer, description: "User ID"}
         }
       },
       example: %{

@@ -149,7 +149,7 @@ defmodule ExBackendWeb.UserController do
 
   operation :check_rights,
     summary: "Check rights",
-    description: "Check users rights for action on entity",
+    description: "Check user rights for action on entity",
     type: :object,
     request_body:
       {"Check Rights Body", "application/json", OpenApiSchemas.Rights.CheckRightsBody},
@@ -242,8 +242,8 @@ defmodule ExBackendWeb.UserController do
   end
 
   operation :get_workflow_filters,
-    summary: "Get users workflow filters",
-    description: "Get users workflow filters",
+    summary: "Get user workflow filters",
+    description: "Get user workflow filters",
     type: :object,
     responses: [
       ok: {"Filters", "application/json", OpenApiSchemas.Users.Filters},

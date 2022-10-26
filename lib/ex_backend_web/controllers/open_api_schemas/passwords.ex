@@ -14,7 +14,7 @@ defmodule ExBackendWeb.OpenApiSchemas.Passwords do
       properties: %{
         password_reset: %Schema{
           type: :object,
-          properties: %{email: %Schema{type: :string, description: "Users email"}}
+          properties: %{email: %Schema{type: :string, description: "User email"}}
         }
       },
       example: %{
