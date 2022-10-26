@@ -101,6 +101,42 @@ export class Workflow {
 
     return Version.compare(a_version, b_version);
   }
+
+  public is_paused(): boolean {
+    return ["pausing", "paused"].includes(this.status.state);
+  }
+
+  public is_finished(): boolean {
+    return this.artifacts.length > 0;
+  }
+
+  public can_abort(): boolean {
+    let has_at_least_one_queued_job = this.steps.some((s) => s['jobs']['queued'] == 1)
+    let has_at_least_one_processing_step = this.steps.some((s) => s['status'] === "processing");
+
+    return !has_at_least_one_queued_job && has_at_least_one_processing_step;
+  }
+
+  public can_pause(): boolean {
+    let has_at_least_one_queued_job = this.steps.some((s) => s['jobs']['queued'] == 1)
+    let has_at_least_one_processing_step = this.steps.some((s) => s['status'] === "processing");
+
+    let last_step = this.steps[this.steps.length - 1];
+    let is_last_step_processing = last_step['jobs']['processing'] == 1;
+
+    return !this.is_finished() && (has_at_least_one_queued_job || has_at_least_one_processing_step) && !this.is_paused() && !is_last_step_processing;
+  }
+
+  public can_resume(): boolean {
+    let has_at_least_one_paused_step = this.steps.some((s) => s['status'] === "paused");
+    return has_at_least_one_paused_step;
+  }
+
+  public can_delete(): boolean {
+    return !this.deleted;
+  }
+
+
 }
 
 export class WorkflowEvent {
