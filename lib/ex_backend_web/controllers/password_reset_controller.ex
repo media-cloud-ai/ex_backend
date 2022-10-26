@@ -1,13 +1,29 @@
 defmodule ExBackendWeb.PasswordResetController do
   use ExBackendWeb, :controller
+  use OpenApiSpex.ControllerSpecs
 
   require Logger
 
   import ExBackendWeb.Authorize
   alias ExBackend.Accounts
   alias ExBackendWeb.Auth.Token
+  alias ExBackendWeb.OpenApiSchemas
+
+  tags ["Users"]
+  security [%{"authorization" => %OpenApiSpex.SecurityScheme{type: "http", scheme: "bearer"}}]
 
   plug(:guest_check when action in [:create, :update])
+
+  operation :create,
+    summary: "Reset a password",
+    description: "Reset a password",
+    type: :object,
+    request_body:
+      {"Session Body", "application/json", OpenApiSchemas.Passwords.PasswordResetBody},
+    responses: [
+      created: "Check your inbox for instructions on how to reset your password",
+      forbidden: "Forbidden"
+    ]
 
   def create(conn, %{"password_reset" => %{"email" => email}}) do
     case Accounts.create_password_reset(%{"email" => email}) do
@@ -39,6 +55,17 @@ defmodule ExBackendWeb.PasswordResetController do
         end
     end
   end
+
+  operation :update,
+    summary: "Update a password",
+    description: "Update a password",
+    type: :object,
+    request_body:
+      {"Session Body", "application/json", OpenApiSchemas.Passwords.PasswordUpdateBody},
+    responses: [
+      ok: "Your password has been reset",
+      forbidden: "Forbidden"
+    ]
 
   def update(conn, %{"password_reset" => params}) do
     case Token.verify(params, mode: :pass_reset) do

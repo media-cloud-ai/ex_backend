@@ -4,6 +4,7 @@
 /config/dev.secret.exs
 /deps
 /assets/node_modules
+/assets/yarn.lock
 /priv/static
 /log
 documentation.json

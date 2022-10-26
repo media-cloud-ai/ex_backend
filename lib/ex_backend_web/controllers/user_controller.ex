@@ -1,6 +1,6 @@
 defmodule ExBackendWeb.UserController do
   use ExBackendWeb, :controller
-  use PhoenixSwagger
+  use OpenApiSpex.ControllerSpecs
 
   require Logger
 
@@ -8,7 +8,11 @@ defmodule ExBackendWeb.UserController do
   alias ExBackend.Accounts
   alias ExBackend.Filters
   alias ExBackendWeb.Auth.Token
+  alias ExBackendWeb.OpenApiSchemas
   alias Phauxth.Log
+
+  tags ["Users"]
+  security [%{"authorization" => %OpenApiSpex.SecurityScheme{type: "http", scheme: "bearer"}}]
 
   action_fallback(ExBackendWeb.FallbackController)
 
@@ -20,112 +24,21 @@ defmodule ExBackendWeb.UserController do
     when action in [:update, :delete, :generate_credentials, :generate_validation_link]
   )
 
-  def swagger_definitions do
-    %{
-      User:
-        swagger_schema do
-          title("User")
-          description("A user of MCAI Backend")
-
-          properties do
-            access_key_id(:string, "API Access key ID")
-            confirmed_at(:string, "Users confirmation date")
-            email(:string, "Users email")
-            first_name(:string, "Users first name")
-            id(:string, "Unique identifier in database")
-            inserted_at(:string, "Users insertion date")
-            last_name(:string, "Users last name")
-            roles(:array, "Users attached roles")
-            username(:string, "Username")
-            address(:string, "Home address")
-            uuid(:string, "Unique identifier")
-
-            secret_access_key(
-              :string,
-              "API Secret access key (only present when generating credentials)"
-            )
-          end
-
-          example(%{
-            access_key_id: "MCAIYTDAEPDJEMS0K02M",
-            confirmed_at: "2022-09-23T21:30:15.000000Z",
-            email: "editor@media-cloud.ai",
-            first_name: "MCAI",
-            id: 3,
-            inserted_at: "2022-09-23T21:30:15",
-            last_name: "Editor",
-            roles: [
-              "editor"
-            ],
-            username: "editor",
-            uuid: "783e6266-f358-4afb-923c-2afd2266ded8",
-            secret_access_key: "xxxxxxxxxxxxx"
-          })
-        end,
-      Users:
-        swagger_schema do
-          title("Users")
-          description("A collection of Users")
-          type(:array)
-          items(Schema.ref(:User))
-        end,
-      Authorized:
-        swagger_schema do
-          title("Authorized")
-          description("Authorization response")
-
-          properties do
-            authorized(:bool, "If authorized to do action on given entity")
-          end
-
-          example(%{
-            authorized: true
-          })
-        end,
-      ValidationLink:
-        swagger_schema do
-          title("Validation Link")
-          description("Validation Link for inscription validation")
-
-          properties do
-            authorized(:string, "Link")
-          end
-
-          example(%{
-            validation_link: "http://media-cloud.ai/confirm?key=SFMyNTY.xxxxxxxxxxxxxxx"
-          })
-        end,
-      Emails:
-        swagger_schema do
-          title("Accounts emails")
-          description("Emails from accounts")
-          type(:array)
-          items(%Schema{type: :string})
-
-          example([
-            "admin@media-cloud.ai",
-            "technician@media-cloud.ai"
-          ])
-        end
-    }
-  end
-
-  swagger_path :index do
-    get("/api/users")
-    summary("List users")
-    description("List all users registered in MCAI Backend")
-    produces("application/json")
-    tag("Users")
-    operation_id("list_users")
-    security([%{Bearer: []}])
-    response(200, "OK", Schema.ref(:Users))
-    response(403, "Unauthorized")
-  end
+  operation :index,
+    summary: "List users",
+    description: "List all users registered in MCAI Backend",
+    type: :object,
+    responses: [
+      ok: {"Users", "application/json", OpenApiSchemas.Users.Users},
+      forbidden: "Forbidden"
+    ]
 
   def index(conn, params) do
     users = Accounts.list_users(params)
     render(conn, "index.json", users: users)
   end
+
+  operation :create, false
 
   def create(conn, %{"user" => %{"email" => email} = user_params}) do
     token = Token.sign(%{"email" => email})
@@ -154,49 +67,53 @@ defmodule ExBackendWeb.UserController do
     end
   end
 
-  swagger_path :show do
-    get("/api/users/{id}")
-    summary("Get user (id)")
-    description("Get a user by id")
-    produces("application/json")
-    tag("Users")
-    operation_id("get_user_by_id")
-
-    parameters do
-      id(:path, :integer, "User ID", required: true)
-    end
-
-    security([%{Bearer: []}])
-    response(200, "OK", Schema.ref(:User))
-    response(403, "Unauthorized")
-  end
+  operation :show,
+    summary: "Get user (id)",
+    description: "Get a user by id",
+    type: :object,
+    parameters: [
+      id: [
+        in: :path,
+        description: "User ID",
+        type: :integer,
+        example: 1
+      ]
+    ],
+    responses: [
+      ok: {"User", "application/json", OpenApiSchemas.Users.User},
+      forbidden: "Forbidden",
+      not_found: "Not Found"
+    ]
 
   def show(%Plug.Conn{assigns: %{current_user: user}} = conn, %{"id" => id}) do
     user = (id == to_string(user.id) and user) || Accounts.get(id)
     render(conn, "show.json", %{user: user, credentials: false})
   end
 
-  swagger_path :get_by_uuid do
-    get("/api/users/search/{uuid}")
-    summary("Get user (uuid)")
-    description("Get a user by uuid")
-    produces("application/json")
-    tag("Users")
-    operation_id("get_user_by_uuid")
-
-    parameters do
-      uuid(:path, :string, "User UUID", required: true)
-    end
-
-    security([%{Bearer: []}])
-    response(200, "OK", Schema.ref(:User))
-    response(403, "Unauthorized")
-  end
+  operation :get_by_uuid,
+    summary: "Get user (uuid)",
+    description: "Get a user by uuid",
+    type: :object,
+    parameters: [
+      uuid: [
+        in: :path,
+        description: "User UUID",
+        type: :string,
+        example: "d8d50a08-3021-4fea-8a22-a9a6c4fb5055"
+      ]
+    ],
+    responses: [
+      ok: {"User", "application/json", OpenApiSchemas.Users.User},
+      forbidden: "Forbidden",
+      not_found: "Not Found"
+    ]
 
   def get_by_uuid(%Plug.Conn{assigns: %{current_user: user}} = conn, %{"uuid" => uuid}) do
     user = (uuid == to_string(user.uuid) and user) || Accounts.get_by(%{"uuid" => uuid})
     render(conn, "show.json", %{user: user, credentials: false})
   end
+
+  operation :update, false
 
   def update(%Plug.Conn{assigns: %{current_user: _user}} = conn, %{
         "id" => id,
@@ -209,22 +126,16 @@ defmodule ExBackendWeb.UserController do
     end
   end
 
-  swagger_path :generate_credentials do
-    post("/api/users/generate_credentials")
-    summary("Generate credentials")
-    description("Generate credentials for a user")
-    produces("application/json")
-    tag("Users")
-    operation_id("generate_credentials")
-
-    parameters do
-      id(:query, :integer, "User ID", required: true)
-    end
-
-    security([%{Bearer: []}])
-    response(200, "OK", Schema.ref(:User))
-    response(403, "Unauthorized")
-  end
+  operation :generate_credentials,
+    summary: "Generate credentials",
+    description: "Generate credentials for a user",
+    type: :object,
+    request_body: {"ID Body", "application/json", OpenApiSchemas.Users.IdBody},
+    responses: [
+      ok: {"User", "application/json", OpenApiSchemas.Users.UserFull},
+      forbidden: "Forbidden",
+      not_found: "Not Found"
+    ]
 
   def generate_credentials(%Plug.Conn{assigns: %{current_user: _user}} = conn, %{
         "id" => id
@@ -236,23 +147,16 @@ defmodule ExBackendWeb.UserController do
     end
   end
 
-  swagger_path :check_rights do
-    post("/api/users/check_rights")
-    summary("Check rights")
-    description("Check users rights for action on entity")
-    produces("application/json")
-    tag("Users")
-    operation_id("check_rights")
-
-    parameters do
-      entity(:query, :string, "Entity", required: true)
-      action(:query, :string, "Action", required: true)
-    end
-
-    security([%{Bearer: []}])
-    response(200, "OK", Schema.ref(:Authorized))
-    response(403, "Unauthorized")
-  end
+  operation :check_rights,
+    summary: "Check rights",
+    description: "Check user rights for action on entity",
+    type: :object,
+    request_body:
+      {"Check Rights Body", "application/json", OpenApiSchemas.Rights.CheckRightsBody},
+    responses: [
+      ok: {"Authorized", "application/json", OpenApiSchemas.Rights.Authorized},
+      forbidden: "Forbidden"
+    ]
 
   def check_rights(%Plug.Conn{assigns: %{current_user: user}} = conn, %{
         "entity" => entity_name,
@@ -263,22 +167,16 @@ defmodule ExBackendWeb.UserController do
     end
   end
 
-  swagger_path :generate_validation_link do
-    post("/api/users/generate_validation_link")
-    summary("Generate validation link")
-    description("Generate validation link for user")
-    produces("application/json")
-    tag("Users")
-    operation_id("generate_validation_link")
-
-    parameters do
-      id(:query, :integer, "User ID", required: true)
-    end
-
-    security([%{Bearer: []}])
-    response(200, "OK", Schema.ref(:ValidationLink))
-    response(403, "Unauthorized")
-  end
+  operation :generate_validation_link,
+    summary: "Generate validation link",
+    description: "Generate validation link for user",
+    type: :object,
+    request_body: {"ID Body", "application/json", OpenApiSchemas.Users.IdBody},
+    responses: [
+      ok: {"Validation Link", "application/json", OpenApiSchemas.Users.ValidationLink},
+      forbidden: "Forbidden",
+      not_found: "Not Found"
+    ]
 
   def generate_validation_link(%Plug.Conn{assigns: %{current_user: user}} = conn, %{
         "id" => id
@@ -290,22 +188,23 @@ defmodule ExBackendWeb.UserController do
     json(conn, %{validation_link: validation_link})
   end
 
-  swagger_path :delete_role do
-    PhoenixSwagger.Path.delete("/api/users/roles/{name}")
-    summary("Delete role")
-    description("Delete role by name")
-    produces("application/json")
-    tag("Users")
-    operation_id("delete_role")
-
-    parameters do
-      name(:path, :string, "Role name", required: true)
-    end
-
-    security([%{Bearer: []}])
-    response(200, "OK", Schema.ref(:Emails))
-    response(403, "Unauthorized")
-  end
+  operation :delete_role,
+    summary: "Delete role",
+    description: "Delete role by name",
+    type: :object,
+    parameters: [
+      id: [
+        in: :path,
+        description: "Role name",
+        type: :string,
+        example: "technician"
+      ]
+    ],
+    responses: [
+      no_content: "No Content",
+      forbidden: "Forbidden",
+      not_found: "Not Found"
+    ]
 
   def delete_role(%Plug.Conn{assigns: %{current_user: _user}} = conn, %{"name" => role_name}) do
     updated_users = Accounts.delete_users_role(%{role: role_name})
@@ -313,22 +212,23 @@ defmodule ExBackendWeb.UserController do
     json(conn, updated_users)
   end
 
-  swagger_path :delete do
-    PhoenixSwagger.Path.delete("/api/users")
-    summary("Delete user")
-    description("Delete user by id")
-    produces("application/json")
-    tag("Users")
-    operation_id("delete_user")
-
-    parameters do
-      id(:query, :integer, "User ID", required: true)
-    end
-
-    security([%{Bearer: []}])
-    response(204, "No Content")
-    response(403, "Unauthorized")
-  end
+  operation :delete,
+    summary: "Delete user",
+    description: "Delete user by id",
+    type: :object,
+    parameters: [
+      id: [
+        in: :path,
+        description: "User ID",
+        type: :integer,
+        example: 1
+      ]
+    ],
+    responses: [
+      no_content: "No Content",
+      forbidden: "Forbidden",
+      not_found: "Not Found"
+    ]
 
   def delete(%Plug.Conn{assigns: %{current_user: user}} = conn, params) do
     selected_user = Accounts.get(Map.get(params, "id") |> String.to_integer())
@@ -341,10 +241,29 @@ defmodule ExBackendWeb.UserController do
     end
   end
 
-  def get_workflow_filters(%Plug.Conn{assigns: %{current_user: user}} = conn, param) do
+  operation :get_workflow_filters,
+    summary: "Get user workflow filters",
+    description: "Get user workflow filters",
+    type: :object,
+    responses: [
+      ok: {"Filters", "application/json", OpenApiSchemas.Users.Filters},
+      forbidden: "Forbidden"
+    ]
+
+  def get_workflow_filters(%Plug.Conn{assigns: %{current_user: user}} = conn, _param) do
     filters = Filters.list_workflow_filter_for_user(%{"user_id" => user.id})
     json(conn, filters)
   end
+
+  operation :save_workflow_filters,
+    summary: "Save users workflows filter",
+    description: "Save users workflows filter",
+    type: :object,
+    request_body: {"Filter Body", "application/json", OpenApiSchemas.Users.FilterBody},
+    responses: [
+      ok: "User workflow filters properly saved",
+      forbidden: "Forbidden"
+    ]
 
   def save_workflow_filters(%Plug.Conn{assigns: %{current_user: user}} = conn, %{
         "filter_name" => filter_name,
@@ -359,6 +278,24 @@ defmodule ExBackendWeb.UserController do
 
     send_resp(conn, 200, "User workflow filters properly saved")
   end
+
+  operation :delete_workflow_filters,
+    summary: "Delete users workflows filter",
+    description: "Delete users workflows filter",
+    type: :object,
+    parameters: [
+      filter_id: [
+        in: :path,
+        description: "Filter ID",
+        type: :integer,
+        example: 1
+      ]
+    ],
+    responses: [
+      no_content: "No Content",
+      forbidden: "Forbidden",
+      not_found: "Not Found"
+    ]
 
   def delete_workflow_filters(%Plug.Conn{assigns: %{current_user: user}} = conn, %{
         "filter_id" => filter_id
