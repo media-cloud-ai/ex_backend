@@ -1,5 +1,35 @@
-<a name="unreleased"></a>
-## [Unreleased]
+<a name="1.6.1"></a>
+## [1.6.1] - 2022-11-04
+### Ci
+- generate documentation in image building
+- build swagger doc in docker image
+
+### Docs
+- document all api endpoints
+- add open api schemas
+- use open api spex instead of phoenix swagger
+- document backend for swagger doc
+
+### Feat
+- add reset password ui
+- add swagger ui in documentation page
+- add ui notification endpoints
+- add a more actions button to regroup actions on workflow
+- add workflow delete button in wrkf details
+
+### Fix
+- avoid breaking credentials api
+- app name as env var
+- url for swagger
+- format and no doc in module stepflow swagger
+- add email in auth structure
+- fix confirmation mail user
+
+### Ux
+- improvement to navigation bar
+- clean views and enhance color palette
+- enhance navigation bars
+- improve search bar style and experience
 
 
 <a name="1.6.0"></a>
