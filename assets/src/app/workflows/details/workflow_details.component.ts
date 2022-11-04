@@ -87,26 +87,18 @@ export class WorkflowDetailsComponent {
         this.renderer = undefined
         return
       }
-      this.workflow = workflow.data
+      this.workflow = Object.assign(new Workflow(), workflow.data);
       this.renderer = new WorkflowRenderer(this.workflow.steps)
       this.renderer.setStepFocus(this.step_focus);
 
-      let has_at_least_one_queued_job = this.workflow.steps.some((s) => s['jobs']['queued'] == 1)
-      let has_at_least_one_processing_step = this.workflow.steps.some((s) => s['status'] === "processing");
-
-      let is_paused = ["pausing", "paused"].includes(this.workflow.status.state);
-
-      this.can_abort = !has_at_least_one_queued_job && has_at_least_one_processing_step
+      this.can_abort = this.workflow.can_abort();
       if (this.can_abort && this.workflow.steps.some((s) => s.name === 'clean_workspace' && s.status !== 'queued')) {
         this.can_abort = false
       }
 
-      let last_step = this.workflow.steps[this.workflow.steps.length - 1];
-      let is_last_step_processing = last_step['status'] === "processing";
-
-      this.can_pause = this.can_abort && !is_paused && !is_last_step_processing;
-      this.can_resume = is_paused;
-      this.can_delete = !this.workflow.deleted
+      this.can_pause = this.workflow.can_pause();
+      this.can_resume = this.workflow.can_resume();
+      this.can_delete = this.workflow.can_delete()
 
       this.pause_post_action = this.getPausePostAction();
 
@@ -171,7 +163,7 @@ export class WorkflowDetailsComponent {
     }})
 
     dialogRef.afterClosed().subscribe(user_choice => {
-      if (user_choice !== undefined) {
+      if (user_choice !== undefined && this.workflow.can_pause()) {
         this.workflowService.sendWorkflowEvent(user_choice.workflow.id, user_choice.event)
           .subscribe(response => {
             console.log(response)
@@ -187,7 +179,7 @@ export class WorkflowDetailsComponent {
     }})
 
     dialogRef.afterClosed().subscribe(workflow => {
-      if (workflow !== undefined) {
+      if (workflow !== undefined && this.workflow.can_abort()) {
         console.log('Abort workflow!')
         this.workflowService.sendWorkflowEvent(workflow.id, {event: 'abort'})
         .subscribe(response => {
@@ -204,7 +196,7 @@ export class WorkflowDetailsComponent {
     }})
 
     dialogRef.afterClosed().subscribe(workflow => {
-      if (workflow !== undefined) {
+      if (workflow !== undefined && this.workflow.can_resume()) {
         console.log('Resume workflow!')
         this.workflowService.sendWorkflowEvent(workflow.id, {event: 'resume'})
         .subscribe(response => {
@@ -235,7 +227,7 @@ export class WorkflowDetailsComponent {
     }})
 
     dialogRef.afterClosed().subscribe(workflow => {
-      if (workflow !== undefined) {
+      if (workflow !== undefined && this.workflow.can_delete()) {
         this.workflowService.sendWorkflowEvent(workflow.id, {event: 'delete'})
         .subscribe(response => {
           window.location.reload()

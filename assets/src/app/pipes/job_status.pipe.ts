@@ -11,7 +11,6 @@ import { Job } from '../models/job'
 export class JobStatusPipe implements PipeTransform {
 
   transform(job: Job): string {
-    var status = undefined
     var jobStatus = Job.getLastStatus(job)
     var jobProgression = Job.getLastProgression(job)
 
@@ -21,34 +20,15 @@ export class JobStatusPipe implements PipeTransform {
       } else {
         return 'queued'
       }
-    } else {
-      if (jobStatus.state === 'completed'){
-        return 'completed'
-      }
-      if (jobStatus.state === 'error'){
-        status = 'error'
-      }
-      if (jobStatus.state === 'paused'){
-        return 'paused'
-      }
-      if (jobStatus.state === 'skipped'){
-        return 'skipped'
-      }
-      if (jobStatus.state === 'stopped'){
-        return 'stopped'
-      }
-      if (status != "error" && jobStatus.state === 'retrying'){
-        if (!jobProgression || jobProgression.datetime < jobStatus.inserted_at) {
-          return "queued"
-        }
-        return 'processing'
+    } else if (["completed", "error", "paused", "skipped", "stopped", "queued", "dropped"].includes(jobStatus.state)) {
+      return jobStatus.state
+    } else if (jobStatus.state === 'retrying'){
+      if (!jobProgression || jobProgression.datetime < jobStatus.inserted_at) {
+        return "queued"
       }
     }
-    if (status === undefined) {
-      return 'processing'
-    } else {
-      return status
-    }
+
+    return 'processing'
   }
 }
 
