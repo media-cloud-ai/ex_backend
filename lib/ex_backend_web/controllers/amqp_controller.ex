@@ -1,12 +1,27 @@
 defmodule ExBackendWeb.Amqp.AmqpController do
   use ExBackendWeb, :controller
+  use OpenApiSpex.ControllerSpecs
 
   import ExBackendWeb.Authorize
   require Logger
 
+  alias ExBackendWeb.OpenApiSchemas
+
   # the following plugs are defined in the controllers/authorize.ex file
   plug(:user_check when action in [:queues, :connections])
   plug(:right_technician_check when action in [:queues, :connections])
+
+  tags ["AMQP"]
+  security [%{"authorization" => %OpenApiSpex.SecurityScheme{type: "http", scheme: "bearer"}}]
+
+  operation :queues,
+    summary: "List queues",
+    description: "List RabbitMQ queues content",
+    type: :object,
+    responses: [
+      ok: {"Application", "application/json", OpenApiSchemas.Amqp.Queues.Queues},
+      forbidden: "Forbidden"
+    ]
 
   def queues(conn, _params) do
     case get_amqp_informations("queues") do
@@ -14,6 +29,15 @@ defmodule ExBackendWeb.Amqp.AmqpController do
       {:error, message} -> json(conn, %{status: "error", message: message})
     end
   end
+
+  operation :connections,
+    summary: "List connections",
+    description: "List RabbitMQ connections",
+    type: :object,
+    responses: [
+      ok: {"Application", "application/json", OpenApiSchemas.Amqp.Connections.Connections},
+      forbidden: "Forbidden"
+    ]
 
   def connections(conn, _params) do
     case get_amqp_informations("connections") do

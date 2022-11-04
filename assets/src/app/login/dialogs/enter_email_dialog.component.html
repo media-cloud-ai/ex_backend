@@ -1,0 +1,20 @@
+<h1 mat-dialog-title>Reset your password</h1>
+<div mat-dialog-content>
+  Please enter your account's email. The reset link will be sent there.
+</div>
+<form class="reset" (ngSubmit)="resetPassword()" #heroForm="ngForm">
+    <div>
+        <mat-form-field class="search-text-input">
+            <input matInput type="text" placeholder="Your mail adress" name=email [(ngModel)]="email">
+        </mat-form-field>
+    </div>
+    <div class="button submit">
+        <button mat-button color="primary" type="submit">
+            <mat-icon>chevron_right</mat-icon>
+            Reset password
+        </button>
+    </div>
+    <div class=message [ngStyle]="{'color': message_color}">
+        {{message}}
+    </div>
+</form>

@@ -1,9 +1,9 @@
 
-import {Component} from '@angular/core'
+import {Component, OnInit} from '@angular/core'
 import {ActivatedRoute} from '@angular/router'
 
-import {CredentialService} from '../services/credential.service'
-import {Credential} from '../models/credential'
+import {CredentialService} from '../../services/credential.service'
+import {Credential} from '../../models/credential'
 
 @Component({
   selector: 'credentials-component',

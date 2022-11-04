@@ -170,6 +170,18 @@
         Stop
       </button>
     </span>
+    <span
+      class="delete">
+      <button
+        mat-raised-button
+        [disabled]="!right_delete || !can_delete"
+        color="warn"
+        (click)="delete(workflow.id)"
+        >
+        <mat-icon>delete_forever</mat-icon>
+        Delete
+      </button>
+    </span>
   </div>
 
   <div

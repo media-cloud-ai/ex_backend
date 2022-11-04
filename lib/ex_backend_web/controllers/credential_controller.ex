@@ -1,10 +1,15 @@
 defmodule ExBackendWeb.CredentialController do
   use ExBackendWeb, :controller
+  use OpenApiSpex.ControllerSpecs
 
   import ExBackendWeb.Authorize
 
   alias ExBackend.Credentials
   alias ExBackend.Credentials.Credential
+  alias ExBackendWeb.OpenApiSchemas
+
+  tags ["Credentials"]
+  security [%{"authorization" => %OpenApiSpex.SecurityScheme{type: "http", scheme: "bearer"}}]
 
   action_fallback(ExBackendWeb.FallbackController)
 
@@ -12,14 +17,14 @@ defmodule ExBackendWeb.CredentialController do
   plug(:user_check when action in [:index, :show, :delete])
   plug(:right_administrator_check when action in [:index, :show, :delete])
 
-  api :GET, "/api/credentials" do
-    title("List all Credentials")
-    description("Retrieve all credentials")
-
-    parameter(:page, :integer, optional: true, description: "Index of the page")
-    parameter(:size, :integer, optional: true, description: "Size per page")
-    parameter(:key, :string, description: "Search by key")
-  end
+  operation :index,
+    summary: "List all credentials",
+    description: "Retrieve all credentials",
+    type: :object,
+    responses: [
+      ok: {"Credentials", "application/json", OpenApiSchemas.Credentials.Credentials},
+      forbidden: "Forbidden"
+    ]
 
   def index(conn, params) do
     # local_token = "mediacloudai"
@@ -38,6 +43,17 @@ defmodule ExBackendWeb.CredentialController do
     render(conn, "index.json", credentials: credentials)
   end
 
+  operation :create,
+    summary: "Create credential",
+    description: "Create credential",
+    type: :object,
+    request_body:
+      {"Credential Body", "application/json", OpenApiSchemas.Credentials.CredentialBody},
+    responses: [
+      ok: {"Credential", "application/json", OpenApiSchemas.Credentials.Credential},
+      forbidden: "Forbidden"
+    ]
+
   def create(conn, credential_params) do
     case Credentials.create_credential(credential_params) do
       {:ok, %Credential{} = credential} ->
@@ -52,10 +68,58 @@ defmodule ExBackendWeb.CredentialController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    credential = Credentials.get_credential_by_key!(id)
+  operation :show,
+    summary: "Get credential",
+    description: "Get a credential by id or key",
+    type: :object,
+    parameters: [
+      id: [
+        in: :path,
+        description: "Credential ID or key",
+        type: :integer,
+        example: 1
+      ]
+    ],
+    responses: [
+      ok: {"Credential", "application/json", OpenApiSchemas.Credentials.Credential},
+      forbidden: "Forbidden",
+      not_found: "Not Found"
+    ]
+
+  def show(conn, %{"id" => identifier}) do
+    case Integer.parse(identifier) do
+      {id, ""} -> get_by_id(conn, %{"id" => id})
+      _ -> get_by_key(conn, %{"id" => identifier})
+    end
+  end
+
+  def get_by_key(conn, %{"id" => key}) do
+    credential = Credentials.get_credential_by_key!(key)
     render(conn, "show.json", credential: credential)
   end
+
+  def get_by_id(conn, %{"id" => id}) do
+    credential = Credentials.get_credential!(id)
+    render(conn, "show.json", credential: credential)
+  end
+
+  operation :delete,
+    summary: "Delete credential",
+    description: "Delete credential by id or key",
+    type: :object,
+    parameters: [
+      id: [
+        in: :path,
+        description: "Credential ID or key",
+        type: :integer,
+        example: 1
+      ]
+    ],
+    responses: [
+      no_content: "No Content",
+      forbidden: "Forbidden",
+      not_found: "Not Found"
+    ]
 
   def delete(conn, %{"id" => id}) do
     credential = Credentials.get_credential!(id)
@@ -64,4 +128,6 @@ defmodule ExBackendWeb.CredentialController do
       send_resp(conn, :no_content, "")
     end
   end
+
+  operation :update, false
 end

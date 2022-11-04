@@ -119,6 +119,10 @@ defmodule ExBackend.Accounts do
     {:ok, has_right}
   end
 
+  def set_user_workflow_filters(user, filters) do
+    User.set_workflow_filters(user, filters)
+  end
+
   def delete_users_role(%{role: role_name}) do
     query =
       from(

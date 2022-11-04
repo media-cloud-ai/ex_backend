@@ -1,4 +1,7 @@
 
+import moment = require('moment')
+
+import { formatDate } from '@angular/common'
 import { Component, ViewChild } from '@angular/core'
 import { PageEvent } from '@angular/material/paginator'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -54,49 +57,58 @@ export class WorkflowsComponent {
     private workflowService: WorkflowService,
     private statisticsService: StatisticsService,
     private route: ActivatedRoute,
-  ) {
-    let today = new Date();
-    let yesterday = new Date();
-    yesterday.setDate(today.getDate() - 1);
+    private router: Router,
+  ) {}
+
+  ngOnInit() {
+    let today = new Date()
+    let yesterday = new Date()
+    yesterday.setDate(today.getDate() - 1)
+
     this.parameters =  {
       identifiers: [],
-      start_date: yesterday,
-      end_date: today,
-      mode: [
-       "file",
-       "live"
-      ],
+      selectedDateRange: {
+        startDate: yesterday,
+        endDate: today
+      },
+      mode: ["file", "live"],
       search: undefined,
       status: [],
       detailed: false,
       time_interval: 1
     };
-  }
 
-  ngOnInit() {
+    this.route.queryParamMap.subscribe(params => {
+      this.parameters.mode = params.getAll("mode").length > 0 ?  params.getAll("mode") : ["file","live"]
+      this.parameters.status = params.getAll("status")
+      this.parameters.identifiers = params.getAll("identifiers")
+      this.parameters.search = params.getAll("search").toString() || undefined
+      this.parameters.selectedDateRange.startDate = params.get("start_date") != undefined ? moment(params.get("start_date"), moment.ISO_8601).toDate() : yesterday;
+      this.parameters.selectedDateRange.endDate =  params.get("end_date") != undefined ? moment(params.get("end_date"), moment.ISO_8601).toDate() : today;
+    })
+
     this.sub = this.route
-      .queryParams
-      .subscribe(params => {
-        this.page = +params['page'] || 0
-        this.pageSize = +params['per_page'] || 10
-        this.getWorkflows(this.page, this.pageSize, this.parameters)
+    .queryParams
+    .subscribe(params => {
+      this.page = +params['page'] || 0
+      this.pageSize = +params['per_page'] || 10
 
-        this.socketService.initSocket()
-        this.socketService.connectToChannel('notifications:all')
+      this.socketService.initSocket()
+      this.socketService.connectToChannel('notifications:all')
 
-        this.connection = this.socketService.onNewWorkflow()
-          .subscribe((message: Message) => {
-            this.getWorkflows(this.page, this.pageSize, this.parameters)
-          })
-        this.connection = this.socketService.onDeleteWorkflow()
-          .subscribe((message: Message) => {
-            this.getWorkflows(this.page, this.pageSize, this.parameters)
-          })
-        this.connection = this.socketService.onRetryJob()
-          .subscribe((message: Message) => {
-            this.getWorkflows(this.page, this.pageSize, this.parameters)
-          })
-      })
+      this.connection = this.socketService.onNewWorkflow()
+        .subscribe((message: Message) => {
+          this.getWorkflows(this.page, this.pageSize, this.parameters)
+        })
+      this.connection = this.socketService.onDeleteWorkflow()
+        .subscribe((message: Message) => {
+          this.getWorkflows(this.page, this.pageSize, this.parameters)
+        })
+      this.connection = this.socketService.onRetryJob()
+        .subscribe((message: Message) => {
+          this.getWorkflows(this.page, this.pageSize, this.parameters)
+        })
+    })
   }
 
   ngOnDestroy() {
@@ -109,6 +121,8 @@ export class WorkflowsComponent {
   }
 
   getWorkflows(page: number, pageSize: number, parameters: WorkflowQueryParams) {
+    this.eventGetWorkflows()
+
     this.workflowService.getWorkflows(
       page,
       pageSize,
@@ -135,6 +149,34 @@ export class WorkflowsComponent {
         this.durations = response;
       })
     })
+  }
+
+  eventGetWorkflows(): void {
+    this.router.navigate(['/workflows'], { queryParams: this.getQueryParamsForWorkflows() })
+  }
+
+  getQueryParamsForWorkflows(): Object {
+    var params = {}
+
+    if (this.parameters.identifiers.length > 0){
+      params['identifiers'] = this.parameters.identifiers
+    }
+
+    if (this.parameters.status.length > 0) {
+      params["status"] = this.parameters.status
+    }
+
+    if (this.parameters.mode.length > 0) {
+      params["mode"] = this.parameters.mode
+    }
+
+    if (this.parameters.search !== "" && this.parameters.search !== undefined){
+      params["search"] = this.parameters.search
+    }
+
+    params["start_date"] = formatDate(this.parameters.selectedDateRange.startDate, "yyyy-MM-ddTHH:mm:ss", "fr")
+    params["end_date"] = formatDate(this.parameters.selectedDateRange.endDate, "yyyy-MM-ddTHH:mm:ss", "fr")
+    return params
   }
 
   changeWorkflowPage(event) {
@@ -172,6 +214,7 @@ export class WorkflowsComponent {
   }
 
   updateWorkflows(parameters: WorkflowQueryParams) {
+    this.parameters = parameters
     this.getWorkflows(this.page, this.pageSize, this.parameters)
   }
 }

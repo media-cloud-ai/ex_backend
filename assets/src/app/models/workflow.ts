@@ -75,6 +75,7 @@ export class Workflow {
   version_minor?: string
   version_micro?: string
   is_live?: boolean
+  deleted?: boolean
   jobs?: Array<Job>
   tags?: string[]
   reference?: string

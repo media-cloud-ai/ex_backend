@@ -1,12 +1,11 @@
-<h1>Commandes</h1>
 
 <button mat-raised-button color="accent" (click)="newOrder()">
   <i class="material-icons">add</i>
-  Nouvelle commande
+  New order
 </button>
 
 <div class=search>
-  <workflow-search-bar (parametersEvent)="updateWorkflows($event)"></workflow-search-bar>
+  <workflow-search-bar [parameters]="parameters" (parametersEvent)="updateWorkflows($event)"></workflow-search-bar>
 </div>
 
 <div class=workflow-header>

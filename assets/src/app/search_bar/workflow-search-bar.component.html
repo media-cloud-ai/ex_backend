@@ -1,51 +1,88 @@
 <form [formGroup]="workflowsForm" fxFlex fxLayout="column" autocomplete="off">
-  <mat-form-field>
-    <mat-select formControlName="selectedStatus" placeholder="Status" [(ngModel)]="parameters.status" multiple>
-      <mat-option *ngFor="let state of status" [value]="state" [ngClass]="state" class="state-option">
-        {{ state | titlecase }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-select formControlName="selectedMode" placeholder="Mode" [(ngModel)]="parameters.mode" multiple>
-      <mat-option *ngFor="let modus of mode" [value]="modus.id" [ngClass]="modus.id" class="state-option">
-        {{ modus.label }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-select formControlName="selectedWorkflows" placeholder="Workflows" [(ngModel)]="parameters.identifiers"
-      multiple>
-      <mat-option (click)="toggleAllSelection()" [value]="0">All</mat-option>
-      <mat-option *ngFor="let workflow of workflows" [value]="workflow.id" [ngClass]="workflow.id"
-        (click)="toggleOne()" class="workflow-option">
-        {{ workflow.label }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field class="search-text-input">
-    <input formControlName="startDate" matInput [ngxMatDatetimePicker]="picker_start_date" placeholder="Start date"
-      name=start_date [(ngModel)]="parameters.start_date">
-    <mat-datepicker-toggle matSuffix [for]="picker_start_date"></mat-datepicker-toggle>
-    <ngx-mat-datetime-picker #picker_start_date [showSeconds]=true>
-    </ngx-mat-datetime-picker>
-  </mat-form-field>
-  <mat-form-field class="search-text-input">
-    <input formControlName="endDate" matInput [ngxMatDatetimePicker]="picker_end_date" placeholder="End date"
-      name=end_date [(ngModel)]="parameters.end_date">
-    <mat-datepicker-toggle matSuffix [for]="picker_end_date"></mat-datepicker-toggle>
-    <ngx-mat-datetime-picker #picker_end_date [showSeconds]=true>
-    </ngx-mat-datetime-picker>
-  </mat-form-field>
-  <mat-form-field class="search-text-input">
-    <input formControlName="referenceSearch" matInput placeholder="Reference search..." [(ngModel)]="parameters.search">
-  </mat-form-field>
-  <button mat-raised-button color="accent" (click)="searchWorkflows()">
-    <i class="material-icons">search</i>
-    Search
-  </button>
-  <mat-slide-toggle *ngIf="showDetailedToggle" formControlName="detailedToggle" color="primary"
-    [checked]="parameters.detailed" [(ngModel)]="parameters.detailed" (change)="toggleDetailed()">
-    Detailed
-  </mat-slide-toggle>
+  <div class="search-line">
+    <mat-form-field>
+      <mat-select formControlName="selectedPreset" placeholder="Saved filters" [(ngModel)]="selectedPreset" (selectionChange)="presetChanged()">
+        <mat-option *ngFor="let f of workflow_filters" [value]="f.filter" class="filter-option">
+          {{ f.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <input
+      ngxDaterangepickerMd
+      type="text"
+      class="date-picker"
+      formControlName="selectedDateRange"
+      [timePicker]="true"
+      [timePickerSeconds]="true"
+      [timePicker24Hour]="true"
+      [locale]="{ format: 'DD MMM YYYY HH:mm:ss', firstDay: 1 }"
+      [ranges]="ranges"
+      [showCustomRangeLabel]="true"
+      [keepCalendarOpeningWithRange]="true"
+      [alwaysShowCalendars]="true"
+      placeholder="Choose date"
+      [(ngModel)]="parameters.selectedDateRange"
+      (datesUpdated)="searchWorkflows()"
+    />
+
+    <button mat-button color="primary" (click)="clearFilters()">
+      <i class="material-icons">clear</i>
+      Clear filters
+    </button>
+    <button mat-button color="primary" (click)="expandFilters()">
+      <i id="expand-icon" class="material-icons">keyboard_double_arrow_down</i>
+    </button>
+  </div>
+
+  <div id="filter-line">
+    <div>
+      <mat-form-field style="width: 21%">
+        <mat-select formControlName="selectedStatus" placeholder="Status" [(ngModel)]="parameters.status" multiple>
+          <!-- <mat-option (click)="toggleAllSelection()" [value]="0">All</mat-option> -->
+          <mat-option *ngFor="let state of status" [value]="state" [ngClass]="state" class="state-option">
+            {{ state | titlecase }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field style="width: 21%">
+        <mat-select formControlName="selectedMode" placeholder="Mode" [(ngModel)]="parameters.mode" multiple>
+          <mat-option *ngFor="let modus of mode" [value]="modus.id" [ngClass]="modus.id" class="state-option">
+            {{ modus.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field style="width: 21%">
+        <mat-select formControlName="selectedWorkflows" placeholder="Workflows" [(ngModel)]="parameters.identifiers"
+          multiple>
+          <mat-option (click)="toggleAllSelection()" [value]="0">All</mat-option>
+          <mat-option *ngFor="let workflow of workflows" [value]="workflow.id" [ngClass]="workflow.id"
+            (click)="toggleOne()" class="workflow-option">
+            {{ workflow.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="search-text-input" style="width: 21%">
+        <input formControlName="referenceSearch" matInput placeholder="Reference search..." [(ngModel)]="parameters.search">
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="searchWorkflows()">
+        <i class="material-icons">filter_alt</i>
+      </button>
+    </div>
+    <div>
+      <button mat-raised-button color="primary" (click)="openSaveDialog()">
+        <i class="material-icons">save</i>
+        Save filters
+      </button>
+      <button mat-button color="primary" (click)="openManageDialog()">
+        <i class="material-icons">settings</i>
+        Manage filters
+      </button>
+    </div>
+  </div>
+
+  <div class="search-line-options">
+    <mat-slide-toggle *ngIf="showDetailedToggle" formControlName="detailedToggle" color="primary" [checked]="parameters.detailed" [(ngModel)]="parameters.detailed" (change)="toggleDetailed()">
+      Detailed
+    </mat-slide-toggle>
+  </div>
 </form>

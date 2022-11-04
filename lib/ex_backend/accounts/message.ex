@@ -105,7 +105,7 @@ defmodule ExBackend.Accounts.Message do
           <td align="center" bgcolor="#348eda"
             style="box-sizing: border-box; padding: 0; font-family: 'Open Sans', 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 16px; vertical-align: top; background-color: #348eda; border-radius: 2px; text-align: center;"
             valign="top">
-            <a href="#{hostname}/validate?key=#{key}"
+            <a href="#{hostname}/confirm?key=#{key}"
               style="box-sizing: border-box; border-color: #348eda; font-weight: 400; text-decoration: none; display: inline-block; margin: 0; color: #ffffff; background-color: #348eda; border: solid 1px #348eda; border-radius: 2px; cursor: pointer; font-size: 14px; padding: 12px 45px;">
               Confirm Email Address
             </a>
@@ -137,7 +137,7 @@ defmodule ExBackend.Accounts.Message do
 
     prep_mail(address)
     |> subject("[#{app_label} Backend] Reset your password")
-    |> text_body("Reset your password at " <> hostname <> "/password_resets/edit?key=#{key}")
+    |> text_body("Reset your password at " <> hostname <> "/reset_password?key=#{key}")
     |> Mailer.deliver_now()
   end
 

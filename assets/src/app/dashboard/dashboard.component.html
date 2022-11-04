@@ -1,30 +1,23 @@
-<h1>
-  Dashboard
-</h1>
-
-<h3>Workflow history</h3>
+<h1>Workflow history</h1>
 
 <div class=selectors>
   <workflow-search-bar [parameters]="parameters" (parametersEvent)="updateWorkflows($event)"></workflow-search-bar>
 </div>
 
-<div id="chartContainer" [ngSwitch]="barChartData?.length">
-  <span class=spinner *ngSwitchCase="undefined">
-    <img src="/bundles/images/media-io.animated.svg" width="80px" height="80px" />
-    <span class=text>
-      Loading ...
-    </span>
-  </span>
-  <span class=spinner *ngSwitchCase="0">
-    <span class=no_data>
-      No Data
-    </span>
-  </span>
-  <div class="canvasWrapper" *ngSwitchDefault>
-    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
-      [legend]="barChartLegend" [chartType]="barChartType" [plugins]="barChartPlugins">
-    </canvas>
-  </div>
+<div class="view-options">
+  <h3>
+    Aggregate by:
+  </h3>
+  <mat-button-toggle-group [ngModel]="parameters.time_interval.toString()" (change)="rangeChanged($event)">
+    <mat-button-toggle value="3600">Hour</mat-button-toggle>
+    <mat-button-toggle value="86400">Day</mat-button-toggle>
+    <mat-button-toggle value="604800">Week</mat-button-toggle>
+    <mat-button-toggle value="36536000">Year</mat-button-toggle>
+  </mat-button-toggle-group>
+</div>
+
+<div id="chartContainer">
+    <div [chart]="historyChart"></div>
 </div>
 
 

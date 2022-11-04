@@ -9,7 +9,7 @@ import {UserService} from '../services/user.service'
 import {WorkflowService} from '../services/workflow.service'
 import {Workflow, Step} from '../models/workflow'
 import {WorkflowDuration} from '../models/statistics/duration'
-import {WorkflowAbortDialogComponent} from './dialogs/workflow_abort_dialog.component'
+import {WorkflowActionsDialogComponent} from './dialogs/workflow_actions_dialog.component'
 import {WorkflowPauseDialogComponent} from './dialogs/workflow_pause_dialog.component'
 
 @Component({
@@ -27,6 +27,7 @@ export class WorkflowComponent {
   can_pause: boolean = false
   can_resume: boolean = false
   right_abort: boolean = false
+  right_retry: boolean = false
   right_delete: boolean = false
   first_name: String
   last_name: String
@@ -41,6 +42,18 @@ export class WorkflowComponent {
   ) {}
 
   ngOnInit() {
+    this.userService.getUserByUuid(this.workflow.user_uuid).subscribe(
+        response => {
+          this.user_name = response.data.email
+          if (response.data.first_name && response.data.last_name) {
+            this.first_name = response.data.first_name
+            this.last_name = response.data.last_name
+            this.user_name = response.data.username
+          }
+        })
+  }
+
+  onMoreActionsToggle() {
     let has_at_least_one_queued_job = this.workflow.steps.some((s) => s['jobs']['queued'] == 1)
     let has_at_least_one_processing_step = this.workflow.steps.some((s) => s['status'] === "processing");
 
@@ -57,16 +70,6 @@ export class WorkflowComponent {
     this.can_pause = this.can_abort && !is_paused && !is_last_step_processing;
     this.can_resume = is_paused;
 
-    this.userService.getUserByUuid(this.workflow.user_uuid).subscribe(
-        response => {
-          this.user_name = response.data.email
-          if (response.data.first_name && response.data.last_name) {
-            this.first_name = response.data.first_name
-            this.last_name = response.data.last_name
-            this.user_name = response.data.username
-          }
-        })
-
     this.authService.hasAnyRights("workflow::" + this.workflow.identifier, "abort").subscribe(
         response => {
           this.right_abort = response.authorized
@@ -75,12 +78,16 @@ export class WorkflowComponent {
         response => {
           this.right_delete = response.authorized
       })
-
-
   }
 
   switchDetailed() {
     this.detailed = !this.detailed
+    if (this.workflow !== undefined && this.detailed) {
+      this.authService.hasAnyRights("workflow::" + this.workflow.identifier, "retry").subscribe(
+        response => {
+          this.right_retry = response.authorized
+      })
+    }
   }
 
   gotoVideo(video_id): void {
@@ -119,7 +126,7 @@ export class WorkflowComponent {
   }
 
   resume(workflow_id): void {
-    let dialogRef = this.dialog.open(WorkflowAbortDialogComponent, {data: {
+    let dialogRef = this.dialog.open(WorkflowActionsDialogComponent, {data: {
       'workflow': this.workflow,
       'message': 'resume'
     }})
@@ -136,7 +143,7 @@ export class WorkflowComponent {
   }
 
   abort(workflow_id): void {
-    let dialogRef = this.dialog.open(WorkflowAbortDialogComponent, {data: {
+    let dialogRef = this.dialog.open(WorkflowActionsDialogComponent, {data: {
       'workflow': this.workflow,
       'message': 'abort'
     }})
@@ -153,7 +160,7 @@ export class WorkflowComponent {
   }
 
   stop(workflow_id): void {
-    let dialogRef = this.dialog.open(WorkflowAbortDialogComponent, {data: {
+    let dialogRef = this.dialog.open(WorkflowActionsDialogComponent, {data: {
       'workflow': this.workflow,
       'message': 'stop'
     }})
@@ -170,7 +177,7 @@ export class WorkflowComponent {
   }
 
   delete(workflow_id): void {
-    let dialogRef = this.dialog.open(WorkflowAbortDialogComponent, {data: {
+    let dialogRef = this.dialog.open(WorkflowActionsDialogComponent, {data: {
       'workflow': this.workflow,
       'message': 'delete'
     }})

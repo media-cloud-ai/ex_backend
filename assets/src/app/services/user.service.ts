@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core'
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpParams, HttpHeaders, HttpResponse } from '@angular/common/http'
 import { Observable, of } from 'rxjs'
 import { catchError, map, tap } from 'rxjs/operators'
 
 import {UserPage, RolePage, RightDefinitionsPage} from '../models/page/user_page'
 import {User, Confirm, Role, ValidationLink} from '../models/user'
 import {AuthService} from '../authentication/auth.service'
+import { WorkflowQueryParams } from '../models/page/workflow_page'
 
 @Injectable()
 export class UserService {
@@ -183,6 +184,35 @@ export class UserService {
       .pipe(
         tap(userEmails => this.log('delete Users Role')),
         catchError(this.handleError('deleteUsersRole', undefined))
+      )
+  }
+
+  getWorkflowFilters(): Observable<any> {
+    return this.http.get<Array<String>>(this.usersUrl + '/filters/workflow')
+      .pipe(
+        tap(workflowPage => this.log('fetched Workflow filters')),
+        catchError(this.handleError('getWorkflowStatus', undefined))
+      )
+  }
+
+  saveWorkflowFilters(filter_name: string, filters: WorkflowQueryParams): Observable<any>  {
+    let params = {
+      filter_name: filter_name, 
+      filters: filters
+    }
+
+    return this.http.post<WorkflowQueryParams>(this.usersUrl + '/filters/workflow', params)
+      .pipe(
+        tap(workflowPage => this.log('save User workflow filters')),
+        catchError(this.handleError('saveWorkflowFilters', undefined))
+      )
+  }
+
+  deleteFilter(filter_id: number): Observable<any> {
+    return this.http.delete<WorkflowQueryParams>(this.usersUrl + '/filters/workflow/' + filter_id)
+      .pipe(
+        tap(workflowPage => this.log('delete User workflow filters')),
+        catchError(this.handleError('deleteWorkflowFilters', undefined))
       )
   }
 

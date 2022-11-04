@@ -35,6 +35,8 @@ RUN mix deps.get && \
     yarn run lint && \
     yarn run release && \
     cd .. && \
+    mix docs.stepflow && \
+    mix docs.backend && \
     mix phx.digest
 
 FROM alpine:3.15

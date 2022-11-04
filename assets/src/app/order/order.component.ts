@@ -213,11 +213,11 @@ export class OrderComponent {
       .subscribe(response => {
         if (response) {
           this.processStatus.failed = false;
-          this.processStatus.message = "Votre commande est en cours de réalisation.";
+          this.processStatus.message = "Your order is being processed.";
           this.response = response;
         } else {
           this.processStatus.failed = true;
-          this.processStatus.message = "Une erreur est apparue.";
+          this.processStatus.message = "An error occured.";
         }
       })
   }

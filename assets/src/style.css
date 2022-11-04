@@ -12,8 +12,10 @@
 }
 
 .mat-toolbar.mat-primary {
-  background-color: #ade0c9 !important;
-  color: black !important;
+  background: -moz-linear-gradient(-45deg, #095487 0%, #0D8A57 100%) !important;
+  background: -webkit-linear-gradient(-45deg, #095487 0%, #0D8A57 100%) !important;
+  background: linear-gradient(135deg, #095487 0%, #0D8A57 100%) !important;
+  color: white !important;
 }
 
 .mat-checkbox.small .mat-checkbox-layout {
@@ -42,7 +44,7 @@ pre.code {
   white-space: -pre-wrap;
   white-space: -o-pre-wrap;
 }
- 
+
 .canvasjs-chart-credit {
   display: none !important;
 }

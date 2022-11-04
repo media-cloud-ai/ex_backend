@@ -1,20 +1,25 @@
-import {Injectable, Component, OnDestroy} from '@angular/core'
-import {Router} from '@angular/router'
-import {HttpClient, HttpParams, HttpHeaders} from '@angular/common/http'
-import {CookieService} from 'ngx-cookie-service'
-import {Observable, of, Subject, Subscription} from 'rxjs'
-import {catchError, map, tap} from 'rxjs/operators'
-import {Token} from '../models/token'
+import { Injectable, Component, OnDestroy } from '@angular/core'
+import { Router } from '@angular/router'
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http'
+import { CookieService } from 'ngx-cookie-service'
+import { Observable, of, Subject, Subscription } from 'rxjs'
+import { catchError, map, tap } from 'rxjs/operators'
 import 'rxjs/add/operator/do'
 
-import {UserService} from '../services/user.service'
+import { Confirm } from '../models/user'
+import { PasswordReset, PasswordResetError } from '../models/password_reset'
+import { Token } from '../models/token'
+import { UserService } from '../services/user.service'
 
 @Injectable()
 export class AuthService {
   isLoggedIn = false
-  username : string
+  email: string
+  username: string
+  first_name: string
+  last_name: string
   user_id: number
-  roles : string[]
+  roles: string[]
   redirectUrl: string
 
   private userLoggedInSource = new Subject<string>()
@@ -39,7 +44,10 @@ export class AuthService {
       currentUser !== undefined && currentUser !== '') {
       this.isLoggedIn = true
       var parsedUser = JSON.parse(currentUser)
+      this.email = parsedUser.email
       this.username = parsedUser.username
+      this.first_name = parsedUser.first_name
+      this.last_name = parsedUser.last_name
       this.user_id = parsedUser.user_id
       this.roles = parsedUser.roles
     }
@@ -51,31 +59,45 @@ export class AuthService {
 
   login(email, password): Observable<Token> {
     this.isLoggedIn = false
+    this.email = undefined
     this.username = undefined
+    this.first_name = undefined
+    this.last_name = undefined
     this.user_id = undefined
-    const query = {session: {
-      email: email,
-      password: password
-    }}
+    const query = {
+      session: {
+        email: email,
+        password: password
+      }
+    }
 
     return this.http.post<Token>('/api/sessions', query).pipe(
       tap(response => {
         console.log("Login: ", response);
         if (response && response.user) {
           this.cookieService.set('currentUser', JSON.stringify({
-            username: email,
+            email: email,
+            username: response.user.username,
+            first_name: response.user.first_name,
+            last_name: response.user.last_name,
             user_id: response.user.id,
             roles: response.user.roles
           }))
 
           this.isLoggedIn = true
-          this.username = email
-          this.roles = response.user.roles
+          this.email = response.user.email
+          this.username = response.user.username,
+            this.first_name = response.user.first_name,
+            this.last_name = response.user.last_name,
+            this.roles = response.user.roles
           this.user_id = response.user.id
           this.userLoggedInSource.next(email)
         } else {
           this.isLoggedIn = false
+          this.email = undefined
           this.username = undefined
+          this.first_name = undefined
+          this.last_name = undefined
           this.roles = undefined
           this.user_id = undefined
           this.userLoggedOutSource.next('')
@@ -88,7 +110,10 @@ export class AuthService {
 
   logout(clean_cookies = true): void {
     this.isLoggedIn = false
+    this.email = undefined
     this.username = undefined
+    this.first_name = undefined
+    this.last_name = undefined
     this.roles = undefined
     this.user_id = undefined
     this.userLoggedOutSource.next('')
@@ -103,7 +128,7 @@ export class AuthService {
   }
 
   getUsername(): string {
-    return this.username
+    return this.first_name + ' ' + this.last_name
   }
 
   getId(): number {
@@ -112,31 +137,31 @@ export class AuthService {
 
   hasAdministratorRight(): boolean {
     console.log("hasAdministratorRight", this.roles);
-    if (!this.roles){
+    if (!this.roles) {
       return false
     }
     return this.roles.includes('administrator')
   }
 
   hasTechnicianRight(): boolean {
-    if (!this.roles){
+    if (!this.roles) {
       return false
     }
     return this.roles.includes('technician')
   }
 
   hasEditorRight(): boolean {
-    if (!this.roles){
+    if (!this.roles) {
       return false
     }
     return this.roles.includes('editor')
   }
 
   hasAnyRights(entity: string, action: string): Observable<any> {
-    if (!this.roles){
+    if (!this.roles) {
       return of(false)
     }
-    if (entity === undefined || action == undefined){
+    if (entity === undefined || action == undefined) {
       return of(false)
     }
     let params = new HttpParams()
@@ -150,12 +175,46 @@ export class AuthService {
       )
   }
 
-  private handleError<T> (operation = 'operation', result?: T) {
+  passwordResetRequest(email: string): Observable<PasswordReset> {
+    let params = {
+      password_reset: {
+        email: email
+      }
+    }
+
+    return this.http.post<PasswordReset>('/api/password_resets', params)
+      .pipe(
+        tap(userPage => this.log('Reset password')),
+        catchError(err => this.handleErrorPasswordReset(err)))
+  }
+
+  confirmResetPassword(password: string, key: string): Observable<Confirm> {
+    let params = {
+      password_reset: {
+        password: password,
+        key: key
+      }
+    }
+
+    return this.http.put<Confirm>('/api/password_resets/update', params)
+      .pipe(
+        tap(user => this.log('fetched Confirm Password Reset')),
+        catchError(this.handleError('confirmResetPassword', undefined))
+      )
+  }
+
+  private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error)
       this.log(`${operation} failed: ${error.message}`)
       return of(result as T)
     }
+  }
+
+  private handleErrorPasswordReset(err_object: PasswordResetError): Observable<PasswordReset> {
+    console.error(err_object);
+    this.log(err_object.message);
+    return of(new PasswordReset('', err_object.error.custom_error_message))
   }
 
   private log(message: string) {

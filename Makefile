@@ -32,3 +32,6 @@ up:
 
 version:
 	@echo ${VERSION}
+
+doc:
+	@mix phx.swagger.generate

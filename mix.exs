@@ -4,7 +4,7 @@ defmodule ExBackend.Mixfile do
   def project do
     [
       app: :ex_backend,
-      version: "1.6.0",
+      version: "1.6.1",
       elixir: "~> 1.9",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -100,6 +100,7 @@ defmodule ExBackend.Mixfile do
       {:lager, "3.8.0"},
       {:libvault, "~> 0.2.1"},
       {:mix_audit, "~> 1.0", only: [:dev, :test], runtime: false},
+      {:open_api_spex, "~> 3.13"},
       {:phoenix, "~> 1.5.3"},
       {:phoenix_ecto, "~> 4.0"},
       {:phoenix_html, "~> 2.10"},
@@ -112,7 +113,7 @@ defmodule ExBackend.Mixfile do
       {:ranch, "~> 1.8.0"},
       {:remote_dockers, "1.4.0"},
       {:sigaws, "~> 0.7.2"},
-      {:step_flow, "1.6.0"},
+      {:step_flow, "1.6.1"},
       {:tesla, "~> 1.4.0"},
       {:timex, "~> 3.6"},
       {:uuid, "~> 1.1"}
@@ -138,6 +139,12 @@ defmodule ExBackend.Mixfile do
         "deps.audit"
       ],
       dev: ["ecto.drop", "ecto.setup", "phx.server -r priv/repo/seeds.exs"],
+      "docs.stepflow": [
+        "openapi.spec.json --spec StepFlow.ApiSpec --start-app=false --pretty priv/static/step_flow_openapi.json"
+      ],
+      "docs.backend": [
+        "openapi.spec.json --spec ExBackendWeb.ApiSpec --start-app=false --pretty priv/static/backend_openapi.json"
+      ],
       test: ["ecto.drop", "ecto.create --quiet", "ecto.migrate", "test"],
       version: &get_version/1
     ]

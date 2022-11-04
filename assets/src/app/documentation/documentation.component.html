@@ -1,39 +1,8 @@
-<h1>API Documentation</h1>
-<div class="routes"
-  *ngIf="documentation">
-  <div *ngFor="let route of documentation.routes"
-    class=route>
-    <h3 class=title>
-      {{route.title}}
-    </h3>
-    <div class=description>
-      <mat-icon>notes</mat-icon>
-      <span [innerHTML]="route.description"></span>
-    </div>
-    <span class=verb
-      [ngClass]="route.method">
-      {{route.method}}
-    </span>
-    <span class=path>
-      {{route.path}}
-    </span>
-    <div class="parameters">
-      <div *ngFor="let param of route.parameters"
-        class=parameter>
-        <label>
-          {{param.name}}
-        </label>
-        <span class=description>
-          {{param.description}}
-        </span>
-        <span class=type>
-          ({{param.type}})
-        </span>
-        <span class=required *ngIf="param.optional === false">
-          Required
-        </span>
-      </div>
-    </div>
-    <hr/>
-  </div>
-</div>
+<mat-tab-group class="mat-elevation-z4">
+  <mat-tab label="Backend">
+    <div #swagger_backend></div>
+  </mat-tab>
+  <mat-tab label="StepFlow">
+    <div #swagger_stepflow></div>
+  </mat-tab>
+</mat-tab-group>

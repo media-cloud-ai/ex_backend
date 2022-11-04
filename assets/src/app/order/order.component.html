@@ -1,8 +1,8 @@
-<h1>Nouvelle commande</h1>
+<h1>New order</h1>
 
 <mat-horizontal-stepper linear="true" #stepper>
   <mat-step [stepControl]="modeSelection">
-    <ng-template matStepLabel>Sélection du service</ng-template>
+    <ng-template matStepLabel>Select service</ng-template>
     <div class="services">
       <div class="service" *ngFor="let service of services">
         <button
@@ -46,7 +46,7 @@
     </mat-toolbar>
   </mat-step>
   <mat-step [stepControl]="versionSelection">
-    <ng-template matStepLabel>Sélection de la version du service</ng-template>
+    <ng-template matStepLabel>Select service version</ng-template>
     <div class="services">
       <div class="service" *ngFor="let service of services">
         <button
@@ -82,7 +82,7 @@
     </mat-paginator>
   </mat-step>
   <mat-step [stepControl]="inputSelection">
-    <ng-template matStepLabel>Paramétrage</ng-template>
+    <ng-template matStepLabel>Configuration</ng-template>
     <div *ngIf="selectedService">
       <div
         class="service"
@@ -135,14 +135,14 @@
       </div>
     </div>
     <div>
-      <button mat-button matStepperPrevious>Retour</button>
-      <button mat-button matStepperNext (click)="upload()">Suite</button>
+      <button mat-button matStepperPrevious>Previous</button>
+      <button mat-button matStepperNext (click)="upload()">Next</button>
     </div>
   </mat-step>
 
   <mat-step [stepControl]="upload">
-    <ng-template matStepLabel>Chargement des fichiers</ng-template>
-    <div>Récupération des fichiers:</div>
+    <ng-template matStepLabel>File upload</ng-template>
+    <div>Files uploaded:</div>
 
     <div *ngFor="let progressBar of progressBars" class="fileProgress">
       {{ progressBar.name }} -
@@ -151,25 +151,25 @@
     </div>
 
     <div>
-      <button mat-button matStepperPrevious>Retour</button>
+      <button mat-button matStepperPrevious>Previous</button>
       <button
         mat-button
         matStepperNext
         [disabled]="!uploadCompleted"
         (click)="startWorkflow()"
       >
-        Démarrer le traitement
+        Start order
       </button>
     </div>
   </mat-step>
   <mat-step [stepControl]="startWorkflow">
-    <ng-template matStepLabel>Traitement</ng-template>
+    <ng-template matStepLabel>Processing</ng-template>
     <div [ngStyle]="{ color: processStatus.failed ? 'red' : 'black' }">
       {{ processStatus.message }}
     </div>
 
     <button mat-button (click)="follow()">
-      {{ processStatus.failed ? "Retour" : "Suivre la commande" }}
+      {{ processStatus.failed ? "Previous" : "Follow order" }}
     </button>
   </mat-step>
 </mat-horizontal-stepper>

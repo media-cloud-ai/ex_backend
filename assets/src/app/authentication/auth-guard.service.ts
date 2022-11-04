@@ -30,7 +30,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
       if (url.startsWith('/watchers') ||
         url.startsWith('/workers')
         ) {
-        if (this.authService.hasTechnicianRight()) {
+        if (this.authService.hasAdministratorRight() || this.authService.hasTechnicianRight()) {
           return true
         } else {
           this.router.navigate(['/dashboard'])
@@ -38,7 +38,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         }
       }
       if (url.startsWith('/users') ||
-        url.startsWith('/credentials') ||
+        url.startsWith('/secrets') ||
         url.startsWith('/statistics')
         ) {
         if (this.authService.hasAdministratorRight()) {
@@ -53,7 +53,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         url.startsWith('/ingest') ||
         url.startsWith('/person') ||
         url.startsWith('/registeries')) {
-        if (this.authService.hasEditorRight()) {
+        if (this.authService.hasAdministratorRight() || this.authService.hasEditorRight()) {
           return true
         } else {
           this.router.navigate(['/dashboard'])
@@ -68,6 +68,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
 
       if (url.startsWith('/dashboard') ||
         url.startsWith('/documentation') ||
+        url.startsWith('/swagger') ||
         url.startsWith('/declared-workers') ||
         url.startsWith('/orders') ||
         url.startsWith('/workflows')) {

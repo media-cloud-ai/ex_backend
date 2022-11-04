@@ -1,8 +1,12 @@
 {
+  "custom_stop_words": [
+    "operation"
+  ],
   "skip_files": [
     "lib/migrations/",
     "lib/mix/",
     "lib/ex_backend.ex",
+    "lib/ex_backend_web/controllers/open_api_schemas",
     "lib/ex_backend_web.ex"
   ]
 }

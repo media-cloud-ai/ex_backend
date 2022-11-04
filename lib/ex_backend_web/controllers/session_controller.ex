@@ -1,23 +1,26 @@
 defmodule ExBackendWeb.SessionController do
   use ExBackendWeb, :controller
+  use OpenApiSpex.ControllerSpecs
 
   import ExBackendWeb.Authorize
   alias ExBackendWeb.Auth.Token
+  alias ExBackendWeb.OpenApiSchemas
+
+  tags ["Session"]
+  security [%{"authorization" => %OpenApiSpex.SecurityScheme{type: "http", scheme: "bearer"}}]
 
   plug(:guest_check when action in [:create])
 
-  api :POST, "/api/sessions" do
-    title("Create a new session")
-    description(~s(Login a user with credentials to get the JWT token<br/>
-    <h4>To get the token:</h4>
-    <pre class=code>MIO_TOKEN=`curl -H \"Content-Type: application/json\" -d '{\"session\": {\"email\": \"user@media-io.com\", \"password\": \"secret_password\"} }' https://backend.media-io.com/api/sessions | jq -r \".access_token\"`</pre>
-    ))
-
-    parameter(:session, :map,
-      optional: false,
-      description: "Map with required parameters email and password"
-    )
-  end
+  operation :create,
+    summary: "Create a session",
+    description: "Log in a user with credentials to get the JWT token",
+    type: :object,
+    request_body: {"Session Body", "application/json", OpenApiSchemas.Sessions.SessionBody},
+    responses: [
+      ok: {"Session", "application/json", OpenApiSchemas.Sessions.Session},
+      unauthorized: "Unauthorized - Already logged in",
+      forbidden: "Forbidden"
+    ]
 
   def create(conn, %{"session" => params}) do
     case Token.verify(params) do

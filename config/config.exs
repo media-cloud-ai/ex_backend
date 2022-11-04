@@ -63,6 +63,7 @@ config :logger, :console,
   metadata: [:request_id]
 
 config :mime, :types, %{
+  "application/json" => ["json"],
   "application/wasm" => ["wasm"],
   "text/vtt" => ["webvtt"]
 }

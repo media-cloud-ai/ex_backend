@@ -30,8 +30,9 @@
 
       .loading_content .logo {
         flex: 1;
-        box-shadow: 1px 1px 5px 0 #03a35b;
-        background-color: #03a35b;
+        background: -moz-linear-gradient(-45deg, #095487 0%, #0D8A57 100%) !important;
+        background: -webkit-linear-gradient(-45deg, #095487 0%, #0D8A57 100%) !important;
+        background: linear-gradient(135deg, #095487 0%, #0D8A57 100%) !important;
       }
       .loading_content .loading-text {
         color: #fff;

@@ -108,4 +108,3 @@ $ex-backend-app-warn:    mat-palette($ex-backend-error);
 $ex-backend-app-theme: mat-light-theme($ex-backend-app-primary, $ex-backend-app-accent, $ex-backend-app-warn);
 
 @include angular-material-theme($ex-backend-app-theme);
-
