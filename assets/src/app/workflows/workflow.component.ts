@@ -26,6 +26,7 @@ export class WorkflowComponent {
   can_stop: boolean = true
   can_pause: boolean = false
   can_resume: boolean = false
+  can_delete: boolean = false
   right_abort: boolean = false
   right_retry: boolean = false
   right_delete: boolean = false
@@ -62,6 +63,7 @@ export class WorkflowComponent {
 
     this.can_pause = this.workflow.can_pause();
     this.can_resume = this.workflow.can_resume();
+    this.can_delete = this.workflow.can_delete();
 
     this.authService.hasAnyRights("workflow::" + this.workflow.identifier, "abort").subscribe(
         response => {
