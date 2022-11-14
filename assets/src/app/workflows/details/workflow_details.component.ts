@@ -98,7 +98,7 @@ export class WorkflowDetailsComponent {
 
       this.can_pause = this.workflow.can_pause();
       this.can_resume = this.workflow.can_resume();
-      this.can_delete = this.workflow.can_delete()
+      this.can_delete = this.workflow.can_delete();
 
       this.pause_post_action = this.getPausePostAction();
 
