@@ -14,7 +14,7 @@
         </span>
         <span class=spacer>
         </span>
-        <span (click)="openRightPanel()"
+        <span (click)="toggleRightPanel()"
           *ngIf=loggedIn
           class="user_settings">
           <i style="color: white;">{{username}}</i>
@@ -23,7 +23,7 @@
       </mat-toolbar-row>
     </mat-toolbar>
 
-    <mat-sidenav-container (backdropClick)="openRightPanel()">
+    <mat-sidenav-container (backdropClick)="toggleRightPanel()">
       <mat-sidenav mode="side" opened="true" *ngIf="loggedIn" [ngClass]="{small_menu: !menu_expanded}"
         class="docs-component-viewer-sidenav mat-drawer mat-sidenav ng-tns-c13-1 ng-trigger ng-trigger-transform mat-drawer-side ng-star-inserted">
         <ul>
@@ -68,19 +68,22 @@
         <router-outlet></router-outlet>
       </mat-sidenav-content>
       
-      <mat-sidenav mode="over" #sidenav (keydown.escape)="openRightPanel()" position="end" [opened]="right_panel_opened" *ngIf="loggedIn"
+      <mat-sidenav mode="over" #sidenav (keydown.escape)="toggleRightPanel()" position="end" [opened]="right_panel_opened" *ngIf="loggedIn"
         class="docs-component-viewer-sidenav-reverse mat-drawer mat-sidenav ng-tns-c13-1 ng-trigger ng-trigger-transform mat-drawer-side ng-star-inserted">
         <ul>
           <li class="ng-star-inserted"
             routerLink='/documentation'
             routerLinkActive="active-list-item"
+            (click)="toggleRightPanel()"
             >
             <i class="material-icons">developer_mode</i>
             API Documentation
           </li>
           <li class="ng-star-inserted"
           routerLink='/declared-workers'
-          routerLinkActive="active-list-item">
+          routerLinkActive="active-list-item"
+          (click)="toggleRightPanel()"
+          >
           <i class="material-icons">playlist_add_check</i>
           Declared workers
           </li>

@@ -164,7 +164,7 @@ export class AppComponent {
     this.menu_expanded = !this.menu_expanded
   }
 
-  openRightPanel() {
+  toggleRightPanel() {
     this.right_panel_opened = !this.right_panel_opened
   }
 
