@@ -74,13 +74,16 @@
           <li class="ng-star-inserted"
             routerLink='/documentation'
             routerLinkActive="active-list-item"
+            (click)="openRightPanel()"
             >
             <i class="material-icons">developer_mode</i>
             API Documentation
           </li>
           <li class="ng-star-inserted"
           routerLink='/declared-workers'
-          routerLinkActive="active-list-item">
+          routerLinkActive="active-list-item"
+          (click)="openRightPanel()"
+          >
           <i class="material-icons">playlist_add_check</i>
           Declared workers
           </li>
