@@ -163,7 +163,7 @@
       <button
         mat-raised-button
         color="warn"
-        [disabled]="!can_stop || !right_abort"
+        [disabled]="!right_abort"
         (click)="stop(workflow.id)"
         >
         <mat-icon>stop</mat-icon>

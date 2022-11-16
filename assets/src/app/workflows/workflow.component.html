@@ -103,7 +103,6 @@
           class="stop"
           *ngIf=workflow.is_live
           color="warn"
-          [disabled]=!can_stop
           (click)="stop(workflow.id)"
           title="Stop"
           >

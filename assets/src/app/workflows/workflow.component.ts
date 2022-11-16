@@ -22,8 +22,7 @@ export class WorkflowComponent {
   @Input() workflow: Workflow
   @Input() duration: WorkflowDuration
   @Input() detailed = false
-  can_abort: boolean
-  can_stop: boolean = true
+  can_abort: boolean = false
   can_pause: boolean = false
   can_resume: boolean = false
   can_delete: boolean = false
