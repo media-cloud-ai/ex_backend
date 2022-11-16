@@ -39,6 +39,13 @@
       <span class="label">Steps:</span>
       <span class="count">{{getStepsCount()}} / {{getTotalSteps()}}</span>
     </span>
+    <span class="status">
+      <mat-chip-list>
+        <mat-chip color="primary" selected>
+          {{ workflow.status.state }}
+        </mat-chip>
+      </mat-chip-list>
+    </span>
     <span class="details">
       <a routerLink="/workflows/{{workflow.id}}">
         <button
