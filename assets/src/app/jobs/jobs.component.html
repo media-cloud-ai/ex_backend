@@ -1,9 +1,11 @@
 <ul *ngIf="jobs" class="jobs">
-  <li *ngFor="let job of jobs.data" class="job {{job.channel}} {{job | jobStatus}}">
+  <li *ngFor="let job of jobs.data"
+      class="job {{job.channel}} {{job | jobStatus}}"
+      title="{{job | jobStatus}}">
 
     <div class="info">
       <span class="name">Job #{{job.id}}</span>
-      <span class="summary" title="{{job | jobStatus}}">
+      <span class="summary">
         <div class="duration" (click)="switchDurationRenderingMode()">
           {{job | jobDuration | duration: job_duration_rendering_mode}}
         </div>
@@ -45,6 +47,7 @@
     <ng-template #elseBlock>
       <div class="status {{job | jobStatus}}">
         <span>{{job | jobStatus | titlecase}}</span>
+        <span *ngIf="job.in_black_list" class="black-listed"> (blacklisted)</span>
       </div>
       <div class="bar {{job | jobStatus}}"></div>
     </ng-template>
