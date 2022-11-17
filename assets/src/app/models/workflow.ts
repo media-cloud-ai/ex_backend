@@ -134,8 +134,7 @@ export class Workflow {
   }
 
   public can_resume(): boolean {
-    let has_at_least_one_paused_step = this.steps.some((s) => s['status'] === "paused");
-    return has_at_least_one_paused_step && !this.is_finished() && !this.is_stopped();
+    return this.is_paused() && !this.is_finished() && !this.is_stopped();
   }
 
   public can_delete(): boolean {
