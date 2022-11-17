@@ -200,6 +200,13 @@
         Delete
       </button>
     </span>
+    <span class="duplicate">
+      <button mat-raised-button [disabled]="!right_duplicate" color="accent" (click)="duplicate()">
+        <mat-icon>file_copy</mat-icon>
+        Duplicate
+      </button>
+    </span>
+
   </div>
 
   <div class="line" *ngFor="let line of renderer.graph">

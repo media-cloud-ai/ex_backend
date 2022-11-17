@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog'
 import { Message } from '../../models/message'
 import { AuthService } from '../../authentication/auth.service'
 import { SocketService } from '../../services/socket.service'
+import { StartWorkflowDefinition } from '../../models/startWorkflowDefinition'
 import { UserService } from '../../services/user.service'
 import { WorkflowService } from '../../services/workflow.service'
 import { Workflow } from '../../models/workflow'
@@ -31,8 +32,9 @@ export class WorkflowDetailsComponent {
   notification_hooks_opened = false
   connection: any
   messages: Message[] = []
-  right_stop = false
   right_delete = false
+  right_duplicate = false
+  right_stop = false
   step_focus: Map<number, boolean> = new Map()
   first_name: string
   last_name: string
@@ -110,6 +112,12 @@ export class WorkflowDetailsComponent {
             this.right_delete = response.authorized
           })
       }
+
+      this.authService
+        .hasAnyRights('workflow::' + this.workflow.identifier, 'create')
+        .subscribe((response) => {
+          this.right_duplicate = response.authorized
+        })
 
       this.userService
         .getUserByUuid(this.workflow.user_uuid)
@@ -236,6 +244,44 @@ export class WorkflowDetailsComponent {
           })
       }
     })
+  }
+
+  duplicate(): void {
+    if (this.right_duplicate) {
+      const parameters = this.workflow.parameters.reduce(function (
+        map,
+        parameter,
+      ) {
+        const value = parseInt(parameter.value)
+        console.log(value)
+        if (isNaN(value)) {
+          map[parameter.id] = parameter.value
+        } else {
+          map[parameter.id] = value
+        }
+        return map
+      },
+      {})
+      const create_workflow_parameters = new StartWorkflowDefinition()
+      create_workflow_parameters.workflow_identifier = this.workflow.identifier
+      create_workflow_parameters.parameters = parameters
+      create_workflow_parameters.reference = this.workflow.reference
+      create_workflow_parameters.version_major = parseInt(
+        this.workflow.version_major,
+      )
+      create_workflow_parameters.version_minor = parseInt(
+        this.workflow.version_minor,
+      )
+      create_workflow_parameters.version_micro = parseInt(
+        this.workflow.version_micro,
+      )
+
+      this.workflowService
+        .createWorkflow(create_workflow_parameters)
+        .subscribe((response) => {
+          console.log(response)
+        })
+    }
   }
 
   updateStepInWorkflow(step) {

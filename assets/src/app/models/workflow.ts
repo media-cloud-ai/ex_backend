@@ -77,6 +77,7 @@ export class Workflow {
   jobs?: Array<Job>
   label?: string
   notification_hooks?: Array<NotificationHook>
+  parameters?: Parameter[]
   reference?: string
   rights?: Right[]
   status?: Status
