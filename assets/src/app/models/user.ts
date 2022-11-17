@@ -29,7 +29,8 @@ export class Role {
 
 export enum RoleEventAction {
   Update,
-  Delete
+  Delete,
+  Select
 }
 
 export class RoleEvent {

@@ -178,7 +178,9 @@
         *ngFor="let role of roles.data"
         [role]=role
         (roleChange)="roleHasChanged($event)"
-        [permissions]=available_permissions>
+        (selectRole)="roleHasBeenSelected(Role)"
+        [permissions]=available_permissions
+        [selected_role]="selected_role_id">
       </role-component>
     </div>
 

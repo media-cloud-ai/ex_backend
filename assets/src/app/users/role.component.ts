@@ -1,12 +1,8 @@
-
-import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core'
-import {PageEvent} from '@angular/material/paginator'
-import {MatCheckboxModule} from '@angular/material/checkbox'
-import {ActivatedRoute, Router} from '@angular/router'
+import {Component, EventEmitter, Input, Output} from '@angular/core'
 import {MatDialog} from '@angular/material/dialog'
 
 import {UserService} from '../services/user.service'
-import {Role, Right, RoleEvent, RoleEventAction} from '../models/user'
+import {Right, Role, RoleEvent, RoleEventAction} from '../models/user'
 import {RoleOrRightDeletionDialogComponent} from './dialogs/role_or_right_deletion_dialog.component'
 
 @Component({
@@ -14,17 +10,17 @@ import {RoleOrRightDeletionDialogComponent} from './dialogs/role_or_right_deleti
   templateUrl: 'role.component.html',
   styleUrls: ['./role.component.less'],
 })
+
 export class RoleComponent {
   @Input() role: Role
   @Input() permissions: string[]
+  @Input() selected_role: number
 
   @Output() roleChange = new EventEmitter<RoleEvent>();
 
   active_rights: Right[] = []
-
   new_right: Right;
-
-  role_is_being_edited: boolean = false;
+  is_being_updated: boolean = false;
 
   constructor(
     private userService: UserService,
@@ -54,7 +50,8 @@ export class RoleComponent {
 
     edited_right.entity = event.target.value;
 
-    this.role_is_being_edited = true;
+    this.selectRole();
+    this.is_being_updated = true;
   }
 
   editRightPermissions(event, right?: Right) {
@@ -80,7 +77,8 @@ export class RoleComponent {
       }
     }
 
-    this.role_is_being_edited = true;
+    this.selectRole();
+    this.is_being_updated = true;
   }
 
   deleteRight(right: Right) {
@@ -109,8 +107,11 @@ export class RoleComponent {
     this.roleChange.emit(new RoleEvent(RoleEventAction.Update, this.role));
   }
 
-  deleteRole(role: Role) {
-    // TODO: ask for confirmation
+  deleteRole() {
     this.roleChange.emit(new RoleEvent(RoleEventAction.Delete, this.role));
+  }
+
+  selectRole(){
+    this.roleChange.emit(new RoleEvent(RoleEventAction.Select, this.role))
   }
 }
