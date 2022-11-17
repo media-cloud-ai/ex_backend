@@ -15,10 +15,10 @@
     <span class="created">
       <label> Created at </label>
       <span class="date">
-        {{ workflow.created_at | date: 'd LLLL yy' }}
+        {{ workflow.created_at | date : 'd LLLL yy' }}
       </span>
       <span class="hour">
-        {{ workflow.created_at + 'Z' | date: 'HH:mm:ss' }}
+        {{ workflow.created_at + 'Z' | date : 'HH:mm:ss' }}
       </span>
     </span>
     <span class="duration">

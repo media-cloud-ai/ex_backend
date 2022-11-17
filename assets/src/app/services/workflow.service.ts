@@ -17,7 +17,7 @@ import { StartWorkflowDefinition } from '../models/startWorkflowDefinition'
 export class WorkflowService {
   private workflowUrl = '/api/workflow'
   private workflowsUrl = '/api/step_flow/workflows'
-  private workflowsLauncher = '/api/step_flow/launch_workflow'
+  private workflowFiltersUrl = 'api/worfklow_filters'
   private workflowDefinitionsUrl = '/api/step_flow/definitions'
   private statisticsUrl = '/api/step_flow/workflows_statistics'
   private statusUrl = '/api/step_flow/workflows_status'
@@ -156,7 +156,7 @@ export class WorkflowService {
     startWorkflowDefinition: StartWorkflowDefinition,
   ): Observable<WorkflowData> {
     return this.http
-      .post<WorkflowData>(this.workflowsLauncher, startWorkflowDefinition)
+      .post<WorkflowData>(this.workflowsUrl, startWorkflowDefinition)
       .pipe(
         tap((_workflowPage) => this.log('fetched Workflow')),
         catchError(this.handleError('createWorkflow', undefined)),
