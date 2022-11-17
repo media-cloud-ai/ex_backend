@@ -1,14 +1,12 @@
-
-import {Component, ViewChild} from '@angular/core'
-import {MatCheckboxModule} from '@angular/material/checkbox'
+import {Component} from '@angular/core'
 import {PageEvent} from '@angular/material/paginator'
 import {ActivatedRoute, Router} from '@angular/router'
 import {MatDialog} from '@angular/material/dialog'
 
 import {AuthService} from '../authentication/auth.service'
 import {UserService} from '../services/user.service'
-import {UserPage, RolePage} from '../models/page/user_page'
-import {User, Role, Right, RoleEvent, RoleEventAction} from '../models/user'
+import {RolePage, UserPage} from '../models/page/user_page'
+import {Right, Role, RoleEvent, RoleEventAction} from '../models/user'
 import {RoleOrRightDeletionDialogComponent} from './dialogs/role_or_right_deletion_dialog.component'
 import {UserEditionDialogComponent} from './dialogs/user_edition_dialog.component'
 import {UserShowCredentialsDialogComponent} from './dialogs/user_show_credentials_dialog.component'
@@ -42,6 +40,7 @@ export class UsersComponent {
   roles: RolePage
   roles_total = 1000
   all_roles: RolePage
+  selected_role_id = undefined
   rights: Right[] = []
   right_administrator: boolean
   available_permissions: string[]
@@ -200,23 +199,31 @@ export class UsersComponent {
     });
   }
 
+
   roleHasChanged(event: RoleEvent) {
+
+    if (event.action == RoleEventAction.Select){
+      this.selected_role_id = event.role.id
+    }
 
     if (event.action == RoleEventAction.Update) {
       this.userService.updateRole(event.role).subscribe(role => {
         // console.log("Updated role:", role);
         this.getRoles(this.page);
       });
+      this.selected_role_id = undefined;
     }
 
     if (event.action == RoleEventAction.Delete) {
       // Ask for confirmation
-      let dialogRef = this.dialog.open(RoleOrRightDeletionDialogComponent, {data: {
-        'role': event.role
-      }})
+      let dialogRef = this.dialog.open(RoleOrRightDeletionDialogComponent, {
+        data: {
+          'role': event.role
+        }
+      })
 
       dialogRef.afterClosed().subscribe(response => {
-        if(response) {
+        if (response) {
           this.userService.deleteRole(event.role).subscribe(role => {
             // console.log("Deleted role:", role);
             this.userService.deleteUsersRole(event.role).subscribe(updatedUsers => {
@@ -228,6 +235,5 @@ export class UsersComponent {
         }
       })
     }
-
   }
 }

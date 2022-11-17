@@ -17,6 +17,7 @@
           placeholder="Scope"
           (change)="editRightScope($event, right)"
           [(ngModel)]="right.entity"
+          [disabled]="selected_role && selected_role != role.id"
           >
       </mat-form-field>
 
@@ -26,7 +27,8 @@
           class="permission"
           name="{{permission}}"
           (change)="editRightPermissions($event, right)"
-          [checked]="right.action.indexOf(permission) > -1">
+          [checked]="right.action.indexOf(permission) > -1"
+          [disabled]="selected_role && selected_role != role.id">
           {{ permission }}
         </mat-checkbox>
       </span>
@@ -36,22 +38,11 @@
           mat-mini-fab
           (click)="deleteRight(right)"
           color="warn"
-          title="Delete right">
+          title="Delete right"
+          [disabled]="selected_role && selected_role != role.id">
           <mat-icon>delete</mat-icon>
         </button>
       </span>
-
-       <span class="right-actions">
-        <button
-                mat-mini-fab
-                *ngIf="right.is_being_edited"
-                (click)="updateRole()"
-                color="primary"
-                title="Update role">
-          <mat-icon>check</mat-icon>
-        </button>
-      </span>
-
     </div>
 
     <div class="new-right">
@@ -62,6 +53,7 @@
           [type]="text"
           (change)="editRightScope($event)"
           placeholder="Declare new scope..."
+          [disabled]="selected_role && selected_role != role.id"
           >
       </mat-form-field>
 
@@ -71,31 +63,31 @@
           (change)="editRightPermissions($event)"
           name="{{permission}}"
           [disabled]="!new_right"
-          class="permission">
+          class="permission"
+          [disabled]="selected_role && selected_role != role.id">
           {{ permission }}
         </mat-checkbox>
       </span>
-
-      <span class="right-actions">
-        <button
-          mat-mini-fab
-          *ngIf="right_is_being_added"
-          (click)="updateRole()"
-          color="primary"
-          title="Update role">
-          <mat-icon>check</mat-icon>
-        </button>
-      </span>
-
     </div>
   </span>
 
-    <span class="role-actions">
+  <span class="role-actions">
+    <button
+          mat-raised-button
+          (click)="updateRole(role)"
+          color="primary"
+          title="Update role"
+          [disabled]="!is_being_updated"
+          >
+      <mat-icon>check</mat-icon>
+      Update role
+    </button>
     <button
       mat-raised-button
       (click)="deleteRole(role)"
       color="warn"
-      title="Delete role">
+      title="Delete role"
+      [disabled]="selected_role && selected_role != role.id">
       <mat-icon>delete</mat-icon>
       Delete role
     </button>

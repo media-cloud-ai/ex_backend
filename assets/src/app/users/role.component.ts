@@ -1,8 +1,8 @@
-import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core'
+import {Component, EventEmitter, Input, Output} from '@angular/core'
 import {MatDialog} from '@angular/material/dialog'
 
 import {UserService} from '../services/user.service'
-import {Role, Right, RoleEvent, RoleEventAction} from '../models/user'
+import {Right, Role, RoleEvent, RoleEventAction} from '../models/user'
 import {RoleOrRightDeletionDialogComponent} from './dialogs/role_or_right_deletion_dialog.component'
 
 @Component({
@@ -14,12 +14,13 @@ import {RoleOrRightDeletionDialogComponent} from './dialogs/role_or_right_deleti
 export class RoleComponent {
   @Input() role: Role
   @Input() permissions: string[]
+  @Input() selected_role: number
 
   @Output() roleChange = new EventEmitter<RoleEvent>();
 
   active_rights: Right[] = []
   new_right: Right;
-  right_is_being_added: boolean = false;
+  is_being_updated: boolean = false;
 
   constructor(
     private userService: UserService,
@@ -41,15 +42,16 @@ export class RoleComponent {
     if (right) {
       // Edit an exisiting right
       edited_right = right;
-      right.is_being_edited = true;
     } else {
       // Declare a new right
       this.new_right = new Right();
       edited_right = this.new_right;
-      this.right_is_being_added = true;
     }
 
     edited_right.entity = event.target.value;
+
+    this.selectRole();
+    this.is_being_updated = true;
   }
 
   editRightPermissions(event, right?: Right) {
@@ -57,7 +59,6 @@ export class RoleComponent {
     if (right) {
       // Edit an existing right
       edited_right = right;
-      right.is_being_edited = true
     } else {
       // Edit a new right
       if (!this.new_right) {
@@ -65,7 +66,6 @@ export class RoleComponent {
         this.new_right = new Right();
       }
       edited_right = this.new_right;
-      this.right_is_being_added = true;
     }
 
     if (event.checked) {
@@ -76,6 +76,9 @@ export class RoleComponent {
         edited_right.action.splice(index, 1);
       }
     }
+
+    this.selectRole();
+    this.is_being_updated = true;
   }
 
   deleteRight(right: Right) {
@@ -104,8 +107,11 @@ export class RoleComponent {
     this.roleChange.emit(new RoleEvent(RoleEventAction.Update, this.role));
   }
 
-  deleteRole(role: Role) {
-    // TODO: ask for confirmation
+  deleteRole() {
     this.roleChange.emit(new RoleEvent(RoleEventAction.Delete, this.role));
+  }
+
+  selectRole(){
+    this.roleChange.emit(new RoleEvent(RoleEventAction.Select, this.role))
   }
 }
