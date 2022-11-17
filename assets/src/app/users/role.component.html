@@ -15,7 +15,7 @@
           matInput
           [type]="text"
           placeholder="Scope"
-          read-only
+          (change)="editRightScope($event, right)"
           [(ngModel)]="right.entity"
           >
       </mat-form-field>
@@ -25,7 +25,7 @@
           *ngFor="let permission of permissions"
           class="permission"
           name="{{permission}}"
-          (change)="editPermission($event, right)"
+          (change)="editRightPermissions($event, right)"
           [checked]="right.action.indexOf(permission) > -1">
           {{ permission }}
         </mat-checkbox>
@@ -38,6 +38,17 @@
           color="warn"
           title="Delete right">
           <mat-icon>delete</mat-icon>
+        </button>
+      </span>
+
+       <span class="right-actions">
+        <button
+                mat-mini-fab
+                *ngIf="right.is_being_edited"
+                (click)="updateRole()"
+                color="primary"
+                title="Update role">
+          <mat-icon>check</mat-icon>
         </button>
       </span>
 
@@ -68,7 +79,7 @@
       <span class="right-actions">
         <button
           mat-mini-fab
-          *ngIf="role_is_being_edited"
+          *ngIf="right_is_being_added"
           (click)="updateRole()"
           color="primary"
           title="Update role">

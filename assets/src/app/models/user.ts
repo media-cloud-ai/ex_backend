@@ -10,9 +10,11 @@ export class Confirm {
 export class Right {
   entity: string
   action: string[]
+  is_being_edited: boolean
 
   constructor() {
     this.action = [];
+    this.is_being_edited = false;
   }
 }
 
