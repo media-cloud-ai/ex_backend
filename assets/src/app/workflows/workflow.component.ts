@@ -22,11 +22,11 @@ export class WorkflowComponent {
   @Input() workflow: Workflow
   @Input() duration: WorkflowDuration
   @Input() detailed = false
-  can_abort: boolean = false
+  can_stop: boolean = false
   can_pause: boolean = false
   can_resume: boolean = false
   can_delete: boolean = false
-  right_abort: boolean = false
+  right_stop: boolean = false
   right_retry: boolean = false
   right_delete: boolean = false
   first_name: String
@@ -55,9 +55,9 @@ export class WorkflowComponent {
   }
 
   onMoreActionsToggle() {
-    this.can_abort = this.workflow.can_abort();
-    if (this.can_abort && this.workflow.steps.some((s) => s.name === 'clean_workspace' && s.status !== 'queued')) {
-      this.can_abort = false
+    this.can_stop = this.workflow.can_stop();
+    if (this.can_stop && this.workflow.steps.some((s) => s.name === 'clean_workspace' && s.status !== 'queued')) {
+      this.can_stop = false
     }
 
     this.can_pause = this.workflow.can_pause();
@@ -66,7 +66,7 @@ export class WorkflowComponent {
 
     this.authService.hasAnyRights("workflow::" + this.workflow.identifier, "abort").subscribe(
         response => {
-          this.right_abort = response.authorized
+          this.right_stop = response.authorized
       })
     this.authService.hasAnyRights("workflow::" + this.workflow.identifier, "delete").subscribe(
         response => {
@@ -136,33 +136,18 @@ export class WorkflowComponent {
     })
   }
 
-  abort(workflow_id): void {
-    let dialogRef = this.dialog.open(WorkflowActionsDialogComponent, {data: {
-      'workflow': this.workflow,
-      'message': 'abort'
-    }})
-
-    dialogRef.afterClosed().subscribe(workflow => {
-      if (workflow !== undefined && this.workflow.can_abort()) {
-        console.log('Abort workflow!')
-        this.workflowService.sendWorkflowEvent(workflow.id, {event: 'abort'})
-        .subscribe(response => {
-          console.log(response)
-        })
-      }
-    })
-  }
-
   stop(workflow_id): void {
+    let message = this.workflow.is_live ? 'stop' : 'abort';
+
     let dialogRef = this.dialog.open(WorkflowActionsDialogComponent, {data: {
       'workflow': this.workflow,
-      'message': 'stop'
+      'message': message
     }})
 
     dialogRef.afterClosed().subscribe(workflow => {
-      if (workflow !== undefined) {
-        console.log('Stop workflow!')
-        this.workflowService.sendWorkflowEvent(workflow.id, {event: 'stop'})
+      if (workflow !== undefined && this.workflow.can_stop()) {
+        console.log('Stop/abort workflow:', message)
+        this.workflowService.sendWorkflowEvent(workflow.id, {event: message})
         .subscribe(response => {
           console.log(response)
         })

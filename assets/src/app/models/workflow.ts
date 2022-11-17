@@ -122,8 +122,8 @@ export class Workflow {
     return this.steps.some((s) => s['status'] === "processing");
   }
 
-  public can_abort(): boolean {
-    return !this.is_stopped() && (this.has_at_least_one_processing_step() || this.is_paused());
+  public can_stop(): boolean {
+    return !this.is_stopped() && (this.has_at_least_one_processing_step() || this.is_paused() || this.is_live);
   }
 
   public can_pause(): boolean {
