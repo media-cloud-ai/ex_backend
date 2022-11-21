@@ -1,4 +1,4 @@
-import moment = require('moment')
+import moment = require('moment');
 
 import { formatDate } from '@angular/common'
 import { Component } from '@angular/core'
@@ -10,8 +10,7 @@ import { SocketService } from '../services/socket.service'
 import { WorkflowService } from '../services/workflow.service'
 import { StatisticsService } from '../services/statistics.service'
 import { WorkflowDurations } from '../models/statistics/duration'
-import { WorkflowPage } from '../models/page/workflow_page'
-import { WorkflowQueryParams } from '../models/page/workflow_page'
+import { ViewOption, ViewOptionEvent, WorkflowPage, WorkflowQueryParams } from '../models/page/workflow_page'
 
 @Component({
   selector: 'workflows-component',
@@ -51,7 +50,7 @@ export class WorkflowsComponent {
     private statisticsService: StatisticsService,
     private route: ActivatedRoute,
     private router: Router,
-  ) {}
+  ) { }
 
   ngOnInit() {
     const today = new Date()
@@ -68,50 +67,73 @@ export class WorkflowsComponent {
       search: undefined,
       status: [],
       detailed: false,
-      time_interval: 1,
-    }
+      live_reload: true,
+      time_interval: 1
+    };
 
-    this.route.queryParamMap.subscribe((params) => {
-      this.parameters.mode =
-        params.getAll('mode').length > 0
-          ? params.getAll('mode')
-          : ['file', 'live']
-      this.parameters.status = params.getAll('status')
-      this.parameters.identifiers = params.getAll('identifiers')
-      this.parameters.search = params.getAll('search').toString() || undefined
-      this.parameters.selectedDateRange.startDate =
-        params.get('start_date') != undefined
-          ? moment(params.get('start_date'), moment.ISO_8601).toDate()
-          : yesterday
-      this.parameters.selectedDateRange.endDate =
-        params.get('end_date') != undefined
-          ? moment(params.get('end_date'), moment.ISO_8601).toDate()
-          : today
+    // Parse all parameters in URL to apply filters
+    this.route.queryParamMap.subscribe(params => {
+      this.parameters.mode = params.getAll("mode").length > 0 ? params.getAll("mode") : ["file", "live"]
+      this.parameters.status = params.getAll("status")
+      this.parameters.identifiers = params.getAll("identifiers")
+      this.parameters.search = params.getAll("search").toString() || undefined
+      this.parameters.selectedDateRange.startDate = params.get("start_date") != undefined ? moment(params.get("start_date"), moment.ISO_8601).toDate() : yesterday;
+      this.parameters.selectedDateRange.endDate = params.get("end_date") != undefined ? moment(params.get("end_date"), moment.ISO_8601).toDate() : today;
+      console.log("PPOEUT", params.get("page"))
     })
 
     this.sub = this.route.queryParams.subscribe((params) => {
       this.page = +params['page'] || 0
       this.pageSize = +params['per_page'] || 10
 
-      this.socketService.initSocket()
-      this.socketService.connectToChannel('notifications:all')
-
-      this.connection = this.socketService
-        .onNewWorkflow()
-        .subscribe((_message: Message) => {
-          this.getWorkflows(this.page, this.pageSize, this.parameters)
-        })
-      this.connection = this.socketService
-        .onDeleteWorkflow()
-        .subscribe((_message: Message) => {
-          this.getWorkflows(this.page, this.pageSize, this.parameters)
-        })
-      this.connection = this.socketService
-        .onRetryJob()
-        .subscribe((_message: Message) => {
-          this.getWorkflows(this.page, this.pageSize, this.parameters)
-        })
+      this.subscribeToGlobalSockets();
     })
+  }
+
+  subscribeToSockets() {
+    this.getWorkflows(this.page, this.pageSize, this.parameters)
+    this.subscribeToGlobalSockets();
+    this.subscribeToWorkflowSockets();
+  }
+
+  private subscribeToGlobalSockets() {
+    this.socketService.initSocket()
+    this.socketService.connectToChannel('notifications:all')
+
+    this.connections.push(this.socketService.onNewWorkflow()
+      .subscribe((message: Message) => {
+        this.getWorkflows(this.page, this.pageSize, this.parameters)
+      })
+    )
+    this.connections.push(this.socketService.onDeleteWorkflow()
+      .subscribe((message: Message) => {
+        this.getWorkflows(this.page, this.pageSize, this.parameters)
+      })
+    )
+    this.connections.push(this.socketService.onRetryJob()
+      .subscribe((message: Message) => {
+        this.getWorkflows(this.page, this.pageSize, this.parameters)
+      })
+    )
+  }
+
+
+  private subscribeToWorkflowSockets() {
+    for (let workflow of this.workflows.data) {
+      this.connections.push(this.socketService.onWorkflowUpdate(workflow.id)
+        .subscribe((message: Message) => {
+          this.updateWorkflow(message.body.workflow_id)
+        })
+      )
+    }
+  }
+
+  unsubscribeToSockets() {
+    for (let connection of this.connections) {
+      connection.unsubscribe()
+    }
+
+    this.connections = []
   }
 
   ngOnDestroy() {
@@ -128,7 +150,7 @@ export class WorkflowsComponent {
     pageSize: number,
     parameters: WorkflowQueryParams,
   ) {
-    this.eventGetWorkflows()
+    this.eventGetWorkflows();
 
     this.workflowService
       .getWorkflows(page, pageSize, parameters)
@@ -142,20 +164,13 @@ export class WorkflowsComponent {
         this.workflows = workflowPage
         this.length = workflowPage.total
         this.loading = false
-        for (const workflow of this.workflows.data) {
-          const _connection = this.socketService
-            .onWorkflowUpdate(workflow.id)
-            .subscribe((message: Message) => {
-              this.updateWorkflow(message.body.workflow_id)
-            })
-        }
 
-        const workflow_ids = this.workflows.data.map((workflow) => workflow.id)
-        this.statisticsService
-          .getWorkflowsDurations(workflow_ids)
-          .subscribe((response) => {
-            this.durations = response
-          })
+        this.subscribeToWorkflowSockets();
+
+        let workflow_ids = this.workflows.data.map((workflow) => workflow.id);
+        this.statisticsService.getWorkflowsDurations(workflow_ids).subscribe((response) => {
+          this.durations = response;
+        })
       })
   }
 
@@ -201,8 +216,15 @@ export class WorkflowsComponent {
     this.getWorkflows(event.pageIndex, event.pageSize, this.parameters)
   }
 
-  toogleDetailed(detailed: boolean) {
-    this.parameters.detailed = detailed
+  viewOptionsEvent(view_options: ViewOptionEvent) {
+    if (view_options.option == ViewOption.Detailed) {
+      this.parameters.detailed = view_options.value;
+    }
+    if (view_options.option == ViewOption.LiveReload) {
+      console.log("Disabling LIVE RELOAD")
+      this.parameters.live_reload = view_options.value;
+      this.parameters.live_reload ? this.subscribeToSockets() : this.unsubscribeToSockets();
+    }
   }
 
   updateWorkflow(workflow_id) {

@@ -125,16 +125,12 @@
     </div>
   </div>
 
-  <div class="search-line-options">
-    <mat-slide-toggle
-      *ngIf="showDetailedToggle"
-      formControlName="detailedToggle"
-      color="primary"
-      [checked]="parameters.detailed"
-      [(ngModel)]="parameters.detailed"
-      (change)="toggleDetailed()"
-    >
+  <div class="search-line-options" *ngIf="showViewOptionsToolbar">
+    <mat-checkbox formControlName="detailedToggle" color="primary" [checked]="parameters.detailed" [(ngModel)]="parameters.detailed" (change)="toggleDetailed()">
       Detailed
-    </mat-slide-toggle>
+    </mat-checkbox>
+    <mat-checkbox formControlName="liveReloadToggle" color="primary" [checked]="parameters.live_reload" [(ngModel)]="parameters.live_reload" (change)="toggleLiveReload()">
+      Live reload
+    </mat-checkbox>
   </div>
 </form>

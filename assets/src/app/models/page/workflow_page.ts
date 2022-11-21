@@ -1,4 +1,5 @@
 import { Workflow } from '../workflow'
+import {Role, RoleEventAction} from "../user";
 
 export class WorkflowPage {
   data: Workflow[]
@@ -39,5 +40,21 @@ export class WorkflowQueryParams {
   search?: string
   status: string[]
   detailed: boolean
+  live_reload: boolean
   time_interval: number
+}
+
+export enum ViewOption {
+  Detailed,
+  LiveReload,
+}
+
+export class ViewOptionEvent {
+  option: ViewOption
+  value: boolean
+
+  constructor(option: ViewOption, value: boolean) {
+    this.option = option;
+    this.value = value;
+  }
 }
