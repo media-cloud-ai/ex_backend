@@ -3,22 +3,48 @@
 <mat-horizontal-stepper linear="true" #stepper>
   <mat-step [stepControl]="modeSelection">
     <ng-template matStepLabel>Select service</ng-template>
-    <div class="services">
-      <div class="service" *ngFor="let service of services">
-        <button
-          mat-raised-button
-          color="primary"
-          (click)="selectService(service)"
-        >
-          <i class="material-icons" *ngIf="service.icon">
-            {{ service.icon }}
-          </i>
-          {{ service.label }}
-          <span *ngIf="service.is_live" class="badge-live">
-            LIVE
-          </span>
+    <div class="searchbar">
+      <mat-form-field class="search" appearance="fill">
+        <mat-label>Search workflows</mat-label>
+        <input matInput type="text" [(ngModel)]="search" (keyup.enter)="loadWorkflows()">
+        <button *ngIf="search" matSuffix mat-icon-button aria-label="Clear" (click)="search=''; loadWorkflows()">
+          <mat-icon>close</mat-icon>
         </button>
-      </div>
+        <button *ngIf="!search" matSuffix mat-icon-button>
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+    <div class="services">
+        <div class="service" *ngFor="let service of services">
+            <button mat-raised-button (click)="selectService(service)">
+              <span class="service-details">
+                 <span class="service-title">
+                  <i class="material-icons" *ngIf="service.icon">
+                  {{ service.icon }}
+                  </i>
+                  {{ service.label }}
+
+                  <span class="version">
+                    (latest v{{ service.version_major }}.{{ service.version_minor }}.{{ service.version_micro }})
+                  </span>
+                  <span *ngIf="service.is_live" class="badge-live">
+                  LIVE
+                  </span>
+
+                  </span>
+
+                  <span class="tags">
+                  <mat-chip-list class="tag" *ngFor="let tag of service.tags">
+                    <mat-chip color="white" selected>
+                      {{ tag }}
+                    </mat-chip>
+                  </mat-chip-list>
+                  </span>
+              </span>
+
+            </button>
+        </div>
     </div>
     <mat-toolbar>
       <mat-toolbar-row>
@@ -34,7 +60,7 @@
         <mat-paginator
           class="paginator"
           showFirstLastButtons="true"
-          [length]="length"
+          [length]="serviceLength"
           [pageSize]="pageSize"
           [pageIndex]="page"
           [pageSizeOptions]="pageSizeOptions"
@@ -45,13 +71,12 @@
       </mat-toolbar-row>
     </mat-toolbar>
   </mat-step>
-  <mat-step [stepControl]="versionSelection">
+  <mat-step [stepControl]="versionSelection" optional=false>
     <ng-template matStepLabel>Select service version</ng-template>
     <div class="services">
-      <div class="service" *ngFor="let service of services">
+      <div class="service" *ngFor="let service of selectedServiceVersion">
         <button
           mat-raised-button
-          color="primary"
           (click)="selectVersion(service)"
         >
           <i class="material-icons" *ngIf="service.icon">
@@ -72,7 +97,7 @@
     <mat-paginator
       class="paginator"
       showFirstLastButtons="true"
-      [length]="length"
+      [length]="versionLength"
       [pageSize]="pageSize"
       [pageIndex]="page"
       [pageSizeOptions]="pageSizeOptions"

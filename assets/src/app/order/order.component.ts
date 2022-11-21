@@ -24,7 +24,8 @@ export class ProcessStatus {
 })
 export class OrderComponent {
   @ViewChild('stepper') stepper: MatStepper;
-  length = 1000
+  serviceLength = 0
+  versionLength = 0
   pageSize = 10
   page = 0
   pageSizeOptions = [
@@ -33,6 +34,7 @@ export class OrderComponent {
     50,
     100
   ]
+  search = ""
   s3Configuration: S3Configuration;
   progressBars = [];
   completed: number = 0;
@@ -43,9 +45,10 @@ export class OrderComponent {
     message: ""
   };
 
-  services = []
+  services = [];
 
   selectedService = undefined;
+  selectedServiceVersion = [];
 
   response = undefined;
 
@@ -65,15 +68,15 @@ export class OrderComponent {
     this.workflowService.getWorkflowDefinitions(this.page, this.pageSize, "create", undefined, ["latest"], "full")
       .subscribe(definitions => {
         this.services = definitions.data
-        this.length = definitions.total
+        this.serviceLength = definitions.total
       })
   }
 
   loadWorkflows() {
-    this.workflowService.getWorkflowDefinitions(this.page, this.pageSize, "create", undefined, ["latest"], "full")
+    this.workflowService.getWorkflowDefinitions(this.page, this.pageSize, "create", this.search, ["latest"], "full")
       .subscribe(definitions => {
         this.services = definitions.data
-        this.length = definitions.total
+        this.serviceLength = definitions.total
       })
   }
 
@@ -82,8 +85,8 @@ export class OrderComponent {
 
     this.workflowService.getWorkflowDefinitions(this.page, this.pageSize, "create", this.selectedService.identifier, [], "full")
       .subscribe(definitions => {
-        this.services = definitions.data
-        this.length = definitions.total
+        this.selectedServiceVersion = definitions.data
+        this.versionLength = definitions.total
       })
 
     this.stepper.next();
@@ -228,10 +231,10 @@ export class OrderComponent {
   }
 
   eventGetWorkflows(event) {
-    this.workflowService.getWorkflowDefinitions(event.pageIndex, event.pageSize, "create", undefined, ["latest"], "simple")
+    this.workflowService.getWorkflowDefinitions(event.pageIndex, event.pageSize, "create", this.search, ["latest"], "full")
       .subscribe(definitions => {
         this.services = definitions.data
-        this.length = definitions.total
+        this.serviceLength = definitions.total
       })
   }
 }

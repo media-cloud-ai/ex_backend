@@ -1,18 +1,37 @@
 @import '../colors';
 
 .services {
+  :nth-child(even) button {
+    background-color: @lightBlue;
+  }
+
+  :nth-child(odd) button {
+    background-color: @white;
+  }
+
   .service {
     margin-bottom: 10px;
+    display: flex;
 
     button {
       font-size: 1.5em;
-      line-height: 100px;
-      border-radius: 10px;
+      line-height: 60px;
+      border-radius: 5px;
       width: 100%;
+      text-align: left;
 
       display: block;
       i {
         vertical-align: middle;
+      }
+
+      .service-details {
+        display: flex;
+        justify-content: space-between;
+
+        .service-tilte {
+          flex: 1;
+        }
       }
     }
 
@@ -42,5 +61,25 @@
 
 .mat-toolbar-row { 
   background-color: white;
-  justify-content: space-between; 
+  justify-content: space-between;
+}
+
+.searchbar {
+  display: flex;
+  justify-content: space-around;
+  margin: 10px;
+}
+
+.search {
+  width: 30%;
+   input {
+     font-size: 15px;
+   }
+}
+
+.tags {
+  .tag {
+    display: inline-block;
+    margin: 3px;
+  }
 }
