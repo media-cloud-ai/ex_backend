@@ -146,24 +146,11 @@
         Resume
       </button>
     </span>
-    <span
-      class="abort" *ngIf=!workflow.is_live>
+    <span class="stop">
       <button
         mat-raised-button
         color="warn"
-        [disabled]="!can_abort || !right_abort"
-        (click)="abort(workflow.id)"
-        >
-        <mat-icon>cancel</mat-icon>
-        Abort
-      </button>
-    </span>
-    <span
-      class="stop" *ngIf=workflow.is_live>
-      <button
-        mat-raised-button
-        color="warn"
-        [disabled]="!can_stop || !right_abort"
+        [disabled]="!can_stop || !right_stop"
         (click)="stop(workflow.id)"
         >
         <mat-icon>stop</mat-icon>

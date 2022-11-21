@@ -21,6 +21,7 @@ export class Job {
   status: Status[]
   progressions: Progression[]
   last_worker_instance_id: string
+  in_black_list: boolean
 
   constructor(other: Job) {
     this.id = other.id;

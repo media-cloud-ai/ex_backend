@@ -24,8 +24,7 @@ export class WorkflowDetailsComponent {
   workflow_id: number
   workflow: Workflow
   renderer: WorkflowRenderer
-  can_abort: boolean = false
-  can_stop: boolean = true
+  can_stop: boolean = false
   can_pause: boolean = false
   can_resume: boolean = false
   can_delete: boolean = false
@@ -33,7 +32,7 @@ export class WorkflowDetailsComponent {
   notification_hooks_opened: boolean = false
   connection: any
   messages: Message[] = []
-  right_abort: boolean = false
+  right_stop: boolean = false
   right_delete: boolean = false
   step_focus: Map<number, boolean> = new Map()
   first_name: String
@@ -91,26 +90,26 @@ export class WorkflowDetailsComponent {
       this.renderer = new WorkflowRenderer(this.workflow.steps)
       this.renderer.setStepFocus(this.step_focus);
 
-      this.can_abort = this.workflow.can_abort();
-      if (this.can_abort && this.workflow.steps.some((s) => s.name === 'clean_workspace' && s.status !== 'queued')) {
-        this.can_abort = false
-      }
-
+      this.can_stop = this.workflow.can_stop();
       this.can_pause = this.workflow.can_pause();
       this.can_resume = this.workflow.can_resume();
       this.can_delete = this.workflow.can_delete();
 
       this.pause_post_action = this.getPausePostAction();
 
-      this.authService.hasAnyRights("workflow::" + this.workflow.identifier, "abort").subscribe(
-        response => {
-          this.right_abort = response.authorized
-      })
+      if (this.can_stop) {
+        this.authService.hasAnyRights("workflow::" + this.workflow.identifier, "abort").subscribe(
+          response => {
+            this.right_stop = response.authorized
+        })
+      }
 
-      this.authService.hasAnyRights("workflow::" + this.workflow.identifier, "delete").subscribe(
-        response => {
-          this.right_delete = response.authorized
-      })
+      if (this.can_delete) {
+        this.authService.hasAnyRights("workflow::" + this.workflow.identifier, "delete").subscribe(
+          response => {
+            this.right_delete = response.authorized
+        })
+      }
 
       this.userService.getUserByUuid(this.workflow.user_uuid).subscribe(
           response => {
@@ -172,23 +171,6 @@ export class WorkflowDetailsComponent {
     })
   }
 
-  abort(workflow_id): void {
-    let dialogRef = this.dialog.open(WorkflowActionsDialogComponent, {data: {
-      'workflow': this.workflow,
-      'message': 'abort'
-    }})
-
-    dialogRef.afterClosed().subscribe(workflow => {
-      if (workflow !== undefined && this.workflow.can_abort()) {
-        console.log('Abort workflow!')
-        this.workflowService.sendWorkflowEvent(workflow.id, {event: 'abort'})
-        .subscribe(response => {
-          console.log(response)
-        })
-      }
-    })
-  }
-
   resume(workflow_id): void {
     let dialogRef = this.dialog.open(WorkflowActionsDialogComponent, {data: {
       'workflow': this.workflow,
@@ -207,12 +189,17 @@ export class WorkflowDetailsComponent {
   }
 
   stop(workflow_id): void {
-    let dialogRef = this.dialog.open(WorkflowActionsDialogComponent, {data: {'workflow': this.workflow}})
+    let message = this.workflow.is_live ? 'stop' : 'abort';
+
+    let dialogRef = this.dialog.open(WorkflowActionsDialogComponent, {data: {
+      'workflow': this.workflow,
+      'message': message
+    }})
 
     dialogRef.afterClosed().subscribe(workflow => {
-      if (workflow !== undefined) {
-        console.log('Stop workflow!')
-        this.workflowService.sendWorkflowEvent(workflow.id, {event: 'stop'})
+      if (workflow !== undefined && this.workflow.can_stop()) {
+        console.log('Stop/abort workflow:', message)
+        this.workflowService.sendWorkflowEvent(workflow.id, {event: message})
         .subscribe(response => {
           console.log(response)
         })

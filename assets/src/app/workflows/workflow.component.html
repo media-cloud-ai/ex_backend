@@ -88,22 +88,9 @@
         </button>
         <button
           mat-menu-item
-          class="abort"
-          *ngIf="!workflow.is_live"
-          color="warn"
-          [disabled]="!can_abort || !right_abort"
-          (click)="abort(workflow.id)"
-          title="Abort"
-          >
-          <mat-icon class="v-align-middle" color=warn>cancel</mat-icon>
-          <span class="v-align-middle">Abort</span>
-        </button>
-        <button
-          mat-menu-item
           class="stop"
-          *ngIf=workflow.is_live
           color="warn"
-          [disabled]=!can_stop
+          [disabled]="!can_stop || !right_stop"
           (click)="stop(workflow.id)"
           title="Stop"
           >
