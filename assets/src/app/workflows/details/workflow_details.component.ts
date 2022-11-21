@@ -91,25 +91,25 @@ export class WorkflowDetailsComponent {
       this.renderer.setStepFocus(this.step_focus);
 
       this.can_stop = this.workflow.can_stop();
-      if (this.can_stop && this.workflow.steps.some((s) => s.name === 'clean_workspace' && s.status !== 'queued')) {
-        this.can_stop = false
-      }
-
       this.can_pause = this.workflow.can_pause();
       this.can_resume = this.workflow.can_resume();
       this.can_delete = this.workflow.can_delete();
 
       this.pause_post_action = this.getPausePostAction();
 
-      this.authService.hasAnyRights("workflow::" + this.workflow.identifier, "abort").subscribe(
-        response => {
-          this.right_stop = response.authorized
-      })
+      if (this.can_stop) {
+        this.authService.hasAnyRights("workflow::" + this.workflow.identifier, "abort").subscribe(
+          response => {
+            this.right_stop = response.authorized
+        })
+      }
 
-      this.authService.hasAnyRights("workflow::" + this.workflow.identifier, "delete").subscribe(
-        response => {
-          this.right_delete = response.authorized
-      })
+      if (this.can_delete) {
+        this.authService.hasAnyRights("workflow::" + this.workflow.identifier, "delete").subscribe(
+          response => {
+            this.right_delete = response.authorized
+        })
+      }
 
       this.userService.getUserByUuid(this.workflow.user_uuid).subscribe(
           response => {

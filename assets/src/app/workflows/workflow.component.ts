@@ -56,22 +56,23 @@ export class WorkflowComponent {
 
   onMoreActionsToggle() {
     this.can_stop = this.workflow.can_stop();
-    if (this.can_stop && this.workflow.steps.some((s) => s.name === 'clean_workspace' && s.status !== 'queued')) {
-      this.can_stop = false
-    }
-
     this.can_pause = this.workflow.can_pause();
     this.can_resume = this.workflow.can_resume();
     this.can_delete = this.workflow.can_delete();
 
-    this.authService.hasAnyRights("workflow::" + this.workflow.identifier, "abort").subscribe(
+    if (this.can_stop) {
+      this.authService.hasAnyRights("workflow::" + this.workflow.identifier, "abort").subscribe(
         response => {
           this.right_stop = response.authorized
       })
-    this.authService.hasAnyRights("workflow::" + this.workflow.identifier, "delete").subscribe(
+    }
+
+    if (this.can_delete) {
+      this.authService.hasAnyRights("workflow::" + this.workflow.identifier, "delete").subscribe(
         response => {
           this.right_delete = response.authorized
       })
+    }
   }
 
   switchDetailed() {
