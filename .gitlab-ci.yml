@@ -19,3 +19,42 @@ include:
     file: 'elixir/elixir-publish-docker.yml'
   - project: 'media-cloud-ai/ci/pipelines'
     file: 'elixir/elixir-base.yml'
+
+ts_lint:
+  image: node:14
+  tags:
+    - mcai
+  before_script:
+    - cd ./assets
+    - yarn install
+    - npm install
+  cache:
+    paths:
+      - node_modules/
+  stage: test
+  script:
+    - npm run lint
+  except:
+    refs:
+      - tags
+
+ts_format:
+  image: node:14
+  tags:
+    - mcai
+  before_script:
+    - cd ./assets
+    - yarn install
+    - npm install
+  cache:
+    paths:
+      - node_modules/
+  stage: test
+  script:
+    - npm run format
+    - git diff
+    - git diff-index --quiet HEAD -- || exit 1
+    - echo "Passed style check"
+  except:
+    refs:
+      - tags
