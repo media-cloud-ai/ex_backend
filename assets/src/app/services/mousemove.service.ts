@@ -15,5 +15,7 @@ export class MouseMoveService {
   outFocusSubtitleSource = new Subject<Event>()
   outFocusSubtitleEvent = this.outFocusSubtitleSource.asObservable()
 
-  constructor() {}
+  constructor() {
+    //do nothing
+  }
 }

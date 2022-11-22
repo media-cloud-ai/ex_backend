@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router'
 import { HttpClient } from '@angular/common/http'
 import { S3Service } from '../services/s3.service'
 import { WorkflowService } from '../services/workflow.service'
-import { WorkflowPage } from '../models/page/workflow_page'
 import { Workflow } from '../models/workflow'
 
 @Component({
@@ -36,7 +35,6 @@ export class TranscriptViewerComponent {
               this.workflow,
               filename,
             )
-            const current = this
             if (file_path) {
               this.s3Service
                 .getPresignedUrl(file_path)
@@ -86,7 +84,7 @@ export class TranscriptViewerComponent {
   }
 
   downloadTranscriptText() {
-    var element = document.createElement('a')
+    const element = document.createElement('a')
     element.setAttribute(
       'href',
       'data:text/plain;charset=utf-8,' +

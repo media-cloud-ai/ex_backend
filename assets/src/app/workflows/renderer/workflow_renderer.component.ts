@@ -13,7 +13,9 @@ export class WorkflowRendererComponent {
   renderer: WorkflowRenderer
   active_steps = {}
 
-  constructor() {}
+  constructor() {
+    // do nothing
+  }
 
   ngOnInit() {
     this.loadSteps()

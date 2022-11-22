@@ -8,12 +8,12 @@ import { StartWorkflowDefinition } from '../models/startWorkflowDefinition'
 import { WorkflowService } from '../services/workflow.service'
 import { S3Service } from '../services/s3.service'
 
-let Evaporate = require('evaporate')
-let crypto = require('crypto')
+import { Evaporate } from 'evaporate'
+import * as crypto from 'crypto'
 
 export class ProcessStatus {
-  failed: boolean = true
-  message: string = ''
+  failed = true
+  message = ''
 }
 
 @Component({
@@ -31,7 +31,7 @@ export class OrderComponent {
   search = ''
   s3Configuration: S3Configuration
   progressBars = []
-  completed: number = 0
+  completed = 0
   uploadCompleted = false
   parameters: any = {}
   processStatus: ProcessStatus = {
@@ -115,12 +115,12 @@ export class OrderComponent {
   }
 
   upload() {
-    var current = this
+    const current = this
     current.completed = 0
     current.progressBars = []
     current.uploadCompleted = false
 
-    var config = {
+    const config = {
       signerUrl: '/api/s3_signer',
       aws_key: this.s3Configuration.access_key,
       bucket: this.s3Configuration.bucket,
@@ -128,7 +128,7 @@ export class OrderComponent {
       awsRegion: this.s3Configuration.region,
       computeContentMd5: true,
       cryptoMd5Method: function (data) {
-        var buffer = new Buffer(data)
+        const buffer = new Buffer(data)
         return crypto.createHash('md5').update(buffer).digest('base64')
       },
       cryptoHexEncodedHash256: function (data) {
@@ -136,26 +136,26 @@ export class OrderComponent {
       },
     }
 
-    var uploader = Evaporate.create(config).then(function (evaporate) {
-      var overrides = {
+    const _uploader = Evaporate.create(config).then(function (evaporate) {
+      const overrides = {
         bucket: current.s3Configuration.bucket,
       }
 
-      Object.entries(current.parameters).forEach(([key, value]) => {
+      Object.entries(current.parameters).forEach(([_key, value]) => {
         if (typeof value == 'object') {
           const file = <HTMLInputElement>value
           current.progressBars.push({ name: file.name, progress: 0 })
-          var fileConfig = {
+          const fileConfig = {
             name: file.name,
             file: file,
             progress: function (progressValue) {
-              for (let item of current.progressBars) {
+              for (const item of current.progressBars) {
                 if (item.name == file.name) {
                   item.progress = progressValue * 100
                 }
               }
             },
-            complete: function (_xhr, awsKey) {
+            complete: function (_xhr, _awsKey) {
               current.completed += 1
               if (current.completed == current.progressBars.length) {
                 current.uploadCompleted = true
@@ -195,7 +195,7 @@ export class OrderComponent {
   }
 
   startWorkflow() {
-    let parameters = {}
+    const parameters = {}
 
     for (let i = 0; i < this.selectedService.start_parameters.length; i++) {
       const parameter = this.selectedService.start_parameters[i]
@@ -219,7 +219,7 @@ export class OrderComponent {
       this.selectedService.reference = this.selectedService.identifier
     }
 
-    let startWorkflowDefinition: StartWorkflowDefinition = {
+    const startWorkflowDefinition: StartWorkflowDefinition = {
       workflow_identifier: this.selectedService.identifier,
       parameters: parameters,
       reference: this.selectedService.reference,

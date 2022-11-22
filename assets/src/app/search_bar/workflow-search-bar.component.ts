@@ -24,7 +24,9 @@ export interface NameDialogData {
 }
 
 export interface ManageDialogData {
-  filters: {}
+  filters: {
+    //do nothing
+  }
   userService: UserService
 }
 
@@ -74,7 +76,7 @@ export class WorkflowFiltersNameDialog {
   styleUrls: ['./workflow-search-bar.component.less'],
 })
 export class WorkflowSearchBarComponent {
-  @Input() showDetailedToggle: boolean = false
+  @Input() showDetailedToggle = false
   @Input() parameters: WorkflowQueryParams = {
     identifiers: [],
     mode: ['file', 'live'],
@@ -131,8 +133,8 @@ export class WorkflowSearchBarComponent {
   ) {}
 
   ngOnInit() {
-    let today = new Date()
-    let yesterday = new Date()
+    const today = new Date()
+    const yesterday = new Date()
     yesterday.setDate(today.getDate() - 1)
 
     this.workflowsForm = this.formBuilder.group({
@@ -168,7 +170,7 @@ export class WorkflowSearchBarComponent {
         'simple',
       )
       .subscribe((response) => {
-        for (var index = 0; index < response.data.length; ++index) {
+        for (let index = 0; index < response.data.length; ++index) {
           this.workflows.push({
             id: response.data[index].identifier,
             label: response.data[index].label,
@@ -218,8 +220,8 @@ export class WorkflowSearchBarComponent {
   }
 
   clearFilters(): void {
-    let date = new Date()
-    let yesterday = new Date()
+    const date = new Date()
+    const yesterday = new Date()
     yesterday.setDate(date.getDate() - 1)
 
     this.parameters = {
@@ -241,7 +243,7 @@ export class WorkflowSearchBarComponent {
   }
 
   presetChanged(): void {
-    let preset = this.workflowsForm.controls.selectedPreset.value
+    const preset = this.workflowsForm.controls.selectedPreset.value
     this.parameters.identifiers = preset['identifiers']
     this.parameters.mode = preset['mode']
     this.parameters.search =

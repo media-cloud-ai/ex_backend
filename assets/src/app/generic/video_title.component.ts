@@ -13,7 +13,7 @@ export class VideoTitleComponent {
   @Input() id: string
 
   application: Application
-  loading: boolean = true
+  loading = true
 
   constructor(
     private applicationService: ApplicationService,
@@ -21,9 +21,9 @@ export class VideoTitleComponent {
   ) {}
 
   ngOnInit() {
-    var index = 0
-    var page = 0
-    var selectedChannels = undefined
+    const _index = 0
+    const _page = 0
+    const _selectedChannels = undefined
     this.loading = true
 
     this.applicationService.get_cached_app().subscribe((response) => {

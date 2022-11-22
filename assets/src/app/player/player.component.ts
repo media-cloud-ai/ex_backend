@@ -1,16 +1,11 @@
 import { Component, HostListener } from '@angular/core'
-import { ActivatedRoute, Router } from '@angular/router'
+import { ActivatedRoute } from '@angular/router'
 
-import {
-  MediaPlayer,
-  PlaybackTimeUpdatedEvent,
-  MediaPlayerEvents,
-} from 'dashjs'
+import { MediaPlayer } from 'dashjs'
 
 import { Observable } from 'rxjs'
 import 'rxjs/add/observable/interval'
 
-import { Cue } from 'ts-subtitle'
 import { MouseMoveService } from '../services/mousemove.service'
 
 import { RegisteryService } from '../services/registery.service'
@@ -55,7 +50,7 @@ export class PlayerComponent {
   ) {}
 
   ngOnInit() {
-    var videoPlayer = document.querySelector('#videoPlayer')
+    const videoPlayer = document.querySelector('#videoPlayer')
 
     this.sub = this.route.params.subscribe((params) => {
       this.content_id = params['id']
@@ -63,7 +58,7 @@ export class PlayerComponent {
       this.registeryService.getRegistery(this.content_id).subscribe((item) => {
         this.item = item.data
 
-        var url = '/stream/' + this.item.workflow_id + '/manifest.mpd'
+        const url = '/stream/' + this.item.workflow_id + '/manifest.mpd'
         this.player.getDebug().setLogToBrowserConsole(false)
         this.player.initialize(<HTMLElement>videoPlayer, url, false)
 
@@ -90,7 +85,7 @@ export class PlayerComponent {
 
         if (this.item.params && this.item.params.subtitles) {
           this.languages = this.item.params.subtitles
-          for (var i = 0; i < this.languages.length; ++i) {
+          for (let i = 0; i < this.languages.length; ++i) {
             this.languages[i].index = i
           }
 
@@ -101,13 +96,13 @@ export class PlayerComponent {
     })
 
     this.subFocus = this.mouseMoveService.focusSubtitleEvent.subscribe(
-      (event) => {
+      (_event) => {
         this.countFocused += 1
       },
     )
 
     this.subOutFocus = this.mouseMoveService.outFocusSubtitleEvent.subscribe(
-      (event) => {
+      (_event) => {
         this.countFocused -= 1
       },
     )
@@ -141,7 +136,7 @@ export class PlayerComponent {
   }
 
   startRefresh() {
-    this.sub = Observable.interval(100).subscribe((val) => {
+    this.sub = Observable.interval(100).subscribe((_val) => {
       this.getCurrentTime()
     })
   }

@@ -78,21 +78,21 @@ export class JobStatisticsComponent {
 
     // Get step names to retrieve jobs statistics
     let step_names = []
-    let versions_per_identifier = new Map<string, string[]>()
+    const versions_per_identifier = new Map<string, string[]>()
 
-    for (let workflow of this.workflows) {
+    for (const workflow of this.workflows) {
       if (versions_per_identifier.has(workflow.identifier)) {
         continue
       }
 
-      let versions = this.workflows
+      const versions = this.workflows
         .filter((definition) => definition.identifier == workflow.identifier)
         .map((definition) => Version.from_workflow(definition).toString())
 
       versions_per_identifier.set(workflow.identifier, versions)
     }
 
-    for (let [identifier, versions] of versions_per_identifier) {
+    for (const [identifier, versions] of versions_per_identifier) {
       this.workflowService
         .getWorkflowDefinitions(
           undefined,
@@ -120,28 +120,28 @@ export class JobStatisticsComponent {
   private getJobStatistics() {
     this.loading = true
 
-    let params = []
+    const params = []
 
     params.push({ key: 'page', value: this.jobStatisticsPage })
     params.push({ key: 'size', value: this.jobStatisticsPageSize })
 
-    for (let name of this.jobSelectedNames) {
+    for (const name of this.jobSelectedNames) {
       params.push({ key: 'job_type', value: name })
     }
 
-    for (let status of this.jobSelectedStatus) {
+    for (const status of this.jobSelectedStatus) {
       params.push({ key: 'states[]', value: status })
     }
 
-    for (let instanceId of this.jobInstanceIDs) {
+    for (const instanceId of this.jobInstanceIDs) {
       params.push({ key: 'instance_ids[]', value: instanceId })
     }
 
-    for (let workerLabel of this.jobWorkerLabels) {
+    for (const workerLabel of this.jobWorkerLabels) {
       params.push({ key: 'labels[]', value: workerLabel })
     }
 
-    for (let workerVersion of this.jobWorkerVersions) {
+    for (const workerVersion of this.jobWorkerVersions) {
       params.push({ key: 'versions[]', value: workerVersion })
     }
 

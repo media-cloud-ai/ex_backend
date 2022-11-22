@@ -4,11 +4,7 @@ import { ActivatedRoute } from '@angular/router'
 import { Registery, Subtitle } from '../models/registery'
 import { RegisteryService } from '../services/registery.service'
 
-import {
-  MediaPlayer,
-  PlaybackTimeUpdatedEvent,
-  MediaPlayerEvents,
-} from 'dashjs'
+import { MediaPlayer } from 'dashjs'
 
 @Component({
   selector: 'registery_detail-component',
@@ -55,8 +51,8 @@ export class RegisteryDetailComponent {
         this.registery.params.manifests[0].paths &&
         this.registery.params.manifests[0].paths.length > 0
       ) {
-        var videoPlayer = document.querySelectorAll('.videoPlayer')[0]
-        var url = this.registery.params.manifests[0].paths[0].replace(
+        const videoPlayer = document.querySelectorAll('.videoPlayer')[0]
+        const url = this.registery.params.manifests[0].paths[0].replace(
           '/dash',
           '/stream',
         )
@@ -74,9 +70,9 @@ export class RegisteryDetailComponent {
 
     this.root = []
 
-    for (let subtitle of this.registery.params.subtitles) {
+    for (const subtitle of this.registery.params.subtitles) {
       if (subtitle.parent_id == undefined) {
-        let childs = this.getSubtitlesForParent(subtitle.id)
+        const childs = this.getSubtitlesForParent(subtitle.id)
         subtitle.sub_childs = childs
         this.root.push(subtitle)
       }
@@ -85,10 +81,10 @@ export class RegisteryDetailComponent {
   }
 
   getSubtitlesForParent(parent_id: number): Subtitle[] {
-    let list = []
-    for (let subtitle of this.registery.params.subtitles) {
+    const list = []
+    for (const subtitle of this.registery.params.subtitles) {
       if (subtitle.parent_id === parent_id) {
-        let childs = this.getSubtitlesForParent(subtitle.id)
+        const childs = this.getSubtitlesForParent(subtitle.id)
         subtitle.sub_childs = childs
         list.push(subtitle)
       }

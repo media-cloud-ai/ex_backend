@@ -6,5 +6,7 @@ import { Component } from '@angular/core'
   styleUrls: ['./help.component.less'],
 })
 export class HelpComponent {
-  constructor() {}
+  constructor() {
+    //do nothing
+  }
 }

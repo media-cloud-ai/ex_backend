@@ -9,7 +9,7 @@ import { Pipe, PipeTransform } from '@angular/core'
 @Pipe({ name: 'iconForJob' })
 export class IconForJobPipe implements PipeTransform {
   transform(iconForJob: string): string {
-    var allJobIcons = [
+    const allJobIcons = [
       { id: 'acs_prepare_audio', name: 'music_video' },
       { id: 'acs_synchronize', name: 'music_video' },
       { id: 'audio_decode', name: 'music_video' },
@@ -30,7 +30,7 @@ export class IconForJobPipe implements PipeTransform {
       { id: 'push_rdf', name: 'library_add' },
     ]
 
-    for (var i = allJobIcons.length - 1; i >= 0; i--) {
+    for (let i = allJobIcons.length - 1; i >= 0; i--) {
       if (allJobIcons[i].id === iconForJob) {
         return allJobIcons[i].name
       }

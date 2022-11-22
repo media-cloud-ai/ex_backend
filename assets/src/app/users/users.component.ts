@@ -83,7 +83,7 @@ export class UsersComponent {
       this.roles = roles
       if (roles) {
         this.roles_total = roles.total
-        for (let role of this.roles.data) {
+        for (const role of this.roles.data) {
           role.rights.forEach((right) => this.rights.push(right))
         }
       } else {
@@ -131,7 +131,7 @@ export class UsersComponent {
     this.userService
       .generateValidationLink(user)
       .subscribe((validation_link) => {
-        let dialogRef = this.dialog.open(
+        const dialogRef = this.dialog.open(
           UserShowValidationLinkDialogComponent,
           {
             data: {
@@ -141,7 +141,7 @@ export class UsersComponent {
           },
         )
 
-        dialogRef.afterClosed().subscribe((response) => {
+        dialogRef.afterClosed().subscribe((_response) => {
           this.getUsers(this.page)
         })
       })
@@ -149,38 +149,38 @@ export class UsersComponent {
 
   generateCredentials(user): void {
     this.userService.generateCredentials(user).subscribe((response_user) => {
-      let dialogRef = this.dialog.open(UserShowCredentialsDialogComponent, {
+      const dialogRef = this.dialog.open(UserShowCredentialsDialogComponent, {
         data: {
           user: response_user,
         },
       })
 
-      dialogRef.afterClosed().subscribe((response) => {
+      dialogRef.afterClosed().subscribe((_response) => {
         this.getUsers(this.page)
       })
     })
   }
 
   editUser(user): void {
-    let dialogRef = this.dialog.open(UserEditionDialogComponent, {
+    const dialogRef = this.dialog.open(UserEditionDialogComponent, {
       data: {
         user: user,
       },
     })
 
-    dialogRef.afterClosed().subscribe((response) => {
+    dialogRef.afterClosed().subscribe((_response) => {
       this.getUsers(this.page)
     })
   }
 
   removeUser(user_id): void {
-    this.userService.removeUser(user_id).subscribe((response) => {
+    this.userService.removeUser(user_id).subscribe((_response) => {
       this.getUsers(this.page)
     })
   }
 
-  getQueryParamsForPage(pageIndex: number): Object {
-    var params = {}
+  getQueryParamsForPage(pageIndex: number): Record<string, unknown> {
+    const params = {}
     if (pageIndex !== 0) {
       params['page'] = pageIndex
     }
@@ -188,7 +188,7 @@ export class UsersComponent {
   }
 
   createRole() {
-    let role = new Role(this.new_role_name)
+    const role = new Role(this.new_role_name)
     this.role_error_message = ''
     this.userService.createRole(role).subscribe((role) => {
       if (!role) {
@@ -204,7 +204,7 @@ export class UsersComponent {
     }
 
     if (event.action == RoleEventAction.Update) {
-      this.userService.updateRole(event.role).subscribe((role) => {
+      this.userService.updateRole(event.role).subscribe((_role) => {
         // console.log("Updated role:", role);
         this.getRoles(this.page)
       })
@@ -213,7 +213,7 @@ export class UsersComponent {
 
     if (event.action == RoleEventAction.Delete) {
       // Ask for confirmation
-      let dialogRef = this.dialog.open(RoleOrRightDeletionDialogComponent, {
+      const dialogRef = this.dialog.open(RoleOrRightDeletionDialogComponent, {
         data: {
           role: event.role,
         },
@@ -221,11 +221,11 @@ export class UsersComponent {
 
       dialogRef.afterClosed().subscribe((response) => {
         if (response) {
-          this.userService.deleteRole(event.role).subscribe((role) => {
+          this.userService.deleteRole(event.role).subscribe((_role) => {
             // console.log("Deleted role:", role);
             this.userService
               .deleteUsersRole(event.role)
-              .subscribe((updatedUsers) => {
+              .subscribe((_updatedUsers) => {
                 // console.log("Updated role users:", updatedUsers);
                 this.getUsers(this.page)
               })

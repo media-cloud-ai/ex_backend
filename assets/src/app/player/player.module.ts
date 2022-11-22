@@ -19,8 +19,6 @@ import { MatSliderModule } from '@angular/material/slider'
 
 import { PipesModule } from '../pipes/pipes.module'
 
-import * as dashjs from 'dashjs'
-
 export const ROUTES: Routes = [{ path: '', component: PlayerComponent }]
 
 @NgModule({

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpParams } from '@angular/common/http'
 import { Observable, of } from 'rxjs'
-import { catchError, map, tap } from 'rxjs/operators'
+import { catchError, tap } from 'rxjs/operators'
 
 import { JobPage } from '../models/page/job_page'
 
@@ -36,7 +36,7 @@ export class JobService {
     }
 
     return this.http.get<JobPage>(this.jobsUrl, { params: params }).pipe(
-      tap((jobPage) => this.log('fetched JobPage')),
+      tap((_jobPage) => this.log('fetched JobPage')),
       catchError(this.handleError('getJobs', undefined)),
     )
   }

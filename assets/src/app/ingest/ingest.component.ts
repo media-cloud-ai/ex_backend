@@ -16,7 +16,7 @@ import { StartIngestDialog, Data } from './dialogs/start_ingest.component'
   styleUrls: ['./ingest.component.less'],
 })
 export class IngestComponent {
-  selectedAgent: string = ''
+  selectedAgent = ''
   connection: any
   entries: Message
   full_path = []
@@ -71,11 +71,11 @@ export class IngestComponent {
       this.full_path.push(entry.filename)
       this.updateDir()
     } else {
-      let filename = entry.filename
-      let data = new Data()
+      const _filename = entry.filename
+      const data = new Data()
       data.path = entry.abs_path
       data.agent = this.selectedAgent
-      let dialogRef = this.dialog.open(StartIngestDialog, { data: data })
+      const dialogRef = this.dialog.open(StartIngestDialog, { data: data })
 
       dialogRef.afterClosed().subscribe((steps) => {
         if (steps !== undefined) {

@@ -1,7 +1,7 @@
 import moment = require('moment')
 
 import { formatDate } from '@angular/common'
-import { Component, ViewChild } from '@angular/core'
+import { Component } from '@angular/core'
 import { PageEvent } from '@angular/material/paginator'
 import { ActivatedRoute, Router } from '@angular/router'
 
@@ -54,8 +54,8 @@ export class WorkflowsComponent {
   ) {}
 
   ngOnInit() {
-    let today = new Date()
-    let yesterday = new Date()
+    const today = new Date()
+    const yesterday = new Date()
     yesterday.setDate(today.getDate() - 1)
 
     this.parameters = {
@@ -98,17 +98,17 @@ export class WorkflowsComponent {
 
       this.connection = this.socketService
         .onNewWorkflow()
-        .subscribe((message: Message) => {
+        .subscribe((_message: Message) => {
           this.getWorkflows(this.page, this.pageSize, this.parameters)
         })
       this.connection = this.socketService
         .onDeleteWorkflow()
-        .subscribe((message: Message) => {
+        .subscribe((_message: Message) => {
           this.getWorkflows(this.page, this.pageSize, this.parameters)
         })
       this.connection = this.socketService
         .onRetryJob()
-        .subscribe((message: Message) => {
+        .subscribe((_message: Message) => {
           this.getWorkflows(this.page, this.pageSize, this.parameters)
         })
     })
@@ -118,7 +118,7 @@ export class WorkflowsComponent {
     if (this.sub) {
       this.sub.unsubscribe()
     }
-    for (let connection of this.connections) {
+    for (const connection of this.connections) {
       connection.unsubscribe()
     }
   }
@@ -142,15 +142,15 @@ export class WorkflowsComponent {
         this.workflows = workflowPage
         this.length = workflowPage.total
         this.loading = false
-        for (let workflow of this.workflows.data) {
-          var connection = this.socketService
+        for (const workflow of this.workflows.data) {
+          const _connection = this.socketService
             .onWorkflowUpdate(workflow.id)
             .subscribe((message: Message) => {
               this.updateWorkflow(message.body.workflow_id)
             })
         }
 
-        let workflow_ids = this.workflows.data.map((workflow) => workflow.id)
+        const workflow_ids = this.workflows.data.map((workflow) => workflow.id)
         this.statisticsService
           .getWorkflowsDurations(workflow_ids)
           .subscribe((response) => {
@@ -165,8 +165,8 @@ export class WorkflowsComponent {
     })
   }
 
-  getQueryParamsForWorkflows(): Object {
-    var params = {}
+  getQueryParamsForWorkflows(): Record<string, unknown> {
+    const params = {}
 
     if (this.parameters.identifiers.length > 0) {
       params['identifiers'] = this.parameters.identifiers

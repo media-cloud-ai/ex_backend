@@ -5,11 +5,10 @@ import {
   OnChanges,
   Output,
   SimpleChange,
-  HostListener,
 } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
 import { HttpClient } from '@angular/common/http'
-import { WebVtt, Cue, Timecode } from 'ts-subtitle'
+import { WebVtt, Cue } from 'ts-subtitle'
 
 import { MouseMoveService } from '../services/mousemove.service'
 import { RegisteryService } from '../services/registery.service'
@@ -25,10 +24,10 @@ import { SetVersionDialog } from './dialog/set_version_dialog'
 export class SubtitleComponent implements OnChanges {
   @Input() content_id: number
   @Input() subtitle: Subtitle
-  @Input() time: number = 0.0
-  @Input() before: number = 0
-  @Input() after: number = 0
-  @Input() split: boolean = false
+  @Input() time = 0.0
+  @Input() before = 0
+  @Input() after = 0
+  @Input() split = false
   @Input() isChangingTimecode: boolean
   @Output() playSegment: EventEmitter<Cue> = new EventEmitter<Cue>()
 
@@ -63,11 +62,11 @@ export class SubtitleComponent implements OnChanges {
   loadSubtitle(subtitle: Subtitle) {
     if (subtitle && subtitle.path) {
       this.loaded = false
-      var subtitle_url = subtitle.path.replace('/dash', '/stream')
+      const subtitle_url = subtitle.path.replace('/dash', '/stream')
       this.http
         .get(subtitle_url, { responseType: 'text' })
         .subscribe((contents) => {
-          var webvtt = new WebVtt()
+          const webvtt = new WebVtt()
           if (webvtt.parse(contents)) {
             this.loaded = true
             this.cues = webvtt.get_cues()
@@ -78,24 +77,24 @@ export class SubtitleComponent implements OnChanges {
   }
 
   refresh(currentTime) {
-    var initialIndex = 0
+    let initialIndex = 0
 
-    for (var index = 0; index < this.cues.length; index++) {
-      var cue = this.cues[index]
+    for (let index = 0; index < this.cues.length; index++) {
+      const cue = this.cues[index]
       if (cue && cue.start <= currentTime && cue.end >= currentTime) {
         // console.log(cue);
         this.currentCue = cue
         this.currentCueIndex = index
 
         this.beforeCues = []
-        for (var beforeIndex = 1; beforeIndex <= this.before; beforeIndex++) {
+        for (let beforeIndex = 1; beforeIndex <= this.before; beforeIndex++) {
           if (index - beforeIndex >= 0) {
             this.beforeCues.push(this.cues[index - beforeIndex])
           }
         }
 
         this.afterCues = []
-        for (var afterIndex = 1; afterIndex <= this.after; afterIndex++) {
+        for (let afterIndex = 1; afterIndex <= this.after; afterIndex++) {
           if (index + afterIndex < this.cues.length) {
             this.afterCues.push(this.cues[index + afterIndex])
           }
@@ -113,13 +112,13 @@ export class SubtitleComponent implements OnChanges {
     this.beforeCues = []
     this.afterCues = []
 
-    for (var beforeIndex = 1; beforeIndex <= this.before; beforeIndex++) {
+    for (let beforeIndex = 1; beforeIndex <= this.before; beforeIndex++) {
       if (initialIndex - beforeIndex >= 0) {
         this.beforeCues.push(this.cues[initialIndex - beforeIndex])
       }
     }
 
-    for (var afterIndex = 0; afterIndex < this.after; afterIndex++) {
+    for (let afterIndex = 0; afterIndex < this.after; afterIndex++) {
       if (initialIndex + afterIndex < this.cues.length) {
         this.afterCues.push(this.cues[initialIndex + afterIndex])
       }
@@ -127,7 +126,7 @@ export class SubtitleComponent implements OnChanges {
   }
 
   merge(cue: Cue) {
-    var index = this.currentCueIndex + 1
+    const index = this.currentCueIndex + 1
     cue.content = cue.content + this.cues[index].content
     cue.end = this.cues[index].end
 
@@ -141,15 +140,15 @@ export class SubtitleComponent implements OnChanges {
       this.split &&
       event.toElement.selectionStart == event.toElement.selectionEnd
     ) {
-      let before = this.currentCue.content.substring(
+      const before = this.currentCue.content.substring(
         0,
         event.toElement.selectionStart,
       )
-      let after = this.currentCue.content.substring(
+      const after = this.currentCue.content.substring(
         event.toElement.selectionStart,
       )
 
-      var next = new Cue()
+      const next = new Cue()
       next.start = this.time
       next.end = this.currentCue.end
       next.content = after
@@ -163,14 +162,14 @@ export class SubtitleComponent implements OnChanges {
 
   addCue() {
     if (this.currentCue && this.currentCue.end) {
-      var next = new Cue()
+      const next = new Cue()
       next.start = this.currentCue.end
       next.end = this.currentCue.end + 1.0
       next.content = ''
       this.cues.splice(this.currentCueIndex + 1, 0, next)
       this.refresh(this.time)
     } else {
-      var next = new Cue()
+      const next = new Cue()
       next.start = this.time
       next.end = this.time + 1.0
       next.content = ''
@@ -180,11 +179,11 @@ export class SubtitleComponent implements OnChanges {
   }
 
   save() {
-    var webvtt = new WebVtt()
+    const webvtt = new WebVtt()
     webvtt.set_cues(this.cues)
-    var content = webvtt.dump()
+    const content = webvtt.dump()
 
-    let dialogRef = this.dialog.open(SetVersionDialog, { data: this.time })
+    const dialogRef = this.dialog.open(SetVersionDialog, { data: this.time })
     dialogRef.afterClosed().subscribe((newVersion) => {
       if (newVersion !== undefined) {
         this.registeryService
@@ -194,7 +193,7 @@ export class SubtitleComponent implements OnChanges {
             content,
             newVersion,
           )
-          .subscribe((response) => {
+          .subscribe((_response) => {
             this.canSave = false
           })
       }

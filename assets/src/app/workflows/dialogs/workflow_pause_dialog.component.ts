@@ -32,7 +32,7 @@ export class WorkflowPauseDialogComponent {
   }
 
   onClose(): void {
-    let response = {
+    const response = {
       workflow: this.workflow,
       event: {
         event: 'pause',

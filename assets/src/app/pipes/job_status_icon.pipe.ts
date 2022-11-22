@@ -9,14 +9,14 @@ import { Pipe, PipeTransform } from '@angular/core'
 @Pipe({ name: 'jobStatusIcon' })
 export class JobStatusIconPipe implements PipeTransform {
   transform(jobStatus: string): string {
-    var allJobStatusIcons = [
+    const allJobStatusIcons = [
       { id: 'completed', name: 'done' },
       { id: 'processing', name: 'refresh' },
       { id: 'error', name: 'clear' },
       { id: 'queued', name: '' },
     ]
 
-    for (var i = allJobStatusIcons.length - 1; i >= 0; i--) {
+    for (let i = allJobStatusIcons.length - 1; i >= 0; i--) {
       if (allJobStatusIcons[i].id === jobStatus) {
         return allJobStatusIcons[i].name
       }

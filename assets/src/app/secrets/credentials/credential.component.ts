@@ -28,7 +28,7 @@ export class CredentialComponent {
   delete() {
     this.credentialService
       .removeCredential(this.data.id)
-      .subscribe((credential) => {
+      .subscribe((_credential) => {
         this.deleted.next(this.data)
       })
   }

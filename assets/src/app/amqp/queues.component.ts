@@ -19,7 +19,7 @@ export class QueuesComponent {
     this.getQueues()
 
     const updater = interval(60_000)
-    this.updaterSub = updater.subscribe((n) => this.getQueues())
+    this.updaterSub = updater.subscribe((_n) => this.getQueues())
   }
 
   ngOnDestroy() {
@@ -29,7 +29,7 @@ export class QueuesComponent {
   getQueues(): void {
     this.amqpService.getQueues().subscribe((queuePage) => {
       if (queuePage) {
-        var all_queues = []
+        const all_queues = []
         queuePage.queues.forEach(function (queue) {
           if (
             !queue.name.includes('direct_messaging_') &&

@@ -9,7 +9,7 @@ import { Pipe, PipeTransform } from '@angular/core'
 @Pipe({ name: 'queue' })
 export class QueuePipe implements PipeTransform {
   transform(queue: string): string {
-    var allQueueNames = [
+    const allQueueNames = [
       { id: 'job_acs', name: 'ACS jobs' },
       { id: 'job_acs_error', name: 'ACS jobs with error status' },
       { id: 'job_acs_completed', name: 'ACS jobs with completed status' },
@@ -57,7 +57,7 @@ export class QueuePipe implements PipeTransform {
       },
     ]
 
-    for (var i = allQueueNames.length - 1; i >= 0; i--) {
+    for (let i = allQueueNames.length - 1; i >= 0; i--) {
       if (allQueueNames[i].id === queue) {
         return allQueueNames[i].name
       }

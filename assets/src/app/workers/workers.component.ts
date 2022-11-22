@@ -52,7 +52,7 @@ export class WorkersComponent {
   ngOnInit() {
     this.loading = true
     this.sub = this.route.queryParams.subscribe((params) => {
-      var status = params['status[]']
+      let status = params['status[]']
       if (status && !Array.isArray(status)) {
         status = [status]
       }
@@ -75,7 +75,7 @@ export class WorkersComponent {
 
       this.connection = this.socketService
         .onWorkersStatusUpdated()
-        .subscribe((message: Message) => {
+        .subscribe((_message: Message) => {
           this.getWorkerStatuses()
         })
     })
@@ -91,8 +91,8 @@ export class WorkersComponent {
     this.router.navigate(['/workers'], { queryParams: this.getQueryParams() })
   }
 
-  private getQueryParams(): Object {
-    var params = {}
+  private getQueryParams(): Record<string, unknown> {
+    const params = {}
 
     if (this.selectedStatus.length > 0) {
       params['status[]'] = this.selectedStatus
@@ -117,9 +117,9 @@ export class WorkersComponent {
   }
 
   isWorkerStatusOutdated(worker_status: WorkerStatus) {
-    let status_update = moment(worker_status.updated_at)
-    let diff = this.last_worker_status_update.diff(status_update)
-    let diff_seconds = moment.duration(diff).asSeconds()
+    const status_update = moment(worker_status.updated_at)
+    const diff = this.last_worker_status_update.diff(status_update)
+    const diff_seconds = moment.duration(diff).asSeconds()
     return diff_seconds > OUTDATE_SECONDS_THRESHOLD
   }
 
@@ -131,7 +131,7 @@ export class WorkersComponent {
   }
 
   public stopProcess(id, job_id) {
-    let message = {
+    const message = {
       job_id: job_id,
       type: 'stop_process',
       parameters: [],
@@ -139,27 +139,33 @@ export class WorkersComponent {
 
     this.workerService
       .sendWorkerOrderMessage(id, message)
-      .subscribe((result) => {})
+      .subscribe((_result) => {
+        //do nothing
+      })
   }
 
   public toggleJobConsumption(id, prefix) {
-    let message = {
+    const message = {
       type: prefix + '_consuming_jobs',
     }
 
     this.workerService
       .sendWorkerOrderMessage(id, message)
-      .subscribe((result) => {})
+      .subscribe((_result) => {
+        //do nothing
+      })
   }
 
   public stopWorker(id) {
-    let message = {
+    const message = {
       type: 'stop_worker',
     }
 
     this.workerService
       .sendWorkerOrderMessage(id, message)
-      .subscribe((result) => {})
+      .subscribe((_result) => {
+        //do nothing
+      })
   }
 
   public goToWorkflow(jobId) {

@@ -3,7 +3,6 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpResponse,
   HttpInterceptor,
   HttpErrorResponse,
 } from '@angular/common/http'
@@ -21,7 +20,9 @@ export class ErrorInterceptor implements HttpInterceptor {
     next: HttpHandler,
   ): Observable<HttpEvent<any>> {
     return next.handle(req).do(
-      (event) => {},
+      (_event) => {
+        //do nothing
+      },
       (err) => {
         if (err instanceof HttpErrorResponse && err.status === 401) {
           this.authService.logout()

@@ -17,7 +17,7 @@ export class BytesPipe implements PipeTransform {
 
   transform(
     input: number,
-    decimal: number = 0,
+    decimal = 0,
     from: ByteUnit = 'B',
     to?: ByteUnit,
   ): any {

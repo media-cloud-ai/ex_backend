@@ -89,14 +89,14 @@ export class Workflow {
   notification_hooks?: Array<NotificationHook>
 
   static compare(a: Workflow, b: Workflow) {
-    let identifierComparison = a.identifier.localeCompare(b.identifier)
+    const identifierComparison = a.identifier.localeCompare(b.identifier)
 
     if (identifierComparison != 0) {
       return identifierComparison
     }
 
-    let a_version = Version.from_workflow(a)
-    let b_version = Version.from_workflow(b)
+    const a_version = Version.from_workflow(a)
+    const b_version = Version.from_workflow(b)
 
     return Version.compare(a_version, b_version)
   }
@@ -138,8 +138,8 @@ export class Workflow {
   }
 
   public can_pause(): boolean {
-    let last_step = this.steps[this.steps.length - 1]
-    let is_last_step_processing = last_step['jobs']['processing'] == 1
+    const last_step = this.steps[this.steps.length - 1]
+    const is_last_step_processing = last_step['jobs']['processing'] == 1
 
     return (
       !this.is_finished() &&
@@ -187,7 +187,7 @@ export class Version {
   }
 
   static from_string(value: string): Version {
-    let items = value.split('.')
+    const items = value.split('.')
     if (items.length != 3) {
       console.error('Invalid version string', value)
       return undefined

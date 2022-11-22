@@ -8,7 +8,7 @@ import { Step, Workflow } from '../../models/workflow'
 })
 export class WorkflowStepDetailsComponent {
   details_opened = false
-  disabled: boolean = true
+  disabled = true
 
   @Input() step: Step
   @Input() workflow: Workflow

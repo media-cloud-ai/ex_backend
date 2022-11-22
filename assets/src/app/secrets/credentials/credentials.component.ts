@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 
 import { CredentialService } from '../../services/credential.service'
@@ -35,7 +35,7 @@ export class CredentialsComponent {
   insert() {
     this.credentialService
       .createCredential(this.key, this.value)
-      .subscribe((credentialPage) => {
+      .subscribe((_credentialPage) => {
         this.listCredentials()
       })
   }

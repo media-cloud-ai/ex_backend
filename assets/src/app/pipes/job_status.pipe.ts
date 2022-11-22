@@ -10,8 +10,8 @@ import { Job } from '../models/job'
 @Pipe({ name: 'jobStatus' })
 export class JobStatusPipe implements PipeTransform {
   transform(job: Job): string {
-    var jobStatus = Job.getLastStatus(job)
-    var jobProgression = Job.getLastProgression(job)
+    const jobStatus = Job.getLastStatus(job)
+    const jobProgression = Job.getLastProgression(job)
 
     if (!jobStatus) {
       if (jobProgression) {

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core'
 import { formatDate } from '@angular/common'
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpParams } from '@angular/common/http'
 import { Observable, of } from 'rxjs'
-import { catchError, map, tap } from 'rxjs/operators'
+import { catchError, tap } from 'rxjs/operators'
 
 import {
   WorkflowQueryParams,
@@ -10,14 +10,13 @@ import {
   WorkflowData,
   WorkflowHistory,
 } from '../models/page/workflow_page'
-import { Step, Workflow, WorkflowEvent } from '../models/workflow'
+import { Workflow, WorkflowEvent } from '../models/workflow'
 import { StartWorkflowDefinition } from '../models/startWorkflowDefinition'
 
 @Injectable()
 export class WorkflowService {
   private workflowUrl = '/api/workflow'
   private workflowsUrl = '/api/step_flow/workflows'
-  private workflowFiltersUrl = 'api/worfklow_filters'
   private workflowsLauncher = '/api/step_flow/launch_workflow'
   private workflowDefinitionsUrl = '/api/step_flow/definitions'
   private statisticsUrl = '/api/step_flow/workflows_statistics'
@@ -47,7 +46,7 @@ export class WorkflowService {
       params = params.append('search', search)
     }
     if (versions) {
-      for (let version of versions) {
+      for (const version of versions) {
         params = params.append('versions[]', version)
       }
     }
@@ -57,7 +56,7 @@ export class WorkflowService {
     return this.http
       .get<WorkflowPage>(this.workflowDefinitionsUrl, { params: params })
       .pipe(
-        tap((workflowPage) => this.log('fetched WorkflowPage')),
+        tap((_workflowPage) => this.log('fetched WorkflowPage')),
         catchError(this.handleError('getWorkflowDefinitions', undefined)),
       )
   }
@@ -75,10 +74,10 @@ export class WorkflowService {
     if (page > 0) {
       params = params.append('page', String(page))
     }
-    for (let identifier of parameters.identifiers) {
+    for (const identifier of parameters.identifiers) {
       params = params.append('workflow_ids[]', identifier)
     }
-    for (let state of parameters.status) {
+    for (const state of parameters.status) {
       params = params.append('states[]', state)
     }
     if (parameters.mode.length == 1) {
@@ -109,7 +108,7 @@ export class WorkflowService {
     return this.http
       .get<WorkflowPage>(this.workflowsUrl, { params: params })
       .pipe(
-        tap((workflowPage) => this.log('fetched WorkflowPage')),
+        tap((_workflowPage) => this.log('fetched WorkflowPage')),
         catchError(this.handleError('getWorkflows', undefined)),
       )
   }
@@ -126,7 +125,7 @@ export class WorkflowService {
         params: params,
       })
       .pipe(
-        tap((workflowPage) => this.log('fetched Workflow')),
+        tap((_workflowPage) => this.log('fetched Workflow')),
         catchError(this.handleError('getWorkflowDefinition', undefined)),
       )
   }
@@ -135,7 +134,7 @@ export class WorkflowService {
     return this.http
       .get<WorkflowData>(this.workflowsUrl + '/' + workflow_id.toString())
       .pipe(
-        tap((workflowPage) => this.log('fetched Workflow')),
+        tap((_workflowPage) => this.log('fetched Workflow')),
         catchError(this.handleError('getWorkflow', undefined)),
       )
   }
@@ -148,7 +147,7 @@ export class WorkflowService {
     return this.http
       .get<WorkflowData>(this.workflowsUrl, { params: params })
       .pipe(
-        tap((workflowPage) => this.log('fetched Workflow')),
+        tap((_workflowPage) => this.log('fetched Workflow')),
         catchError(this.handleError('getWorkflow', undefined)),
       )
   }
@@ -159,7 +158,7 @@ export class WorkflowService {
     return this.http
       .post<WorkflowData>(this.workflowsLauncher, startWorkflowDefinition)
       .pipe(
-        tap((workflowPage) => this.log('fetched Workflow')),
+        tap((_workflowPage) => this.log('fetched Workflow')),
         catchError(this.handleError('createWorkflow', undefined)),
       )
   }
@@ -171,7 +170,7 @@ export class WorkflowService {
     return this.http
       .post<Workflow>(this.workflowsUrl + '/' + workflow_id + '/events', event)
       .pipe(
-        tap((workflowPage) => this.log(event.event + ' Workflow')),
+        tap((_workflowPage) => this.log(event.event + ' Workflow')),
         catchError(this.handleError('abortWorkflow', undefined)),
       )
   }
@@ -181,7 +180,7 @@ export class WorkflowService {
   ): Observable<WorkflowHistory> {
     let params = new HttpParams()
 
-    for (let identifier of parameters.identifiers) {
+    for (const identifier of parameters.identifiers) {
       params = params.append('identifiers[]', identifier)
     }
     params = params.append('time_interval', parameters.time_interval.toString())
@@ -201,14 +200,14 @@ export class WorkflowService {
     )
 
     return this.http.get<Workflow>(this.statisticsUrl, { params: params }).pipe(
-      tap((workflowPage) => this.log('statistics Workflow')),
+      tap((_workflowPage) => this.log('statistics Workflow')),
       catchError(this.handleError('getWorkflowStatistics', undefined)),
     )
   }
 
-  getWorkflowStatus(): Observable<Array<String>> {
-    return this.http.get<Array<String>>(this.statusUrl).pipe(
-      tap((workflowPage) => this.log('fetched Workflow Status')),
+  getWorkflowStatus(): Observable<Array<string>> {
+    return this.http.get<Array<string>>(this.statusUrl).pipe(
+      tap((_workflowPage) => this.log('fetched Workflow Status')),
       catchError(this.handleError('getWorkflowStatus', undefined)),
     )
   }

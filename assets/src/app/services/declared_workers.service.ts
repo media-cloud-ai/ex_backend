@@ -13,7 +13,7 @@ export class DeclaredWorkersService {
 
   getWorkers(): Observable<DeclaredWorkersPage> {
     return this.http.get<DeclaredWorkersPage>(this.imagesUrl).pipe(
-      tap((imagePage) => this.log('fetched DeclaredWorkersPage')),
+      tap((_imagePage) => this.log('fetched DeclaredWorkersPage')),
       catchError(this.handleError('getWorkers', undefined)),
     )
   }

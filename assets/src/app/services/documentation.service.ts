@@ -13,7 +13,7 @@ export class DocumentationService {
 
   getDocumentation(): Observable<DocumentationPage> {
     return this.http.get<DocumentationPage>(this.imagesUrl).pipe(
-      tap((imagePage) => this.log('fetched DocumentationPage')),
+      tap((_imagePage) => this.log('fetched DocumentationPage')),
       catchError(this.handleError('getImages', undefined)),
     )
   }

@@ -9,7 +9,6 @@ import {
 } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
 
-import { Timecode } from 'ts-subtitle'
 import { Subscription } from 'rxjs'
 
 import { MouseMoveService } from '../services/mousemove.service'
@@ -22,7 +21,7 @@ import { TimecodeDialogComponent } from './dialog/timecode_dialog.component'
 })
 export class TimecodeComponent implements OnChanges {
   @Input() time: number
-  @Input() framerate: number = 25.0
+  @Input() framerate = 25.0
   @Input() isChangingTimecode: boolean
 
   @Output() timeChange: EventEmitter<number> = new EventEmitter<number>()
@@ -34,7 +33,7 @@ export class TimecodeComponent implements OnChanges {
   private secondes: number
   private frames: number
 
-  private clicked: boolean = false
+  private clicked = false
   private origin: number
   private last: MouseEvent
 
@@ -47,32 +46,35 @@ export class TimecodeComponent implements OnChanges {
 
   ngOnInit() {
     this.update()
-    var me = this
+    const current = this
 
     this.sub = this.mouseMoveService.mouseMoveEvent.subscribe((event) => {
-      if (me.clicked) {
-        me.time = Math.max(me.originalTime + (me.origin - event.y) / 25.0, 0.0)
-        me.update()
+      if (current.clicked) {
+        current.time = Math.max(
+          current.originalTime + (current.origin - event.y) / 25.0,
+          0.0,
+        )
+        current.update()
       }
     })
 
-    this.sub = this.mouseMoveService.mouseUpEvent.subscribe((event) => {
-      if (me.clicked) {
-        me.clicked = false
-        me.originalTime = undefined
-        me.isChangingTimecode = false
+    this.sub = this.mouseMoveService.mouseUpEvent.subscribe((_event) => {
+      if (current.clicked) {
+        current.clicked = false
+        current.originalTime = undefined
+        current.isChangingTimecode = false
       }
     })
   }
 
   update() {
-    var hours = Math.trunc(this.time / 3600)
-    var minutes = Math.trunc(this.time / 60 - hours * 60)
-    var seconds = Math.trunc(this.time - minutes * 60 - hours * 3600)
-    var milli = Math.round(
+    const hours = Math.trunc(this.time / 3600)
+    const minutes = Math.trunc(this.time / 60 - hours * 60)
+    const seconds = Math.trunc(this.time - minutes * 60 - hours * 3600)
+    const milli = Math.round(
       1000.0 * (this.time - seconds - minutes * 60 - hours * 3600),
     )
-    var frames = (milli * this.framerate) / 1000.0
+    const frames = (milli * this.framerate) / 1000.0
     this.hours = hours
     this.minutes = minutes
     this.secondes = seconds
@@ -99,7 +101,7 @@ export class TimecodeComponent implements OnChanges {
   @HostListener('mouseup')
   onMouseup() {
     if (this.time == this.originalTime) {
-      let dialogRef = this.dialog.open(TimecodeDialogComponent, {
+      const dialogRef = this.dialog.open(TimecodeDialogComponent, {
         data: this.time,
       })
       dialogRef.afterClosed().subscribe((newTime) => {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component } from '@angular/core'
 
 import { NotificationEndpointService } from '../../services/notification_endpoint.service'
 import { NotificationEndpoint } from '../../models/notification_endpoint'
@@ -41,7 +41,7 @@ export class NotificationEndpointsComponent {
         this.endpoint_url,
         this.endpoint_credentials,
       )
-      .subscribe((notificationEndpointPage) => {
+      .subscribe((_notificationEndpointPage) => {
         this.listNotificationEndpoints()
       })
   }

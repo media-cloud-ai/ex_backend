@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http'
+import { HttpClient } from '@angular/common/http'
 import { Observable, of } from 'rxjs'
-import { catchError, map, tap } from 'rxjs/operators'
+import { catchError, tap } from 'rxjs/operators'
 
 import { NotificationEndpoint } from '../models/notification_endpoint'
 import { NotificationEndpointPage } from '../models/page/notification_endpoint_page'
@@ -16,7 +16,7 @@ export class NotificationEndpointService {
     return this.http
       .get<NotificationEndpointPage>(this.notificationEndpointsUrl)
       .pipe(
-        tap((notificationEndpointPage) =>
+        tap((_notificationEndpointPage) =>
           this.log('fetched NotificationEndpointPage'),
         ),
         catchError(this.handleError('getNotificationEndpoints', undefined)),
@@ -44,7 +44,7 @@ export class NotificationEndpointService {
     return this.http
       .post<NotificationEndpoint>(this.notificationEndpointsUrl, params)
       .pipe(
-        tap((notificationEndpointPage) =>
+        tap((_notificationEndpointPage) =>
           this.log('create NotificationEndpoint'),
         ),
         catchError(this.handleError('createNotificationEndpoint', undefined)),
@@ -59,7 +59,7 @@ export class NotificationEndpointService {
         this.notificationEndpointsUrl + '/' + endpoint_placeholder,
       )
       .pipe(
-        tap((notificationEndpointPage) =>
+        tap((_notificationEndpointPage) =>
           this.log('remove NotificationEndpoint'),
         ),
         catchError(this.handleError('removeNotificationEndpoint', undefined)),

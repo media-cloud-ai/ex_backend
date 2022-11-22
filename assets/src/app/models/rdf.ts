@@ -1,3 +1,3 @@
 export class Rdf {
-  content?: String
+  content?: string
 }

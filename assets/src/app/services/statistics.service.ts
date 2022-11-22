@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core'
-import { formatDate } from '@angular/common'
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpParams } from '@angular/common/http'
 import { Observable, of } from 'rxjs'
-import { catchError, map, tap } from 'rxjs/operators'
+import { catchError, tap } from 'rxjs/operators'
 
 import {
-  DurationStatistics,
   JobDurations,
   JobDurationStatistics,
   WorkflowDurations,
@@ -28,14 +26,14 @@ export class StatisticsService {
         params: params,
       })
       .pipe(
-        tap((workflowDurations) => this.log('fetched WorkflowDurations')),
+        tap((_workflowDurations) => this.log('fetched WorkflowDurations')),
         catchError(this.handleError('getWorkflowDurations', undefined)),
       )
   }
 
   getWorkflowsDurations(workflow_ids: number[]): Observable<WorkflowDurations> {
     let params = new HttpParams()
-    for (let workflow_id of workflow_ids) {
+    for (const workflow_id of workflow_ids) {
       params = params.append('ids[]', String(workflow_id))
     }
 
@@ -44,7 +42,7 @@ export class StatisticsService {
         params: params,
       })
       .pipe(
-        tap((workflowDurations) => this.log('fetched WorkflowDurations')),
+        tap((_workflowDurations) => this.log('fetched WorkflowDurations')),
         catchError(this.handleError('getWorkflowsDurations', undefined)),
       )
   }
@@ -55,7 +53,7 @@ export class StatisticsService {
     //console.log("[getWorkflowDurationStatistics] parameters: ", parameters);
     let params = new HttpParams()
 
-    for (let item of parameters) {
+    for (const item of parameters) {
       params = params.append(item['key'], String(item['value']))
     }
 
@@ -65,7 +63,7 @@ export class StatisticsService {
         { params: params },
       )
       .pipe(
-        tap((workflowDurations) =>
+        tap((_workflowDurations) =>
           this.log('fetched WorkflowDurationStatistics'),
         ),
         catchError(
@@ -77,7 +75,7 @@ export class StatisticsService {
   getJobDurationStatistics(parameters = []): Observable<JobDurationStatistics> {
     let params = new HttpParams()
 
-    for (let item of parameters) {
+    for (const item of parameters) {
       params = params.append(item['key'], String(item['value']))
     }
 
@@ -86,7 +84,7 @@ export class StatisticsService {
         params: params,
       })
       .pipe(
-        tap((workflowDurations) => this.log('fetched JobDurationStatistics')),
+        tap((_workflowDurations) => this.log('fetched JobDurationStatistics')),
         catchError(this.handleError('getJobsDurationStatistics', undefined)),
       )
   }
@@ -98,7 +96,7 @@ export class StatisticsService {
     return this.http
       .get<JobDurations>(this.durationsUrl + '/jobs', { params: params })
       .pipe(
-        tap((jobDurations) => this.log('fetched JobDurations')),
+        tap((_jobDurations) => this.log('fetched JobDurations')),
         catchError(this.handleError('getJobDurations', undefined)),
       )
   }

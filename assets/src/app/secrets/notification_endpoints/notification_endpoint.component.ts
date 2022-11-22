@@ -31,7 +31,7 @@ export class NotificationEndpointComponent {
   delete() {
     this.notificationEndpointService
       .removeNotificationEndpoint(this.data.endpoint_placeholder)
-      .subscribe((notificationEndpoint) => {
+      .subscribe((_notificationEndpoint) => {
         this.deleted.next(this.data)
       })
   }

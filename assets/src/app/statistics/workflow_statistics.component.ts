@@ -96,7 +96,7 @@ export class WorkflowStatisticsComponent {
           this.workflows.map((definition) => definition.identifier).sort(),
         )
 
-        let sorted_versions = this.workflows
+        const sorted_versions = this.workflows
           .map((definition) => Version.from_workflow(definition))
           .sort(Version.compare)
 
@@ -110,7 +110,7 @@ export class WorkflowStatisticsComponent {
         if (change.length != this.workflowSelectedIdentifiers.length) {
           this.workflowSelectedVersions = []
 
-          let sorted_filtered_versions = this.workflows
+          const sorted_filtered_versions = this.workflows
             .filter((definition) => change.includes(definition.identifier))
             .map((definition) => Version.from_workflow(definition))
             .sort(Version.compare)
@@ -126,7 +126,7 @@ export class WorkflowStatisticsComponent {
     this.loading = true
     this.workflowDurations = new Array<WorkflowDurationStatistics>()
 
-    let selected_identifiers = new Set(
+    const selected_identifiers = new Set(
       this.workflows
         .sort(Workflow.compare)
         .map((definition) => definition.identifier)
@@ -135,19 +135,19 @@ export class WorkflowStatisticsComponent {
         ),
     )
 
-    let params = []
+    const params = []
     params.push({ key: 'page', value: this.workflowStatisticsPage })
     params.push({ key: 'size', value: this.workflowStatisticsPageSize })
 
-    for (let identifier of selected_identifiers) {
+    for (const identifier of selected_identifiers) {
       params.push({ key: 'workflow_ids[]', value: identifier })
     }
 
-    for (let version of this.workflowSelectedVersions) {
+    for (const version of this.workflowSelectedVersions) {
       params.push({ key: 'version[]', value: version })
     }
 
-    for (let status of this.workflowSelectedStatuses) {
+    for (const status of this.workflowSelectedStatuses) {
       params.push({ key: 'states[]', value: status })
     }
 
@@ -208,7 +208,7 @@ class WorkflowDurationStatistics {
   }
 
   static compare(a: WorkflowDurationStatistics, b: WorkflowDurationStatistics) {
-    let identifierComparison = a.identifier.localeCompare(b.identifier)
+    const identifierComparison = a.identifier.localeCompare(b.identifier)
 
     if (identifierComparison != 0) {
       return identifierComparison

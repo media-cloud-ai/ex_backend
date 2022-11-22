@@ -9,9 +9,9 @@ import { Pipe, PipeTransform } from '@angular/core'
 @Pipe({ name: 'textType' })
 export class TextTypePipe implements PipeTransform {
   transform(text: string): string {
-    var allTypes = [{ id: 'francais', name: 'FR' }]
+    const allTypes = [{ id: 'francais', name: 'FR' }]
 
-    for (var i = allTypes.length - 1; i >= 0; i--) {
+    for (let i = allTypes.length - 1; i >= 0; i--) {
       if (allTypes[i].id === text) {
         return allTypes[i].name
       }

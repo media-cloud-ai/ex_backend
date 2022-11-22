@@ -38,11 +38,11 @@ export class LoginComponent {
       .subscribe((response) => {
         this.message = ''
         if (response && response.user) {
-          let redirect = this.authService.redirectUrl
+          const redirect = this.authService.redirectUrl
             ? this.authService.redirectUrl
             : '/dashboard'
 
-          let navigationExtras: NavigationExtras = {
+          const navigationExtras: NavigationExtras = {
             queryParamsHandling: 'preserve',
             preserveFragment: true,
           }
@@ -58,7 +58,7 @@ export class LoginComponent {
   }
 
   openResetPasswordDialog(): void {
-    let dialogRef = this.dialog.open(EnterEmailDialogComponent, {
+    const _dialogRef = this.dialog.open(EnterEmailDialogComponent, {
       data: {
         email: '',
         message: '',

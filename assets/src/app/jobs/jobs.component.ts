@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core'
+import { Component, Input } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
 import { PageEvent } from '@angular/material/paginator'
 import { ActivatedRoute, Router } from '@angular/router'
@@ -11,8 +11,6 @@ import { Job } from '../models/job'
 import { Workflow } from '../models/workflow'
 
 import { JobDetailsDialogComponent } from './details/job_details_dialog.component'
-
-import * as moment from 'moment'
 
 @Component({
   selector: 'jobs-component',
@@ -33,8 +31,8 @@ export class JobsComponent {
   pageEvent: PageEvent
   jobs: JobPage
 
-  right_retry: boolean = false
-  is_live: boolean = false
+  right_retry = false
+  is_live = false
 
   retryable_jobs = ['error', 'stopped'] as const
 
@@ -48,7 +46,7 @@ export class JobsComponent {
   ) {}
 
   ngOnInit() {
-    this.sub = this.route.queryParams.subscribe((params) => {
+    this.sub = this.route.queryParams.subscribe((_params) => {
       this.page = 0
       this.getJobs(this.page)
     })
@@ -91,8 +89,8 @@ export class JobsComponent {
     this.getJobs(0)
   }
 
-  getQueryParamsForPage(pageIndex: number): Object {
-    var params = {}
+  getQueryParamsForPage(pageIndex: number): Record<string, unknown> {
+    const params = {}
     if (pageIndex !== 0) {
       params['page'] = pageIndex
     }
@@ -110,7 +108,7 @@ export class JobsComponent {
   }
 
   getLastStatusDescription(job: Job) {
-    let lastStatus = Job.getLastStatus(job)
+    const lastStatus = Job.getLastStatus(job)
     if (lastStatus) {
       return lastStatus['description']
     }

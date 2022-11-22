@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core'
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpParams } from '@angular/common/http'
 import { Observable, of } from 'rxjs'
-import { catchError, map, tap } from 'rxjs/operators'
+import { catchError, tap } from 'rxjs/operators'
 
 import { WatcherPage } from '../models/page/watcher_page'
-import { Watcher } from '../models/watcher'
 
 @Injectable()
 export class WatcherService {
@@ -13,10 +12,10 @@ export class WatcherService {
   constructor(private http: HttpClient) {}
 
   getWatchers(): Observable<WatcherPage> {
-    let params = new HttpParams()
+    const _params = new HttpParams()
 
     return this.http.get<WatcherPage>(this.watchersUrl).pipe(
-      tap((watcherPage) => this.log('fetched WatcherPage')),
+      tap((_watcherPage) => this.log('fetched WatcherPage')),
       catchError(this.handleError('getWatchers', undefined)),
     )
   }

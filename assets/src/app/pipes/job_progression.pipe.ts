@@ -10,7 +10,7 @@ import { Progression } from '../models/job'
 @Pipe({ name: 'jobProgression' })
 export class JobProgressionPipe implements PipeTransform {
   transform(jobProgressions: Progression[]): number {
-    var progression = 0
+    let progression = 0
 
     if (jobProgressions.length > 0) {
       jobProgressions = jobProgressions.sort(this.compare)
@@ -21,8 +21,8 @@ export class JobProgressionPipe implements PipeTransform {
   }
 
   compare(first: Progression, second: Progression) {
-    let dateFirst = new Date(first.datetime)
-    let dateSecond = new Date(second.datetime)
+    const dateFirst = new Date(first.datetime)
+    const dateSecond = new Date(second.datetime)
 
     if (dateFirst < dateSecond) {
       return -1

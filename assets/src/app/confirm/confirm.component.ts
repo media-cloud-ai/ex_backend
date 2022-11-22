@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { Application } from '../models/application'
 import { ApplicationService } from '../services/application.service'
 import { UserService } from '../services/user.service'
-import { User } from '../models/user'
 
 @Component({
   selector: 'confirm-component',

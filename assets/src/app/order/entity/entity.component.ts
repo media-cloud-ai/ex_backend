@@ -12,8 +12,8 @@ export class EntityComponent {
   @Input() index: number
 
   getStyle(index: number) {
-    var colors: string[] = ['#afd5aa', '#90c978', '#83c6dd', '#5db1d1']
-    var color: string = colors[(index % colors.length).toString()]
+    const colors: string[] = ['#afd5aa', '#90c978', '#83c6dd', '#5db1d1']
+    const color: string = colors[(index % colors.length).toString()]
     return {
       'background-color': color,
       'padding-top': '3px',

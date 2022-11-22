@@ -40,7 +40,6 @@ import { ClipboardModule } from '@angular/cdk/clipboard'
 import {
   MomentDateAdapter,
   MatMomentDateModule,
-  MAT_MOMENT_DATE_FORMATS,
 } from '@angular/material-moment-adapter'
 
 import {
@@ -49,7 +48,7 @@ import {
   MAT_DATE_FORMATS,
 } from '@angular/material/core'
 
-import { RouterModule, Routes } from '@angular/router'
+import { RouterModule } from '@angular/router'
 import { CookieService } from 'ngx-cookie-service'
 
 import { ChartModule } from 'angular-highcharts'

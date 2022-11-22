@@ -42,8 +42,8 @@ export class OrdersComponent {
     private workflowService: WorkflowService,
     private s3Service: S3Service,
   ) {
-    let today = new Date()
-    let yesterday = new Date()
+    const today = new Date()
+    const yesterday = new Date()
     yesterday.setDate(today.getDate() - 1)
     this.parameters = {
       identifiers: [
@@ -73,15 +73,15 @@ export class OrdersComponent {
       this.socketService.initSocket()
       this.socketService.connectToChannel('notifications:all')
 
-      this.socketService.onNewWorkflow().subscribe((message) => {
+      this.socketService.onNewWorkflow().subscribe((_message) => {
         this.getWorkflows(this.page, this.pageSize, this.parameters)
       })
 
-      this.socketService.onDeleteWorkflow().subscribe((message) => {
+      this.socketService.onDeleteWorkflow().subscribe((_message) => {
         this.getWorkflows(this.page, this.pageSize, this.parameters)
       })
 
-      this.socketService.onRetryJob().subscribe((message) => {
+      this.socketService.onRetryJob().subscribe((_message) => {
         this.getWorkflows(this.page, this.pageSize, this.parameters)
       })
     })
@@ -91,7 +91,7 @@ export class OrdersComponent {
     if (this.sub) {
       this.sub.unsubscribe()
     }
-    for (let connection of this.connections) {
+    for (const connection of this.connections) {
       connection.unsubscribe()
     }
   }
@@ -123,8 +123,8 @@ export class OrdersComponent {
         this.workflows = workflowPage
         this.length = workflowPage.total
         this.loading = false
-        for (let workflow of this.workflows.data) {
-          var connection = this.socketService
+        for (const workflow of this.workflows.data) {
+          const _connection = this.socketService
             .onWorkflowUpdate(workflow.id)
             .subscribe((message: Message) => {
               this.updateWorkflow(message.body.workflow_id)
@@ -155,8 +155,8 @@ export class OrdersComponent {
   getQueryParamsForPage(
     pageIndex: number,
     pageSize: number = undefined,
-  ): Object {
-    var params = {}
+  ): Record<string, unknown> {
+    const params = {}
     if (pageIndex !== 0) {
       params['page'] = pageIndex
     }
@@ -317,7 +317,7 @@ export class OrdersComponent {
   }
 
   downloadFileUrl(path: string) {
-    var element = document.createElement('a')
+    const element = document.createElement('a')
     element.setAttribute('href', path)
 
     element.style.display = 'none'
@@ -328,9 +328,9 @@ export class OrdersComponent {
 
   getCompletedPercentage(workflow) {
     const total_tasks = workflow.steps.length
-    var completed_tasks = 0
+    let completed_tasks = 0
 
-    for (var i = 0; i < workflow.steps.length; ++i) {
+    for (let i = 0; i < workflow.steps.length; ++i) {
       const step = workflow.steps[i]
       if (step.jobs.total != 0) {
         if (step.jobs.completed == step.jobs.total) {

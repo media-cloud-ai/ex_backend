@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { Observable, Observer } from 'rxjs'
+import { Observable } from 'rxjs'
 import { Message } from '../models/message'
 import { AuthService } from '../authentication/auth.service'
 import { Socket } from 'phoenix'
@@ -12,7 +12,7 @@ export class SocketService {
   constructor(private authService: AuthService) {}
 
   public initSocket() {
-    var token = this.authService.getToken()
+    const token = this.authService.getToken()
 
     this.socket = new Socket('/socket', { params: { userToken: token } })
     // this.socket.onError(() => this.authService.logout())

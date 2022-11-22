@@ -1,10 +1,5 @@
 import { Component, Inject } from '@angular/core'
-import { Clipboard } from '@angular/cdk/clipboard'
-import {
-  MatDialogConfig,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog'
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { Role, Right } from '../../models/user'
 
 @Component({

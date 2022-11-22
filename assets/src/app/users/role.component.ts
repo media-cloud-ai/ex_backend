@@ -19,13 +19,13 @@ export class RoleComponent {
 
   active_rights: Right[] = []
   new_right: Right
-  is_being_updated: boolean = false
+  is_being_updated = false
 
   constructor(private userService: UserService, private dialog: MatDialog) {}
 
   ngOnInit() {
-    for (let right of this.role.rights) {
-      let permission = right
+    for (const right of this.role.rights) {
+      const permission = right
       if (permission.action.includes('*')) {
         permission.action = this.permissions.slice()
       }
@@ -79,7 +79,7 @@ export class RoleComponent {
 
   deleteRight(right: Right) {
     // Ask for confirmation
-    let dialogRef = this.dialog.open(RoleOrRightDeletionDialogComponent, {
+    const dialogRef = this.dialog.open(RoleOrRightDeletionDialogComponent, {
       data: {
         right: right,
       },

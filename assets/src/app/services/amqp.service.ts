@@ -13,7 +13,7 @@ export class AmqpService {
 
   getQueues(): Observable<QueuePage> {
     return this.http.get<QueuePage>(this.queuesUrl).pipe(
-      tap((queuepage) => this.log('fetched QueuePage')),
+      tap((_queuepage) => this.log('fetched QueuePage')),
       catchError(this.handleError('getQueues', undefined)),
     )
   }

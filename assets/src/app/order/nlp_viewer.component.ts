@@ -39,7 +39,6 @@ export class NlpViewerComponent {
               this.workflow,
               filename,
             )
-            const current = this
             if (file_path) {
               this.s3Service
                 .getPresignedUrl(file_path)
@@ -92,9 +91,9 @@ export class NlpViewerComponent {
   }
 
   getEntities(word_index: number): Entity[] {
-    var wordEntities: Entity[] = []
-    for (var index in this.entities) {
-      var entity: Entity = this.entities[index]
+    const wordEntities: Entity[] = []
+    for (const index in this.entities) {
+      const entity: Entity = this.entities[index]
       if (entity.list_id.includes(word_index)) {
         wordEntities.push(entity)
       }

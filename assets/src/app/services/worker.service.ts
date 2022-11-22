@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpParams } from '@angular/common/http'
 import { Observable, of } from 'rxjs'
-import { catchError, map, tap } from 'rxjs/operators'
+import { catchError, tap } from 'rxjs/operators'
 
 import { WorkerPage } from '../models/page/worker_page'
 import { WorkersStatus } from '../models/worker'
@@ -29,7 +29,7 @@ export class WorkerService {
     }
 
     return this.http.get<WorkerPage>(this.workersUrl, { params: params }).pipe(
-      tap((workerPage) => this.log('fetched WorkerPage')),
+      tap((_workerPage) => this.log('fetched WorkerPage')),
       catchError(this.handleError('getWorkers', undefined)),
     )
   }
@@ -46,7 +46,7 @@ export class WorkerService {
     return this.http
       .get<WorkerPage>(this.workerStatusesUrl, { params: params })
       .pipe(
-        tap((workerPage) => this.log('fetched WorkersStatus')),
+        tap((_workerPage) => this.log('fetched WorkersStatus')),
         catchError(this.handleError('getWorkerStatuses', undefined)),
       )
   }
@@ -58,7 +58,7 @@ export class WorkerService {
     return this.http
       .get<WorkerPage>(this.workerStatusesUrl, { params: params })
       .pipe(
-        tap((workerPage) => this.log('fetched WorkersStatus')),
+        tap((_workerPage) => this.log('fetched WorkersStatus')),
         catchError(this.handleError('getWorkerStatuses', undefined)),
       )
   }
@@ -72,7 +72,7 @@ export class WorkerService {
     return this.http
       .put<any>(this.workerStatusesUrl + '/' + instance_id, message)
       .pipe(
-        tap((registery) => this.log('put worker order message')),
+        tap((_registery) => this.log('put worker order message')),
         catchError(this.handleError('sendWorkerOrderMessage', undefined)),
       )
   }

@@ -32,9 +32,9 @@ export class StartIngestDialog {
       .subscribe((workflowDefinition) => {
         this.steps = workflowDefinition.steps
 
-        for (var step of this.steps) {
+        for (const step of this.steps) {
           if (step.inputs) {
-            for (var input of step.inputs) {
+            for (const input of step.inputs) {
               if (input.path) {
                 input.path = this.workflow_data.path
               }
@@ -52,8 +52,8 @@ export class StartIngestDialog {
   }
 
   onClose() {
-    var steps = []
-    for (let step of this.steps) {
+    const steps = []
+    for (const step of this.steps) {
       if (step.enable === true) {
         steps.push(step)
       }

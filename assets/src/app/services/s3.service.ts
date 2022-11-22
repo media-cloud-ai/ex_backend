@@ -14,7 +14,7 @@ export class S3Service {
 
   getConfiguration(): Observable<S3Configuration> {
     return this.http.get<S3Configuration>(this.s3ConfigUrl).pipe(
-      tap((userPage) => this.log('fetched S3Configuration')),
+      tap((_userPage) => this.log('fetched S3Configuration')),
       catchError(this.handleError('getConfiguration', undefined)),
     )
   }
@@ -26,7 +26,7 @@ export class S3Service {
     return this.http
       .get<S3Configuration>(this.s3PresignUrl, { params: params })
       .pipe(
-        tap((userPage) => this.log('fetched S3Configuration')),
+        tap((_userPage) => this.log('fetched S3Configuration')),
         catchError(this.handleError('getPresignedUrl', undefined)),
       )
   }

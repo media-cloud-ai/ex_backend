@@ -20,11 +20,11 @@ export class UserComponent {
 
   ngOnInit() {
     console.log('user:', this.user)
-    var inserted = moment(this.user.inserted_at)
-    var now = moment().add(-moment().utcOffset(), 'minutes')
+    const inserted = moment(this.user.inserted_at)
+    const now = moment().add(-moment().utcOffset(), 'minutes')
     this.diff = now.diff(inserted)
 
-    var h = now.diff(inserted, 'hours', true)
+    const h = now.diff(inserted, 'hours', true)
     if (h > 4) {
       this.expired = true
     }
@@ -34,7 +34,7 @@ export class UserComponent {
     console.log('updateUserRoles', event.checked, event.source.name)
 
     let roles = this.user.roles
-    let edited_role_name = event.source.name
+    const edited_role_name = event.source.name
     if (roles === undefined) {
       roles = []
     }
@@ -46,7 +46,7 @@ export class UserComponent {
       }
     } else {
       // remove role
-      let index = this.user.roles.indexOf(edited_role_name)
+      const index = this.user.roles.indexOf(edited_role_name)
       if (index > -1) {
         roles.splice(index, 1)
       }

@@ -10,7 +10,11 @@ export class StepRendererComponent {
   @Input() step: Step
   open_parameters = false
 
-  constructor() {}
+  constructor() {
+    // do nothing
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+    // do nothing
+  }
 }

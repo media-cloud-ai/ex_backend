@@ -3,10 +3,9 @@ import { Router } from '@angular/router'
 import { MatDialog } from '@angular/material/dialog'
 
 import { AuthService } from '../authentication/auth.service'
-import { User } from '../models/user'
 import { UserService } from '../services/user.service'
 import { WorkflowService } from '../services/workflow.service'
-import { Workflow, Step } from '../models/workflow'
+import { Workflow } from '../models/workflow'
 import { WorkflowDuration } from '../models/statistics/duration'
 import { WorkflowActionsDialogComponent } from './dialogs/workflow_actions_dialog.component'
 import { WorkflowPauseDialogComponent } from './dialogs/workflow_pause_dialog.component'
@@ -20,16 +19,16 @@ export class WorkflowComponent {
   @Input() workflow: Workflow
   @Input() duration: WorkflowDuration
   @Input() detailed = false
-  can_stop: boolean = false
-  can_pause: boolean = false
-  can_resume: boolean = false
-  can_delete: boolean = false
-  right_stop: boolean = false
-  right_retry: boolean = false
-  right_delete: boolean = false
-  first_name: String
-  last_name: String
-  user_name: String
+  can_stop = false
+  can_pause = false
+  can_resume = false
+  can_delete = false
+  right_stop = false
+  right_retry = false
+  right_delete = false
+  first_name: string
+  last_name: string
+  user_name: string
 
   constructor(
     private authService: AuthService,
@@ -93,7 +92,7 @@ export class WorkflowComponent {
 
   getStepsCount(): number {
     let count = 0
-    for (let step of this.workflow.steps) {
+    for (const step of this.workflow.steps) {
       if (
         step.jobs.skipped > 0 ||
         step.jobs.completed > 0 ||
@@ -109,8 +108,8 @@ export class WorkflowComponent {
     return this.workflow.steps.length
   }
 
-  pause(workflow_id): void {
-    let dialogRef = this.dialog.open(WorkflowPauseDialogComponent, {
+  pause(_workflow_id): void {
+    const dialogRef = this.dialog.open(WorkflowPauseDialogComponent, {
       data: {
         workflow: this.workflow,
       },
@@ -127,8 +126,8 @@ export class WorkflowComponent {
     })
   }
 
-  resume(workflow_id): void {
-    let dialogRef = this.dialog.open(WorkflowActionsDialogComponent, {
+  resume(_workflow_id): void {
+    const dialogRef = this.dialog.open(WorkflowActionsDialogComponent, {
       data: {
         workflow: this.workflow,
         message: 'resume',
@@ -147,10 +146,10 @@ export class WorkflowComponent {
     })
   }
 
-  stop(workflow_id): void {
-    let message = this.workflow.is_live ? 'stop' : 'abort'
+  stop(_workflow_id): void {
+    const message = this.workflow.is_live ? 'stop' : 'abort'
 
-    let dialogRef = this.dialog.open(WorkflowActionsDialogComponent, {
+    const dialogRef = this.dialog.open(WorkflowActionsDialogComponent, {
       data: {
         workflow: this.workflow,
         message: message,
@@ -169,8 +168,8 @@ export class WorkflowComponent {
     })
   }
 
-  delete(workflow_id): void {
-    let dialogRef = this.dialog.open(WorkflowActionsDialogComponent, {
+  delete(_workflow_id): void {
+    const dialogRef = this.dialog.open(WorkflowActionsDialogComponent, {
       data: {
         workflow: this.workflow,
         message: 'delete',
@@ -181,7 +180,7 @@ export class WorkflowComponent {
       if (workflow !== undefined && this.workflow.can_delete()) {
         this.workflowService
           .sendWorkflowEvent(workflow.id, { event: 'delete' })
-          .subscribe((response) => {
+          .subscribe((_response) => {
             // if response.status === "ok" {
             // }
           })

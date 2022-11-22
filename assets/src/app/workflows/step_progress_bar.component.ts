@@ -1,8 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core'
+import { Component, Input } from '@angular/core'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { Step, Workflow } from '../models/workflow'
 
-import { AuthService } from '../authentication/auth.service'
 import { JobService } from '../services/job.service'
 import { WorkflowService } from '../services/workflow.service'
 
@@ -19,7 +18,6 @@ export class StepProgressBarComponent {
   @Input() is_live: boolean
 
   constructor(
-    private authService: AuthService,
     private snackBar: MatSnackBar,
     private jobService: JobService,
     private workflowService: WorkflowService,
@@ -32,7 +30,7 @@ export class StepProgressBarComponent {
     this.jobService
       .getJobs(0, 100, this.workflow.id, step.id, step.name)
       .subscribe((jobPage) => {
-        var count = 0
+        let count = 0
         jobPage.data.forEach(function (job) {
           if (job.status[job.status.length - 1].state == 'error') {
             count += 1
@@ -41,11 +39,13 @@ export class StepProgressBarComponent {
                 event: 'retry',
                 job_id: job.id,
               })
-              .subscribe((response) => {})
+              .subscribe((_response) => {
+                //do nothing
+              })
           }
         })
 
-        let snackBarRef = this.snackBar.open(
+        const _snackBarRef = this.snackBar.open(
           'Restarted ' + count + ' "' + step.name + '" jobs',
           '',
           {

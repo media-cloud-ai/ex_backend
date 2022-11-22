@@ -6,8 +6,6 @@ import { StatisticsService } from '../../services/statistics.service'
 import { WorkflowDuration } from '../../models/statistics/duration'
 import { Workflow } from '../../models/workflow'
 
-import * as moment from 'moment'
-
 @Component({
   selector: 'duration-component',
   styleUrls: ['./duration.component.less'],
@@ -36,13 +34,13 @@ export class DurationComponent {
 
       this.connection = this.socketService
         .onWorkflowUpdate(this.workflow.id)
-        .subscribe((message: Message) => {
+        .subscribe((_message: Message) => {
           this.getDurations(this.workflow.id)
         })
     }
   }
 
-  getDurations(workflow_id) {
+  getDurations(_workflow_id) {
     this.statisticsService
       .getWorkflowDurations(this.workflow.id)
       .subscribe((response) => {

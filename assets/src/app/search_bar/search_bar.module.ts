@@ -1,5 +1,3 @@
-import * as fr from 'dayjs/locale/fr'
-
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'

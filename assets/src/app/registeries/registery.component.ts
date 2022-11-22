@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core'
-import { ActivatedRoute, Router } from '@angular/router'
+import { Router } from '@angular/router'
 import { MatDialog } from '@angular/material/dialog'
 
 import { Registery } from '../models/registery'
@@ -7,11 +7,7 @@ import { RegisteryService } from '../services/registery.service'
 import { NewSubtitleDialogComponent } from './dialog/new_subtitle_dialog.component'
 import { DeleteSubtitleDialog } from './dialog/delete_subtitle_dialog.component'
 
-import {
-  MediaPlayer,
-  PlaybackTimeUpdatedEvent,
-  MediaPlayerEvents,
-} from 'dashjs'
+import { MediaPlayer } from 'dashjs'
 
 @Component({
   selector: 'registery-component',
@@ -33,7 +29,7 @@ export class RegisteryComponent {
   ) {}
 
   ngOnInit() {
-    var videoPlayer = document.querySelectorAll('.videoPlayer')[this.index]
+    const videoPlayer = document.querySelectorAll('.videoPlayer')[this.index]
 
     if (
       this.item.params.manifests &&
@@ -41,7 +37,7 @@ export class RegisteryComponent {
       this.item.params.manifests[0].paths &&
       this.item.params.manifests[0].paths.length > 0
     ) {
-      var url = this.item.params.manifests[0].paths[0].replace(
+      const url = this.item.params.manifests[0].paths[0].replace(
         '/dash',
         '/stream',
       )
@@ -66,7 +62,7 @@ export class RegisteryComponent {
   }
 
   addSubtitle() {
-    let dialogRef = this.dialog.open(NewSubtitleDialogComponent, {
+    const dialogRef = this.dialog.open(NewSubtitleDialogComponent, {
       data: this.item,
     })
     dialogRef.afterClosed().subscribe((state) => {
@@ -81,7 +77,9 @@ export class RegisteryComponent {
   }
 
   deleteSubtitle(index: number) {
-    let dialogRef = this.dialog.open(DeleteSubtitleDialog, { data: this.item })
+    const dialogRef = this.dialog.open(DeleteSubtitleDialog, {
+      data: this.item,
+    })
     dialogRef.afterClosed().subscribe((state) => {
       if (state === true) {
         this.registeryService

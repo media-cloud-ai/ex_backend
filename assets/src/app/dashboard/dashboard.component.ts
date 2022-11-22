@@ -48,8 +48,8 @@ export class DashboardComponent {
     private workflowService: WorkflowService,
     public authService: AuthService,
   ) {
-    let today = new Date()
-    let yesterday = new Date()
+    const today = new Date()
+    const yesterday = new Date()
     yesterday.setDate(today.getDate() - 1)
 
     this.parameters = {
@@ -66,12 +66,12 @@ export class DashboardComponent {
   }
 
   ngOnInit() {
-    this.subIn = this.authService.userLoggedIn$.subscribe((username) => {
+    this.subIn = this.authService.userLoggedIn$.subscribe((_username) => {
       this.right_administrator = this.authService.hasAdministratorRight()
       this.right_technician = this.authService.hasTechnicianRight()
       this.right_editor = this.authService.hasEditorRight()
     })
-    this.subOut = this.authService.userLoggedOut$.subscribe((username) => {
+    this.subOut = this.authService.userLoggedOut$.subscribe((_username) => {
       delete this.right_administrator
       delete this.right_technician
       delete this.right_editor
@@ -91,15 +91,15 @@ export class DashboardComponent {
   }
 
   drawHistoryChart(data?): void {
-    let x_labels = []
-    let series = {
+    const x_labels = []
+    const series = {
       completed: [],
       error: [],
       pending: [],
       processing: [],
     }
 
-    let options: Options = {
+    const options: Options = {
       chart: {
         type: 'column',
       },
@@ -146,14 +146,14 @@ export class DashboardComponent {
     if (data != undefined) {
       data.bins.reverse().map((bin) => {
         x_labels.push(bin['start_date'])
-        for (let s of this.series) {
+        for (const s of this.series) {
           series[s].push(bin[s])
         }
       })
 
       options.xAxis['categories'] = x_labels
 
-      for (let s of this.series) {
+      for (const s of this.series) {
         if (this.parameters.status.includes(s)) {
           options['series'].push({
             name: s,

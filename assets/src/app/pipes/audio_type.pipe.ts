@@ -9,13 +9,13 @@ import { Pipe, PipeTransform } from '@angular/core'
 @Pipe({ name: 'audioType' })
 export class AudioTypePipe implements PipeTransform {
   transform(audio: string): string {
-    var allTypes = [
+    const allTypes = [
       { id: 'francais', name: 'FR' },
       { id: 'audiodescription', name: 'AD' },
       { id: 'version-originale', name: 'VO' },
     ]
 
-    for (var i = allTypes.length - 1; i >= 0; i--) {
+    for (let i = allTypes.length - 1; i >= 0; i--) {
       if (allTypes[i].id === audio) {
         return allTypes[i].name
       }

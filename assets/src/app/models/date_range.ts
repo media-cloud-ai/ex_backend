@@ -1,4 +1,3 @@
-import * as moment from 'moment'
 import { Moment } from 'moment'
 
 export class DateRange {

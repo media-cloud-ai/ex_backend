@@ -9,5 +9,7 @@ import { Parameter } from '../../models/workflow'
 export class ParametersComponent {
   @Input() parameters: Parameter[]
 
-  constructor() {}
+  constructor() {
+    //do nothing
+  }
 }

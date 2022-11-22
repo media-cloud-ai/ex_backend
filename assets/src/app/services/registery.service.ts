@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core'
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http'
 import { Observable, of } from 'rxjs'
-import { catchError, map, tap } from 'rxjs/operators'
+import { catchError, tap } from 'rxjs/operators'
 
 import { RegisteryPage, RegisteryData } from '../models/page/registery_page'
-import { DateRange } from '../models/date_range'
-import { IngestResponse } from '../models/ingest_response'
 
 @Injectable()
 export class RegisteryService {
@@ -31,7 +29,7 @@ export class RegisteryService {
     return this.http
       .get<RegisteryPage>(this.registeryUrl, { params: params })
       .pipe(
-        tap((registeryPage) => this.log('fetched RegisteriesPage')),
+        tap((_registeryPage) => this.log('fetched RegisteriesPage')),
         catchError(this.handleError('getRegisteries', undefined)),
       )
   }
@@ -40,7 +38,7 @@ export class RegisteryService {
     return this.http
       .get<RegisteryData>(this.registeryUrl + '/' + registery_id)
       .pipe(
-        tap((registery) => this.log('fetched Registery')),
+        tap((_registery) => this.log('fetched Registery')),
         catchError(this.handleError('getRegistery', undefined)),
       )
   }
@@ -56,7 +54,7 @@ export class RegisteryService {
         { language: language, version: version },
       )
       .pipe(
-        tap((registery) => this.log('fetched Registery')),
+        tap((_registery) => this.log('fetched Registery')),
         catchError(this.handleError('addSubtitle', undefined)),
       )
   }
@@ -81,7 +79,7 @@ export class RegisteryService {
         httpOptions,
       )
       .pipe(
-        tap((registery) => this.log('fetched Registery')),
+        tap((_registery) => this.log('fetched Registery')),
         catchError(this.handleError('saveSubtitle', undefined)),
       )
   }
@@ -95,7 +93,7 @@ export class RegisteryService {
         this.registeryUrl + '/' + registery_id + '/subtitle/' + index,
       )
       .pipe(
-        tap((registery) => this.log('fetched Registery')),
+        tap((_registery) => this.log('fetched Registery')),
         catchError(this.handleError('deleteSubtitle', undefined)),
       )
   }

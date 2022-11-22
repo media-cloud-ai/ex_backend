@@ -1,5 +1,5 @@
 import { Component } from '@angular/core'
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
+import { BreakpointObserver } from '@angular/cdk/layout'
 import { Title } from '@angular/platform-browser'
 import { Router } from '@angular/router'
 import { Subscription } from 'rxjs'
@@ -15,8 +15,8 @@ import { ApplicationService } from './services/application.service'
 })
 export class AppComponent {
   loggedIn: boolean
-  menu_expanded: boolean = true
-  right_panel_opened: boolean = false
+  menu_expanded = true
+  right_panel_opened = false
   username: string
   application: Application
   right_administrator: boolean
@@ -37,7 +37,7 @@ export class AppComponent {
   ) {}
 
   ngOnInit() {
-    this.subIn = this.authService.userLoggedIn$.subscribe((username) => {
+    this.subIn = this.authService.userLoggedIn$.subscribe((_username) => {
       this.loggedIn = true
       this.username = this.authService.getUsername()
       this.right_administrator = this.authService.hasAdministratorRight()
@@ -46,7 +46,7 @@ export class AppComponent {
       this.menu_expanded = true
       this.updateLeftMenu()
     })
-    this.subOut = this.authService.userLoggedOut$.subscribe((username) => {
+    this.subOut = this.authService.userLoggedOut$.subscribe((_username) => {
       this.loggedIn = false
       this.menu_expanded = true
       this.right_panel_opened = false

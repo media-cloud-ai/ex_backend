@@ -1,9 +1,9 @@
-import { Injectable, Component, OnDestroy } from '@angular/core'
+import { Injectable } from '@angular/core'
 import { Router } from '@angular/router'
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpParams } from '@angular/common/http'
 import { CookieService } from 'ngx-cookie-service'
 import { Observable, of, Subject, Subscription } from 'rxjs'
-import { catchError, map, tap } from 'rxjs/operators'
+import { catchError, tap } from 'rxjs/operators'
 import 'rxjs/add/operator/do'
 
 import { Confirm } from '../models/user'
@@ -38,8 +38,8 @@ export class AuthService {
     private userService: UserService,
     public router: Router,
   ) {
-    let access_token = this.getToken()
-    var currentUser = this.cookieService.get('currentUser')
+    const access_token = this.getToken()
+    const currentUser = this.cookieService.get('currentUser')
     if (
       access_token !== undefined &&
       access_token !== '' &&
@@ -47,7 +47,7 @@ export class AuthService {
       currentUser !== ''
     ) {
       this.isLoggedIn = true
-      var parsedUser = JSON.parse(currentUser)
+      const parsedUser = JSON.parse(currentUser)
       this.email = parsedUser.email
       this.username = parsedUser.username
       this.first_name = parsedUser.first_name
@@ -115,7 +115,7 @@ export class AuthService {
     )
   }
 
-  logout(clean_cookies = true): void {
+  logout(_clean_cookies = true): void {
     this.isLoggedIn = false
     this.email = undefined
     this.username = undefined
@@ -176,26 +176,26 @@ export class AuthService {
     params = params.append('action', action)
 
     return this.http.post<any>('/api/users/check_rights', params).pipe(
-      tap((userPage) => this.log('Check Rights')),
+      tap((_userPage) => this.log('Check Rights')),
       catchError(this.handleError('checkRights', undefined)),
     )
   }
 
   passwordResetRequest(email: string): Observable<PasswordReset> {
-    let params = {
+    const params = {
       password_reset: {
         email: email,
       },
     }
 
     return this.http.post<PasswordReset>('/api/password_resets', params).pipe(
-      tap((userPage) => this.log('Reset password')),
+      tap((_userPage) => this.log('Reset password')),
       catchError((err) => this.handleErrorPasswordReset(err)),
     )
   }
 
   confirmResetPassword(password: string, key: string): Observable<Confirm> {
-    let params = {
+    const params = {
       password_reset: {
         password: password,
         key: key,
@@ -203,7 +203,7 @@ export class AuthService {
     }
 
     return this.http.put<Confirm>('/api/password_resets/update', params).pipe(
-      tap((user) => this.log('fetched Confirm Password Reset')),
+      tap((_user) => this.log('fetched Confirm Password Reset')),
       catchError(this.handleError('confirmResetPassword', undefined)),
     )
   }

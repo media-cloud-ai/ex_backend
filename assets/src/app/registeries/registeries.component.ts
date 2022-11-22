@@ -73,8 +73,8 @@ export class RegisteriesComponent {
   getQueryParamsForPage(
     pageIndex: number,
     pageSize: number = undefined,
-  ): Object {
-    var params = {}
+  ): Record<string, unknown> {
+    const params = {}
 
     if (pageIndex !== 0) {
       params['page'] = pageIndex
