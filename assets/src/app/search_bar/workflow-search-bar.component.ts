@@ -76,7 +76,7 @@ export class WorkflowSearchBarComponent {
     search: undefined,
     status: ['completed', 'error'],
     detailed: false,
-    live_reload: false,
+    refresh_interval: -1,
     time_interval: 3600
   };
 
@@ -114,6 +114,18 @@ export class WorkflowSearchBarComponent {
     { id: 'live', label: 'Live' },
   ]
 
+  refresh_interval = [
+    { label: "Off", value: -1 },
+    { label: "5s", value: 5 },
+    { label: "10s", value: 10 },
+    { label: "30s", value: 30 },
+    { label: "1m", value: 60 },
+    { label: "5m", value: 300 },
+    { label: "15m", value: 900 },
+    { label: "30m", value: 1800 },
+    { label: "1h", value: 3600 },
+  ];
+
   constructor(
     private userService: UserService,
     private workflowService: WorkflowService,
@@ -138,7 +150,8 @@ export class WorkflowSearchBarComponent {
       },
       referenceSearch: new FormControl(''),
       detailedToggle: new FormControl(''),
-      liveReloadToggle: new FormControl('')
+      liveReloadToggle: new FormControl(''),
+      refreshInterval: new FormControl('')
     });
 
     this.userService.getWorkflowFilters().subscribe((response) => {
@@ -210,8 +223,8 @@ export class WorkflowSearchBarComponent {
     this.viewOptionsEvent.emit(new ViewOptionEvent(ViewOption.Detailed, this.parameters.detailed))
   }
 
-  toggleLiveReload() {
-    this.viewOptionsEvent.emit(new ViewOptionEvent(ViewOption.LiveReload, this.parameters.live_reload))
+  changeRefreshInterval() {
+    this.viewOptionsEvent.emit(new ViewOptionEvent(ViewOption.RefreshInterval, this.parameters.refresh_interval))
   }
 
   clearFilters(): void {
@@ -229,7 +242,7 @@ export class WorkflowSearchBarComponent {
       search: undefined,
       status: ['completed', 'error'],
       detailed: false,
-      live_reload: true,
+      refresh_interval: -1,
       time_interval: 3600
     };
 

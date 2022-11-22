@@ -40,20 +40,20 @@ export class WorkflowQueryParams {
   search?: string
   status: string[]
   detailed: boolean
-  live_reload: boolean
+  refresh_interval: number
   time_interval: number
 }
 
 export enum ViewOption {
   Detailed,
-  LiveReload,
+  RefreshInterval,
 }
 
 export class ViewOptionEvent {
   option: ViewOption
-  value: boolean
+  value: any
 
-  constructor(option: ViewOption, value: boolean) {
+  constructor(option: ViewOption, value: any) {
     this.option = option;
     this.value = value;
   }
