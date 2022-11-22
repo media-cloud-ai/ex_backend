@@ -5,10 +5,9 @@ import { Pipe, PipeTransform } from '@angular/core'
  * Example:
  *   {{ 'segment_duration' | parameterLabel }}
  *   formats to: "Segment Duration"
-*/
-@Pipe({name: 'parameterLabel'})
+ */
+@Pipe({ name: 'parameterLabel' })
 export class ParameterLabelPipe implements PipeTransform {
-
   transform(parameterLabel: string): string {
     var allLabels = [
       { id: 'source_paths', name: 'Source Paths' },
@@ -66,7 +65,7 @@ export class ParameterLabelPipe implements PipeTransform {
     ]
 
     for (var i = allLabels.length - 1; i >= 0; i--) {
-      if (allLabels[i].id === parameterLabel){
+      if (allLabels[i].id === parameterLabel) {
         return allLabels[i].name
       }
     }

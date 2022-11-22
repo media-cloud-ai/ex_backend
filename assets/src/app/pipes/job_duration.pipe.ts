@@ -8,10 +8,9 @@ import * as moment from 'moment'
  * Example:
  *   {{ job | jobDuration }}
  *   formats to: 99614
-*/
-@Pipe({name: 'jobDuration'})
+ */
+@Pipe({ name: 'jobDuration' })
 export class JobDurationPipe implements PipeTransform {
-
   transform(job: Job): number {
     var start = +new Date(job.inserted_at)
     if (job.status[0] === undefined) {
@@ -19,6 +18,6 @@ export class JobDurationPipe implements PipeTransform {
     }
 
     var end = +new Date(job.status[0].inserted_at)
-    return (end - start)
+    return end - start
   }
 }

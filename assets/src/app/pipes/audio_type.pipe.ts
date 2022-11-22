@@ -5,10 +5,9 @@ import { Pipe, PipeTransform } from '@angular/core'
  * Example:
  *   {{ 'francais' | audioType }}
  *   formats to: "FR"
-*/
-@Pipe({name: 'audioType'})
+ */
+@Pipe({ name: 'audioType' })
 export class AudioTypePipe implements PipeTransform {
-
   transform(audio: string): string {
     var allTypes = [
       { id: 'francais', name: 'FR' },
@@ -17,7 +16,7 @@ export class AudioTypePipe implements PipeTransform {
     ]
 
     for (var i = allTypes.length - 1; i >= 0; i--) {
-      if (allTypes[i].id === audio){
+      if (allTypes[i].id === audio) {
         return allTypes[i].name
       }
     }

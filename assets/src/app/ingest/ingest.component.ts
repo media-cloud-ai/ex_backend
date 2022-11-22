@@ -1,24 +1,22 @@
+import { Component } from '@angular/core'
+import { MatDialog } from '@angular/material/dialog'
 
-import {Component} from '@angular/core'
-import {MatDialog} from '@angular/material/dialog'
+import { SocketService } from '../services/socket.service'
+import { WatcherService } from '../services/watcher.service'
+import { WorkflowService } from '../services/workflow.service'
 
-import {SocketService} from '../services/socket.service'
-import {WatcherService} from '../services/watcher.service'
-import {WorkflowService} from '../services/workflow.service'
+import { FileEntry, Message } from '../models/message'
+import { WatcherPage } from '../models/page/watcher_page'
 
-import {FileEntry, Message} from '../models/message'
-import {WatcherPage} from '../models/page/watcher_page'
-
-import {StartIngestDialog, Data} from './dialogs/start_ingest.component'
+import { StartIngestDialog, Data } from './dialogs/start_ingest.component'
 
 @Component({
   selector: 'ingest-component',
   templateUrl: 'ingest.component.html',
   styleUrls: ['./ingest.component.less'],
 })
-
 export class IngestComponent {
-  selectedAgent: string = ""
+  selectedAgent: string = ''
   connection: any
   entries: Message
   full_path = []
@@ -32,18 +30,18 @@ export class IngestComponent {
   ) {}
 
   ngOnInit() {
-    this.watcherService.getWatchers()
-    .subscribe(watcherPage => {
+    this.watcherService.getWatchers().subscribe((watcherPage) => {
       this.watchers = watcherPage
     })
 
     this.socketService.initSocket()
     this.socketService.connectToChannel('watch:all')
 
-    this.connection = this.socketService.onList('pouet')
-    .subscribe((message: Message) => {
-      this.entries = message
-    })
+    this.connection = this.socketService
+      .onList('pouet')
+      .subscribe((message: Message) => {
+        this.entries = message
+      })
 
     this.updateDir()
   }
@@ -55,8 +53,11 @@ export class IngestComponent {
   }
 
   updateDir() {
-    if(this.selectedAgent !== "") {
-      this.socketService.sendMessage('ls', {'agent': this.selectedAgent, 'path': this.full_path.join('/')})
+    if (this.selectedAgent !== '') {
+      this.socketService.sendMessage('ls', {
+        agent: this.selectedAgent,
+        path: this.full_path.join('/'),
+      })
     }
   }
 
@@ -74,9 +75,9 @@ export class IngestComponent {
       let data = new Data()
       data.path = entry.abs_path
       data.agent = this.selectedAgent
-      let dialogRef = this.dialog.open(StartIngestDialog, {data: data})
+      let dialogRef = this.dialog.open(StartIngestDialog, { data: data })
 
-      dialogRef.afterClosed().subscribe(steps => {
+      dialogRef.afterClosed().subscribe((steps) => {
         if (steps !== undefined) {
           console.log('Start Ingest !', steps)
           // this.workflowService.createWorkflow({reference: filename, steps: steps})
@@ -87,6 +88,5 @@ export class IngestComponent {
         }
       })
     }
-
   }
 }

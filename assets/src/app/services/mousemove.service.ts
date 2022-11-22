@@ -1,4 +1,3 @@
-
 import { Injectable } from '@angular/core'
 import { Subject } from 'rxjs'
 
@@ -16,5 +15,5 @@ export class MouseMoveService {
   outFocusSubtitleSource = new Subject<Event>()
   outFocusSubtitleEvent = this.outFocusSubtitleSource.asObservable()
 
-  constructor() { }
+  constructor() {}
 }

@@ -1,9 +1,5 @@
-
 import { Component } from '@angular/core'
-import {
-  NavigationExtras,
-  Router,
-} from '@angular/router'
+import { NavigationExtras, Router } from '@angular/router'
 
 import { Application } from '../models/application'
 import { ApplicationService } from '../services/application.service'
@@ -17,7 +13,6 @@ import { EnterEmailDialogComponent } from './dialogs/enter_email_dialog.componen
   templateUrl: 'login.component.html',
   styleUrls: ['./login.component.less'],
 })
-
 export class LoginComponent {
   username: string
   password: string
@@ -28,25 +23,28 @@ export class LoginComponent {
     private applicationService: ApplicationService,
     public authService: AuthService,
     private dialog: MatDialog,
-    public router: Router) { }
+    public router: Router,
+  ) {}
 
   ngOnInit() {
-    this.applicationService.get()
-      .subscribe(response => {
-        this.application = response
-      })
+    this.applicationService.get().subscribe((response) => {
+      this.application = response
+    })
   }
 
   login() {
-    this.authService.login(this.username, this.password)
-      .subscribe(response => {
+    this.authService
+      .login(this.username, this.password)
+      .subscribe((response) => {
         this.message = ''
         if (response && response.user) {
-          let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : '/dashboard'
+          let redirect = this.authService.redirectUrl
+            ? this.authService.redirectUrl
+            : '/dashboard'
 
           let navigationExtras: NavigationExtras = {
             queryParamsHandling: 'preserve',
-            preserveFragment: true
+            preserveFragment: true,
           }
           this.router.navigate([redirect], navigationExtras)
         } else {
@@ -62,8 +60,9 @@ export class LoginComponent {
   openResetPasswordDialog(): void {
     let dialogRef = this.dialog.open(EnterEmailDialogComponent, {
       data: {
-        'email': '', 'message': ''
-      }
+        email: '',
+        message: '',
+      },
     })
   }
 }

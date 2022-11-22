@@ -1,8 +1,8 @@
-import {Component, Inject} from '@angular/core'
-import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog'
+import { Component, Inject } from '@angular/core'
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 
-import {WorkflowService} from '../../services/workflow.service'
-import {Step} from '../../models/workflow'
+import { WorkflowService } from '../../services/workflow.service'
+import { Step } from '../../models/workflow'
 
 export class Data {
   path: string
@@ -14,7 +14,6 @@ export class Data {
   templateUrl: 'start_ingest.component.html',
   styleUrls: ['./start_ingest.component.less'],
 })
-
 export class StartIngestDialog {
   steps: Step[]
   workflow_data: Data
@@ -22,27 +21,30 @@ export class StartIngestDialog {
   constructor(
     public dialogRef: MatDialogRef<StartIngestDialog>,
     private workflowService: WorkflowService,
-    @Inject(MAT_DIALOG_DATA) public data: Data) {
+    @Inject(MAT_DIALOG_DATA) public data: Data,
+  ) {
     this.workflow_data = data
   }
 
   ngOnInit() {
-    this.workflowService.getWorkflowDefinition("ebu_ingest", this.workflow_data.path).subscribe(workflowDefinition => {
-      this.steps = workflowDefinition.steps
+    this.workflowService
+      .getWorkflowDefinition('ebu_ingest', this.workflow_data.path)
+      .subscribe((workflowDefinition) => {
+        this.steps = workflowDefinition.steps
 
-      for(var step of this.steps) {
-        if(step.inputs) {
-          for(var input of step.inputs) {
-            if(input.path) {
-              input.path = this.workflow_data.path
-            }
-            if(input.agent) {
-              input.agent = this.workflow_data.agent
+        for (var step of this.steps) {
+          if (step.inputs) {
+            for (var input of step.inputs) {
+              if (input.path) {
+                input.path = this.workflow_data.path
+              }
+              if (input.agent) {
+                input.agent = this.workflow_data.agent
+              }
             }
           }
         }
-      }
-    });
+      })
   }
 
   onNoClick() {

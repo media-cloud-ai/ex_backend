@@ -1,6 +1,4 @@
-<h1>
-  Catalog
-</h1>
+<h1>Catalog</h1>
 
 <div class="search-bar">
   <div>
@@ -11,57 +9,48 @@
         placeholder="Category"
         [(ngModel)]="searchInput"
         (keydown)="updateRegisteries()"
-        >
-        <mat-icon matSuffix
-          class=title_button
-          *ngIf="searchInput != ''"
-          (click)="searchInput = ''; updateRegisteries()" >clear</mat-icon>
+      />
+      <mat-icon
+        matSuffix
+        class="title_button"
+        *ngIf="searchInput != ''"
+        (click)="searchInput = ''; updateRegisteries()"
+        >clear</mat-icon
+      >
     </mat-form-field>
   </div>
 </div>
 
 <div *ngIf="loading" class="loading">
   <span>
-    <img src="/bundles/images/media-io.animated.svg" width="50px" height="50px" />
+    <img
+      src="/bundles/images/media-io.animated.svg"
+      width="50px"
+      height="50px"
+    />
   </span>
-  <span class=text>
-    Loading ...
-  </span>
+  <span class="text"> Loading ... </span>
 </div>
-<ul
-  *ngIf="items && !loading"
-  class="items"
-  [ngClass]="{loading: loading}"
-  >
-  <li *ngIf="items.total == 0" class="notfound">
-    No result found.
-  </li>
+<ul *ngIf="items && !loading" class="items" [ngClass]="{ loading: loading }">
+  <li *ngIf="items.total == 0" class="notfound">No result found.</li>
   <li *ngIf="items.total > 0" class="items-header">
-    <span class="category">
-      Category
-    </span>
-    <span class="player">
-    </span>
-    <span class="languages">
-      Languages
-    </span>
+    <span class="category"> Category </span>
+    <span class="player"> </span>
+    <span class="languages"> Languages </span>
   </li>
-  <li
-    *ngFor="let item of items.data; let i = index"
-    class="item"
-    >
-    <registery-component [item]=item [index]=i>
-    </registery-component>
+  <li *ngFor="let item of items.data; let i = index" class="item">
+    <registery-component [item]="item" [index]="i"> </registery-component>
   </li>
 </ul>
 
 <mat-paginator
-  class=paginator
-  showFirstLastButtons=true
+  class="paginator"
+  showFirstLastButtons="true"
   [length]="length"
   [pageSize]="pageSize"
   [pageIndex]="page"
   [pageSizeOptions]="pageSizeOptions"
   (page)="pageEvent = eventGetRegisteries($event)"
-   *ngIf="!loading">
+  *ngIf="!loading"
+>
 </mat-paginator>

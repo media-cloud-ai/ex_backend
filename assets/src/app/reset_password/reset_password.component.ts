@@ -1,4 +1,3 @@
-
 import { Component } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 
@@ -11,7 +10,6 @@ import { AuthService } from '../authentication/auth.service'
   templateUrl: 'reset_password.component.html',
   styleUrls: ['./reset_password.component.less'],
 })
-
 export class ResetPasswordComponent {
   application: Application
   validating = false
@@ -25,19 +23,17 @@ export class ResetPasswordComponent {
     private applicationService: ApplicationService,
     private authService: AuthService,
     private route: ActivatedRoute,
-    public router: Router
-  ) { }
+    public router: Router,
+  ) {}
 
   ngOnInit() {
-    this.applicationService.get()
-      .subscribe(application => {
-        this.application = application
-      })
+    this.applicationService.get().subscribe((application) => {
+      this.application = application
+    })
 
-    this.sub = this.route.queryParams
-      .subscribe(params => {
-        this.key = params['key']
-      })
+    this.sub = this.route.queryParams.subscribe((params) => {
+      this.key = params['key']
+    })
   }
 
   ngOnDestroy() {
@@ -48,8 +44,9 @@ export class ResetPasswordComponent {
     this.validating = true
     this.error = false
 
-    this.authService.confirmResetPassword(this.password, this.key)
-      .subscribe(response => {
+    this.authService
+      .confirmResetPassword(this.password, this.key)
+      .subscribe((response) => {
         this.validating = false
         if (response) {
           this.validated = true

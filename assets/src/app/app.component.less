@@ -7,7 +7,7 @@
   right: 0;
   bottom: 0;
   font-size: 12px;
-  font-family: Roboto,"Helvetica Neue",sans-serif;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
 
   main {
     height: 100%;
@@ -42,7 +42,8 @@
   }
 }
 
-a:link, a:visited {
+a:link,
+a:visited {
   text-decoration: none;
   color: @white;
 }
@@ -112,7 +113,11 @@ a:link, a:visited {
   max-width: 500px;
   transition: 1s !important;
   background: -moz-linear-gradient(-45deg, #095487 0%, #095487 100%) !important;
-  background: -webkit-linear-gradient(-45deg, #095487 0%, #095487 100%) !important;
+  background: -webkit-linear-gradient(
+    -45deg,
+    #095487 0%,
+    #095487 100%
+  ) !important;
   background: linear-gradient(45deg, #095487 0%, #095487 100%) !important;
 
   ul {
@@ -126,13 +131,12 @@ a:link, a:visited {
       flex: 1;
     }
 
-
     li {
       border-bottom-width: 1px;
       margin: 0;
       padding: 0 20px;
-      border-color: rgba(0,0,0,.06);
-      color: rgba(0,0,0,.54);
+      border-color: rgba(0, 0, 0, 0.06);
+      color: rgba(0, 0, 0, 0.54);
       box-sizing: border-box;
       display: flex;
       font-size: 14px;
@@ -158,9 +162,13 @@ a:link, a:visited {
   bottom: 0;
   overflow: auto;
   height: 180px;
-  background: -moz-linear-gradient(-45deg, #007855 0%, #0D8A57 100%) !important;
-  background: -webkit-linear-gradient(-45deg, #007855 0%, #0D8A57 100%) !important;
-  background: linear-gradient(45deg, #007855 0%, #0D8A57 100%) !important;
+  background: -moz-linear-gradient(-45deg, #007855 0%, #0d8a57 100%) !important;
+  background: -webkit-linear-gradient(
+    -45deg,
+    #007855 0%,
+    #0d8a57 100%
+  ) !important;
+  background: linear-gradient(45deg, #007855 0%, #0d8a57 100%) !important;
 
   ul {
     list-style: none;
@@ -170,8 +178,8 @@ a:link, a:visited {
       border-bottom-width: 1px;
       margin: 0;
       padding: 0;
-      border-color: rgba(0,0,0,.06);
-      color: rgba(0,0,0,.54);
+      border-color: rgba(0, 0, 0, 0.06);
+      color: rgba(0, 0, 0, 0.54);
       box-sizing: border-box;
       font-size: 14px;
       font-weight: 400;
@@ -184,7 +192,6 @@ a:link, a:visited {
       mat-icon {
         vertical-align: middle;
       }
-
     }
 
     li:hover {
@@ -202,7 +209,7 @@ a:link, a:visited {
     transform: scale(1.1);
   }
   color: @secondColor !important;
-  box-shadow:inset 5px 0px 0px 0px @secondColor !important;
+  box-shadow: inset 5px 0px 0px 0px @secondColor !important;
 }
 
 .mat-drawer-inner-container {
@@ -236,7 +243,7 @@ a:link, a:visited {
   width: 100%;
 }
 
-.icon-stick{
+.icon-stick {
   height: 47px;
   font-size: 30px !important;
   color: white;
@@ -247,13 +254,13 @@ a:link, a:visited {
   float: right;
 }
 
-.help{
+.help {
   color: white;
 }
 
-.help-small{
-  position:absolute;
-  bottom:0;
+.help-small {
+  position: absolute;
+  bottom: 0;
   padding-bottom: 60px;
   color: white;
 }

@@ -1,4 +1,3 @@
-
 export class Application {
   company: string
   company_logo: string

@@ -1,26 +1,15 @@
-<h1>
-  Registery versions
-</h1>
+<h1>Registery versions</h1>
 <div>
-  <span class=player
-    (click)="play()">
-    <span class=button>
-      <mat-icon *ngIf=!playing class=play>
-        play_circle_outline
-      </mat-icon>
-      <mat-icon *ngIf=playing class=pause>
-        pause_circle_outline
-      </mat-icon>
+  <span class="player" (click)="play()">
+    <span class="button">
+      <mat-icon *ngIf="!playing" class="play"> play_circle_outline </mat-icon>
+      <mat-icon *ngIf="playing" class="pause"> pause_circle_outline </mat-icon>
     </span>
-    <video
-      class="videoPlayer"
-      >
-    </video>
+    <video class="videoPlayer"></video>
   </span>
 </div>
 <div *ngIf="root">
-  <span *ngFor="let subtitle of root"
-    class=column>
-    <subtitle-component [subtitle]=subtitle></subtitle-component>
+  <span *ngFor="let subtitle of root" class="column">
+    <subtitle-component [subtitle]="subtitle"></subtitle-component>
   </span>
 </div>

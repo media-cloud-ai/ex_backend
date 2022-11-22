@@ -1,4 +1,3 @@
-
 import {
   Component,
   EventEmitter,
@@ -6,28 +5,27 @@ import {
   Input,
   Output,
   OnChanges,
-  SimpleChange
+  SimpleChange,
 } from '@angular/core'
-import {MatDialog} from '@angular/material/dialog'
+import { MatDialog } from '@angular/material/dialog'
 
-import {Timecode} from 'ts-subtitle'
-import {Subscription} from 'rxjs'
+import { Timecode } from 'ts-subtitle'
+import { Subscription } from 'rxjs'
 
-import {MouseMoveService} from '../services/mousemove.service'
-import {TimecodeDialogComponent} from './dialog/timecode_dialog.component'
+import { MouseMoveService } from '../services/mousemove.service'
+import { TimecodeDialogComponent } from './dialog/timecode_dialog.component'
 
 @Component({
   selector: 'timecode-component',
   templateUrl: 'timecode.component.html',
   styleUrls: ['./timecode.component.less'],
 })
-
 export class TimecodeComponent implements OnChanges {
   @Input() time: number
   @Input() framerate: number = 25.0
   @Input() isChangingTimecode: boolean
 
-  @Output() timeChange: EventEmitter<number> = new EventEmitter<number>();
+  @Output() timeChange: EventEmitter<number> = new EventEmitter<number>()
 
   private originalTime: number
 
@@ -36,9 +34,9 @@ export class TimecodeComponent implements OnChanges {
   private secondes: number
   private frames: number
 
-  private clicked: boolean = false;
-  private origin: number;
-  private last: MouseEvent;
+  private clicked: boolean = false
+  private origin: number
+  private last: MouseEvent
 
   private sub: Subscription
 
@@ -49,32 +47,32 @@ export class TimecodeComponent implements OnChanges {
 
   ngOnInit() {
     this.update()
-    var me = this;
+    var me = this
 
-    this.sub = this.mouseMoveService.mouseMoveEvent.subscribe(
-      event => {
-        if(me.clicked) {
-          me.time = Math.max(me.originalTime + ((me.origin - event.y) / 25.0), 0.0)
-          me.update()
-        }
-      })
+    this.sub = this.mouseMoveService.mouseMoveEvent.subscribe((event) => {
+      if (me.clicked) {
+        me.time = Math.max(me.originalTime + (me.origin - event.y) / 25.0, 0.0)
+        me.update()
+      }
+    })
 
-    this.sub = this.mouseMoveService.mouseUpEvent.subscribe(
-      event => {
-        if(me.clicked) {
-          me.clicked = false
-          me.originalTime = undefined
-          me.isChangingTimecode = false
-        }
-      })
+    this.sub = this.mouseMoveService.mouseUpEvent.subscribe((event) => {
+      if (me.clicked) {
+        me.clicked = false
+        me.originalTime = undefined
+        me.isChangingTimecode = false
+      }
+    })
   }
 
   update() {
     var hours = Math.trunc(this.time / 3600)
-    var minutes = Math.trunc((this.time / 60) - (hours * 60))
-    var seconds = Math.trunc(this.time - minutes * 60 - (hours * 3600))
-    var milli = Math.round(1000.0 * (this.time - seconds - (minutes * 60 ) - (hours * 3600)))
-    var frames = milli * this.framerate / 1000.0
+    var minutes = Math.trunc(this.time / 60 - hours * 60)
+    var seconds = Math.trunc(this.time - minutes * 60 - hours * 3600)
+    var milli = Math.round(
+      1000.0 * (this.time - seconds - minutes * 60 - hours * 3600),
+    )
+    var frames = (milli * this.framerate) / 1000.0
     this.hours = hours
     this.minutes = minutes
     this.secondes = seconds
@@ -82,7 +80,7 @@ export class TimecodeComponent implements OnChanges {
     this.timeChange.next(this.time)
   }
 
-  ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
+  ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
     if (changes && changes.time) {
       this.time = changes.time.currentValue
       this.update()
@@ -100,11 +98,13 @@ export class TimecodeComponent implements OnChanges {
 
   @HostListener('mouseup')
   onMouseup() {
-    if(this.time == this.originalTime) {
-      let dialogRef = this.dialog.open(TimecodeDialogComponent, {data: this.time})
-      dialogRef.afterClosed().subscribe(newTime => {
-        if(newTime !== undefined) {
-          this.time = newTime;
+    if (this.time == this.originalTime) {
+      let dialogRef = this.dialog.open(TimecodeDialogComponent, {
+        data: this.time,
+      })
+      dialogRef.afterClosed().subscribe((newTime) => {
+        if (newTime !== undefined) {
+          this.time = newTime
           this.update()
         }
       })

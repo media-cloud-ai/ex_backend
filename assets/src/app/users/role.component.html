@@ -6,10 +6,7 @@
   </span>
 
   <span class="rights">
-    <div
-      *ngFor="let right of active_rights"
-      class="right"
-      >
+    <div *ngFor="let right of active_rights" class="right">
       <mat-form-field class="scope">
         <input
           matInput
@@ -18,17 +15,18 @@
           (change)="editRightScope($event, right)"
           [(ngModel)]="right.entity"
           [disabled]="selected_role && selected_role != role.id"
-          >
+        />
       </mat-form-field>
 
       <span class="permissions">
         <mat-checkbox
           *ngFor="let permission of permissions"
           class="permission"
-          name="{{permission}}"
+          name="{{ permission }}"
           (change)="editRightPermissions($event, right)"
           [checked]="right.action.indexOf(permission) > -1"
-          [disabled]="selected_role && selected_role != role.id">
+          [disabled]="selected_role && selected_role != role.id"
+        >
           {{ permission }}
         </mat-checkbox>
       </span>
@@ -39,32 +37,33 @@
           (click)="deleteRight(right)"
           color="warn"
           title="Delete right"
-          [disabled]="selected_role && selected_role != role.id">
+          [disabled]="selected_role && selected_role != role.id"
+        >
           <mat-icon>delete</mat-icon>
         </button>
       </span>
     </div>
 
     <div class="new-right">
-      <mat-form-field
-        class="scope">
+      <mat-form-field class="scope">
         <input
           matInput
           [type]="text"
           (change)="editRightScope($event)"
           placeholder="Declare new scope..."
           [disabled]="selected_role && selected_role != role.id"
-          >
+        />
       </mat-form-field>
 
       <span class="permissions">
         <mat-checkbox
           *ngFor="let permission of permissions"
           (change)="editRightPermissions($event)"
-          name="{{permission}}"
+          name="{{ permission }}"
           [disabled]="!new_right"
           class="permission"
-          [disabled]="selected_role && selected_role != role.id">
+          [disabled]="selected_role && selected_role != role.id"
+        >
           {{ permission }}
         </mat-checkbox>
       </span>
@@ -73,12 +72,12 @@
 
   <span class="role-actions">
     <button
-          mat-raised-button
-          (click)="updateRole(role)"
-          color="primary"
-          title="Update role"
-          [disabled]="!is_being_updated"
-          >
+      mat-raised-button
+      (click)="updateRole(role)"
+      color="primary"
+      title="Update role"
+      [disabled]="!is_being_updated"
+    >
       <mat-icon>check</mat-icon>
       Update role
     </button>
@@ -87,7 +86,8 @@
       (click)="deleteRole(role)"
       color="warn"
       title="Delete role"
-      [disabled]="selected_role && selected_role != role.id">
+      [disabled]="selected_role && selected_role != role.id"
+    >
       <mat-icon>delete</mat-icon>
       Delete role
     </button>

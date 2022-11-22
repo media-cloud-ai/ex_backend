@@ -3,12 +3,7 @@
 <div mat-dialog-content>
   <div>
     <mat-form-field>
-      <input
-        matInput
-        type="text"
-        placeholder="Version"
-        [(ngModel)]="version"
-        >
+      <input matInput type="text" placeholder="Version" [(ngModel)]="version" />
     </mat-form-field>
   </div>
 </div>
@@ -18,11 +13,7 @@
     <mat-icon>clear</mat-icon>
     Cancel
   </button>
-  <button
-    mat-raised-button
-    (click)="onClose()"
-    color="accent"
-    cdkFocusInitial>
+  <button mat-raised-button (click)="onClose()" color="accent" cdkFocusInitial>
     <mat-icon>done</mat-icon>
     Save
   </button>

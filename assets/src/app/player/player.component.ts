@@ -1,28 +1,26 @@
-
-import {Component, HostListener} from '@angular/core'
-import {ActivatedRoute, Router} from '@angular/router'
+import { Component, HostListener } from '@angular/core'
+import { ActivatedRoute, Router } from '@angular/router'
 
 import {
   MediaPlayer,
   PlaybackTimeUpdatedEvent,
   MediaPlayerEvents,
-  } from 'dashjs'
+} from 'dashjs'
 
-import {Observable} from 'rxjs'
+import { Observable } from 'rxjs'
 import 'rxjs/add/observable/interval'
 
-import {Cue} from 'ts-subtitle'
-import {MouseMoveService} from '../services/mousemove.service'
+import { Cue } from 'ts-subtitle'
+import { MouseMoveService } from '../services/mousemove.service'
 
-import {RegisteryService} from '../services/registery.service'
-import {Registery, Subtitle} from '../models/registery'
+import { RegisteryService } from '../services/registery.service'
+import { Registery, Subtitle } from '../models/registery'
 
 @Component({
   selector: 'player-component',
   templateUrl: 'player.component.html',
   styleUrls: ['./player.component.less'],
 })
-
 export class PlayerComponent {
   player = MediaPlayer().create()
   duration = 0
@@ -46,7 +44,7 @@ export class PlayerComponent {
 
   leftLanguage: Subtitle
   rightLanguage: Subtitle
-  languages : Subtitle[] = []
+  languages: Subtitle[] = []
 
   isChangingTimecode = false
 
@@ -59,45 +57,60 @@ export class PlayerComponent {
   ngOnInit() {
     var videoPlayer = document.querySelector('#videoPlayer')
 
-    this.sub = this.route
-      .params.subscribe(params => {
-        this.content_id = params['id']
+    this.sub = this.route.params.subscribe((params) => {
+      this.content_id = params['id']
 
-        this.registeryService.getRegistery(this.content_id)
-        .subscribe(item => {
-          this.item = item.data
+      this.registeryService.getRegistery(this.content_id).subscribe((item) => {
+        this.item = item.data
 
-          var url = '/stream/' + this.item.workflow_id + '/manifest.mpd'
-          this.player.getDebug().setLogToBrowserConsole(false)
-          this.player.initialize(<HTMLElement>videoPlayer, url, false)
+        var url = '/stream/' + this.item.workflow_id + '/manifest.mpd'
+        this.player.getDebug().setLogToBrowserConsole(false)
+        this.player.initialize(<HTMLElement>videoPlayer, url, false)
 
-          this.player.on(MediaPlayer.events['PLAYBACK_PAUSED'], this.processEvent, this)
-          this.player.on(MediaPlayer.events['PLAYBACK_ENDED'], this.processEvent, this)
-          this.player.on(MediaPlayer.events['PLAYBACK_PLAYING'], this.processEvent, this)
-          this.player.on(MediaPlayer.events['PLAYBACK_METADATA_LOADED'], this.processEvent, this)
+        this.player.on(
+          MediaPlayer.events['PLAYBACK_PAUSED'],
+          this.processEvent,
+          this,
+        )
+        this.player.on(
+          MediaPlayer.events['PLAYBACK_ENDED'],
+          this.processEvent,
+          this,
+        )
+        this.player.on(
+          MediaPlayer.events['PLAYBACK_PLAYING'],
+          this.processEvent,
+          this,
+        )
+        this.player.on(
+          MediaPlayer.events['PLAYBACK_METADATA_LOADED'],
+          this.processEvent,
+          this,
+        )
 
-          if(this.item.params && this.item.params.subtitles) {
-            this.languages = this.item.params.subtitles
-            for(var i = 0; i< this.languages.length; ++i) {
-              this.languages[i].index = i;
-            }
-
-            this.leftLanguage = this.languages[0]
-            this.rightLanguage = this.languages[this.languages.length - 1]
+        if (this.item.params && this.item.params.subtitles) {
+          this.languages = this.item.params.subtitles
+          for (var i = 0; i < this.languages.length; ++i) {
+            this.languages[i].index = i
           }
-        })
-      })
 
+          this.leftLanguage = this.languages[0]
+          this.rightLanguage = this.languages[this.languages.length - 1]
+        }
+      })
+    })
 
     this.subFocus = this.mouseMoveService.focusSubtitleEvent.subscribe(
-      event => {
+      (event) => {
         this.countFocused += 1
-      })
+      },
+    )
 
     this.subOutFocus = this.mouseMoveService.outFocusSubtitleEvent.subscribe(
-      event => {
+      (event) => {
         this.countFocused -= 1
-      })
+      },
+    )
   }
 
   ngOnDestroy() {
@@ -128,8 +141,7 @@ export class PlayerComponent {
   }
 
   startRefresh() {
-    this.sub = Observable.interval(100)
-    .subscribe((val) => {
+    this.sub = Observable.interval(100).subscribe((val) => {
       this.getCurrentTime()
     })
   }
@@ -149,7 +161,7 @@ export class PlayerComponent {
 
   playPauseSwitch() {
     this.playing = !this.playing
-    if(this.playing) {
+    if (this.playing) {
       this.player.play()
     } else {
       this.player.pause()
@@ -157,7 +169,7 @@ export class PlayerComponent {
   }
 
   replay(duration: number) {
-    if(this.playing) {
+    if (this.playing) {
       this.player.pause()
     }
     this.player.seek(duration)
@@ -176,15 +188,14 @@ export class PlayerComponent {
 
   playSegment(cue) {
     // console.log("play segment...", cue)
-    if(cue) {
+    if (cue) {
       this.replay(cue.start)
     }
   }
 
   @HostListener('window:keydown', ['$event'])
   keyDownEvent(event: KeyboardEvent) {
-
-    if(this.countFocused == 0 && event.code === 'Space') {
+    if (this.countFocused == 0 && event.code === 'Space') {
       event.preventDefault()
       return true
     }
@@ -197,7 +208,7 @@ export class PlayerComponent {
   keyUpEvent(event: KeyboardEvent) {
     // console.log(event)
 
-    if(this.countFocused == 0 && event.code === 'Space') {
+    if (this.countFocused == 0 && event.code === 'Space') {
       this.playPauseSwitch()
       event.preventDefault()
       return true

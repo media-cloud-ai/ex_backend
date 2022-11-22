@@ -1,7 +1,7 @@
 <h1 mat-dialog-title>Update Timecode</h1>
 
 <div mat-dialog-content>
-  <mat-form-field class=field>
+  <mat-form-field class="field">
     <input
       matInput
       type="number"
@@ -9,10 +9,10 @@
       max="23"
       step="1"
       [(ngModel)]="hours"
-      >
+    />
   </mat-form-field>
   :
-  <mat-form-field class=field>
+  <mat-form-field class="field">
     <input
       matInput
       type="number"
@@ -20,10 +20,10 @@
       max="59"
       step="1"
       [(ngModel)]="minutes"
-      >
+    />
   </mat-form-field>
   :
-  <mat-form-field class=field>
+  <mat-form-field class="field">
     <input
       matInput
       type="number"
@@ -31,10 +31,10 @@
       max="59"
       step="1"
       [(ngModel)]="seconds"
-      >
+    />
   </mat-form-field>
   :
-  <mat-form-field class=field>
+  <mat-form-field class="field">
     <input
       matInput
       type="number"
@@ -42,7 +42,7 @@
       max="24"
       step="1"
       [(ngModel)]="frames"
-      >
+    />
   </mat-form-field>
 </div>
 
@@ -51,11 +51,7 @@
     <mat-icon>clear</mat-icon>
     Cancel
   </button>
-  <button
-    mat-raised-button
-    (click)="onClose()"
-    color="accent"
-    cdkFocusInitial>
+  <button mat-raised-button (click)="onClose()" color="accent" cdkFocusInitial>
     <mat-icon>done</mat-icon>
     Done
   </button>

@@ -1,80 +1,151 @@
-
 <div>
-  <form [formGroup]="jobsForm" fxFlex fxLayout="column" autocomplete="off" class="job-statistics-filters">
+  <form
+    [formGroup]="jobsForm"
+    fxFlex
+    fxLayout="column"
+    autocomplete="off"
+    class="job-statistics-filters"
+  >
     <mat-form-field class="job-filters-input">
-      <mat-select formControlName="selectedSteps" placeholder="Steps" [(ngModel)]="jobSelectedNames" multiple>
-        <mat-option *ngFor="let name of stepNames" [value]="name" [ngClass]="name">
+      <mat-select
+        formControlName="selectedSteps"
+        placeholder="Steps"
+        [(ngModel)]="jobSelectedNames"
+        multiple
+      >
+        <mat-option
+          *ngFor="let name of stepNames"
+          [value]="name"
+          [ngClass]="name"
+        >
           {{ name }}
         </mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field class="job-filters-input">
-      <mat-select formControlName="selectedStatus" placeholder="Status" [(ngModel)]="jobSelectedStatus" multiple>
-        <mat-option *ngFor="let state of jobStatus" [value]="state.id" [ngClass]="state.id">
+      <mat-select
+        formControlName="selectedStatus"
+        placeholder="Status"
+        [(ngModel)]="jobSelectedStatus"
+        multiple
+      >
+        <mat-option
+          *ngFor="let state of jobStatus"
+          [value]="state.id"
+          [ngClass]="state.id"
+        >
           {{ state.label }}
         </mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field class="job-filters-input">
-      <input formControlName="startDate" matInput [ngxMatDatetimePicker]="picker_job_start_date" placeholder="Start date"
-        name=start_date [(ngModel)]="jobStartDate">
-      <mat-datepicker-toggle matSuffix [for]="picker_job_start_date"></mat-datepicker-toggle>
-      <ngx-mat-datetime-picker #picker_job_start_date [showSeconds]=true>
+      <input
+        formControlName="startDate"
+        matInput
+        [ngxMatDatetimePicker]="picker_job_start_date"
+        placeholder="Start date"
+        name="start_date"
+        [(ngModel)]="jobStartDate"
+      />
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="picker_job_start_date"
+      ></mat-datepicker-toggle>
+      <ngx-mat-datetime-picker #picker_job_start_date [showSeconds]="true">
       </ngx-mat-datetime-picker>
     </mat-form-field>
 
     <mat-form-field class="job-filters-input">
-      <input formControlName="endDate" matInput [ngxMatDatetimePicker]="picker_job_end_date" placeholder="End date"
-        name=end_date [(ngModel)]="jobEndDate">
-      <mat-datepicker-toggle matSuffix [for]="picker_job_end_date"></mat-datepicker-toggle>
-      <ngx-mat-datetime-picker #picker_job_end_date [showSeconds]=true>
+      <input
+        formControlName="endDate"
+        matInput
+        [ngxMatDatetimePicker]="picker_job_end_date"
+        placeholder="End date"
+        name="end_date"
+        [(ngModel)]="jobEndDate"
+      />
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="picker_job_end_date"
+      ></mat-datepicker-toggle>
+      <ngx-mat-datetime-picker #picker_job_end_date [showSeconds]="true">
       </ngx-mat-datetime-picker>
     </mat-form-field>
 
-    <mat-form-field class="job-filters-input job-filter-chips" appearance="fill">
+    <mat-form-field
+      class="job-filters-input job-filter-chips"
+      appearance="fill"
+    >
       <mat-chip-list #instance_id_chip_list aria-label="Instance ID filter">
-        <mat-chip *ngFor="let instance_id of jobInstanceIDs" [selectable]="false"
-                 [removable]="true" (removed)="removeChip(jobInstanceIDs, instance_id)">
-          {{instance_id}}
+        <mat-chip
+          *ngFor="let instance_id of jobInstanceIDs"
+          [selectable]="false"
+          [removable]="true"
+          (removed)="removeChip(jobInstanceIDs, instance_id)"
+        >
+          {{ instance_id }}
           <mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip>
-        <input placeholder="Worker instance IDs..."
-               [matChipInputFor]="instance_id_chip_list"
-               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-               [matChipInputAddOnBlur]="true"
-               (matChipInputTokenEnd)="addChip(jobInstanceIDs, $event)">
+        <input
+          placeholder="Worker instance IDs..."
+          [matChipInputFor]="instance_id_chip_list"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          [matChipInputAddOnBlur]="true"
+          (matChipInputTokenEnd)="addChip(jobInstanceIDs, $event)"
+        />
       </mat-chip-list>
     </mat-form-field>
 
-    <mat-form-field class="job-filters-input job-filter-chips" appearance="fill">
+    <mat-form-field
+      class="job-filters-input job-filter-chips"
+      appearance="fill"
+    >
       <mat-chip-list #worker_label_chip_list aria-label="Worker label filter">
-        <mat-chip *ngFor="let worker_label of jobWorkerLabels" [selectable]="false"
-                 [removable]="true" (removed)="removeChip(jobWorkerLabels, worker_label)">
-          {{worker_label}}
+        <mat-chip
+          *ngFor="let worker_label of jobWorkerLabels"
+          [selectable]="false"
+          [removable]="true"
+          (removed)="removeChip(jobWorkerLabels, worker_label)"
+        >
+          {{ worker_label }}
           <mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip>
-        <input placeholder="Worker labels..."
-               [matChipInputFor]="worker_label_chip_list"
-               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-               [matChipInputAddOnBlur]="true"
-               (matChipInputTokenEnd)="addChip(jobWorkerLabels, $event)">
+        <input
+          placeholder="Worker labels..."
+          [matChipInputFor]="worker_label_chip_list"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          [matChipInputAddOnBlur]="true"
+          (matChipInputTokenEnd)="addChip(jobWorkerLabels, $event)"
+        />
       </mat-chip-list>
     </mat-form-field>
 
-    <mat-form-field class="job-filters-input job-filter-chips" appearance="fill">
-      <mat-chip-list #worker_version_chip_list aria-label="Worker version filter">
-        <mat-chip *ngFor="let worker_version of jobWorkerVersions" [selectable]="false"
-                 [removable]="true" (removed)="removeChip(jobWorkerVersions, worker_version)">
-          {{worker_version}}
+    <mat-form-field
+      class="job-filters-input job-filter-chips"
+      appearance="fill"
+    >
+      <mat-chip-list
+        #worker_version_chip_list
+        aria-label="Worker version filter"
+      >
+        <mat-chip
+          *ngFor="let worker_version of jobWorkerVersions"
+          [selectable]="false"
+          [removable]="true"
+          (removed)="removeChip(jobWorkerVersions, worker_version)"
+        >
+          {{ worker_version }}
           <mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip>
-        <input placeholder="Worker versions..."
-               [matChipInputFor]="worker_version_chip_list"
-               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-               [matChipInputAddOnBlur]="true"
-               (matChipInputTokenEnd)="addChip(jobWorkerVersions, $event)">
+        <input
+          placeholder="Worker versions..."
+          [matChipInputFor]="worker_version_chip_list"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          [matChipInputAddOnBlur]="true"
+          (matChipInputTokenEnd)="addChip(jobWorkerVersions, $event)"
+        />
       </mat-chip-list>
     </mat-form-field>
 
@@ -87,11 +158,13 @@
 
 <div *ngIf="loading" class="loading">
   <span>
-    <img src="/bundles/images/media-io.animated.svg" width="50px" height="50px" />
+    <img
+      src="/bundles/images/media-io.animated.svg"
+      width="50px"
+      height="50px"
+    />
   </span>
-  <span class=text>
-    Loading ...
-  </span>
+  <span class="text"> Loading ... </span>
 </div>
 
 <ul *ngIf="!loading" class="job-durations">
@@ -104,9 +177,7 @@
     <span class="job-duration">Total</span>
   </li>
 
-  <li *ngIf="jobDurations.length == 0" class="notfound">
-    No statistic found.
-  </li>
+  <li *ngIf="jobDurations.length == 0" class="notfound">No statistic found.</li>
 
   <li *ngFor="let item of jobDurations" class="duration">
     <span class="job-identifier">
@@ -117,9 +188,24 @@
     </span>
     <span class="job-duration" *ngIf="item.durations.count > 0">
       <div class="job-duration-values">
-        <div class="minimum">Min: {{ item.durations.min.order_pending * 1000 | duration : 'timecode_ms' }}</div>
-        <div class="average">{{ item.durations.average.order_pending * 1000 | duration : 'timecode_ms' }}</div>
-        <div class="maximum">Max: {{ item.durations.max.order_pending * 1000 | duration : 'timecode_ms' }}</div>
+        <div class="minimum">
+          Min:
+          {{
+            item.durations.min.order_pending * 1000 | duration: 'timecode_ms'
+          }}
+        </div>
+        <div class="average">
+          {{
+            item.durations.average.order_pending * 1000
+              | duration: 'timecode_ms'
+          }}
+        </div>
+        <div class="maximum">
+          Max:
+          {{
+            item.durations.max.order_pending * 1000 | duration: 'timecode_ms'
+          }}
+        </div>
       </div>
     </span>
     <span class="job-duration" *ngIf="item.durations.count == 0">
@@ -129,9 +215,19 @@
     </span>
     <span class="job-duration" *ngIf="item.durations.count > 0">
       <div class="job-duration-values">
-        <div class="minimum">Min: {{ item.durations.min.processing * 1000 | duration : 'timecode_ms' }}</div>
-        <div class="average">{{ item.durations.average.processing * 1000 | duration : 'timecode_ms' }}</div>
-        <div class="maximum">Max: {{ item.durations.max.processing * 1000 | duration : 'timecode_ms' }}</div>
+        <div class="minimum">
+          Min:
+          {{ item.durations.min.processing * 1000 | duration: 'timecode_ms' }}
+        </div>
+        <div class="average">
+          {{
+            item.durations.average.processing * 1000 | duration: 'timecode_ms'
+          }}
+        </div>
+        <div class="maximum">
+          Max:
+          {{ item.durations.max.processing * 1000 | duration: 'timecode_ms' }}
+        </div>
       </div>
     </span>
     <span class="job-duration" *ngIf="item.durations.count == 0">
@@ -141,9 +237,24 @@
     </span>
     <span class="job-duration" *ngIf="item.durations.count > 0">
       <div class="job-duration-values">
-        <div class="minimum">Min: {{ item.durations.min.response_pending * 1000 | duration : 'timecode_ms' }}</div>
-        <div class="average">{{ item.durations.average.response_pending * 1000 | duration : 'timecode_ms' }}</div>
-        <div class="maximum">Max: {{ item.durations.max.response_pending * 1000 | duration : 'timecode_ms' }}</div>
+        <div class="minimum">
+          Min:
+          {{
+            item.durations.min.response_pending * 1000 | duration: 'timecode_ms'
+          }}
+        </div>
+        <div class="average">
+          {{
+            item.durations.average.response_pending * 1000
+              | duration: 'timecode_ms'
+          }}
+        </div>
+        <div class="maximum">
+          Max:
+          {{
+            item.durations.max.response_pending * 1000 | duration: 'timecode_ms'
+          }}
+        </div>
       </div>
     </span>
     <span class="job-duration" *ngIf="item.durations.count == 0">
@@ -153,9 +264,15 @@
     </span>
     <span class="job-duration" *ngIf="item.durations.count > 0">
       <div class="job-duration-values">
-        <div class="minimum">Min: {{ item.durations.min.total * 1000 | duration : 'timecode_ms' }}</div>
-        <div class="average">{{ item.durations.average.total * 1000 | duration : 'timecode_ms' }}</div>
-        <div class="maximum">Max: {{ item.durations.max.total * 1000 | duration : 'timecode_ms' }}</div>
+        <div class="minimum">
+          Min: {{ item.durations.min.total * 1000 | duration: 'timecode_ms' }}
+        </div>
+        <div class="average">
+          {{ item.durations.average.total * 1000 | duration: 'timecode_ms' }}
+        </div>
+        <div class="maximum">
+          Max: {{ item.durations.max.total * 1000 | duration: 'timecode_ms' }}
+        </div>
       </div>
     </span>
     <span class="job-duration" *ngIf="item.durations.count == 0">
@@ -167,11 +284,12 @@
 </ul>
 
 <mat-paginator
-  class=paginator
-  showFirstLastButtons=true
+  class="paginator"
+  showFirstLastButtons="true"
   [pageSize]="jobStatisticsPageSize"
   [pageIndex]="jobStatisticsPage"
   [pageSizeOptions]="pageSizeOptions"
   [length]="jobStatisticsPageTotal"
-  (page)="pageEvent = changeJobStatisticsPage($event)">
+  (page)="pageEvent = changeJobStatisticsPage($event)"
+>
 </mat-paginator>

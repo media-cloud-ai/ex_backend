@@ -1,6 +1,5 @@
 import { Job } from './job'
 
-
 export class JobsStatus {
   completed: number
   dropped: number
@@ -61,7 +60,7 @@ export class NotificationStatus {
   timestamp?: string
 }
 
-export class NotificationHook {
+export class NotificationHook {
   label?: string
   endpoint?: string
   credentials?: string
@@ -90,68 +89,75 @@ export class Workflow {
   notification_hooks?: Array<NotificationHook>
 
   static compare(a: Workflow, b: Workflow) {
-    let identifierComparison = a.identifier.localeCompare(b.identifier);
+    let identifierComparison = a.identifier.localeCompare(b.identifier)
 
     if (identifierComparison != 0) {
-      return identifierComparison;
+      return identifierComparison
     }
 
-    let a_version = Version.from_workflow(a);
-    let b_version = Version.from_workflow(b);
+    let a_version = Version.from_workflow(a)
+    let b_version = Version.from_workflow(b)
 
-    return Version.compare(a_version, b_version);
+    return Version.compare(a_version, b_version)
   }
 
   public is_paused(): boolean {
-    return ["pausing", "paused"].includes(this.status.state);
+    return ['pausing', 'paused'].includes(this.status.state)
   }
 
   public is_stopped(): boolean {
-    return ["stopped"].includes(this.status.state);
+    return ['stopped'].includes(this.status.state)
   }
 
   public is_finished(): boolean {
-    return this.artifacts.length > 0;
+    return this.artifacts.length > 0
   }
 
   has_at_least_one_queued_job(): boolean {
-    return this.steps.some((s) => s['jobs']['queued'] == 1);
+    return this.steps.some((s) => s['jobs']['queued'] == 1)
   }
 
   has_at_least_one_processing_step(): boolean {
-    return this.steps.some((s) => s['status'] === "processing");
+    return this.steps.some((s) => s['status'] === 'processing')
   }
 
   is_about_to_clean_workspace(): boolean {
-    return this.steps.some((s) => s.name === 'clean_workspace' && s.status !== 'queued')
+    return this.steps.some(
+      (s) => s.name === 'clean_workspace' && s.status !== 'queued',
+    )
   }
 
   public can_stop(): boolean {
-    return !this.is_stopped()
-        && !this.is_about_to_clean_workspace()
-        && (this.has_at_least_one_processing_step() || this.is_paused() || this.is_live);
+    return (
+      !this.is_stopped() &&
+      !this.is_about_to_clean_workspace() &&
+      (this.has_at_least_one_processing_step() ||
+        this.is_paused() ||
+        this.is_live)
+    )
   }
 
   public can_pause(): boolean {
-    let last_step = this.steps[this.steps.length - 1];
-    let is_last_step_processing = last_step['jobs']['processing'] == 1;
+    let last_step = this.steps[this.steps.length - 1]
+    let is_last_step_processing = last_step['jobs']['processing'] == 1
 
-    return !this.is_finished()
-        && !this.is_stopped()
-        && !this.is_paused()
-        && (this.has_at_least_one_queued_job() || this.has_at_least_one_processing_step())
-        && !is_last_step_processing;
+    return (
+      !this.is_finished() &&
+      !this.is_stopped() &&
+      !this.is_paused() &&
+      (this.has_at_least_one_queued_job() ||
+        this.has_at_least_one_processing_step()) &&
+      !is_last_step_processing
+    )
   }
 
   public can_resume(): boolean {
-    return this.is_paused() && !this.is_finished() && !this.is_stopped();
+    return this.is_paused() && !this.is_finished() && !this.is_stopped()
   }
 
   public can_delete(): boolean {
-    return !this.deleted;
+    return !this.deleted
   }
-
-
 }
 
 export class WorkflowEvent {
@@ -167,54 +173,60 @@ export class Version {
   micro: number
 
   constructor(major: number, minor: number, micro: number) {
-    this.major = major;
-    this.minor = minor;
-    this.micro = micro;
+    this.major = major
+    this.minor = minor
+    this.micro = micro
   }
 
   static from_workflow(workflow: Workflow): Version {
     return new Version(
       parseInt(workflow.version_major),
       parseInt(workflow.version_minor),
-      parseInt(workflow.version_micro));
+      parseInt(workflow.version_micro),
+    )
   }
 
   static from_string(value: string): Version {
-    let items = value.split(".");
+    let items = value.split('.')
     if (items.length != 3) {
-      console.error("Invalid version string", value);
-      return undefined;
+      console.error('Invalid version string', value)
+      return undefined
     }
     return new Version(
       parseInt(items[0]),
       parseInt(items[1]),
-      parseInt(items[2]));
+      parseInt(items[2]),
+    )
   }
 
-  public equals(other: Version) : boolean {
-      return this.major === other.major && this.minor === other.minor && this.micro === other.micro;
+  public equals(other: Version): boolean {
+    return (
+      this.major === other.major &&
+      this.minor === other.minor &&
+      this.micro === other.micro
+    )
   }
 
   static compare(a: Version, b: Version) {
-    let diff = a.major - b.major;
+    let diff = a.major - b.major
     if (diff != 0) {
-      return diff;
+      return diff
     }
 
-    diff = a.minor - b.minor;
+    diff = a.minor - b.minor
     if (diff != 0) {
-      return diff;
+      return diff
     }
 
-    diff = a.micro - b.micro;
+    diff = a.micro - b.micro
     if (diff != 0) {
-      return diff;
+      return diff
     }
 
-    return 0;
+    return 0
   }
 
-  public toString = () : string => {
-      return this.major + "." + this.minor + "." + this.micro;
+  public toString = (): string => {
+    return this.major + '.' + this.minor + '.' + this.micro
   }
 }

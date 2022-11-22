@@ -1,8 +1,12 @@
-import {Component, Inject} from '@angular/core'
-import {MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog'
+import { Component, Inject } from '@angular/core'
+import {
+  MatDialogConfig,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog'
 import { UserService } from '../../services/user.service'
-import {User, ValidationLink} from '../../models/user'
-import { Clipboard } from "@angular/cdk/clipboard";
+import { User, ValidationLink } from '../../models/user'
+import { Clipboard } from '@angular/cdk/clipboard'
 
 @Component({
   selector: 'user_show_validation_link_dialog',
@@ -10,17 +14,16 @@ import { Clipboard } from "@angular/cdk/clipboard";
   styleUrls: ['./user_show_validation_link_dialog.component.less'],
 })
 export class UserShowValidationLinkDialogComponent {
-
   user: User
   type: string
   validation_link: string
 
   constructor(
-    private userService:UserService,
+    private userService: UserService,
     private clipboard: Clipboard,
     public dialogRef: MatDialogRef<UserShowValidationLinkDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) {
-
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) {
     console.log(data)
     this.user = data.user
     this.type = data.message

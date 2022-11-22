@@ -1,32 +1,30 @@
+import { Component, Input } from '@angular/core'
+import { ActivatedRoute, Router } from '@angular/router'
+import { MatDialog } from '@angular/material/dialog'
 
-import {Component, Input} from '@angular/core'
-import {ActivatedRoute, Router} from '@angular/router'
-import {MatDialog} from '@angular/material/dialog'
-
-import {Registery} from '../models/registery'
-import {RegisteryService} from '../services/registery.service'
-import {NewSubtitleDialogComponent} from './dialog/new_subtitle_dialog.component'
-import {DeleteSubtitleDialog} from './dialog/delete_subtitle_dialog.component'
+import { Registery } from '../models/registery'
+import { RegisteryService } from '../services/registery.service'
+import { NewSubtitleDialogComponent } from './dialog/new_subtitle_dialog.component'
+import { DeleteSubtitleDialog } from './dialog/delete_subtitle_dialog.component'
 
 import {
   MediaPlayer,
   PlaybackTimeUpdatedEvent,
   MediaPlayerEvents,
-  } from 'dashjs'
+} from 'dashjs'
 
 @Component({
   selector: 'registery-component',
   templateUrl: 'registery.component.html',
   styleUrls: ['./registery.component.less'],
 })
-
 export class RegisteryComponent {
   @Input() item: Registery
   @Input() index: number
   player = MediaPlayer().create()
 
   playing = false
-  htmlPlayer = ""
+  htmlPlayer = ''
 
   constructor(
     public dialog: MatDialog,
@@ -35,13 +33,18 @@ export class RegisteryComponent {
   ) {}
 
   ngOnInit() {
-    var videoPlayer = document.querySelectorAll(".videoPlayer")[this.index]
+    var videoPlayer = document.querySelectorAll('.videoPlayer')[this.index]
 
-    if(this.item.params.manifests &&
+    if (
+      this.item.params.manifests &&
       this.item.params.manifests.length > 0 &&
       this.item.params.manifests[0].paths &&
-      this.item.params.manifests[0].paths.length > 0) {
-      var url = this.item.params.manifests[0].paths[0].replace("/dash", "/stream")
+      this.item.params.manifests[0].paths.length > 0
+    ) {
+      var url = this.item.params.manifests[0].paths[0].replace(
+        '/dash',
+        '/stream',
+      )
 
       this.player.getDebug().setLogToBrowserConsole(false)
       this.player.initialize(<HTMLElement>videoPlayer, url, false)
@@ -49,7 +52,7 @@ export class RegisteryComponent {
   }
 
   play() {
-    if(this.playing) {
+    if (this.playing) {
       this.player.pause()
       this.playing = false
     } else {
@@ -63,31 +66,35 @@ export class RegisteryComponent {
   }
 
   addSubtitle() {
-    let dialogRef = this.dialog.open(NewSubtitleDialogComponent, {data: this.item})
-    dialogRef.afterClosed().subscribe(state => {
-      if(state != undefined) {
-        this.registeryService.addSubtitle(this.item.id, state.language, state.version)
-        .subscribe(itemData => {
-          this.item = itemData.data
-        })
+    let dialogRef = this.dialog.open(NewSubtitleDialogComponent, {
+      data: this.item,
+    })
+    dialogRef.afterClosed().subscribe((state) => {
+      if (state != undefined) {
+        this.registeryService
+          .addSubtitle(this.item.id, state.language, state.version)
+          .subscribe((itemData) => {
+            this.item = itemData.data
+          })
       }
     })
   }
 
   deleteSubtitle(index: number) {
-    let dialogRef = this.dialog.open(DeleteSubtitleDialog, {data: this.item})
-    dialogRef.afterClosed().subscribe(state => {
-      if(state === true) {
-        this.registeryService.deleteSubtitle(this.item.id, index)
-        .subscribe(itemData => {
-          this.item = itemData.data
-        })
+    let dialogRef = this.dialog.open(DeleteSubtitleDialog, { data: this.item })
+    dialogRef.afterClosed().subscribe((state) => {
+      if (state === true) {
+        this.registeryService
+          .deleteSubtitle(this.item.id, index)
+          .subscribe((itemData) => {
+            this.item = itemData.data
+          })
       }
     })
   }
 
-  filterLatestVersions(list){
-    return list.filter(x => x.childs.length == 0);
+  filterLatestVersions(list) {
+    return list.filter((x) => x.childs.length == 0)
   }
 
   showDetails() {

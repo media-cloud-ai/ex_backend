@@ -1,17 +1,16 @@
+import { Component, Input, ViewChild } from '@angular/core'
+import { MatDialog } from '@angular/material/dialog'
+import { PageEvent } from '@angular/material/paginator'
+import { ActivatedRoute, Router } from '@angular/router'
 
-import {Component, Input, ViewChild} from '@angular/core'
-import {MatDialog} from '@angular/material/dialog'
-import {PageEvent} from '@angular/material/paginator'
-import {ActivatedRoute, Router} from '@angular/router'
+import { AuthService } from '../authentication/auth.service'
+import { JobService } from '../services/job.service'
+import { WorkflowService } from '../services/workflow.service'
+import { JobPage } from '../models/page/job_page'
+import { Job } from '../models/job'
+import { Workflow } from '../models/workflow'
 
-import {AuthService} from '../authentication/auth.service'
-import {JobService} from '../services/job.service'
-import {WorkflowService} from '../services/workflow.service'
-import {JobPage} from '../models/page/job_page'
-import {Job} from '../models/job'
-import {Workflow} from '../models/workflow'
-
-import {JobDetailsDialogComponent} from './details/job_details_dialog.component'
+import { JobDetailsDialogComponent } from './details/job_details_dialog.component'
 
 import * as moment from 'moment'
 
@@ -20,7 +19,6 @@ import * as moment from 'moment'
   templateUrl: 'jobs.component.html',
   styleUrls: ['./jobs.component.less'],
 })
-
 export class JobsComponent {
   length = 1000
   pageSize = 10
@@ -38,7 +36,7 @@ export class JobsComponent {
   right_retry: boolean = false
   is_live: boolean = false
 
-  retryable_jobs = ['error', 'stopped'] as const;
+  retryable_jobs = ['error', 'stopped'] as const
 
   constructor(
     private authService: AuthService,
@@ -46,26 +44,24 @@ export class JobsComponent {
     private workflowService: WorkflowService,
     private route: ActivatedRoute,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
   ) {}
 
   ngOnInit() {
-    this.sub = this.route
-      .queryParams
-      .subscribe(params => {
-        this.page = 0
-        this.getJobs(this.page)
+    this.sub = this.route.queryParams.subscribe((params) => {
+      this.page = 0
+      this.getJobs(this.page)
+    })
+
+    this.is_live = this.workflow.is_live
+
+    console.log(this.workflow.is_live)
+
+    this.authService
+      .hasAnyRights('workflow::' + this.workflow.identifier, 'retry')
+      .subscribe((response) => {
+        this.right_retry = response.authorized
       })
-
-      this.is_live = this.workflow.is_live
-
-      console.log(this.workflow.is_live)
-
-      this.authService.hasAnyRights("workflow::" + this.workflow.identifier, "retry").subscribe(
-       response => {
-          this.right_retry = response.authorized
-      })
-
   }
 
   ngOnDestroy() {
@@ -73,20 +69,25 @@ export class JobsComponent {
   }
 
   getJobs(index) {
-    this.jobService.getJobs(index, 200, this.workflow.id, this.step_id, this.jobType)
-    .subscribe(jobPage => {
-      this.jobs = jobPage
-      this.length = jobPage.total
-    })
+    this.jobService
+      .getJobs(index, 200, this.workflow.id, this.step_id, this.jobType)
+      .subscribe((jobPage) => {
+        this.jobs = jobPage
+        this.length = jobPage.total
+      })
   }
 
   eventGetJobs(event) {
-    this.router.navigate(['/jobs'], { queryParams: this.getQueryParamsForPage(event.pageIndex) })
+    this.router.navigate(['/jobs'], {
+      queryParams: this.getQueryParamsForPage(event.pageIndex),
+    })
     this.getJobs(event.pageIndex)
   }
 
   updateJobs() {
-    this.router.navigate(['/jobs'], { queryParams: this.getQueryParamsForPage(0) })
+    this.router.navigate(['/jobs'], {
+      queryParams: this.getQueryParamsForPage(0),
+    })
     this.getJobs(0)
   }
 
@@ -109,22 +110,25 @@ export class JobsComponent {
   }
 
   getLastStatusDescription(job: Job) {
-    let lastStatus = Job.getLastStatus(job);
+    let lastStatus = Job.getLastStatus(job)
     if (lastStatus) {
-      return lastStatus["description"];
+      return lastStatus['description']
     }
-    return undefined;
+    return undefined
   }
 
   displayJobDetails(job: Job, workflow: Workflow) {
-    this.dialog.open(JobDetailsDialogComponent, {data: {job: job, workflow: workflow}})
+    this.dialog.open(JobDetailsDialogComponent, {
+      data: { job: job, workflow: workflow },
+    })
   }
 
   retryJob(job: Job) {
-    this.workflowService.sendWorkflowEvent(this.workflow.id, {event: 'retry', job_id: job.id})
-    .subscribe(response => {
-      console.log(response)
-      this.ngOnInit();
-    })
+    this.workflowService
+      .sendWorkflowEvent(this.workflow.id, { event: 'retry', job_id: job.id })
+      .subscribe((response) => {
+        console.log(response)
+        this.ngOnInit()
+      })
   }
 }

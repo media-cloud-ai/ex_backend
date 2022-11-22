@@ -5,8 +5,8 @@ import { Pipe, PipeTransform } from '@angular/core'
  * Example:
  *   {{ 'fra' | language }}
  *   formats to: "French"
-*/
-@Pipe({name: 'language'})
+ */
+@Pipe({ name: 'language' })
 export class LanguagePipe implements PipeTransform {
   transform(language: string): string {
     var allLanguages = [
@@ -19,7 +19,7 @@ export class LanguagePipe implements PipeTransform {
     ]
 
     for (var i = allLanguages.length - 1; i >= 0; i--) {
-      if (allLanguages[i].id === language.split(':')[0]){
+      if (allLanguages[i].id === language.split(':')[0]) {
         return allLanguages[i].name
       }
     }

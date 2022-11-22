@@ -1,4 +1,3 @@
-
 export class Info {
   detail: string
 }
@@ -12,25 +11,25 @@ export class Right {
   action: string[]
 
   constructor() {
-    this.action = [];
+    this.action = []
   }
 }
 
 export class Role {
   id?: number
   name: string
-  rights: Right[];
+  rights: Right[]
 
   constructor(name: string) {
-    this.name = name;
-    this.rights = [];
+    this.name = name
+    this.rights = []
   }
 }
 
 export enum RoleEventAction {
   Update,
   Delete,
-  Select
+  Select,
 }
 
 export class RoleEvent {
@@ -38,12 +37,12 @@ export class RoleEvent {
   role: Role
 
   constructor(action: RoleEventAction, role: Role) {
-    this.action = action;
-    this.role = role;
+    this.action = action
+    this.role = role
   }
 }
 
-export class ValidationLink{
+export class ValidationLink {
   validation_link: string
 }
 

@@ -1,8 +1,17 @@
 <form [formGroup]="workflowsForm" fxFlex fxLayout="column" autocomplete="off">
   <div class="search-line">
     <mat-form-field>
-      <mat-select formControlName="selectedPreset" placeholder="Saved filters" [(ngModel)]="selectedPreset" (selectionChange)="presetChanged()">
-        <mat-option *ngFor="let f of workflow_filters" [value]="f.filter" class="filter-option">
+      <mat-select
+        formControlName="selectedPreset"
+        placeholder="Saved filters"
+        [(ngModel)]="selectedPreset"
+        (selectionChange)="presetChanged()"
+      >
+        <mat-option
+          *ngFor="let f of workflow_filters"
+          [value]="f.filter"
+          class="filter-option"
+        >
           {{ f.name }}
         </mat-option>
       </mat-select>
@@ -37,32 +46,68 @@
   <div id="filter-line">
     <div>
       <mat-form-field style="width: 21%">
-        <mat-select formControlName="selectedStatus" placeholder="Status" [(ngModel)]="parameters.status" multiple>
+        <mat-select
+          formControlName="selectedStatus"
+          placeholder="Status"
+          [(ngModel)]="parameters.status"
+          multiple
+        >
           <!-- <mat-option (click)="toggleAllSelection()" [value]="0">All</mat-option> -->
-          <mat-option *ngFor="let state of status" [value]="state" [ngClass]="state" class="state-option">
+          <mat-option
+            *ngFor="let state of status"
+            [value]="state"
+            [ngClass]="state"
+            class="state-option"
+          >
             {{ state | titlecase }}
           </mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field style="width: 21%">
-        <mat-select formControlName="selectedMode" placeholder="Mode" [(ngModel)]="parameters.mode" multiple>
-          <mat-option *ngFor="let modus of mode" [value]="modus.id" [ngClass]="modus.id" class="state-option">
+        <mat-select
+          formControlName="selectedMode"
+          placeholder="Mode"
+          [(ngModel)]="parameters.mode"
+          multiple
+        >
+          <mat-option
+            *ngFor="let modus of mode"
+            [value]="modus.id"
+            [ngClass]="modus.id"
+            class="state-option"
+          >
             {{ modus.label }}
           </mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field style="width: 21%">
-        <mat-select formControlName="selectedWorkflows" placeholder="Workflows" [(ngModel)]="parameters.identifiers"
-          multiple>
-          <mat-option (click)="toggleAllSelection()" [value]="0">All</mat-option>
-          <mat-option *ngFor="let workflow of workflows" [value]="workflow.id" [ngClass]="workflow.id"
-            (click)="toggleOne()" class="workflow-option">
+        <mat-select
+          formControlName="selectedWorkflows"
+          placeholder="Workflows"
+          [(ngModel)]="parameters.identifiers"
+          multiple
+        >
+          <mat-option (click)="toggleAllSelection()" [value]="0"
+            >All</mat-option
+          >
+          <mat-option
+            *ngFor="let workflow of workflows"
+            [value]="workflow.id"
+            [ngClass]="workflow.id"
+            (click)="toggleOne()"
+            class="workflow-option"
+          >
             {{ workflow.label }}
           </mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field class="search-text-input" style="width: 21%">
-        <input formControlName="referenceSearch" matInput placeholder="Reference search..." [(ngModel)]="parameters.search">
+        <input
+          formControlName="referenceSearch"
+          matInput
+          placeholder="Reference search..."
+          [(ngModel)]="parameters.search"
+        />
       </mat-form-field>
       <button mat-raised-button color="primary" (click)="searchWorkflows()">
         <i class="material-icons">filter_alt</i>
@@ -81,7 +126,14 @@
   </div>
 
   <div class="search-line-options">
-    <mat-slide-toggle *ngIf="showDetailedToggle" formControlName="detailedToggle" color="primary" [checked]="parameters.detailed" [(ngModel)]="parameters.detailed" (change)="toggleDetailed()">
+    <mat-slide-toggle
+      *ngIf="showDetailedToggle"
+      formControlName="detailedToggle"
+      color="primary"
+      [checked]="parameters.detailed"
+      [(ngModel)]="parameters.detailed"
+      (change)="toggleDetailed()"
+    >
       Detailed
     </mat-slide-toggle>
   </div>

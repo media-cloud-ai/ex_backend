@@ -1,6 +1,6 @@
-import {Component, Inject} from '@angular/core'
-import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog'
-import {Workflow} from '../../models/workflow'
+import { Component, Inject } from '@angular/core'
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
+import { Workflow } from '../../models/workflow'
 
 @Component({
   selector: 'workflow_pause_dialog',
@@ -8,21 +8,17 @@ import {Workflow} from '../../models/workflow'
   styleUrls: ['./workflow_pause_dialog.component.less'],
 })
 export class WorkflowPauseDialogComponent {
-
   workflow: Workflow
   action: string
   date: Date
   delay = 0
   now = new Date()
 
-  available_actions = [
-    "abort",
-    "resume"
-  ]
+  available_actions = ['abort', 'resume']
 
   constructor(
     public dialogRef: MatDialogRef<WorkflowPauseDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     this.workflow = data.workflow
   }
@@ -39,16 +35,15 @@ export class WorkflowPauseDialogComponent {
     let response = {
       workflow: this.workflow,
       event: {
-        event: "pause",
+        event: 'pause',
         post_action: this.action,
         trigger_at: this.date.getTime(),
-      }
-    };
+      },
+    }
     this.dialogRef.close(response)
   }
 
   onActionSelection(event) {
-    this.action = event.value;
+    this.action = event.value
   }
-
 }

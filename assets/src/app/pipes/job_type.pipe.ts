@@ -5,10 +5,9 @@ import { Pipe, PipeTransform } from '@angular/core'
  * Example:
  *   {{ 'ftp_order' | jobType }}
  *   formats to: "FTP transfer"
-*/
-@Pipe({name: 'jobType'})
+ */
+@Pipe({ name: 'jobType' })
 export class JobTypePipe implements PipeTransform {
-
   transform(jobType: string): string {
     var allJobType = [
       { id: 'acs_prepare_audio', name: 'ACS: prepare audio' },
@@ -24,7 +23,7 @@ export class JobTypePipe implements PipeTransform {
       { id: 'generate_dash', name: 'Generate DASH' },
       { id: 'gpac_dash', name: 'DASH generation' },
       { id: 'ism_extraction', name: 'ISM extraction' },
-      { id: 'ism_manifest', name: 'ISM manifest'},
+      { id: 'ism_manifest', name: 'ISM manifest' },
       { id: 'set_language', name: 'Language setting' },
       { id: 'speech_to_text', name: 'Speech to Text' },
       { id: 'ttml_to_mp4', name: 'TTML to MP4' },
@@ -34,7 +33,7 @@ export class JobTypePipe implements PipeTransform {
     ]
 
     for (var i = allJobType.length - 1; i >= 0; i--) {
-      if (allJobType[i].id === jobType){
+      if (allJobType[i].id === jobType) {
         return allJobType[i].name
       }
     }
