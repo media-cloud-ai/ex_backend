@@ -8,7 +8,7 @@ import { StartWorkflowDefinition } from '../models/startWorkflowDefinition'
 import { WorkflowService } from '../services/workflow.service'
 import { S3Service } from '../services/s3.service'
 
-import { Evaporate } from 'evaporate'
+import * as Evaporate from 'evaporate'
 import * as crypto from 'crypto'
 
 export class ProcessStatus {
