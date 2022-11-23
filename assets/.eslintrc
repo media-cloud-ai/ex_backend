@@ -26,9 +26,9 @@
     "@typescript-eslint/no-unused-vars": [
       "warn",
       {
-        "args" : "all",
+        "args": "all",
         "varsIgnorePattern": "^_",
-	      "argsIgnorePattern": "^_"
+        "argsIgnorePattern": "^_"
       }
     ]
   },

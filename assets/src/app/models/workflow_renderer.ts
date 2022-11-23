@@ -50,7 +50,9 @@ export class WorkflowRenderer {
         .filter((s, pos) => line_parent_ids.indexOf(s) === pos)
         .sort((a, b) => a - b)
 
-      const ids_diff = last_line_ids.filter((id) => !line_parent_ids.includes(id))
+      const ids_diff = last_line_ids.filter(
+        (id) => !line_parent_ids.includes(id),
+      )
 
       const no_child_parents = last_line.filter((s) => ids_diff.includes(s.id))
       for (const parent of no_child_parents) {
