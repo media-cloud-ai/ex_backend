@@ -80,7 +80,7 @@
   },
   "scripts": {
     "lint": "./node_modules/.bin/eslint .",
-    "format-check": "./node_modules/.bin/prettier --list-different .",
+    "format-check": "./node_modules/.bin/prettier --check .",
     "format": "./node_modules/.bin/prettier --write .",
     "release": "webpack"
   }

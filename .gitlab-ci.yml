@@ -51,9 +51,7 @@ ts_format:
       - node_modules/
   stage: test
   script:
-    - npm run format
-    - git diff
-    - git diff-index --quiet HEAD -- || exit 1
+    - npm run format-check
     - echo "Passed style check"
   except:
     refs:
