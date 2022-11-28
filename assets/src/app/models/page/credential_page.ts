@@ -1,4 +1,3 @@
-
 import { Credential } from '../credential'
 
 export class CredentialPage {

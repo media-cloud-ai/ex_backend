@@ -1,5 +1,4 @@
-
-import {Registery} from '../registery'
+import { Registery } from '../registery'
 
 export class RegisteryPage {
   data: Registery[]

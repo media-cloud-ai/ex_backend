@@ -6,8 +6,19 @@
     <div class="searchbar">
       <mat-form-field class="search" appearance="fill">
         <mat-label>Search workflows</mat-label>
-        <input matInput type="text" [(ngModel)]="search" (keyup.enter)="loadWorkflows()">
-        <button *ngIf="search" matSuffix mat-icon-button aria-label="Clear" (click)="search=''; loadWorkflows()">
+        <input
+          matInput
+          type="text"
+          [(ngModel)]="search"
+          (keyup.enter)="loadWorkflows()"
+        />
+        <button
+          *ngIf="search"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="search = ''; loadWorkflows()"
+        >
           <mat-icon>close</mat-icon>
         </button>
         <button *ngIf="!search" matSuffix mat-icon-button>
@@ -16,46 +27,38 @@
       </mat-form-field>
     </div>
     <div class="services">
-        <div class="service" *ngFor="let service of services">
-            <button mat-raised-button (click)="selectService(service)">
-              <span class="service-details">
-                 <span class="service-title">
-                  <i class="material-icons" *ngIf="service.icon">
-                  {{ service.icon }}
-                  </i>
-                  {{ service.label }}
+      <div class="service" *ngFor="let service of services">
+        <button mat-raised-button (click)="selectService(service)">
+          <span class="service-details">
+            <span class="service-title">
+              <i class="material-icons" *ngIf="service.icon">
+                {{ service.icon }}
+              </i>
+              {{ service.label }}
 
-                  <span class="version">
-                    (latest v{{ service.version_major }}.{{ service.version_minor }}.{{ service.version_micro }})
-                  </span>
-                  <span *ngIf="service.is_live" class="badge-live">
-                  LIVE
-                  </span>
-
-                  </span>
-
-                  <span class="tags">
-                  <mat-chip-list class="tag" *ngFor="let tag of service.tags">
-                    <mat-chip color="white" selected>
-                      {{ tag }}
-                    </mat-chip>
-                  </mat-chip-list>
-                  </span>
+              <span class="version">
+                (latest v{{ service.version_major }}.{{
+                  service.version_minor
+                }}.{{ service.version_micro }})
               </span>
+              <span *ngIf="service.is_live" class="badge-live"> LIVE </span>
+            </span>
 
-            </button>
-        </div>
+            <span class="tags">
+              <mat-chip-list class="tag" *ngFor="let tag of service.tags">
+                <mat-chip color="white" selected>
+                  {{ tag }}
+                </mat-chip>
+              </mat-chip-list>
+            </span>
+          </span>
+        </button>
+      </div>
     </div>
     <mat-toolbar>
       <mat-toolbar-row>
-        <button
-            mat-raised-button
-            color="primary"
-            (click)="loadWorkflows()"
-          >
-            <span class="material-icons">
-              refresh
-            </span>
+        <button mat-raised-button color="primary" (click)="loadWorkflows()">
+          <span class="material-icons"> refresh </span>
         </button>
         <mat-paginator
           class="paginator"
@@ -71,14 +74,11 @@
       </mat-toolbar-row>
     </mat-toolbar>
   </mat-step>
-  <mat-step [stepControl]="versionSelection" optional=false>
+  <mat-step [stepControl]="versionSelection" optional="false">
     <ng-template matStepLabel>Select service version</ng-template>
     <div class="services">
       <div class="service" *ngFor="let service of selectedServiceVersion">
-        <button
-          mat-raised-button
-          (click)="selectVersion(service)"
-        >
+        <button mat-raised-button (click)="selectVersion(service)">
           <i class="material-icons" *ngIf="service.icon">
             {{ service.icon }}
           </i>
@@ -88,9 +88,7 @@
               service.version_micro
             }}
           </span>
-          <span *ngIf="service.is_live" class="badge-live">
-            LIVE
-          </span>
+          <span *ngIf="service.is_live" class="badge-live"> LIVE </span>
         </button>
       </div>
     </div>
@@ -171,7 +169,7 @@
 
     <div *ngFor="let progressBar of progressBars" class="fileProgress">
       {{ progressBar.name }} -
-      {{ progressBar.progress | number: "1.0-0" }}&nbsp;%
+      {{ progressBar.progress | number: '1.0-0' }}&nbsp;%
       <mat-progress-bar [value]="progressBar.progress"> </mat-progress-bar>
     </div>
 
@@ -194,7 +192,7 @@
     </div>
 
     <button mat-button (click)="follow()">
-      {{ processStatus.failed ? "Previous" : "Follow order" }}
+      {{ processStatus.failed ? 'Previous' : 'Follow order' }}
     </button>
   </mat-step>
 </mat-horizontal-stepper>

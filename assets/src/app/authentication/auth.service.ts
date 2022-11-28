@@ -1,9 +1,9 @@
-import { Injectable, Component, OnDestroy } from '@angular/core'
+import { Injectable } from '@angular/core'
 import { Router } from '@angular/router'
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http'
+import { HttpClient, HttpParams } from '@angular/common/http'
 import { CookieService } from 'ngx-cookie-service'
 import { Observable, of, Subject, Subscription } from 'rxjs'
-import { catchError, map, tap } from 'rxjs/operators'
+import { catchError, tap } from 'rxjs/operators'
 import 'rxjs/add/operator/do'
 
 import { Confirm } from '../models/user'
@@ -36,14 +36,18 @@ export class AuthService {
     private cookieService: CookieService,
     private http: HttpClient,
     private userService: UserService,
-    public router: Router
+    public router: Router,
   ) {
-    let access_token = this.getToken()
-    var currentUser = this.cookieService.get('currentUser')
-    if (access_token !== undefined && access_token !== '' &&
-      currentUser !== undefined && currentUser !== '') {
+    const access_token = this.getToken()
+    const currentUser = this.cookieService.get('currentUser')
+    if (
+      access_token !== undefined &&
+      access_token !== '' &&
+      currentUser !== undefined &&
+      currentUser !== ''
+    ) {
       this.isLoggedIn = true
-      var parsedUser = JSON.parse(currentUser)
+      const parsedUser = JSON.parse(currentUser)
       this.email = parsedUser.email
       this.username = parsedUser.username
       this.first_name = parsedUser.first_name
@@ -67,29 +71,32 @@ export class AuthService {
     const query = {
       session: {
         email: email,
-        password: password
-      }
+        password: password,
+      },
     }
 
     return this.http.post<Token>('/api/sessions', query).pipe(
-      tap(response => {
-        console.log("Login: ", response);
+      tap((response) => {
+        console.log('Login: ', response)
         if (response && response.user) {
-          this.cookieService.set('currentUser', JSON.stringify({
-            email: email,
-            username: response.user.username,
-            first_name: response.user.first_name,
-            last_name: response.user.last_name,
-            user_id: response.user.id,
-            roles: response.user.roles
-          }))
+          this.cookieService.set(
+            'currentUser',
+            JSON.stringify({
+              email: email,
+              username: response.user.username,
+              first_name: response.user.first_name,
+              last_name: response.user.last_name,
+              user_id: response.user.id,
+              roles: response.user.roles,
+            }),
+          )
 
           this.isLoggedIn = true
           this.email = response.user.email
-          this.username = response.user.username,
-            this.first_name = response.user.first_name,
-            this.last_name = response.user.last_name,
-            this.roles = response.user.roles
+          ;(this.username = response.user.username),
+            (this.first_name = response.user.first_name),
+            (this.last_name = response.user.last_name),
+            (this.roles = response.user.roles)
           this.user_id = response.user.id
           this.userLoggedInSource.next(email)
         } else {
@@ -104,11 +111,11 @@ export class AuthService {
           this.rightPanelSwitchSource.next('close')
         }
       }),
-      catchError(this.handleError('login', undefined))
+      catchError(this.handleError('login', undefined)),
     )
   }
 
-  logout(clean_cookies = true): void {
+  logout(_clean_cookies = true): void {
     this.isLoggedIn = false
     this.email = undefined
     this.username = undefined
@@ -124,7 +131,7 @@ export class AuthService {
   }
 
   getToken(): string {
-    return this.cookieService.get('token');
+    return this.cookieService.get('token')
   }
 
   getUsername(): string {
@@ -136,7 +143,7 @@ export class AuthService {
   }
 
   hasAdministratorRight(): boolean {
-    console.log("hasAdministratorRight", this.roles);
+    console.log('hasAdministratorRight', this.roles)
     if (!this.roles) {
       return false
     }
@@ -168,39 +175,37 @@ export class AuthService {
     params = params.append('entity', entity)
     params = params.append('action', action)
 
-    return this.http.post<any>('/api/users/check_rights', params)
-      .pipe(
-        tap(userPage => this.log('Check Rights')),
-        catchError(this.handleError('checkRights', undefined))
-      )
+    return this.http.post<any>('/api/users/check_rights', params).pipe(
+      tap((_userPage) => this.log('Check Rights')),
+      catchError(this.handleError('checkRights', undefined)),
+    )
   }
 
   passwordResetRequest(email: string): Observable<PasswordReset> {
-    let params = {
+    const params = {
       password_reset: {
-        email: email
-      }
+        email: email,
+      },
     }
 
-    return this.http.post<PasswordReset>('/api/password_resets', params)
-      .pipe(
-        tap(userPage => this.log('Reset password')),
-        catchError(err => this.handleErrorPasswordReset(err)))
+    return this.http.post<PasswordReset>('/api/password_resets', params).pipe(
+      tap((_userPage) => this.log('Reset password')),
+      catchError((err) => this.handleErrorPasswordReset(err)),
+    )
   }
 
   confirmResetPassword(password: string, key: string): Observable<Confirm> {
-    let params = {
+    const params = {
       password_reset: {
         password: password,
-        key: key
-      }
+        key: key,
+      },
     }
 
-    return this.http.put<Confirm>('/api/password_resets/update', params)
-      .pipe(
-        tap(user => this.log('fetched Confirm Password Reset')),
-        catchError(this.handleError('confirmResetPassword', undefined))
-      )
+    return this.http.put<Confirm>('/api/password_resets/update', params).pipe(
+      tap((_user) => this.log('fetched Confirm Password Reset')),
+      catchError(this.handleError('confirmResetPassword', undefined)),
+    )
   }
 
   private handleError<T>(operation = 'operation', result?: T) {
@@ -211,9 +216,11 @@ export class AuthService {
     }
   }
 
-  private handleErrorPasswordReset(err_object: PasswordResetError): Observable<PasswordReset> {
-    console.error(err_object);
-    this.log(err_object.message);
+  private handleErrorPasswordReset(
+    err_object: PasswordResetError,
+  ): Observable<PasswordReset> {
+    console.error(err_object)
+    this.log(err_object.message)
     return of(new PasswordReset('', err_object.error.custom_error_message))
   }
 

@@ -1,13 +1,11 @@
 <div *ngIf="renderer">
-  <div
-    class="line"
-    *ngFor="let line of renderer.graph"
-    >
-    <span *ngFor="let step of line"
+  <div class="line" *ngFor="let line of renderer.graph">
+    <span
+      *ngFor="let step of line"
       class="step"
-      [ngStyle]="{flex: renderer.getStepWeight(step)}"
-      >
-      <step-renderer [step]=step></step-renderer>
+      [ngStyle]="{ flex: renderer.getStepWeight(step) }"
+    >
+      <step-renderer [step]="step"></step-renderer>
     </span>
   </div>
 </div>

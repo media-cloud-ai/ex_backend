@@ -1,4 +1,3 @@
-
 export class NotificationEndpoint {
   id: number
   endpoint_placeholder: string

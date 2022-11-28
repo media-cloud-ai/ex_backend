@@ -1,25 +1,18 @@
-
 import { APP_BASE_HREF } from '@angular/common'
-import {
-  HttpClientModule,
-  HTTP_INTERCEPTORS
-} from '@angular/common/http'
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 import { NgModule } from '@angular/core'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
-import {
-  BrowserModule,
-  Title
-} from '@angular/platform-browser'
+import { BrowserModule, Title } from '@angular/platform-browser'
 import { AppComponent } from './app.component'
 
 import { MatAutocompleteModule } from '@angular/material/autocomplete'
 import { MatButtonModule } from '@angular/material/button'
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatButtonToggleModule } from '@angular/material/button-toggle'
 import { MatCardModule } from '@angular/material/card'
 import { MatCheckboxModule } from '@angular/material/checkbox'
 import { MatChipsModule } from '@angular/material/chips'
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDatepickerModule } from '@angular/material/datepicker'
+import { MatDialogModule } from '@angular/material/dialog'
 import { MatIconModule } from '@angular/material/icon'
 import { MatInputModule } from '@angular/material/input'
 import { MatListModule } from '@angular/material/list'
@@ -35,29 +28,30 @@ import { MatSnackBarModule } from '@angular/material/snack-bar'
 import { MatTabsModule } from '@angular/material/tabs'
 import { MatToolbarModule } from '@angular/material/toolbar'
 
-
 import { MatStepperModule } from '@angular/material/stepper'
-import { NgxMatDatetimePickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
+import {
+  NgxMatDatetimePickerModule,
+  NgxMatNativeDateModule,
+} from '@angular-material-components/datetime-picker'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { ChartsModule } from 'ng2-charts'
-import { ClipboardModule } from '@angular/cdk/clipboard';
+import { ClipboardModule } from '@angular/cdk/clipboard'
 
 import {
   MomentDateAdapter,
   MatMomentDateModule,
-  MAT_MOMENT_DATE_FORMATS
 } from '@angular/material-moment-adapter'
 
 import {
   DateAdapter,
   MAT_DATE_LOCALE,
-  MAT_DATE_FORMATS
+  MAT_DATE_FORMATS,
 } from '@angular/material/core'
 
-import { RouterModule, Routes } from '@angular/router'
+import { RouterModule } from '@angular/router'
 import { CookieService } from 'ngx-cookie-service'
 
-import { ChartModule } from 'angular-highcharts';
+import { ChartModule } from 'angular-highcharts'
 
 import { AppRoutingModule } from './app-routing.module'
 import { SocketModule } from './socket.module'
@@ -144,9 +138,7 @@ const EX_BACKEND_DATE_FORMATS = {
 }
 
 @NgModule({
-  exports: [
-    RouterModule
-  ],
+  exports: [RouterModule],
   imports: [
     AppRoutingModule,
     ClipboardModule,
@@ -258,30 +250,30 @@ const EX_BACKEND_DATE_FORMATS = {
     WorkflowPauseDialogComponent,
     WorkflowRendererComponent,
     WorkflowStatisticsComponent,
-    WorkflowStepDetailsComponent
+    WorkflowStepDetailsComponent,
   ],
   providers: [
     {
       provide: APP_BASE_HREF,
-      useValue: '/'
+      useValue: '/',
     },
     {
       provide: MAT_DATE_LOCALE,
-      useValue: 'fr-FR'
+      useValue: 'fr-FR',
     },
     {
       provide: DateAdapter,
       useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE]
+      deps: [MAT_DATE_LOCALE],
     },
     {
       provide: MAT_DATE_FORMATS,
-      useValue: EX_BACKEND_DATE_FORMATS
+      useValue: EX_BACKEND_DATE_FORMATS,
     },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
-      multi: true
+      multi: true,
     },
     AmqpService,
     ApplicationService,
@@ -303,9 +295,6 @@ const EX_BACKEND_DATE_FORMATS = {
     WorkerService,
     WorkflowService,
   ],
-  bootstrap: [
-    AppComponent
-  ]
+  bootstrap: [AppComponent],
 })
-
-export class AppModule { }
+export class AppModule {}

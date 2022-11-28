@@ -1,5 +1,3 @@
-
-
 export class McaiDurations {
   order_pending: number
   processing: number

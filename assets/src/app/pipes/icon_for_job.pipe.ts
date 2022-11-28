@@ -5,12 +5,11 @@ import { Pipe, PipeTransform } from '@angular/core'
  * Example:
  *   {{ 'download_ftp' | iconForJob }}
  *   formats to: "file_download"
-*/
-@Pipe({name: 'iconForJob'})
+ */
+@Pipe({ name: 'iconForJob' })
 export class IconForJobPipe implements PipeTransform {
-
   transform(iconForJob: string): string {
-    var allJobIcons = [
+    const allJobIcons = [
       { id: 'acs_prepare_audio', name: 'music_video' },
       { id: 'acs_synchronize', name: 'music_video' },
       { id: 'audio_decode', name: 'music_video' },
@@ -22,7 +21,7 @@ export class IconForJobPipe implements PipeTransform {
       { id: 'download_http', name: 'file_download' },
       { id: 'generate_dash', name: 'tv' },
       { id: 'ism_extraction', name: 'queue_music' },
-      { id: 'ism_manifest', name: 'assignment'},
+      { id: 'ism_manifest', name: 'assignment' },
       { id: 'set_language', name: 'speaker_notes' },
       { id: 'speech_to_text', name: 'closed_caption' },
       { id: 'ttml_to_mp4', name: 'closed_caption' },
@@ -31,8 +30,8 @@ export class IconForJobPipe implements PipeTransform {
       { id: 'push_rdf', name: 'library_add' },
     ]
 
-    for (var i = allJobIcons.length - 1; i >= 0; i--) {
-      if (allJobIcons[i].id === iconForJob){
+    for (let i = allJobIcons.length - 1; i >= 0; i--) {
+      if (allJobIcons[i].id === iconForJob) {
         return allJobIcons[i].name
       }
     }

@@ -1,4 +1,3 @@
-
 export class S3Configuration {
   url: string
   access_key: string
@@ -6,4 +5,3 @@ export class S3Configuration {
   bucket: string
   vod_endpoint?: string
 }
- 

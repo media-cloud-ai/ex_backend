@@ -1,4 +1,3 @@
-
 import { User, Role } from '../user'
 
 export class UserPage {
@@ -15,4 +14,3 @@ export class RightDefinitionsPage {
   endpoints: string[]
   rights: string[]
 }
-

@@ -1,6 +1,6 @@
 @import '../colors';
 
-.job-statistics-filters{
+.job-statistics-filters {
   padding-left: 40px;
   display: flex;
   flex-wrap: wrap;
@@ -31,23 +31,21 @@
 }
 
 .job-durations {
-
   .durations-header,
   .duration {
     padding: 5px;
     display: flex;
     line-height: 36px;
-    vertical-align: middle; 
+    vertical-align: middle;
 
     .job-identifier,
-    .job-duration,
-    {
+    .job-duration {
       flex: 1;
     }
 
     .job-duration,
     .job-version,
-    .job-count, {
+    .job-count {
       text-align: center;
     }
 
@@ -58,13 +56,12 @@
     }
 
     .job-version,
-    .job-count, {
+    .job-count {
       flex: 0.5;
     }
-
   }
 
-  .duration:nth-child(2n+1) {
+  .duration:nth-child(2n + 1) {
     background-color: @lightGrey;
   }
 
@@ -81,5 +78,4 @@
       color: @grey;
     }
   }
-
 }

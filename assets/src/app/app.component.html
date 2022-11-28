@@ -1,95 +1,109 @@
-<meta name="theme-color" content="#095487">
+<meta name="theme-color" content="#095487" />
 
-<div class="container"
-  [ngClass]="{logout: !loggedIn}">
+<div class="container" [ngClass]="{ logout: !loggedIn }">
   <main role="main">
-    <mat-toolbar class="mat-toolbar mat-primary mat-toolbar-multiple-rows"
-    [ngClass]="{logout: !loggedIn}">
+    <mat-toolbar
+      class="mat-toolbar mat-primary mat-toolbar-multiple-rows"
+      [ngClass]="{ logout: !loggedIn }"
+    >
       <mat-toolbar-row class="mat-toolbar-row">
-        <span class=home>
-          <a class=title routerLink='/'
-            *ngIf=application>
-            <img src="{{application.logo}}" class=app_logo>
+        <span class="home">
+          <a class="title" routerLink="/" *ngIf="application">
+            <img src="{{ application.logo }}" class="app_logo" />
           </a>
         </span>
-        <span class=spacer>
-        </span>
-        <span (click)="toggleRightPanel()"
-          *ngIf=loggedIn
-          class="user_settings">
-          <i style="color: white;">{{username}}</i>
-          &nbsp;<i class="material-icons" style="font-size:35px; color: white;">account_circle</i>
+        <span class="spacer"> </span>
+        <span
+          (click)="toggleRightPanel()"
+          *ngIf="loggedIn"
+          class="user_settings"
+        >
+          <i style="color: white">{{ username }}</i>
+          &nbsp;<i class="material-icons" style="font-size: 35px; color: white"
+            >account_circle</i
+          >
         </span>
       </mat-toolbar-row>
     </mat-toolbar>
 
     <mat-sidenav-container (backdropClick)="toggleRightPanel()">
-      <mat-sidenav mode="side" opened="true" *ngIf="loggedIn" [ngClass]="{small_menu: !menu_expanded}"
-        class="docs-component-viewer-sidenav mat-drawer mat-sidenav ng-tns-c13-1 ng-trigger ng-trigger-transform mat-drawer-side ng-star-inserted">
+      <mat-sidenav
+        mode="side"
+        opened="true"
+        *ngIf="loggedIn"
+        [ngClass]="{ small_menu: !menu_expanded }"
+        class="docs-component-viewer-sidenav mat-drawer mat-sidenav ng-tns-c13-1 ng-trigger ng-trigger-transform mat-drawer-side ng-star-inserted"
+      >
         <ul>
-          <a mat-list-item
+          <a
+            mat-list-item
             *ngFor="let item of left_menu"
-              routerLink='{{item.link}}'>
+            routerLink="{{ item.link }}"
+          >
             <li class="ng-star-inserted" routerLinkActive="active-list-item">
-              <mat-icon vertical-align:middle>{{item.icon}}</mat-icon>
+              <mat-icon vertical-align:middle>{{ item.icon }}</mat-icon>
               <div class="menu_label" *ngIf="menu_expanded">
-                &nbsp;{{item.label}}
+                &nbsp;{{ item.label }}
               </div>
             </li>
           </a>
-          <li class="spacer">
-            
-          </li>
-          <a mat-list-item
-              routerLink='/help'>
-              <li class="ng-star-inserted" routerLinkActive="active-list-item">
-                <mat-icon>help_outline</mat-icon>
-                <div class="menu_label" *ngIf="menu_expanded">
-                  &nbsp;Help
-                </div>
-              </li>
+          <li class="spacer"></li>
+          <a mat-list-item routerLink="/help">
+            <li class="ng-star-inserted" routerLinkActive="active-list-item">
+              <mat-icon>help_outline</mat-icon>
+              <div class="menu_label" *ngIf="menu_expanded">&nbsp;Help</div>
+            </li>
           </a>
           <li (click)="switchMenu()">
-              <button
-                mat-icon-button 
-                class="menu_button"
-                *ngIf=loggedIn>
-                <mat-icon class="icon-stick" [ngClass]="{icon_stick_rotated: menu_expanded}">keyboard_double_arrow_right</mat-icon>
-              </button>
+            <button mat-icon-button class="menu_button" *ngIf="loggedIn">
+              <mat-icon
+                class="icon-stick"
+                [ngClass]="{ icon_stick_rotated: menu_expanded }"
+                >keyboard_double_arrow_right</mat-icon
+              >
+            </button>
           </li>
         </ul>
       </mat-sidenav>
 
-      
       <mat-sidenav-content
         class="mat-drawer-content mat-sidenav-content ng-star-inserted"
-        [ngClass]="{loggedIn: loggedIn, reduced_menu: !menu_expanded}"
-        >
+        [ngClass]="{ loggedIn: loggedIn, reduced_menu: !menu_expanded }"
+      >
         <router-outlet></router-outlet>
       </mat-sidenav-content>
-      
-      <mat-sidenav mode="over" #sidenav (keydown.escape)="toggleRightPanel()" position="end" [opened]="right_panel_opened" *ngIf="loggedIn"
-        class="docs-component-viewer-sidenav-reverse mat-drawer mat-sidenav ng-tns-c13-1 ng-trigger ng-trigger-transform mat-drawer-side ng-star-inserted">
+
+      <mat-sidenav
+        mode="over"
+        #sidenav
+        (keydown.escape)="toggleRightPanel()"
+        position="end"
+        [opened]="right_panel_opened"
+        *ngIf="loggedIn"
+        class="docs-component-viewer-sidenav-reverse mat-drawer mat-sidenav ng-tns-c13-1 ng-trigger ng-trigger-transform mat-drawer-side ng-star-inserted"
+      >
         <ul>
-          <li class="ng-star-inserted"
-            routerLink='/documentation'
+          <li
+            class="ng-star-inserted"
+            routerLink="/documentation"
             routerLinkActive="active-list-item"
             (click)="toggleRightPanel()"
-            >
+          >
             <i class="material-icons">developer_mode</i>
             API Documentation
           </li>
-          <li class="ng-star-inserted"
-          routerLink='/declared-workers'
-          routerLinkActive="active-list-item"
-          (click)="toggleRightPanel()"
+          <li
+            class="ng-star-inserted"
+            routerLink="/declared-workers"
+            routerLinkActive="active-list-item"
+            (click)="toggleRightPanel()"
           >
-          <i class="material-icons">playlist_add_check</i>
-          Declared workers
+            <i class="material-icons">playlist_add_check</i>
+            Declared workers
           </li>
           <li class="ng-star-inserted" (click)="logout()">
-          <i class="material-icons">power_settings_new</i>
-          Logout
+            <i class="material-icons">power_settings_new</i>
+            Logout
           </li>
         </ul>
       </mat-sidenav>

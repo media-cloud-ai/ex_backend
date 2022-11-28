@@ -1,9 +1,8 @@
-<h1 mat-dialog-title *ngIf="user" class=creds>User Edition</h1>
+<h1 mat-dialog-title *ngIf="user" class="creds">User Edition</h1>
 
-<div mat-dialog-content
-  class="confirm">
+<div mat-dialog-content class="confirm">
   <div>
-    Edit user <i>{{user.username}}</i> :
+    Edit user <i>{{ user.username }}</i> :
     <span>
       <div class="form">
         <mat-form-field class="first-name-input">
@@ -12,7 +11,7 @@
             type="text"
             placeholder="New First Name"
             [(ngModel)]="new_first_name"
-            >
+          />
         </mat-form-field>
       </div>
     </span>
@@ -24,20 +23,15 @@
             type="text"
             placeholder="New Last Name"
             [(ngModel)]="new_last_name"
-            >
+          />
         </mat-form-field>
       </div>
     </span>
   </div>
 </div>
 
-<div mat-dialog-actions
-  align=end>
-  <button
-    mat-raised-button
-    (click)="onCancel()"
-    color="error"
-    cdkFocusInitial>
+<div mat-dialog-actions align="end">
+  <button mat-raised-button (click)="onCancel()" color="error" cdkFocusInitial>
     <mat-icon>close</mat-icon>
     Cancel
   </button>
@@ -45,7 +39,8 @@
     mat-raised-button
     (click)="onValidation()"
     color="primary"
-    cdkFocusInitial>
+    cdkFocusInitial
+  >
     <mat-icon>check</mat-icon>
   </button>
 </div>

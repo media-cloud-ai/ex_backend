@@ -1,12 +1,13 @@
 @import '../colors';
 
-h1, h2,
+h1,
+h2,
 .search-params {
   padding-left: 40px;
 }
 
-.workers, .workers-status {
-
+.workers,
+.workers-status {
   .worker {
     padding: 5px;
     display: flex;
@@ -19,7 +20,7 @@ h1, h2,
     .creation_date,
     .termination_date,
     .worker-name,
-    .worker-orders, {
+    .worker-orders {
       flex: 1;
     }
 
@@ -29,7 +30,7 @@ h1, h2,
     .worker-version,
     .worker-queue,
     .worker-activity,
-    .worker-status-last-update, {
+    .worker-status-last-update {
       flex: 0.6;
     }
 
@@ -42,7 +43,7 @@ h1, h2,
     }
   }
 
-  .worker:nth-child(2n+1) {
+  .worker:nth-child(2n + 1) {
     background-color: @lightGrey;
   }
 

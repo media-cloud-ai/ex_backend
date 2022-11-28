@@ -1,70 +1,52 @@
 <div>
-	<h1>
-		Ingest
-	</h1>
+  <h1>Ingest</h1>
 
-	<div class=watchers
-		*ngIf=watchers>
-		<span *ngFor="let watcher of watchers.data">
-			<div *ngFor="let connection of watcher.connections"
-				class="watcher"
-				[ngClass]="{'selected': connection.identifier === selectedAgent }"
-				(click)="setSelectedAgent(connection.identifier)"
-				>
-				<i class="material-icons">
-					trip_origin
-				</i>
-				<span>
-					{{connection.identifier}}
-				</span>
-			</div>
-		</span>
-	</div>
+  <div class="watchers" *ngIf="watchers">
+    <span *ngFor="let watcher of watchers.data">
+      <div
+        *ngFor="let connection of watcher.connections"
+        class="watcher"
+        [ngClass]="{ selected: connection.identifier === selectedAgent }"
+        (click)="setSelectedAgent(connection.identifier)"
+      >
+        <i class="material-icons"> trip_origin </i>
+        <span>
+          {{ connection.identifier }}
+        </span>
+      </div>
+    </span>
+  </div>
 
-	<div class="ariane"
-		*ngIf='selectedAgent != ""'>
-		<span
-			class=path
-			(click)="goTo(0)">
-			<label>
-				<i class="material-icons">
-					home
-				</i>
-				<i class="material-icons forward">
-					arrow_forward_ios
-				</i>
-			</label>
-		</span>
-		<span
-			class=path
-			*ngFor="let folder of full_path; let i = index"
-			(click)="goTo(i + 1)">
-			<label>
-				{{folder}}
-			</label>
-			<i class="material-icons forward">
-				arrow_forward_ios
-			</i>
-		</span>
-	</div>
+  <div class="ariane" *ngIf="selectedAgent != ''">
+    <span class="path" (click)="goTo(0)">
+      <label>
+        <i class="material-icons"> home </i>
+        <i class="material-icons forward"> arrow_forward_ios </i>
+      </label>
+    </span>
+    <span
+      class="path"
+      *ngFor="let folder of full_path; let i = index"
+      (click)="goTo(i + 1)"
+    >
+      <label>
+        {{ folder }}
+      </label>
+      <i class="material-icons forward"> arrow_forward_ios </i>
+    </span>
+  </div>
 
-	<ul *ngIf="entries">
-		<li *ngFor="let entry of entries.entries"
-			(click)="ingest(entry)"
-			[ngClass]="{'file': entry.is_file, 'dir': entry.is_dir }">
-			<i class="material-icons"
-				*ngIf="entry.is_dir"
-				>
-				folder_open
-			</i>
-			<i class="material-icons"
-				*ngIf="entry.is_file"
-				>
-				description
-			</i>
-			<label>
-				{{entry.filename}}
-			</label>
-		</li>
-	</ul>
+  <ul *ngIf="entries">
+    <li
+      *ngFor="let entry of entries.entries"
+      (click)="ingest(entry)"
+      [ngClass]="{ file: entry.is_file, dir: entry.is_dir }"
+    >
+      <i class="material-icons" *ngIf="entry.is_dir"> folder_open </i>
+      <i class="material-icons" *ngIf="entry.is_file"> description </i>
+      <label>
+        {{ entry.filename }}
+      </label>
+    </li>
+  </ul>
 </div>

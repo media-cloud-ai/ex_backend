@@ -1,20 +1,35 @@
-<h1 mat-dialog-title *ngIf="workflow && type == 'abort'">Aborting workflow #{{ workflow.id }}</h1>
-<h1 mat-dialog-title *ngIf="workflow && type == 'pause'">Pausing workflow #{{ workflow.id }}</h1>
-<h1 mat-dialog-title *ngIf="workflow && type == 'resume'">Resuming workflow #{{ workflow.id }}</h1>
-<h1 mat-dialog-title *ngIf="workflow && type == 'stop'">Stopping workflow #{{ workflow.id }}</h1>
-<h1
-  mat-dialog-title
-  *ngIf="workflow && type == 'delete'"
-  class=delete>Delete workflow #{{ workflow.id }}</h1>
+<h1 mat-dialog-title *ngIf="workflow && type == 'abort'">
+  Aborting workflow #{{ workflow.id }}
+</h1>
+<h1 mat-dialog-title *ngIf="workflow && type == 'pause'">
+  Pausing workflow #{{ workflow.id }}
+</h1>
+<h1 mat-dialog-title *ngIf="workflow && type == 'resume'">
+  Resuming workflow #{{ workflow.id }}
+</h1>
+<h1 mat-dialog-title *ngIf="workflow && type == 'stop'">
+  Stopping workflow #{{ workflow.id }}
+</h1>
+<h1 mat-dialog-title *ngIf="workflow && type == 'delete'" class="delete">
+  Delete workflow #{{ workflow.id }}
+</h1>
 
-<div mat-dialog-content
-  *ngIf=workflow
-  class="confirm">
-  <div *ngIf="type == 'stop'">Do you really want to stop this workflow #{{ workflow.id }}?</div>
-  <div *ngIf="type == 'abort'">Do you really want to abort workflow #{{ workflow.id }}?</div>
-  <div *ngIf="type == 'pause'">Do you really want to pause workflow #{{ workflow.id }}?</div>
-  <div *ngIf="type == 'resume'">Do you really want to resume workflow #{{ workflow.id }}?</div>
-  <div *ngIf="type == 'delete'">Do you really want to delete workflow #{{ workflow.id }}?</div>
+<div mat-dialog-content *ngIf="workflow" class="confirm">
+  <div *ngIf="type == 'stop'">
+    Do you really want to stop this workflow #{{ workflow.id }}?
+  </div>
+  <div *ngIf="type == 'abort'">
+    Do you really want to abort workflow #{{ workflow.id }}?
+  </div>
+  <div *ngIf="type == 'pause'">
+    Do you really want to pause workflow #{{ workflow.id }}?
+  </div>
+  <div *ngIf="type == 'resume'">
+    Do you really want to resume workflow #{{ workflow.id }}?
+  </div>
+  <div *ngIf="type == 'delete'">
+    Do you really want to delete workflow #{{ workflow.id }}?
+  </div>
   <div *ngIf="type == 'stop'" class="warning">
     <span>
       <mat-icon color="warn">warning</mat-icon>
@@ -35,17 +50,12 @@
   </div>
 </div>
 
-<div mat-dialog-actions
-  align=end>
+<div mat-dialog-actions align="end">
   <button mat-button (click)="onNoClick()">
     <mat-icon>clear</mat-icon>
     Cancel
   </button>
-  <button
-    mat-raised-button
-    (click)="onClose()"
-    color="warn"
-    cdkFocusInitial>
+  <button mat-raised-button (click)="onClose()" color="warn" cdkFocusInitial>
     <mat-icon>cancel</mat-icon>
     Yes,
     <span *ngIf="type == 'stop'">stop</span>

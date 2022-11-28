@@ -5,15 +5,9 @@ const webpack = require('webpack')
 const config = {
   mode: 'production',
   entry: {
-    'main': [
-      './src/app.ts'
-    ],
-    'style': [
-      './src/style.css'
-    ],
-    'theme': [
-      './src/theme.scss'
-    ]
+    main: ['./src/app.ts'],
+    style: ['./src/style.css'],
+    theme: ['./src/theme.scss'],
   },
   output: {
     path: path.resolve(__dirname, path.join('..', 'priv', 'static', 'bundles')),
@@ -22,70 +16,58 @@ const config = {
   },
   resolve: {
     extensions: ['.ts', '.js', '.scss'],
-    modules: ['src', 'node_modules']
+    modules: ['src', 'node_modules'],
   },
   module: {
     rules: [
       {
         test: /\.ts?$/,
-        use: [
-          { loader: 'ts-loader' },
-          { loader: 'angular2-template-loader' }
-        ]
+        use: [{ loader: 'ts-loader' }, { loader: 'angular2-template-loader' }],
       },
       {
         test: /\.css(\?v=\d+\.\d+\.\d+)?$/,
-        use: [
-          { loader: 'style-loader' },
-          { loader: 'css-loader' }
-        ]
+        use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
       },
       {
         test: /\.less(\?v=\d+\.\d+\.\d+)?$/,
         use: [
           { loader: 'to-string-loader' },
           { loader: 'css-loader' },
-          { loader: 'less-loader' }
-        ]
+          { loader: 'less-loader' },
+        ],
       },
       {
         test: /\.scss(\?v=\d+\.\d+\.\d+)?$/,
         use: [
           { loader: 'style-loader' },
           { loader: 'css-loader' },
-          { loader: 'sass-loader' }
-        ]
+          { loader: 'sass-loader' },
+        ],
       },
       {
         test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
-        use: [
-          { loader: 'file-loader?name=fonts/[name].[ext]' }
-        ]
+        use: [{ loader: 'file-loader?name=fonts/[name].[ext]' }],
       },
       {
         test: /\.html$/,
-        use: [
-          { loader: 'raw-loader' }
-        ]
-      }
-    ]
+        use: [{ loader: 'raw-loader' }],
+      },
+    ],
   },
   optimization: {
     splitChunks: {
-      chunks: 'all'
-    }
+      chunks: 'all',
+    },
   },
   plugins: [
     new CopyWebpackPlugin({
-      patterns: [
-        { from: './static', to: '.' }
-      ]
+      patterns: [{ from: './static', to: '.' }],
     }),
     new webpack.ContextReplacementPlugin(
       /@angular(\\|\/)core(\\|\/)esm5/,
-      path.join(__dirname, './assets')
-    )
-  ]
+      path.join(__dirname, './assets'),
+    ),
+  ],
 }
 
 module.exports = config

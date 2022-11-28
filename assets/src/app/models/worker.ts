@@ -1,8 +1,6 @@
-
 export class Worker {
   id: number
 }
-
 
 export class WorkerJobStatus {
   execution_duration?: number

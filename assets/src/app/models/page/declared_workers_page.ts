@@ -1,3 +1,1 @@
-
-export class DeclaredWorkersPage {
-}
+export class DeclaredWorkersPage {}

@@ -1,43 +1,39 @@
 <div class="workflow">
   <div *ngIf="workflow" class="info">
-    <i class="material-icons open"
-      *ngIf=!detailed
-      (click)=switchDetailed()>
+    <i class="material-icons open" *ngIf="!detailed" (click)="switchDetailed()">
       expand_more
     </i>
-    <i class="material-icons close"
-      *ngIf=detailed
-      (click)=switchDetailed()>
+    <i class="material-icons close" *ngIf="detailed" (click)="switchDetailed()">
       expand_less
     </i>
 
     <span class="identifier">#{{ workflow.id }}</span>
     <span class="reference">
-      <video-title-component [id]=workflow.reference></video-title-component>
-      <span class="badge-live" *ngIf=workflow.is_live>
-        LIVE
-      </span>
+      <video-title-component [id]="workflow.reference"></video-title-component>
+      <span class="badge-live" *ngIf="workflow.is_live"> LIVE </span>
     </span>
     <span class="created">
-      <label>
-        Created at
-      </label>
+      <label> Created at </label>
       <span class="date">
-        {{workflow.created_at | date: 'd LLLL yy'}}
+        {{ workflow.created_at | date: 'd LLLL yy' }}
       </span>
       <span class="hour">
-        {{workflow.created_at+'Z' | date: 'HH:mm:ss'}}
+        {{ workflow.created_at + 'Z' | date: 'HH:mm:ss' }}
       </span>
     </span>
     <span class="duration">
-      <duration-component [workflow]=workflow display="simple" [duration]=duration></duration-component>
+      <duration-component
+        [workflow]="workflow"
+        display="simple"
+        [duration]="duration"
+      ></duration-component>
     </span>
-    <span title="@{{user_name}}" class="user">
-      {{first_name}} {{last_name}}
+    <span title="@{{ user_name }}" class="user">
+      {{ first_name }} {{ last_name }}
     </span>
     <span class="steps-count">
       <span class="label">Steps:</span>
-      <span class="count">{{getStepsCount()}} / {{getTotalSteps()}}</span>
+      <span class="count">{{ getStepsCount() }} / {{ getTotalSteps() }}</span>
     </span>
     <span class="status">
       <mat-chip-list>
@@ -47,79 +43,77 @@
       </mat-chip-list>
     </span>
     <span class="details">
-      <a routerLink="/workflows/{{workflow.id}}">
-        <button
-          mat-raised-button
-          color="primary"
-          title="Details"
-          >
-            <mat-icon>visibility</mat-icon>
-          </button>
+      <a routerLink="/workflows/{{ workflow.id }}">
+        <button mat-raised-button color="primary" title="Details">
+          <mat-icon>visibility</mat-icon>
+        </button>
       </a>
     </span>
-    <button mat-button [matMenuTriggerFor]="moreActions"
+    <button
+      mat-button
+      [matMenuTriggerFor]="moreActions"
       (click)="onMoreActionsToggle()"
-      >
-      <span class="material-icons">
-        more_horiz
-      </span>
+    >
+      <span class="material-icons"> more_horiz </span>
     </button>
-      <mat-menu #moreActions="matMenu">
-        <button
-          mat-menu-item
-          *ngIf="!can_resume"
-          color="accent"
-          [disabled]=!can_pause
-          (click)="pause(workflow.id)"
-          title="Pause"
-          >
-          <mat-icon class="pause-icon" color=primary>pause</mat-icon>
-          <span class="v-align-middle">Pause</span>
-        </button>
-        <button
-          mat-menu-item
-          *ngIf="!can_pause && can_resume"
-          color="accent"
-          (click)="resume(workflow.id)"
-          title="Resume"
-          >
-          <mat-icon class="v-align-middle" color=primary>play_arrow</mat-icon>
-          <span class="v-align-middle">Resume</span>
-        </button>
-        <button
-          mat-menu-item
-          class="stop"
-          color="warn"
-          [disabled]="!can_stop || !right_stop"
-          (click)="stop(workflow.id)"
-          title="Stop"
-          >
-          <mat-icon class="v-align-middle" color=warn>stop</mat-icon>
-          <span class="v-align-middle">Stop</span>
-        </button>
-        <button
-          mat-menu-item
-          class="delete"
-          [disabled]="!right_delete || !can_delete"
-          color="warn"
-          (click)="delete(workflow.id)"
-          title="Delete"
-          >
-          <mat-icon class="v-align-middle" color=warn>delete</mat-icon>
-          <span class="v-align-middle">Delete</span>
-        </button>
-      </mat-menu>
+    <mat-menu #moreActions="matMenu">
+      <button
+        mat-menu-item
+        *ngIf="!can_resume"
+        color="accent"
+        [disabled]="!can_pause"
+        (click)="pause(workflow.id)"
+        title="Pause"
+      >
+        <mat-icon class="pause-icon" color="primary">pause</mat-icon>
+        <span class="v-align-middle">Pause</span>
+      </button>
+      <button
+        mat-menu-item
+        *ngIf="!can_pause && can_resume"
+        color="accent"
+        (click)="resume(workflow.id)"
+        title="Resume"
+      >
+        <mat-icon class="v-align-middle" color="primary">play_arrow</mat-icon>
+        <span class="v-align-middle">Resume</span>
+      </button>
+      <button
+        mat-menu-item
+        class="stop"
+        color="warn"
+        [disabled]="!can_stop || !right_stop"
+        (click)="stop(workflow.id)"
+        title="Stop"
+      >
+        <mat-icon class="v-align-middle" color="warn">stop</mat-icon>
+        <span class="v-align-middle">Stop</span>
+      </button>
+      <button
+        mat-menu-item
+        class="delete"
+        [disabled]="!right_delete || !can_delete"
+        color="warn"
+        (click)="delete(workflow.id)"
+        title="Delete"
+      >
+        <mat-icon class="v-align-middle" color="warn">delete</mat-icon>
+        <span class="v-align-middle">Delete</span>
+      </button>
+    </mat-menu>
   </div>
-  <div *ngIf="workflow" class=steps>
+  <div *ngIf="workflow" class="steps">
     <div
       *ngFor="let step of workflow.steps"
-      class="step {{step.name}} {{step.status}}">
+      class="step {{ step.name }} {{ step.status }}"
+    >
       <step-progress-bar-component
-        [step]=step
-        [workflow]=workflow
-        [detailed]=detailed
-        [right_retry]=right_retry
-        [is_live]=workflow.is_live>
+        [step]="step"
+        [workflow]="workflow"
+        [detailed]="detailed"
+        [right_retry]="right_retry"
+        [is_live]="workflow.is_live"
+      >
       </step-progress-bar-component>
     </div>
   </div>

@@ -5,12 +5,11 @@ import { Pipe, PipeTransform } from '@angular/core'
  * Example:
  *   {{ 'extrait' | videoType }}
  *   formats to: "Extrait"
-*/
-@Pipe({name: 'videoType'})
+ */
+@Pipe({ name: 'videoType' })
 export class VideoTypePipe implements PipeTransform {
-
   transform(text: string): string {
-    var allTypes = [
+    const allTypes = [
       { id: 'making-of', name: 'Making-of' },
       { id: 'interview', name: 'Interview' },
       { id: 'teaser', name: 'Teaser' },
@@ -22,8 +21,8 @@ export class VideoTypePipe implements PipeTransform {
       { id: 'flux', name: 'Flux' },
     ]
 
-    for (var i = allTypes.length - 1; i >= 0; i--) {
-      if (allTypes[i].id === text){
+    for (let i = allTypes.length - 1; i >= 0; i--) {
+      if (allTypes[i].id === text) {
         return allTypes[i].name
       }
     }
