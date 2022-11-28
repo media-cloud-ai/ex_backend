@@ -110,7 +110,10 @@ defmodule ExBackendWeb.UserController do
 
   def get_by_uuid(%Plug.Conn{assigns: %{current_user: user}} = conn, %{"uuid" => uuid}) do
     user = (uuid == to_string(user.uuid) and user) || Accounts.get_by(%{"uuid" => uuid})
-    render(conn, "show.json", %{user: user, credentials: false})
+
+    conn
+    |> put_resp_header("cache-control", "max-age=3600")
+    |> render("show.json", %{user: user, credentials: false})
   end
 
   operation :update, false
