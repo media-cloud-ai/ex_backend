@@ -1,6 +1,6 @@
 <form [formGroup]="workflowsForm" fxFlex fxLayout="column" autocomplete="off">
-  <div class="global" style="display: flex; justify-content: space-between">
-    <div class="search-line" style="width: 100%">
+  <div class="search">
+    <div class="search-base">
       <mat-form-field>
         <mat-select formControlName="selectedPreset" placeholder="Saved filters" [(ngModel)]="selectedPreset" (selectionChange)="presetChanged()">
           <mat-option *ngFor="let f of workflow_filters" [value]="f.filter" class="filter-option">
@@ -35,16 +35,14 @@
       </button>
     </div>
 
-    <div *ngIf="showViewOptionsToolbar" style="display: flex">
-      <mat-button-toggle-group multiple>
-        <mat-button-toggle formControlName="detailedToggle" color="primary" [checked]="parameters.detailed" [(ngModel)]="parameters.detailed" (check)="toggleDetailed()">Detailed</mat-button-toggle>
-      </mat-button-toggle-group>
-      <mat-form-field class="refresh-interval-picker" appearance="outline" style="width: 100%;">
+    <div *ngIf="showViewOptionsToolbar" class="search-line-options">
+      <mat-form-field class="refresh-interval-picker" appearance="outline">
         <mat-label>Refresh interval</mat-label>
         <mat-select formControlName="refreshInterval" [(ngModel)]="parameters.refresh_interval" (selectionChange)="changeRefreshInterval()">
           <mat-option *ngFor="let interval of refresh_interval" [value]="interval.value">{{interval.label}}</mat-option>
         </mat-select>
       </mat-form-field>
+      <mat-slide-toggle class="toggle-options" formControlName="detailedToggle" color="primary" [checked]="parameters.detailed" [(ngModel)]="parameters.detailed" (check)="toggleDetailed()">Detailed</mat-slide-toggle>
     </div>
   </div>
 

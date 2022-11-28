@@ -16,30 +16,54 @@ mat-raised-button {
   margin: 0% 0.5% 0% 0.5%;
 }
 
-.date-picker {
-  background-color: transparent;
-  border: none;
-  border-bottom: 1px solid;
-  width: 19%;
-  height: 20px;
-  margin: 0% 0.5% 0% 0.5%;
-}
+.search {
 
-.search-line {
-	//text-align: right;
-	margin-left: 50px;
+  .date-picker {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid;
+    width: 19%;
+    height: 20px;
+    margin: 0% 0.5% 0% 0.5%;
+  }
+
+  margin-left: 50px;
 	margin-right: 50px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+
+  .search-base {
+    width: 100%;
+  }
+
+  .search-line-options {
+    margin-right: 10px;
+    display: flex;
+    flex-direction: row-reverse;
+
+    .refresh-interval-picker {
+      width: 50%;
+      height: 90%;
+    }
+
+    .toggle-options {
+      width: 50%;
+      height: 90%;
+    }
+  }
+  
+  #expand-icon {
+    transform: rotate(0deg);
+    transition-duration: 0.3s;
+  }
+  
+  #expand-icon.expanded {
+    transform: rotate(180deg);
+    transition-duration: 0.3s;
+  }
 }
 
-#expand-icon {
-  transform: rotate(0deg);
-  transition-duration: 0.3s;
-}
-
-#expand-icon.expanded {
-  transform: rotate(180deg);
-  transition-duration: 0.3s;
-}
 
 #filter-line {
   margin-left: 50px;
@@ -53,40 +77,26 @@ mat-raised-button {
   background-color: white;
 }
 
-
 #filter-line.expanded {
-  margin-left: 50px;
-  margin-right: 50px;
-  text-align: right;
-  max-height: 500px;
-  padding-top: 10px;
-  padding-right: 10px;
-  padding-bottom: 10px;
-  transition: 0.5s all ease;
-  box-shadow: 0 3px 1px -2px #0003, 0 2px 2px #00000024, 0 1px 5px #0000001f;
-}
-
-.filter-style {
-  max-width: 25%;
-}
-
-.search-line-options {
-	margin: 20px 50px 50px;
-	background-color: white;
+	margin-left: 50px;
+	margin-right: 50px;
+  margin-bottom: 50px;
+	text-align: right;
+	max-height: 500px;
+	padding-top: 10px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+	transition: 0.5s all ease;
 	box-shadow: 0 3px 1px -2px #0003, 0 2px 2px #00000024, 0 1px 5px #0000001f;
-	line-height: 60px;
-
-	.refresh-interval-picker {
-		width: 120px;
-		height: 50px;
-	}
-
 }
+
 
 .delete-filter {
   position: absolute;
   right: 0px;
 }
+
+
 
 @media only screen and (max-width: 768px) {
   mat-form-field {
