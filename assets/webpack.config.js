@@ -1,3 +1,4 @@
+const AngularWebpackPlugin = require('@ngtools/webpack').AngularWebpackPlugin
 const path = require('path')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const webpack = require('webpack')
@@ -21,8 +22,8 @@ const config = {
   module: {
     rules: [
       {
-        test: /\.ts?$/,
-        use: [{ loader: 'ts-loader' }, { loader: 'angular2-template-loader' }],
+        test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
+        use: [{loader: '@ngtools/webpack'}],
       },
       {
         test: /\.css(\?v=\d+\.\d+\.\d+)?$/,
@@ -60,6 +61,10 @@ const config = {
     },
   },
   plugins: [
+    new AngularWebpackPlugin({
+      tsConfigPath: './tsconfig.json',
+      entryModule: './src/app/app.ts#AppModule'
+    }),
     new CopyWebpackPlugin({
       patterns: [{ from: './static', to: '.' }],
     }),
