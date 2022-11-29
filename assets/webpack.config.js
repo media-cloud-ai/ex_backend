@@ -18,6 +18,12 @@ const config = {
   resolve: {
     extensions: ['.ts', '.js', '.scss'],
     modules: ['src', 'node_modules'],
+    fallback: {
+      "buffer": false,
+      "crypto": false,
+      "path": false,
+      "stream": false,
+    }
   },
   module: {
     rules: [

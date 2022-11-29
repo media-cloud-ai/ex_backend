@@ -27,9 +27,7 @@ export interface NameDialogData {
 }
 
 export interface ManageDialogData {
-  filters: {
-    //do nothing
-  }
+  filters: []
   userService: UserService
 }
 

@@ -91,7 +91,6 @@
         <input
           placeholder="Worker instance IDs..."
           [matChipInputFor]="instance_id_chip_list"
-          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
           [matChipInputAddOnBlur]="true"
           (matChipInputTokenEnd)="addChip(jobInstanceIDs, $event)"
         />
@@ -115,7 +114,6 @@
         <input
           placeholder="Worker labels..."
           [matChipInputFor]="worker_label_chip_list"
-          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
           [matChipInputAddOnBlur]="true"
           (matChipInputTokenEnd)="addChip(jobWorkerLabels, $event)"
         />
@@ -142,7 +140,6 @@
         <input
           placeholder="Worker versions..."
           [matChipInputFor]="worker_version_chip_list"
-          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
           [matChipInputAddOnBlur]="true"
           (matChipInputTokenEnd)="addChip(jobWorkerVersions, $event)"
         />
@@ -191,19 +188,19 @@
         <div class="minimum">
           Min:
           {{
-            item.durations.min.order_pending * 1000 | duration: 'timecode_ms'
+            item.durations.min.order_pending * 1000 | duration : 'timecode_ms'
           }}
         </div>
         <div class="average">
           {{
             item.durations.average.order_pending * 1000
-              | duration: 'timecode_ms'
+              | duration : 'timecode_ms'
           }}
         </div>
         <div class="maximum">
           Max:
           {{
-            item.durations.max.order_pending * 1000 | duration: 'timecode_ms'
+            item.durations.max.order_pending * 1000 | duration : 'timecode_ms'
           }}
         </div>
       </div>
@@ -217,16 +214,16 @@
       <div class="job-duration-values">
         <div class="minimum">
           Min:
-          {{ item.durations.min.processing * 1000 | duration: 'timecode_ms' }}
+          {{ item.durations.min.processing * 1000 | duration : 'timecode_ms' }}
         </div>
         <div class="average">
           {{
-            item.durations.average.processing * 1000 | duration: 'timecode_ms'
+            item.durations.average.processing * 1000 | duration : 'timecode_ms'
           }}
         </div>
         <div class="maximum">
           Max:
-          {{ item.durations.max.processing * 1000 | duration: 'timecode_ms' }}
+          {{ item.durations.max.processing * 1000 | duration : 'timecode_ms' }}
         </div>
       </div>
     </span>
@@ -240,19 +237,21 @@
         <div class="minimum">
           Min:
           {{
-            item.durations.min.response_pending * 1000 | duration: 'timecode_ms'
+            item.durations.min.response_pending * 1000
+              | duration : 'timecode_ms'
           }}
         </div>
         <div class="average">
           {{
             item.durations.average.response_pending * 1000
-              | duration: 'timecode_ms'
+              | duration : 'timecode_ms'
           }}
         </div>
         <div class="maximum">
           Max:
           {{
-            item.durations.max.response_pending * 1000 | duration: 'timecode_ms'
+            item.durations.max.response_pending * 1000
+              | duration : 'timecode_ms'
           }}
         </div>
       </div>
@@ -265,13 +264,13 @@
     <span class="job-duration" *ngIf="item.durations.count > 0">
       <div class="job-duration-values">
         <div class="minimum">
-          Min: {{ item.durations.min.total * 1000 | duration: 'timecode_ms' }}
+          Min: {{ item.durations.min.total * 1000 | duration : 'timecode_ms' }}
         </div>
         <div class="average">
-          {{ item.durations.average.total * 1000 | duration: 'timecode_ms' }}
+          {{ item.durations.average.total * 1000 | duration : 'timecode_ms' }}
         </div>
         <div class="maximum">
-          Max: {{ item.durations.max.total * 1000 | duration: 'timecode_ms' }}
+          Max: {{ item.durations.max.total * 1000 | duration : 'timecode_ms' }}
         </div>
       </div>
     </span>
@@ -290,6 +289,6 @@
   [pageIndex]="jobStatisticsPage"
   [pageSizeOptions]="pageSizeOptions"
   [length]="jobStatisticsPageTotal"
-  (page)="pageEvent = changeJobStatisticsPage($event)"
+  (page)="changeJobStatisticsPage($event)"
 >
 </mat-paginator>

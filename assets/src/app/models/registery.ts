@@ -1,3 +1,5 @@
+import { User } from './user'
+
 export class Manifest {
   paths: string[]
 }
@@ -6,6 +8,9 @@ export class Subtitle {
   id: number
   language: string
   index?: number
+  version?: string
+  inserted_at?: string
+  user: User
   path: string
   parent_id?: number
   childs: number[]

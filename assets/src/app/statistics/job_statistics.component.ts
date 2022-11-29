@@ -117,7 +117,7 @@ export class JobStatisticsComponent {
     this.getJobStatistics()
   }
 
-  private getJobStatistics() {
+  getJobStatistics() {
     this.loading = true
 
     const params = []
@@ -170,7 +170,7 @@ export class JobStatisticsComponent {
       })
   }
 
-  private changeJobStatisticsPage(event) {
+  changeJobStatisticsPage(event) {
     this.jobStatisticsPage = event.pageIndex
     this.jobStatisticsPageSize = event.pageSize
     this.getJobStatistics()
@@ -184,7 +184,7 @@ export class JobStatisticsComponent {
     }
   }
 
-  private addChip(list: string[], event: MatChipInputEvent) {
+  addChip(list: string[], event: MatChipInputEvent) {
     const value = (event.value || '').trim()
 
     if (value) {

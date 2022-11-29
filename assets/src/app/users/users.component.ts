@@ -29,7 +29,6 @@ export class UsersComponent {
   page = 0
   sub = undefined
 
-  pageEvent: PageEvent
   users: UserPage
 
   roles: RolePage

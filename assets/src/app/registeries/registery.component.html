@@ -25,19 +25,19 @@
           {{ subtitle.version }}
         </span>
         <span class="creation_date">
-          {{ subtitle.inserted_at + 'Z' | date: 'd LLLL yy' }}
-          {{ subtitle.inserted_at + 'Z' | date: 'HH:mm:ss' }}
+          {{ subtitle.inserted_at + 'Z' | date : 'd LLLL yy' }}
+          {{ subtitle.inserted_at + 'Z' | date : 'HH:mm:ss' }}
         </span>
         <span *ngIf="subtitle.user" class="email">
           {{ subtitle.user.email }}
         </span>
       </span>
-      <mat-icon class="icon" (click)="deleteSubtitle(i)"> delete </mat-icon>
+      <mat-icon class="icon" (click)="deleteSubtitle($i)"> delete </mat-icon>
     </span>
   </span>
   <span class="actions">
     <span>
-      <button mat-raised-button color="primary" (click)="openPlayer(subtitle)">
+      <button mat-raised-button color="primary" (click)="openPlayer($subtitle)">
         <mat-icon class="icon"> edit </mat-icon>
         Edit
       </button>

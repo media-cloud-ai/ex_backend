@@ -9,8 +9,8 @@
     <div *ngFor="let right of active_rights" class="right">
       <mat-form-field class="scope">
         <input
+          type="text"
           matInput
-          [type]="text"
           placeholder="Scope"
           (change)="editRightScope($event, right)"
           [(ngModel)]="right.entity"
@@ -47,8 +47,8 @@
     <div class="new-right">
       <mat-form-field class="scope">
         <input
+          type="text"
           matInput
-          [type]="text"
           (change)="editRightScope($event)"
           placeholder="Declare new scope..."
           [disabled]="selected_role && selected_role != role.id"
@@ -73,7 +73,7 @@
   <span class="role-actions">
     <button
       mat-raised-button
-      (click)="updateRole(role)"
+      (click)="updateRole()"
       color="primary"
       title="Update role"
       [disabled]="!is_being_updated"
@@ -83,7 +83,7 @@
     </button>
     <button
       mat-raised-button
-      (click)="deleteRole(role)"
+      (click)="deleteRole()"
       color="warn"
       title="Delete role"
       [disabled]="selected_role && selected_role != role.id"

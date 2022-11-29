@@ -28,10 +28,10 @@ export class TimecodeComponent implements OnChanges {
 
   private originalTime: number
 
-  private hours: number
-  private minutes: number
-  private secondes: number
-  private frames: number
+  hours: number
+  minutes: number
+  secondes: number
+  frames: number
 
   private clicked = false
   private origin: number
