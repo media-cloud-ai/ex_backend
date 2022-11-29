@@ -3,13 +3,13 @@ import { Router } from '@angular/router'
 import { MatDialog } from '@angular/material/dialog'
 
 import { AuthService } from '../authentication/auth.service'
-import { StartWorkflowDefinition } from '../models/startWorkflowDefinition'
 import { UserService } from '../services/user.service'
 import { WorkflowService } from '../services/workflow.service'
 import { Workflow } from '../models/workflow'
 import { WorkflowDuration } from '../models/statistics/duration'
 import { WorkflowActionsDialogComponent } from './dialogs/workflow_actions_dialog.component'
 import { WorkflowPauseDialogComponent } from './dialogs/workflow_pause_dialog.component'
+import { MatSnackBar } from '@angular/material/snack-bar'
 
 @Component({
   selector: 'workflow-component',
@@ -36,6 +36,7 @@ export class WorkflowComponent {
     private authService: AuthService,
     private router: Router,
     private userService: UserService,
+    private snackBar: MatSnackBar,
     private workflowService: WorkflowService,
     public dialog: MatDialog,
   ) {}
@@ -198,38 +199,31 @@ export class WorkflowComponent {
 
   duplicate(): void {
     if (this.right_duplicate) {
-      const parameters = this.workflow.parameters.reduce(function (
-        map,
-        parameter,
-      ) {
-        const value = parseInt(parameter.value)
-        console.log(value)
-        if (isNaN(value)) {
-          map[parameter.id] = parameter.value
-        } else {
-          map[parameter.id] = value
-        }
-        return map
-      },
-      {})
-      const create_workflow_parameters = new StartWorkflowDefinition()
-      create_workflow_parameters.workflow_identifier = this.workflow.identifier
-      create_workflow_parameters.parameters = parameters
-      create_workflow_parameters.reference = this.workflow.reference
-      create_workflow_parameters.version_major = parseInt(
-        this.workflow.version_major,
-      )
-      create_workflow_parameters.version_minor = parseInt(
-        this.workflow.version_minor,
-      )
-      create_workflow_parameters.version_micro = parseInt(
-        this.workflow.version_micro,
-      )
-
+      const duplicate_parameters =
+        this.workflowService.getCreateWorkflowParameters(this.workflow)
       this.workflowService
-        .createWorkflow(create_workflow_parameters)
+        .createWorkflow(duplicate_parameters)
         .subscribe((response) => {
-          console.log(response)
+          if (response) {
+            console.log(response)
+            this.router
+              .navigateByUrl(
+                this.router.url.split('?', 1)[0] +
+                  '/' +
+                  response.data.id.toString(),
+              )
+              .then((_page) => {
+                window.location.reload()
+              })
+          } else {
+            const _snackBarRef = this.snackBar.open(
+              'The workflow definition is not defined !',
+              '',
+              {
+                duration: 1000,
+              },
+            )
+          }
         })
     }
   }

@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { MatStepper } from '@angular/material/stepper'
 
 import { S3Configuration } from '../models/s3'
-import { StartWorkflowDefinition } from '../models/startWorkflowDefinition'
 
 import { WorkflowService } from '../services/workflow.service'
 import { S3Service } from '../services/s3.service'
@@ -195,51 +194,20 @@ export class OrderComponent {
   }
 
   startWorkflow() {
-    const parameters = {}
+    const parameters = this.workflowService.getCreateWorkflowParameters(
+      this.selectedService.start_parameters,
+    )
 
-    for (let i = 0; i < this.selectedService.start_parameters.length; i++) {
-      const parameter = this.selectedService.start_parameters[i]
-
-      let value = this.parameters[parameter.id]
-      if (value && value.name) {
-        value = value.name
-        if (this.selectedService.reference === undefined) {
-          this.selectedService.reference = value
-        }
+    this.workflowService.createWorkflow(parameters).subscribe((response) => {
+      if (response) {
+        this.processStatus.failed = false
+        this.processStatus.message = 'Your order is being processed.'
+        this.response = response
+      } else {
+        this.processStatus.failed = true
+        this.processStatus.message = 'An error occured.'
       }
-
-      if (typeof value === 'number') {
-        value = value.toString()
-      }
-
-      parameters[parameter.id] = value
-    }
-
-    if (this.selectedService.reference === undefined) {
-      this.selectedService.reference = this.selectedService.identifier
-    }
-
-    const startWorkflowDefinition: StartWorkflowDefinition = {
-      workflow_identifier: this.selectedService.identifier,
-      parameters: parameters,
-      reference: this.selectedService.reference,
-      version_major: this.selectedService.version_major,
-      version_minor: this.selectedService.version_minor,
-      version_micro: this.selectedService.version_micro,
-    }
-
-    this.workflowService
-      .createWorkflow(startWorkflowDefinition)
-      .subscribe((response) => {
-        if (response) {
-          this.processStatus.failed = false
-          this.processStatus.message = 'Your order is being processed.'
-          this.response = response
-        } else {
-          this.processStatus.failed = true
-          this.processStatus.message = 'An error occured.'
-        }
-      })
+    })
   }
 
   follow() {

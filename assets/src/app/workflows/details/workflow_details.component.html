@@ -153,7 +153,7 @@
       <div class="item" *ngIf="pause_post_action">
         <label>Will {{ pause_post_action.action }} at: </label>
         <span>{{
-          pause_post_action.trigger_at + 'Z' | date : 'yyyy-MM-dd HH:mm:ss'
+          pause_post_action.trigger_at + 'Z' | date: 'yyyy-MM-dd HH:mm:ss'
         }}</span>
       </div>
     </span>
@@ -201,12 +201,16 @@
       </button>
     </span>
     <span class="duplicate">
-      <button mat-raised-button [disabled]="!right_duplicate" color="accent" (click)="duplicate()">
+      <button
+        mat-raised-button
+        [disabled]="!right_duplicate"
+        color="accent"
+        (click)="duplicate()"
+      >
         <mat-icon>file_copy</mat-icon>
         Duplicate
       </button>
     </span>
-
   </div>
 
   <div class="line" *ngFor="let line of renderer.graph">
