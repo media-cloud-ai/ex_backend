@@ -1,12 +1,12 @@
-import { Component, Input } from '@angular/core'
-import { Router } from '@angular/router'
+import { Component, EventEmitter, Input, Output } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
+import { Router } from '@angular/router'
+import { Subscription } from 'rxjs'
 
 import { AuthService } from '../authentication/auth.service'
 import { UserService } from '../services/user.service'
 import { WorkflowService } from '../services/workflow.service'
 import { Workflow } from '../models/workflow'
-import { WorkflowDuration } from '../models/statistics/duration'
 import { WorkflowActionsDialogComponent } from './dialogs/workflow_actions_dialog.component'
 import { WorkflowPauseDialogComponent } from './dialogs/workflow_pause_dialog.component'
 import { MatSnackBar } from '@angular/material/snack-bar'
@@ -17,20 +17,27 @@ import { MatSnackBar } from '@angular/material/snack-bar'
   styleUrls: ['./workflow.component.less'],
 })
 export class WorkflowComponent {
+  private readonly subscriptions = new Subscription()
+
   @Input() workflow: Workflow
-  @Input() duration: WorkflowDuration
   @Input() detailed = false
-  can_stop = true
+
+  // This refreshEvent allows direct refresh when modifying a workflow through the page
+  @Output() refreshEvent = new EventEmitter()
+
+  first_name: string
+  last_name: string
+  user_name: string
+
+  can_stop = false
   can_pause = false
   can_resume = false
   can_delete = false
+
   right_stop = false
   right_retry = false
   right_delete = false
   right_duplicate = false
-  first_name: string
-  last_name: string
-  user_name: string
 
   constructor(
     private authService: AuthService,
@@ -40,6 +47,10 @@ export class WorkflowComponent {
     private workflowService: WorkflowService,
     public dialog: MatDialog,
   ) {}
+
+  ngOnChanges() {
+    this.workflow = Object.assign(new Workflow(), this.workflow)
+  }
 
   ngOnInit() {
     this.workflow = Object.assign(new Workflow(), this.workflow)
@@ -84,7 +95,7 @@ export class WorkflowComponent {
       })
   }
 
-  switchDetailed() {
+  switchDetailed(): void {
     this.detailed = !this.detailed
     if (this.workflow !== undefined && this.detailed) {
       this.authService
@@ -93,10 +104,6 @@ export class WorkflowComponent {
           this.right_retry = response.authorized
         })
     }
-  }
-
-  gotoVideo(video_id): void {
-    this.router.navigate(['/videos'], { queryParams: { video_id: video_id } })
   }
 
   getStepsCount(): number {
@@ -117,7 +124,7 @@ export class WorkflowComponent {
     return this.workflow.steps.length
   }
 
-  pause(_workflow_id): void {
+  pause(): void {
     const dialogRef = this.dialog.open(WorkflowPauseDialogComponent, {
       data: {
         workflow: this.workflow,
@@ -130,12 +137,13 @@ export class WorkflowComponent {
           .sendWorkflowEvent(user_choice.workflow.id, user_choice.event)
           .subscribe((response) => {
             console.log(response)
+            this.refreshEvent.emit()
           })
       }
     })
   }
 
-  resume(_workflow_id): void {
+  resume(): void {
     const dialogRef = this.dialog.open(WorkflowActionsDialogComponent, {
       data: {
         workflow: this.workflow,
@@ -150,12 +158,13 @@ export class WorkflowComponent {
           .sendWorkflowEvent(workflow.id, { event: 'resume' })
           .subscribe((response) => {
             console.log(response)
+            this.refreshEvent.emit()
           })
       }
     })
   }
 
-  stop(_workflow_id): void {
+  stop(): void {
     const message = this.workflow.is_live ? 'stop' : 'abort'
 
     const dialogRef = this.dialog.open(WorkflowActionsDialogComponent, {
@@ -172,12 +181,13 @@ export class WorkflowComponent {
           .sendWorkflowEvent(workflow.id, { event: message })
           .subscribe((response) => {
             console.log(response)
+            this.refreshEvent.emit()
           })
       }
     })
   }
 
-  delete(_workflow_id): void {
+  delete(): void {
     const dialogRef = this.dialog.open(WorkflowActionsDialogComponent, {
       data: {
         workflow: this.workflow,
@@ -190,8 +200,7 @@ export class WorkflowComponent {
         this.workflowService
           .sendWorkflowEvent(workflow.id, { event: 'delete' })
           .subscribe((_response) => {
-            // if response.status === "ok" {
-            // }
+            this.refreshEvent.emit()
           })
       }
     })

@@ -2,8 +2,17 @@
   <div class="search">
     <div class="search-base">
       <mat-form-field>
-        <mat-select formControlName="selectedPreset" placeholder="Saved filters" [(ngModel)]="selectedPreset" (selectionChange)="presetChanged()">
-          <mat-option *ngFor="let f of workflow_filters" [value]="f.filter" class="filter-option">
+        <mat-select
+          formControlName="selectedPreset"
+          placeholder="Saved filters"
+          [(ngModel)]="selectedPreset"
+          (selectionChange)="presetChanged()"
+        >
+          <mat-option
+            *ngFor="let f of workflow_filters"
+            [value]="f.filter"
+            class="filter-option"
+          >
             {{ f.name }}
           </mat-option>
         </mat-select>
@@ -31,18 +40,36 @@
         Clear filters
       </button>
       <button mat-button color="primary" (click)="expandFilters()">
-        <i id="expand-icon" class="material-icons">keyboard_double_arrow_down</i>
+        <i id="expand-icon" class="material-icons"
+          >keyboard_double_arrow_down</i
+        >
       </button>
     </div>
 
     <div *ngIf="showViewOptionsToolbar" class="search-line-options">
       <mat-form-field class="refresh-interval-picker" appearance="outline">
         <mat-label>Refresh interval</mat-label>
-        <mat-select formControlName="refreshInterval" [(ngModel)]="parameters.refresh_interval" (selectionChange)="changeRefreshInterval()">
-          <mat-option *ngFor="let interval of refresh_interval" [value]="interval.value">{{interval.label}}</mat-option>
+        <mat-select
+          formControlName="refreshInterval"
+          [(ngModel)]="parameters.refresh_interval"
+          (selectionChange)="changeRefreshInterval()"
+        >
+          <mat-option
+            *ngFor="let interval of refresh_interval"
+            [value]="interval.value"
+            >{{ interval.label }}</mat-option
+          >
         </mat-select>
       </mat-form-field>
-      <mat-slide-toggle class="toggle-options" formControlName="detailedToggle" color="primary" [checked]="parameters.detailed" [(ngModel)]="parameters.detailed" (check)="toggleDetailed()">Detailed</mat-slide-toggle>
+      <mat-slide-toggle
+        class="toggle-options"
+        formControlName="detailedToggle"
+        color="primary"
+        [checked]="parameters.detailed"
+        [(ngModel)]="parameters.detailed"
+        (check)="toggleDetailed()"
+        >Detailed</mat-slide-toggle
+      >
     </div>
   </div>
 

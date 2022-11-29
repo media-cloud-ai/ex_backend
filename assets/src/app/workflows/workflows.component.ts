@@ -1,15 +1,20 @@
-import moment = require('moment');
+import moment = require('moment')
 
 import { formatDate } from '@angular/common'
 import { Component } from '@angular/core'
-import { PageEvent } from '@angular/material/paginator'
 import { ActivatedRoute, Router } from '@angular/router'
+import { Subscription } from 'rxjs'
 
 import { SocketService } from '../services/socket.service'
 import { WorkflowService } from '../services/workflow.service'
-import { StatisticsService } from '../services/statistics.service'
 import { WorkflowDurations } from '../models/statistics/duration'
-import { ViewOption, ViewOptionEvent, WorkflowPage, WorkflowQueryParams } from '../models/page/workflow_page'
+import {
+  ViewOption,
+  ViewOptionEvent,
+  WorkflowPage,
+  WorkflowQueryParams,
+} from '../models/page/workflow_page'
+import { Message } from '../models/message'
 
 @Component({
   selector: 'workflows-component',
@@ -17,41 +22,31 @@ import { ViewOption, ViewOptionEvent, WorkflowPage, WorkflowQueryParams } from '
   styleUrls: ['./workflows.component.less'],
 })
 export class WorkflowsComponent {
+  private readonly subscriptions = new Subscription()
+
   length = 1000
-  page = 0
+  pageIndex = 0
   pageSize = 10
   pageSizeOptions = [10, 20, 50, 100]
-  video_id: string
 
   parameters: WorkflowQueryParams
-
-  sub = undefined
   loading = true
-  detailed = false
 
-  selectedModes = []
-
-  modes = [
-    { id: 'live', label: 'Live' },
-    { id: 'file', label: 'File' },
-  ]
-
-  pageEvent: PageEvent
   workflows: WorkflowPage
   durations: WorkflowDurations
-  // connection: any
-  // connections: any = []
-  // messages: Message[] = []
 
-  interval: any;
+  // Set to true when a workflow is added or deleted. In this case we need to fetch all workflows on the server when refreshing
+  fullReload = false
+  workflowsToRefresh: Set<number> = new Set<number>()
+
+  interval: any
 
   constructor(
     private socketService: SocketService,
     private workflowService: WorkflowService,
-    private statisticsService: StatisticsService,
     private route: ActivatedRoute,
     private router: Router,
-  ) { }
+  ) {}
 
   ngOnInit() {
     const today = new Date()
@@ -69,137 +64,111 @@ export class WorkflowsComponent {
       status: [],
       detailed: false,
       refresh_interval: -1,
-      time_interval: 1
-    };
+      time_interval: 1,
+    }
 
     // Parse all parameters in URL to apply filters
-    this.route.queryParamMap.subscribe(params => {
-      this.parameters.mode = params.getAll("mode").length > 0 ? params.getAll("mode") : ["file", "live"]
-      this.parameters.status = params.getAll("status")
-      this.parameters.identifiers = params.getAll("identifiers")
-      this.parameters.search = params.getAll("search").toString() || undefined
-      this.parameters.selectedDateRange.startDate = params.get("start_date") != undefined ? moment(params.get("start_date"), moment.ISO_8601).toDate() : yesterday;
-      this.parameters.selectedDateRange.endDate =  params.get("end_date") != undefined ? moment(params.get("end_date"), moment.ISO_8601).toDate() : today;
+    this.route.queryParamMap.subscribe((params) => {
+      this.parameters.mode =
+        params.getAll('mode').length > 0
+          ? params.getAll('mode')
+          : ['file', 'live']
+      this.parameters.status = params.getAll('status')
+      this.parameters.identifiers = params.getAll('identifiers')
+      this.parameters.search = params.getAll('search').toString() || undefined
+      this.parameters.selectedDateRange.startDate =
+        params.get('start_date') != undefined
+          ? moment(params.get('start_date'), moment.ISO_8601).toDate()
+          : yesterday
+      this.parameters.selectedDateRange.endDate =
+        params.get('end_date') != undefined
+          ? moment(params.get('end_date'), moment.ISO_8601).toDate()
+          : today
+      this.parameters.refresh_interval =
+        params.get('refresh') != undefined
+          ? parseInt(params.get('refresh'))
+          : -1
     })
 
-    this.sub = this.route.queryParams.subscribe((params) => {
-      this.page = +params['page'] || 0
+    this.route.queryParams.subscribe((params) => {
+      this.pageIndex = +params['page'] || 0
       this.pageSize = +params['per_page'] || 10
-
-      // this.subscribeToGlobalSockets();
     })
 
+    this.initSocketService()
+
+    if (this.parameters.refresh_interval !== -1) {
+      this.interval = setInterval(() => {
+        this.reloadWorkflowsView()
+      }, this.parameters.refresh_interval * 1000)
+    }
   }
-
-  refreshData(){
-    this.getWorkflows(this.page, this.pageSize, this.parameters);
-  }
-  //
-  // subscribeToSockets() {
-  //   this.getWorkflows(this.page, this.pageSize, this.parameters)
-  //   this.subscribeToGlobalSockets();
-  //   this.subscribeToWorkflowSockets();
-  // }
-
-  // private subscribeToGlobalSockets() {
-  //   this.socketService.initSocket()
-  //   this.socketService.connectToChannel('notifications:all')
-  //
-  //   this.connections.push(this.socketService.onNewWorkflow()
-  //       .subscribe((message: Message) => {
-  //         this.getWorkflows(this.page, this.pageSize, this.parameters)
-  //       })
-  //   )
-  //   this.connections.push(this.socketService.onDeleteWorkflow()
-  //       .subscribe((message: Message) => {
-  //         this.getWorkflows(this.page, this.pageSize, this.parameters)
-  //       })
-  //   )
-  //   this.connections.push(this.socketService.onRetryJob()
-  //       .subscribe((message: Message) => {
-  //         this.getWorkflows(this.page, this.pageSize, this.parameters)
-  //       })
-  //   )
-  // }
-
-
-  // private subscribeToWorkflowSockets() {
-  //   for (let workflow of this.workflows.data) {
-  //     this.connections.push(this.socketService.onWorkflowUpdate(workflow.id)
-  //         .subscribe((message: Message) => {
-  //           this.updateWorkflow(message.body.workflow_id)
-  //         })
-  //     )
-  //   }
-  // }
-
-  // unsubscribeToSockets() {
-  //   for (let connection of this.connections) {
-  //     connection.unsubscribe()
-  //   }
-  //
-  //   this.connections = []
-  // }
 
   ngOnDestroy() {
-    clearInterval(this.interval);
-    // if (this.sub) {
-    //   this.sub.unsubscribe()
-    // }
-    // for (let connection of this.connections) {
-    //   connection.unsubscribe()
-    // }
+    clearInterval(this.interval)
+    this.subscriptions.unsubscribe()
   }
 
-  getWorkflows(page: number, pageSize: number, parameters: WorkflowQueryParams) {
-    // this.eventGetWorkflows()
+  private initSocketService() {
+    /* 
+      We listen for delete or create worflow's event and set full reload to true to refresh the full list on the refresh interval
+    */
+    this.socketService.initSocket()
+    this.socketService.connectToChannel('notifications:all')
+
+    this.subscriptions.add(
+      this.socketService.onNewWorkflow().subscribe((_message: Message) => {
+        this.fullReload = true
+      }),
+    )
+
+    this.subscriptions.add(
+      this.socketService.onDeleteWorkflow().subscribe((_message: Message) => {
+        this.fullReload = true
+      }),
+    )
+  }
+
+  private trackWorkflow(_index, workflow) {
+    return workflow ? workflow.id : undefined
+  }
+
+  getWorkflows() {
+    this.router.navigate(['/workflows'], {
+      queryParams: this.getQueryParamsForWorkflows(),
+    })
 
     this.workflowService
-      .getWorkflows(page, pageSize, parameters)
+      .getWorkflows(this.pageIndex, this.pageSize, this.parameters)
       .subscribe((workflowPage) => {
-        if (workflowPage === undefined) {
-          this.length = undefined
-          this.workflows = new WorkflowPage()
-          return
-        }
-
         this.workflows = workflowPage
         this.length = workflowPage.total
         this.loading = false
 
-      // this.subscribeToWorkflowSockets();
-
-        let workflow_ids = this.workflows.data.map((workflow) => workflow.id);
-        this.statisticsService.getWorkflowsDurations(workflow_ids).subscribe((response) => {
-          this.durations = response;
-        })
+        for (const workflow of this.workflows.data) {
+          this.subscriptions.add(
+            this.socketService
+              .onWorkflowUpdate(workflow.id)
+              .subscribe((message: Message) => {
+                this.workflowsToRefresh.add(workflow.id) // Data will be fetched on refresh
+              }),
+          )
+        }
       })
-  }
-
-  eventGetWorkflows(): void {
-    this.router.navigate(['/workflows'], {
-      queryParams: this.getQueryParamsForWorkflows(),
-    })
   }
 
   getQueryParamsForWorkflows(): Record<string, unknown> {
     const params = {}
 
-    if (this.parameters.identifiers.length > 0) {
+    if (this.parameters.identifiers.length > 0)
       params['identifiers'] = this.parameters.identifiers
-    }
-
-    if (this.parameters.status.length > 0) {
+    if (this.parameters.status.length > 0)
       params['status'] = this.parameters.status
-    }
-
-    if (this.parameters.mode.length > 0) {
-      params['mode'] = this.parameters.mode
-    }
-
-    if (this.parameters.search !== '' && this.parameters.search !== undefined) {
+    if (this.parameters.mode.length > 0) params['mode'] = this.parameters.mode
+    if (this.parameters.search !== '' && this.parameters.search !== undefined)
       params['search'] = this.parameters.search
-    }
+    if (this.parameters.refresh_interval != -1)
+      params['refresh'] = this.parameters.refresh_interval
 
     params['start_date'] = formatDate(
       this.parameters.selectedDateRange.startDate,
@@ -211,59 +180,58 @@ export class WorkflowsComponent {
       'yyyy-MM-ddTHH:mm:ss',
       'fr',
     )
+
     return params
   }
 
   changeWorkflowPage(event) {
-    this.getWorkflows(event.pageIndex, event.pageSize, this.parameters)
+    this.pageSize = event.pageSize
+    this.pageIndex = event.pageIndex
+    this.getWorkflows()
   }
 
   viewOptionsEvent(view_options: ViewOptionEvent) {
+    // Trigger detailed view to expand workflow's steps
     if (view_options.option == ViewOption.Detailed) {
-      this.parameters.detailed = view_options.value;
+      this.parameters.detailed = view_options.value
     }
+
+    // Trigger auto refresh configured by the user
     if (view_options.option == ViewOption.RefreshInterval) {
-      clearInterval(this.interval);
+      clearInterval(this.interval)
       if (view_options.value !== -1) {
         this.interval = setInterval(() => {
-          this.refreshData();
-        }, view_options.value * 1000);
+          this.reloadWorkflowsView()
+        }, view_options.value * 1000)
       }
     }
   }
 
-  updateWorkflow(workflow_id) {
+  reloadWorkflowsView() {
+    if (this.fullReload) {
+      this.getWorkflows()
+      this.fullReload = false
+    } else if (this.workflowsToRefresh.size > 0) {
+      this.workflowsToRefresh.forEach((w_id) => {
+        this.fetchWorkflowInformation(w_id)
+      })
+      this.workflowsToRefresh.clear()
+    }
+  }
+
+  private fetchWorkflowInformation(workflow_id) {
     this.workflowService.getWorkflow(workflow_id).subscribe((workflowData) => {
       for (let i = 0; i < this.workflows.data.length; i++) {
         if (this.workflows.data[i].id === workflowData.data.id) {
-          this.statisticsService
-            .getWorkflowDurations(workflow_id)
-            .subscribe((response) => {
-              for (let j = 0; j < this.durations.data.length; j++) {
-                if (
-                  this.durations.data[j].workflow_id ===
-                  response.data[0].workflow_id
-                ) {
-                  this.durations.data[j] = response.data[0]
-                  this.workflows.data[i] = workflowData.data
-                  return
-                }
-              }
-            })
-          return
+          this.workflows.data[i] = workflowData.data
         }
       }
     })
+    return
   }
 
-  private getWorkflowDuration(workflow_id) {
-    return this.durations.data.find(
-      (duration) => duration.workflow_id == workflow_id,
-    )
-  }
-
-  updateWorkflows(parameters: WorkflowQueryParams) {
+  updateSearch(parameters: WorkflowQueryParams) {
     this.parameters = parameters
-    this.getWorkflows(this.page, this.pageSize, this.parameters)
+    this.getWorkflows()
   }
 }

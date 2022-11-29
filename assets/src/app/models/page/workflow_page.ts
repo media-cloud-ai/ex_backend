@@ -1,5 +1,4 @@
 import { Workflow } from '../workflow'
-import {Role, RoleEventAction} from "../user";
 
 export class WorkflowPage {
   data: Workflow[]
@@ -54,7 +53,7 @@ export class ViewOptionEvent {
   value: any
 
   constructor(option: ViewOption, value: any) {
-    this.option = option;
-    this.value = value;
+    this.option = option
+    this.value = value
   }
 }

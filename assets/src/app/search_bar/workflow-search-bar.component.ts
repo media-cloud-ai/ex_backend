@@ -1,12 +1,26 @@
-import moment = require('moment');
-import {Component, EventEmitter, Inject, Input, Output, ViewChild} from '@angular/core'
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import moment = require('moment')
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core'
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms'
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogRef,
+} from '@angular/material/dialog'
 
-
-import {UserService} from '../services/user.service';
-import {WorkflowService} from '../services/workflow.service'
-import {ViewOption, ViewOptionEvent, WorkflowQueryParams} from '../models/page/workflow_page'
+import { UserService } from '../services/user.service'
+import { WorkflowService } from '../services/workflow.service'
+import {
+  ViewOption,
+  ViewOptionEvent,
+  WorkflowQueryParams,
+} from '../models/page/workflow_page'
 
 export interface NameDialogData {
   filter_name: string
@@ -65,7 +79,7 @@ export class WorkflowFiltersNameDialog {
   styleUrls: ['./workflow-search-bar.component.less'],
 })
 export class WorkflowSearchBarComponent {
-  @Input() showViewOptionsToolbar: boolean = false;
+  @Input() showViewOptionsToolbar = false
   @Input() parameters: WorkflowQueryParams = {
     identifiers: [],
     mode: ['file', 'live'],
@@ -77,11 +91,11 @@ export class WorkflowSearchBarComponent {
     status: ['completed', 'error'],
     detailed: false,
     refresh_interval: -1,
-    time_interval: 3600
-  };
+    time_interval: 3600,
+  }
 
-  @Output() parametersEvent = new EventEmitter<WorkflowQueryParams>();
-  @Output() viewOptionsEvent = new EventEmitter<ViewOptionEvent>();
+  @Output() parametersEvent = new EventEmitter<WorkflowQueryParams>()
+  @Output() viewOptionsEvent = new EventEmitter<ViewOptionEvent>()
 
   @ViewChild('picker') picker: any
 
@@ -115,16 +129,14 @@ export class WorkflowSearchBarComponent {
   ]
 
   refresh_interval = [
-    { label: "Off", value: -1 },
-    { label: "5s", value: 5 },
-    { label: "10s", value: 10 },
-    { label: "30s", value: 30 },
-    { label: "1m", value: 60 },
-    { label: "5m", value: 300 },
-    { label: "15m", value: 900 },
-    { label: "30m", value: 1800 },
-    { label: "1h", value: 3600 },
-  ];
+    { label: 'Off', value: -1 },
+    { label: '1s', value: 1 },
+    { label: '5s', value: 5 },
+    { label: '10s', value: 10 },
+    { label: '30s', value: 30 },
+    { label: '1m', value: 60 },
+    { label: '5m', value: 300 },
+  ]
 
   constructor(
     private userService: UserService,
@@ -151,8 +163,8 @@ export class WorkflowSearchBarComponent {
       referenceSearch: new FormControl(''),
       detailedToggle: new FormControl(''),
       liveReloadToggle: new FormControl(''),
-      refreshInterval: new FormControl('')
-    });
+      refreshInterval: new FormControl(''),
+    })
 
     this.userService.getWorkflowFilters().subscribe((response) => {
       this.workflow_filters = response.sort(this.sortFiltersName)
@@ -220,11 +232,18 @@ export class WorkflowSearchBarComponent {
   }
 
   toggleDetailed() {
-    this.viewOptionsEvent.emit(new ViewOptionEvent(ViewOption.Detailed, this.parameters.detailed))
+    this.viewOptionsEvent.emit(
+      new ViewOptionEvent(ViewOption.Detailed, this.parameters.detailed),
+    )
   }
 
   changeRefreshInterval() {
-    this.viewOptionsEvent.emit(new ViewOptionEvent(ViewOption.RefreshInterval, this.parameters.refresh_interval))
+    this.viewOptionsEvent.emit(
+      new ViewOptionEvent(
+        ViewOption.RefreshInterval,
+        this.parameters.refresh_interval,
+      ),
+    )
   }
 
   clearFilters(): void {
@@ -243,8 +262,8 @@ export class WorkflowSearchBarComponent {
       status: ['completed', 'error'],
       detailed: false,
       refresh_interval: -1,
-      time_interval: 3600
-    };
+      time_interval: 3600,
+    }
 
     this.workflowsForm.controls.selectedPreset.setValue('')
 

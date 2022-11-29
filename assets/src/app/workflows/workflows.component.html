@@ -1,6 +1,10 @@
-<div class=search>
-  <workflow-search-bar [parameters]="parameters" [showViewOptionsToolbar]=true (viewOptionsEvent)="viewOptionsEvent($event)"
-    (parametersEvent)="updateWorkflows($event)"></workflow-search-bar>
+<div class="search">
+  <workflow-search-bar
+    [parameters]="parameters"
+    [showViewOptionsToolbar]="true"
+    (viewOptionsEvent)="viewOptionsEvent($event)"
+    (parametersEvent)="updateSearch($event)"
+  ></workflow-search-bar>
 </div>
 
 <div *ngIf="loading" class="loading">
@@ -15,12 +19,14 @@
 </div>
 <ul *ngIf="workflows && !loading" class="workflows">
   <li *ngIf="workflows.total == 0" class="notfound">No workflow found.</li>
-  <li *ngFor="let workflow of workflows.data" class="workflow">
+  <li
+    *ngFor="let workflow of workflows.data; trackBy: trackWorkflow"
+    class="workflow"
+  >
     <workflow-component
-      *ngIf="durations"
       [workflow]="workflow"
       [detailed]="parameters.detailed"
-      [duration]="getWorkflowDuration(workflow.id)"
+      (refreshEvent)="getWorkflows()"
     ></workflow-component>
   </li>
 </ul>
@@ -32,7 +38,7 @@
   [pageSize]="pageSize"
   [pageIndex]="page"
   [pageSizeOptions]="pageSizeOptions"
-  (page)="pageEvent = changeWorkflowPage($event)"
+  (page)="changeWorkflowPage($event)"
   *ngIf="workflows && !loading"
 >
 </mat-paginator>
