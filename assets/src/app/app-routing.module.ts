@@ -11,8 +11,6 @@ import { DeclaredWorkersComponent } from './declared_workers/declared_workers.co
 import { HelpComponent } from './help/help.component'
 import { IngestComponent } from './ingest/ingest.component'
 import { LoginComponent } from './login/login.component'
-import { RegisteriesComponent } from './registeries/registeries.component'
-import { RegisteryDetailComponent } from './registeries/registery_detail.component'
 import { ResetPasswordComponent } from './reset_password/reset_password.component'
 import { StatisticsComponent } from './statistics/statistics.component'
 import { UsersComponent } from './users/users.component'
@@ -22,7 +20,6 @@ import { WorkflowsComponent } from './workflows/workflows.component'
 
 import { DocumentationModule } from './documentation/documentation.module'
 import { OrderModule } from './order/order.module'
-import { PlayerModule } from './player/player.module'
 import { SecretsModule } from './secrets/secrets.module'
 import { WorkersModule } from './workers/workers.module'
 
@@ -55,21 +52,6 @@ const appRoutes: Routes = [
   {
     path: 'orders',
     loadChildren: () => OrderModule,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'player/:id',
-    loadChildren: () => PlayerModule,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'registeries',
-    component: RegisteriesComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'registeries/:id',
-    component: RegisteryDetailComponent,
     canActivate: [AuthGuard],
   },
   {

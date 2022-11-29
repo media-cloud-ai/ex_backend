@@ -55,7 +55,6 @@ export class AuthGuard implements CanActivate, CanActivateChild {
       }
       if (
         url.startsWith('/people') ||
-        url.startsWith('/player') ||
         url.startsWith('/ingest') ||
         url.startsWith('/person') ||
         url.startsWith('/registeries')

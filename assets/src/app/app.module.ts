@@ -68,16 +68,12 @@ import { JobStatisticsComponent } from './statistics/job_statistics.component'
 import { JobsComponent } from './jobs/jobs.component'
 import { LoginComponent } from './login/login.component'
 import { ParametersComponent } from './workflows/details/parameters.component'
-import { RegisteriesComponent } from './registeries/registeries.component'
-import { RegisteryComponent } from './registeries/registery.component'
-import { RegisteryDetailComponent } from './registeries/registery_detail.component'
 import { ResetPasswordComponent } from './reset_password/reset_password.component'
 import { RoleComponent } from './users/role.component'
 import { QueuesComponent } from './amqp/queues.component'
 import { StatisticsComponent } from './statistics/statistics.component'
 import { StepProgressBarComponent } from './workflows/step_progress_bar.component'
 import { StepRendererComponent } from './workflows/renderer/step_renderer.component'
-import { SubtitleComponent } from './registeries/items/subtitle.component'
 import { UserComponent } from './users/user.component'
 import { UsersComponent } from './users/users.component'
 import { WatchersComponent } from './watchers/watchers.component'
@@ -88,11 +84,9 @@ import { WorkflowStatisticsComponent } from './statistics/workflow_statistics.co
 import { WorkflowStepDetailsComponent } from './workflows/details/workflow_step_details.component'
 import { WorkflowsComponent } from './workflows/workflows.component'
 
-import { DeleteSubtitleDialog } from './registeries/dialog/delete_subtitle_dialog.component'
 import { EnterEmailDialogComponent } from './login/dialogs/enter_email_dialog.component'
 import { StartIngestDialog } from './ingest/dialogs/start_ingest.component'
 import { JobDetailsDialogComponent } from './jobs/details/job_details_dialog.component'
-import { NewSubtitleDialogComponent } from './registeries/dialog/new_subtitle_dialog.component'
 import { RoleOrRightDeletionDialogComponent } from './users/dialogs/role_or_right_deletion_dialog.component'
 import { UserEditionDialogComponent } from './users/dialogs/user_edition_dialog.component'
 import { UserShowCredentialsDialogComponent } from './users/dialogs/user_show_credentials_dialog.component'
@@ -186,7 +180,6 @@ const EX_BACKEND_DATE_FORMATS = {
     ConfirmComponent,
     DashboardComponent,
     DeclaredWorkersComponent,
-    DeleteSubtitleDialog,
     DurationComponent,
     EnterEmailDialogComponent,
     HelpComponent,
@@ -195,12 +188,8 @@ const EX_BACKEND_DATE_FORMATS = {
     JobStatisticsComponent,
     JobsComponent,
     LoginComponent,
-    NewSubtitleDialogComponent,
     ParametersComponent,
     QueuesComponent,
-    RegisteryComponent,
-    RegisteriesComponent,
-    RegisteryDetailComponent,
     ResetPasswordComponent,
     RoleComponent,
     RoleOrRightDeletionDialogComponent,
@@ -208,7 +197,6 @@ const EX_BACKEND_DATE_FORMATS = {
     StatisticsComponent,
     StepProgressBarComponent,
     StepRendererComponent,
-    SubtitleComponent,
     UserComponent,
     UsersComponent,
     UserEditionDialogComponent,
@@ -225,21 +213,16 @@ const EX_BACKEND_DATE_FORMATS = {
     WorkflowsComponent,
   ],
   entryComponents: [
-    DeleteSubtitleDialog,
     DurationComponent,
     EnterEmailDialogComponent,
     JobDetailsDialogComponent,
     JobStatisticsComponent,
-    NewSubtitleDialogComponent,
     ParametersComponent,
-    RegisteryComponent,
-    RegisteryDetailComponent,
     RoleComponent,
     RoleOrRightDeletionDialogComponent,
     StartIngestDialog,
     StepProgressBarComponent,
     StepRendererComponent,
-    SubtitleComponent,
     UserComponent,
     UserEditionDialogComponent,
     UserShowCredentialsDialogComponent,
