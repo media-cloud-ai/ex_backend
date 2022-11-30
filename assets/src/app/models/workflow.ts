@@ -68,25 +68,26 @@ export class NotificationHook {
 }
 
 export class Workflow {
+  artifacts?: Artifact[]
+  created_at?: string
+  deleted?: boolean
   id?: number
   identifier?: string
-  label?: string
-  version_major?: string
-  version_minor?: string
-  version_micro?: string
   is_live?: boolean
-  deleted?: boolean
   jobs?: Array<Job>
-  tags?: string[]
+  label?: string
+  notification_hooks?: Array<NotificationHook>
+  parameters?: Parameter[]
   reference?: string
-  created_at?: string
-  artifacts?: Artifact[]
   rights?: Right[]
   status?: Status
   steps?: Step[]
-  workflow_id?: number
+  tags?: string[]
   user_uuid?: string
-  notification_hooks?: Array<NotificationHook>
+  version_major?: string
+  version_micro?: string
+  version_minor?: string
+  workflow_id?: number
 
   static compare(a: Workflow, b: Workflow) {
     const identifierComparison = a.identifier.localeCompare(b.identifier)

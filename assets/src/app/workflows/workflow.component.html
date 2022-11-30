@@ -100,6 +100,17 @@
         <mat-icon class="v-align-middle" color="warn">delete</mat-icon>
         <span class="v-align-middle">Delete</span>
       </button>
+      <button
+        mat-menu-item
+        class="duplicate"
+        [disabled]="!right_duplicate"
+        color="accent"
+        (click)="duplicate()"
+        title="Duplicate"
+      >
+        <mat-icon class="v-align-middle" color="accent">file_copy</mat-icon>
+        <span class="v-align-middle">Duplicate</span>
+      </button>
     </mat-menu>
   </div>
   <div *ngIf="workflow" class="steps">

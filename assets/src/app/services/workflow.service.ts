@@ -17,7 +17,7 @@ import { StartWorkflowDefinition } from '../models/startWorkflowDefinition'
 export class WorkflowService {
   private workflowUrl = '/api/workflow'
   private workflowsUrl = '/api/step_flow/workflows'
-  private workflowsLauncher = '/api/step_flow/launch_workflow'
+  private workflowFiltersUrl = 'api/worfklow_filters'
   private workflowDefinitionsUrl = '/api/step_flow/definitions'
   private statisticsUrl = '/api/step_flow/workflows_statistics'
   private statusUrl = '/api/step_flow/workflows_status'
@@ -156,11 +156,33 @@ export class WorkflowService {
     startWorkflowDefinition: StartWorkflowDefinition,
   ): Observable<WorkflowData> {
     return this.http
-      .post<WorkflowData>(this.workflowsLauncher, startWorkflowDefinition)
+      .post<WorkflowData>(this.workflowsUrl, startWorkflowDefinition)
       .pipe(
         tap((_workflowPage) => this.log('fetched Workflow')),
         catchError(this.handleError('createWorkflow', undefined)),
       )
+  }
+
+  getCreateWorkflowParameters(workflow: Workflow): StartWorkflowDefinition {
+    const parameters = workflow.parameters.reduce(function (map, parameter) {
+      const value = parseInt(parameter.value)
+      console.log(value)
+      if (isNaN(value)) {
+        map[parameter.id] = parameter.value
+      } else {
+        map[parameter.id] = value
+      }
+      return map
+    }, {})
+    const create_workflow_parameters = new StartWorkflowDefinition()
+    create_workflow_parameters.workflow_identifier = workflow.identifier
+    create_workflow_parameters.parameters = parameters
+    create_workflow_parameters.reference = workflow.reference
+    create_workflow_parameters.version_major = parseInt(workflow.version_major)
+    create_workflow_parameters.version_minor = parseInt(workflow.version_minor)
+    create_workflow_parameters.version_micro = parseInt(workflow.version_micro)
+
+    return create_workflow_parameters
   }
 
   sendWorkflowEvent(

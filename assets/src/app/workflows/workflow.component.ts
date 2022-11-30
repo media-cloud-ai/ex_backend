@@ -9,6 +9,7 @@ import { Workflow } from '../models/workflow'
 import { WorkflowDuration } from '../models/statistics/duration'
 import { WorkflowActionsDialogComponent } from './dialogs/workflow_actions_dialog.component'
 import { WorkflowPauseDialogComponent } from './dialogs/workflow_pause_dialog.component'
+import { MatSnackBar } from '@angular/material/snack-bar'
 
 @Component({
   selector: 'workflow-component',
@@ -19,13 +20,14 @@ export class WorkflowComponent {
   @Input() workflow: Workflow
   @Input() duration: WorkflowDuration
   @Input() detailed = false
-  can_stop = false
+  can_stop = true
   can_pause = false
   can_resume = false
   can_delete = false
   right_stop = false
   right_retry = false
   right_delete = false
+  right_duplicate = false
   first_name: string
   last_name: string
   user_name: string
@@ -34,6 +36,7 @@ export class WorkflowComponent {
     private authService: AuthService,
     private router: Router,
     private userService: UserService,
+    private snackBar: MatSnackBar,
     private workflowService: WorkflowService,
     public dialog: MatDialog,
   ) {}
@@ -73,6 +76,12 @@ export class WorkflowComponent {
           this.right_delete = response.authorized
         })
     }
+
+    this.authService
+      .hasAnyRights('workflow::' + this.workflow.identifier, 'create')
+      .subscribe((response) => {
+        this.right_duplicate = response.authorized
+      })
   }
 
   switchDetailed() {
@@ -186,5 +195,32 @@ export class WorkflowComponent {
           })
       }
     })
+  }
+
+  duplicate(): void {
+    if (this.right_duplicate) {
+      const duplicate_parameters =
+        this.workflowService.getCreateWorkflowParameters(this.workflow)
+      this.workflowService
+        .createWorkflow(duplicate_parameters)
+        .subscribe((response) => {
+          if (response) {
+            console.log(response)
+            this.router
+              .navigate(['/workflows/' + response.data.id])
+              .then((_page) => {
+                window.location.reload()
+              })
+          } else {
+            const _snackBarRef = this.snackBar.open(
+              'The workflow definition is not defined!',
+              '',
+              {
+                duration: 1000,
+              },
+            )
+          }
+        })
+    }
   }
 }
