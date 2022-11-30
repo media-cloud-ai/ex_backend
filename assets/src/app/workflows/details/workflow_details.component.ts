@@ -257,26 +257,20 @@ export class WorkflowDetailsComponent {
         .createWorkflow(duplicate_parameters)
         .subscribe((response) => {
           if (response) {
-            const new_url =
-              this.router.url
-                .split('?', 1)[0]
-                .split('/')
-                .slice(0, -1)
-                .join('/') +
-              '/' +
-              response.data.id.toString()
-            this.router.navigateByUrl(new_url).then((_page) => {
-              window.location.reload()
-            })
+            this.router
+              .navigate(['/workflows/' + response.data.id])
+              .then((_page) => {
+                window.location.reload()
+              })
           } else {
             const _snackBarRef = this.snackBar.open(
-              'The workflow definition is not defined !',
+              'The workflow definition is not defined!',
               '',
               {
                 duration: 1000,
               },
             )
-            console.log('The workflow definition is not defined !')
+            console.log('The workflow definition is not defined!')
           }
         })
     }

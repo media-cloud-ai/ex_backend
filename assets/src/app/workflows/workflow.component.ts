@@ -207,17 +207,13 @@ export class WorkflowComponent {
           if (response) {
             console.log(response)
             this.router
-              .navigateByUrl(
-                this.router.url.split('?', 1)[0] +
-                  '/' +
-                  response.data.id.toString(),
-              )
+              .navigate(['/workflows/' + response.data.id])
               .then((_page) => {
                 window.location.reload()
               })
           } else {
             const _snackBarRef = this.snackBar.open(
-              'The workflow definition is not defined !',
+              'The workflow definition is not defined!',
               '',
               {
                 duration: 1000,
