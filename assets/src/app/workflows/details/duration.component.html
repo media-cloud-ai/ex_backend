@@ -26,8 +26,5 @@
   *ngIf="duration && !isFullMode()"
   title="{{ duration | duration: 'human' }}"
 >
-  <span
-    >Duration:
-    {{ duration.order_pending * 1000 | duration: 'timecode_ms' }}</span
-  >
+  <span>Duration: {{ duration.total * 1000 | duration: 'timecode_ms' }}</span>
 </span>

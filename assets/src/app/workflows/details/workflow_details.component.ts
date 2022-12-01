@@ -26,8 +26,9 @@ export class WorkflowDetailsComponent {
   workflow_id: number
   workflow: Workflow
   renderer: WorkflowRenderer
+
   can_abort = false
-  can_stop = true
+  can_stop = false
   can_pause = false
   can_resume = false
   can_delete = false
