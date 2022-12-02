@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core'
+import { Subscription } from 'rxjs'
 
 import { Message } from '../../models/message'
 import { SocketService } from '../../services/socket.service'
@@ -12,35 +13,42 @@ import { Workflow } from '../../models/workflow'
   templateUrl: 'duration.component.html',
 })
 export class DurationComponent {
-  connection: any
+  private readonly subscriptions = new Subscription()
 
   @Input() workflow: Workflow
   @Input() display: string
-  @Input() duration: WorkflowDuration = undefined
+
+  duration: WorkflowDuration = undefined
 
   constructor(
     private socketService: SocketService,
     private statisticsService: StatisticsService,
   ) {}
 
-  ngOnInit() {
-    if (this.duration == undefined) {
-      this.getDurations(this.workflow.id)
-    }
+  ngOnChanges() {
+    this.getDurations()
+  }
 
+  ngOnInit() {
     if (this.isFullMode()) {
       this.socketService.initSocket()
       this.socketService.connectToChannel('notifications:all')
 
-      this.connection = this.socketService
-        .onWorkflowUpdate(this.workflow.id)
-        .subscribe((_message: Message) => {
-          this.getDurations(this.workflow.id)
-        })
+      this.subscriptions.add(
+        this.socketService
+          .onWorkflowUpdate(this.workflow.id)
+          .subscribe((message: Message) => {
+            this.getDurations()
+          }),
+      )
     }
   }
 
-  getDurations(_workflow_id) {
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe()
+  }
+
+  getDurations() {
     this.statisticsService
       .getWorkflowDurations(this.workflow.id)
       .subscribe((response) => {

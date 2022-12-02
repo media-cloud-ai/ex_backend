@@ -13,6 +13,7 @@ import { Workflow } from '../../models/workflow'
 import { WorkflowRenderer } from '../../models/workflow_renderer'
 import { WorkflowActionsDialogComponent } from '../dialogs/workflow_actions_dialog.component'
 import { WorkflowPauseDialogComponent } from '../dialogs/workflow_pause_dialog.component'
+import { Subscription } from 'rxjs'
 
 @Component({
   selector: 'workflow-details-component',
@@ -20,22 +21,24 @@ import { WorkflowPauseDialogComponent } from '../dialogs/workflow_pause_dialog.c
   styleUrls: ['./workflow_details.component.less'],
 })
 export class WorkflowDetailsComponent {
-  private sub: any
+  private readonly subscriptions = new Subscription()
 
   workflow_id: number
   workflow: Workflow
   renderer: WorkflowRenderer
+
+  can_abort = false
   can_stop = false
   can_pause = false
   can_resume = false
   can_delete = false
   parameters_opened = false
   notification_hooks_opened = false
-  connection: any
-  messages: Message[] = []
+
   right_delete = false
   right_duplicate = false
   right_stop = false
+
   step_focus: Map<number, boolean> = new Map()
   first_name: string
   last_name: string
@@ -55,31 +58,35 @@ export class WorkflowDetailsComponent {
   ) {}
 
   ngOnInit() {
-    this.sub = this.route.params.subscribe((params) => {
-      this.workflow_id = +params['id']
-      this.getWorkflow(this.workflow_id)
-    })
+    this.subscriptions.add(
+      this.route.params.subscribe((params) => {
+        this.workflow_id = +params['id']
+        this.getWorkflow(this.workflow_id)
+      }),
+    )
 
     this.socketService.initSocket()
     this.socketService.connectToChannel('notifications:all')
 
-    this.connection = this.socketService
-      .onWorkflowUpdate(this.workflow_id)
-      .subscribe((_message: Message) => {
-        this.getWorkflow(this.workflow_id)
-      })
+    this.subscriptions.add(
+      this.socketService
+        .onWorkflowUpdate(this.workflow_id)
+        .subscribe((message: Message) => {
+          this.getWorkflow(this.workflow_id)
+        }),
+    )
 
-    this.connection = this.socketService
-      .onRetryJob()
-      .subscribe((message: Message) => {
+    this.subscriptions.add(
+      this.socketService.onRetryJob().subscribe((message: Message) => {
         if (message.workflow_id == this.workflow_id) {
           this.getWorkflow(this.workflow_id)
         }
-      })
+      }),
+    )
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe()
+    this.subscriptions.unsubscribe()
   }
 
   getWorkflow(workflow_id): void {

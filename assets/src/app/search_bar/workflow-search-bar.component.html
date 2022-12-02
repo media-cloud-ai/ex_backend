@@ -1,46 +1,76 @@
 <form [formGroup]="workflowsForm" fxFlex fxLayout="column" autocomplete="off">
-  <div class="search-line">
-    <mat-form-field>
-      <mat-select
-        formControlName="selectedPreset"
-        placeholder="Saved filters"
-        [(ngModel)]="selectedPreset"
-        (selectionChange)="presetChanged()"
-      >
-        <mat-option
-          *ngFor="let f of workflow_filters"
-          [value]="f.filter"
-          class="filter-option"
+  <div class="search">
+    <div class="search-base">
+      <mat-form-field>
+        <mat-select
+          formControlName="selectedPreset"
+          placeholder="Saved filters"
+          [(ngModel)]="selectedPreset"
+          (selectionChange)="presetChanged()"
         >
-          {{ f.name }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <input
-      ngxDaterangepickerMd
-      type="text"
-      class="date-picker"
-      formControlName="selectedDateRange"
-      [timePicker]="true"
-      [timePickerSeconds]="true"
-      [timePicker24Hour]="true"
-      [locale]="{ format: 'DD MMM YYYY HH:mm:ss', firstDay: 1 }"
-      [ranges]="ranges"
-      [showCustomRangeLabel]="true"
-      [keepCalendarOpeningWithRange]="true"
-      [alwaysShowCalendars]="true"
-      placeholder="Choose date"
-      [(ngModel)]="parameters.selectedDateRange"
-      (datesUpdated)="searchWorkflows()"
-    />
+          <mat-option
+            *ngFor="let f of workflow_filters"
+            [value]="f.filter"
+            class="filter-option"
+          >
+            {{ f.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <input
+        ngxDaterangepickerMd
+        type="text"
+        class="date-picker"
+        formControlName="selectedDateRange"
+        [timePicker]="true"
+        [timePickerSeconds]="true"
+        [timePicker24Hour]="true"
+        [locale]="{ format: 'DD MMM YYYY HH:mm:ss', firstDay: 1 }"
+        [ranges]="ranges"
+        [showCustomRangeLabel]="true"
+        [keepCalendarOpeningWithRange]="true"
+        [alwaysShowCalendars]="true"
+        placeholder="Choose date"
+        [(ngModel)]="parameters.selectedDateRange"
+        (datesUpdated)="searchWorkflows()"
+      />
 
-    <button mat-button color="primary" (click)="clearFilters()">
-      <i class="material-icons">clear</i>
-      Clear filters
-    </button>
-    <button mat-button color="primary" (click)="expandFilters()">
-      <i id="expand-icon" class="material-icons">keyboard_double_arrow_down</i>
-    </button>
+      <button mat-button color="primary" (click)="clearFilters()">
+        <i class="material-icons">clear</i>
+        Clear filters
+      </button>
+      <button mat-button color="primary" (click)="expandFilters()">
+        <i id="expand-icon" class="material-icons"
+          >keyboard_double_arrow_down</i
+        >
+      </button>
+    </div>
+
+    <div *ngIf="showViewOptionsToolbar" class="search-line-options">
+      <mat-form-field class="refresh-interval-picker" appearance="outline">
+        <mat-label>Refresh interval</mat-label>
+        <mat-select
+          formControlName="refreshInterval"
+          [(ngModel)]="parameters.refresh_interval"
+          (selectionChange)="changeRefreshInterval()"
+        >
+          <mat-option
+            *ngFor="let interval of refresh_interval"
+            [value]="interval.value"
+            >{{ interval.label }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+      <mat-slide-toggle
+        class="toggle-options"
+        formControlName="detailedToggle"
+        color="primary"
+        [checked]="parameters.detailed"
+        [(ngModel)]="parameters.detailed"
+        (check)="toggleDetailed()"
+        >Detailed</mat-slide-toggle
+      >
+    </div>
   </div>
 
   <div id="filter-line">
@@ -123,18 +153,5 @@
         Manage filters
       </button>
     </div>
-  </div>
-
-  <div class="search-line-options">
-    <mat-slide-toggle
-      *ngIf="showDetailedToggle"
-      formControlName="detailedToggle"
-      color="primary"
-      [checked]="parameters.detailed"
-      [(ngModel)]="parameters.detailed"
-      (change)="toggleDetailed()"
-    >
-      Detailed
-    </mat-slide-toggle>
   </div>
 </form>
