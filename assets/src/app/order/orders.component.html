@@ -24,7 +24,7 @@
     </span>
     <span class="step">
       <div class="percentage" *ngIf="getCompletedPercentage(workflow) != 100">
-        {{ getCompletedPercentage(workflow) | number: '1.0-0' }} %
+        {{ getCompletedPercentage(workflow) | number : '1.0-0' }} %
       </div>
       <div class="percentage" *ngIf="getCompletedPercentage(workflow) == 100">
         Completed

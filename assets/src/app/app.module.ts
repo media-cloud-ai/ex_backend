@@ -104,7 +104,6 @@ import { IMDbService } from './services/imdb.service'
 import { JobService } from './services/job.service'
 import { MouseMoveService } from './services/mousemove.service'
 import { NotificationEndpointService } from './services/notification_endpoint.service'
-import { RegisteryService } from './services/registery.service'
 import { StatisticsService } from './services/statistics.service'
 import { S3Service } from './services/s3.service'
 import { UserService } from './services/user.service'
@@ -269,7 +268,6 @@ const EX_BACKEND_DATE_FORMATS = {
     JobService,
     MouseMoveService,
     NotificationEndpointService,
-    RegisteryService,
     StatisticsService,
     S3Service,
     Title,

@@ -8,7 +8,7 @@
       <span class="name">Job #{{ job.id }}</span>
       <span class="summary">
         <div class="duration" (click)="switchDurationRenderingMode()">
-          {{ job | jobDuration | duration: job_duration_rendering_mode }}
+          {{ job | jobDuration | duration : job_duration_rendering_mode }}
         </div>
       </span>
       <span class="details">

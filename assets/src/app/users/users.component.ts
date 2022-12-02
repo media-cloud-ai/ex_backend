@@ -1,5 +1,4 @@
 import { Component } from '@angular/core'
-import { PageEvent } from '@angular/material/paginator'
 import { ActivatedRoute, Router } from '@angular/router'
 import { MatDialog } from '@angular/material/dialog'
 

@@ -19,17 +19,17 @@ const config = {
     extensions: ['.ts', '.js', '.scss'],
     modules: ['src', 'node_modules'],
     fallback: {
-      "buffer": false,
-      "crypto": false,
-      "path": false,
-      "stream": false,
-    }
+      buffer: false,
+      crypto: false,
+      path: false,
+      stream: false,
+    },
   },
   module: {
     rules: [
       {
         test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
-        use: [{loader: '@ngtools/webpack'}],
+        use: [{ loader: '@ngtools/webpack' }],
       },
       {
         test: /\.css(\?v=\d+\.\d+\.\d+)?$/,
@@ -69,7 +69,7 @@ const config = {
   plugins: [
     new AngularWebpackPlugin({
       tsConfigPath: './tsconfig.json',
-      entryModule: './src/app/app.ts#AppModule'
+      entryModule: './src/app/app.ts#AppModule',
     }),
     new CopyWebpackPlugin({
       patterns: [{ from: './static', to: '.' }],
