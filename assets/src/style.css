@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'Castorgate';
-  src: url('/bundles/fonts/Castorgate.eot');
-  src: url('/bundles/fonts/Castorgate.eot?#iefix') format('embedded-opentype'),
-    url('/bundles/fonts/Castorgate.woff2') format('woff2'),
-    url('/bundles/fonts/Castorgate.woff') format('woff'),
-    url('/bundles/fonts/Castorgate.ttf') format('truetype'),
-    url('/bundles/fonts/Castorgate.svg#Castorgate') format('svg');
+  src: url('../static/fonts/Castorgate.eot');
+  src: url('../static/fonts/Castorgate.eot?#iefix') format('embedded-opentype'),
+    url('../static/fonts/Castorgate.woff2') format('woff2'),
+    url('../static/fonts/Castorgate.woff') format('woff'),
+    url('../static/fonts/Castorgate.ttf') format('truetype'),
+    url('../static/fonts/Castorgate.svg#Castorgate') format('svg');
   font-weight: normal;
   font-style: normal;
 }

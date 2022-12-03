@@ -4,7 +4,6 @@ import { HttpClient, HttpParams } from '@angular/common/http'
 import { CookieService } from 'ngx-cookie-service'
 import { Observable, of, Subject, Subscription } from 'rxjs'
 import { catchError, tap } from 'rxjs/operators'
-import 'rxjs/add/operator/do'
 
 import { Confirm } from '../models/user'
 import { PasswordReset, PasswordResetError } from '../models/password_reset'

@@ -34,7 +34,7 @@ import {
   NgxMatNativeDateModule,
 } from '@angular-material-components/datetime-picker'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { ChartsModule } from 'ng2-charts'
+import { NgChartsModule } from 'ng2-charts'
 import { ClipboardModule } from '@angular/cdk/clipboard'
 
 import {
@@ -137,7 +137,6 @@ const EX_BACKEND_DATE_FORMATS = {
     ClipboardModule,
     BrowserAnimationsModule,
     BrowserModule,
-    ChartsModule,
     ChartModule,
     GenericModule,
     FormsModule,
@@ -166,6 +165,7 @@ const EX_BACKEND_DATE_FORMATS = {
     MatStepperModule,
     MatTabsModule,
     MatToolbarModule,
+    NgChartsModule,
     NgxMatDatetimePickerModule,
     NgxMatNativeDateModule,
     PipesModule,

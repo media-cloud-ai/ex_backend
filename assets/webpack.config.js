@@ -59,6 +59,13 @@ const config = {
         test: /\.html$/,
         use: [{ loader: 'raw-loader' }],
       },
+      {
+        test: /\.m?jsx?$/,
+        resolve: {
+          fullySpecified: false,
+        },
+        exclude: '/node_modules/',
+      },
     ],
   },
   optimization: {
