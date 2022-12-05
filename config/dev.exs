@@ -13,11 +13,8 @@ config :ex_backend, ExBackendWeb.Endpoint,
   check_origin: false,
   watchers: [
     node: [
-      "node_modules/webpack/bin/webpack.js",
-      "--watch",
-      "--watch-poll",
+      "node_modules/webpack-dev-server/bin/webpack-dev-server.js",
       "--mode=development",
-      "--stdin",
       cd: Path.expand("../assets", __DIR__)
     ]
   ]
