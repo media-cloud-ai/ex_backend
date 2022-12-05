@@ -14,8 +14,8 @@ defmodule ExBackendWeb.CredentialController do
   action_fallback(ExBackendWeb.FallbackController)
 
   # the following plugs are defined in the controllers/authorize.ex file
-  plug(:user_check when action in [:index, :show, :delete])
-  plug(:right_administrator_check when action in [:index, :show, :delete])
+  plug(:user_check when action in [:index, :show, :delete, :update])
+  plug(:right_administrator_check when action in [:index, :show, :delete, :update])
 
   operation :index,
     summary: "List all credentials",
@@ -56,6 +56,33 @@ defmodule ExBackendWeb.CredentialController do
 
   def create(conn, credential_params) do
     case Credentials.create_credential(credential_params) do
+      {:ok, %Credential{} = credential} ->
+        conn
+        |> put_status(:created)
+        |> render("show.json", credential: credential)
+
+      {:error, changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(ExBackendWeb.ChangesetView, "error.json", changeset: changeset)
+    end
+  end
+
+  operation :update,
+    summary: "Edit credential",
+    description: "Edit credential",
+    type: :object,
+    request_body:
+      {"Credential Body", "application/json", OpenApiSchemas.Credentials.CredentialBody},
+    responses: [
+      ok: {"Credential", "application/json", OpenApiSchemas.Credentials.Credential},
+      forbidden: "Forbidden"
+    ]
+
+  def update(conn, %{"id" => identifier, "credential" => credential_params}) do
+    credential = Credentials.get_credential!(identifier)
+
+    case Credentials.update_credential(credential, credential_params) do
       {:ok, %Credential{} = credential} ->
         conn
         |> put_status(:created)

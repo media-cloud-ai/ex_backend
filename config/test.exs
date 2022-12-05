@@ -15,12 +15,12 @@ config :ex_backend, ExBackend.Repo,
   username: "postgres",
   password: "postgres",
   database: "ex_backend_test",
-  hostname: "postgres",
+  hostname: "172.17.0.2",
   port: 5432,
   pool: Ecto.Adapters.SQL.Sandbox
 
 config :step_flow, StepFlow.Repo,
-  hostname: "postgres",
+  hostname: "172.17.0.2",
   username: "postgres",
   password: "postgres",
   database: "ex_backend_workflow_test",
@@ -49,11 +49,11 @@ config :ex_backend,
   asp_app: "ASP_V3"
 
 config :step_flow, StepFlow.Amqp,
-  hostname: "rabbitmq",
+  hostname: "172.19.0.2",
   port: 5672,
-  username: "guest",
-  password: "guest",
-  virtual_host: ""
+  username: "mediacloudai",
+  password: "mediacloudai",
+  virtual_host: "media_cloud_ai_dev"
 
 # Comeonin password hashing test config
 # config :argon2_elixir,

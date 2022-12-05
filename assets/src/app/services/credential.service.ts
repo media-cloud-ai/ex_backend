@@ -30,6 +30,27 @@ export class CredentialService {
     )
   }
 
+  changeCredential(
+    id: number,
+    key: string,
+    value: string,
+  ): Observable<Credential> {
+    const params = {
+      id: id,
+      credential: {
+        key: key,
+        value: value,
+      },
+    }
+
+    return this.http
+      .put<Credential>(this.credentialsUrl + '/' + id, params)
+      .pipe(
+        tap((_credentialPage) => this.log('change Credential')),
+        catchError(this.handleError('changeCredential', undefined)),
+      )
+  }
+
   removeCredential(id: number): Observable<Credential> {
     return this.http.delete<Credential>(this.credentialsUrl + '/' + id).pipe(
       tap((_credentialPage) => this.log('remove Credential')),
