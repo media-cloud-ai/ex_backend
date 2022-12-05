@@ -37,7 +37,7 @@ export class DurationComponent {
       this.subscriptions.add(
         this.socketService
           .onWorkflowUpdate(this.workflow.id)
-          .subscribe((message: Message) => {
+          .subscribe((_message: Message) => {
             this.getDurations()
           }),
       )

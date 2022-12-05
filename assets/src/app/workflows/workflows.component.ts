@@ -110,7 +110,7 @@ export class WorkflowsComponent {
   }
 
   private initSocketService() {
-    /* 
+    /*
       We listen for delete or create worflow's event and set full reload to true to refresh the full list on the refresh interval
     */
     this.socketService.initSocket()
@@ -149,7 +149,7 @@ export class WorkflowsComponent {
           this.subscriptions.add(
             this.socketService
               .onWorkflowUpdate(workflow.id)
-              .subscribe((message: Message) => {
+              .subscribe((_message: Message) => {
                 this.workflowsToRefresh.add(workflow.id) // Data will be fetched on refresh
               }),
           )

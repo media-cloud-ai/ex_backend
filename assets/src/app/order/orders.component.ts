@@ -60,6 +60,7 @@ export class OrdersComponent {
       status: ['completed'],
       detailed: false,
       time_interval: 1,
+      refresh_interval: -1,
     }
   }
 
