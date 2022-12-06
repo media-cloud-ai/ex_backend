@@ -44,20 +44,21 @@ export class CredentialComponent {
     } else {
       this.disabled = true
       this.saveCredential()
-      this.credentialService.changeCredential(
-        this.data.id,
-        this.data.key,
-        this.data.value,
-      )
-      if (!this.data.key || !this.data.value) {
-        const _snackBarRef = this.snackBar.open(
-          'You must not leave Key or Value field empty !',
-          '',
-          {
-            duration: 3000,
-          },
-        )
-      }
+      this.credentialService
+        .changeCredential(this.data.id, this.data.key, this.data.value)
+        .subscribe((_credential) => {
+          if (!_credential) {
+            if (!this.data.key || !this.data.value) {
+              const _snackBarRef = this.snackBar.open(
+                'You must not leave Key or Value field empty !',
+                '',
+                {
+                  duration: 3000,
+                },
+              )
+            }
+          }
+        })
       this.credentialsComponent.listCredentials()
     }
   }
@@ -68,6 +69,7 @@ export class CredentialComponent {
       .subscribe((_credential) => {
         this.deleted.next(this.data)
       })
+    this.saveCredential()
   }
 
   selectCredential() {

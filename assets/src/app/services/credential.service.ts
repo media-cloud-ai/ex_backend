@@ -42,7 +42,7 @@ export class CredentialService {
         value: value,
       },
     }
-
+    console.log(params)
     return this.http
       .put<Credential>(this.credentialsUrl + '/' + id, params)
       .pipe(
