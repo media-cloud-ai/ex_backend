@@ -1,7 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core'
 
 import { CredentialService } from '../../services/credential.service'
-import { Credential } from '../../models/credential'
+import {
+  Credential,
+  CredentialEventAction,
+  CredentialEvent,
+} from '../../models/credential'
 import { PwdType } from '../../models/pwd_type'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { CredentialsComponent } from './credentials.component'
@@ -13,7 +17,9 @@ import { CredentialsComponent } from './credentials.component'
 })
 export class CredentialComponent {
   @Input() data: Credential
+  @Input() selected_credential: number
   @Output() deleted: EventEmitter<Credential> = new EventEmitter<Credential>()
+  @Output() credentialChange = new EventEmitter<CredentialEvent>()
 
   pwd_type = PwdType.Password
   disabled = true
@@ -34,8 +40,10 @@ export class CredentialComponent {
   edit(mode) {
     if (mode == true) {
       this.disabled = false
+      this.selectCredential()
     } else {
       this.disabled = true
+      this.saveCredential()
       this.credentialService.changeCredential(
         this.data.id,
         this.data.key,
@@ -44,14 +52,6 @@ export class CredentialComponent {
       if (!this.data.key || !this.data.value) {
         const _snackBarRef = this.snackBar.open(
           'You must not leave Key or Value field empty !',
-          '',
-          {
-            duration: 3000,
-          },
-        )
-      } else {
-        const _snackBarRef = this.snackBar.open(
-          'Error while editing Credential value or key.',
           '',
           {
             duration: 3000,
@@ -68,5 +68,17 @@ export class CredentialComponent {
       .subscribe((_credential) => {
         this.deleted.next(this.data)
       })
+  }
+
+  selectCredential() {
+    this.credentialChange.emit(
+      new CredentialEvent(CredentialEventAction.Select, this.data),
+    )
+  }
+
+  saveCredential() {
+    this.credentialChange.emit(
+      new CredentialEvent(CredentialEventAction.Save, this.data),
+    )
   }
 }
