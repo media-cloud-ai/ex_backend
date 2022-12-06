@@ -156,5 +156,4 @@ defmodule ExBackendWeb.CredentialController do
     end
   end
 
-  operation :update, false
 end
