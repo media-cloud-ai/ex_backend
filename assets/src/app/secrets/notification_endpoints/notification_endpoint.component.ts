@@ -1,10 +1,14 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core'
+import { MatSnackBar } from '@angular/material/snack-bar'
 
 import { NotificationEndpointService } from '../../services/notification_endpoint.service'
-import { NotificationEndpoint } from '../../models/notification_endpoint'
-import { PwdType } from '../../models/pwd_type'
-import { MatSnackBar } from '@angular/material/snack-bar'
+import {
+  NotificationEndpoint,
+  NotificationEndpointEventAction,
+  NotificationEndpointEvent,
+} from '../../models/notification_endpoint'
 import { NotificationEndpointsComponent } from './notification_endpoints.component'
+import { PwdType } from '../../models/pwd_type'
 
 @Component({
   selector: 'notification_endpoint-component',
@@ -13,10 +17,11 @@ import { NotificationEndpointsComponent } from './notification_endpoints.compone
 })
 export class NotificationEndpointComponent {
   @Input() data: NotificationEndpoint
+  @Input() selected_notification_endpoint: number
   @Output() deleted: EventEmitter<NotificationEndpoint> =
     new EventEmitter<NotificationEndpoint>()
-  @Output() changed: EventEmitter<NotificationEndpoint> =
-    new EventEmitter<NotificationEndpoint>()
+  @Output() notificationEndpointChange =
+    new EventEmitter<NotificationEndpointEvent>()
 
   pwd_type = PwdType.Password
   disabled = true
@@ -36,13 +41,12 @@ export class NotificationEndpointComponent {
   }
 
   edit(mode) {
-    if (mode == true) {
+    if (mode === true) {
       this.disabled = false
+      this.selectNotificationEndpoint()
     } else {
-      console.log(this.data.endpoint_crendentials)
-      console.log(this.data.endpoint_url)
-      console.log(this.data.endpoint_placeholder)
       this.disabled = true
+      this.saveNotificationEndpoint()
       this.notificationEndpointService
         .changeNotificationEndpoint(
           this.data.id,
@@ -51,20 +55,10 @@ export class NotificationEndpointComponent {
           (this.data.endpoint_crendentials ??= ''),
         )
         .subscribe((_notificationEndpoint) => {
-          if (_notificationEndpoint) {
-            this.changed.next(this.data)
-          } else {
+          if (!_notificationEndpoint) {
             if (!this.data.endpoint_url || !this.data.endpoint_placeholder) {
               const _snackBarRef = this.snackBar.open(
-                'You must not leave Credentials, URL or Label field empty !',
-                '',
-                {
-                  duration: 3000,
-                },
-              )
-            } else {
-              const _snackBarRef = this.snackBar.open(
-                'Error while editing Credential Credentials, URL or Label.',
+                'You must not leave Credentials, URL or Label field empty!',
                 '',
                 {
                   duration: 3000,
@@ -83,5 +77,23 @@ export class NotificationEndpointComponent {
       .subscribe((_notificationEndpoint) => {
         this.deleted.next(this.data)
       })
+  }
+
+  selectNotificationEndpoint() {
+    this.notificationEndpointChange.emit(
+      new NotificationEndpointEvent(
+        NotificationEndpointEventAction.Select,
+        this.data,
+      ),
+    )
+  }
+
+  saveNotificationEndpoint() {
+    this.notificationEndpointChange.emit(
+      new NotificationEndpointEvent(
+        NotificationEndpointEventAction.Save,
+        this.data,
+      ),
+    )
   }
 }

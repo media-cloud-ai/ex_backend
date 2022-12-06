@@ -1,14 +1,14 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core'
+import { MatSnackBar } from '@angular/material/snack-bar'
 
-import { CredentialService } from '../../services/credential.service'
 import {
   Credential,
   CredentialEventAction,
   CredentialEvent,
 } from '../../models/credential'
-import { PwdType } from '../../models/pwd_type'
-import { MatSnackBar } from '@angular/material/snack-bar'
 import { CredentialsComponent } from './credentials.component'
+import { CredentialService } from '../../services/credential.service'
+import { PwdType } from '../../models/pwd_type'
 
 @Component({
   selector: 'credential-component',
@@ -38,7 +38,7 @@ export class CredentialComponent {
   }
 
   edit(mode) {
-    if (mode == true) {
+    if (mode === true) {
       this.disabled = false
       this.selectCredential()
     } else {
@@ -46,11 +46,11 @@ export class CredentialComponent {
       this.saveCredential()
       this.credentialService
         .changeCredential(this.data.id, this.data.key, this.data.value)
-        .subscribe((_credential) => {
-          if (!_credential) {
+        .subscribe((credential) => {
+          if (!credential) {
             if (!this.data.key || !this.data.value) {
               const _snackBarRef = this.snackBar.open(
-                'You must not leave Key or Value field empty !',
+                'You must not leave Key or Value field empty!',
                 '',
                 {
                   duration: 3000,

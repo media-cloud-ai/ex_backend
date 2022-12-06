@@ -1,12 +1,12 @@
 import { Component } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 
-import { CredentialService } from '../../services/credential.service'
 import {
   Credential,
   CredentialEventAction,
   CredentialEvent,
 } from '../../models/credential'
+import { CredentialService } from '../../services/credential.service'
 
 @Component({
   selector: 'credentials-component',
