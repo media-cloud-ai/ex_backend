@@ -9,7 +9,8 @@ import { WorkflowService } from '../services/workflow.service'
 import { S3Service } from '../services/s3.service'
 
 import * as Evaporate from 'evaporate'
-import * as crypto from 'crypto'
+import * as SparkMD5 from 'spark-md5'
+import { sha256 } from 'js-sha256'
 
 export class ProcessStatus {
   failed = true
@@ -127,13 +128,11 @@ export class OrderComponent {
       aws_url: this.s3Configuration.url,
       awsRegion: this.s3Configuration.region,
       computeContentMd5: true,
-      cryptoMd5Method: function (data) {
-        const buffer = new Buffer(data)
-        return crypto.createHash('md5').update(buffer).digest('base64')
+      cryptoMd5Method: (d) => {
+        console.log('LOGG', SparkMD5)
+        btoa(SparkMD5.ArrayBuffer.hash(d, true))
       },
-      cryptoHexEncodedHash256: function (data) {
-        return crypto.createHash('sha256').update(data).digest('hex')
-      },
+      cryptoHexEncodedHash256: sha256,
     }
 
     const _uploader = Evaporate.create(config).then(function (evaporate) {

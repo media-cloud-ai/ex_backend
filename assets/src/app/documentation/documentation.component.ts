@@ -8,6 +8,7 @@ import {
 } from '@angular/core'
 import { DOCUMENT } from '@angular/common'
 import { SwaggerUIBundle, SwaggerUIStandalonePreset } from 'swagger-ui-dist'
+import 'swagger-ui-dist/swagger-ui.css'
 
 @Component({
   selector: 'documentation-component',

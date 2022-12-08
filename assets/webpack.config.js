@@ -13,7 +13,6 @@ const config = {
   output: {
     path: path.resolve(__dirname, path.join('..', 'priv', 'static', 'bundles')),
     filename: '[name].js',
-    chunkFilename: '[name]-chunk.js',
   },
   resolve: {
     extensions: ['.ts', '.js', '.scss'],
@@ -28,8 +27,27 @@ const config = {
   module: {
     rules: [
       {
-        test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
-        use: [{ loader: '@ngtools/webpack' }],
+        test: /\.[jt]sx?$/,
+        loader: '@ngtools/webpack',
+        exclude: '/node_modules/',
+        resolve: {
+          fullySpecified: false,
+        },
+      },
+      {
+        test: /\.m?js/,
+        loader: 'babel-loader',
+        type: 'javascript/auto',
+        exclude: '/node_modules/',
+        options: {
+          plugins: ['@angular/compiler-cli/linker/babel'],
+          configFile: false,
+          compact: false,
+          cacheDirectory: true,
+        },
+        resolve: {
+          fullySpecified: false,
+        },
       },
       {
         test: /\.css(\?v=\d+\.\d+\.\d+)?$/,
@@ -59,19 +77,7 @@ const config = {
         test: /\.html$/,
         use: [{ loader: 'raw-loader' }],
       },
-      {
-        test: /\.m?jsx?$/,
-        resolve: {
-          fullySpecified: false,
-        },
-        exclude: '/node_modules/',
-      },
     ],
-  },
-  optimization: {
-    splitChunks: {
-      chunks: 'all',
-    },
   },
   plugins: [
     new AngularWebpackPlugin({
