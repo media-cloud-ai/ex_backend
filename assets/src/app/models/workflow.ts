@@ -4,6 +4,8 @@ export class JobsStatus {
   completed: number
   dropped: number
   errors: number
+  paused: number
+  processing: number
   queued: number
   stopped: number
   skipped: number

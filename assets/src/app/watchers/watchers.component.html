@@ -12,11 +12,11 @@
             <div class="info">
               <span> connected with account {{ watcher.user.email }} </span>
               <span class="date">
-                {{ connection.online_at + 'Z' | date: 'd LLLL yy' }}
+                {{ connection.online_at + 'Z' | date : 'd LLLL yy' }}
               </span>
               <span>at</span>
               <span class="hour">
-                {{ connection.online_at + 'Z' | date: 'HH:mm:ss' }}
+                {{ connection.online_at + 'Z' | date : 'HH:mm:ss' }}
               </span>
             </div>
             <!-- <div class=actions>

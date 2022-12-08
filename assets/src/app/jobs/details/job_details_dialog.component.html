@@ -93,29 +93,29 @@
     </div>
 
     <div class="duration">
-      <span *ngIf="duration" title="{{ duration | duration: 'human' }}">
+      <span *ngIf="duration" title="{{ duration | duration : 'human' }}">
         <div>
           <span class="label">Pending duration: </span>
           <span class="time">{{
-            duration.order_pending * 1000 | duration: 'timecode_ms'
+            duration.order_pending * 1000 | duration : 'timecode_ms'
           }}</span>
         </div>
         <div>
           <span class="label">Processing duration: </span>
           <span class="time">{{
-            duration.processing * 1000 | duration: 'timecode_ms'
+            duration.processing * 1000 | duration : 'timecode_ms'
           }}</span>
         </div>
         <div>
           <span class="label">Response latency: </span>
           <span class="time">{{
-            duration.response_pending * 1000 | duration: 'timecode_ms'
+            duration.response_pending * 1000 | duration : 'timecode_ms'
           }}</span>
         </div>
         <div>
           <span class="label">Total duration: </span>
           <span class="time">{{
-            duration.total * 1000 | duration: 'timecode_ms'
+            duration.total * 1000 | duration : 'timecode_ms'
           }}</span>
         </div>
       </span>
@@ -125,13 +125,13 @@
       <div>
         <span class="label">Started at: </span>
         <span class="time">{{
-          job.inserted_at + 'Z' | date: 'yyyy-MM-dd HH:mm:ss'
+          job.inserted_at + 'Z' | date : 'yyyy-MM-dd HH:mm:ss'
         }}</span>
       </div>
       <div *ngIf="job.status[0]">
         <span class="label">Ended at: </span>
         <span class="time">{{
-          job.status[0].inserted_at + 'Z' | date: 'yyyy-MM-dd HH:mm:ss'
+          job.status[0].inserted_at + 'Z' | date : 'yyyy-MM-dd HH:mm:ss'
         }}</span>
       </div>
     </div>

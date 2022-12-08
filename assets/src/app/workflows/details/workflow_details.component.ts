@@ -71,7 +71,7 @@ export class WorkflowDetailsComponent {
     this.subscriptions.add(
       this.socketService
         .onWorkflowUpdate(this.workflow_id)
-        .subscribe((message: Message) => {
+        .subscribe((_message: Message) => {
           this.getWorkflow(this.workflow_id)
         }),
     )

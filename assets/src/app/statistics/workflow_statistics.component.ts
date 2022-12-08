@@ -121,7 +121,7 @@ export class WorkflowStatisticsComponent {
     )
   }
 
-  private getWorkflowStatistics() {
+  getWorkflowStatistics() {
     // Retrieve workflow statistics
     this.loading = true
     this.workflowDurations = new Array<WorkflowDurationStatistics>()
@@ -185,7 +185,7 @@ export class WorkflowStatisticsComponent {
       })
   }
 
-  private changeWorkflowStatisticsPage(event) {
+  changeWorkflowStatisticsPage(event) {
     this.workflowStatisticsPage = event.pageIndex
     this.workflowStatisticsPageSize = event.pageSize
     this.getWorkflowStatistics()

@@ -4,7 +4,6 @@ import { Routes, RouterModule } from '@angular/router'
 import { FormsModule } from '@angular/forms'
 import { NgxMatFileInputModule } from '@angular-material-components/file-input'
 
-import { OrdersComponent } from './orders.component'
 import { OrderComponent } from './order.component'
 import { TranscriptViewerComponent } from './transcript_viewer.component'
 import { NlpViewerComponent } from './nlp_viewer.component'
@@ -29,7 +28,6 @@ import { PipesModule } from '../pipes/pipes.module'
 import { SearchBarModule } from '../search_bar/search_bar.module'
 
 export const ROUTES: Routes = [
-  { path: '', component: OrdersComponent },
   { path: ':id', component: OrderComponent },
   { path: ':id/transcript', component: TranscriptViewerComponent },
   { path: ':id/nlp', component: NlpViewerComponent },
@@ -60,7 +58,6 @@ export const ROUTES: Routes = [
   ],
   declarations: [
     OrderComponent,
-    OrdersComponent,
     TranscriptViewerComponent,
     NlpViewerComponent,
     EntityComponent,

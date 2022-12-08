@@ -1,7 +1,7 @@
 <h1>New order</h1>
 
 <mat-horizontal-stepper linear="true" #stepper>
-  <mat-step [stepControl]="modeSelection">
+  <mat-step>
     <ng-template matStepLabel>Select service</ng-template>
     <div class="searchbar">
       <mat-form-field class="search" appearance="fill">
@@ -74,7 +74,7 @@
       </mat-toolbar-row>
     </mat-toolbar>
   </mat-step>
-  <mat-step [stepControl]="versionSelection" optional="false">
+  <mat-step optional="false">
     <ng-template matStepLabel>Select service version</ng-template>
     <div class="services">
       <div class="service" *ngFor="let service of selectedServiceVersion">
@@ -104,7 +104,7 @@
     >
     </mat-paginator>
   </mat-step>
-  <mat-step [stepControl]="inputSelection">
+  <mat-step>
     <ng-template matStepLabel>Configuration</ng-template>
     <div *ngIf="selectedService">
       <div
@@ -169,7 +169,7 @@
 
     <div *ngFor="let progressBar of progressBars" class="fileProgress">
       {{ progressBar.name }} -
-      {{ progressBar.progress | number: '1.0-0' }}&nbsp;%
+      {{ progressBar.progress | number : '1.0-0' }}&nbsp;%
       <mat-progress-bar [value]="progressBar.progress"> </mat-progress-bar>
     </div>
 

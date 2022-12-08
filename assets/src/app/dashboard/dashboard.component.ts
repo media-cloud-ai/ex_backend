@@ -62,6 +62,7 @@ export class DashboardComponent {
       status: ['completed', 'error'],
       detailed: false,
       time_interval: 3600,
+      refresh_interval: -1,
     }
   }
 

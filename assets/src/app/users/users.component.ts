@@ -1,5 +1,4 @@
 import { Component } from '@angular/core'
-import { PageEvent } from '@angular/material/paginator'
 import { ActivatedRoute, Router } from '@angular/router'
 import { MatDialog } from '@angular/material/dialog'
 
@@ -29,7 +28,6 @@ export class UsersComponent {
   page = 0
   sub = undefined
 
-  pageEvent: PageEvent
   users: UserPage
 
   roles: RolePage
