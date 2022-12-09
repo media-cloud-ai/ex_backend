@@ -36,9 +36,11 @@
     </span>
     <span class="status">
       <mat-chip-list>
-        <mat-chip color="primary" selected>
-          {{ workflow.status.state }}
-        </mat-chip>
+        <div style="width: 100%">
+          <mat-chip class="{{ workflow.status.state }}" selected>
+            {{ workflow.status.state }}
+          </mat-chip>
+        </div>
       </mat-chip-list>
     </span>
     <span class="details">

@@ -2,7 +2,7 @@
   <mat-toolbar class="header">
     <span>
       Workflow {{ workflow.identifier }} #{{ workflow.id }}
-      <mat-chip color="primary" class="status" selected>
+      <mat-chip class="status {{ workflow.status.state }}" selected>
         {{ workflow.status.state }}
       </mat-chip>
     </span>
@@ -41,7 +41,7 @@
       <div class="item">
         <label>Workflow tags:</label>
         <mat-chip-list>
-          <mat-chip *ngFor="let tag of workflow.tags" color="primary" selected>
+          <mat-chip *ngFor="let tag of workflow.tags" color="primary">
             {{ tag }}
           </mat-chip>
         </mat-chip-list>
