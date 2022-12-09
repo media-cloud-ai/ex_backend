@@ -1,10 +1,20 @@
 <div class="workflow" *ngIf="workflow">
-  <h1>
-    Workflow {{ workflow.identifier }} #{{ workflow.id }}
-    <mat-chip color="primary" class="status" selected>
-      {{ workflow.status.state }}
-    </mat-chip>
-  </h1>
+  <mat-toolbar class="header">
+    <span>
+      Workflow {{ workflow.identifier }} #{{ workflow.id }}
+      <mat-chip class="status {{ workflow.status.state }}" selected>
+        {{ workflow.status.state }}
+      </mat-chip>
+    </span>
+    <span class="spacer"></span>
+
+    <span class="actions">
+      <workflow-actions-component
+        [workflow]="workflow"
+        (refreshEvent)="refreshWorkflow($event)"
+      ></workflow-actions-component>
+    </span>
+  </mat-toolbar>
 
   <div class="info">
     <span class="reference">
@@ -31,7 +41,7 @@
       <div class="item">
         <label>Workflow tags:</label>
         <mat-chip-list>
-          <mat-chip *ngFor="let tag of workflow.tags" color="primary" selected>
+          <mat-chip *ngFor="let tag of workflow.tags" color="primary">
             {{ tag }}
           </mat-chip>
         </mat-chip-list>
@@ -160,56 +170,6 @@
     <span class="steps-count">
       <span class="label">Steps:</span>
       <span class="count">{{ getStepsCount() }} / {{ getTotalSteps() }}</span>
-    </span>
-    <span class="pause" *ngIf="!can_resume">
-      <button
-        mat-raised-button
-        color="accent"
-        [disabled]="!can_pause"
-        (click)="pause(workflow.id)"
-      >
-        <mat-icon>pause</mat-icon>
-        Pause
-      </button>
-    </span>
-    <span class="resume" *ngIf="!can_pause && can_resume">
-      <button mat-raised-button color="accent" (click)="resume(workflow.id)">
-        <mat-icon>play_arrow</mat-icon>
-        Resume
-      </button>
-    </span>
-    <span class="stop">
-      <button
-        mat-raised-button
-        color="warn"
-        [disabled]="!can_stop || !right_stop"
-        (click)="stop(workflow.id)"
-      >
-        <mat-icon>stop</mat-icon>
-        Stop
-      </button>
-    </span>
-    <span class="delete">
-      <button
-        mat-raised-button
-        [disabled]="!right_delete || !can_delete"
-        color="warn"
-        (click)="delete(workflow.id)"
-      >
-        <mat-icon>delete_forever</mat-icon>
-        Delete
-      </button>
-    </span>
-    <span class="duplicate">
-      <button
-        mat-raised-button
-        [disabled]="!right_duplicate"
-        color="accent"
-        (click)="duplicate()"
-      >
-        <mat-icon>file_copy</mat-icon>
-        Duplicate
-      </button>
     </span>
   </div>
 

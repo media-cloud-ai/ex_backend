@@ -3,17 +3,47 @@
 .workflow {
   overflow-y: hidden;
   margin-bottom: 80px;
+  border: solid @lightBlue 3px;
+
+  .spacer {
+    flex: 1 1 auto;
+  }
+
+  .header {
+    font-weight: bold;
+    background-color: @lightBlue;
+    margin-bottom: 10px;
+  }
 }
 
 .status {
   margin-left: 20px;
   font-weight: bold;
+  vertical-align: bottom;
+}
+
+.status.error {
+  background-color: @red !important;
+}
+
+.status.completed {
+  background-color: @green !important;
+}
+
+.status.stopped {
+  background-color: @yellow !important;
+}
+
+.status.pending {
+  background-color: @purple !important;
 }
 
 .info {
   display: flex;
   line-height: 36px;
   vertical-align: middle;
+  padding-left: 15px;
+  padding-right: 15px;
 
   .reference {
     flex: 1;

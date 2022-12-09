@@ -77,6 +77,7 @@ import { StepRendererComponent } from './workflows/renderer/step_renderer.compon
 import { UserComponent } from './users/user.component'
 import { UsersComponent } from './users/users.component'
 import { WatchersComponent } from './watchers/watchers.component'
+import { WorkflowActionsComponent } from './workflows/actions/workflow_actions.component'
 import { WorkflowComponent } from './workflows/workflow.component'
 import { WorkflowDetailsComponent } from './workflows/details/workflow_details.component'
 import { WorkflowRendererComponent } from './workflows/renderer/workflow_renderer.component'
@@ -202,6 +203,7 @@ const EX_BACKEND_DATE_FORMATS = {
     UserShowCredentialsDialogComponent,
     UserShowValidationLinkDialogComponent,
     WatchersComponent,
+    WorkflowActionsComponent,
     WorkflowActionsDialogComponent,
     WorkflowComponent,
     WorkflowDetailsComponent,
@@ -227,6 +229,7 @@ const EX_BACKEND_DATE_FORMATS = {
     UserShowCredentialsDialogComponent,
     UserShowValidationLinkDialogComponent,
     WatchersComponent,
+    WorkflowActionsComponent,
     WorkflowComponent,
     WorkflowActionsDialogComponent,
     WorkflowPauseDialogComponent,

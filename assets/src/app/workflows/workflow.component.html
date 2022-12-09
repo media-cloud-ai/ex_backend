@@ -36,9 +36,11 @@
     </span>
     <span class="status">
       <mat-chip-list>
-        <mat-chip color="primary" selected>
-          {{ workflow.status.state }}
-        </mat-chip>
+        <div style="width: 100%">
+          <mat-chip class="{{ workflow.status.state }}" selected>
+            {{ workflow.status.state }}
+          </mat-chip>
+        </div>
       </mat-chip-list>
     </span>
     <span class="details">
@@ -48,69 +50,12 @@
         </button>
       </a>
     </span>
-    <button
-      mat-button
-      [matMenuTriggerFor]="moreActions"
-      (click)="onMoreActionsToggle()"
-    >
-      <span class="material-icons"> more_horiz </span>
-    </button>
-    <mat-menu #moreActions="matMenu">
-      <button
-        mat-menu-item
-        *ngIf="!can_resume"
-        color="accent"
-        [disabled]="!can_pause"
-        (click)="pause(workflow.id)"
-        title="Pause"
-      >
-        <mat-icon class="pause-icon" color="primary">pause</mat-icon>
-        <span class="v-align-middle">Pause</span>
-      </button>
-      <button
-        mat-menu-item
-        *ngIf="!can_pause && can_resume"
-        color="accent"
-        (click)="resume(workflow.id)"
-        title="Resume"
-      >
-        <mat-icon class="v-align-middle" color="primary">play_arrow</mat-icon>
-        <span class="v-align-middle">Resume</span>
-      </button>
-      <button
-        mat-menu-item
-        class="stop"
-        color="warn"
-        [disabled]="!can_stop || !right_stop"
-        (click)="stop(workflow.id)"
-        title="Stop"
-      >
-        <mat-icon class="v-align-middle" color="warn">stop</mat-icon>
-        <span class="v-align-middle">Stop</span>
-      </button>
-      <button
-        mat-menu-item
-        class="delete"
-        [disabled]="!right_delete || !can_delete"
-        color="warn"
-        (click)="delete(workflow.id)"
-        title="Delete"
-      >
-        <mat-icon class="v-align-middle" color="warn">delete</mat-icon>
-        <span class="v-align-middle">Delete</span>
-      </button>
-      <button
-        mat-menu-item
-        class="duplicate"
-        [disabled]="!right_duplicate"
-        color="accent"
-        (click)="duplicate()"
-        title="Duplicate"
-      >
-        <mat-icon class="v-align-middle" color="accent">file_copy</mat-icon>
-        <span class="v-align-middle">Duplicate</span>
-      </button>
-    </mat-menu>
+    <span class="actions">
+      <workflow-actions-component
+        [workflow]="workflow"
+        (refreshEvent)="refreshWorkflows()"
+      ></workflow-actions-component>
+    </span>
   </div>
   <div *ngIf="workflow" class="steps">
     <div
