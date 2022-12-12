@@ -37,8 +37,8 @@ export class CredentialComponent {
     }
   }
 
-  edit(mode) {
-    if (mode === true) {
+  edit(is_edited) {
+    if (is_edited === true) {
       this.disabled = false
       this.selectCredential()
     } else {
@@ -51,6 +51,15 @@ export class CredentialComponent {
             if (!this.data.key || !this.data.value) {
               const _snackBarRef = this.snackBar.open(
                 'You must not leave Key or Value field empty!',
+                '',
+                {
+                  duration: 3000,
+                },
+              )
+            }
+            if (!this.data.key.trim() || !this.data.value.trim()) {
+              const _snackBarRef = this.snackBar.open(
+                'You must not fill Key or Value field with whitespaces!',
                 '',
                 {
                   duration: 3000,

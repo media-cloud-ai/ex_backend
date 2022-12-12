@@ -40,8 +40,8 @@ export class NotificationEndpointComponent {
     }
   }
 
-  edit(mode) {
-    if (mode === true) {
+  edit(is_edited) {
+    if (is_edited === true) {
       this.disabled = false
       this.selectNotificationEndpoint()
     } else {
@@ -59,6 +59,18 @@ export class NotificationEndpointComponent {
             if (!this.data.endpoint_url || !this.data.endpoint_placeholder) {
               const _snackBarRef = this.snackBar.open(
                 'You must not leave Credentials, URL or Label field empty!',
+                '',
+                {
+                  duration: 3000,
+                },
+              )
+            }
+            if (
+              !this.data.endpoint_url.trim() ||
+              !this.data.endpoint_placeholder.trim()
+            ) {
+              const _snackBarRef = this.snackBar.open(
+                'You must not fill URL or Label field with whitespaces!',
                 '',
                 {
                   duration: 3000,
