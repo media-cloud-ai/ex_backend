@@ -279,7 +279,10 @@ defmodule ExBackendWeb.UserController do
       "filters" => filters
     })
 
-    send_resp(conn, 200, "User workflow filters properly saved")
+    conn
+    |> put_status(:created)
+    |> put_view(ExBackendWeb.UserView)
+    |> render("info.json", %{info: "User workflow filters properly saved"})
   end
 
   operation :delete_workflow_filters,

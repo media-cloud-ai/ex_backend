@@ -17,6 +17,10 @@ defmodule ExBackendWeb.UserView do
     end
   end
 
+  def render("info.json", %{info: message}) do
+    %{info: %{detail: message}}
+  end
+
   def render("user.json", %{user: user}) do
     %{
       id: user.id,

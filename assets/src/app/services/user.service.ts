@@ -8,7 +8,7 @@ import {
   RolePage,
   RightDefinitionsPage,
 } from '../models/page/user_page'
-import { User, Confirm, Role, ValidationLink } from '../models/user'
+import { User, Confirm, Role, ValidationLink, Info } from '../models/user'
 import { WorkflowQueryParams } from '../models/page/workflow_page'
 
 @Injectable()
@@ -202,14 +202,14 @@ export class UserService {
   saveWorkflowFilters(
     filter_name: string,
     filters: WorkflowQueryParams,
-  ): Observable<any> {
+  ): Observable<Info> {
     const params = {
       filter_name: filter_name,
       filters: filters,
     }
 
     return this.http
-      .post<WorkflowQueryParams>(this.usersUrl + '/filters/workflow', params)
+      .post<Info>(this.usersUrl + '/filters/workflow', params)
       .pipe(
         tap((_workflowPage) => this.log('save User workflow filters')),
         catchError(this.handleError('saveWorkflowFilters', undefined)),
