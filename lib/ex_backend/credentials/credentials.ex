@@ -163,7 +163,9 @@ defmodule ExBackend.Credentials do
       %Ecto.Changeset{source: %Credential{}}
 
   """
-  def change_credential(%Credential{} = credential) do
-    Credential.changeset(credential, %{})
+  def update_credential(%Credential{} = credential, attrs) do
+    credential
+    |> Credential.changeset(attrs)
+    |> Repo.update()
   end
 end

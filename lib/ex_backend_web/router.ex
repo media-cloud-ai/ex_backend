@@ -62,7 +62,7 @@ defmodule ExBackendWeb.Router do
     get("/imdb/:id", ImdbController, :show)
 
     # Credentials APIs
-    resources("/credentials", CredentialController, except: [:new, :edit])
+    resources("/credentials", CredentialController, except: [:new])
 
     # S3 APIs
     get("/s3_config", S3Controller, :config)

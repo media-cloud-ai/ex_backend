@@ -1,8 +1,12 @@
 import { Component } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 
+import {
+  Credential,
+  CredentialEventAction,
+  CredentialEvent,
+} from '../../models/credential'
 import { CredentialService } from '../../services/credential.service'
-import { Credential } from '../../models/credential'
 
 @Component({
   selector: 'credentials-component',
@@ -14,6 +18,7 @@ export class CredentialsComponent {
 
   key: string
   value: string
+  selected_credential_id = undefined
 
   constructor(
     private route: ActivatedRoute,
@@ -30,6 +35,15 @@ export class CredentialsComponent {
         a.key > b.key ? 1 : b.key > a.key ? -1 : 0,
       )
     })
+  }
+
+  credentialHasChanged(event: CredentialEvent) {
+    if (event.action == CredentialEventAction.Select) {
+      this.selected_credential_id = event.credential.id
+    }
+    if (event.action == CredentialEventAction.Save) {
+      this.selected_credential_id = undefined
+    }
   }
 
   insert() {

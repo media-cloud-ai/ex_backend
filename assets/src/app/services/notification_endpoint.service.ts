@@ -51,6 +51,34 @@ export class NotificationEndpointService {
       )
   }
 
+  changeNotificationEndpoint(
+    id: number,
+    endpoint_placeholder: string,
+    endpoint_url: string,
+    endpoint_credentials: string,
+  ): Observable<NotificationEndpoint> {
+    const params = {
+      id: id,
+      notification_endpoint: {
+        endpoint_placeholder: endpoint_placeholder,
+        endpoint_url: endpoint_url,
+        endpoint_credentials: endpoint_credentials,
+      },
+    }
+
+    return this.http
+      .put<NotificationEndpoint>(
+        this.notificationEndpointsUrl + '/' + id,
+        params,
+      )
+      .pipe(
+        tap((_notificationEndpointPage) =>
+          this.log('change NotificationEndpoint'),
+        ),
+        catchError(this.handleError('changeNotificationEndpoint', undefined)),
+      )
+  }
+
   removeNotificationEndpoint(
     endpoint_placeholder: string,
   ): Observable<NotificationEndpoint> {
