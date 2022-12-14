@@ -52,7 +52,7 @@ export class NotificationEndpointComponent {
           this.data.id,
           this.data.endpoint_placeholder,
           this.data.endpoint_url,
-          (this.data.endpoint_crendentials ??= ''),
+          (this.data.endpoint_credentials ??= ''),
         )
         .subscribe((_notificationEndpoint) => {
           if (!_notificationEndpoint) {
