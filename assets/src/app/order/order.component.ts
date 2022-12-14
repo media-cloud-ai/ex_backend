@@ -211,10 +211,10 @@ export class OrderComponent {
 
         parameters[parameter.id] = value
       }
+    }
 
-      if (this.selectedService.reference === undefined) {
-        this.selectedService.reference = this.selectedService.identifier
-      }
+    if (this.selectedService.reference === undefined) {
+      this.selectedService.reference = this.selectedService.identifier
     }
 
     const startWorkflowDefinition: StartWorkflowDefinition = {
