@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { BrowserModule, Title } from '@angular/platform-browser'
 import { AppComponent } from './app.component'
 
+import { AngJsoneditorModule } from '@maaxgr/ang-jsoneditor'
 import { MatAutocompleteModule } from '@angular/material/autocomplete'
 import { MatButtonModule } from '@angular/material/button'
 import { MatButtonToggleModule } from '@angular/material/button-toggle'
@@ -105,6 +106,7 @@ import { IMDbService } from './services/imdb.service'
 import { JobService } from './services/job.service'
 import { MouseMoveService } from './services/mousemove.service'
 import { NotificationEndpointService } from './services/notification_endpoint.service'
+import { NotificationTemplateService } from './services/notification_template.service'
 import { StatisticsService } from './services/statistics.service'
 import { S3Service } from './services/s3.service'
 import { UserService } from './services/user.service'
@@ -134,6 +136,7 @@ const EX_BACKEND_DATE_FORMATS = {
 @NgModule({
   exports: [RouterModule],
   imports: [
+    AngJsoneditorModule,
     AppRoutingModule,
     ClipboardModule,
     BrowserAnimationsModule,
@@ -271,6 +274,7 @@ const EX_BACKEND_DATE_FORMATS = {
     JobService,
     MouseMoveService,
     NotificationEndpointService,
+    NotificationTemplateService,
     StatisticsService,
     S3Service,
     Title,
