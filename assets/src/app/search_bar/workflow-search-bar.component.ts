@@ -149,15 +149,15 @@ export class WorkflowSearchBarComponent {
     const yesterday = new Date()
     yesterday.setDate(today.getDate() - 1)
 
-    this.workflowsForm = this.formBuilder.group({
+    this.workflowsForm = new FormGroup({
       selectedStatus: new FormControl(''),
       selectedMode: new FormControl(''),
       selectedWorkflows: new FormControl(''),
       selectedPreset: new FormControl(''),
-      selectedDateRange: {
+      selectedDateRange: new FormControl({
         startDate: yesterday,
         endDate: today,
-      },
+      }),
       referenceSearch: new FormControl(''),
       detailedToggle: new FormControl(''),
       liveReloadToggle: new FormControl(''),
@@ -263,13 +263,14 @@ export class WorkflowSearchBarComponent {
       time_interval: 3600,
     }
 
-    this.workflowsForm.controls.selectedPreset.setValue('')
+    this.workflowsForm.controls.selectedPreset.reset()
 
     this.searchWorkflows()
   }
 
   presetChanged(): void {
     const preset = this.workflowsForm.controls.selectedPreset.value
+
     this.parameters.identifiers = preset['identifiers']
     this.parameters.mode = preset['mode']
     this.parameters.search =
