@@ -5,7 +5,6 @@
         <mat-select
           formControlName="selectedPreset"
           placeholder="Saved filters"
-          [(ngModel)]="workflowsForm.controls.selectedPreset"
           (selectionChange)="presetChanged()"
         >
           <mat-option
