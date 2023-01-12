@@ -41,7 +41,7 @@
   <button
     mat-menu-item
     class="delete"
-    [disabled]="!right_delete || !can_delete"
+    [disabled]="!right_delete || !can_delete || child_workflow"
     color="warn"
     (click)="delete()"
     title="Delete"
@@ -52,7 +52,7 @@
   <button
     mat-menu-item
     class="duplicate"
-    [disabled]="!right_duplicate"
+    [disabled]="!right_duplicate || child_workflow"
     color="accent"
     (click)="duplicate()"
     title="Duplicate"

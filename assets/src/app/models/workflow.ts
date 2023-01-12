@@ -45,6 +45,7 @@ export class Step {
   parameters?: Parameter[]
   jobs?: JobsStatus
   focus?: boolean
+  mode?: string
 }
 
 export class Artifact {
@@ -90,6 +91,7 @@ export class Workflow {
   version_micro?: string
   version_minor?: string
   workflow_id?: number
+  parent_id?: number
 
   static compare(a: Workflow, b: Workflow) {
     const identifierComparison = a.identifier.localeCompare(b.identifier)

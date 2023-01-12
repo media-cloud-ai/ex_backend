@@ -9,6 +9,7 @@ import { Step, Workflow } from '../../models/workflow'
 export class WorkflowStepDetailsComponent {
   details_opened = false
   disabled = true
+  workflow_mode = false
 
   @Input() step: Step
   @Input() workflow: Workflow
@@ -32,6 +33,15 @@ export class WorkflowStepDetailsComponent {
       this.details_opened = !this.details_opened
       this.step.focus = this.details_opened
       this.stepChange.emit(this.step)
+      if (
+        ['workflow_one_for_one', 'workflow_one_for_many'].includes(
+          this.step.mode,
+        )
+      ) {
+        this.workflow_mode = true
+      }
+      console.log(this.step)
+      console.log(this.workflow)
     }
   }
 }

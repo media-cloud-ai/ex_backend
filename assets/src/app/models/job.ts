@@ -1,4 +1,4 @@
-import { Parameter } from './workflow'
+import { Parameter, Workflow } from './workflow'
 
 export class Protocol {
   username: string
@@ -21,6 +21,9 @@ export class Job {
   progressions: Progression[]
   last_worker_instance_id: string
   in_black_list: boolean
+  workflow_id?: number
+  child_workflow?: Workflow
+  child_workflow_progressions?: ChildWorkflowProgression
 
   constructor(other: Job) {
     this.id = other.id
@@ -45,4 +48,9 @@ export class Progression {
   progression: number
   inserted_at: string
   datetime: string
+}
+
+export class ChildWorkflowProgression {
+  progression: number
+  buffer: number
 }

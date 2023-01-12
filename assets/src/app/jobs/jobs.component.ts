@@ -23,6 +23,8 @@ export class JobsComponent {
   page = 0
   sub = undefined
   job_duration_rendering_mode = 'human'
+  child_workflow_progression = 0
+  child_workflow_buffer = 0
 
   @Input() jobType: string
   @Input() step_id: number
@@ -70,8 +72,13 @@ export class JobsComponent {
     this.jobService
       .getJobs(index, 200, this.workflow.id, this.step_id, this.jobType)
       .subscribe((jobPage) => {
-        this.jobs = jobPage
         this.length = jobPage.total
+        this.jobs = {
+          data: jobPage.data.map((job) =>
+            this.getChildWorkflowProgression(job),
+          ),
+          total: jobPage.total,
+        }
       })
   }
 
@@ -113,6 +120,29 @@ export class JobsComponent {
       return lastStatus['description']
     }
     return undefined
+  }
+
+  getChildWorkflowProgression(job: Job) {
+    if (job.child_workflow != undefined) {
+      this.workflowService
+        .getWorkflow(job.child_workflow.id)
+        .subscribe((workflow) => {
+          const totalSteps = workflow.data.steps?.length
+          const completedSteps = workflow.data.steps?.filter(function (step) {
+            return step.status == 'completed'
+          }).length
+          const processingSteps = workflow.data.steps?.filter(function (step) {
+            return step.status == 'processing'
+          }).length
+          job.child_workflow_progressions = {
+            progression: Math.round((100 * completedSteps) / totalSteps),
+            buffer: Math.round(
+              (100 * (completedSteps + processingSteps)) / totalSteps,
+            ),
+          }
+        })
+    }
+    return job
   }
 
   displayJobDetails(job: Job, workflow: Workflow) {

@@ -24,6 +24,7 @@ export class WorkflowActionsComponent {
   can_pause = false
   can_resume = false
   can_delete = false
+  child_workflow = false
 
   right_stop = false
   right_delete = false
@@ -46,6 +47,7 @@ export class WorkflowActionsComponent {
     this.can_pause = this.workflow.can_pause()
     this.can_resume = this.workflow.can_resume()
     this.can_delete = this.workflow.can_delete()
+    this.child_workflow = this.workflow.parent_id != undefined ? true : false
 
     if (this.can_stop) {
       this.authService

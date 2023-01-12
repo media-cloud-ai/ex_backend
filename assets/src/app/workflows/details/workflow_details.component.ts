@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router'
 
 import { MatDialog } from '@angular/material/dialog'
 
+import { JobService } from '../../services/job.service'
+import { Job } from '../../models/job'
 import { Message } from '../../models/message'
 import { SocketService } from '../../services/socket.service'
 import { UserService } from '../../services/user.service'
@@ -21,6 +23,8 @@ export class WorkflowDetailsComponent {
 
   workflow_id: number
   workflow: Workflow
+  parent_job: Job
+  parent_workflow: Workflow
   renderer: WorkflowRenderer
 
   parameters_opened = false
@@ -37,6 +41,7 @@ export class WorkflowDetailsComponent {
     private socketService: SocketService,
     private userService: UserService,
     private workflowService: WorkflowService,
+    private jobService: JobService,
     private route: ActivatedRoute,
     private router: Router,
     public dialog: MatDialog,
@@ -81,23 +86,40 @@ export class WorkflowDetailsComponent {
         this.renderer = undefined
         return
       }
-      this.workflow = Object.assign(new Workflow(), workflow.data)
-      this.renderer = new WorkflowRenderer(this.workflow.steps)
-      this.renderer.setStepFocus(this.step_focus)
 
-      this.pause_post_action = this.getPausePostAction()
-
-      this.userService
-        .getUserByUuid(this.workflow.user_uuid)
-        .subscribe((response) => {
-          this.user_name = response.data.email
-          if (response.data.first_name && response.data.last_name) {
-            this.first_name = response.data.first_name
-            this.last_name = response.data.last_name
-            this.user_name = response.data.username
-          }
+      if (workflow.data.parent_id != null) {
+        this.jobService.getJob(workflow.data.parent_id).subscribe((job) => {
+          this.parent_job = job.data
+          this.workflowService
+            .getWorkflow(this.parent_job.workflow_id)
+            .subscribe((parent_workflow) => {
+              this.parent_workflow = parent_workflow.data
+              this.renderWorkflow(workflow)
+            })
         })
+      } else {
+        this.renderWorkflow(workflow)
+      }
     })
+  }
+
+  renderWorkflow(workflow) {
+    this.workflow = Object.assign(new Workflow(), workflow.data)
+    this.renderer = new WorkflowRenderer(this.workflow.steps)
+    this.renderer.setStepFocus(this.step_focus)
+
+    this.pause_post_action = this.getPausePostAction()
+
+    this.userService
+      .getUserByUuid(this.workflow.user_uuid)
+      .subscribe((response) => {
+        this.user_name = response.data.email
+        if (response.data.first_name && response.data.last_name) {
+          this.first_name = response.data.first_name
+          this.last_name = response.data.last_name
+          this.user_name = response.data.username
+        }
+      })
   }
 
   getStepsCount(): string {
