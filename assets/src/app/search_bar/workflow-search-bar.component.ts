@@ -98,7 +98,7 @@ export class WorkflowSearchBarComponent {
   @ViewChild('picker') picker: any
 
   ranges: any = {
-    Today: [moment().startOf('day'), moment()],
+    Today: [moment().startOf('day'), moment().endOf('day')],
     Yesterday: [
       moment().subtract(1, 'days').startOf('day'),
       moment().subtract(1, 'days').endOf('day'),
