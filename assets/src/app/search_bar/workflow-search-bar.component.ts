@@ -87,7 +87,13 @@ export class WorkflowSearchBarComponent {
     },
     search: undefined,
     status: ['completed', 'error'],
-    headers: ['identifier', 'reference', 'created_at', 'duration', 'launched_by'],
+    headers: [
+      'identifier',
+      'reference',
+      'created_at',
+      'duration',
+      'launched_by',
+    ],
     detailed: false,
     refresh_interval: -1,
     time_interval: 3600,
@@ -123,14 +129,14 @@ export class WorkflowSearchBarComponent {
   status = []
 
   headers = [
-    { id: 'identifier', label: 'Identifier'},
-    { id: 'reference', label: 'Reference'},
-    { id: 'created_at', label: 'Creation Date'},
-    { id: 'duration', label: 'Total Duration'},
-    { id: 'duration_pending', label: 'Pending Duration'},
-    { id: 'duration_processing', label: 'Processing Duration'},
-    { id: 'launched_by', label: 'Launched By'},
-    { id: 'mode', label: 'Workflow Mode'},
+    { id: 'identifier', label: 'Identifier' },
+    { id: 'reference', label: 'Reference' },
+    { id: 'created_at', label: 'Creation Date' },
+    { id: 'duration', label: 'Total Duration' },
+    { id: 'duration_pending', label: 'Pending Duration' },
+    { id: 'duration_processing', label: 'Processing Duration' },
+    { id: 'launched_by', label: 'Launched By' },
+    { id: 'mode', label: 'Workflow Mode' },
   ]
 
   mode = [
@@ -271,7 +277,13 @@ export class WorkflowSearchBarComponent {
       },
       search: undefined,
       status: ['completed', 'error'],
-      headers: ['identifier', 'reference', 'created_at', 'duration', 'launched_by'],
+      headers: [
+        'identifier',
+        'reference',
+        'created_at',
+        'duration',
+        'launched_by',
+      ],
       detailed: false,
       refresh_interval: -1,
       time_interval: 3600,
