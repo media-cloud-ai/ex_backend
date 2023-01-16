@@ -8,7 +8,6 @@ import {
   NotificationTemplateEvent,
 } from '../../models/notification_template'
 import { NotificationTemplatesComponent } from './notification_templates.component'
-import { PwdType } from '../../models/pwd_type'
 
 @Component({
   selector: 'notification_template-component',
@@ -23,7 +22,6 @@ export class NotificationTemplateComponent {
   @Output() notificationTemplateChange =
     new EventEmitter<NotificationTemplateEvent>()
 
-  pwd_type = PwdType.Password
   disabled = true
 
   constructor(
@@ -31,14 +29,6 @@ export class NotificationTemplateComponent {
     private notificationTemplateService: NotificationTemplateService,
     private snackBar: MatSnackBar,
   ) {}
-
-  mask(mode) {
-    if (mode === true) {
-      this.pwd_type = PwdType.Password
-    } else {
-      this.pwd_type = PwdType.Text
-    }
-  }
 
   edit(is_edited) {
     if (is_edited === true) {

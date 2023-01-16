@@ -20,7 +20,6 @@ export class JsonEditorDialogComponent {
     public fb: UntypedFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
-    console.log('Data : ', data)
     this.editorOptions = new JsonEditorOptions()
     this.initEditorOptions()
     if (data.json == undefined) {
@@ -40,20 +39,8 @@ export class JsonEditorDialogComponent {
     this.editorOptions.mode = 'text'
   }
 
-  // toggleNav() {
-  //   this.editorOptions.navigationBar = !this.editorOptions.navigationBar
-  //   this.editor.setOptions(this.editorOptions)
-  // }
-
-  // toggleStatus() {
-  //   this.editorOptions.statusBar = !this.editorOptions.statusBar
-  //   this.editor.setOptions(this.editorOptions)
-  // }
-
   submit() {
-    console.log('Before: ', this.json)
     this.json = JSON.stringify(this.form.value.json_input, null, 2)
-    console.log('After: ', this.json)
     this.dialogRef.close(this.json)
   }
 }

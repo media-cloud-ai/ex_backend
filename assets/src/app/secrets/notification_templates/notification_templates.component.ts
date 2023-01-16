@@ -53,12 +53,6 @@ export class NotificationTemplatesComponent {
   }
 
   insert() {
-    console.log('Template name : ', this.notification_template.template_name)
-    console.log(
-      'Template headers : ',
-      this.notification_template.template_headers,
-    )
-    console.log('Template body : ', this.notification_template.template_body)
     this.notificationTemplateService
       .createNotificationTemplate(
         this.notification_template.template_name,
@@ -96,7 +90,6 @@ export class NotificationTemplatesComponent {
 
       dialogRef.afterClosed().subscribe((json_response) => {
         if (json_response != undefined) {
-          console.log('JSON output headers', json_response)
           this.notification_template.template_headers = json_response
         }
       })
@@ -109,7 +102,6 @@ export class NotificationTemplatesComponent {
 
       dialogRef.afterClosed().subscribe((json_response) => {
         if (json_response != undefined) {
-          console.log('JSON output body', json_response)
           this.notification_template.template_body = json_response
         }
       })
