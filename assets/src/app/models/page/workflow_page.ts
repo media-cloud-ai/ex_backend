@@ -38,6 +38,7 @@ export class WorkflowQueryParams {
   }
   search?: string
   status: string[]
+  headers: string[]
   detailed: boolean
   refresh_interval: number
   time_interval: number

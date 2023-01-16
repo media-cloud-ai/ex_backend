@@ -143,6 +143,25 @@
       </button>
     </div>
     <div>
+      <mat-form-field style="width: 30%">
+        <mat-select
+          formControlName="selectedHeaders"
+          placeholder="Table headers"
+          [(ngModel)]="parameters.headers"
+          multiple
+        >
+          <mat-option
+            *ngFor="let header of headers"
+            [value]="header.id"
+            [ngClass]="header.id"
+            class="header-option"
+          >
+            {{ header.label | titlecase }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div>
       <button mat-raised-button color="primary" (click)="openSaveDialog()">
         <i class="material-icons">save</i>
         Save filters

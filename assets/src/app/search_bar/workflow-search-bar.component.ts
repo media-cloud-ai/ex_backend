@@ -87,6 +87,7 @@ export class WorkflowSearchBarComponent {
     },
     search: undefined,
     status: ['completed', 'error'],
+    headers: ['identifier', 'reference', 'created_at', 'duration', 'launched_by'],
     detailed: false,
     refresh_interval: -1,
     time_interval: 3600,
@@ -121,6 +122,17 @@ export class WorkflowSearchBarComponent {
   workflows = []
   status = []
 
+  headers = [
+    { id: 'identifier', label: 'Identifier'},
+    { id: 'reference', label: 'Reference'},
+    { id: 'created_at', label: 'Creation Date'},
+    { id: 'duration', label: 'Total Duration'},
+    { id: 'duration_pending', label: 'Pending Duration'},
+    { id: 'duration_processing', label: 'Processing Duration'},
+    { id: 'launched_by', label: 'Launched By'},
+    { id: 'mode', label: 'Workflow Mode'},
+  ]
+
   mode = [
     { id: 'file', label: 'Fichier' },
     { id: 'live', label: 'Live' },
@@ -151,6 +163,7 @@ export class WorkflowSearchBarComponent {
 
     this.workflowsForm = new FormGroup({
       selectedStatus: new FormControl(''),
+      selectedHeaders: new FormControl(''),
       selectedMode: new FormControl(''),
       selectedWorkflows: new FormControl(''),
       selectedPreset: new FormControl(''),
@@ -258,6 +271,7 @@ export class WorkflowSearchBarComponent {
       },
       search: undefined,
       status: ['completed', 'error'],
+      headers: ['identifier', 'reference', 'created_at', 'duration', 'launched_by'],
       detailed: false,
       refresh_interval: -1,
       time_interval: 3600,
@@ -276,6 +290,7 @@ export class WorkflowSearchBarComponent {
     this.parameters.search =
       preset['search'] != undefined ? preset['search'].toString() : undefined
     this.parameters.status = preset['status']
+    this.parameters.headers = preset['headers']
     this.searchWorkflows()
   }
 
