@@ -60,6 +60,7 @@ export class DashboardComponent {
       },
       mode: ['file', 'live'],
       status: ['completed', 'error'],
+      headers: ['identifier', 'reference', 'created_at', 'duration', 'launched_by'],
       detailed: false,
       time_interval: 3600,
       refresh_interval: -1,
