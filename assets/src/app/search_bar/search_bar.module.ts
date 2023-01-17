@@ -6,6 +6,7 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material'
 import { MatButtonModule } from '@angular/material/button'
 import { MatButtonToggleModule } from '@angular/material/button-toggle'
 import { MatCheckboxModule } from '@angular/material/checkbox'
+import { MatChipsModule } from '@angular/material/chips'
 import { MatDatepickerModule } from '@angular/material/datepicker'
 import { MatDialogModule } from '@angular/material/dialog'
 import { MatExpansionModule } from '@angular/material/expansion'
@@ -28,6 +29,7 @@ import {
     MatButtonModule,
     MatButtonToggleModule,
     MatCheckboxModule,
+    MatChipsModule,
     MatDatepickerModule,
     MatDialogModule,
     MatExpansionModule,

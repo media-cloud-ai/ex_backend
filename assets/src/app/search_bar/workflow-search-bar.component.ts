@@ -131,12 +131,12 @@ export class WorkflowSearchBarComponent {
   headers = [
     { id: 'identifier', label: 'Identifier' },
     { id: 'reference', label: 'Reference' },
-    { id: 'created_at', label: 'Creation Date' },
-    { id: 'duration', label: 'Total Duration' },
-    { id: 'duration_pending', label: 'Pending Duration' },
-    { id: 'duration_processing', label: 'Processing Duration' },
-    { id: 'launched_by', label: 'Launched By' },
-    { id: 'mode', label: 'Workflow Mode' },
+    { id: 'created_at', label: 'Creation date' },
+    { id: 'duration', label: 'Total duration' },
+    { id: 'duration_pending', label: 'Pending duration' },
+    { id: 'duration_processing', label: 'Processing duration' },
+    { id: 'launched_by', label: 'Launched by' },
+    { id: 'step_count', label: 'Step count' },
   ]
 
   mode = [
@@ -350,5 +350,16 @@ export class WorkflowSearchBarComponent {
         this.workflow_filters = response.sort(this.sortFiltersName)
       })
     })
+  }
+
+  selectHeader(header: string): void {
+    const index = this.parameters.headers.indexOf(header)
+    if (index !== -1) {
+      this.parameters.headers.splice(index, 1)
+    } else {
+      this.parameters.headers.push(header)
+    }
+
+    console.log(this.parameters.headers)
   }
 }
