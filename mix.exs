@@ -139,10 +139,10 @@ defmodule ExBackend.Mixfile do
         "deps.audit"
       ],
       dev: ["ecto.drop", "ecto.setup", "phx.server -r priv/repo/seeds.exs"],
-      "docs.stepflow": [
+      "openapi.stepflow": [
         "openapi.spec.json --spec StepFlow.ApiSpec --start-app=false --pretty priv/static/step_flow_openapi.json"
       ],
-      "docs.backend": [
+      "openapi.backend": [
         "openapi.spec.json --spec ExBackendWeb.ApiSpec --start-app=false --pretty priv/static/backend_openapi.json"
       ],
       test: ["ecto.drop", "ecto.create --quiet", "ecto.migrate", "test"],
