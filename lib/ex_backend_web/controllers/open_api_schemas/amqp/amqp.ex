@@ -25,7 +25,7 @@ defmodule ExBackendWeb.OpenApiSchemas.Amqp.Amqp do
     require OpenApiSpex
 
     OpenApiSpex.schema(%{
-      title: "Garbage Collection",
+      title: "GarbageCollection",
       description: "RabbitMQ Garbage Collection",
       type: :object,
       properties: %{

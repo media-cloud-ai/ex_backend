@@ -133,7 +133,7 @@ defmodule ExBackendWeb.UserController do
     summary: "Generate credentials",
     description: "Generate credentials for a user",
     type: :object,
-    request_body: {"ID Body", "application/json", OpenApiSchemas.Users.IdBody},
+    request_body: {"IDBody", "application/json", OpenApiSchemas.Users.IdBody},
     responses: [
       ok: {"User", "application/json", OpenApiSchemas.Users.UserFull},
       forbidden: "Forbidden",
@@ -154,8 +154,7 @@ defmodule ExBackendWeb.UserController do
     summary: "Check rights",
     description: "Check user rights for action on entity",
     type: :object,
-    request_body:
-      {"Check Rights Body", "application/json", OpenApiSchemas.Rights.CheckRightsBody},
+    request_body: {"CheckRightsBody", "application/json", OpenApiSchemas.Rights.CheckRightsBody},
     responses: [
       ok: {"Authorized", "application/json", OpenApiSchemas.Rights.Authorized},
       forbidden: "Forbidden"
@@ -174,9 +173,9 @@ defmodule ExBackendWeb.UserController do
     summary: "Generate validation link",
     description: "Generate validation link for user",
     type: :object,
-    request_body: {"ID Body", "application/json", OpenApiSchemas.Users.IdBody},
+    request_body: {"IDBody", "application/json", OpenApiSchemas.Users.IdBody},
     responses: [
-      ok: {"Validation Link", "application/json", OpenApiSchemas.Users.ValidationLink},
+      ok: {"ValidationLink", "application/json", OpenApiSchemas.Users.ValidationLink},
       forbidden: "Forbidden",
       not_found: "Not Found"
     ]
@@ -196,7 +195,7 @@ defmodule ExBackendWeb.UserController do
     description: "Delete role by name",
     type: :object,
     parameters: [
-      id: [
+      name: [
         in: :path,
         description: "Role name",
         type: :string,
@@ -262,7 +261,7 @@ defmodule ExBackendWeb.UserController do
     summary: "Save users workflows filter",
     description: "Save users workflows filter",
     type: :object,
-    request_body: {"Filter Body", "application/json", OpenApiSchemas.Users.FilterBody},
+    request_body: {"FilterBody", "application/json", OpenApiSchemas.Users.FilterBody},
     responses: [
       ok: "User workflow filters properly saved",
       forbidden: "Forbidden"

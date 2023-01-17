@@ -18,8 +18,7 @@ defmodule ExBackendWeb.PasswordResetController do
     summary: "Reset a password",
     description: "Reset a password",
     type: :object,
-    request_body:
-      {"Session Body", "application/json", OpenApiSchemas.Passwords.PasswordResetBody},
+    request_body: {"SessionBody", "application/json", OpenApiSchemas.Passwords.PasswordResetBody},
     responses: [
       created: "Check your inbox for instructions on how to reset your password",
       forbidden: "Forbidden"
@@ -61,7 +60,7 @@ defmodule ExBackendWeb.PasswordResetController do
     description: "Update a password",
     type: :object,
     request_body:
-      {"Session Body", "application/json", OpenApiSchemas.Passwords.PasswordUpdateBody},
+      {"SessionBody", "application/json", OpenApiSchemas.Passwords.PasswordUpdateBody},
     responses: [
       ok: "Your password has been reset",
       forbidden: "Forbidden"

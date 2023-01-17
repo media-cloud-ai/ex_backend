@@ -48,7 +48,7 @@ defmodule ExBackendWeb.CredentialController do
     description: "Create credential",
     type: :object,
     request_body:
-      {"Credential Body", "application/json", OpenApiSchemas.Credentials.CredentialBody},
+      {"CredentialBody", "application/json", OpenApiSchemas.Credentials.CredentialBody},
     responses: [
       ok: {"Credential", "application/json", OpenApiSchemas.Credentials.Credential},
       forbidden: "Forbidden"
@@ -73,7 +73,7 @@ defmodule ExBackendWeb.CredentialController do
     description: "Edit credential",
     type: :object,
     request_body:
-      {"Credential Body", "application/json", OpenApiSchemas.Credentials.CredentialBody},
+      {"CredentialBody", "application/json", OpenApiSchemas.Credentials.CredentialBody},
     responses: [
       ok: {"Credential", "application/json", OpenApiSchemas.Credentials.Credential},
       forbidden: "Forbidden"

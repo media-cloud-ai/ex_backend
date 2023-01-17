@@ -154,7 +154,7 @@ defmodule ExBackendWeb.OpenApiSchemas.Users do
     require OpenApiSpex
 
     OpenApiSpex.schema(%{
-      title: "Validation Link",
+      title: "ValidationLink",
       description: "Validation Link for registration validation",
       type: :object,
       properties: %{
@@ -187,7 +187,7 @@ defmodule ExBackendWeb.OpenApiSchemas.Users do
     require OpenApiSpex
 
     OpenApiSpex.schema(%{
-      title: "Datetime Range",
+      title: "DatetimeRange",
       description: "Datetime Range",
       type: :object,
       properties: %{
@@ -289,7 +289,7 @@ defmodule ExBackendWeb.OpenApiSchemas.Users do
     require OpenApiSpex
 
     OpenApiSpex.schema(%{
-      title: "Filter Body",
+      title: "FilterBody",
       description: "Filter Body",
       type: :array,
       items: %Schema{
@@ -328,7 +328,7 @@ defmodule ExBackendWeb.OpenApiSchemas.Users do
     require OpenApiSpex
 
     OpenApiSpex.schema(%{
-      title: "ID Body",
+      title: "IDBody",
       description: "User ID Body",
       type: :array,
       items: %Schema{

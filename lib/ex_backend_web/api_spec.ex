@@ -9,7 +9,7 @@ defmodule ExBackendWeb.ApiSpec do
     %OpenApi{
       info: %Info{
         title: "MCAI Backend",
-        version: Mix.Project.config()[:version]
+        version: Application.spec(:ex_backend)[:vsn] |> to_string()
       },
       paths: Paths.from_router(ExBackendWeb.Router),
       components: %Components{
