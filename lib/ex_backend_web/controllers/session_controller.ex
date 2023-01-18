@@ -15,7 +15,7 @@ defmodule ExBackendWeb.SessionController do
     summary: "Create a session",
     description: "Log in a user with credentials to get the JWT token",
     type: :object,
-    request_body: {"Session Body", "application/json", OpenApiSchemas.Sessions.SessionBody},
+    request_body: {"SessionBody", "application/json", OpenApiSchemas.Sessions.SessionBody},
     responses: [
       ok: {"Session", "application/json", OpenApiSchemas.Sessions.Session},
       unauthorized: "Unauthorized - Already logged in",

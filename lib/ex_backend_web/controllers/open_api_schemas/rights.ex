@@ -28,7 +28,7 @@ defmodule ExBackendWeb.OpenApiSchemas.Rights do
     require OpenApiSpex
 
     OpenApiSpex.schema(%{
-      title: "Check Rights Body",
+      title: "CheckRightsBody",
       description: "Body for checking rights",
       type: :object,
       properties: %{

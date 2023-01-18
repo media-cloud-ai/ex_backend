@@ -20,6 +20,16 @@ include:
   - project: 'media-cloud-ai/ci/pipelines'
     file: 'elixir/elixir-base.yml'
 
+mix_openapi:
+  stage: test
+  script:
+    - mix openapi.backend
+    - >
+      if [[ $(mix openapi.backend 2>&1
+      | grep -wc "warning") -ne 0 ]];
+      then echo "Documentation missing !"; exit -1;
+      fi
+
 ts_lint:
   image: node:14
   tags:

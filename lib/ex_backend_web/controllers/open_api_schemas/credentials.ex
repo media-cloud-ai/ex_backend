@@ -51,7 +51,7 @@ defmodule ExBackendWeb.OpenApiSchemas.Credentials do
     require OpenApiSpex
 
     OpenApiSpex.schema(%{
-      title: "Credential Body",
+      title: "CredentialBody",
       description: "Credential Body",
       type: :object,
       properties: %{

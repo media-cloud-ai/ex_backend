@@ -39,7 +39,7 @@ defmodule ExBackendWeb.OpenApiSchemas.Sessions do
     require OpenApiSpex
 
     OpenApiSpex.schema(%{
-      title: "Session Body",
+      title: "SessionBody",
       description: "Information for identification",
       type: :object,
       properties: %{
