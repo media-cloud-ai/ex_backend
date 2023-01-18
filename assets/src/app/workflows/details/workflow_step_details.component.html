@@ -48,7 +48,11 @@
     <div class="details" *ngIf="details_opened">
       <div
         class="parameters"
-        *ngIf="step.parameters && step.parameters.length > 0"
+        *ngIf="
+          step.parameters &&
+          step.parameters.length > 0 &&
+          workflow_mode !== true
+        "
       >
         <h4>Parameters</h4>
         <parameters-component

@@ -5,7 +5,17 @@
     title="{{ job | jobStatus }}"
   >
     <div class="info">
-      <span class="name">Job #{{ job.id }}</span>
+      <span class="name" *ngIf="job.child_workflow == null; else childWorkflow"
+        >Job #{{ job.id }}</span
+      >
+      <ng-template #childWorkflow
+        ><span class="name"
+          >Job #{{ job.id }} |
+          <a href="{{ job.child_workflow.id }}"
+            >Child workflow #{{ job.child_workflow.id }}</a
+          ></span
+        ></ng-template
+      >
       <span class="summary">
         <div class="duration" (click)="switchDurationRenderingMode()">
           {{ job | jobDuration | duration : job_duration_rendering_mode }}
@@ -18,7 +28,11 @@
         </button>
         <button
           mat-button
-          *ngIf="retryable_jobs.includes(job | jobStatus) && right_retry"
+          *ngIf="
+            retryable_jobs.includes(job | jobStatus) &&
+            right_retry &&
+            job.child_workflow == null
+          "
           (click)="retryJob(job)"
         >
           <mat-icon>autorenew</mat-icon>
@@ -48,13 +62,28 @@
         ></mat-progress-bar>
       </ng-template>
       <ng-template #elseBlock>
-        <div class="status {{ job | jobStatus }}">
-          <span>{{ job.progressions | jobProgression }}%</span>
-        </div>
-        <mat-progress-bar
-          mode="determinate"
-          value="{{ job.progressions | jobProgression }}"
-        ></mat-progress-bar>
+        <div
+          *ngIf="job.child_workflow == null; then thenBlock; else elseBlock"
+        ></div>
+        <ng-template #thenBlock>
+          <div class="status {{ job | jobStatus }}">
+            <span>{{ job.progressions | jobProgression }}%</span>
+          </div>
+          <mat-progress-bar
+            mode="determinate"
+            value="{{ job.progressions | jobProgression }}"
+          ></mat-progress-bar>
+        </ng-template>
+        <ng-template #elseBlock>
+          <div class="status {{ job | jobStatus }}">
+            <span>{{ job.child_workflow_progressions.progression }}%</span>
+          </div>
+          <mat-progress-bar
+            mode="buffer"
+            value="{{ job.child_workflow_progressions.progression }}"
+            bufferValue="{{ job.child_workflow_progressions.buffer }}"
+          ></mat-progress-bar>
+        </ng-template>
       </ng-template>
     </ng-template>
     <ng-template #elseBlock>

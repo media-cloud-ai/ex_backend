@@ -18,12 +18,25 @@
 
   <div class="info">
     <span class="reference">
-      <div class="item">
+      <div
+        class="item"
+        *ngIf="parent_workflow == undefined; else childWorkflow"
+      >
         <label>Reference:</label>
         <video-title-component
           [id]="workflow.reference"
         ></video-title-component>
       </div>
+      <ng-template #childWorkflow>
+        <div class="item">
+          <label>Parent workflow:</label>
+          <span>
+            <a href="{{ parent_workflow.id }}"
+              >{{ parent_workflow.reference }} #{{ parent_workflow.id }}</a
+            >
+          </span>
+        </div>
+      </ng-template>
       <div class="item">
         <label>Workflow version:</label>
         <span>
