@@ -180,8 +180,11 @@ export class WorkflowsComponent {
       params['search'] = this.parameters.search
     if (this.parameters.refresh_interval != -1)
       params['refresh'] = this.parameters.refresh_interval
-    if (this.parameters.headers.length > 0)
+    if (this.parameters.headers.length > 0) {
       params['headers'] = this.parameters.headers
+    } else {
+      params['headers'] = 'none'
+    }
 
     params['start_date'] = formatDate(
       this.parameters.selectedDateRange.startDate,
