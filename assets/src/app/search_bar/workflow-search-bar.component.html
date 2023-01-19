@@ -138,22 +138,30 @@
           [(ngModel)]="parameters.search"
         />
       </mat-form-field>
-      <button mat-raised-button color="primary" (click)="searchWorkflows()">
-        <i class="material-icons">filter_alt</i>
-      </button>
     </div>
     <div class="tab-headers">
-      <mat-chip-list aria-label="Header selection" multiple>
-        <mat-chip
-          *ngFor="let header of headers"
-          [selected]="this.parameters.headers.includes(header.id)"
-          (click)="selectHeader(header.id)"
+      <ul
+        formArrayName="selectedHeaders"
+        style="list-style: none; display: inline-flex"
+      >
+        <li
+          [formGroupName]="i"
+          *ngFor="
+            let item of workflowsForm.controls?.selectedHeaders?.controls;
+            let i = index
+          "
         >
-          {{ header.label }}
-        </mat-chip>
-      </mat-chip-list>
+          <mat-checkbox class="header-check" formControlName="checked">
+            {{ headers[i].label }}
+          </mat-checkbox>
+        </li>
+      </ul>
     </div>
     <div>
+      <button mat-raised-button color="primary" (click)="searchWorkflows()">
+        <i class="material-icons">filter_alt</i>
+        Apply filters
+      </button>
       <button mat-raised-button color="primary" (click)="openSaveDialog()">
         <i class="material-icons">save</i>
         Save filters

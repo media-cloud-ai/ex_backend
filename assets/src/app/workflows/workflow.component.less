@@ -12,7 +12,6 @@
 
   .reference {
     display: inline-block;
-    text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
     vertical-align: middle;
@@ -35,9 +34,13 @@
     }
   }
 
-  .created,
+  .created {
+    flex: 1.5;
+  }
+
   .duration {
     flex: 1.5;
+    align-content: flex-end;
   }
 
   .steps-count {

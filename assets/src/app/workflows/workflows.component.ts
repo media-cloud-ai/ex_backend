@@ -83,6 +83,10 @@ export class WorkflowsComponent {
       this.parameters.status = params.getAll('status')
       this.parameters.identifiers = params.getAll('identifiers')
       this.parameters.search = params.getAll('search').toString() || undefined
+      this.parameters.headers =
+        params.getAll('headers').length > 0
+          ? params.getAll('headers')
+          : ['identifier', 'reference', 'created_at', 'duration', 'launched_by']
       this.parameters.selectedDateRange.startDate =
         params.get('start_date') != undefined
           ? moment(params.get('start_date'), moment.ISO_8601).toDate()

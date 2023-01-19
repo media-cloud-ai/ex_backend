@@ -26,7 +26,25 @@
     <span class="duration" *ngIf="parameters.headers.includes('duration')">
       <duration-component
         [workflow]="workflow"
-        display="simple"
+        display="total"
+      ></duration-component>
+    </span>
+    <span
+      class="duration"
+      *ngIf="parameters.headers.includes('duration_pending')"
+    >
+      <duration-component
+        [workflow]="workflow"
+        display="pending"
+      ></duration-component>
+    </span>
+    <span
+      class="duration"
+      *ngIf="parameters.headers.includes('duration_processing')"
+    >
+      <duration-component
+        [workflow]="workflow"
+        display="processing"
       ></duration-component>
     </span>
     <span
