@@ -8,6 +8,7 @@ RUN apk update && \
     git \
     make \
     nodejs \
+    npm \
     python3 \
     tar \
     wget \
@@ -15,9 +16,7 @@ RUN apk update && \
     && \
     mix local.hex --force && \
     mix local.rebar --force && \
-    mix hex.info && \
-    cd /usr/local/bin && \
-    curl -o- -L https://yarnpkg.com/install.sh | sh -s -- --version 1.22.5
+    mix hex.info
 
 WORKDIR /app
 ENV MIX_ENV prod
@@ -29,11 +28,11 @@ RUN mix deps.get && \
     mix distillery.release --env=$MIX_ENV && \
     mix generate_documentation && \
     cd assets && \
-    yarn install --network-timeout 1000000 && \
-    yarn add node-gyp && \
-    yarn add bcrypt && \
-    yarn run lint && \
-    yarn run release && \
+    npm install && \
+    npm install node-gyp && \
+    npm install bcrypt && \
+    npm run lint && \
+    npm run release && \
     cd .. && \
     mix openapi.stepflow && \
     mix openapi.backend && \
