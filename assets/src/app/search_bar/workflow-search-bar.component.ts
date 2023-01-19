@@ -408,7 +408,7 @@ export class WorkflowSearchBarComponent {
   }
 
   setHeadersSelection(): void {
-    const headers = this.workflowsForm.controls?.selectedHeaders.controls
+    const headers = this.workflowsForm.controls?.selectedHeaders['controls']
     headers.forEach((header: FormControl) => {
       header.setValue({
         name: header.value.name,
