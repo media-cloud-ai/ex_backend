@@ -7,7 +7,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core'
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms'
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms'
 import {
   MAT_DIALOG_DATA,
   MatDialog,
@@ -87,6 +87,13 @@ export class WorkflowSearchBarComponent {
     },
     search: undefined,
     status: ['completed', 'error'],
+    headers: [
+      'identifier',
+      'reference',
+      'created_at',
+      'duration',
+      'launched_by',
+    ],
     detailed: false,
     refresh_interval: -1,
     time_interval: 3600,
@@ -121,6 +128,49 @@ export class WorkflowSearchBarComponent {
   workflows = []
   status = []
 
+  headers = [
+    {
+      id: 'identifier',
+      label: 'Identifier',
+      checked: this.parameters.headers.includes('identifier'),
+    },
+    {
+      id: 'reference',
+      label: 'Reference',
+      checked: this.parameters.headers.includes('reference'),
+    },
+    {
+      id: 'created_at',
+      label: 'Creation date',
+      checked: this.parameters.headers.includes('created_at'),
+    },
+    {
+      id: 'duration',
+      label: 'Total duration',
+      checked: this.parameters.headers.includes('duration'),
+    },
+    {
+      id: 'duration_pending',
+      label: 'Pending duration',
+      checked: this.parameters.headers.includes('duration_pending'),
+    },
+    {
+      id: 'duration_processing',
+      label: 'Processing duration',
+      checked: this.parameters.headers.includes('duration_processing'),
+    },
+    {
+      id: 'launched_by',
+      label: 'Launched by',
+      checked: this.parameters.headers.includes('launched_by'),
+    },
+    {
+      id: 'step_count',
+      label: 'Step count',
+      checked: this.parameters.headers.includes('step_count'),
+    },
+  ]
+
   mode = [
     { id: 'file', label: 'Fichier' },
     { id: 'live', label: 'Live' },
@@ -139,7 +189,6 @@ export class WorkflowSearchBarComponent {
   constructor(
     private userService: UserService,
     private workflowService: WorkflowService,
-    private formBuilder: FormBuilder,
     public filtersNameDialog: MatDialog,
     public filtersManageDialog: MatDialog,
   ) {}
@@ -151,6 +200,7 @@ export class WorkflowSearchBarComponent {
 
     this.workflowsForm = new FormGroup({
       selectedStatus: new FormControl(''),
+      selectedHeaders: new FormArray([]),
       selectedMode: new FormControl(''),
       selectedWorkflows: new FormControl(''),
       selectedPreset: new FormControl(''),
@@ -162,6 +212,19 @@ export class WorkflowSearchBarComponent {
       detailedToggle: new FormControl(''),
       liveReloadToggle: new FormControl(''),
       refreshInterval: new FormControl(''),
+    })
+
+    const headersFormArray = this.workflowsForm.get(
+      'selectedHeaders',
+    ) as FormArray
+
+    this.headers.forEach((header) => {
+      headersFormArray.push(
+        new FormGroup({
+          name: new FormControl(header.id),
+          checked: new FormControl(this.parameters.headers.includes(header.id)),
+        }),
+      )
     })
 
     this.userService.getWorkflowFilters().subscribe((response) => {
@@ -201,6 +264,7 @@ export class WorkflowSearchBarComponent {
   }
 
   searchWorkflows() {
+    this.addHeadersSelectionToParameters()
     this.parametersEvent.emit(this.parameters)
   }
 
@@ -258,12 +322,20 @@ export class WorkflowSearchBarComponent {
       },
       search: undefined,
       status: ['completed', 'error'],
+      headers: [
+        'identifier',
+        'reference',
+        'created_at',
+        'duration',
+        'launched_by',
+      ],
       detailed: false,
       refresh_interval: -1,
       time_interval: 3600,
     }
 
     this.workflowsForm.controls.selectedPreset.reset()
+    this.setHeadersSelection()
 
     this.searchWorkflows()
   }
@@ -276,6 +348,8 @@ export class WorkflowSearchBarComponent {
     this.parameters.search =
       preset['search'] != undefined ? preset['search'].toString() : undefined
     this.parameters.status = preset['status']
+    this.parameters.headers = preset['headers']
+    this.setHeadersSelection()
     this.searchWorkflows()
   }
 
@@ -290,6 +364,8 @@ export class WorkflowSearchBarComponent {
   }
 
   openSaveDialog(): void {
+    this.addHeadersSelectionToParameters()
+
     const dialogRef = this.filtersNameDialog.open(WorkflowFiltersNameDialog, {
       width: '500px',
       data: { filter_name: this.filter_name },
@@ -321,6 +397,22 @@ export class WorkflowSearchBarComponent {
     dialogRef.afterClosed().subscribe(() => {
       this.userService.getWorkflowFilters().subscribe((response) => {
         this.workflow_filters = response.sort(this.sortFiltersName)
+      })
+    })
+  }
+
+  addHeadersSelectionToParameters(): void {
+    const { value } = this.workflowsForm.get('selectedHeaders')
+    this.parameters.headers =
+      value?.filter((h) => h.checked).map((h) => h.name) || []
+  }
+
+  setHeadersSelection(): void {
+    const headers = this.workflowsForm.controls?.selectedHeaders['controls']
+    headers.forEach((header: FormControl) => {
+      header.setValue({
+        name: header.value.name,
+        checked: this.parameters.headers.includes(header.value.name),
       })
     })
   }

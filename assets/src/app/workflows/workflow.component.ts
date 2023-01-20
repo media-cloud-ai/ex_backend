@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs'
 import { AuthService } from '../authentication/auth.service'
 import { UserService } from '../services/user.service'
 import { Workflow } from '../models/workflow'
+import { WorkflowQueryParams } from '../models/page/workflow_page'
 
 @Component({
   selector: 'workflow-component',
@@ -15,6 +16,7 @@ export class WorkflowComponent {
   private readonly subscriptions = new Subscription()
 
   @Input() workflow: Workflow
+  @Input() parameters: WorkflowQueryParams
   @Input() detailed = false
 
   // This refreshEvent allows direct refresh when modifying a workflow through the page

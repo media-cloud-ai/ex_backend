@@ -7,12 +7,14 @@
       expand_less
     </i>
 
-    <span class="identifier">#{{ workflow.id }}</span>
-    <span class="reference">
+    <span class="identifier" *ngIf="parameters.headers.includes('identifier')"
+      >#{{ workflow.id }}</span
+    >
+    <span class="reference" *ngIf="parameters.headers.includes('reference')">
       <video-title-component [id]="workflow.reference"></video-title-component>
       <span class="badge-live" *ngIf="workflow.is_live"> LIVE </span>
     </span>
-    <span class="created">
+    <span class="created" *ngIf="parameters.headers.includes('created_at')">
       <label> Created at </label>
       <span class="date">
         {{ workflow.created_at | date : 'd LLLL yy' }}
@@ -21,16 +23,38 @@
         {{ workflow.created_at + 'Z' | date : 'HH:mm:ss' }}
       </span>
     </span>
-    <span class="duration">
+    <span class="duration" *ngIf="parameters.headers.includes('duration')">
       <duration-component
         [workflow]="workflow"
-        display="simple"
+        display="total"
       ></duration-component>
     </span>
-    <span title="@{{ user_name }}" class="user">
+    <span
+      class="duration"
+      *ngIf="parameters.headers.includes('duration_pending')"
+    >
+      <duration-component
+        [workflow]="workflow"
+        display="pending"
+      ></duration-component>
+    </span>
+    <span
+      class="duration"
+      *ngIf="parameters.headers.includes('duration_processing')"
+    >
+      <duration-component
+        [workflow]="workflow"
+        display="processing"
+      ></duration-component>
+    </span>
+    <span
+      title="@{{ user_name }}"
+      class="user"
+      *ngIf="parameters.headers.includes('launched_by')"
+    >
       {{ first_name }} {{ last_name }}
     </span>
-    <span class="steps-count">
+    <span class="steps-count" *ngIf="parameters.headers.includes('step_count')">
       <span class="label">Steps:</span>
       <span class="count">{{ getStepsCount() }} / {{ getTotalSteps() }}</span>
     </span>

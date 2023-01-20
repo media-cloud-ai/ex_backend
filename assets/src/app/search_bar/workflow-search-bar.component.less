@@ -64,10 +64,10 @@ mat-raised-button {
 }
 
 #filter-line {
-  margin-left: 50px;
-  margin-right: 50px;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
   text-align: right;
-  margin-top: 15px;
+  margin-top: 0.1em;
   max-height: 0;
   max-width: 100%;
   overflow-y: hidden;
@@ -75,17 +75,27 @@ mat-raised-button {
   background-color: white;
 }
 
+.tab-headers {
+  margin: 15px;
+  display: flex;
+  justify-content: center;
+
+  .header-check {
+    margin-right: 10px;
+  }
+}
+
 #filter-line.expanded {
-  margin-left: 50px;
-  margin-right: 50px;
-  margin-bottom: 50px;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+  margin-bottom: 0.5em;
   text-align: right;
   max-height: 500px;
-  padding-top: 10px;
-  padding-right: 10px;
-  padding-bottom: 10px;
+  padding-top: 1em;
+  padding-right: 1em;
+  padding-bottom: 1em;
   transition: 0.5s all ease;
-  box-shadow: 0 3px 1px -2px #0003, 0 2px 2px #00000024, 0 1px 5px #0000001f;
+  box-shadow: 0 2px 5px #0003, 0 2px 5px #00000024, 0 2px 0px #0000001f;
 }
 
 .delete-filter {

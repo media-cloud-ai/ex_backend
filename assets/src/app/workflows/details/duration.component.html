@@ -23,8 +23,28 @@
 </span>
 
 <span
-  *ngIf="duration && !isFullMode()"
+  *ngIf="duration && display == 'total'"
   title="{{ duration | duration : 'human' }}"
 >
   <span>Duration: {{ duration.total * 1000 | duration : 'timecode_ms' }}</span>
+</span>
+
+<span
+  *ngIf="duration && display == 'processing'"
+  title="{{ duration | duration : 'human' }}"
+>
+  <span
+    >Processing duration:
+    {{ duration.processing * 1000 | duration : 'timecode_ms' }}</span
+  >
+</span>
+
+<span
+  *ngIf="duration && display == 'pending'"
+  title="{{ duration | duration : 'human' }}"
+>
+  <span
+    >Pending duration:
+    {{ duration.order_pending * 1000 | duration : 'timecode_ms' }}</span
+  >
 </span>
