@@ -71,6 +71,7 @@ export class NotificationTemplatesComponent {
           )
         } else {
           this.listNotificationTemplates()
+          this.notification_template = new NotificationTemplate()
         }
       })
   }
