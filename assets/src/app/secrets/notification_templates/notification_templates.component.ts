@@ -49,6 +49,7 @@ export class NotificationTemplatesComponent {
     }
     if (event.action == NotificationTemplateEventAction.Save) {
       this.selected_notification_template_id = undefined
+      this.notification_template = new NotificationTemplate()
     }
   }
 
