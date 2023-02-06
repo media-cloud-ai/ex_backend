@@ -348,7 +348,13 @@ export class WorkflowSearchBarComponent {
     this.parameters.search =
       preset['search'] != undefined ? preset['search'].toString() : undefined
     this.parameters.status = preset['status']
-    this.parameters.headers = preset['headers']
+    this.parameters.headers = preset['headers'] || [
+      'identifier',
+      'reference',
+      'created_at',
+      'duration',
+      'launched_by',
+    ]
     this.setHeadersSelection()
     this.searchWorkflows()
   }
