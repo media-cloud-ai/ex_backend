@@ -145,6 +145,7 @@ export class WorkflowsComponent {
   }
 
   getWorkflows() {
+    this.loading = true
     this.router.navigate(['/workflows'], {
       queryParams: this.getQueryParamsForWorkflows(),
     })
