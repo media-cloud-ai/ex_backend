@@ -205,12 +205,13 @@ export class OrderComponent {
         if (this.selectedService.reference === undefined) {
           this.selectedService.reference = value
         }
-        if (typeof value === 'number') {
-          value = value.toString()
-        }
-
-        parameters[parameter.id] = value
       }
+
+      if (typeof value === 'number') {
+        value = value.toString()
+      }
+
+      parameters[parameter.id] = value
     }
 
     if (this.selectedService.reference === undefined) {
