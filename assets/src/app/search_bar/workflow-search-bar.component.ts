@@ -252,9 +252,9 @@ export class WorkflowSearchBarComponent {
             id: response.data[index].identifier,
             label: response.data[index].label,
           })
-          this.parameters.identifiers.push(response.data[index].identifier)
         }
-        this.toggleAllSelection()
+        // To fit API logic (when no identifier specified return all of them)
+        if (this.parameters.identifiers.length === 0) this.toggleAllSelection()
         this.searchWorkflows()
       })
   }
