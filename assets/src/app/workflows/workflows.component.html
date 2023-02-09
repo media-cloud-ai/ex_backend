@@ -35,11 +35,12 @@
 <mat-paginator
   class="paginator"
   showFirstLastButtons="true"
+  [hidden]="loading"
   [length]="length"
   [pageSize]="pageSize"
   [pageIndex]="page"
   [pageSizeOptions]="pageSizeOptions"
   (page)="changeWorkflowPage($event)"
-  *ngIf="workflows && !loading"
+  *ngIf="workflows"
 >
 </mat-paginator>
