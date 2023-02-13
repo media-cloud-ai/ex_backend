@@ -1,3 +1,60 @@
+<a name="1.7.0"></a>
+## [1.7.0] - 2023-02-13
+
+### Feat
+- display headers as checkbox
+- Display header as chips and update view
+- Added Headers informations in workflow page
+- Added Headers in Filter parameters
+- Added headers param
+- add nested workflow support in ui
+- Timerange on today considers full day
+- check whitespaces only and more explicit var naming
+- Notification Endpoint disable when edit
+- deleting and adding behaviour on edit
+- disable on event selected
+- edit button and controller
+- colorful and meaningful status chips
+- refactor workflow action buttons
+- update to angular 12 and webpack 5.75.0
+- Refresh only necessary information in workflow view
+- add error handling snackbars duplicate button and navigate to duplicated workflows
+- add duplicate button workflow
+- Add searchbar on order page
+- allow editing rights and saving changes in roles
+- Close right menu when clicking
+
+### Fix
+- load new object after save from edit to avoid editing saved object
+- load new object after insert to avoid editing saved object
+- add mising jsoneditor in assets package
+- unable selection of no header
+- properly get controls on checkbox formgroup
+- Proper display on JSON editor
+- Searchbar form throwing errors
+- change response for save_workflow_filters
+- operation for swagger
+- date display in secrets
+- style issues
+- remove unused registry and player components/modules
+- correct compile issues listed by webpack5
+- revert start workflow to form before facto
+- simplify navigate url change duplicate button
+- start workflow with identifier as reference if necessary
+- notification endpoint credentials typo
+
+### Ci
+- remove travis leftovers
+- check for openapi doc
+- change git diff to prettier --check for format
+- apply lint on project
+- add .git-blame-ignore-revs
+- angular format
+- add eslint and prettier config and npm scripts
+
+### Docs
+- fix openapi description and version fetch
+
 <a name="1.6.1"></a>
 ## [1.6.1] - 2022-11-04
 ### Ci
@@ -365,7 +422,8 @@
 - generate only one time the datetime of uploaded content
 
 
-[Unreleased]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.6.0...HEAD
+[1.7.0]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.6.1...1.7.0
+[1.6.1]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.6.0...1.6.1
 [1.6.0]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.5.0...1.6.0
 [1.5.0]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.4.0...1.5.0
 [1.4.0]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.3.1...1.4.0
