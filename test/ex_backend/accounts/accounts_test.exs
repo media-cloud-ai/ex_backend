@@ -12,6 +12,13 @@ defmodule ExBackend.AccountsTest do
   }
   @update_attrs %{email: "frederick@example.com"}
   @invalid_attrs %{email: "", password: ""}
+  @create_new_attrs %{
+    first_name: "Jane",
+    last_name: "Doe",
+    email: "jane@example.com",
+    password: "reallyHard3gue$$"
+  }
+  @search_query @create_new_attrs.first_name
 
   def fixture(:user, attrs \\ @create_attrs) do
     {:ok, user} = Accounts.create_user(attrs)
@@ -95,5 +102,17 @@ defmodule ExBackend.AccountsTest do
     assert String.length(user.access_key_id) == 20
     assert Regex.match?(~r/[^\d]/, user.access_key_id) == true
     assert String.length(user.secret_access_key) == 40
+  end
+
+  test "list_users/2 returns only users that match the search term" do
+    user_1 = fixture(:user)
+    user_2 = fixture(:user, @create_new_attrs)
+
+    assert Accounts.list_users(%{"search" => @search_query}) == %{
+      data: [user_2],
+      page: 0,
+      size: 10,
+      total: 1
+    }
   end
 end
