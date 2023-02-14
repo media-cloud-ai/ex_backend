@@ -19,13 +19,19 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  getUsers(page: number, per_page: number): Observable<UserPage> {
+  getUsers(
+    page: number,
+    per_page: number,
+    search?: string,
+  ): Observable<UserPage> {
     let params = new HttpParams()
     params = params.append('size', per_page.toString())
     if (page > 0) {
       params = params.append('page', String(page))
     }
-
+    if (search) {
+      params = params.append('search', search)
+    }
     return this.http.get<UserPage>(this.usersUrl, { params: params }).pipe(
       tap((_userPage) => this.log('fetched UserPage')),
       catchError(this.handleError('getUsers', undefined)),

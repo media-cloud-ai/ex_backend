@@ -29,6 +29,7 @@ export class UsersComponent {
   sub = undefined
 
   users: UserPage
+  search = ''
 
   roles: RolePage
   roles_total = 1000
@@ -66,14 +67,16 @@ export class UsersComponent {
   }
 
   getUsers(index): void {
-    this.userService.getUsers(index, this.pageSize).subscribe((userPage) => {
-      this.users = userPage
-      if (userPage) {
-        this.length = userPage.total
-      } else {
-        this.length = 0
-      }
-    })
+    this.userService
+      .getUsers(index, this.pageSize, this.search)
+      .subscribe((userPage) => {
+        this.users = userPage
+        if (userPage) {
+          this.length = userPage.total
+        } else {
+          this.length = 0
+        }
+      })
   }
 
   getRoles(index): void {
