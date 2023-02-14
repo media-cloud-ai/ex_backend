@@ -169,13 +169,14 @@ defmodule ExBackend.Accounts do
 
       search ->
         like = "%#{search}%"
+
         from(
           user in query,
           where:
             ilike(user.first_name, ^like) or
               ilike(user.last_name, ^like) or
-                ilike(user.username, ^like) or
-                  ilike(user.email, ^like)
+              ilike(user.username, ^like) or
+              ilike(user.email, ^like)
         )
     end
   end

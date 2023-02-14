@@ -109,10 +109,10 @@ defmodule ExBackend.AccountsTest do
     user_2 = fixture(:user, @create_new_attrs)
 
     assert Accounts.list_users(%{"search" => @search_query}) == %{
-      data: [user_2],
-      page: 0,
-      size: 10,
-      total: 1
-    }
+             data: [user_2],
+             page: 0,
+             size: 10,
+             total: 1
+           }
   end
 end
