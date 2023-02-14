@@ -1,35 +1,42 @@
 <h1>Natural Language Processing: Named Entity</h1>
 
-<h3>Reference: {{workflow.reference}}</h3>
+<h3>Reference: {{ workflow.reference }}</h3>
 
 <div *ngIf="words" class="nlp">
   <mat-chip-list>
     <h3>Thèmes :</h3>
-    <span *ngFor="let topic of topics; let i=index">
+    <span *ngFor="let topic of topics; let i = index">
       <mat-chip *ngIf="i < 5 || topics.score == 1" color="primary" selected>
-          {{topic.label}}
+        {{ topic.label }}
       </mat-chip>
     </span>
   </mat-chip-list>
   <mat-chip-list>
     <h3>Catégories :</h3>
-    <span *ngFor="let category of categories; let i=index">
+    <span *ngFor="let category of categories; let i = index">
       <mat-chip *ngIf="i < 5 || category.score == 1" color="accent" selected>
-          {{category.label}}
+        {{ category.label }}
       </mat-chip>
     </span>
   </mat-chip-list>
   <div class="words">
-    <span *ngFor="let word of words; let i=index">
-        <span *ngIf="getEntities(i).length == 0; else entity"
-              [ngClass]="{'textMergedLeft': mergedLeft(word),
-                          'textMergedRight': mergedRight(word)
-              }">
-            {{ word }}
-        </span>
-        <ng-template #entity>
-            <entity-component [entities]="getEntities(i)" [word]="word" [index]="0"></entity-component>
-        </ng-template>
+    <span *ngFor="let word of words; let i = index">
+      <span
+        *ngIf="getEntities(i).length == 0; else entity"
+        [ngClass]="{
+          textMergedLeft: mergedLeft(word),
+          textMergedRight: mergedRight(word)
+        }"
+      >
+        {{ word }}
+      </span>
+      <ng-template #entity>
+        <entity-component
+          [entities]="getEntities(i)"
+          [word]="word"
+          [index]="0"
+        ></entity-component>
+      </ng-template>
     </span>
   </div>
 </div>

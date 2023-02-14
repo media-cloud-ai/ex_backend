@@ -1,7 +1,6 @@
-
-import {User} from './user'
-import {Action} from './action'
-import {WorkersStatus} from './worker'
+import { User } from './user'
+import { Action } from './action'
+import { WorkersStatus } from './worker'
 
 export interface Body {
   workflow_id?: number

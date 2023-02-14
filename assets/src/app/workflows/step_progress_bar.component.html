@@ -1,143 +1,160 @@
-<div class="progress"
-  [ngClass]="{detailed: detailed}">
+<div class="progress" [ngClass]="{ detailed: detailed }">
   <span
     class="stopped"
-    title="{{step.name | jobType}}: stopped"
-    [ngStyle]="{'flex': step.jobs.stopped}">
-    <span
-      *ngIf="step.jobs.stopped && detailed && !step.label">
-      {{step.name | jobType}}
+    title="{{ step.name | jobType }}: stopped"
+    [ngStyle]="{ flex: step.jobs.stopped }"
+  >
+    <span *ngIf="step.jobs.stopped && detailed && !step.label">
+      {{ step.name | jobType }}
     </span>
-    <span
-      *ngIf="step.jobs.stopped && detailed && step.label">
-      {{step.label}}
+    <span *ngIf="step.jobs.stopped && detailed && step.label">
+      {{ step.label }}
     </span>
   </span>
   <span
     class="skipped"
-    title="{{step.name | jobType}}: skipped"
-    [ngStyle]="{'flex': step.jobs.skipped}">
-    <span
-      *ngIf="step.jobs.skipped && detailed && !step.label">
-      {{step.name | jobType}}
+    title="{{ step.name | jobType }}: skipped"
+    [ngStyle]="{ flex: step.jobs.skipped }"
+  >
+    <span *ngIf="step.jobs.skipped && detailed && !step.label">
+      {{ step.name | jobType }}
     </span>
-    <span
-      *ngIf="step.jobs.skipped && detailed && step.label">
-      {{step.label}}
+    <span *ngIf="step.jobs.skipped && detailed && step.label">
+      {{ step.label }}
     </span>
   </span>
   <span
     class="completed"
-    title="{{step.name | jobType}}: completed"
-    [ngStyle]="{'flex': step.jobs.completed}">
-    <span
-      *ngIf="step.jobs.completed && detailed && !step.label">
-      {{step.name | jobType}} ({{step.jobs.completed}}/{{step.jobs.total}})
+    title="{{ step.name | jobType }}: completed"
+    [ngStyle]="{ flex: step.jobs.completed }"
+  >
+    <span *ngIf="step.jobs.completed && detailed && !step.label">
+      {{ step.name | jobType }} ({{ step.jobs.completed }}/{{
+        step.jobs.total
+      }})
     </span>
-    <span
-      *ngIf="step.jobs.completed && detailed && step.label">
-      {{step.label}} ({{step.jobs.completed}}/{{step.jobs.total}})
+    <span *ngIf="step.jobs.completed && detailed && step.label">
+      {{ step.label }} ({{ step.jobs.completed }}/{{ step.jobs.total }})
     </span>
   </span>
   <span
     class="error"
-    title="{{step.name | jobType}}: error"
-    [ngStyle]="{'flex': step.jobs.errors}">
-    <span
-      *ngIf="step.jobs.errors && detailed && !step.label">
-      {{step.name | jobType}} ({{step.jobs.errors}}/{{step.jobs.total}})
+    title="{{ step.name | jobType }}: error"
+    [ngStyle]="{ flex: step.jobs.errors }"
+  >
+    <span *ngIf="step.jobs.errors && detailed && !step.label">
+      {{ step.name | jobType }} ({{ step.jobs.errors }}/{{ step.jobs.total }})
     </span>
-    <span
-      *ngIf="step.jobs.errors && detailed && step.label">
-      {{step.label}} ({{step.jobs.errors}}/{{step.jobs.total}})
+    <span *ngIf="step.jobs.errors && detailed && step.label">
+      {{ step.label }} ({{ step.jobs.errors }}/{{ step.jobs.total }})
     </span>
     <button
       mat-flat-button
       color="warn"
       *ngIf="step.jobs.errors && detailed && right_retry"
       (click)="retry(step)"
-      class=retry>
+      class="retry"
+    >
       <mat-icon>sync</mat-icon>
       Retry
     </button>
   </span>
   <span
     class="processing"
-    title="{{step.name | jobType}}: processing"
+    title="{{ step.name | jobType }}: processing"
     *ngIf="!is_live"
-    [ngStyle]="{'flex': step.jobs.processing}">
-    <span
-      *ngIf="step.jobs.processing && detailed && !step.label">
-      {{step.name | jobType}} ({{step.jobs.processing}}/{{step.jobs.total}})
+    [ngStyle]="{ flex: step.jobs.processing }"
+  >
+    <span *ngIf="step.jobs.processing && detailed && !step.label">
+      {{ step.name | jobType }} ({{ step.jobs.processing }}/{{
+        step.jobs.total
+      }})
     </span>
-    <span
-      *ngIf="step.jobs.processing && detailed && step.label">
-      {{step.label}} ({{step.jobs.processing}}/{{step.jobs.total}})
-    </span>
-  </span>
-  <span
-    class="processing"
-    title="{{step.name | jobType}}: processing"
-    *ngIf="is_live && 
-      !step.jobs.queued &&
-      !step.jobs.errors &&
-      !step.jobs.completed &&
-      !step.jobs.skipped &&
-      !step.jobs.stopped"
-    [ngStyle]="{'flex': step.jobs.total}">
-    <span
-      *ngIf="step.jobs.total && detailed && !step.label">
-      {{step.name | jobType}} ({{step.jobs.processing}}/{{step.jobs.total}})
-    </span>
-    <span
-      *ngIf="step.jobs.total && detailed && step.label">
-      {{step.label}} ({{step.jobs.processing}}/{{step.jobs.total}})
+    <span *ngIf="step.jobs.processing && detailed && step.label">
+      {{ step.label }} ({{ step.jobs.processing }}/{{ step.jobs.total }})
     </span>
   </span>
   <span
     class="processing"
-    title="{{step.name | jobType}}: processing"
-    *ngIf="is_live &&
+    title="{{ step.name | jobType }}: processing"
+    *ngIf="
+      is_live &&
       !step.jobs.queued &&
       !step.jobs.errors &&
       !step.jobs.completed &&
       !step.jobs.skipped &&
-      !step.jobs.stopped"
-    [ngStyle]="{'flex': step.jobs.total}">
-    <span
-      *ngIf="step.jobs.total && detailed && !step.label">
-      {{step.name | jobType}} ({{step.jobs.processing}}/{{step.jobs.total}})
+      !step.jobs.stopped
+    "
+    [ngStyle]="{ flex: step.jobs.total }"
+  >
+    <span *ngIf="step.jobs.total && detailed && !step.label">
+      {{ step.name | jobType }} ({{ step.jobs.processing }}/{{
+        step.jobs.total
+      }})
     </span>
-    <span
-      *ngIf="step.jobs.total && detailed && step.label">
-      {{step.label}} ({{step.jobs.processing}}/{{step.jobs.total}})
+    <span *ngIf="step.jobs.total && detailed && step.label">
+      {{ step.label }} ({{ step.jobs.processing }}/{{ step.jobs.total }})
+    </span>
+  </span>
+  <span
+    class="processing"
+    title="{{ step.name | jobType }}: processing"
+    *ngIf="
+      is_live &&
+      !step.jobs.queued &&
+      !step.jobs.errors &&
+      !step.jobs.completed &&
+      !step.jobs.skipped &&
+      !step.jobs.stopped
+    "
+    [ngStyle]="{ flex: step.jobs.total }"
+  >
+    <span *ngIf="step.jobs.total && detailed && !step.label">
+      {{ step.name | jobType }} ({{ step.jobs.processing }}/{{
+        step.jobs.total
+      }})
+    </span>
+    <span *ngIf="step.jobs.total && detailed && step.label">
+      {{ step.label }} ({{ step.jobs.processing }}/{{ step.jobs.total }})
     </span>
   </span>
   <span
     class="paused"
-    title="{{step.name | jobType}}: paused"
-    *ngIf="workflow.status.state == 'paused' && !step.jobs.total"
-    [ngStyle]="{'flex': 1}">
-   <span
-      *ngIf="detailed && !step.label">
-      {{step.name | jobType}}
+    title="{{ step.name | jobType }}: paused"
+    *ngIf="step.status == 'paused' && step.jobs.total"
+    [ngStyle]="{ flex: 1 }"
+  >
+    <span *ngIf="detailed && !step.label">
+      {{ step.name | jobType }}
     </span>
-    <span
-      *ngIf="detailed && step.label">
-      {{step.label}}
+    <span *ngIf="detailed && step.label">
+      {{ step.label }}
     </span>
   </span>
   <span
+    *ngIf="!workflow || !workflow.status || workflow.status.state != 'paused'"
     class="queued"
-    title="{{step.name | jobType}}: queued"
-    [ngStyle]="{'flex': step.jobs.queued}">
-    <span
-      *ngIf="step.jobs.queued && detailed && !step.label">
-      {{step.name | jobType}} ({{step.jobs.queued}}/{{step.jobs.total}})
+    title="{{ step.name | jobType }}: queued"
+    [ngStyle]="{ flex: step.jobs.queued }"
+  >
+    <span *ngIf="step.jobs.queued && detailed && !step.label">
+      {{ step.name | jobType }} ({{ step.jobs.queued }}/{{ step.jobs.total }})
     </span>
-    <span
-      *ngIf="step.jobs.queued && detailed && step.label">
-      {{step.label}} ({{step.jobs.queued}}/{{step.jobs.total}})
+    <span *ngIf="step.jobs.queued && detailed && step.label">
+      {{ step.label }} ({{ step.jobs.queued }}/{{ step.jobs.total }})
+    </span>
+  </span>
+  <span
+    *ngIf="workflow && workflow.status && workflow.status.state == 'paused'"
+    class="black-listed"
+    title="{{ step.name | jobType }}: queued"
+    [ngStyle]="{ flex: step.jobs.queued }"
+  >
+    <span *ngIf="step.jobs.queued && detailed && !step.label">
+      {{ step.name | jobType }} ({{ step.jobs.queued }}/{{ step.jobs.total }})
+    </span>
+    <span *ngIf="step.jobs.queued && detailed && step.label">
+      {{ step.label }} ({{ step.jobs.queued }}/{{ step.jobs.total }})
     </span>
   </span>
   <span
@@ -151,9 +168,12 @@
       !step.jobs.skipped &&
       !step.jobs.processing &&
       !step.jobs.stopped &&
-      detailed">
+      !step.jobs.paused &&
+      detailed
+    "
+  >
     <span>
-      {{step.name | jobType}}
+      {{ step.name | jobType }}
     </span>
   </span>
 </div>

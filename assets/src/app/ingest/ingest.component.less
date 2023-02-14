@@ -1,84 +1,85 @@
-
 @import '../colors';
 
 ul {
-	text-decoration: none;
-	list-style: none;
-	padding-bottom: 30px;
+  text-decoration: none;
+  list-style: none;
+  padding-bottom: 30px;
 
-	li {
-		cursor: pointer;
+  li {
+    cursor: pointer;
 
-		i {
-			font-size: 20px;
-		}
+    i {
+      font-size: 20px;
+    }
 
-		i, label {
-			cursor: pointer;
-			color: @blue;
-		}
-	}
+    i,
+    label {
+      cursor: pointer;
+      color: @blue;
+    }
+  }
 
-	li.file:hover {
-		background-color: @blue;
-		color: @white;
+  li.file:hover {
+    background-color: @blue;
+    color: @white;
 
-		i, label {
-			color: @white;
-		}
-	}
-	li.dir:hover {
-		background-color: @lightBlue;
-	};
+    i,
+    label {
+      color: @white;
+    }
+  }
+  li.dir:hover {
+    background-color: @lightBlue;
+  }
 }
 
 i {
-	font-size: 25px;
-	vertical-align: middle;
+  font-size: 25px;
+  vertical-align: middle;
 }
 
 .watchers {
-	padding-bottom: 10px;
-	.watcher {
-		border: 1px solid @green;
-		border-radius: 3px;
-		padding: 5px;
-		display: inline-block;
-		width: 170px;
-		margin-right: 10px;
-	}
-	.watcher:hover {
-		cursor: pointer;
-	};
-	.watcher.selected {
-		background-color: @green;
-	}
+  padding-bottom: 10px;
+  .watcher {
+    border: 1px solid @green;
+    border-radius: 3px;
+    padding: 5px;
+    display: inline-block;
+    width: 170px;
+    margin-right: 10px;
+  }
+  .watcher:hover {
+    cursor: pointer;
+  }
+  .watcher.selected {
+    background-color: @green;
+  }
 }
 
 .ariane {
-	background-color: @lightGrey;
-	display: inline-block;
+  background-color: @lightGrey;
+  display: inline-block;
 
-	.path {
-		cursor: pointer;
-		display: inline-block;
-		padding: 5px;
-		min-width: 40px;
-		text-align: center;
-		height: 100%;
-		margin: 0;
-		vertical-align: top;
+  .path {
+    cursor: pointer;
+    display: inline-block;
+    padding: 5px;
+    min-width: 40px;
+    text-align: center;
+    height: 100%;
+    margin: 0;
+    vertical-align: top;
 
-		label {
-			font-weight: bold;
-			cursor: pointer;
-		}
-		i.forward {
-			color: @grey;
-			cursor: pointer;
-		}
-	}
-	.path:hover {
-		background-color: @lightBlue;
-	}
+    label {
+      font-weight: bold;
+      cursor: pointer;
+    }
+    i.forward {
+      color: @grey;
+      cursor: pointer;
+    }
+  }
+  .path:hover {
+    background-color: @lightBlue;
+  }
 }

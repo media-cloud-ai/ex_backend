@@ -1,61 +1,70 @@
-<span
-  class="step"
-  *ngIf="step.name"
-  title="{{step.name | jobType}}"
-  >
+<span class="step" *ngIf="step.name" title="{{ step.name | jobType }}">
   <div class="content">
     <div class="header">
       <span class="expander">
-        <i class="material-icons open"
-          [ngClass]="{disabled: disabled}"
+        <i
+          class="material-icons open"
+          [ngClass]="{ disabled: disabled }"
           *ngIf="!details_opened"
           (click)="toggleStepDetails()"
           title="Show jobs"
-          >expand_more</i>
+          >expand_more</i
+        >
 
-        <i class="material-icons close"
-          [ngClass]="{disabled: disabled}"
+        <i
+          class="material-icons close"
+          [ngClass]="{ disabled: disabled }"
           *ngIf="details_opened"
           (click)="toggleStepDetails()"
           title="Hide jobs"
-          >expand_less</i>
+          >expand_less</i
+        >
       </span>
 
       <div class="header-content">
         <div class="info">
           <mat-icon class="icon" *ngIf="step.icon">{{ step.icon }}</mat-icon>
-          <mat-icon class="icon" *ngIf="!step.icon">{{ step.name | iconForJob }}</mat-icon>
+          <mat-icon class="icon" *ngIf="!step.icon">{{
+            step.name | iconForJob
+          }}</mat-icon>
           <span class="name" *ngIf="step.label">{{ step.label }}</span>
-          <span class="name" *ngIf="!step.label">{{ step.name | jobType }}</span>
-          <span class="jobs-count">{{ step.jobs.completed + step.jobs.errors }}/{{ step.jobs.total }}</span>
+          <span class="name" *ngIf="!step.label">{{
+            step.name | jobType
+          }}</span>
+          <span class="jobs-count"
+            >{{ step.jobs.completed + step.jobs.errors }}/{{
+              step.jobs.total
+            }}</span
+          >
         </div>
 
         <step-progress-bar-component
-          [step]=step
-	        [workflow]=workflow
-          ></step-progress-bar-component>
+          [step]="step"
+          [workflow]="workflow"
+        ></step-progress-bar-component>
       </div>
     </div>
 
-    <div class="details"
-      *ngIf=details_opened
-      >
+    <div class="details" *ngIf="details_opened">
       <div
         class="parameters"
-        *ngIf="step.parameters && step.parameters.length > 0">
-        <h4>
-          Parameters
-        </h4>
+        *ngIf="
+          step.parameters &&
+          step.parameters.length > 0 &&
+          workflow_mode !== true
+        "
+      >
+        <h4>Parameters</h4>
         <parameters-component
-          [parameters]=step.parameters
-          ></parameters-component>
+          [parameters]="step.parameters"
+        ></parameters-component>
       </div>
       <div class="jobs">
         <jobs-component
-          jobType={{step.name}}
-          step_id={{step.id}}
-          [workflow]=workflow
-          ></jobs-component>
+          jobType="{{ step.name }}"
+          step_id="{{ step.id }}"
+          [workflow]="workflow"
+        ></jobs-component>
       </div>
     </div>
   </div>

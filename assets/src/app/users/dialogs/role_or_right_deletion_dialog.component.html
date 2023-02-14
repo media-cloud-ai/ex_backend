@@ -1,15 +1,17 @@
 <!-- Role deletion confirmation dialog -->
 <div *ngIf="role">
-  <h1 mat-dialog-title
-    class=creds>Delete role: <b>{{ role.name }}</b></h1>
- 
-  <div mat-dialog-content
-    class="confirm">
-    <div> 
+  <h1 mat-dialog-title class="creds">
+    Delete role: <b>{{ role.name }}</b>
+  </h1>
+
+  <div mat-dialog-content class="confirm">
+    <div>
       <span>
         <mat-icon color="warn">warning</mat-icon>
       </span>
-      <span> Are you sure you want to delete the <b>{{ role.name }}</b> role?</span>
+      <span>
+        Are you sure you want to delete the <b>{{ role.name }}</b> role?</span
+      >
     </div>
   </div>
 
@@ -18,14 +20,12 @@
       mat-raised-button
       [mat-dialog-close]="true"
       color="primary"
-      cdkFocusInitial>
+      cdkFocusInitial
+    >
       <mat-icon>check</mat-icon>
       Yes
     </button>
-    <button
-      mat-raised-button
-      [mat-dialog-close]="false"
-      color="primary">
+    <button mat-raised-button [mat-dialog-close]="false" color="primary">
       <mat-icon>cancel</mat-icon>
       No
     </button>
@@ -34,16 +34,19 @@
 
 <!-- Right deletion confirmation dialog -->
 <div *ngIf="right">
-  <h1 mat-dialog-title
-    class=creds>Delete right: <b>{{ right.entity }}</b></h1>
+  <h1 mat-dialog-title class="creds">
+    Delete right: <b>{{ right.entity }}</b>
+  </h1>
 
-  <div mat-dialog-content
-    class="confirm">
-    <div> 
+  <div mat-dialog-content class="confirm">
+    <div>
       <span>
         <mat-icon color="warn">warning</mat-icon>
       </span>
-      <span> Are you sure you want to delete the <b>{{ right.entity }}</b> permissions?</span>
+      <span>
+        Are you sure you want to delete the
+        <b>{{ right.entity }}</b> permissions?</span
+      >
     </div>
   </div>
 
@@ -52,14 +55,12 @@
       mat-raised-button
       [mat-dialog-close]="true"
       color="primary"
-      cdkFocusInitial>
+      cdkFocusInitial
+    >
       <mat-icon>check</mat-icon>
       Yes
     </button>
-    <button
-      mat-raised-button
-      [mat-dialog-close]="false"
-      color="primary">
+    <button mat-raised-button [mat-dialog-close]="false" color="primary">
       <mat-icon>cancel</mat-icon>
       No
     </button>

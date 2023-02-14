@@ -1,25 +1,19 @@
-
 import { APP_BASE_HREF } from '@angular/common'
-import {
-  HttpClientModule,
-  HTTP_INTERCEPTORS
-} from '@angular/common/http'
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 import { NgModule } from '@angular/core'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
-import {
-  BrowserModule,
-  Title
-} from '@angular/platform-browser'
+import { BrowserModule, Title } from '@angular/platform-browser'
 import { AppComponent } from './app.component'
 
+import { AngJsoneditorModule } from '@maaxgr/ang-jsoneditor'
 import { MatAutocompleteModule } from '@angular/material/autocomplete'
 import { MatButtonModule } from '@angular/material/button'
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatButtonToggleModule } from '@angular/material/button-toggle'
 import { MatCardModule } from '@angular/material/card'
 import { MatCheckboxModule } from '@angular/material/checkbox'
 import { MatChipsModule } from '@angular/material/chips'
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDatepickerModule } from '@angular/material/datepicker'
+import { MatDialogModule } from '@angular/material/dialog'
 import { MatIconModule } from '@angular/material/icon'
 import { MatInputModule } from '@angular/material/input'
 import { MatListModule } from '@angular/material/list'
@@ -35,29 +29,30 @@ import { MatSnackBarModule } from '@angular/material/snack-bar'
 import { MatTabsModule } from '@angular/material/tabs'
 import { MatToolbarModule } from '@angular/material/toolbar'
 
-
 import { MatStepperModule } from '@angular/material/stepper'
-import { NgxMatDatetimePickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
+import {
+  NgxMatDatetimePickerModule,
+  NgxMatNativeDateModule,
+} from '@angular-material-components/datetime-picker'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { ChartsModule } from 'ng2-charts'
-import { ClipboardModule } from '@angular/cdk/clipboard';
+import { NgChartsModule } from 'ng2-charts'
+import { ClipboardModule } from '@angular/cdk/clipboard'
 
 import {
   MomentDateAdapter,
   MatMomentDateModule,
-  MAT_MOMENT_DATE_FORMATS
 } from '@angular/material-moment-adapter'
 
 import {
   DateAdapter,
   MAT_DATE_LOCALE,
-  MAT_DATE_FORMATS
+  MAT_DATE_FORMATS,
 } from '@angular/material/core'
 
-import { RouterModule, Routes } from '@angular/router'
+import { RouterModule } from '@angular/router'
 import { CookieService } from 'ngx-cookie-service'
 
-import { ChartModule } from 'angular-highcharts';
+import { ChartModule } from 'angular-highcharts'
 
 import { AppRoutingModule } from './app-routing.module'
 import { SocketModule } from './socket.module'
@@ -74,19 +69,16 @@ import { JobStatisticsComponent } from './statistics/job_statistics.component'
 import { JobsComponent } from './jobs/jobs.component'
 import { LoginComponent } from './login/login.component'
 import { ParametersComponent } from './workflows/details/parameters.component'
-import { RegisteriesComponent } from './registeries/registeries.component'
-import { RegisteryComponent } from './registeries/registery.component'
-import { RegisteryDetailComponent } from './registeries/registery_detail.component'
 import { ResetPasswordComponent } from './reset_password/reset_password.component'
 import { RoleComponent } from './users/role.component'
 import { QueuesComponent } from './amqp/queues.component'
 import { StatisticsComponent } from './statistics/statistics.component'
 import { StepProgressBarComponent } from './workflows/step_progress_bar.component'
 import { StepRendererComponent } from './workflows/renderer/step_renderer.component'
-import { SubtitleComponent } from './registeries/items/subtitle.component'
 import { UserComponent } from './users/user.component'
 import { UsersComponent } from './users/users.component'
 import { WatchersComponent } from './watchers/watchers.component'
+import { WorkflowActionsComponent } from './workflows/actions/workflow_actions.component'
 import { WorkflowComponent } from './workflows/workflow.component'
 import { WorkflowDetailsComponent } from './workflows/details/workflow_details.component'
 import { WorkflowRendererComponent } from './workflows/renderer/workflow_renderer.component'
@@ -94,11 +86,9 @@ import { WorkflowStatisticsComponent } from './statistics/workflow_statistics.co
 import { WorkflowStepDetailsComponent } from './workflows/details/workflow_step_details.component'
 import { WorkflowsComponent } from './workflows/workflows.component'
 
-import { DeleteSubtitleDialog } from './registeries/dialog/delete_subtitle_dialog.component'
 import { EnterEmailDialogComponent } from './login/dialogs/enter_email_dialog.component'
 import { StartIngestDialog } from './ingest/dialogs/start_ingest.component'
 import { JobDetailsDialogComponent } from './jobs/details/job_details_dialog.component'
-import { NewSubtitleDialogComponent } from './registeries/dialog/new_subtitle_dialog.component'
 import { RoleOrRightDeletionDialogComponent } from './users/dialogs/role_or_right_deletion_dialog.component'
 import { UserEditionDialogComponent } from './users/dialogs/user_edition_dialog.component'
 import { UserShowCredentialsDialogComponent } from './users/dialogs/user_show_credentials_dialog.component'
@@ -116,7 +106,7 @@ import { IMDbService } from './services/imdb.service'
 import { JobService } from './services/job.service'
 import { MouseMoveService } from './services/mousemove.service'
 import { NotificationEndpointService } from './services/notification_endpoint.service'
-import { RegisteryService } from './services/registery.service'
+import { NotificationTemplateService } from './services/notification_template.service'
 import { StatisticsService } from './services/statistics.service'
 import { S3Service } from './services/s3.service'
 import { UserService } from './services/user.service'
@@ -144,15 +134,13 @@ const EX_BACKEND_DATE_FORMATS = {
 }
 
 @NgModule({
-  exports: [
-    RouterModule
-  ],
+  exports: [RouterModule],
   imports: [
+    AngJsoneditorModule,
     AppRoutingModule,
     ClipboardModule,
     BrowserAnimationsModule,
     BrowserModule,
-    ChartsModule,
     ChartModule,
     GenericModule,
     FormsModule,
@@ -181,6 +169,7 @@ const EX_BACKEND_DATE_FORMATS = {
     MatStepperModule,
     MatTabsModule,
     MatToolbarModule,
+    NgChartsModule,
     NgxMatDatetimePickerModule,
     NgxMatNativeDateModule,
     PipesModule,
@@ -194,7 +183,6 @@ const EX_BACKEND_DATE_FORMATS = {
     ConfirmComponent,
     DashboardComponent,
     DeclaredWorkersComponent,
-    DeleteSubtitleDialog,
     DurationComponent,
     EnterEmailDialogComponent,
     HelpComponent,
@@ -203,12 +191,8 @@ const EX_BACKEND_DATE_FORMATS = {
     JobStatisticsComponent,
     JobsComponent,
     LoginComponent,
-    NewSubtitleDialogComponent,
     ParametersComponent,
     QueuesComponent,
-    RegisteryComponent,
-    RegisteriesComponent,
-    RegisteryDetailComponent,
     ResetPasswordComponent,
     RoleComponent,
     RoleOrRightDeletionDialogComponent,
@@ -216,13 +200,13 @@ const EX_BACKEND_DATE_FORMATS = {
     StatisticsComponent,
     StepProgressBarComponent,
     StepRendererComponent,
-    SubtitleComponent,
     UserComponent,
     UsersComponent,
     UserEditionDialogComponent,
     UserShowCredentialsDialogComponent,
     UserShowValidationLinkDialogComponent,
     WatchersComponent,
+    WorkflowActionsComponent,
     WorkflowActionsDialogComponent,
     WorkflowComponent,
     WorkflowDetailsComponent,
@@ -233,55 +217,51 @@ const EX_BACKEND_DATE_FORMATS = {
     WorkflowsComponent,
   ],
   entryComponents: [
-    DeleteSubtitleDialog,
     DurationComponent,
     EnterEmailDialogComponent,
     JobDetailsDialogComponent,
     JobStatisticsComponent,
-    NewSubtitleDialogComponent,
     ParametersComponent,
-    RegisteryComponent,
-    RegisteryDetailComponent,
     RoleComponent,
     RoleOrRightDeletionDialogComponent,
     StartIngestDialog,
     StepProgressBarComponent,
     StepRendererComponent,
-    SubtitleComponent,
     UserComponent,
     UserEditionDialogComponent,
     UserShowCredentialsDialogComponent,
     UserShowValidationLinkDialogComponent,
     WatchersComponent,
+    WorkflowActionsComponent,
     WorkflowComponent,
     WorkflowActionsDialogComponent,
     WorkflowPauseDialogComponent,
     WorkflowRendererComponent,
     WorkflowStatisticsComponent,
-    WorkflowStepDetailsComponent
+    WorkflowStepDetailsComponent,
   ],
   providers: [
     {
       provide: APP_BASE_HREF,
-      useValue: '/'
+      useValue: '/',
     },
     {
       provide: MAT_DATE_LOCALE,
-      useValue: 'fr-FR'
+      useValue: 'fr-FR',
     },
     {
       provide: DateAdapter,
       useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE]
+      deps: [MAT_DATE_LOCALE],
     },
     {
       provide: MAT_DATE_FORMATS,
-      useValue: EX_BACKEND_DATE_FORMATS
+      useValue: EX_BACKEND_DATE_FORMATS,
     },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
-      multi: true
+      multi: true,
     },
     AmqpService,
     ApplicationService,
@@ -294,7 +274,7 @@ const EX_BACKEND_DATE_FORMATS = {
     JobService,
     MouseMoveService,
     NotificationEndpointService,
-    RegisteryService,
+    NotificationTemplateService,
     StatisticsService,
     S3Service,
     Title,
@@ -303,9 +283,6 @@ const EX_BACKEND_DATE_FORMATS = {
     WorkerService,
     WorkflowService,
   ],
-  bootstrap: [
-    AppComponent
-  ]
+  bootstrap: [AppComponent],
 })
-
-export class AppModule { }
+export class AppModule {}

@@ -5,12 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { SocketService } from './services/socket.service'
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-  ],
-  providers: [SocketService]
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  providers: [SocketService],
 })
-
-export class SocketModule{}
+export class SocketModule {}

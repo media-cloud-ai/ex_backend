@@ -1,95 +1,99 @@
 <span
   *ngIf="step.name"
-  [ngClass]="{disabled: !step.enable}"
-  title="{{step.name | jobType}}"
-  >
+  [ngClass]="{ disabled: !step.enable }"
+  title="{{ step.name | jobType }}"
+>
   <div class="header">
-    <mat-icon *ngIf="step.icon">{{step.icon}}</mat-icon>
-    <mat-icon *ngIf="!step.icon">{{step.name | iconForJob}}</mat-icon>
-    <label
-      (click)="step.enable = !step.enable">
+    <mat-icon *ngIf="step.icon">{{ step.icon }}</mat-icon>
+    <mat-icon *ngIf="!step.icon">{{ step.name | iconForJob }}</mat-icon>
+    <label (click)="step.enable = !step.enable">
       <span *ngIf="step.label">
-        {{step.label}}
+        {{ step.label }}
       </span>
       <span *ngIf="!step.label">
-        {{step.name | jobType}}
+        {{ step.name | jobType }}
       </span>
     </label>
 
     <mat-slide-toggle
-      class=small
-      color=primary
+      class="small"
+      color="primary"
       [(ngModel)]="step.enable"
-      [checked]=step.enable>
+      [checked]="step.enable"
+    >
     </mat-slide-toggle>
 
-    <mat-icon class=more
+    <mat-icon
+      class="more"
       *ngIf="!open_parameters"
       (click)="open_parameters = !open_parameters"
       >expand_more
-      </mat-icon>
+    </mat-icon>
 
-    <mat-icon class=more
+    <mat-icon
+      class="more"
       *ngIf="open_parameters"
       (click)="open_parameters = !open_parameters"
       >expand_less
-      </mat-icon>
+    </mat-icon>
   </div>
 
-  <mat-list dense
-    *ngIf="open_parameters">
-    <mat-list-item
-      *ngFor="let parameter of step.parameters">
+  <mat-list dense *ngIf="open_parameters">
+    <mat-list-item *ngFor="let parameter of step.parameters">
       <mat-form-field
         class="parameter"
-        *ngIf="parameter.type == 'string' || parameter.type == 'integer' || parameter.type == 'credential'">
-        <input matInput
-          type={{parameter.type}}
-          placeholder="{{parameter.id | parameterLabel}}"
+        *ngIf="
+          parameter.type == 'string' ||
+          parameter.type == 'integer' ||
+          parameter.type == 'credential'
+        "
+      >
+        <input
+          matInput
+          type="{{ parameter.type }}"
+          placeholder="{{ parameter.id | parameterLabel }}"
           [disabled]="!step.enable || !parameter.enable"
-          value={{parameter.value}}
-          [(ngModel)]=parameter.value>
+          value="{{ parameter.value }}"
+          [(ngModel)]="parameter.value"
+        />
       </mat-form-field>
-      <mat-form-field
-        class="parameter"
-        *ngIf="parameter.type == 'filter'">
+      <mat-form-field class="parameter" *ngIf="parameter.type == 'filter'">
         <div>
-          {{parameter.value | json}}
+          {{ parameter.value | json }}
         </div>
-        <input matInput
-          type={{parameter.type}}
-          placeholder="{{parameter.id | parameterLabel}}"
+        <input
+          matInput
+          type="{{ parameter.type }}"
+          placeholder="{{ parameter.id | parameterLabel }}"
           [disabled]="!step.enable || !parameter.enable"
-          value={{parameter.value}}
-          [(ngModel)]='parameter.value'>
+          value="{{ parameter.value }}"
+          [(ngModel)]="parameter.value"
+        />
       </mat-form-field>
-      <div
-        class="parameter"
-        *ngIf="parameter.type == 'paths'">
+      <div class="parameter" *ngIf="parameter.type == 'paths'">
         <label>
-          {{parameter.id | parameterLabel}}
+          {{ parameter.id | parameterLabel }}
         </label>
-        <div class=value>
-          {{parameter.value | json}}
+        <div class="value">
+          {{ parameter.value | json }}
         </div>
       </div>
       <div
         *ngIf="parameter.type == 'boolean'"
         class="parameter"
-        [ngClass]="{disabled: !step.enable}"
-        >
+        [ngClass]="{ disabled: !step.enable }"
+      >
         <mat-checkbox
           class="small"
           color="accent"
           [disabled]="!step.enable || !parameter.enable"
-          [(ngModel)]=parameter.value
-          >
-          {{parameter.id | parameterLabel}}
+          [(ngModel)]="parameter.value"
+        >
+          {{ parameter.id | parameterLabel }}
         </mat-checkbox>
       </div>
     </mat-list-item>
   </mat-list>
 </span>
 
-<mat-divider *ngIf="step.name">
-</mat-divider>
+<mat-divider *ngIf="step.name"> </mat-divider>

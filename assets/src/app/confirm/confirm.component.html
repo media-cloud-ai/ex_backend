@@ -1,23 +1,20 @@
 <div class="container">
   <main role="main">
-    <mat-toolbar class="mat-toolbar mat-primary mat-toolbar-multiple-rows"
-      [ngClass]="{logout: !loggedIn}">
+    <mat-toolbar class="mat-toolbar mat-primary mat-toolbar-multiple-rows">
       <mat-toolbar-row class="mat-toolbar-row">
-        <span class=home>
-          <a class=title routerLink='/'
-            *ngIf=application>
-            <img src="{{application.logo}}" class=app_logo>
-            <span class=app_name>Backend</span>
+        <span class="home">
+          <a class="title" routerLink="/" *ngIf="application">
+            <img src="{{ application.logo }}" class="app_logo" />
+            <span class="app_name">Backend</span>
           </a>
         </span>
-        <span class=spacer>
-        </span>
+        <span class="spacer"> </span>
       </mat-toolbar-row>
     </mat-toolbar>
 
-    <div class=content *ngIf="!validated">
-      <div *ngIf=application>
-        You are invited to {{application.label}}.<br/>
+    <div class="content" *ngIf="!validated">
+      <div *ngIf="application">
+        You are invited to {{ application.label }}.<br />
         Please choose your password to complete your invitation.
       </div>
       <div>
@@ -27,36 +24,32 @@
             type="password"
             placeholder="Password"
             [(ngModel)]="password"
-            >
+          />
         </mat-form-field>
       </div>
       <div>
-        <button mat-button
-          color="primary"
-          (click)="setPasswordAndValidate()">
+        <button mat-button color="primary" (click)="setPasswordAndValidate()">
           <i class="material-icons">add</i> Create account
         </button>
       </div>
-      <span *ngIf=validating>
+      <span *ngIf="validating">
         <span>
-          <img src="/bundles/images/media-io.animated.svg" width="20px" height="20px" />
+          <img
+            src="/bundles/images/media-io.animated.svg"
+            width="20px"
+            height="20px"
+          />
         </span>
-        <label>
-          Validating your account ...
-        </label>
+        <label> Validating your account ... </label>
       </span>
-      <span *ngIf=error>
-        Unable to validate your account.<br/>
+      <span *ngIf="error">
+        Unable to validate your account.<br />
         Please ensure your password has 8 caracters.
       </span>
     </div>
-    <div class=content *ngIf="validated">
-      <div>
-        Your account is validated, you can now log in.
-      </div>
-      <button mat-button
-        color="primary"
-        (click)="goToLogin()">
+    <div class="content" *ngIf="validated">
+      <div>Your account is validated, you can now log in.</div>
+      <button mat-button color="primary" (click)="goToLogin()">
         <i class="material-icons">chevron_right</i>
         Go to login page
       </button>

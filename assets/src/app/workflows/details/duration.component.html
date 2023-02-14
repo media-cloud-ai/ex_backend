@@ -1,4 +1,7 @@
-<span *ngIf="duration && isFullMode()" title="{{duration | duration : 'human'}}">
+<span
+  *ngIf="duration && isFullMode()"
+  title="{{ duration | duration : 'human' }}"
+>
   <div class="item">
     <label>Jobs pending duration: </label>
     <span>{{ duration.order_pending * 1000 | duration : 'timecode_ms' }}</span>
@@ -9,7 +12,9 @@
   </div>
   <div class="item">
     <label>Jobs response latency: </label>
-    <span>{{ duration.response_pending * 1000 | duration : 'timecode_ms' }}</span>
+    <span>{{
+      duration.response_pending * 1000 | duration : 'timecode_ms'
+    }}</span>
   </div>
   <div class="item">
     <label>Total duration: </label>
@@ -17,6 +22,29 @@
   </div>
 </span>
 
-<span *ngIf="duration && !isFullMode()" title="{{duration | duration : 'human'}}">
+<span
+  *ngIf="duration && display == 'total'"
+  title="{{ duration | duration : 'human' }}"
+>
   <span>Duration: {{ duration.total * 1000 | duration : 'timecode_ms' }}</span>
+</span>
+
+<span
+  *ngIf="duration && display == 'processing'"
+  title="{{ duration | duration : 'human' }}"
+>
+  <span
+    >Processing duration:
+    {{ duration.processing * 1000 | duration : 'timecode_ms' }}</span
+  >
+</span>
+
+<span
+  *ngIf="duration && display == 'pending'"
+  title="{{ duration | duration : 'human' }}"
+>
+  <span
+    >Pending duration:
+    {{ duration.order_pending * 1000 | duration : 'timecode_ms' }}</span
+  >
 </span>

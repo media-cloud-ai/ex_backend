@@ -1,5 +1,4 @@
-
-import { Parameter } from './workflow'
+import { Parameter, Workflow } from './workflow'
 
 export class Protocol {
   username: string
@@ -21,22 +20,26 @@ export class Job {
   status: Status[]
   progressions: Progression[]
   last_worker_instance_id: string
+  in_black_list: boolean
+  workflow_id?: number
+  child_workflow?: Workflow
+  child_workflow_progressions?: ChildWorkflowProgression
 
   constructor(other: Job) {
-    this.id = other.id;
-    this.name = other.name;
-    this.inserted_at = other.inserted_at;
-    this.params = other.params;
-    this.status = other.status;
-    this.progressions = other.progressions;
+    this.id = other.id
+    this.name = other.name
+    this.inserted_at = other.inserted_at
+    this.params = other.params
+    this.status = other.status
+    this.progressions = other.progressions
   }
 
   public static getLastStatus(job) {
-    return new Job(job).status.sort((s1, s2) => s2.id - s1.id)[0];
+    return new Job(job).status.sort((s1, s2) => s2.id - s1.id)[0]
   }
 
   public static getLastProgression(job) {
-    return new Job(job).progressions.sort((p1, p2) => p2.id - p1.id)[0];
+    return new Job(job).progressions.sort((p1, p2) => p2.id - p1.id)[0]
   }
 }
 
@@ -45,4 +48,9 @@ export class Progression {
   progression: number
   inserted_at: string
   datetime: string
+}
+
+export class ChildWorkflowProgression {
+  progression: number
+  buffer: number
 }

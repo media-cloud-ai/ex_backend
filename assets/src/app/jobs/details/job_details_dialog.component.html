@@ -1,71 +1,122 @@
-<div *ngIf=job>
+<div *ngIf="job">
   <h1 mat-dialog-title>Job details: {{ job.name | jobType }} #{{ job.id }}</h1>
-  <div mat-dialog-content  class="details">
+  <div mat-dialog-content class="details">
     <div class="job_hooks">
       <label class="endpoint">Notification Hooks</label>
       <span *ngFor="let notification_hook of workflow.notification_hooks">
-        <div class="job_hooks inline_job {{notification_hook.label}} {{notification_hook.status}}">
+        <div
+          class="job_hooks inline_job {{ notification_hook.label }} {{
+            notification_hook.status
+          }}"
+        >
           <span *ngFor="let notification_status of notification_hook.status">
-              <div class="status_hook">
-                <span *ngIf="(notification_status.condition.includes('job'))" class="expander">
-                  <i class="material-icons open"
-                    [ngClass]="{disabled: disabled}"
-                    *ngIf="notification_status.details_opened"
-                    (click)="notification_status.details_opened=!notification_status.details_opened"
-                    (click)="notification_status.isExpanded=!notification_status.isExpanded"
-                    title="Show jobs"
-                    >expand_more</i>
-                  <i class="material-icons close"
-                    [ngClass]="{disabled: disabled}"
-                    *ngIf="!notification_status.details_opened"
-                    (click)="notification_status.details_opened=!notification_status.details_opened"
-                    (click)="notification_status.isExpanded=!notification_status.isExpanded"
-                    title="Hide jobs"
-                    >chevron_right</i>
+            <div class="status_hook">
+              <span
+                *ngIf="notification_status.condition.includes('job')"
+                class="expander"
+              >
+                <i
+                  class="material-icons open"
+                  [ngClass]="{ disabled: disabled }"
+                  *ngIf="notification_status.details_opened"
+                  (click)="
+                    notification_status.details_opened =
+                      !notification_status.details_opened
+                  "
+                  (click)="
+                    notification_status.isExpanded =
+                      !notification_status.isExpanded
+                  "
+                  title="Show jobs"
+                  >expand_more</i
+                >
+                <i
+                  class="material-icons close"
+                  [ngClass]="{ disabled: disabled }"
+                  *ngIf="!notification_status.details_opened"
+                  (click)="
+                    notification_status.details_opened =
+                      !notification_status.details_opened
+                  "
+                  (click)="
+                    notification_status.isExpanded =
+                      !notification_status.isExpanded
+                  "
+                  title="Hide jobs"
+                  >chevron_right</i
+                >
+              </span>
+              <label
+                class="endpoint"
+                *ngIf="notification_status.condition.includes('job')"
+                >{{ notification_hook.label | titlecase }}</label
+              >
+              <span
+                class="endpoint"
+                *ngIf="notification_status.condition.includes('job')"
+                [ngClass]="{
+                  error: notification_status.response != 200,
+                  ok: notification_status.response == 200
+                }"
+                >{{ notification_status.response }}</span
+              >
+              <div *ngIf="notification_status.isExpanded">
+                <span
+                  class="condition"
+                  *ngIf="notification_status.condition.includes('job')"
+                  >Condition:
                 </span>
-                <label class="endpoint" *ngIf="(notification_status.condition.includes('job'))">{{notification_hook.label | titlecase}}</label>
-                <span class="endpoint" *ngIf="(notification_status.condition.includes('job'))" [ngClass]="{
-                  'error' : notification_status.response != 200,
-                  'ok' : notification_status.response == 200}">{{notification_status.response}}</span>
-                <div *ngIf="notification_status.isExpanded">
-                  <span class="condition" *ngIf="(notification_status.condition.includes('job'))">Condition: </span>
-                  <span *ngIf="(notification_status.condition.includes('job'))">{{notification_status.condition}}</span>
-                </div>
-                <div *ngIf="notification_status.isExpanded">
-                  <span class="timestamp" *ngIf="(notification_status.condition.includes('job'))">Timestamp: </span>
-                  <span *ngIf="(notification_status.condition.includes('job'))">{{notification_status.timestamp}}</span>
-                </div>
+                <span *ngIf="notification_status.condition.includes('job')">{{
+                  notification_status.condition
+                }}</span>
               </div>
+              <div *ngIf="notification_status.isExpanded">
+                <span
+                  class="timestamp"
+                  *ngIf="notification_status.condition.includes('job')"
+                  >Timestamp:
+                </span>
+                <span *ngIf="notification_status.condition.includes('job')">{{
+                  notification_status.timestamp
+                }}</span>
+              </div>
+            </div>
           </span>
         </div>
       </span>
     </div>
     <div class="status">
-      <label>
-        Status
-      </label>
-      <span class="{{job | jobStatus}}">
-        {{job | jobStatus | titlecase}}
+      <label> Status </label>
+      <span class="{{ job | jobStatus }}">
+        {{ job | jobStatus | titlecase }}
       </span>
     </div>
 
     <div class="duration">
-      <span *ngIf="duration" title="{{duration | duration : 'human'}}">
+      <span *ngIf="duration" title="{{ duration | duration : 'human' }}">
         <div>
           <span class="label">Pending duration: </span>
-          <span class="time">{{ duration.order_pending * 1000 | duration : 'timecode_ms' }}</span>
+          <span class="time">{{
+            duration.order_pending * 1000 | duration : 'timecode_ms'
+          }}</span>
         </div>
         <div>
           <span class="label">Processing duration: </span>
-          <span class="time">{{ duration.processing * 1000 | duration : 'timecode_ms' }}</span>
+          <span class="time">{{
+            duration.processing * 1000 | duration : 'timecode_ms'
+          }}</span>
         </div>
         <div>
           <span class="label">Response latency: </span>
-          <span class="time">{{ duration.response_pending * 1000 | duration : 'timecode_ms' }}</span>
+          <span class="time">{{
+            duration.response_pending * 1000 | duration : 'timecode_ms'
+          }}</span>
         </div>
         <div>
           <span class="label">Total duration: </span>
-          <span class="time">{{ duration.total * 1000 | duration : 'timecode_ms' }}</span>
+          <span class="time">{{
+            duration.total * 1000 | duration : 'timecode_ms'
+          }}</span>
         </div>
       </span>
     </div>
@@ -73,37 +124,49 @@
     <div class="times">
       <div>
         <span class="label">Started at: </span>
-        <span class="time">{{ job.inserted_at+'Z' | date: 'yyyy-MM-dd HH:mm:ss' }}</span>
+        <span class="time">{{
+          job.inserted_at + 'Z' | date : 'yyyy-MM-dd HH:mm:ss'
+        }}</span>
       </div>
       <div *ngIf="job.status[0]">
         <span class="label">Ended at: </span>
-        <span class="time">{{ job.status[0].inserted_at+'Z' | date: 'yyyy-MM-dd HH:mm:ss' }}</span>
+        <span class="time">{{
+          job.status[0].inserted_at + 'Z' | date : 'yyyy-MM-dd HH:mm:ss'
+        }}</span>
       </div>
     </div>
 
     <div class="worker">
       <span class="label">Worker: </span>
       <span>
-        {{job.last_worker_instance_id}}
-        <div *ngIf=job.last_worker_instance_id>
+        {{ job.last_worker_instance_id }}
+        <div *ngIf="job.last_worker_instance_id">
           <button
             mat-button
             color="primary"
             (click)="goToWorkers()"
-            title="Go to workers">
+            title="Go to workers"
+          >
             Workers
           </button>
         </div>
       </span>
     </div>
 
-    <div class="error-description" *ngIf="job.status[0] && job.status[0].state == 'error' && job.status[0].description">
+    <div
+      class="error-description"
+      *ngIf="
+        job.status[0] &&
+        job.status[0].state == 'error' &&
+        job.status[0].description
+      "
+    >
       <h4>Error</h4>
       {{ job.status[0].description.message }}
     </div>
 
     <h4>Parameters</h4>
-    <pre>{{job.params | json}}</pre>
+    <pre>{{ job.params | json }}</pre>
   </div>
   <div mat-dialog-actions>
     <button mat-button (click)="onClose()">OK</button>

@@ -1,48 +1,49 @@
 <div *ngIf="parameters && parameters.length > 0">
-  <div class=parameters>
+  <div class="parameters">
     <mat-list dense>
-      <mat-list-item
-        *ngFor="let parameter of parameters">
-        <mat-form-field class="parameter"
-          *ngIf="parameter.type != 'boolean' && parameter.type != 'filter' && parameter.type != 'paths'">
-          <input matInput
-            type={{parameter.type}}
-            placeholder="{{parameter.id | parameterLabel}}"
-            value={{parameter.value}}
+      <mat-list-item *ngFor="let parameter of parameters">
+        <mat-form-field
+          class="parameter"
+          *ngIf="
+            parameter.type != 'boolean' &&
+            parameter.type != 'filter' &&
+            parameter.type != 'paths'
+          "
+        >
+          <input
+            matInput
+            type="{{ parameter.type }}"
+            placeholder="{{ parameter.id | parameterLabel }}"
+            value="{{ parameter.value }}"
             disabled="true"
-            [(ngModel)]="parameter.value">
+            [(ngModel)]="parameter.value"
+          />
         </mat-form-field>
-        <div
-          class="parameter"
-          *ngIf="parameter.type == 'filter'">
+        <div class="parameter" *ngIf="parameter.type == 'filter'">
           <label>
-            {{parameter.id | parameterLabel}}
+            {{ parameter.id | parameterLabel }}
           </label>
-          <div class=value>
-            {{parameter.value | json}}
+          <div class="value">
+            {{ parameter.value | json }}
           </div>
         </div>
-        <div
-          class="parameter"
-          *ngIf="parameter.type == 'paths'">
+        <div class="parameter" *ngIf="parameter.type == 'paths'">
           <label>
-            {{parameter.id | parameterLabel}}
+            {{ parameter.id | parameterLabel }}
           </label>
-          <div class=value>
-            {{parameter.value | json}}
+          <div class="value">
+            {{ parameter.value | json }}
           </div>
         </div>
-        <div
-          *ngIf="parameter.type == 'boolean'"
-          class="parameter disabled">
-          {{parameter.id | parameterLabel}}:
-          <mat-checkbox class="small"
+        <div *ngIf="parameter.type == 'boolean'" class="parameter disabled">
+          {{ parameter.id | parameterLabel }}:
+          <mat-checkbox
+            class="small"
             color="accent"
             disabled="true"
-            [(ngModel)]=parameter.value
-            ></mat-checkbox>
+            [(ngModel)]="parameter.value"
+          ></mat-checkbox>
         </div>
-
       </mat-list-item>
     </mat-list>
   </div>

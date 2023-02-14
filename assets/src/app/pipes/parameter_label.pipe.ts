@@ -5,12 +5,11 @@ import { Pipe, PipeTransform } from '@angular/core'
  * Example:
  *   {{ 'segment_duration' | parameterLabel }}
  *   formats to: "Segment Duration"
-*/
-@Pipe({name: 'parameterLabel'})
+ */
+@Pipe({ name: 'parameterLabel' })
 export class ParameterLabelPipe implements PipeTransform {
-
   transform(parameterLabel: string): string {
-    var allLabels = [
+    const allLabels = [
       { id: 'source_paths', name: 'Source Paths' },
       { id: 'source_hostname', name: 'Source Hostname' },
       { id: 'source_username', name: 'Source Username' },
@@ -65,8 +64,8 @@ export class ParameterLabelPipe implements PipeTransform {
       { id: 'perfect_memory_password', name: 'Perfect-Memory Password' },
     ]
 
-    for (var i = allLabels.length - 1; i >= 0; i--) {
-      if (allLabels[i].id === parameterLabel){
+    for (let i = allLabels.length - 1; i >= 0; i--) {
+      if (allLabels[i].id === parameterLabel) {
         return allLabels[i].name
       }
     }

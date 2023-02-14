@@ -1,11 +1,24 @@
 <ul *ngIf="jobs" class="jobs">
-  <li *ngFor="let job of jobs.data" class="job {{job.channel}} {{job | jobStatus}}">
-
+  <li
+    *ngFor="let job of jobs.data"
+    class="job {{ job.channel }} {{ job | jobStatus }}"
+    title="{{ job | jobStatus }}"
+  >
     <div class="info">
-      <span class="name">Job #{{job.id}}</span>
-      <span class="summary" title="{{job | jobStatus}}">
+      <span class="name" *ngIf="job.child_workflow == null; else childWorkflow"
+        >Job #{{ job.id }}</span
+      >
+      <ng-template #childWorkflow
+        ><span class="name"
+          >Job #{{ job.id }} |
+          <a href="{{ job.child_workflow.id }}"
+            >Child workflow #{{ job.child_workflow.id }}</a
+          ></span
+        ></ng-template
+      >
+      <span class="summary">
         <div class="duration" (click)="switchDurationRenderingMode()">
-          {{job | jobDuration | duration: job_duration_rendering_mode}}
+          {{ job | jobDuration | duration : job_duration_rendering_mode }}
         </div>
       </span>
       <span class="details">
@@ -13,40 +26,74 @@
           <mat-icon>visibility</mat-icon>
           Details
         </button>
-        <button mat-button *ngIf="retryable_jobs.includes((job | jobStatus)) && right_retry" (click)="retryJob(job)">
+        <button
+          mat-button
+          *ngIf="
+            retryable_jobs.includes(job | jobStatus) &&
+            right_retry &&
+            job.child_workflow == null
+          "
+          (click)="retryJob(job)"
+        >
           <mat-icon>autorenew</mat-icon>
           Retry
         </button>
       </span>
     </div>
 
-    <div class="description {{job | jobStatus}}">
+    <div class="description {{ job | jobStatus }}">
       <label>Error:</label>
       <span *ngIf="getLastStatusDescription(job)">
-        {{getLastStatusDescription(job).message}}
+        {{ getLastStatusDescription(job).message }}
       </span>
     </div>
-    <div *ngIf="(job | jobStatus) === 'processing'; then thenBlock else elseBlock"></div>
+    <div
+      *ngIf="(job | jobStatus) === 'processing'; then thenBlock; else elseBlock"
+    ></div>
     <ng-template #thenBlock>
-      <div *ngIf="is_live; then thenBlock else elseBlock"></div>
+      <div *ngIf="is_live; then thenBlock; else elseBlock"></div>
       <ng-template #thenBlock>
-        <div class="status {{job | jobStatus}}">
+        <div class="status {{ job | jobStatus }}">
           <span>running</span>
         </div>
-        <mat-progress-bar mode="indeterminate" value="running"></mat-progress-bar>
+        <mat-progress-bar
+          mode="indeterminate"
+          value="running"
+        ></mat-progress-bar>
       </ng-template>
       <ng-template #elseBlock>
-        <div class="status {{job | jobStatus}}">
-          <span>{{job.progressions | jobProgression}}%</span>
-        </div>
-        <mat-progress-bar mode="determinate" value="{{job.progressions | jobProgression}}"></mat-progress-bar>
+        <div
+          *ngIf="job.child_workflow == null; then thenBlock; else elseBlock"
+        ></div>
+        <ng-template #thenBlock>
+          <div class="status {{ job | jobStatus }}">
+            <span>{{ job.progressions | jobProgression }}%</span>
+          </div>
+          <mat-progress-bar
+            mode="determinate"
+            value="{{ job.progressions | jobProgression }}"
+          ></mat-progress-bar>
+        </ng-template>
+        <ng-template #elseBlock>
+          <div class="status {{ job | jobStatus }}">
+            <span>{{ job.child_workflow_progressions.progression }}%</span>
+          </div>
+          <mat-progress-bar
+            mode="buffer"
+            value="{{ job.child_workflow_progressions.progression }}"
+            bufferValue="{{ job.child_workflow_progressions.buffer }}"
+          ></mat-progress-bar>
+        </ng-template>
       </ng-template>
     </ng-template>
     <ng-template #elseBlock>
-      <div class="status {{job | jobStatus}}">
-        <span>{{job | jobStatus | titlecase}}</span>
+      <div class="status {{ job | jobStatus }}">
+        <span>{{ job | jobStatus | titlecase }}</span>
+        <span *ngIf="job.in_black_list" class="black-listed">
+          (blacklisted)</span
+        >
       </div>
-      <div class="bar {{job | jobStatus}}"></div>
+      <div class="bar {{ job | jobStatus }}"></div>
     </ng-template>
   </li>
 </ul>

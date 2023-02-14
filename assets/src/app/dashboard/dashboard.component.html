@@ -1,14 +1,18 @@
 <h1>Workflow history</h1>
 
-<div class=selectors>
-  <workflow-search-bar [parameters]="parameters" (parametersEvent)="updateWorkflows($event)"></workflow-search-bar>
+<div class="selectors">
+  <workflow-search-bar
+    [parameters]="parameters"
+    (parametersEvent)="updateWorkflows($event)"
+  ></workflow-search-bar>
 </div>
 
 <div class="view-options">
-  <h3>
-    Aggregate by:
-  </h3>
-  <mat-button-toggle-group [ngModel]="parameters.time_interval.toString()" (change)="rangeChanged($event)">
+  <h3>Aggregate by:</h3>
+  <mat-button-toggle-group
+    [ngModel]="parameters.time_interval.toString()"
+    (change)="rangeChanged($event)"
+  >
     <mat-button-toggle value="3600">Hour</mat-button-toggle>
     <mat-button-toggle value="86400">Day</mat-button-toggle>
     <mat-button-toggle value="604800">Week</mat-button-toggle>
@@ -17,15 +21,14 @@
 </div>
 
 <div id="chartContainer">
-    <div [chart]="historyChart"></div>
+  <div [chart]="historyChart"></div>
 </div>
 
-
 <div *ngIf="application">
+  <amqp-queues *ngIf="right_technician"> </amqp-queues>
 
-  <amqp-queues *ngIf="right_technician">
-  </amqp-queues>
-
-  <watchers-component *ngIf="right_technician && application.identifier == 'vidtext'">
+  <watchers-component
+    *ngIf="right_technician && application.identifier == 'vidtext'"
+  >
   </watchers-component>
 </div>

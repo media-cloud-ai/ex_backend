@@ -1,3 +1,1 @@
-
-export class HelpPage {
-}
+export class HelpPage {}

@@ -1,4 +1,3 @@
-
 export class Queue {
   name: string
   state: string

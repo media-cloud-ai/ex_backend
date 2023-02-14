@@ -1,25 +1,46 @@
-<div class=search>
-  <workflow-search-bar [parameters]="parameters" [showDetailedToggle]=true (detailedEvent)="toogleDetailed($event)"
-    (parametersEvent)="updateWorkflows($event)"></workflow-search-bar>
+<div class="search">
+  <workflow-search-bar
+    [parameters]="parameters"
+    [showViewOptionsToolbar]="true"
+    (viewOptionsEvent)="viewOptionsEvent($event)"
+    (parametersEvent)="updateSearch($event)"
+  ></workflow-search-bar>
 </div>
 
 <div *ngIf="loading" class="loading">
   <span>
-    <img src="/bundles/images/media-io.animated.svg" width="50px" height="50px" />
+    <img
+      src="/bundles/images/media-io.animated.svg"
+      width="50px"
+      height="50px"
+    />
   </span>
-  <span class=text>
-    Loading ...
-  </span>
+  <span class="text"> Loading ... </span>
 </div>
 <ul *ngIf="workflows && !loading" class="workflows">
-  <li *ngIf="workflows.total == 0" class="notfound">
-    No workflow found.
-  </li>
-  <li *ngFor="let workflow of workflows.data" class="workflow">
-    <workflow-component *ngIf=durations [workflow]=workflow [detailed]=parameters.detailed [duration]=getWorkflowDuration(workflow.id)></workflow-component>
+  <li *ngIf="workflows.total == 0" class="notfound">No workflow found.</li>
+  <li
+    *ngFor="let workflow of workflows.data; trackBy: trackWorkflow"
+    class="workflow"
+  >
+    <workflow-component
+      [workflow]="workflow"
+      [parameters]="parameters"
+      [detailed]="parameters.detailed"
+      (refreshEvent)="getWorkflows()"
+    ></workflow-component>
   </li>
 </ul>
 
-<mat-paginator class=paginator showFirstLastButtons=true [length]="length" [pageSize]="pageSize" [pageIndex]="page"
-  [pageSizeOptions]="pageSizeOptions" (page)="pageEvent = changeWorkflowPage($event)" *ngIf="workflows && !loading">
+<mat-paginator
+  class="paginator"
+  showFirstLastButtons="true"
+  [hidden]="loading"
+  [length]="length"
+  [pageSize]="pageSize"
+  [pageIndex]="page"
+  [pageSizeOptions]="pageSizeOptions"
+  (page)="changeWorkflowPage($event)"
+  *ngIf="workflows"
+>
 </mat-paginator>

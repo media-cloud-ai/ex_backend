@@ -1,74 +1,167 @@
 <form [formGroup]="workflowsForm" fxFlex fxLayout="column" autocomplete="off">
-  <div class="search-line">
-    <mat-form-field>
-      <mat-select formControlName="selectedPreset" placeholder="Saved filters" [(ngModel)]="selectedPreset" (selectionChange)="presetChanged()">
-        <mat-option *ngFor="let f of workflow_filters" [value]="f.filter" class="filter-option">
-          {{ f.name }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <input
-      ngxDaterangepickerMd
-      type="text"
-      class="date-picker"
-      formControlName="selectedDateRange"
-      [timePicker]="true"
-      [timePickerSeconds]="true"
-      [timePicker24Hour]="true"
-      [locale]="{ format: 'DD MMM YYYY HH:mm:ss', firstDay: 1 }"
-      [ranges]="ranges"
-      [showCustomRangeLabel]="true"
-      [keepCalendarOpeningWithRange]="true"
-      [alwaysShowCalendars]="true"
-      placeholder="Choose date"
-      [(ngModel)]="parameters.selectedDateRange"
-      (datesUpdated)="searchWorkflows()"
-    />
+  <div class="search">
+    <div class="search-base">
+      <mat-form-field>
+        <mat-select
+          formControlName="selectedPreset"
+          placeholder="Saved filters"
+          (selectionChange)="presetChanged()"
+        >
+          <mat-option
+            *ngFor="let f of workflow_filters"
+            [value]="f.filter"
+            class="filter-option"
+          >
+            {{ f.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <input
+        ngxDaterangepickerMd
+        type="text"
+        class="date-picker"
+        formControlName="selectedDateRange"
+        [timePicker]="true"
+        [timePickerSeconds]="true"
+        [timePicker24Hour]="true"
+        [locale]="{ format: 'DD MMM YYYY HH:mm:ss', firstDay: 1 }"
+        [ranges]="ranges"
+        [showCustomRangeLabel]="true"
+        [keepCalendarOpeningWithRange]="true"
+        [alwaysShowCalendars]="true"
+        placeholder="Choose date"
+        [(ngModel)]="parameters.selectedDateRange"
+        (datesUpdated)="searchWorkflows()"
+      />
 
-    <button mat-button color="primary" (click)="clearFilters()">
-      <i class="material-icons">clear</i>
-      Clear filters
-    </button>
-    <button mat-button color="primary" (click)="expandFilters()">
-      <i id="expand-icon" class="material-icons">keyboard_double_arrow_down</i>
-    </button>
+      <button mat-button color="primary" (click)="clearFilters()">
+        <i class="material-icons">clear</i>
+        Clear filters
+      </button>
+      <button mat-button color="primary" (click)="expandFilters()">
+        <i id="expand-icon" class="material-icons"
+          >keyboard_double_arrow_down</i
+        >
+      </button>
+    </div>
+
+    <div *ngIf="showViewOptionsToolbar" class="search-line-options">
+      <mat-form-field class="refresh-interval-picker" appearance="outline">
+        <mat-label>Refresh interval</mat-label>
+        <mat-select
+          formControlName="refreshInterval"
+          [(ngModel)]="parameters.refresh_interval"
+          (selectionChange)="changeRefreshInterval()"
+        >
+          <mat-option
+            *ngFor="let interval of refresh_interval"
+            [value]="interval.value"
+            >{{ interval.label }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+      <mat-slide-toggle
+        class="toggle-options"
+        formControlName="detailedToggle"
+        color="primary"
+        [checked]="parameters.detailed"
+        [(ngModel)]="parameters.detailed"
+        (check)="toggleDetailed()"
+        >Detailed</mat-slide-toggle
+      >
+    </div>
   </div>
 
   <div id="filter-line">
     <div>
       <mat-form-field style="width: 21%">
-        <mat-select formControlName="selectedStatus" placeholder="Status" [(ngModel)]="parameters.status" multiple>
+        <mat-select
+          formControlName="selectedStatus"
+          placeholder="Status"
+          [(ngModel)]="parameters.status"
+          multiple
+        >
           <!-- <mat-option (click)="toggleAllSelection()" [value]="0">All</mat-option> -->
-          <mat-option *ngFor="let state of status" [value]="state" [ngClass]="state" class="state-option">
+          <mat-option
+            *ngFor="let state of status"
+            [value]="state"
+            [ngClass]="state"
+            class="state-option"
+          >
             {{ state | titlecase }}
           </mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field style="width: 21%">
-        <mat-select formControlName="selectedMode" placeholder="Mode" [(ngModel)]="parameters.mode" multiple>
-          <mat-option *ngFor="let modus of mode" [value]="modus.id" [ngClass]="modus.id" class="state-option">
+        <mat-select
+          formControlName="selectedMode"
+          placeholder="Mode"
+          [(ngModel)]="parameters.mode"
+          multiple
+        >
+          <mat-option
+            *ngFor="let modus of mode"
+            [value]="modus.id"
+            [ngClass]="modus.id"
+            class="state-option"
+          >
             {{ modus.label }}
           </mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field style="width: 21%">
-        <mat-select formControlName="selectedWorkflows" placeholder="Workflows" [(ngModel)]="parameters.identifiers"
-          multiple>
-          <mat-option (click)="toggleAllSelection()" [value]="0">All</mat-option>
-          <mat-option *ngFor="let workflow of workflows" [value]="workflow.id" [ngClass]="workflow.id"
-            (click)="toggleOne()" class="workflow-option">
+        <mat-select
+          formControlName="selectedWorkflows"
+          placeholder="Workflows"
+          [(ngModel)]="parameters.identifiers"
+          multiple
+        >
+          <mat-option (click)="toggleAllSelection()" [value]="0"
+            >All</mat-option
+          >
+          <mat-option
+            *ngFor="let workflow of workflows"
+            [value]="workflow.id"
+            [ngClass]="workflow.id"
+            (click)="toggleOne()"
+            class="workflow-option"
+          >
             {{ workflow.label }}
           </mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field class="search-text-input" style="width: 21%">
-        <input formControlName="referenceSearch" matInput placeholder="Reference search..." [(ngModel)]="parameters.search">
+        <input
+          formControlName="referenceSearch"
+          matInput
+          placeholder="Reference search..."
+          [(ngModel)]="parameters.search"
+        />
       </mat-form-field>
-      <button mat-raised-button color="primary" (click)="searchWorkflows()">
-        <i class="material-icons">filter_alt</i>
-      </button>
+    </div>
+    <div class="tab-headers">
+      <ul
+        formArrayName="selectedHeaders"
+        style="list-style: none; display: inline-flex"
+      >
+        <li
+          [formGroupName]="i"
+          *ngFor="
+            let item of workflowsForm.controls?.selectedHeaders?.controls;
+            let i = index
+          "
+        >
+          <mat-checkbox class="header-check" formControlName="checked">
+            {{ headers[i].label }}
+          </mat-checkbox>
+        </li>
+      </ul>
     </div>
     <div>
+      <button mat-raised-button color="primary" (click)="searchWorkflows()">
+        <i class="material-icons">filter_alt</i>
+        Apply filters
+      </button>
       <button mat-raised-button color="primary" (click)="openSaveDialog()">
         <i class="material-icons">save</i>
         Save filters
@@ -78,11 +171,5 @@
         Manage filters
       </button>
     </div>
-  </div>
-
-  <div class="search-line-options">
-    <mat-slide-toggle *ngIf="showDetailedToggle" formControlName="detailedToggle" color="primary" [checked]="parameters.detailed" [(ngModel)]="parameters.detailed" (change)="toggleDetailed()">
-      Detailed
-    </mat-slide-toggle>
   </div>
 </form>

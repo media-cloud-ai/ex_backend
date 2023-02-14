@@ -1,99 +1,97 @@
 @import '../colors';
 
 .content {
-	text-align: center;
-	display: flex;
-	height: 100%;
-	padding: 0px;
+  text-align: center;
+  display: flex;
+  height: 100%;
+  padding: 0px;
 
-	.logo {
-		flex: 1;
-		box-shadow: 1px 1px 5px 0 #095487;
-		background-color: #095487;
-		background: -moz-linear-gradient(-45deg, #095487 0%, #0D8A57 100%);
-		background: -webkit-linear-gradient(-45deg, #095487 0%, #0D8A57 100%);
-		background: linear-gradient(135deg, #095487 0%, #0D8A57 100%);
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#03a35b', endColorstr='#037b45', GradientType=1);
+  .logo {
+    flex: 1;
+    box-shadow: 1px 1px 5px 0 #095487;
+    background-color: #095487;
+    background: -moz-linear-gradient(-45deg, #095487 0%, #0d8a57 100%);
+    background: -webkit-linear-gradient(-45deg, #095487 0%, #0d8a57 100%);
+    background: linear-gradient(135deg, #095487 0%, #0d8a57 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#03a35b', endColorstr='#037b45', GradientType=1);
 
-		.home {
-			width: 100%;
-			display: inline-block;
-			text-align: left;
+    .home {
+      width: 100%;
+      display: inline-block;
+      text-align: left;
 
-			.title {
-				text-decoration: none;
-				.app_logo {
-					height: 50px;
-					vertical-align: bottom;
-				}
-				.app_name {
-					font-weight: lighter;
-					font-size: 0.8em;
-					letter-spacing: 0.05rem;
-					color: @white;
-				}
-			}
-		}
+      .title {
+        text-decoration: none;
+        .app_logo {
+          height: 50px;
+          vertical-align: bottom;
+        }
+        .app_name {
+          font-weight: lighter;
+          font-size: 0.8em;
+          letter-spacing: 0.05rem;
+          color: @white;
+        }
+      }
+    }
 
+    .version:before {
+      content: 'Version ';
+    }
+    .version {
+      position: absolute;
+      bottom: 5px;
+      left: 5px;
+      color: @lightGrey;
+    }
+  }
 
-		.version:before {
-			content: "Version ";
-		}
-		.version {
-			position: absolute;
-			bottom: 5px;
-			left: 5px;
-			color: @lightGrey;
-		}
-	}
+  .login {
+    margin-top: 20px;
+    padding-top: 18%;
+    flex: 2;
 
-	.login {
-		margin-top: 20px;
-		padding-top: 18%;
-		flex: 2;
+    .wrapper {
+      display: block;
+      margin: auto;
+      padding-bottom: 15px;
 
+      img {
+        width: 300px;
+        vertical-align: middle;
+        display: inline-block;
+      }
+    }
 
-		.wrapper {
-			display: block;
-			margin: auto;
-			padding-bottom: 15px;
+    .button.submit {
+      display: inline-block;
+      width: 215px;
+      text-align: right;
+    }
+    .message {
+      padding: 10px;
+      color: @red;
+    }
+    .reset {
+      margin-top: 0px;
+      margin-bottom: 10px;
+      display: inline-block;
+      text-align: left;
+      width: 180px;
+      font-size: 8px;
+      color: @blue;
+    }
+    .reset:hover {
+      color: @green;
+      text-decoration: underline;
+      cursor: pointer;
+    }
 
-			img {
-				width: 300px;
-				vertical-align: middle;
-				display: inline-block;
-			}
-		}
-
-		.button.submit {
-			display: inline-block;
-			width: 215px;
-			text-align: right;
-		}
-		.message {
-			padding: 10px;
-			color: @red;
-		}
-		.reset {
-			margin-top: 0px;
-			margin-bottom: 10px;
-			display: inline-block;
-			text-align: left;
-			width: 180px;
-	    font-size: 8px;
-			color: @blue;
-		}
-		.reset:hover {
-			color: @green;
-			text-decoration: underline;
-			cursor: pointer;
-		}
-
-		.id_logo {
-			padding-top: 40px;
-			img {
-				width: 200px;
-			}
-		}
-	}
+    .id_logo {
+      padding-top: 40px;
+      img {
+        width: 200px;
+      }
+    }
+  }
 }

@@ -1,8 +1,7 @@
-
-<div *ngIf="application && application.identifier != 'subtil' || !video">
-  {{id}}
+<div *ngIf="application && application.identifier != 'subtil'">
+  {{ id }}
 </div>
 
-<div *ngIf="application && application.identifier == 'subtil' && ! video && loading">
+<div *ngIf="application && application.identifier == 'subtil' && loading">
   <img src="/bundles/images/media-io.animated.svg" width="20px" height="20px" />
 </div>

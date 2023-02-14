@@ -4,8 +4,22 @@ ul.jobs {
   list-style: none;
   padding: 0px;
 
-  li.job {
+  a:link {
+    color: black;
+    text-decoration: none;
+  }
 
+  a:hover {
+    color: blue;
+  }
+
+  a:active {
+    color: green;
+  }
+
+  color: black;
+
+  li.job {
     .info {
       display: flex;
       font-size: 0.8em;
@@ -34,10 +48,10 @@ ul.jobs {
           color: @blue;
         }
         .link:before {
-          content: "[";
+          content: '[';
         }
         .link:after {
-          content: "]";
+          content: ']';
         }
       }
     }
@@ -69,8 +83,21 @@ ul.jobs {
 
     .status.paused {
       background-color: @yellow;
-      background-image: linear-gradient(135deg, white 25%, transparent 25.5%, transparent 50%, white 50.5%, white 75%, transparent 75.5%, transparent);
+      background-image: linear-gradient(
+        135deg,
+        white 25%,
+        transparent 25.5%,
+        transparent 50%,
+        white 50.5%,
+        white 75%,
+        transparent 75.5%,
+        transparent
+      );
       background-size: 20px 20px;
+    }
+
+    .status.dropped {
+      color: @grey;
     }
 
     .bar {
@@ -108,5 +135,8 @@ ul.jobs {
   }
   li.stopped .bar {
     background-color: @yellow;
+  }
+  li.dropped .bar {
+    background-color: @grey;
   }
 }

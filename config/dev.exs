@@ -15,9 +15,7 @@ config :ex_backend, ExBackendWeb.Endpoint,
     node: [
       "node_modules/webpack/bin/webpack.js",
       "--watch",
-      "--watch-poll",
       "--mode=development",
-      "--stdin",
       cd: Path.expand("../assets", __DIR__)
     ]
   ]

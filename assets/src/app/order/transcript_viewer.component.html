@@ -1,37 +1,51 @@
 <h1>Transcript</h1>
 
-<h3>Reference: {{workflow.reference}}</h3>
+<h3>Reference: {{ workflow.reference }}</h3>
 
-<div *ngIf="transcript"
-  class="transcript">
-  <span *ngFor="let word of transcript.words; let i = index"
-    [ngClass]="{'new_speaker': i == 0 || word.speakerId != transcript.words[i-1].speakerId }"
-    >
+<div *ngIf="transcript" class="transcript">
+  <span
+    *ngFor="let word of transcript.words; let i = index"
+    [ngClass]="{
+      new_speaker: i == 0 || word.speakerId != transcript.words[i - 1].speakerId
+    }"
+  >
     <div
-      class=linebreak
-      *ngIf="i == 0 || word.speakerId != transcript.words[i-1].speakerId">
+      class="linebreak"
+      *ngIf="i == 0 || word.speakerId != transcript.words[i - 1].speakerId"
+    >
       <span class="start time">
-        {{ {'seconds' : word.startTime} | duration : 'timecode_frame'}}
+        {{ { seconds: word.startTime } | duration : 'timecode_frame' }}
       </span>
     </div>
-    <span matTooltip="{{ {'seconds' : word.startTime} | duration : 'timecode_frame' }} -
-                      {{ {'seconds' : word.endTime} | duration : 'timecode_frame' }}"
-          matTooltipPosition="above"
-          [ngClass]="{
-                      'textMergedLeft': [',', '.', ';'].includes(word.content) || word.content.startsWith('-'),
-                      'textMergedRight': word.content.endsWith('(') || word.content.endsWith('\'') || word.content.endsWith('-')
-                     }">
-      {{word.content}}
+    <span
+      matTooltip="{{
+        { seconds: word.startTime } | duration : 'timecode_frame'
+      }} -
+                      {{
+        { seconds: word.endTime } | duration : 'timecode_frame'
+      }}"
+      matTooltipPosition="above"
+      [ngClass]="{
+        textMergedLeft:
+          [',', '.', ';'].includes(word.content) ||
+          word.content.startsWith('-'),
+        textMergedRight:
+          word.content.endsWith('(') ||
+          word.content.endsWith('\'') ||
+          word.content.endsWith('-')
+      }"
+    >
+      {{ word.content }}
     </span>
   </span>
 </div>
 
 <button
-        mat-raised-button
-        color="accent"
-        (click)="downloadTranscriptText()"
-        [disabled]="workflow.artifacts.length == 0"
-        >
-        <i class="material-icons">cloud_download</i>
-        Download Transcript
+  mat-raised-button
+  color="accent"
+  (click)="downloadTranscriptText()"
+  [disabled]="workflow.artifacts.length == 0"
+>
+  <i class="material-icons">cloud_download</i>
+  Download Transcript
 </button>

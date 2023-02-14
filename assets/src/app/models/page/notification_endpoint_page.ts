@@ -1,4 +1,3 @@
-
 import { NotificationEndpoint } from '../notification_endpoint'
 
 export class NotificationEndpointPage {

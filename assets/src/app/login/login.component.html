@@ -1,27 +1,39 @@
-<div class=content>
-  <div class=logo>
+<div class="content">
+  <div class="logo">
     <span class="version" *ngIf="application">
-      {{application.version}}
+      {{ application.version }}
     </span>
   </div>
 
   <form class="login" (ngSubmit)="login()" #heroForm="ngForm">
-    <span class=wrapper *ngIf="application">
-      <img src="{{application.logo}}" class=app_logo>
+    <span class="wrapper" *ngIf="application">
+      <img src="{{ application.logo }}" class="app_logo" />
     </span>
     <div>
       <mat-form-field class="search-text-input">
-        <input matInput type="text" placeholder="Username" name=username [(ngModel)]="username">
+        <input
+          type="text"
+          matInput
+          placeholder="Username"
+          name="username"
+          [(ngModel)]="username"
+        />
       </mat-form-field>
     </div>
     <div>
       <mat-form-field class="search-text-input">
-        <input matInput type="password" placeholder="Password" name=password [(ngModel)]="password">
+        <input
+          matInput
+          type="password"
+          placeholder="Password"
+          name="password"
+          [(ngModel)]="password"
+        />
       </mat-form-field>
     </div>
     <div>
       <p class="reset" (click)="openResetPasswordDialog()">
-          Forgot your password ?
+        Forgot your password ?
       </p>
     </div>
     <div class="button submit">
@@ -30,8 +42,8 @@
         Login
       </button>
     </div>
-    <div class=message>
-      {{message}}
+    <div class="message">
+      {{ message }}
     </div>
   </form>
 </div>

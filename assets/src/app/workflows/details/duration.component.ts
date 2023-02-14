@@ -1,59 +1,64 @@
-import {Component, Input} from '@angular/core'
+import { Component, Input } from '@angular/core'
+import { Subscription } from 'rxjs'
 
-import {Message} from '../../models/message'
-import {SocketService} from '../../services/socket.service'
-import {StatisticsService} from '../../services/statistics.service'
-import {WorkflowDuration} from '../../models/statistics/duration'
-import {Workflow} from '../../models/workflow'
-
-import * as moment from 'moment'
+import { Message } from '../../models/message'
+import { SocketService } from '../../services/socket.service'
+import { StatisticsService } from '../../services/statistics.service'
+import { WorkflowDuration } from '../../models/statistics/duration'
+import { Workflow } from '../../models/workflow'
 
 @Component({
   selector: 'duration-component',
   styleUrls: ['./duration.component.less'],
-  templateUrl: 'duration.component.html'
+  templateUrl: 'duration.component.html',
 })
-
 export class DurationComponent {
-  connection: any
+  private readonly subscriptions = new Subscription()
 
   @Input() workflow: Workflow
   @Input() display: string
-  @Input() duration: WorkflowDuration = undefined
+
+  duration: WorkflowDuration = undefined
 
   constructor(
     private socketService: SocketService,
     private statisticsService: StatisticsService,
   ) {}
 
+  ngOnChanges() {
+    this.getDurations()
+  }
+
   ngOnInit() {
-    if(this.duration == undefined) {
-      this.getDurations(this.workflow.id);
-    }
-
     if (this.isFullMode()) {
-      this.socketService.initSocket();
-      this.socketService.connectToChannel('notifications:all');
+      this.socketService.initSocket()
+      this.socketService.connectToChannel('notifications:all')
 
-      this.connection = this.socketService.onWorkflowUpdate(this.workflow.id)
-        .subscribe((message: Message) => {
-          this.getDurations(this.workflow.id);
-        })
+      this.subscriptions.add(
+        this.socketService
+          .onWorkflowUpdate(this.workflow.id)
+          .subscribe((_message: Message) => {
+            this.getDurations()
+          }),
+      )
     }
-
   }
 
-  getDurations(workflow_id) {
-    this.statisticsService.getWorkflowDurations(this.workflow.id)
-    .subscribe(response => {
-       if (response && response.data.length > 0) {
-         this.duration = response.data[0];
-       }
-    });
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe()
   }
 
+  getDurations() {
+    this.statisticsService
+      .getWorkflowDurations(this.workflow.id)
+      .subscribe((response) => {
+        if (response && response.data.length > 0) {
+          this.duration = response.data[0]
+        }
+      })
+  }
 
   public isFullMode() {
-    return this.display == "full";
+    return this.display == 'full'
   }
 }

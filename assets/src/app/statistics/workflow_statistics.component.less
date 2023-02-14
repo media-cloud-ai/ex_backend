@@ -10,7 +10,6 @@
   margin: 0px 10px;
 }
 
-
 .loading {
   text-align: center;
   padding-top: 20px;
@@ -27,23 +26,21 @@
 }
 
 .workflow-durations {
-
   .durations-header,
   .duration {
     padding: 5px;
     display: flex;
     line-height: 36px;
-    vertical-align: middle; 
+    vertical-align: middle;
 
     .workflow-identifier,
-    .workflow-duration,
-    {
+    .workflow-duration {
       flex: 1;
     }
 
     .workflow-duration,
     .workflow-version,
-    .workflow-count, {
+    .workflow-count {
       text-align: center;
     }
 
@@ -54,13 +51,12 @@
     }
 
     .workflow-version,
-    .workflow-count, {
+    .workflow-count {
       flex: 0.5;
     }
-
   }
 
-  .duration:nth-child(2n+1) {
+  .duration:nth-child(2n + 1) {
     background-color: @lightGrey;
   }
 
@@ -77,5 +73,4 @@
       color: @grey;
     }
   }
-
 }

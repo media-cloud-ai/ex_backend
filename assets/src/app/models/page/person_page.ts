@@ -1,4 +1,3 @@
-
 import { Person } from '../person'
 
 export class PersonPage {

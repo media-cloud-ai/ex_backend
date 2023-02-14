@@ -1,6 +1,6 @@
-import {Component, Inject} from '@angular/core'
-import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog'
-import {Workflow} from '../../models/workflow'
+import { Component, Inject } from '@angular/core'
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
+import { Workflow } from '../../models/workflow'
 
 @Component({
   selector: 'workflow_actions_dialog',
@@ -8,14 +8,13 @@ import {Workflow} from '../../models/workflow'
   styleUrls: ['./workflow_actions_dialog.component.less'],
 })
 export class WorkflowActionsDialogComponent {
-
   workflow: Workflow
   type: string
 
   constructor(
     public dialogRef: MatDialogRef<WorkflowActionsDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) {
-
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) {
     console.log(data)
     this.workflow = data.workflow
     this.type = data.message

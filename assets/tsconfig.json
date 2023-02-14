@@ -11,19 +11,10 @@
     "removeComments": false,
     "noImplicitAny": false,
     "skipLibCheck": true,
-    "lib": [
-      "ES2015",
-      "DOM",
-      "ES2017",
-      "ES2019"
-    ],
-    "types": [
-      "node"
-    ]
+    "lib": ["ES2015", "DOM", "ES2017", "ES2019"],
+    "types": ["node"]
   },
-  "exclude": [
-    "node_modules"
-  ],
+  "exclude": ["node_modules"],
   "awesomeTypescriptLoaderOptions": {
     "useWebpackText": true
   }

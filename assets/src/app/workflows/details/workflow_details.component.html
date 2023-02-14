@@ -1,67 +1,93 @@
-<div class="workflow"
-  *ngIf="workflow"
-  >
+<div class="workflow" *ngIf="workflow">
+  <mat-toolbar class="header">
+    <span>
+      Workflow {{ workflow.identifier }} #{{ workflow.id }}
+      <mat-chip class="status {{ workflow.status.state }}" selected>
+        {{ workflow.status.state }}
+      </mat-chip>
+    </span>
+    <span class="spacer"></span>
 
-  <h1>
-    Workflow {{workflow.identifier}} #{{ workflow.id }}
-    <mat-chip color="primary" class="status" selected>
-      {{ workflow.status.state }}
-    </mat-chip>
-  </h1>
+    <span class="actions">
+      <workflow-actions-component
+        [workflow]="workflow"
+        (refreshEvent)="refreshWorkflow($event)"
+      ></workflow-actions-component>
+    </span>
+  </mat-toolbar>
 
   <div class="info">
     <span class="reference">
-      <div class="item">
+      <div
+        class="item"
+        *ngIf="parent_workflow == undefined; else childWorkflow"
+      >
         <label>Reference:</label>
-        <video-title-component [id]=workflow.reference></video-title-component>
+        <video-title-component
+          [id]="workflow.reference"
+        ></video-title-component>
       </div>
+      <ng-template #childWorkflow>
+        <div class="item">
+          <label>Parent workflow:</label>
+          <span>
+            <a href="{{ parent_workflow.id }}"
+              >{{ parent_workflow.reference }} #{{ parent_workflow.id }}</a
+            >
+          </span>
+        </div>
+      </ng-template>
       <div class="item">
         <label>Workflow version:</label>
         <span>
-          {{workflow.version_major}}.{{workflow.version_minor}}.{{workflow.version_micro}}
+          {{ workflow.version_major }}.{{ workflow.version_minor }}.{{
+            workflow.version_micro
+          }}
         </span>
       </div>
       <div class="item">
         <label>Workflow mode:</label>
         <span>
-          {{workflow.is_live ? 'Live' : 'File'}}
+          {{ workflow.is_live ? 'Live' : 'File' }}
         </span>
       </div>
       <div class="item">
         <label>Workflow tags:</label>
         <mat-chip-list>
-          <mat-chip
-            *ngFor="let tag of workflow.tags"
-            color="primary" selected>
-            {{tag}}
+          <mat-chip *ngFor="let tag of workflow.tags" color="primary">
+            {{ tag }}
           </mat-chip>
         </mat-chip-list>
       </div>
       <div class="parameters">
         <span class="expander">
-          <i class="material-icons open"
-            [ngClass]="{disabled: disabled}"
+          <i
+            class="material-icons open"
+            [ngClass]="{ disabled: disabled }"
             *ngIf="!parameters_opened"
             (click)="toggleParameters()"
             title="Show parameters"
-            >expand_more</i>
+            >expand_more</i
+          >
 
-          <i class="material-icons close"
-            [ngClass]="{disabled: disabled}"
+          <i
+            class="material-icons close"
+            [ngClass]="{ disabled: disabled }"
             *ngIf="parameters_opened"
             (click)="toggleParameters()"
             title="Hide parameters"
-            >expand_less</i>
+            >expand_less</i
+          >
         </span>
         <label>Parameters:</label>
-        <div *ngIf=parameters_opened>
+        <div *ngIf="parameters_opened">
           <span *ngFor="let parameter of workflow.parameters">
-            <div class=parameter *ngIf="parameter.id != 'message'">
+            <div class="parameter" *ngIf="parameter.id != 'message'">
               <label>
-                {{parameter.id}}
+                {{ parameter.id }}
               </label>
               <span>
-                {{parameter.value | json}}
+                {{ parameter.value | json }}
               </span>
             </div>
           </span>
@@ -69,37 +95,72 @@
       </div>
     </span>
     <span class="duration">
-      <duration-component [workflow]=workflow display="full"></duration-component>
+      <duration-component
+        [workflow]="workflow"
+        display="full"
+      ></duration-component>
       <div class="notification_hooks">
         <span class="expander">
-          <i class="material-icons open"
-            [ngClass]="{disabled: disabled}"
+          <i
+            class="material-icons open"
+            [ngClass]="{ disabled: disabled }"
             *ngIf="!notification_hooks_opened"
             (click)="toggleNotificationHooks()"
             title="Show notification_hooks"
-            >expand_more</i>
+            >expand_more</i
+          >
 
-          <i class="material-icons close"
-            [ngClass]="{disabled: disabled}"
+          <i
+            class="material-icons close"
+            [ngClass]="{ disabled: disabled }"
             *ngIf="notification_hooks_opened"
             (click)="toggleNotificationHooks()"
             title="Hide notification_hooks"
-            >expand_less</i>
+            >expand_less</i
+          >
         </span>
         <label>Workflow notification hooks:</label>
-        <div *ngIf=notification_hooks_opened>
+        <div *ngIf="notification_hooks_opened">
           <span *ngFor="let notification_hook of workflow.notification_hooks">
-            <div class="notification_hook {{notification_hook.label}} {{notification_hook.status}}">
-              <hr>
+            <div
+              class="notification_hook {{ notification_hook.label }} {{
+                notification_hook.status
+              }}"
+            >
+              <hr />
               <label>Endpoint</label>
-              <span class="hook_detail" *ngFor="let notification_status of notification_hook.status">
-              <label *ngIf="(notification_status.condition.includes('workflow'))">{{notification_hook.label | titlecase}}</label>
-                <hr *ngIf="(notification_status.condition.includes('workflow'))">
-                <label *ngIf="(notification_status.condition.includes('workflow'))">Condition <span>{{notification_status.condition}}</span></label>
-                <label *ngIf="(notification_status.condition.includes('workflow'))">Timestamp <span>{{notification_status.timestamp}}</span></label>
-                <label *ngIf="(notification_status.condition.includes('workflow'))">Status <span [ngClass]="{
-                  'error' : notification_status.response != 200,
-                  'ok' : notification_status.response == 200}">{{notification_status.response}}</span></label>
+              <span
+                class="hook_detail"
+                *ngFor="let notification_status of notification_hook.status"
+              >
+                <label
+                  *ngIf="notification_status.condition.includes('workflow')"
+                  >{{ notification_hook.label | titlecase }}</label
+                >
+                <hr
+                  *ngIf="notification_status.condition.includes('workflow')"
+                />
+                <label
+                  *ngIf="notification_status.condition.includes('workflow')"
+                  >Condition
+                  <span>{{ notification_status.condition }}</span></label
+                >
+                <label
+                  *ngIf="notification_status.condition.includes('workflow')"
+                  >Timestamp
+                  <span>{{ notification_status.timestamp }}</span></label
+                >
+                <label
+                  *ngIf="notification_status.condition.includes('workflow')"
+                  >Status
+                  <span
+                    [ngClass]="{
+                      error: notification_status.response != 200,
+                      ok: notification_status.response == 200
+                    }"
+                    >{{ notification_status.response }}</span
+                  ></label
+                >
               </span>
             </div>
           </span>
@@ -107,95 +168,35 @@
       </div>
     </span>
     <span class="user-launch">
-      <div title="@{{user_name}}" class="item">
+      <div title="@{{ user_name }}" class="item">
         <label>Launched by: </label>
-        <span>{{first_name}} {{last_name}}</span>
+        <span>{{ first_name }} {{ last_name }}</span>
       </div>
 
       <div class="item" *ngIf="pause_post_action">
         <label>Will {{ pause_post_action.action }} at: </label>
-        <span>{{ pause_post_action.trigger_at+'Z' | date: 'yyyy-MM-dd HH:mm:ss' }}</span>
+        <span>{{
+          pause_post_action.trigger_at + 'Z' | date : 'yyyy-MM-dd HH:mm:ss'
+        }}</span>
       </div>
     </span>
     <span class="steps-count">
       <span class="label">Steps:</span>
-      <span class="count">{{getStepsCount()}} / {{getTotalSteps()}}</span>
-    </span>
-    <span
-      class="pause"
-      *ngIf="!can_resume">
-      <button
-        mat-raised-button
-        color="accent"
-        [disabled]=!can_pause
-        (click)="pause(workflow.id)"
-        >
-        <mat-icon>pause</mat-icon>
-        Pause
-      </button>
-    </span>
-    <span
-      class="resume"
-      *ngIf="!can_pause && can_resume">
-      <button
-        mat-raised-button
-        color="accent"
-        (click)="resume(workflow.id)"
-        >
-        <mat-icon>play_arrow</mat-icon>
-        Resume
-      </button>
-    </span>
-    <span
-      class="abort" *ngIf=!workflow.is_live>
-      <button
-        mat-raised-button
-        color="warn"
-        [disabled]="!can_abort || !right_abort"
-        (click)="abort(workflow.id)"
-        >
-        <mat-icon>cancel</mat-icon>
-        Abort
-      </button>
-    </span>
-    <span
-      class="stop" *ngIf=workflow.is_live>
-      <button
-        mat-raised-button
-        color="warn"
-        [disabled]="!can_stop || !right_abort"
-        (click)="stop(workflow.id)"
-        >
-        <mat-icon>stop</mat-icon>
-        Stop
-      </button>
-    </span>
-    <span
-      class="delete">
-      <button
-        mat-raised-button
-        [disabled]="!right_delete || !can_delete"
-        color="warn"
-        (click)="delete(workflow.id)"
-        >
-        <mat-icon>delete_forever</mat-icon>
-        Delete
-      </button>
+      <span class="count">{{ getStepsCount() }} / {{ getTotalSteps() }}</span>
     </span>
   </div>
 
-  <div
-    class="line"
-    *ngFor="let line of renderer.graph"
-    >
-    <span *ngFor="let step of line"
+  <div class="line" *ngFor="let line of renderer.graph">
+    <span
+      *ngFor="let step of line"
       class="step"
-      [ngStyle]="{flex: renderer.getStepWeight(step)}"
-      >
+      [ngStyle]="{ flex: renderer.getStepWeight(step) }"
+    >
       <workflow-step-details-component
-        [step]=step
-        [workflow]=workflow
-        (stepChange)="updateStepInWorkflow($event)">
+        [step]="step"
+        [workflow]="workflow"
+        (stepChange)="updateStepInWorkflow($event)"
+      >
       </workflow-step-details-component>
     </span>
   </div>

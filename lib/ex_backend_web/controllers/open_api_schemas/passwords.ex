@@ -8,7 +8,7 @@ defmodule ExBackendWeb.OpenApiSchemas.Passwords do
     require OpenApiSpex
 
     OpenApiSpex.schema(%{
-      title: "Password Reset Body",
+      title: "PasswordResetBody",
       description: "Password Reset Body",
       type: :object,
       properties: %{
@@ -30,7 +30,7 @@ defmodule ExBackendWeb.OpenApiSchemas.Passwords do
     require OpenApiSpex
 
     OpenApiSpex.schema(%{
-      title: "Password Reset Body",
+      title: "PasswordResetBody",
       description: "Password Reset Body",
       type: :object,
       properties: %{

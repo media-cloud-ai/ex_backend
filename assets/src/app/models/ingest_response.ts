@@ -1,3 +1,1 @@
-
-export class IngestResponse {
-}
+export class IngestResponse {}

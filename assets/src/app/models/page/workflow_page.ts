@@ -33,11 +33,28 @@ export class WorkflowQueryParams {
   identifiers: string[]
   mode: string[]
   selectedDateRange: {
-    startDate: any,
-    endDate: any,
+    startDate: any
+    endDate: any
   }
   search?: string
   status: string[]
+  headers: string[]
   detailed: boolean
+  refresh_interval: number
   time_interval: number
+}
+
+export enum ViewOption {
+  Detailed,
+  RefreshInterval,
+}
+
+export class ViewOptionEvent {
+  option: ViewOption
+  value: any
+
+  constructor(option: ViewOption, value: any) {
+    this.option = option
+    this.value = value
+  }
 }

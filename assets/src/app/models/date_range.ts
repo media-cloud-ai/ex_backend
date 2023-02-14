@@ -1,6 +1,4 @@
-import * as moment from 'moment'
-import {Moment} from 'moment'
-
+import { Moment } from 'moment'
 
 export class DateRange {
   public start: Moment
@@ -13,7 +11,7 @@ export class DateRange {
 
   setStartDate(date: Moment): void {
     this.start = date
-    if (this.start){
+    if (this.start) {
       this.start.hours(0)
       this.start.minutes(0)
       this.start.seconds(0)

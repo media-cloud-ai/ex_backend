@@ -1,4 +1,3 @@
-
 export enum LinkLabel {
   facebook = 'Facebook',
   imdb = 'IMDb',
@@ -26,7 +25,7 @@ export class Person {
     this.gender = 'Unknown'
     this.first_names = new Array<string>('')
     this.nationalities = new Array<string>()
-    this.links = new Links
+    this.links = new Links()
   }
 }
 

@@ -1,16 +1,25 @@
-<span *ngIf="entities.length == 0; else entity"
-      [ngClass]="{'textMergedLeft': mergedLeft(word),
-                  'textMergedRight': mergedRight(word)
-                  }">
-    {{ word }}
+<span
+  *ngIf="entities.length == 0; else entity"
+  [ngClass]="{
+    textMergedLeft: mergedLeft(word),
+    textMergedRight: mergedRight(word)
+  }"
+>
+  {{ word }}
 </span>
 <ng-template #entity>
-    <span matTooltip="Type : {{ entities[0].type }} &#13;
+  <span
+    matTooltip="Type : {{ entities[0].type }} &#13;
                       Score : {{ entities[0].relevance_score }} &#13;
                       Entité : {{ entities[0].string_ner }}"
-          matTooltipPosition="above"
-          matTooltipClass="tooltip"
-          [ngStyle]="getStyle(index)">
-        <entity-component [entities]="entities.slice(1)" [word]="word" [index]="index + 1"></entity-component>
-    </span>
+    matTooltipPosition="above"
+    matTooltipClass="tooltip"
+    [ngStyle]="getStyle(index)"
+  >
+    <entity-component
+      [entities]="entities.slice(1)"
+      [word]="word"
+      [index]="index + 1"
+    ></entity-component>
+  </span>
 </ng-template>
