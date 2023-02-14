@@ -42,7 +42,7 @@
           matInput
           type="text"
           [(ngModel)]="search"
-          (keyup)="getUsers($event)"
+          (keyup.enter)="getUsers($event)"
         />
         <button
           *ngIf="search"
