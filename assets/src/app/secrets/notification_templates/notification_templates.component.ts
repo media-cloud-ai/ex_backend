@@ -49,6 +49,7 @@ export class NotificationTemplatesComponent {
     }
     if (event.action == NotificationTemplateEventAction.Save) {
       this.selected_notification_template_id = undefined
+      this.notification_template = new NotificationTemplate()
     }
   }
 
@@ -71,6 +72,7 @@ export class NotificationTemplatesComponent {
           )
         } else {
           this.listNotificationTemplates()
+          this.notification_template = new NotificationTemplate()
         }
       })
   }
