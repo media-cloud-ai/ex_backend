@@ -35,6 +35,30 @@
       </div>
     </div>
 
+    <div class="searchbar">
+      <mat-form-field class="search" appearance="fill">
+        <mat-label>Search users</mat-label>
+        <input
+          matInput
+          type="text"
+          [(ngModel)]="search"
+          (keyup.enter)="getUsers($event)"
+        />
+        <button
+          *ngIf="search"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="search = ''; getUsers($event)"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+        <button *ngIf="!search" matSuffix mat-icon-button>
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+
     <ul *ngIf="users && all_roles" class="users">
       <li *ngIf="users.total == 0">No users found.</li>
       <li class="users-header">
