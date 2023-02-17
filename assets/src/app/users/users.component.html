@@ -128,7 +128,7 @@
             *ngIf="
               right_administrator && (user.id != 1 || current_user_id == 1)
             "
-            (click)="removeUser(user.id)"
+            (click)="removeUser(user)"
           >
             <i class="material-icons">delete</i>
           </button>

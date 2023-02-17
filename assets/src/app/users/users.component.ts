@@ -7,6 +7,7 @@ import { UserService } from '../services/user.service'
 import { RolePage, UserPage } from '../models/page/user_page'
 import { Right, Role, RoleEvent, RoleEventAction } from '../models/user'
 import { RoleOrRightDeletionDialogComponent } from './dialogs/role_or_right_deletion_dialog.component'
+import { UserDeletionDialogComponent } from './dialogs/user_deletion_dialog.component'
 import { UserEditionDialogComponent } from './dialogs/user_edition_dialog.component'
 import { UserShowCredentialsDialogComponent } from './dialogs/user_show_credentials_dialog.component'
 import { UserShowValidationLinkDialogComponent } from './dialogs/user_show_validation_link_dialog.component'
@@ -174,9 +175,20 @@ export class UsersComponent {
     })
   }
 
-  removeUser(user_id): void {
-    this.userService.removeUser(user_id).subscribe((_response) => {
-      this.getUsers(this.page)
+  removeUser(user): void {
+    // Ask for confirmation
+    const dialogRef = this.dialog.open(UserDeletionDialogComponent, {
+      data: {
+        user: user,
+      },
+    })
+
+    dialogRef.afterClosed().subscribe((response) => {
+      if (response) {
+        this.userService.removeUser(user.id).subscribe((_response) => {
+          this.getUsers(this.page)
+        })
+      }
     })
   }
 
