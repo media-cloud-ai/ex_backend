@@ -91,6 +91,7 @@ import { StartIngestDialog } from './ingest/dialogs/start_ingest.component'
 import { JobDetailsDialogComponent } from './jobs/details/job_details_dialog.component'
 import { RoleOrRightDeletionDialogComponent } from './users/dialogs/role_or_right_deletion_dialog.component'
 import { UserEditionDialogComponent } from './users/dialogs/user_edition_dialog.component'
+import { UserPasswordEditionDialogComponent } from './users/dialogs/user_password_edition_dialog.component'
 import { UserShowCredentialsDialogComponent } from './users/dialogs/user_show_credentials_dialog.component'
 import { UserShowValidationLinkDialogComponent } from './users/dialogs/user_show_validation_link_dialog.component'
 import { WorkflowActionsDialogComponent } from './workflows/dialogs/workflow_actions_dialog.component'
@@ -203,6 +204,7 @@ const EX_BACKEND_DATE_FORMATS = {
     UserComponent,
     UsersComponent,
     UserEditionDialogComponent,
+    UserPasswordEditionDialogComponent,
     UserShowCredentialsDialogComponent,
     UserShowValidationLinkDialogComponent,
     WatchersComponent,
@@ -229,6 +231,7 @@ const EX_BACKEND_DATE_FORMATS = {
     StepRendererComponent,
     UserComponent,
     UserEditionDialogComponent,
+    UserPasswordEditionDialogComponent,
     UserShowCredentialsDialogComponent,
     UserShowValidationLinkDialogComponent,
     WatchersComponent,

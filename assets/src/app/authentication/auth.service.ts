@@ -76,7 +76,6 @@ export class AuthService {
 
     return this.http.post<Token>('/api/sessions', query).pipe(
       tap((response) => {
-        console.log('Login: ', response)
         if (response && response.user) {
           this.cookieService.set(
             'currentUser',

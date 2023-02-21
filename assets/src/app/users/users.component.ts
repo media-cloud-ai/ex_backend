@@ -8,6 +8,7 @@ import { RolePage, UserPage } from '../models/page/user_page'
 import { Right, Role, RoleEvent, RoleEventAction } from '../models/user'
 import { RoleOrRightDeletionDialogComponent } from './dialogs/role_or_right_deletion_dialog.component'
 import { UserEditionDialogComponent } from './dialogs/user_edition_dialog.component'
+import { UserPasswordEditionDialogComponent } from './dialogs/user_password_edition_dialog.component'
 import { UserShowCredentialsDialogComponent } from './dialogs/user_show_credentials_dialog.component'
 import { UserShowValidationLinkDialogComponent } from './dialogs/user_show_validation_link_dialog.component'
 
@@ -169,6 +170,19 @@ export class UsersComponent {
     dialogRef.afterClosed().subscribe((_response) => {
       this.getUsers(this.page)
     })
+  }
+
+  changeUserPassword(user): void {
+    const dialogRef = this.dialog.open(UserPasswordEditionDialogComponent, {
+      data: {
+        user: user,
+      },
+    })
+
+    dialogRef.afterClosed().subscribe((_response) => {
+      this.getUsers(this.page)
+    })
+    // this.userService.changeUserPassword(user, password)
   }
 
   removeUser(user_id): void {
