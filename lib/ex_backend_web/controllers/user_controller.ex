@@ -190,6 +190,35 @@ defmodule ExBackendWeb.UserController do
     json(conn, %{validation_link: validation_link})
   end
 
+  operation :change_password,
+    summary: "Change account password",
+    description: "Change account password when one has enough rights",
+    type: :object,
+    request_body: {"PasswordBody", "application/json", OpenApiSchemas.Users.PasswordBody},
+    responses: [
+      ok: {"User", "application/json", OpenApiSchemas.Users.UserFull},
+      forbidden: "Forbidden",
+      not_found: "Not Found"
+    ]
+
+  def change_password(%Plug.Conn{assigns: %{current_user: user}} = conn, %{
+        "id" => id,
+        "password" => password
+      }) do
+    selected_user = Accounts.get(id)
+
+    if user.id == 1 do
+      {:ok, _user} = Accounts.update_password(selected_user, %{password: password})
+
+      conn
+      |> put_status(:ok)
+      |> put_view(ExBackendWeb.UserView)
+      |> render("info.json", %{info: "User password successfully changed"})
+    else
+      send_resp(conn, 403, "Unauthorized to change User password")
+    end
+  end
+
   operation :delete_role,
     summary: "Delete role",
     description: "Delete role by name",

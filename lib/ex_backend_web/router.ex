@@ -35,6 +35,7 @@ defmodule ExBackendWeb.Router do
     post("/users/generate_validation_link", UserController, :generate_validation_link)
     delete("/users/roles/:name", UserController, :delete_role)
     post("/users/check_rights", UserController, :check_rights)
+    post("/users/change_password", UserController, :change_password)
 
     # Watchers APIs
     get("/watchers", WatcherController, :index)
