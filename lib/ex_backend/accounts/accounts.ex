@@ -3,6 +3,8 @@ defmodule ExBackend.Accounts do
   The boundary for the Accounts system.
   """
 
+  require Logger
+
   import Ecto.{Query, Changeset}, warn: false
   alias Phauxth.Log
   alias ExBackend.{Accounts.User, Repo}
@@ -68,8 +70,35 @@ defmodule ExBackend.Accounts do
 
   def create_user(attrs) do
     %User{}
-    |> User.changeset(attrs)
+    |> User.changeset_user(attrs)
     |> Repo.insert()
+  end
+
+  def create_root(root_email) do
+    attrs = %{
+      id: 1,
+      email: root_email,
+      roles: ["administrator"],
+      first_name: "MCAI",
+      last_name: "Admin",
+      username: "root"
+    }
+
+    {:ok, user} = User.create_root_user(attrs)
+    root_password = User.generate_root_password()
+    {:ok, user} = update_password(user, %{password: root_password})
+    {:ok, _user} = confirm_user(user)
+    Logger.warn("Root user created with password: #{root_password}")
+    Logger.warn("Please change this password after first connection !")
+  end
+
+  def reset_root_password(account) do
+    if Map.get(account, :id) == 1 do
+      root_password = User.generate_root_password()
+      {:ok, _user} = update_password(account, %{password: root_password})
+      Logger.warn("Root user reset with password: #{root_password}")
+      Logger.warn("Please change this password after next connection !")
+    end
   end
 
   def confirm_user(%User{} = user) do
@@ -87,7 +116,7 @@ defmodule ExBackend.Accounts do
 
   def update_user(%User{} = user, attrs) do
     user
-    |> User.changeset(attrs)
+    |> User.changeset_user(attrs)
     |> Repo.update()
   end
 
@@ -109,7 +138,7 @@ defmodule ExBackend.Accounts do
   end
 
   def change_user(%User{} = user) do
-    User.changeset(user, %{})
+    User.changeset_user(user, %{})
   end
 
   def check_user_rights(user, entity, action) do
