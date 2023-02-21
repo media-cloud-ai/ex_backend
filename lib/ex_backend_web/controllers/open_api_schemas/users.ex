@@ -342,4 +342,26 @@ defmodule ExBackendWeb.OpenApiSchemas.Users do
       }
     })
   end
+
+  defmodule PasswordBody do
+    @moduledoc false
+    require OpenApiSpex
+
+    OpenApiSpex.schema(%{
+      title: "PasswordBody",
+      description: "User Password Body",
+      type: :array,
+      items: %Schema{
+        type: :object,
+        properties: %{
+          id: %Schema{type: :integer, description: "User ID"},
+          password: %Schema{type: :string, description: "User Password"}
+        }
+      },
+      example: %{
+        "id" => 2,
+        "password" => "strong_password"
+      }
+    })
+  end
 end
