@@ -83,6 +83,18 @@ export class UserService {
     )
   }
 
+  changeUserPassword(user: User, password: string): Observable<any> {
+    let params = new HttpParams()
+    params = params.append('id', user.id)
+    params = params.append('password', password)
+    return this.http
+      .post<User>(this.usersUrl + '/change_password', params)
+      .pipe(
+        tap((_userPage) => this.log('Change user password')),
+        catchError(this.handleError('changeUserPassword', undefined)),
+      )
+  }
+
   generateValidationLink(user: User): Observable<ValidationLink> {
     let params = new HttpParams()
     params = params.append('id', user.id.toString())

@@ -28,8 +28,6 @@ export class UserEditionDialogComponent {
 
   onValidation(): void {
     this.user_error_message = ''
-    console.log(this.new_first_name)
-    console.log(this.new_last_name)
     this.userService
       .updateUser(this.user.id, this.new_first_name, this.new_last_name)
       .subscribe((response) => {

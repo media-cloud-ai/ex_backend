@@ -92,6 +92,7 @@ import { JobDetailsDialogComponent } from './jobs/details/job_details_dialog.com
 import { RoleOrRightDeletionDialogComponent } from './users/dialogs/role_or_right_deletion_dialog.component'
 import { UserDeletionDialogComponent } from './users/dialogs/user_deletion_dialog.component'
 import { UserEditionDialogComponent } from './users/dialogs/user_edition_dialog.component'
+import { UserPasswordEditionDialogComponent } from './users/dialogs/user_password_edition_dialog.component'
 import { UserShowCredentialsDialogComponent } from './users/dialogs/user_show_credentials_dialog.component'
 import { UserShowValidationLinkDialogComponent } from './users/dialogs/user_show_validation_link_dialog.component'
 import { WorkflowActionsDialogComponent } from './workflows/dialogs/workflow_actions_dialog.component'
@@ -205,6 +206,7 @@ const EX_BACKEND_DATE_FORMATS = {
     UserComponent,
     UsersComponent,
     UserEditionDialogComponent,
+    UserPasswordEditionDialogComponent,
     UserShowCredentialsDialogComponent,
     UserShowValidationLinkDialogComponent,
     WatchersComponent,
@@ -232,6 +234,7 @@ const EX_BACKEND_DATE_FORMATS = {
     UserDeletionDialogComponent,
     UserComponent,
     UserEditionDialogComponent,
+    UserPasswordEditionDialogComponent,
     UserShowCredentialsDialogComponent,
     UserShowValidationLinkDialogComponent,
     WatchersComponent,
