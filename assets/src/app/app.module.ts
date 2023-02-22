@@ -90,6 +90,7 @@ import { EnterEmailDialogComponent } from './login/dialogs/enter_email_dialog.co
 import { StartIngestDialog } from './ingest/dialogs/start_ingest.component'
 import { JobDetailsDialogComponent } from './jobs/details/job_details_dialog.component'
 import { RoleOrRightDeletionDialogComponent } from './users/dialogs/role_or_right_deletion_dialog.component'
+import { UserDeletionDialogComponent } from './users/dialogs/user_deletion_dialog.component'
 import { UserEditionDialogComponent } from './users/dialogs/user_edition_dialog.component'
 import { UserShowCredentialsDialogComponent } from './users/dialogs/user_show_credentials_dialog.component'
 import { UserShowValidationLinkDialogComponent } from './users/dialogs/user_show_validation_link_dialog.component'
@@ -200,6 +201,7 @@ const EX_BACKEND_DATE_FORMATS = {
     StatisticsComponent,
     StepProgressBarComponent,
     StepRendererComponent,
+    UserDeletionDialogComponent,
     UserComponent,
     UsersComponent,
     UserEditionDialogComponent,
@@ -227,6 +229,7 @@ const EX_BACKEND_DATE_FORMATS = {
     StartIngestDialog,
     StepProgressBarComponent,
     StepRendererComponent,
+    UserDeletionDialogComponent,
     UserComponent,
     UserEditionDialogComponent,
     UserShowCredentialsDialogComponent,
