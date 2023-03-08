@@ -1,3 +1,15 @@
+<a name="1.7.1"></a>
+## [1.7.1] - 2023-03-08
+### Feat
+- add password change in user administration
+- add password change route to api
+
+### Fix
+- root account creation and password reset
+
+### Tests
+- add test for root creation and root reset
+
 <a name="1.7.0"></a>
 ## [1.7.0] - 2023-02-13
 
@@ -421,7 +433,7 @@
 ### Fix
 - generate only one time the datetime of uploaded content
 
-
+[1.7.1]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.7.0...1.7.1
 [1.7.0]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.6.1...1.7.0
 [1.6.1]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.6.0...1.6.1
 [1.6.0]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.5.0...1.6.0
