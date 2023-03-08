@@ -19,7 +19,6 @@ export class UserComponent {
   constructor(private userService: UserService) {}
 
   ngOnInit() {
-    console.log('user:', this.user)
     const inserted = moment(this.user.inserted_at)
     const now = moment().add(-moment().utcOffset(), 'minutes')
     this.diff = now.diff(inserted)

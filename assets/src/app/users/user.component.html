@@ -11,20 +11,38 @@
     <p>{{ user.email }}</p>
   </span>
 
-  <span class="roles">
-    <p *ngIf="roles.length == 0">No roles found!</p>
-    <span *ngFor="let role of roles">
-      <mat-checkbox
-        color="primary"
-        name="{{ role.name }}"
-        [checked]="user.roles.includes(role.name)"
-        (change)="updateUserRoles($event)"
-        class="role"
-      >
-        {{ role.name }}
-      </mat-checkbox>
+  <div *ngIf="user.id != 1; then thenBlock; else elseBlock"></div>
+  <ng-template #thenBlock>
+    <span class="roles" *ngIf="user.id != 1">
+      <p *ngIf="roles.length == 0">No roles found!</p>
+      <span *ngFor="let role of roles">
+        <mat-checkbox
+          color="primary"
+          name="{{ role.name }}"
+          [checked]="user.roles.includes(role.name)"
+          (change)="updateUserRoles($event)"
+          class="role"
+        >
+          {{ role.name }}
+        </mat-checkbox>
+      </span>
     </span>
-  </span>
+  </ng-template>
+  <ng-template #elseBlock>
+    <span class="roles" *ngIf="user.id == 1">
+      <span>
+        <mat-checkbox
+          color="primary"
+          name="root"
+          [checked]="true"
+          [disabled]="true"
+          class="role"
+        >
+          root
+        </mat-checkbox>
+      </span>
+    </span>
+  </ng-template>
 
   <span class="status">
     <span class="state enabled" *ngIf="user.confirmed_at"> Enabled </span>
