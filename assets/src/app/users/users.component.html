@@ -112,9 +112,7 @@
           <button
             mat-raised-button
             color="primary"
-            *ngIf="
-              right_administrator && (user.id != 1 || current_user_id == 1)
-            "
+            [disabled]="!right_administrator || user.id == 1"
             (click)="editUser(user)"
           >
             <i class="material-icons">mode_edit</i>
@@ -124,10 +122,19 @@
         <span class="actions">
           <button
             mat-raised-button
+            color="primary"
+            [disabled]="current_user_id != 1"
+            (click)="changeUserPassword(user)"
+          >
+            <i class="material-icons">lock_reset</i>
+          </button>
+        </span>
+
+        <span class="actions">
+          <button
+            mat-raised-button
             color="warn"
-            *ngIf="
-              right_administrator && (user.id != 1 || current_user_id == 1)
-            "
+            [disabled]="!right_administrator || user.id == 1"
             (click)="removeUser(user)"
           >
             <i class="material-icons">delete</i>

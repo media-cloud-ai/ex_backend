@@ -25,7 +25,7 @@ defmodule ExBackend.Accounts.User do
     timestamps()
   end
 
-  def changeset(%User{} = user, attrs) do
+  defp changeset(%User{} = user, attrs, is_root \\ false) do
     uuid = Ecto.UUID.generate()
 
     attrs =
@@ -65,9 +65,25 @@ defmodule ExBackend.Accounts.User do
       end
 
     user
-    |> cast(attrs, [:email, :first_name, :last_name, :username, :roles, :uuid])
+    |> cast(attrs, user_cast(is_root))
     |> validate_required([:email, :first_name, :last_name, :username, :uuid])
     |> unique_email
+  end
+
+  defp user_cast(is_root) do
+    if is_root do
+      [:email, :first_name, :last_name, :username, :roles, :uuid, :id]
+    else
+      [:email, :first_name, :last_name, :username, :roles, :uuid]
+    end
+  end
+
+  def changeset_user(%User{} = user, attrs) do
+    changeset(user, attrs)
+  end
+
+  defp changeset_root(%User{} = user, attrs) do
+    changeset(user, attrs, true)
   end
 
   def changeset_credentials(%User{} = user) do
@@ -80,6 +96,15 @@ defmodule ExBackend.Accounts.User do
       :secret_access_key
     ])
     |> validate_required([:access_key_id, :secret_access_key])
+  end
+
+  def create_root_user(attrs) do
+    changeset_root(%User{}, attrs)
+    |> Repo.insert()
+  end
+
+  def generate_root_password do
+    credential_generator(16, false, false)
   end
 
   def password_changeset(%User{} = user, attrs) do
@@ -132,10 +157,10 @@ defmodule ExBackend.Accounts.User do
 
   # In the function below, a random bytes chain is generated to be transformed
   # in an alphanumeric string in order to be used as a credential
-  defp credential_generator(length, is_upcase \\ false) do
+  defp credential_generator(length, is_upcase \\ false, is_padding \\ true) do
     creds =
       :crypto.strong_rand_bytes(length)
-      |> Base.url_encode64(padding: true)
+      |> Base.url_encode64(padding: is_padding)
 
     if is_upcase do
       creds
@@ -149,7 +174,7 @@ defmodule ExBackend.Accounts.User do
 
   def set_workflow_filters(%User{} = user, filters) do
     user
-    |> User.changeset(%{
+    |> changeset_user(%{
       workflow_filters: filters
     })
     |> Repo.update()

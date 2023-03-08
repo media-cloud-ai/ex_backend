@@ -74,24 +74,25 @@ defmodule ExBackend.Application do
   defp create_root_user_if_needed do
     root_email = System.get_env("ROOT_EMAIL") || Application.get_env(:ex_backend, :root_email)
 
-    root_password =
-      System.get_env("ROOT_PASSWORD") || Application.get_env(:ex_backend, :root_password)
-
-    if !is_nil(root_email) && !is_nil(root_password) &&
-         is_nil(ExBackend.Accounts.get_by(%{"email" => root_email})) do
-      user = %{
-        email: root_email,
-        roles: ["administrator"],
-        first_name: "MCAI",
-        last_name: "Admin",
-        username: "root"
-      }
-
-      {:ok, user} = ExBackend.Accounts.create_user(user)
-      {:ok, user} = ExBackend.Accounts.update_password(user, %{password: root_password})
-      {:ok, _user} = ExBackend.Accounts.confirm_user(user)
-    else
+    if is_nil(root_email) do
       Logger.warn("No root user created")
+    else
+      account = ExBackend.Accounts.get(1)
+
+      root_password_reset =
+        System.get_env("MCAI_RESET_ROOT_PASSWORD") ||
+          Application.get_env(:ex_backend, :mcai_reset_root_password)
+
+      case {is_nil(account), root_password_reset} do
+        {true, _} ->
+          ExBackend.Accounts.create_root(root_email)
+
+        {false, true} ->
+          ExBackend.Accounts.reset_root_password(account)
+
+        _ ->
+          Logger.info("Root user already exists")
+      end
     end
   end
 
