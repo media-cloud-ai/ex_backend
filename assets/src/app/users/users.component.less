@@ -1,43 +1,25 @@
 @import '../colors';
 
-.new {
-  border: 2px solid @blue;
-  .title {
-    background-color: @blue;
-    color: @white;
-
-    i {
-      font-size: 18px;
-    }
-    label {
-      line-height: 24px;
-      vertical-align: top;
-    }
-  }
-  .form {
-    padding: 5px;
-    i {
-      font-size: 18px;
-    }
-
-    .message {
-      padding: 10px;
-      color: @red;
-    }
-  }
+.top-container {
+  display: flex;
+  justify-content: center;
 }
 
+
 .searchbar {
-  display: flex;
-  justify-content: space-around;
-  margin: 15px;
+  float: left;
+  padding: 15px;
 }
 
 .search {
-  width: 30%;
   input {
     font-size: 15px;
   }
+}
+
+.new {
+  float: right;
+  margin: 22px;
 }
 
 ul.users {
