@@ -8,7 +8,6 @@ import { User } from '../../models/user'
   templateUrl: './user_addition_dialog.component.html',
   styleUrls: ['./user_addition_dialog.component.less'],
 })
-
 export class UserAdditionDialogComponent {
   user: User
   first_name: string
@@ -18,9 +17,8 @@ export class UserAdditionDialogComponent {
 
   constructor(
     private userService: UserService,
-    public dialogRef: MatDialogRef<UserAdditionDialogComponent>
-  ) {
-  }
+    public dialogRef: MatDialogRef<UserAdditionDialogComponent>,
+  ) {}
 
   onClose(): void {
     this.dialogRef.close()

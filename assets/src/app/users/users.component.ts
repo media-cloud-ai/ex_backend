@@ -115,11 +115,11 @@ export class UsersComponent {
   }
 
   inviteUser(): void {
-    const dialogRef = this.dialog.open(UserAdditionDialogComponent, {} )
+    const dialogRef = this.dialog.open(UserAdditionDialogComponent, {})
     dialogRef.afterClosed().subscribe((_response) => {
       this.getUsers(0)
     })
-  } 
+  }
 
   validationLink(user): void {
     this.userService
