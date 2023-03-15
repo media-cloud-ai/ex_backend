@@ -1,27 +1,54 @@
 @import '../colors';
 
-.top-container {
+.top-container-users {
   display: flex;
   justify-content: space-between;
 
   .mat-form-field {
     width: 200%;
   }
-}
 
-.searchbar {
-  padding: 15px;
-  width: 200px;
-}
-
-.search {
-  input {
-    font-size: 15px;
+  .searchbar {
+    padding: 15px;
+    width: 200px;
+  }
+  
+  .search {
+    input {
+      font-size: 15px;
+    }
+  }
+  
+  .new {
+    margin: 22px;
   }
 }
 
-.new {
-  margin: 22px;
+.top-container-roles {
+  border: 2px solid @blue;
+  .title {
+    background-color: @blue;
+    color: @white;
+
+    i {
+      font-size: 18px;
+    }
+    label {
+      line-height: 24px;
+      vertical-align: top;
+    }
+  }
+  .form {
+    padding: 5px;
+    i {
+      font-size: 18px;
+    }
+
+    .message {
+      padding: 10px;
+      color: @red;
+    }
+  }
 }
 
 ul.users {
