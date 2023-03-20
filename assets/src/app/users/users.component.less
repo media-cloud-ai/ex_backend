@@ -1,6 +1,30 @@
 @import '../colors';
 
-.new {
+.top-container-users {
+  display: flex;
+  justify-content: space-between;
+
+  .mat-form-field {
+    width: 200%;
+  }
+
+  .searchbar {
+    padding: 15px;
+    width: 200px;
+  }
+
+  .search {
+    input {
+      font-size: 15px;
+    }
+  }
+
+  .new {
+    margin: 22px;
+  }
+}
+
+.top-container-roles {
   border: 2px solid @blue;
   .title {
     background-color: @blue;
@@ -24,19 +48,6 @@
       padding: 10px;
       color: @red;
     }
-  }
-}
-
-.searchbar {
-  display: flex;
-  justify-content: space-around;
-  margin: 15px;
-}
-
-.search {
-  width: 30%;
-  input {
-    font-size: 15px;
   }
 }
 

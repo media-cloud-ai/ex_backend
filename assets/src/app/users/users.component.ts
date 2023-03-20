@@ -8,6 +8,7 @@ import { RolePage, UserPage } from '../models/page/user_page'
 import { Right, Role, RoleEvent, RoleEventAction } from '../models/user'
 import { RoleOrRightDeletionDialogComponent } from './dialogs/role_or_right_deletion_dialog.component'
 import { UserDeletionDialogComponent } from './dialogs/user_deletion_dialog.component'
+import { UserAdditionDialogComponent } from './dialogs/user_addition_dialog.component'
 import { UserEditionDialogComponent } from './dialogs/user_edition_dialog.component'
 import { UserPasswordEditionDialogComponent } from './dialogs/user_password_edition_dialog.component'
 import { UserShowCredentialsDialogComponent } from './dialogs/user_show_credentials_dialog.component'
@@ -114,20 +115,10 @@ export class UsersComponent {
   }
 
   inviteUser(): void {
-    this.user_error_message = ''
-    this.userService
-      .inviteUser(this.email, this.first_name, this.last_name)
-      .subscribe((response) => {
-        if (response === undefined) {
-          this.user_error_message = 'Unable to create user'
-        } else {
-          this.email = ''
-          this.first_name = ''
-          this.last_name = ''
-          this.password = ''
-        }
-        this.getUsers(0)
-      })
+    const dialogRef = this.dialog.open(UserAdditionDialogComponent, {})
+    dialogRef.afterClosed().subscribe((_response) => {
+      this.getUsers(0)
+    })
   }
 
   validationLink(user): void {

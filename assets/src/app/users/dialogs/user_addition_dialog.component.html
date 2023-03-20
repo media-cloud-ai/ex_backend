@@ -1,0 +1,53 @@
+<h1 mat-dialog-title>Add user</h1>
+
+<div mat-dialog-content class="confirm">
+  <div>
+    Add user
+    <span>
+      <div class="form">
+        <mat-form-field class="first-name-input">
+          <input
+            matInput
+            type="text"
+            placeholder="First Name"
+            [(ngModel)]="first_name"
+          />
+        </mat-form-field>
+      </div>
+    </span>
+    <span>
+      <div class="form">
+        <mat-form-field class="last-name-input">
+          <input
+            matInput
+            type="text"
+            placeholder="Last Name"
+            [(ngModel)]="last_name"
+          />
+        </mat-form-field>
+      </div>
+    </span>
+    <span>
+      <div class="form">
+        <mat-form-field class="email-input">
+          <input matInput type="text" placeholder="Email" [(ngModel)]="email" />
+        </mat-form-field>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-raised-button (click)="onClose()" color="error" cdkFocusInitial>
+    <mat-icon>close</mat-icon>
+    Cancel
+  </button>
+  <button
+    mat-raised-button
+    (click)="onValidation()"
+    color="primary"
+    cdkFocusInitial
+  >
+    <mat-icon>check</mat-icon>
+  </button>
+</div>

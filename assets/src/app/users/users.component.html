@@ -1,62 +1,39 @@
 <mat-tab-group animationDuration="0ms">
   <!-- USERS -->
   <mat-tab label="Users" class="users-tab">
-    <div class="new">
-      <div class="title">
-        <i class="material-icons">add</i>
-        <label> Add User </label>
+    <div class="top-container-users">
+      <div></div>
+      <div class="searchbar">
+        <mat-form-field class="search" appearance="fill">
+          <mat-label>Search users</mat-label>
+          <input
+            matInput
+            type="text"
+            [(ngModel)]="search"
+            (keyup.enter)="getUsers($event)"
+          />
+          <button
+            *ngIf="search"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+            (click)="search = ''; getUsers($event)"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+          <button *ngIf="!search" matSuffix mat-icon-button>
+            <mat-icon>search</mat-icon>
+          </button>
+        </mat-form-field>
       </div>
-      <div class="form">
-        <mat-form-field class="first-name-input">
-          <input
-            matInput
-            type="text"
-            placeholder="First Name"
-            [(ngModel)]="first_name"
-          />
-        </mat-form-field>
-        <mat-form-field class="last-name-input">
-          <input
-            matInput
-            type="text"
-            placeholder="Last Name"
-            [(ngModel)]="last_name"
-          />
-        </mat-form-field>
-        <mat-form-field class="email-input">
-          <input matInput type="text" placeholder="Email" [(ngModel)]="email" />
-        </mat-form-field>
-        <button mat-button color="primary" (click)="inviteUser()">
-          <i class="material-icons">add</i> Invite
-        </button>
-        <span class="message">
-          {{ user_error_message }}
+
+      <div class="new">
+        <span class="actions">
+          <button mat-raised-button color="primary" (click)="inviteUser()">
+            <i class="material-icons">add</i> Invite
+          </button>
         </span>
       </div>
-    </div>
-
-    <div class="searchbar">
-      <mat-form-field class="search" appearance="fill">
-        <mat-label>Search users</mat-label>
-        <input
-          matInput
-          type="text"
-          [(ngModel)]="search"
-          (keyup.enter)="getUsers($event)"
-        />
-        <button
-          *ngIf="search"
-          matSuffix
-          mat-icon-button
-          aria-label="Clear"
-          (click)="search = ''; getUsers($event)"
-        >
-          <mat-icon>close</mat-icon>
-        </button>
-        <button *ngIf="!search" matSuffix mat-icon-button>
-          <mat-icon>search</mat-icon>
-        </button>
-      </mat-form-field>
     </div>
 
     <ul *ngIf="users && all_roles" class="users">
@@ -157,7 +134,7 @@
 
   <!-- ROLES -->
   <mat-tab label="Roles">
-    <div class="new">
+    <div class="top-container-roles">
       <div class="title">
         <i class="material-icons">add</i>
         <label> Add Role </label>
