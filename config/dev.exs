@@ -142,7 +142,8 @@ config :step_flow, StepFlow.Amqp,
   port: "5678",
   username: "mediacloudai",
   password: "mediacloudai",
-  virtual_host: "media_cloud_ai_dev"
+  virtual_host: "media_cloud_ai_dev",
+  delivery_mode: {:system, "AMQP_DELIVERY_MODE"}
 
 config :httpotion, :default_timeout, 60000
 

@@ -137,4 +137,5 @@ config :step_flow, StepFlow.Amqp,
   password: {:system, "AMQP_PASSWORD"},
   port: {:system, "AMQP_PORT"},
   hostname: {:system, "AMQP_HOSTNAME"},
-  virtual_host: {:system, "AMQP_VIRTUAL_HOST"}
+  virtual_host: {:system, "AMQP_VIRTUAL_HOST"},
+  delivery_mode: {:system, "AMQP_DELIVERY_MODE"}
