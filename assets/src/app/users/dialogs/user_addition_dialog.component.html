@@ -2,38 +2,55 @@
 
 <div mat-dialog-content class="confirm">
   <div>
-    Add user
     <span>
       <div class="form">
-        <mat-form-field class="first-name-input">
+        <mat-form-field>
+          <mat-label>Enter your first name</mat-label>
           <input
             matInput
-            type="text"
-            placeholder="First Name"
-            [(ngModel)]="first_name"
+            placeholder="Firt name"
+            [formControl]="first_name"
+            required
           />
+          <mat-error *ngIf="first_name.invalid">{{
+            getEmptyMessage(first_name)
+          }}</mat-error>
         </mat-form-field>
       </div>
     </span>
     <span>
       <div class="form">
-        <mat-form-field class="last-name-input">
+        <mat-form-field>
+          <mat-label>Enter your last name</mat-label>
           <input
             matInput
-            type="text"
-            placeholder="Last Name"
-            [(ngModel)]="last_name"
+            placeholder="Last name"
+            [formControl]="last_name"
+            required
           />
+          <mat-error *ngIf="last_name.invalid">{{
+            getEmptyMessage(last_name)
+          }}</mat-error>
         </mat-form-field>
       </div>
     </span>
     <span>
       <div class="form">
-        <mat-form-field class="email-input">
-          <input matInput type="text" placeholder="Email" [(ngModel)]="email" />
+        <mat-form-field>
+          <mat-label>Enter your email</mat-label>
+          <input
+            matInput
+            placeholder="mail@example.com"
+            [formControl]="email"
+            required
+          />
+          <mat-error *ngIf="email.invalid">{{ getErrorMessage() }}</mat-error>
         </mat-form-field>
       </div>
     </span>
+    <div *ngIf="user_error_message" class="error-message">
+      {{ user_error_message }}
+    </div>
   </div>
 </div>
 

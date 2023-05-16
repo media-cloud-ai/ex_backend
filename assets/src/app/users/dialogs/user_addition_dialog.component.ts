@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core'
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { UserService } from '../../services/user.service'
 import { User } from '../../models/user'
+import { FormControl, Validators } from '@angular/forms'
 
 @Component({
   selector: 'user_addition_dialog',
@@ -10,16 +11,28 @@ import { User } from '../../models/user'
 })
 export class UserAdditionDialogComponent {
   user: User
-  first_name: string
-  last_name: string
-  email: string
   user_error_message: string
+  email = new FormControl('', [Validators.required, Validators.email])
+  first_name = new FormControl('', [Validators.required])
+  last_name = new FormControl('', [Validators.required])
 
   constructor(
     private userService: UserService,
     public dialogRef: MatDialogRef<UserAdditionDialogComponent>,
   ) {}
 
+  getErrorMessage() {
+    if (this.email.hasError('required')) {
+      return 'You must enter a value'
+    }
+    return this.email.hasError('email') ? 'Not a valid email' : ''
+  }
+
+  getEmptyMessage(elem) {
+    if (elem.hasError('required')) {
+      return 'You must enter a value'
+    }
+  }
   onClose(): void {
     this.dialogRef.close()
   }
@@ -29,17 +42,26 @@ export class UserAdditionDialogComponent {
     console.log(this.first_name)
     console.log(this.last_name)
     console.log(this.email)
-    this.userService
-      .inviteUser(this.email, this.first_name, this.last_name)
-      .subscribe((response) => {
-        if (response === undefined) {
-          this.user_error_message = 'Unable to create user'
-        } else {
-          this.email = ''
-          this.first_name = ''
-          this.last_name = ''
-        }
-      })
-    this.dialogRef.close()
+    if (
+      this.email.invalid ||
+      this.first_name.invalid ||
+      this.last_name.invalid
+    ) {
+      return
+    } else {
+      this.userService
+        .inviteUser(
+          this.email.value,
+          this.first_name.value,
+          this.last_name.value,
+        )
+        .subscribe((response) => {
+          if (response === undefined) {
+            this.user_error_message = 'Unable to create user'
+          } else {
+            this.dialogRef.close()
+          }
+        })
+    }
   }
 }
