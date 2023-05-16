@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core'
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { UserService } from '../../services/user.service'
 import { User } from '../../models/user'
-import {FormControl, Validators} from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms'
 
 @Component({
   selector: 'user_addition_dialog',
@@ -12,26 +12,25 @@ import {FormControl, Validators} from '@angular/forms';
 export class UserAdditionDialogComponent {
   user: User
   user_error_message: string
-  email = new FormControl('', [Validators.required, Validators.email]);
-  first_name = new FormControl('', [Validators.required]);
-  last_name = new FormControl('', [Validators.required]);
-  
+  email = new FormControl('', [Validators.required, Validators.email])
+  first_name = new FormControl('', [Validators.required])
+  last_name = new FormControl('', [Validators.required])
+
   constructor(
     private userService: UserService,
     public dialogRef: MatDialogRef<UserAdditionDialogComponent>,
   ) {}
 
-
   getErrorMessage() {
     if (this.email.hasError('required')) {
-      return 'You must enter a value';
+      return 'You must enter a value'
     }
-    return this.email.hasError('email') ? 'Not a valid email' : '';
+    return this.email.hasError('email') ? 'Not a valid email' : ''
   }
 
   getEmptyMessage(elem) {
     if (elem.hasError('required')) {
-      return 'You must enter a value';
+      return 'You must enter a value'
     }
   }
   onClose(): void {
@@ -43,12 +42,19 @@ export class UserAdditionDialogComponent {
     console.log(this.first_name)
     console.log(this.last_name)
     console.log(this.email)
-    if (this.email.invalid || this.first_name.invalid || this.last_name.invalid){
+    if (
+      this.email.invalid ||
+      this.first_name.invalid ||
+      this.last_name.invalid
+    ) {
       return
-    }
-    else{
+    } else {
       this.userService
-        .inviteUser(this.email.value, this.first_name.value, this.last_name.value)
+        .inviteUser(
+          this.email.value,
+          this.first_name.value,
+          this.last_name.value,
+        )
         .subscribe((response) => {
           if (response === undefined) {
             console.log(response)
@@ -58,6 +64,6 @@ export class UserAdditionDialogComponent {
             this.dialogRef.close()
           }
         })
-  }
+    }
   }
 }

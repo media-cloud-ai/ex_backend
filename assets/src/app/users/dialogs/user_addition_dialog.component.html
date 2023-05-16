@@ -6,8 +6,15 @@
       <div class="form">
         <mat-form-field>
           <mat-label>Enter your first name</mat-label>
-          <input matInput placeholder="Firt name" [formControl]="first_name" required>
-          <mat-error *ngIf="first_name.invalid">{{getEmptyMessage(first_name)}}</mat-error>
+          <input
+            matInput
+            placeholder="Firt name"
+            [formControl]="first_name"
+            required
+          />
+          <mat-error *ngIf="first_name.invalid">{{
+            getEmptyMessage(first_name)
+          }}</mat-error>
         </mat-form-field>
       </div>
     </span>
@@ -15,8 +22,15 @@
       <div class="form">
         <mat-form-field>
           <mat-label>Enter your last name</mat-label>
-          <input matInput placeholder="Last name" [formControl]="last_name" required>
-          <mat-error *ngIf="last_name.invalid">{{getEmptyMessage(last_name)}}</mat-error>
+          <input
+            matInput
+            placeholder="Last name"
+            [formControl]="last_name"
+            required
+          />
+          <mat-error *ngIf="last_name.invalid">{{
+            getEmptyMessage(last_name)
+          }}</mat-error>
         </mat-form-field>
       </div>
     </span>
@@ -24,8 +38,13 @@
       <div class="form">
         <mat-form-field>
           <mat-label>Enter your email</mat-label>
-          <input matInput placeholder="mail@example.com" [formControl]="email" required>
-          <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+          <input
+            matInput
+            placeholder="mail@example.com"
+            [formControl]="email"
+            required
+          />
+          <mat-error *ngIf="email.invalid">{{ getErrorMessage() }}</mat-error>
         </mat-form-field>
       </div>
     </span>
