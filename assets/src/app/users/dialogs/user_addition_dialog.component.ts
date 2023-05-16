@@ -57,10 +57,8 @@ export class UserAdditionDialogComponent {
         )
         .subscribe((response) => {
           if (response === undefined) {
-            console.log(response)
             this.user_error_message = 'Unable to create user'
           } else {
-            console.log(response)
             this.dialogRef.close()
           }
         })
