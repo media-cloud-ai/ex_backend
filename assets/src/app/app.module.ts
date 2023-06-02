@@ -69,6 +69,7 @@ import { JobStatisticsComponent } from './statistics/job_statistics.component'
 import { JobsComponent } from './jobs/jobs.component'
 import { LoginComponent } from './login/login.component'
 import { ParametersComponent } from './workflows/details/parameters.component'
+import { PasswordComponent } from './password/password.component'
 import { ResetPasswordComponent } from './reset_password/reset_password.component'
 import { RoleComponent } from './users/role.component'
 import { QueuesComponent } from './amqp/queues.component'
@@ -195,6 +196,7 @@ const EX_BACKEND_DATE_FORMATS = {
     JobsComponent,
     LoginComponent,
     ParametersComponent,
+    PasswordComponent,
     QueuesComponent,
     ResetPasswordComponent,
     RoleComponent,
