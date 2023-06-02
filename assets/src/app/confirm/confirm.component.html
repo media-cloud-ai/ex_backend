@@ -18,14 +18,7 @@
         Please choose your password to complete your invitation.
       </div>
       <div>
-        <mat-form-field class="search-text-input">
-          <input
-            matInput
-            type="password"
-            placeholder="Password"
-            [(ngModel)]="password"
-          />
-        </mat-form-field>
+        <app-password #password [check_validity]="true"></app-password>
       </div>
       <div>
         <button mat-button color="primary" (click)="setPasswordAndValidate()">
@@ -42,10 +35,7 @@
         </span>
         <label> Validating your account ... </label>
       </span>
-      <span *ngIf="error">
-        Unable to validate your account.<br />
-        Please ensure your password has 8 caracters.
-      </span>
+      <span *ngIf="error"> Unable to validate your account.<br /> </span>
     </div>
     <div class="content" *ngIf="validated">
       <div>Your account is validated, you can now log in.</div>

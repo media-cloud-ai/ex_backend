@@ -1,9 +1,11 @@
-import { Component } from '@angular/core'
+import { Component, ViewChild } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 
 import { Application } from '../models/application'
 import { ApplicationService } from '../services/application.service'
 import { UserService } from '../services/user.service'
+
+import { PasswordComponent } from '../password/password.component'
 
 @Component({
   selector: 'confirm-component',
@@ -11,6 +13,8 @@ import { UserService } from '../services/user.service'
   styleUrls: ['./confirm.component.less'],
 })
 export class ConfirmComponent {
+  @ViewChild('password') passwordComponent: PasswordComponent
+
   application: Application
   validating = false
   validated = false
@@ -43,14 +47,21 @@ export class ConfirmComponent {
   setPasswordAndValidate() {
     this.validating = true
     this.error = false
+    this.password = this.passwordComponent.get_password()
+
+    if (!this.password) {
+      this.error = true
+      this.validating = false
+      return undefined
+    }
 
     this.userService.confirm(this.password, this.key).subscribe((response) => {
-      this.validating = false
-      if (response) {
+      if (response && this.password) {
         this.validated = true
       } else {
         this.error = true
       }
+      this.validating = false
     })
   }
 

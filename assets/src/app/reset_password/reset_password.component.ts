@@ -1,9 +1,10 @@
-import { Component } from '@angular/core'
+import { Component, ViewChild } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 
 import { Application } from '../models/application'
 import { ApplicationService } from '../services/application.service'
 import { AuthService } from '../authentication/auth.service'
+import { PasswordComponent } from '../password/password.component'
 
 @Component({
   selector: 'reset_password-component',
@@ -11,6 +12,8 @@ import { AuthService } from '../authentication/auth.service'
   styleUrls: ['./reset_password.component.less'],
 })
 export class ResetPasswordComponent {
+  @ViewChild('password') passwordComponent: PasswordComponent
+
   application: Application
   validating = false
   validated = false
@@ -43,7 +46,10 @@ export class ResetPasswordComponent {
   setPasswordAndValidate() {
     this.validating = true
     this.error = false
-
+    this.password = this.passwordComponent.get_password()
+    if (!this.password) {
+      return undefined
+    }
     this.authService
       .confirmResetPassword(this.password, this.key)
       .subscribe((response) => {

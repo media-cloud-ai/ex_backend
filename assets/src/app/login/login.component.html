@@ -21,15 +21,7 @@
       </mat-form-field>
     </div>
     <div>
-      <mat-form-field class="search-text-input">
-        <input
-          matInput
-          type="password"
-          placeholder="Password"
-          name="password"
-          [(ngModel)]="password"
-        />
-      </mat-form-field>
+      <app-password #password [check_validity]="false"></app-password>
     </div>
     <div>
       <p class="reset" (click)="openResetPasswordDialog()">

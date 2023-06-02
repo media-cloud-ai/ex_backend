@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, ViewChild } from '@angular/core'
 import { NavigationExtras, Router } from '@angular/router'
 
 import { Application } from '../models/application'
@@ -7,6 +7,7 @@ import { AuthService } from '../authentication/auth.service'
 
 import { MatDialog } from '@angular/material/dialog'
 import { EnterEmailDialogComponent } from './dialogs/enter_email_dialog.component'
+import { PasswordComponent } from '../password/password.component'
 
 @Component({
   selector: 'login-component',
@@ -14,6 +15,8 @@ import { EnterEmailDialogComponent } from './dialogs/enter_email_dialog.componen
   styleUrls: ['./login.component.less'],
 })
 export class LoginComponent {
+  @ViewChild('password') passwordComponent: PasswordComponent
+
   username: string
   password: string
   message: string
@@ -33,6 +36,7 @@ export class LoginComponent {
   }
 
   login() {
+    this.password = this.passwordComponent.get_password()
     this.authService
       .login(this.username, this.password)
       .subscribe((response) => {
