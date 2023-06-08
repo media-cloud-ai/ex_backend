@@ -33,6 +33,7 @@
     "ng2-charts": "~3.1.2",
     "ngx-cookie-service": "~14.0.1",
     "ngx-daterangepicker-material": "^6.0.4",
+    "password-validator": "^5.3.0",
     "phoenix": "^1.5.8",
     "phoenix-socket": "^1.2.3",
     "reflect-metadata": "^0.1.12",
