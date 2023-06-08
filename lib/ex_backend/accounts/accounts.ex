@@ -30,7 +30,9 @@ defmodule ExBackend.Accounts do
 
     offset = page * size
 
-    query = from(user in User)
+    query =
+      from(user in User)
+      |> filter_by_name(Map.get(params, "search"))
 
     total_query = from(item in query, select: count(item.id))
 
@@ -187,5 +189,24 @@ defmodule ExBackend.Accounts do
       page: 0,
       size: length(user_emails)
     }
+  end
+
+  defp filter_by_name(query, search) do
+    case search do
+      nil ->
+        query
+
+      search ->
+        like = "%#{search}%"
+
+        from(
+          user in query,
+          where:
+            ilike(user.first_name, ^like) or
+              ilike(user.last_name, ^like) or
+              ilike(user.username, ^like) or
+              ilike(user.email, ^like)
+        )
+    end
   end
 end

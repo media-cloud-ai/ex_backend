@@ -7,6 +7,8 @@ import { UserService } from '../services/user.service'
 import { RolePage, UserPage } from '../models/page/user_page'
 import { Right, Role, RoleEvent, RoleEventAction } from '../models/user'
 import { RoleOrRightDeletionDialogComponent } from './dialogs/role_or_right_deletion_dialog.component'
+import { UserDeletionDialogComponent } from './dialogs/user_deletion_dialog.component'
+import { UserAdditionDialogComponent } from './dialogs/user_addition_dialog.component'
 import { UserEditionDialogComponent } from './dialogs/user_edition_dialog.component'
 import { UserPasswordEditionDialogComponent } from './dialogs/user_password_edition_dialog.component'
 import { UserShowCredentialsDialogComponent } from './dialogs/user_show_credentials_dialog.component'
@@ -30,6 +32,7 @@ export class UsersComponent {
   sub = undefined
 
   users: UserPage
+  search = ''
 
   roles: RolePage
   roles_total = 1000
@@ -67,14 +70,16 @@ export class UsersComponent {
   }
 
   getUsers(index): void {
-    this.userService.getUsers(index, this.pageSize).subscribe((userPage) => {
-      this.users = userPage
-      if (userPage) {
-        this.length = userPage.total
-      } else {
-        this.length = 0
-      }
-    })
+    this.userService
+      .getUsers(index, this.pageSize, this.search)
+      .subscribe((userPage) => {
+        this.users = userPage
+        if (userPage) {
+          this.length = userPage.total
+        } else {
+          this.length = 0
+        }
+      })
   }
 
   getRoles(index): void {
@@ -110,20 +115,10 @@ export class UsersComponent {
   }
 
   inviteUser(): void {
-    this.user_error_message = ''
-    this.userService
-      .inviteUser(this.email, this.first_name, this.last_name)
-      .subscribe((response) => {
-        if (response === undefined) {
-          this.user_error_message = 'Unable to create user'
-        } else {
-          this.email = ''
-          this.first_name = ''
-          this.last_name = ''
-          this.password = ''
-        }
-        this.getUsers(0)
-      })
+    const dialogRef = this.dialog.open(UserAdditionDialogComponent, {})
+    dialogRef.afterClosed().subscribe((_response) => {
+      this.getUsers(0)
+    })
   }
 
   validationLink(user): void {
@@ -185,9 +180,20 @@ export class UsersComponent {
     // this.userService.changeUserPassword(user, password)
   }
 
-  removeUser(user_id): void {
-    this.userService.removeUser(user_id).subscribe((_response) => {
-      this.getUsers(this.page)
+  removeUser(user): void {
+    // Ask for confirmation
+    const dialogRef = this.dialog.open(UserDeletionDialogComponent, {
+      data: {
+        user: user,
+      },
+    })
+
+    dialogRef.afterClosed().subscribe((response) => {
+      if (response) {
+        this.userService.removeUser(user.id).subscribe((_response) => {
+          this.getUsers(this.page)
+        })
+      }
     })
   }
 
