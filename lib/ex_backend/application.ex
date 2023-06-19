@@ -91,7 +91,7 @@ defmodule ExBackend.Application do
           ExBackend.Accounts.reset_root_password(account)
 
         _ ->
-          Logger.info("Root user already exists")
+          Logger.notice("Root user already exists")
       end
     end
   end
@@ -121,7 +121,7 @@ defmodule ExBackend.Application do
         role
 
       {role, _} ->
-        Logger.info("Role #{name} already exists: #{inspect(role)}")
+        Logger.notice("Role #{name} already exists: #{inspect(role)}")
     end
   end
 end

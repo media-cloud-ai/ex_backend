@@ -35,7 +35,7 @@ defmodule ExBackendWeb.ConfirmController do
   defp send_confirmation_email(user) do
     case Accounts.Message.confirm_success(user.email) do
       {:ok, _sent_mail} ->
-        Logger.info("Email delivery success")
+        Logger.notice("Email delivery success")
 
       {:error, error} ->
         Logger.error("Email delivery failure: #{inspect(error)}")
