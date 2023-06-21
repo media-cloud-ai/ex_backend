@@ -136,6 +136,7 @@ export class Workflow {
     return (
       !this.is_stopped() &&
       !this.is_about_to_clean_workspace() &&
+      !(this.is_live && this.status.state != 'processing') && // We can't stop a pending live workflow
       (this.has_at_least_one_processing_step() ||
         this.is_paused() ||
         this.is_live)
@@ -152,7 +153,8 @@ export class Workflow {
       !this.is_paused() &&
       (this.has_at_least_one_queued_job() ||
         this.has_at_least_one_processing_step()) &&
-      !is_last_step_processing
+      !is_last_step_processing &&
+      !this.is_live
     )
   }
 
