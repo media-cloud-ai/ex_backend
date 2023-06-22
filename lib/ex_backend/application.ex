@@ -75,7 +75,7 @@ defmodule ExBackend.Application do
     root_email = System.get_env("ROOT_EMAIL") || Application.get_env(:ex_backend, :root_email)
 
     if is_nil(root_email) do
-      Logger.warn("No root user created")
+      Logger.info("No root user created")
     else
       account = ExBackend.Accounts.get(1)
 
@@ -91,7 +91,7 @@ defmodule ExBackend.Application do
           ExBackend.Accounts.reset_root_password(account)
 
         _ ->
-          Logger.notice("Root user already exists")
+          Logger.info("Root user already exists")
       end
     end
   end
@@ -121,7 +121,7 @@ defmodule ExBackend.Application do
         role
 
       {role, _} ->
-        Logger.notice("Role #{name} already exists: #{inspect(role)}")
+        Logger.info("Role #{name} already exists: #{inspect(role)}")
     end
   end
 end

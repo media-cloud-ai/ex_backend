@@ -69,7 +69,7 @@ defmodule ExBackendWeb.PlayerController do
       start = start_pos |> String.to_integer()
       length = (end_pos |> String.to_integer()) - start + 1
 
-      Logger.notice("Send part of file #{path} (#{start}, #{length})")
+      Logger.debug("Send part of file #{path} (#{start}, #{length})")
       {:ok, data} = :file.pread(file, start, length)
       :file.close(file)
 
