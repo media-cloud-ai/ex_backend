@@ -25,8 +25,7 @@ config :phauxth,
   endpoint: ExBackendWeb.Endpoint,
   user_context: ExBackend.Accounts,
   token_module: ExBackendWeb.Auth.Token,
-  crypto_module: Bcrypt,
-  log_level: :warn
+  crypto_module: Bcrypt
 
 # Mailer configuration
 config :ex_backend, ExBackend.Mailer, adapter: Bamboo.LocalAdapter
