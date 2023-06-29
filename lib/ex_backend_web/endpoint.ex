@@ -79,9 +79,11 @@ defmodule ExBackendWeb.Endpoint do
       hostname =
         System.get_env("HOSTNAME") || raise "expected the HOSTNAME environment variable to be set"
 
+      protocol = String.to_existing_atom(System.get_env("INTERNET_PROTOCOL", "inet6"))
+
       config =
         config
-        |> Keyword.put(:http, [:inet6, port: port])
+        |> Keyword.put(:http, [protocol, port: port])
         |> Keyword.put(:url, host: hostname, port: port)
 
       {:ok, config}
