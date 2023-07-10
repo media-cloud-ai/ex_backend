@@ -88,8 +88,8 @@ defmodule ExBackend.Accounts do
     root_password = User.generate_root_password()
     {:ok, user} = update_password(user, %{password: root_password})
     {:ok, _user} = confirm_user(user)
-    Logger.info("Root user created with password: #{root_password}")
-    Logger.info("Please change this password after first connection !")
+    Logger.warn("Root user created with password: #{root_password}")
+    Logger.warn("Please change this password after first connection !")
   end
 
   def reset_root_password(account) do
