@@ -25,6 +25,8 @@ include:
   - template: Jobs/SAST.gitlab-ci.yml
   - template: Jobs/Build.gitlab-ci.yml
   - template: Security/Container-Scanning.gitlab-ci.yml
+  - template: Security/Secret-Detection.gitlab-ci.yml
+
 
 sast:
   before_script: []
@@ -35,6 +37,8 @@ container_scanning:
 build:
   before_script: []
 
+secret_detection:
+  before_script: []
 
 mix_openapi:
   stage: test
