@@ -5,15 +5,17 @@ variables:
   BUILD_EMPTY_DIRECTORIES: priv/repo/migrations deps/step_flow/priv/repo/migrations
   CONTAINER_REGISTRY: registry.gitlab.com
   CONTAINER_IMAGE_NAME: media-cloud-ai/backend/ex_backend
+  CS_DEFAULT_BRANCH_IMAGE: $CI_REGISTRY_IMAGE/$CI_DEFAULT_BRANCH:$CI_COMMIT_SHA
+  CS_DOCKERFILE_PATH: ./Dockerfile
 
 services:
   - postgres:14.4-alpine
   - rabbitmq:3.8.14-alpine
 
 stages:
+    - build
     - test
     - publish
-    - scan
 
 include:
   - project: 'media-cloud-ai/ci/pipelines'
@@ -21,9 +23,18 @@ include:
   - project: 'media-cloud-ai/ci/pipelines'
     file: 'elixir/elixir-base.yml'
   - template: Jobs/SAST.gitlab-ci.yml
+  - template: Jobs/Build.gitlab-ci.yml
+  - template: Security/Container-Scanning.gitlab-ci.yml
 
 sast:
   before_script: []
+
+container_scanning:
+  before_script: []
+
+build:
+  before_script: []
+
 
 mix_openapi:
   stage: test
