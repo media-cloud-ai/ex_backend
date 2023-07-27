@@ -1,3 +1,41 @@
+<a name="1.7.3"></a>
+## [1.7.3] - 2023-07-27
+
+### Feat
+- disable stopping live when pendint
+- update step_flow version
+- duplicate workflows by sending event
+- new password component
+- improve add user form error handling
+
+### Fix
+- inet protocol config with env var
+- Webpack stops watching when the backend stops
+- add password-validator in package dependancies
+
+<a name="1.7.2"></a>
+## [1.7.2] - 2023-06-08
+
+### Feat
+- add password change in user administration
+- add password change route to api
+- add configuration fields for AMQP message persistence in queues
+- Improve CSS on user page
+- open a dialog box when adding a user
+- Display confirmation dialog when deleting a user
+- add user search bar in ui
+
+### Fix
+- correct the css style of roles tab
+- root account creation and password reset
+
+### Perf
+- trigger user search on enter key only
+
+### Refactor
+- harmonize title of dialog box
+- change search bar display in user page
+
 <a name="1.7.1"></a>
 ## [1.7.1] - 2023-03-08
 ### Feat
@@ -433,6 +471,8 @@
 ### Fix
 - generate only one time the datetime of uploaded content
 
+[1.7.3]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.7.2...1.7.3
+[1.7.2]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.7.1...1.7.2
 [1.7.1]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.7.0...1.7.1
 [1.7.0]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.6.1...1.7.0
 [1.6.1]: https://gitlab.com/media-cloud-ai/backend/ex_backend/compare/1.6.0...1.6.1
