@@ -155,15 +155,13 @@ export class WorkflowActionsComponent {
   }
 
   duplicate(): void {
-    const duplicate_parameters =
-      this.workflowService.getCreateWorkflowParameters(this.workflow)
     this.workflowService
-      .createWorkflow(duplicate_parameters)
+      .sendWorkflowEvent(this.workflow.id, { event: 'duplicate' })
       .subscribe((response) => {
         if (response) {
           console.log(response)
           this.router
-            .navigate(['/workflows/' + response.data.id])
+            .navigate(['/workflows/' + response.workflow_id])
             .then((_page) => {
               window.location.reload()
             })

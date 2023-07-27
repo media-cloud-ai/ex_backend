@@ -16,6 +16,7 @@
 | `DATABASE_HOSTNAME`    |                              | Host of the database (IP or DNS).               |
 | `PORT`                 |                              | Port to access the application.                 |
 | `SSL`                  |                              | If TRUE the application run with HTTPS.         |
-| `MCAI_RESET_ROOT_PASSWORD`                  |                              | If TRUE the root password is reset.         |
+| `MCAI_RESET_ROOT_PASSWORD`|                           | If TRUE the root password is reset.             |
 | `ROOT_EMAIL`           |                              | Application email for administrator.            |
 | `HOSTNAME`             |                              | Application hostname (or IP).                   |
+| `INTERNET_PROTOCOL`    |                              | Internet Protocol.                              |

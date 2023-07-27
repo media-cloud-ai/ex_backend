@@ -16,7 +16,8 @@ defmodule ExBackendWeb.ConfirmController do
         case Accounts.update_password(user, params) do
           {:ok, user} ->
             Accounts.confirm_user(user)
-            send_confirmation_email(conn, user)
+
+            send_confirmation_email(user)
             render(conn, "info.json", %{info: "Your account has been confirmed"})
 
           {:error, changeset} ->
@@ -31,18 +32,13 @@ defmodule ExBackendWeb.ConfirmController do
     end
   end
 
-  defp send_confirmation_email(conn, user) do
-    message = "Your account has been confirmed"
-
+  defp send_confirmation_email(user) do
     case Accounts.Message.confirm_success(user.email) do
       {:ok, _sent_mail} ->
-        render(conn, "info.json", %{info: message})
+        Logger.info("Email delivery success")
 
       {:error, error} ->
         Logger.error("Email delivery failure: #{inspect(error)}")
-
-        conn
-        |> send_resp(500, "Internal Server Error")
     end
   end
 end
