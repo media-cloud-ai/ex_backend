@@ -41,7 +41,7 @@ defmodule ExBackendWeb.PlayerController do
     path = Path.join([root, content, filename])
 
     if String.ends_with?(filename, ".ttml") || String.ends_with?(filename, ".vtt") do
-      Logger.warn("Send file #{path}")
+      Logger.notice("Send file #{path}")
 
       conn
       |> put_resp_header("Accept-Ranges", "bytes")
@@ -69,7 +69,7 @@ defmodule ExBackendWeb.PlayerController do
       start = start_pos |> String.to_integer()
       length = (end_pos |> String.to_integer()) - start + 1
 
-      Logger.warn("Send part of file #{path} (#{start}, #{length})")
+      Logger.debug("Send part of file #{path} (#{start}, #{length})")
       {:ok, data} = :file.pread(file, start, length)
       :file.close(file)
 

@@ -75,7 +75,7 @@ defmodule ExBackend.Application do
     root_email = System.get_env("ROOT_EMAIL") || Application.get_env(:ex_backend, :root_email)
 
     if is_nil(root_email) do
-      Logger.warn("No root user created")
+      Logger.info("No root user created")
     else
       account = ExBackend.Accounts.get(1)
 
