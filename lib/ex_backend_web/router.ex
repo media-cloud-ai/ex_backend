@@ -1,12 +1,27 @@
 defmodule ExBackendWeb.Router do
   use ExBackendWeb, :router
 
+  @content_security_policy (case Mix.env() do
+                              :prod ->
+                                "default-src 'self';connect-src wss://#{@host};img-src 'self' blob:;"
+
+                              _ ->
+                                "default-src 'self' 'unsafe-eval' 'unsafe-inline';" <>
+                                  "connect-src *;" <>
+                                  "img-src 'self' blob: data:;" <>
+                                  "font-src http:;" <>
+                                  "style-src 'unsafe-inline' https:;"
+                            end)
+
   pipeline :browser do
     plug(:accepts, ["html"])
     plug(:fetch_session)
     plug(:fetch_flash)
     plug(:protect_from_forgery)
-    plug(:put_secure_browser_headers, %{"content-security-policy" => "default-src 'self'"})
+
+    plug(:put_secure_browser_headers, %{
+      "content-security-policy" => @content_security_policy
+    })
   end
 
   pipeline :api do
