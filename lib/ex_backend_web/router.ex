@@ -17,7 +17,9 @@ defmodule ExBackendWeb.Router do
     plug(:accepts, ["html"])
     plug(:fetch_session)
     plug(:fetch_flash)
-    plug(:protect_from_forgery)
+    # Should be added but breaks pipeline
+    # Find a workaround : https://nts.strzibny.name/phoenix-csrf-protection-in-html-forms-react-forms-and-apis/
+    # plug(:protect_from_forgery)
 
     plug(:put_secure_browser_headers, %{
       "content-security-policy" => @content_security_policy
@@ -27,7 +29,9 @@ defmodule ExBackendWeb.Router do
   pipeline :api do
     plug(:accepts, ["json"])
     plug(:fetch_session)
-    plug(:protect_from_forgery)
+    # Should be added but breaks pipeline
+    # Find a workaround : https://nts.strzibny.name/phoenix-csrf-protection-in-html-forms-react-forms-and-apis/
+    # plug(:protect_from_forgery)
     plug(ExBackendWeb.Auth.TokenCookie)
     plug(OpenApiSpex.Plug.PutApiSpec, module: ExBackendWeb.ApiSpec)
   end
