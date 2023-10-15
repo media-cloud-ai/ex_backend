@@ -82,8 +82,8 @@ export class WorkflowSearchBarComponent {
     identifiers: [],
     mode: ['file', 'live'],
     selectedDateRange: {
-      startDate: moment(),
-      endDate: moment(),
+      startDate: moment().toISOString(),
+      endDate: moment().toISOString(),
     },
     search: undefined,
     status: ['completed', 'error'],
@@ -261,6 +261,18 @@ export class WorkflowSearchBarComponent {
 
   sortFiltersName(a, b) {
     return a['name'].localeCompare(b['name'])
+  }
+
+  searchWorkflowsUtc() {
+    this.parameters.selectedDateRange.startDate =
+      this.parameters.selectedDateRange.startDate
+        .utc()
+        .format('YYYY-MM-DDTHH:mm:ss')
+    this.parameters.selectedDateRange.endDate =
+      this.parameters.selectedDateRange.endDate
+        .utc()
+        .format('YYYY-MM-DDTHH:mm:ss')
+    this.searchWorkflows()
   }
 
   searchWorkflows() {
