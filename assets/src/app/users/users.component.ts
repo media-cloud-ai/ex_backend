@@ -107,10 +107,12 @@ export class UsersComponent {
 
   eventGetUsers(event): void {
     // this.router.navigate(['/users'], { queryParams: this.getQueryParamsForPage(event.pageIndex) })
+    this.pageSize = event.pageSize
     this.getUsers(event.pageIndex)
   }
 
   eventGetRoles(event): void {
+    this.pageSize = event.pageSize
     this.getRoles(event.pageIndex)
   }
 
