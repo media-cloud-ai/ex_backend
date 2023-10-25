@@ -31,7 +31,7 @@
         [alwaysShowCalendars]="true"
         placeholder="Choose date"
         [(ngModel)]="parameters.selectedDateRange"
-        (datesUpdated)="searchWorkflows()"
+        (datesUpdated)="searchWorkflowsUtc()"
       />
 
       <button mat-button color="primary" (click)="clearFilters()">
