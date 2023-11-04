@@ -15,6 +15,11 @@ import Config
 # which you typically run after static files are built.
 config :ex_backend, ExBackendWeb.Endpoint,
   load_from_system_env: true,
+  secret_key_base:
+    System.get_env(
+      "MCAI_BACKEND_SECRET_KEY_BASE",
+      "WzHyGzHsy0VflZcAynNf3xwUbUBzw3m7BkaiuiVpD0qofv0r8+BlXDJzadh+NTLN"
+    ),
   url: [scheme: "https", host: System.get_env("EXPOSED_DOMAIN_NAME"), port: 443],
   check_origin: false,
   root: ".",
@@ -60,13 +65,6 @@ config :logger, level: :info
 #
 #     config :ex_backend, ExBackendWeb.Endpoint, server: true
 #
-
-config :ex_backend, ExBackendWeb.Endpoint,
-  secret_key_base: System.get_env("MCAI_BACKEND_SECRET_KEY_BASE") || 
-                   raise """
-                    Environment variable MCAI_BACKEND_SECRET_KEY_BASE is missing.
-                    You can generate one by calling: mix phx.gen.secret
-                   """
 
 config :logger, level: :info
 
