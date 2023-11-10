@@ -1,9 +1,19 @@
 defmodule ExBackendWeb.Router do
   use ExBackendWeb, :router
 
+  # @host :ex_backend
+  #       |> Application.get_env(ExBackendWeb.Endpoint)
+  #       |> Keyword.fetch!(:url)
+  #       |> Keyword.fetch!(:host)
+
   @content_security_policy (case Mix.env() do
                               :prod ->
-                                "default-src 'self';connect-src wss://#{@host};img-src 'self' blob:;"
+                                # "connect-src 'self' wss://#{@host};" <>
+                                "default-src 'self' 'unsafe-eval';" <>
+                                  "connect-src 'self';" <>
+                                  "img-src 'self' blob: data:;" <>
+                                  "style-src 'self' https://fonts.googleapis.com 'unsafe-inline';" <>
+                                  "font-src 'self' https://fonts.gstatic.com;"
 
                               _ ->
                                 "default-src 'self' 'unsafe-eval' 'unsafe-inline';" <>
