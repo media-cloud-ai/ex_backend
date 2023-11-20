@@ -1,17 +1,47 @@
 defmodule ExBackendWeb.Router do
   use ExBackendWeb, :router
 
+  # @host :ex_backend
+  #       |> Application.get_env(ExBackendWeb.Endpoint)
+  #       |> Keyword.fetch!(:url)
+  #       |> Keyword.fetch!(:host)
+
+  @content_security_policy (case Mix.env() do
+                              :prod ->
+                                # "connect-src 'self' wss://#{@host};" <>
+                                "default-src 'self' 'unsafe-eval';" <>
+                                  "connect-src 'self';" <>
+                                  "img-src 'self' blob: data:;" <>
+                                  "style-src 'self' https://fonts.googleapis.com 'unsafe-inline';" <>
+                                  "font-src 'self' https://fonts.gstatic.com;"
+
+                              _ ->
+                                "default-src 'self' 'unsafe-eval' 'unsafe-inline';" <>
+                                  "connect-src *;" <>
+                                  "img-src 'self' blob: data:;" <>
+                                  "font-src http:;" <>
+                                  "style-src 'unsafe-inline' https:;"
+                            end)
+
   pipeline :browser do
     plug(:accepts, ["html"])
     plug(:fetch_session)
     plug(:fetch_flash)
-    plug(:protect_from_forgery)
-    plug(:put_secure_browser_headers)
+    # Should be added but breaks pipeline
+    # Find a workaround : https://nts.strzibny.name/phoenix-csrf-protection-in-html-forms-react-forms-and-apis/
+    # plug(:protect_from_forgery)
+
+    plug(:put_secure_browser_headers, %{
+      "content-security-policy" => @content_security_policy
+    })
   end
 
   pipeline :api do
     plug(:accepts, ["json"])
     plug(:fetch_session)
+    # Should be added but breaks pipeline
+    # Find a workaround : https://nts.strzibny.name/phoenix-csrf-protection-in-html-forms-react-forms-and-apis/
+    # plug(:protect_from_forgery)
     plug(ExBackendWeb.Auth.TokenCookie)
     plug(OpenApiSpex.Plug.PutApiSpec, module: ExBackendWeb.ApiSpec)
   end

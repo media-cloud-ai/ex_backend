@@ -4,7 +4,7 @@ defmodule ExBackend.Mixfile do
   def project do
     [
       app: :ex_backend,
-      version: "1.7.3",
+      version: "1.8.0",
       elixir: "~> 1.9",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -113,7 +113,8 @@ defmodule ExBackend.Mixfile do
       {:ranch, "~> 1.8.0"},
       {:remote_dockers, "1.4.0"},
       {:sigaws, "~> 0.7.2"},
-      {:step_flow, "1.7.3"},
+      {:step_flow, "1.8.0"},
+      {:sobelow, "~> 0.8", only: :dev},
       {:tesla, "~> 1.4.0"},
       {:timex, "~> 3.6"},
       {:uuid, "~> 1.1"}
@@ -146,6 +147,7 @@ defmodule ExBackend.Mixfile do
         "openapi.spec.json --spec ExBackendWeb.ApiSpec --start-app=false --pretty priv/static/backend_openapi.json"
       ],
       test: ["ecto.drop", "ecto.create --quiet", "ecto.migrate", "test"],
+      audit: ["deps.audit"],
       version: &get_version/1
     ]
   end

@@ -24,7 +24,7 @@ defmodule ExBackendWeb.Endpoint do
   end
 
   plug(Plug.RequestId)
-  plug(Plug.Logger)
+  plug(Plug.Logger, log: :debug)
 
   plug(CORSPlug,
     headers: [

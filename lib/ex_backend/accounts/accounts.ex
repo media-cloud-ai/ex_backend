@@ -96,8 +96,8 @@ defmodule ExBackend.Accounts do
     if Map.get(account, :id) == 1 do
       root_password = User.generate_root_password()
       {:ok, _user} = update_password(account, %{password: root_password})
-      Logger.warn("Root user reset with password: #{root_password}")
-      Logger.warn("Please change this password after next connection !")
+      Logger.info("Root user reset with password: #{root_password}")
+      Logger.info("Please change this password after next connection !")
     end
   end
 
