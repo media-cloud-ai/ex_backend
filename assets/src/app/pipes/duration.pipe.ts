@@ -44,7 +44,8 @@ export class DurationPipe implements PipeTransform {
     }
 
     let display = ''
-    const hours = duration.hours()
+    const days = duration.days()
+    const hours = duration.hours() + 24 * days
     const minutes = duration.minutes()
     const seconds = duration.seconds()
 
