@@ -17,7 +17,7 @@
     <span class="created" *ngIf="parameters.headers.includes('created_at')">
       <label> Created at </label>
       <span class="date">
-        {{ workflow.created_at | date : 'd LLLL yy' }}
+        {{ workflow.created_at + 'Z' | date : 'd LLLL yy' }}
       </span>
       <span class="hour">
         {{ workflow.created_at + 'Z' | date : 'HH:mm:ss' }}
