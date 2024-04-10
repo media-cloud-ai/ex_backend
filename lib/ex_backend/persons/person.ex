@@ -13,7 +13,7 @@ defmodule ExBackend.Persons.Person do
     field(:birth_city, :string, default: "")
     field(:birth_country, :string, default: "")
     field(:nationalities, {:array, :string}, default: [])
-    field(:links, :map, defaut: %{})
+    field(:links, :map, default: %{})
 
     timestamps()
   end

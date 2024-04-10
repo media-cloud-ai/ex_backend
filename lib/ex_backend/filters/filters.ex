@@ -4,7 +4,7 @@ defmodule ExBackend.Filters do
   use Ecto.Schema
   import Ecto.Changeset
   import Ecto.Query
-  alias ExBackend.Accounts
+  alias ExBackend.Accounts.User
   alias ExBackend.Filters
   alias ExBackend.Repo
 
@@ -20,7 +20,7 @@ defmodule ExBackend.Filters do
     field(:filters, :map, default: %{})
     field(:active, :boolean, default: true)
 
-    belongs_to(:user, Accounts)
+    belongs_to(:user, User)
 
     timestamps()
   end
