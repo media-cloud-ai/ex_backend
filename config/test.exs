@@ -65,3 +65,7 @@ config :bcrypt_elixir, log_rounds: 4
 
 # Mailer test configuration
 config :ex_backend, ExBackend.SMTPMailer, adapter: Bamboo.TestAdapter
+
+# Finally import the config/test.secret.exs
+if File.exists?("config/test.secret.exs"),
+  do: import_config("test.secret.exs")

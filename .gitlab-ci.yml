@@ -13,8 +13,9 @@ services:
   - rabbitmq:3.8.14-alpine
 
 stages:
-    - build
     - test
+    - build
+    - scanning
     - publish
 
 include:
@@ -32,6 +33,7 @@ sast:
   before_script: []
 
 container_scanning:
+  stage: scanning
   before_script: []
 
 build:

@@ -149,7 +149,6 @@ defmodule ExBackend.Mixfile do
         "openapi.spec.json --spec ExBackendWeb.ApiSpec --start-app=false --pretty priv/static/backend_openapi.json"
       ],
       test: ["ecto.drop", "ecto.create --quiet", "ecto.migrate", "test"],
-      audit: ["deps.audit"],
       version: &get_version/1
     ]
   end
