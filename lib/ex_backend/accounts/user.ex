@@ -39,36 +39,34 @@ defmodule ExBackend.Accounts.User do
         attrs
       end
 
-    attrs =
-      if ExBackend.Map.get_by_key_or_atom(attrs, :username) do
-        attrs
-      else
-        if Map.get(attrs, :first_name) && Map.get(attrs, :last_name) do
-          username =
-            String.downcase(
-              String.at(Map.get(attrs, :first_name), 0) <> Map.get(attrs, :last_name)
-            )
-
-          Map.put(attrs, :username, username)
-        else
-          if Map.get(attrs, "first_name") && Map.get(attrs, "last_name") do
-            username =
-              String.downcase(
-                String.at(Map.get(attrs, "first_name"), 0) <> Map.get(attrs, "last_name")
-              )
-
-            Map.put(attrs, "username", username)
-          else
-            attrs
-          end
-        end
-      end
+    attrs = set_username_attribute(attrs)
 
     user
     |> cast(attrs, user_cast(is_root))
     |> validate_required([:email, :first_name, :last_name, :username, :uuid])
     |> unique_email
   end
+
+  def set_username_attribute(%{username: _} = attrs), do: attrs
+  def set_username_attribute(%{"username" => _} = attrs), do: attrs
+
+  def set_username_attribute(%{first_name: first_name, last_name: last_name} = attrs) do
+    username =
+      (String.at(first_name, 0) <> last_name)
+      |> String.downcase()
+
+    Map.put(attrs, :username, username)
+  end
+
+  def set_username_attribute(%{"first_name" => first_name, "last_name" => last_name} = attrs) do
+    username =
+      (String.at(first_name, 0) <> last_name)
+      |> String.downcase()
+
+    Map.put(attrs, "username", username)
+  end
+
+  def set_username_attribute(attrs), do: attrs
 
   defp user_cast(is_root) do
     if is_root do
