@@ -91,7 +91,6 @@ defmodule ExBackend.Mixfile do
       {:ex_aws_s3, "~> 2.0"},
       {:ex_imdb_sniffer, "~> 0.1.1"},
       {:ex_mock, "~> 0.1.1", only: :test},
-      {:ex_video_factory, "0.3.14"},
       {:fake_server, "~> 2.1", only: :test},
       {:gettext, "~> 0.14"},
       {:hackney, "~> 1.6"},
