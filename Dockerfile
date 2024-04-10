@@ -26,7 +26,6 @@ ADD . .
 RUN mix deps.get && \
     mix compile && \
     mix distillery.release --env=$MIX_ENV && \
-    mix generate_documentation && \
     cd assets && \
     npm install && \
     npm install node-gyp && \
@@ -51,7 +50,6 @@ RUN apk update && \
 
 COPY --from=ex_builder /app/_build/prod/rel/ex_backend .
 COPY --from=ex_builder /app/priv/static static/
-COPY --from=ex_builder /app/documentation.json .
 
 RUN apk add --no-cache tzdata
 
