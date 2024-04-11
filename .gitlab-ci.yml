@@ -18,6 +18,9 @@ stages:
     - scanning
     - publish
 
+default:
+  image: elixir:1.14.5
+
 include:
   - project: 'media-cloud-ai/ci/pipelines'
     file: 'elixir/elixir-publish-docker.yml'
