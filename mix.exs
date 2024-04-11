@@ -83,7 +83,6 @@ defmodule ExBackend.Mixfile do
       {:cors_plug, "~> 2.0"},
       {:cowboy, "~> 2.10.0"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
-      {:distillery, "~> 2.1"},
       {:ecto, "~> 3.11"},
       {:ecto_sql, "~> 3.11"},
       {:excoveralls, "~> 0.16", only: :test},

@@ -25,7 +25,7 @@ ADD . .
 
 RUN mix deps.get && \
     mix compile && \
-    mix distillery.release --env=$MIX_ENV && \
+    mix release && \
     cd assets && \
     npm install && \
     npm install node-gyp && \
