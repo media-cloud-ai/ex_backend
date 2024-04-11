@@ -121,10 +121,6 @@ config :ex_backend,
   acs_app: "acs_launcher.sh",
   asp_app: "ASP_V3"
 
-config :ex_video_factory,
-  mode: :custom,
-  endpoint: {:system, "VIDEO_FACTORY_ENDPOINT"}
-
 config :step_flow, StepFlow,
   workers_work_directory: {:system, "WORKERS_WORK_DIRECTORY"},
   workflow_definition: {:system, "STEP_FLOW_WORKFLOW_DIRECTORY"},

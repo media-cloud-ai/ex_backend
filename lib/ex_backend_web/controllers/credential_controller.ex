@@ -64,7 +64,8 @@ defmodule ExBackendWeb.CredentialController do
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(ExBackendWeb.ChangesetView, "error.json", changeset: changeset)
+        |> put_view(ExBackendWeb.ChangesetView)
+        |> render("error.json", changeset: changeset)
     end
   end
 
@@ -91,7 +92,8 @@ defmodule ExBackendWeb.CredentialController do
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> render(ExBackendWeb.ChangesetView, "error.json", changeset: changeset)
+        |> put_view(ExBackendWeb.ChangesetView)
+        |> render("error.json", changeset: changeset)
     end
   end
 

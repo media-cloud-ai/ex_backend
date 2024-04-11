@@ -148,6 +148,6 @@ config :step_flow, StepFlow.Amqp,
 
 config :httpotion, :default_timeout, 60000
 
-# Finally import the config/prod.secret.exs
+# Finally import the config/dev.secret.exs
 # with the private section for passwords
-# import_config "dev.secret.exs"
+import_config "dev.secret.exs"

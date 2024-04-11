@@ -13,9 +13,13 @@ services:
   - rabbitmq:3.8.14-alpine
 
 stages:
-    - build
     - test
+    - build
+    - scanning
     - publish
+
+default:
+  image: elixir:1.14.5
 
 include:
   - project: 'media-cloud-ai/ci/pipelines'
@@ -32,6 +36,7 @@ sast:
   before_script: []
 
 container_scanning:
+  stage: scanning
   before_script: []
 
 build:
