@@ -25,10 +25,8 @@
 </div>
 
 <div *ngIf="application">
-  <amqp-queues *ngIf="right_technician"> </amqp-queues>
+  <amqp-queues> </amqp-queues>
 
-  <watchers-component
-    *ngIf="right_technician && application.identifier == 'vidtext'"
-  >
+  <watchers-component *ngIf="application.identifier == 'vidtext'">
   </watchers-component>
 </div>
