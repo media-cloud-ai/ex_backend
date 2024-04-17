@@ -44,4 +44,10 @@ defmodule ExBackend.UserTest do
 
     assert attrs == User.set_username_attribute(attrs)
   end
+
+  test "test password changeset" do
+    changeset = User.password_changeset(%User{}, %{password: "My password"})
+
+    assert Bcrypt.verify_pass(changeset.changes.password, changeset.changes.password_hash)
+  end
 end

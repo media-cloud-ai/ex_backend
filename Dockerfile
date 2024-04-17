@@ -1,4 +1,4 @@
-FROM elixir:1.13.3-alpine AS ex_builder
+FROM elixir:1.15.7-otp-26-alpine AS ex_builder
 
 RUN apk update && \
     apk add --no-cache \
@@ -25,7 +25,7 @@ ADD . .
 
 RUN mix deps.get && \
     mix compile && \
-    mix distillery.release --env=$MIX_ENV && \
+    mix release && \
     cd assets && \
     npm install && \
     npm install node-gyp && \

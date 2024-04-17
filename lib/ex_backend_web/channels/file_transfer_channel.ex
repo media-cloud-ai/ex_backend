@@ -31,14 +31,14 @@ defmodule ExBackendWeb.FileTransferChannel do
   end
 
   def handle_in("upload_error", %{"job_id" => job_id, "message" => description}, socket) do
-    Logger.warn("upload error for job id #{job_id}: #{description}")
+    Logger.warning("upload error for job id #{job_id}: #{description}")
     Jobs.Status.set_job_status(job_id, "error", %{message: description})
 
     {:noreply, socket}
   end
 
   def handle_in("upload_error", payload, socket) do
-    Logger.warn("upload error: #{inspect(payload)}")
+    Logger.warning("upload error: #{inspect(payload)}")
 
     {:noreply, socket}
   end
