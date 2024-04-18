@@ -65,30 +65,4 @@ defmodule ExBackendWeb.Endpoint do
   )
 
   plug(ExBackendWeb.Router)
-
-  @doc """
-  Callback invoked for dynamically configuring the endpoint.
-
-  It receives the endpoint configuration and checks if
-  configuration should be loaded from the system environment.
-  """
-  def init(_key, config) do
-    if config[:load_from_system_env] do
-      port = System.get_env("PORT") || raise "expected the PORT environment variable to be set"
-
-      hostname =
-        System.get_env("HOSTNAME") || raise "expected the HOSTNAME environment variable to be set"
-
-      protocol = String.to_existing_atom(System.get_env("INTERNET_PROTOCOL", "inet6"))
-
-      config =
-        config
-        |> Keyword.put(:http, [protocol, port: port])
-        |> Keyword.put(:url, host: hostname, port: port)
-
-      {:ok, config}
-    else
-      {:ok, config}
-    end
-  end
 end

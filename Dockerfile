@@ -1,5 +1,8 @@
 FROM elixir:1.15.7-otp-26-alpine AS ex_builder
 
+ARG customAppPort=8080
+ARG customAppHost=localhost
+
 RUN apk update && \
     apk add --no-cache \
     ca-certificates \
@@ -21,6 +24,12 @@ RUN apk update && \
 WORKDIR /app
 ENV MIX_ENV prod
 ENV PATH /root/.yarn/bin:/root/.config/yarn/global/node_modules/.bin:$PATH
+
+# Following env var are needed since `runtime.exs` is called on `mix release` command
+# See https://hexdocs.pm/elixir/1.16.2/Config.html#module-config-runtime-exs
+ENV PORT $customAppPort
+ENV HOSTNAME $customAppHost
+
 ADD . .
 
 RUN mix deps.get && \
