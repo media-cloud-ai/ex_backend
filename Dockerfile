@@ -46,7 +46,7 @@ RUN mix deps.get && \
     mix openapi.backend && \
     mix phx.digest
 
-FROM alpine:3.15
+FROM alpine:3.19.1
 
 WORKDIR /app
 
