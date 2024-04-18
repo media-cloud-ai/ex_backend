@@ -59,4 +59,4 @@ RUN backend="$(ls -1 lib/ | grep ex_backend)" && \
 
 HEALTHCHECK --interval=30s --start-period=2s --retries=2 --timeout=3s CMD curl -v --silent --fail http://localhost:$PORT/ || exit 1
 
-CMD ["./bin/ex_backend", "foreground"]
+CMD ["./bin/ex_backend", "start"]
