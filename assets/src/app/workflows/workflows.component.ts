@@ -67,6 +67,7 @@ export class WorkflowsComponent {
         'reference',
         'created_at',
         'duration',
+        'ended_at',
         'launched_by',
       ],
       detailed: false,
@@ -86,7 +87,14 @@ export class WorkflowsComponent {
       this.parameters.headers =
         params.getAll('headers').length > 0
           ? params.getAll('headers')
-          : ['identifier', 'reference', 'created_at', 'duration', 'launched_by']
+          : [
+              'identifier',
+              'reference',
+              'created_at',
+              'duration',
+              'ended_at',
+              'launched_by',
+            ]
       this.parameters.selectedDateRange.startDate =
         params.get('start_date') != undefined
           ? moment(params.get('start_date'), moment.ISO_8601).toDate()

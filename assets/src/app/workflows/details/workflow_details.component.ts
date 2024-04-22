@@ -14,6 +14,7 @@ import { WorkflowRenderer } from '../../models/workflow_renderer'
 import { Subscription } from 'rxjs'
 import { StatisticsService } from '../../services/statistics.service'
 import { WorkflowDuration } from '../../models/statistics/duration'
+import * as moment from 'moment/moment'
 
 @Component({
   selector: 'workflow-details-component',
@@ -29,6 +30,7 @@ export class WorkflowDetailsComponent {
   parent_workflow: Workflow
   renderer: WorkflowRenderer
   duration: WorkflowDuration = undefined
+  end_date: string = undefined
 
   parameters_opened = false
   notification_hooks_opened = false
@@ -115,6 +117,13 @@ export class WorkflowDetailsComponent {
       .subscribe((response) => {
         if (response && response.data.length > 0) {
           this.duration = response.data[0]
+
+          if (this.workflow.has_ended()) {
+            this.end_date = moment
+              .utc(this.workflow.created_at)
+              .add(this.duration.total, 'seconds')
+              .toISOString()
+          }
         }
       })
   }

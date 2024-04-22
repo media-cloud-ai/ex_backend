@@ -10,10 +10,12 @@
     <span class="identifier" *ngIf="parameters.headers.includes('identifier')"
       >#{{ workflow.id }}</span
     >
+
     <span class="reference" *ngIf="parameters.headers.includes('reference')">
       <video-title-component [id]="workflow.reference"></video-title-component>
       <span class="badge-live" *ngIf="workflow.is_live"> LIVE </span>
     </span>
+
     <span class="created" *ngIf="parameters.headers.includes('created_at')">
       <label> Created at </label>
       <span class="date">
@@ -23,6 +25,18 @@
         {{ workflow.created_at + 'Z' | date : 'HH:mm:ss' }}
       </span>
     </span>
+
+    <span class="ended" *ngIf="parameters.headers.includes('ended_at')">
+      <label> Ended at </label>
+      <span class="date" *ngIf="end_date">
+        {{ end_date | date : 'd LLLL yy' }}
+      </span>
+      <span class="hour" *ngIf="end_date">
+        {{ end_date | date : 'HH:mm:ss' }}
+      </span>
+      <span class="hour" *ngIf="!end_date"> ... </span>
+    </span>
+
     <span class="duration" *ngIf="parameters.headers.includes('duration')">
       <duration-component
         [duration]="duration"
@@ -47,6 +61,7 @@
         display="processing"
       ></duration-component>
     </span>
+
     <span
       title="@{{ user_name }}"
       class="user"
@@ -58,6 +73,7 @@
       <span class="label">Steps:</span>
       <span class="count">{{ getStepsCount() }} / {{ getTotalSteps() }}</span>
     </span>
+
     <span class="status">
       <mat-chip-list>
         <div style="width: 100%">
@@ -67,6 +83,7 @@
         </div>
       </mat-chip-list>
     </span>
+
     <span class="details">
       <a routerLink="/workflows/{{ workflow.id }}">
         <button mat-raised-button color="primary" title="Details">
@@ -74,6 +91,7 @@
         </button>
       </a>
     </span>
+
     <span class="actions">
       <workflow-actions-component
         [workflow]="workflow"

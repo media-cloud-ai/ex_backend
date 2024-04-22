@@ -2,12 +2,13 @@ import { Component, EventEmitter, Input, Output } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
 import { Subscription } from 'rxjs'
 
+import * as moment from 'moment'
+
 import { AuthService } from '../authentication/auth.service'
 import { UserService } from '../services/user.service'
 import { Workflow } from '../models/workflow'
 import { WorkflowQueryParams } from '../models/page/workflow_page'
 import { WorkflowDuration } from '../models/statistics/duration'
-import { SocketService } from '../services/socket.service'
 import { StatisticsService } from '../services/statistics.service'
 
 @Component({
@@ -32,6 +33,7 @@ export class WorkflowComponent {
   right_retry = false
 
   duration: WorkflowDuration = undefined
+  end_date: string = undefined
 
   constructor(
     private authService: AuthService,
@@ -62,6 +64,13 @@ export class WorkflowComponent {
       .subscribe((response) => {
         if (response && response.data.length > 0) {
           this.duration = response.data[0]
+
+          if (this.workflow.has_ended()) {
+            this.end_date = moment
+              .utc(this.workflow.created_at)
+              .add(this.duration.total, 'seconds')
+              .toISOString()
+          }
         }
       })
   }
