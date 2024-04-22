@@ -4,7 +4,6 @@ import { Observable, of } from 'rxjs'
 import { catchError, tap } from 'rxjs/operators'
 
 import { JobData, JobPage } from '../models/page/job_page'
-import { Job } from '../models/job'
 
 @Injectable()
 export class JobService {
