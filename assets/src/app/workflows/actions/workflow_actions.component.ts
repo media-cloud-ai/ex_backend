@@ -38,10 +38,6 @@ export class WorkflowActionsComponent {
     public dialog: MatDialog,
   ) {}
 
-  ngOnInit() {
-    this.onMoreActionsToggle()
-  }
-
   onMoreActionsToggle() {
     this.can_stop = this.workflow.can_stop()
     this.can_pause = this.workflow.can_pause()
