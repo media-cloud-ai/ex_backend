@@ -9,7 +9,7 @@
 
     <link href=https://fonts.googleapis.com/icon?family=Material+Icons rel="stylesheet">
     <script src="<%= static_path(@conn, "/bundles/style.js") %>"></script>
-    <link rel="icon" type="image/png" href="/bundles/images/mediaio_logo.png" />
+    <link rel="icon" type="image/png" href="/bundles/images/mcai_logo_radius.png" />
 
     <style type="text/css">
       body {margin: 0px !important;}

@@ -3,9 +3,9 @@ defmodule ExBackendWeb.UserSocket do
 
   use Phoenix.Socket,
     check_origin: [
-      "https://backend.media-io.com",
-      "https://ai.media-io.com",
-      "//*.media-io.com"
+      "https://backend.media-cloud.ai",
+      "https://ai.media-cloud.ai",
+      "//*.media-cloud.ai"
     ]
 
   alias ExBackendWeb.Auth.Token

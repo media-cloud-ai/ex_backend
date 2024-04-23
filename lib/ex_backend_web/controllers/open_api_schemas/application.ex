@@ -20,7 +20,7 @@ defmodule ExBackendWeb.OpenApiSchemas.Application do
       example: %{
         "identifier" => "MCAI BACKEND",
         "label" => "Backend",
-        "logo" => "/bundles/images/app_logo.png",
+        "logo" => "/bundles/images/media-cloud-ai_black_logo.svg",
         "version" => "1.6.0"
       }
     })
