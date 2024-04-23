@@ -1,5 +1,5 @@
-import { Component, Inject } from '@angular/core'
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
+import { Component } from '@angular/core'
+import { MatDialogRef } from '@angular/material/dialog'
 import { UserService } from '../../services/user.service'
 import { User } from '../../models/user'
 import { FormControl, Validators } from '@angular/forms'
