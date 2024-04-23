@@ -118,6 +118,10 @@ export class Workflow {
     return this.artifacts.length > 0
   }
 
+  public has_ended(): boolean {
+    return ['completed', 'error', 'stopped'].includes(this.status.state)
+  }
+
   has_at_least_one_queued_job(): boolean {
     return this.steps.some((s) => s['jobs']['queued'] == 1)
   }

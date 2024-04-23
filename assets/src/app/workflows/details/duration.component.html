@@ -1,4 +1,4 @@
-<span *ngIf="duration && isFullMode()">
+<span *ngIf="duration && display == 'full'">
   <div
     class="item"
     title="{{ duration.order_pending * 1000 | duration : 'human' }}"

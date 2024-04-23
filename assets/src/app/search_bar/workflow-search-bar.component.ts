@@ -91,6 +91,7 @@ export class WorkflowSearchBarComponent {
       'identifier',
       'reference',
       'created_at',
+      'ended_at',
       'duration',
       'launched_by',
     ],
@@ -143,6 +144,11 @@ export class WorkflowSearchBarComponent {
       id: 'created_at',
       label: 'Creation date',
       checked: this.parameters.headers.includes('created_at'),
+    },
+    {
+      id: 'ended_at',
+      label: 'End date',
+      checked: this.parameters.headers.includes('ended_at'),
     },
     {
       id: 'duration',
@@ -338,6 +344,7 @@ export class WorkflowSearchBarComponent {
         'identifier',
         'reference',
         'created_at',
+        'ended_at',
         'duration',
         'launched_by',
       ],
@@ -364,6 +371,7 @@ export class WorkflowSearchBarComponent {
       'identifier',
       'reference',
       'created_at',
+      'ended_at',
       'duration',
       'launched_by',
     ]

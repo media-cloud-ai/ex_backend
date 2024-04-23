@@ -96,7 +96,7 @@
     </span>
     <span class="duration">
       <duration-component
-        [workflow]="workflow"
+        [duration]="duration"
         display="full"
       ></duration-component>
       <div class="notification_hooks">
@@ -171,6 +171,22 @@
       <div title="@{{ user_name }}" class="item">
         <label>Launched by: </label>
         <span>{{ first_name }} {{ last_name }}</span>
+      </div>
+
+      <div class="item" *ngIf="workflow.created_at">
+        <label> Created at </label>
+        <span class="datetime">
+          {{ workflow.created_at + 'Z' | date : 'd LLLL yy' }}
+          {{ workflow.created_at + 'Z' | date : 'HH:mm:ss' }}
+        </span>
+      </div>
+
+      <div class="item" *ngIf="end_date">
+        <label> Ended at </label>
+        <span class="datetime">
+          {{ end_date | date : 'd LLLL yy' }}
+          {{ end_date | date : 'HH:mm:ss' }}
+        </span>
       </div>
 
       <div class="item" *ngIf="pause_post_action">

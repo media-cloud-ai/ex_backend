@@ -12,6 +12,9 @@ import { WorkflowService } from '../../services/workflow.service'
 import { Workflow } from '../../models/workflow'
 import { WorkflowRenderer } from '../../models/workflow_renderer'
 import { Subscription } from 'rxjs'
+import { StatisticsService } from '../../services/statistics.service'
+import { WorkflowDuration } from '../../models/statistics/duration'
+import * as moment from 'moment/moment'
 
 @Component({
   selector: 'workflow-details-component',
@@ -26,6 +29,8 @@ export class WorkflowDetailsComponent {
   parent_job: Job
   parent_workflow: Workflow
   renderer: WorkflowRenderer
+  duration: WorkflowDuration = undefined
+  end_date: string = undefined
 
   parameters_opened = false
   notification_hooks_opened = false
@@ -42,6 +47,7 @@ export class WorkflowDetailsComponent {
     private userService: UserService,
     private workflowService: WorkflowService,
     private jobService: JobService,
+    private statisticsService: StatisticsService,
     private route: ActivatedRoute,
     private router: Router,
     public dialog: MatDialog,
@@ -52,6 +58,7 @@ export class WorkflowDetailsComponent {
       this.route.params.subscribe((params) => {
         this.workflow_id = +params['id']
         this.getWorkflow(this.workflow_id)
+        this.getDurations()
       }),
     )
 
@@ -63,6 +70,7 @@ export class WorkflowDetailsComponent {
         .onWorkflowUpdate(this.workflow_id)
         .subscribe((_message: Message) => {
           this.getWorkflow(this.workflow_id)
+          this.getDurations()
         }),
     )
 
@@ -101,6 +109,23 @@ export class WorkflowDetailsComponent {
         this.renderWorkflow(workflow)
       }
     })
+  }
+
+  getDurations() {
+    this.statisticsService
+      .getWorkflowDurations(this.workflow_id)
+      .subscribe((response) => {
+        if (response && response.data.length > 0) {
+          this.duration = response.data[0]
+
+          if (this.workflow.has_ended()) {
+            this.end_date = moment
+              .utc(this.workflow.created_at)
+              .add(this.duration.total, 'seconds')
+              .toISOString()
+          }
+        }
+      })
   }
 
   renderWorkflow(workflow) {
