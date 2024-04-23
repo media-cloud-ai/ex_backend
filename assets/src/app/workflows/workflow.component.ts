@@ -79,9 +79,9 @@ export class WorkflowComponent {
     this.detailed = !this.detailed
     if (this.workflow !== undefined && this.detailed) {
       this.authService
-        .hasAnyRights('workflow::' + this.workflow.identifier, 'retry')
+        .hasAnyRights('workflow::' + this.workflow.identifier, ['retry'])
         .subscribe((response) => {
-          this.right_retry = response.authorized
+          this.right_retry = response.authorized['retry']
         })
     }
   }

@@ -13,12 +13,18 @@ defmodule ExBackendWeb.OpenApiSchemas.Rights do
       type: :object,
       properties: %{
         authorized: %Schema{
-          type: :bool,
-          description: "If authorized to do action on given entity"
+          type: :object,
+          additionalProperties: %Schema{
+            type: :string
+          },
+          description: "Indicated whether specified action is authorized or not on given entity"
         }
       },
       example: %{
-        "authorized" => true
+        "authorized" => %{
+          "create" => true,
+          "delete" => false
+        }
       }
     })
   end
@@ -33,11 +39,11 @@ defmodule ExBackendWeb.OpenApiSchemas.Rights do
       type: :object,
       properties: %{
         entity: %Schema{type: :string, description: "Entity to check"},
-        action: %Schema{type: :string, description: "Action to check"}
+        action: %Schema{type: :array, description: "Actions to check"}
       },
       example: %{
         "entity" => "workflow::*",
-        "action" => "view"
+        "actions" => ["view", "create"]
       }
     })
   end
