@@ -178,7 +178,7 @@ defmodule ExBackend.Accounts.Message do
 
   defp get_sender_email do
     System.get_env("APP_SENDER_EMAIL") ||
-      Application.get_env(:ex_backend, :sender_email, "no-reply@media-io.com")
+      Application.get_env(:ex_backend, :sender_email, "no-reply@media-cloud.ai")
   end
 
   defp build_html_body(config, content) do

@@ -7,7 +7,7 @@ video_id = sys.argv[1]
 
 session = {
     "session": {
-        "email": "admin@media-io.com",
+        "email": "admin@media-cloud.ai",
         "password": "admin123"
     }
 }

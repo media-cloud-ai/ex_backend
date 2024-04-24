@@ -23,13 +23,13 @@ defmodule ExBackend.Mixfile do
 
   def blue_bird_info do
     [
-      host: "https://backend.media-io.com",
-      title: "Media-IO Backend",
-      description: "REST API documentation for the Media-IO backend",
+      host: "https://backend.media-cloud.ai",
+      title: "Media-Cloud AI Backend",
+      description: "REST API documentation for the Media-Cloud AI backend",
       contact: [
-        name: "Media-IO",
-        url: "https://media-io.com",
-        email: "contact@media-io.com"
+        name: "Media-Cloud AI",
+        url: "https://media-cloud.ai",
+        email: "contact@media-cloud.ai"
       ]
     ]
   end
