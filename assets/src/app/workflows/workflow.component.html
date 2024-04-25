@@ -65,9 +65,16 @@
     <span
       title="@{{ user_name }}"
       class="user"
-      *ngIf="parameters.headers.includes('launched_by')"
+      *ngIf="parameters.headers.includes('launched_by') && user_name"
     >
       {{ first_name }} {{ last_name }}
+    </span>
+    <span
+      title="{{ workflow.user_uuid }}"
+      class="user user-unknown"
+      *ngIf="parameters.headers.includes('launched_by') && !user_name"
+    >
+      {{ workflow.user_uuid }}
     </span>
     <span class="steps-count" *ngIf="parameters.headers.includes('step_count')">
       <span class="label">Steps:</span>
