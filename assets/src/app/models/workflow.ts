@@ -1,4 +1,6 @@
 import { Job } from './job'
+import { User } from './user'
+import { WorkflowDuration } from './statistics/duration'
 
 export class JobsStatus {
   completed: number
@@ -92,6 +94,8 @@ export class Workflow {
   version_minor?: string
   workflow_id?: number
   parent_id?: number
+  durations?: WorkflowDuration
+  user?: User
 
   static compare(a: Workflow, b: Workflow) {
     const identifierComparison = a.identifier.localeCompare(b.identifier)

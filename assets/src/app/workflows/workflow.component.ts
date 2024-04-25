@@ -10,6 +10,7 @@ import { Workflow } from '../models/workflow'
 import { WorkflowQueryParams } from '../models/page/workflow_page'
 import { WorkflowDuration } from '../models/statistics/duration'
 import { StatisticsService } from '../services/statistics.service'
+import { User } from '../models/user'
 
 @Component({
   selector: 'workflow-component',
@@ -48,40 +49,57 @@ export class WorkflowComponent {
 
   ngOnInit() {
     this.workflow = Object.assign(new Workflow(), this.workflow)
-    this.userService
-      .getUserByUuid(this.workflow.user_uuid)
-      .subscribe((response) => {
-        this.user_name = response.data.email
-        if (response.data.first_name && response.data.last_name) {
-          this.first_name = response.data.first_name
-          this.last_name = response.data.last_name
-          this.user_name = response.data.username
-        }
-      })
 
-    this.statisticsService
-      .getWorkflowDurations(this.workflow.id)
-      .subscribe((response) => {
-        if (response && response.data.length > 0) {
-          this.duration = response.data[0]
+    if (this.workflow.user) {
+      this.setUserDetails(this.workflow.user)
+    } else {
+      this.userService
+        .getUserByUuid(this.workflow.user_uuid)
+        .subscribe((response) => {
+          this.setUserDetails(response.data)
+        })
+    }
 
-          if (this.workflow.has_ended()) {
-            this.end_date = moment
-              .utc(this.workflow.created_at)
-              .add(this.duration.total, 'seconds')
-              .toISOString()
+    if (this.workflow.durations) {
+      this.setDurationsDetails(this.workflow.durations)
+    } else {
+      this.statisticsService
+        .getWorkflowDurations(this.workflow.id)
+        .subscribe((response) => {
+          if (response && response.data.length > 0) {
+            this.setDurationsDetails(response.data[0])
           }
-        }
-      })
+        })
+    }
+  }
+
+  setDurationsDetails(workflowDuration: WorkflowDuration): void {
+    this.duration = workflowDuration
+
+    if (this.workflow.has_ended()) {
+      this.end_date = moment
+        .utc(this.workflow.created_at)
+        .add(this.duration.total, 'seconds')
+        .toISOString()
+    }
+  }
+
+  setUserDetails(user: User): void {
+    this.user_name = user.email
+    if (user.first_name && user.last_name) {
+      this.first_name = user.first_name
+      this.last_name = user.last_name
+      this.user_name = user.username
+    }
   }
 
   switchDetailed(): void {
     this.detailed = !this.detailed
     if (this.workflow !== undefined && this.detailed) {
       this.authService
-        .hasAnyRights('workflow::' + this.workflow.identifier, 'retry')
+        .hasAnyRights('workflow::' + this.workflow.identifier, ['retry'])
         .subscribe((response) => {
-          this.right_retry = response.authorized
+          this.right_retry = response.authorized['retry']
         })
     }
   }

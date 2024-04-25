@@ -152,7 +152,7 @@ defmodule ExBackendWeb.UserController do
 
   operation :check_rights,
     summary: "Check rights",
-    description: "Check user rights for action on entity",
+    description: "Check user rights for actions on entity",
     type: :object,
     request_body: {"CheckRightsBody", "application/json", OpenApiSchemas.Rights.CheckRightsBody},
     responses: [
@@ -162,10 +162,10 @@ defmodule ExBackendWeb.UserController do
 
   def check_rights(%Plug.Conn{assigns: %{current_user: user}} = conn, %{
         "entity" => entity_name,
-        "action" => action
+        "actions" => actions
       }) do
-    with {:ok, authorized} <- Accounts.check_user_rights(user, entity_name, action) do
-      json(conn, %{authorized: authorized})
+    with {:ok, authorizations} <- Accounts.check_user_rights(user, entity_name, actions) do
+      json(conn, %{authorized: authorizations})
     end
   end
 

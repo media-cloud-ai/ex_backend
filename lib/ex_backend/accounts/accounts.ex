@@ -141,13 +141,17 @@ defmodule ExBackend.Accounts do
     User.changeset_user(user, %{})
   end
 
-  def check_user_rights(user, entity, action) do
-    has_right =
+  def check_user_rights(user, entity, actions) do
+    roles =
       user.roles
       |> Enum.map(fn role -> StepFlow.Roles.get_by(%{"name" => role}) end)
-      |> Roles.has_right?(entity, action)
 
-    {:ok, has_right}
+    authorizations =
+      actions
+      |> Enum.map(fn action -> {action, Roles.has_right?(roles, entity, action)} end)
+      |> Map.new()
+
+    {:ok, authorizations}
   end
 
   def set_user_workflow_filters(user, filters) do

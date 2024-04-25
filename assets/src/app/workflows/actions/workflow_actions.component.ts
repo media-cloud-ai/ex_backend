@@ -38,10 +38,6 @@ export class WorkflowActionsComponent {
     public dialog: MatDialog,
   ) {}
 
-  ngOnInit() {
-    this.onMoreActionsToggle()
-  }
-
   onMoreActionsToggle() {
     this.can_stop = this.workflow.can_stop()
     this.can_pause = this.workflow.can_pause()
@@ -49,26 +45,22 @@ export class WorkflowActionsComponent {
     this.can_delete = this.workflow.can_delete()
     this.child_workflow = this.workflow.parent_id != undefined ? true : false
 
+    const actions = ['create']
+
     if (this.can_stop) {
-      this.authService
-        .hasAnyRights('workflow::' + this.workflow.identifier, 'abort')
-        .subscribe((response) => {
-          this.right_stop = response.authorized
-        })
+      actions.push('abort')
     }
 
     if (this.can_delete) {
-      this.authService
-        .hasAnyRights('workflow::' + this.workflow.identifier, 'delete')
-        .subscribe((response) => {
-          this.right_delete = response.authorized
-        })
+      actions.push('delete')
     }
 
     this.authService
-      .hasAnyRights('workflow::' + this.workflow.identifier, 'create')
+      .hasAnyRights('workflow::' + this.workflow.identifier, actions)
       .subscribe((response) => {
-        this.right_duplicate = response.authorized
+        this.right_stop = response.authorized['abort']
+        this.right_duplicate = response.authorized['create']
+        this.right_delete = response.authorized['delete']
       })
   }
 

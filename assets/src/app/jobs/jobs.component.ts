@@ -58,9 +58,9 @@ export class JobsComponent {
     console.log(this.workflow.is_live)
 
     this.authService
-      .hasAnyRights('workflow::' + this.workflow.identifier, 'retry')
+      .hasAnyRights('workflow::' + this.workflow.identifier, ['retry'])
       .subscribe((response) => {
-        this.right_retry = response.authorized
+        this.right_retry = response.authorized['retry']
       })
   }
 

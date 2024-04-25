@@ -60,3 +60,15 @@ export class User {
   last_name: string
   username: string
 }
+
+export class UserRights {
+  authorized: { [key: string]: boolean }
+
+  constructor(authorizations: { [key: string]: boolean }) {
+    this.authorized = authorizations
+  }
+
+  static empty(): UserRights {
+    return new UserRights({})
+  }
+}

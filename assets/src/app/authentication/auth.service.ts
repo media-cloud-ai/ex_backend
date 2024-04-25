@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core'
 import { Router } from '@angular/router'
-import { HttpClient, HttpParams } from '@angular/common/http'
+import { HttpClient } from '@angular/common/http'
 import { CookieService } from 'ngx-cookie-service'
 import { Observable, of, Subject, Subscription } from 'rxjs'
 import { catchError, tap } from 'rxjs/operators'
 
-import { Confirm } from '../models/user'
+import { Confirm, UserRights } from '../models/user'
 import { PasswordReset, PasswordResetError } from '../models/password_reset'
 import { Token } from '../models/token'
 import { UserService } from '../services/user.service'
@@ -162,19 +162,21 @@ export class AuthService {
     return this.roles.includes('editor')
   }
 
-  hasAnyRights(entity: string, action: string): Observable<any> {
+  hasAnyRights(entity: string, actions: string[]): Observable<UserRights> {
     if (!this.roles) {
-      return of(false)
+      return of(UserRights.empty())
     }
-    if (entity === undefined || action == undefined) {
-      return of(false)
+    if (entity === undefined || actions == undefined || actions.length == 0) {
+      return of(UserRights.empty())
     }
-    let params = new HttpParams()
-    params = params.append('entity', entity)
-    params = params.append('action', action)
 
-    return this.http.post<any>('/api/users/check_rights', params).pipe(
-      tap((_userPage) => this.log('Check Rights')),
+    const body = {
+      entity: entity,
+      actions: actions,
+    }
+
+    return this.http.post<UserRights>('/api/users/check_rights', body).pipe(
+      tap((_actionRights) => this.log('Check Rights')),
       catchError(this.handleError('checkRights', undefined)),
     )
   }

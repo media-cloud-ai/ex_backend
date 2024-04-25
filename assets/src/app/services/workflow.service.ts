@@ -17,6 +17,7 @@ import { StartWorkflowDefinition } from '../models/startWorkflowDefinition'
 export class WorkflowService {
   private workflowUrl = '/api/workflow'
   private workflowsUrl = '/api/step_flow/workflows'
+  private workflowsPageUrl = '/api/workflows_page'
   private workflowFiltersUrl = 'api/worfklow_filters'
   private workflowDefinitionsUrl = '/api/step_flow/definitions'
   private statisticsUrl = '/api/step_flow/workflows_statistics'
@@ -106,7 +107,7 @@ export class WorkflowService {
     )
 
     return this.http
-      .get<WorkflowPage>(this.workflowsUrl, { params: params })
+      .get<WorkflowPage>(this.workflowsPageUrl, { params: params })
       .pipe(
         tap((_workflowPage) => this.log('fetched WorkflowPage')),
         catchError(this.handleError('getWorkflows', undefined)),
