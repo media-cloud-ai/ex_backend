@@ -6,7 +6,7 @@ defmodule ExBackendWeb.PasswordResetController do
 
   import ExBackendWeb.Authorize
   alias ExBackend.Accounts
-  alias ExBackendWeb.Auth.Token
+  alias ExBackendWeb.Auth.APIAuthPlug
   alias ExBackendWeb.OpenApiSchemas
 
   tags ["Users"]
@@ -35,8 +35,14 @@ defmodule ExBackendWeb.PasswordResetController do
         |> render("error.json", error: message)
 
       user ->
-        token = Token.sign(%{"email" => user.email})
+        conn
+        |> send_user_password_reset_request_with_token(user, email)
+    end
+  end
 
+  defp send_user_password_reset_request_with_token(conn, user, email) do
+    case APIAuthPlug.create_token(conn, user) do
+      {:ok, conn, token, _} ->
         case Accounts.Message.reset_request(email, token) do
           {:ok, _sent_mail} ->
             message = "Check your inbox for instructions on how to reset your password"
@@ -52,6 +58,9 @@ defmodule ExBackendWeb.PasswordResetController do
             conn
             |> send_resp(500, "Internal Server Error")
         end
+
+      _ ->
+        error(conn, 500, "Could not generate token")
     end
   end
 
@@ -66,22 +75,20 @@ defmodule ExBackendWeb.PasswordResetController do
       forbidden: "Forbidden"
     ]
 
-  def update(conn, %{"password_reset" => params}) do
-    case Token.verify(params, mode: :pass_reset) do
-      {:ok, nil} ->
-        put_status(conn, :unprocessable_entity)
+  def update(conn, %{"password_reset" => %{"key" => token} = params}) do
+    case conn
+         |> assign(:token, token)
+         |> APIAuthPlug.fetch(mode: :pass_reset) do
+      {conn, nil} ->
+        conn
+        |> put_status(:unprocessable_entity)
         |> put_view(ExBackendWeb.PasswordResetView)
         |> render("error.json", error: "Could not find the user in the database")
 
-      {:ok, user} ->
+      {conn, user} ->
         user
         |> Accounts.update_password(params)
         |> update_password(conn, params)
-
-      {:error, message} ->
-        put_status(conn, :unprocessable_entity)
-        |> put_view(ExBackendWeb.PasswordResetView)
-        |> render("error.json", error: message)
     end
   end
 

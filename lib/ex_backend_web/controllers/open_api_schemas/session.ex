@@ -43,14 +43,24 @@ defmodule ExBackendWeb.OpenApiSchemas.Sessions do
       description: "Information for identification",
       type: :object,
       properties: %{
-        access_key_id: %Schema{type: :string, description: "User access key"},
-        secret_access_key: %Schema{type: :string, description: "User secret key"},
-        email: %Schema{type: :string, description: "User email"},
-        password: %Schema{type: :string, description: "User password"}
+        session: %Schema{
+          type: :object,
+          properties: %{
+            email: %Schema{type: :string, description: "User email"},
+            password: %Schema{type: :string, description: "User password"}
+          }
+          # or:
+          # %{
+          #   access_key_id: %Schema{type: :string, description: "User access key"},
+          #   secret_access_key: %Schema{type: :string, description: "User secret key"}
+          # }
+        }
       },
       example: %{
-        access_key_id: "MCAIxxxxxxxxxxxxxxxxxx",
-        secret_access_key: "xxxxxxxxxxxxxxxxxxxxxx"
+        user: %{
+          email: "test@media-cloud.ai",
+          password: "xxxxxxxx"
+        }
       }
     })
   end

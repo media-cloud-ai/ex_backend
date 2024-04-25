@@ -1,5 +1,6 @@
 defmodule ExBackendWeb.Router do
   use ExBackendWeb, :router
+  use Pow.Phoenix.Router
 
   # @host :ex_backend
   #       |> Application.get_env(ExBackendWeb.Endpoint)
@@ -34,15 +35,25 @@ defmodule ExBackendWeb.Router do
     plug(:put_secure_browser_headers, %{
       "content-security-policy" => @content_security_policy
     })
+
+    plug(Pow.Plug.Session, otp_app: :ex_backend)
   end
 
   pipeline :api do
+    plug(:accepts, ["json"])
+    plug(ExBackendWeb.Auth.APIAuthPlug, otp_app: :ex_backend)
+  end
+
+  pipeline :protected_api do
     plug(:accepts, ["json"])
     plug(:fetch_session)
     # Should be added but breaks pipeline
     # Find a workaround : https://nts.strzibny.name/phoenix-csrf-protection-in-html-forms-react-forms-and-apis/
     # plug(:protect_from_forgery)
-    plug(ExBackendWeb.Auth.TokenCookie)
+    plug(ExBackendWeb.Auth.APIRequireAuthenticatedPlug,
+      error_handler: ExBackendWeb.Auth.APIAuthErrorHandler
+    )
+
     plug(OpenApiSpex.Plug.PutApiSpec, module: ExBackendWeb.ApiSpec)
   end
 
@@ -53,7 +64,16 @@ defmodule ExBackendWeb.Router do
     pipe_through(:api)
 
     # Session APIs
-    post("/sessions", SessionController, :create)
+    resources("/sessions", SessionController, singleton: true, only: [:create, :delete])
+    post("/sessions/renew", SessionController, :renew)
+
+    # Passwords APIs
+    post("/password_resets", PasswordResetController, :create)
+    put("/password_resets/update", PasswordResetController, :update)
+  end
+
+  scope "/api", ExBackendWeb do
+    pipe_through(:protected_api)
 
     # Users APIs
     resources("/users", UserController, except: [:new, :edit])
@@ -69,10 +89,6 @@ defmodule ExBackendWeb.Router do
 
     # Watchers APIs
     get("/watchers", WatcherController, :index)
-
-    # Passwords APIs
-    post("/password_resets", PasswordResetController, :create)
-    put("/password_resets/update", PasswordResetController, :update)
 
     # StepFlow APIs
     scope "/step_flow", StepFlow do
@@ -106,7 +122,7 @@ defmodule ExBackendWeb.Router do
 
   # Open API JSON endpoint
   scope "/api/backend" do
-    pipe_through(:api)
+    pipe_through(:protected_api)
     get("/openapi", OpenApiSpex.Plug.RenderSpec, [])
   end
 

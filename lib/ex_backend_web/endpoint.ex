@@ -64,5 +64,7 @@ defmodule ExBackendWeb.Endpoint do
     signing_salt: "ESY1df/P"
   )
 
+  plug(Pow.Plug.Session, otp_app: :ex_backend)
+
   plug(ExBackendWeb.Router)
 end

@@ -5,14 +5,20 @@ defmodule ExBackendWeb.ConfirmController do
 
   import ExBackendWeb.Authorize
   alias ExBackend.Accounts
-  alias ExBackendWeb.Auth.Token
+  alias ExBackendWeb.Auth.APIAuthPlug
 
   def index(conn, params) do
-    case Token.verify(params) do
-      {:ok, nil} ->
+    token = Map.get(params, "key")
+
+    config = Pow.Plug.fetch_config(conn)
+
+    case conn
+         |> assign(:token, token)
+         |> APIAuthPlug.fetch(config) do
+      {conn, nil} ->
         error(conn, :unauthorized, 401)
 
-      {:ok, user} ->
+      {conn, user} ->
         case Accounts.update_password(user, params) do
           {:ok, user} ->
             Accounts.confirm_user(user)
@@ -26,9 +32,6 @@ defmodule ExBackendWeb.ConfirmController do
             |> put_view(ExBackendWeb.ChangesetView)
             |> render("error.json", changeset: changeset)
         end
-
-      {:error, _message} ->
-        error(conn, :unauthorized, 401)
     end
   end
 

@@ -2,11 +2,9 @@ defmodule ExBackend.Accounts.Message do
   @moduledoc """
   A module for sending messages, by email or phone, to the user.
 
-  This module provides functions to be used with the Phauxth authentication
-  library when confirming users or handling password resets. It uses
-  Bamboo, with the LocalAdapter, which is a good development tool.
-  For tests, it uses a test adapter, which is configured in the
-  config/test.exs file.
+  This module uses Bamboo, with the LocalAdapter, which is a good
+  development tool. For tests, it uses a test adapter, which is
+  configured in the config/test.exs file.
 
   For production, you will need to setup a different email adapter.
 

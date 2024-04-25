@@ -5,11 +5,11 @@ defmodule ExBackendWeb.UserController do
   require Logger
 
   import ExBackendWeb.Authorize
+  alias Ecto.Changeset
   alias ExBackend.Accounts
   alias ExBackend.Filters
-  alias ExBackendWeb.Auth.Token
+  alias ExBackendWeb.Auth.APIAuthPlug
   alias ExBackendWeb.OpenApiSchemas
-  alias Phauxth.Log
 
   tags ["Users"]
   security [%{"authorization" => %OpenApiSpex.SecurityScheme{type: "http", scheme: "bearer"}}]
@@ -40,31 +40,32 @@ defmodule ExBackendWeb.UserController do
 
   operation :create, false
 
-  def create(conn, %{"user" => %{"email" => email} = user_params}) do
-    token = Token.sign(%{"email" => email})
+  def create(conn, %{"user" => user_params}) do
+    conn
+    |> Pow.Plug.create_user(user_params)
+    |> case do
+      {:ok, user, conn} ->
+        Logger.info("user #{user.id} created")
 
-    with {:ok, user} <- Accounts.create_user(user_params) do
-      Log.info(%Log{user: user.id, message: "user created"})
+        conn
+        |> put_status(:created)
+        |> put_resp_header("location", user_path(conn, :show, user))
+        |> render("show.json", %{user: user, credentials: false})
 
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", user_path(conn, :show, user))
-      |> render("show.json", %{user: user, credentials: false})
+      {:error, changeset, conn} ->
+        errors =
+          Changeset.traverse_errors(changeset, &format_creation_error/1)
 
-      case Accounts.Message.confirm_request(email, token) do
-        {:ok, _} ->
-          conn
-          |> put_status(:created)
-          |> put_resp_header("location", user_path(conn, :show, user))
-          |> render("show.json", %{user: user, credentials: false})
-
-        {:error, error} ->
-          Logger.error("Email delivery failure: #{inspect(error)}")
-
-          conn
-          |> send_resp(500, "Internal Server Error")
-      end
+        conn
+        |> put_status(422)
+        |> json(%{error: %{message: "Couldn't create user", errors: errors}})
     end
+  end
+
+  defp format_creation_error({msg, opts}) do
+    Regex.replace(~r"%{(\w+)}", msg, fn _, key ->
+      opts |> Keyword.get(String.to_existing_atom(key), key) |> to_string()
+    end)
   end
 
   operation :show,
@@ -180,14 +181,19 @@ defmodule ExBackendWeb.UserController do
       not_found: "Not Found"
     ]
 
-  def generate_validation_link(%Plug.Conn{assigns: %{current_user: user}} = conn, %{
-        "id" => id
-      }) do
+  def generate_validation_link(%Plug.Conn{assigns: %{current_user: user}} = conn, %{"id" => id}) do
     user = (id == to_string(user.id) and user) || Accounts.get(id)
 
-    token = Token.sign(%{"email" => user.email})
-    validation_link = Accounts.Message.get_url_base() <> "/confirm?key=" <> token
-    json(conn, %{validation_link: validation_link})
+    case APIAuthPlug.create_token(conn, user) do
+      {:ok, conn, token, _} ->
+        validation_link =
+          Accounts.Message.get_url_base() <> "/confirm?key=" <> token
+
+        json(conn, %{validation_link: validation_link})
+
+      _ ->
+        error(conn, 500, "Could not generate token")
+    end
   end
 
   operation :change_password,

@@ -6,7 +6,6 @@ defmodule ExBackend.Accounts do
   require Logger
 
   import Ecto.{Query, Changeset}, warn: false
-  alias Phauxth.Log
   alias ExBackend.{Accounts.User, Repo}
   alias StepFlow.Controllers.Roles
 
@@ -108,8 +107,12 @@ defmodule ExBackend.Accounts do
 
   def create_password_reset(attrs) do
     with %User{} = user <- get_by(attrs) do
-      change(user, %{reset_sent_at: DateTime.utc_now()}) |> Repo.update()
-      Log.info(%Log{user: user.id, message: "password reset requested"})
+      user
+      |> change(%{reset_sent_at: DateTime.utc_now()})
+      |> Repo.update()
+
+      Logger.info("Password reset requested for user #{user.id}")
+
       user
     end
   end
