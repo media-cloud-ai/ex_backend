@@ -58,9 +58,9 @@ config :step_flow, StepFlow,
   endpoint: ExBackendWeb.Endpoint
 
 # Configures Elixir's Logger
-config :logger, :console,
-  format: "$time $metadata[$level] $message\n",
-  metadata: [:request_id]
+config :logger,
+  backends: [Logger.Backends.Console],
+  format: "[$level] $message\n"
 
 config :mime, :types, %{
   "application/json" => ["json"],
