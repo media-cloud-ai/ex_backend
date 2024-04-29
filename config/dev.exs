@@ -49,8 +49,12 @@ config :ex_backend, ExBackendWeb.Endpoint,
   ]
 
 # Do not include metadata nor timestamps in development logs
-config :logger, :console, format: "[$level] $message\n"
-config :logger, level: :debug
+config :logger,
+  compile_time_purge_matching: [
+    [level_lower_than: :debug]
+  ],
+  level: :debug
+
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20

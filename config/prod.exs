@@ -25,9 +25,6 @@ config :ex_backend, ExBackendWeb.Endpoint,
   root: ".",
   cache_static_manifest: "priv/static/cache_manifest.json"
 
-# Do not print debug messages in production
-config :logger, level: :info
-
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key
@@ -65,8 +62,6 @@ config :logger, level: :info
 #
 #     config :ex_backend, ExBackendWeb.Endpoint, server: true
 #
-
-config :logger, level: :info
 
 config :httpotion, :default_timeout, 60000
 
