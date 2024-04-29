@@ -45,6 +45,8 @@ defmodule ExBackendWeb.WorkflowsPageView do
     end
   end
 
+  defp set_user_to_workflow(workflow, nil), do: workflow
+
   defp set_user_to_workflow(workflow, user) do
     if workflow.user_uuid == user.uuid do
       workflow |> Map.put("user", user)

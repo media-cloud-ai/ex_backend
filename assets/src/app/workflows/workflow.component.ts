@@ -56,7 +56,9 @@ export class WorkflowComponent {
       this.userService
         .getUserByUuid(this.workflow.user_uuid)
         .subscribe((response) => {
-          this.setUserDetails(response.data)
+          if (response.data) {
+            this.setUserDetails(response.data)
+          }
         })
     }
 
