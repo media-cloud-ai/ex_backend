@@ -6,6 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { Subscription } from 'rxjs'
 
 import { SocketService } from '../services/socket.service'
+import { UserPage } from '../models/page/user_page'
+import { UserService } from '../services/user.service'
 import { WorkflowService } from '../services/workflow.service'
 import { WorkflowDurations } from '../models/statistics/duration'
 import {
@@ -15,6 +17,7 @@ import {
   WorkflowQueryParams,
 } from '../models/page/workflow_page'
 import { Message } from '../models/message'
+import { User } from '../models/user'
 
 @Component({
   selector: 'workflows-component',
@@ -34,6 +37,7 @@ export class WorkflowsComponent {
 
   workflows: WorkflowPage
   durations: WorkflowDurations
+  users: UserPage
 
   // Set to true when a workflow is added or deleted. In this case we need to fetch all workflows on the server when refreshing
   fullReload = false
@@ -44,6 +48,7 @@ export class WorkflowsComponent {
   constructor(
     private socketService: SocketService,
     private workflowService: WorkflowService,
+    private userService: UserService,
     private route: ActivatedRoute,
     private router: Router,
   ) {}
@@ -161,20 +166,37 @@ export class WorkflowsComponent {
     this.workflowService
       .getWorkflows(this.pageIndex, this.pageSize, this.parameters)
       .subscribe((workflowPage) => {
-        this.workflows = workflowPage
-        this.length = workflowPage.total
-        this.loading = false
+        this.userService.getAllUsers().subscribe((users) => {
+          this.users = users
+          this.workflows = this.patchUsernameToWorkflows(workflowPage)
+          this.length = workflowPage.total
+          this.loading = false
 
-        for (const workflow of this.workflows.data) {
-          this.subscriptions.add(
-            this.socketService
-              .onWorkflowUpdate(workflow.id)
-              .subscribe((_message: Message) => {
-                this.workflowsToRefresh.add(workflow.id) // Data will be fetched on refresh
-              }),
-          )
-        }
+          for (const workflow of this.workflows.data) {
+            this.subscriptions.add(
+              this.socketService
+                .onWorkflowUpdate(workflow.id)
+                .subscribe((_message: Message) => {
+                  this.workflowsToRefresh.add(workflow.id) // Data will be fetched on refresh
+                }),
+            )
+          }
+        })
       })
+  }
+
+  private patchUsernameToWorkflows(workflowPage: WorkflowPage): WorkflowPage {
+    console.log(this.users.data)
+    const users = this.users.data
+    workflowPage.data.forEach(function (part, _index) {
+      const user = users.find((element: User) => element.uuid == part.user_uuid)
+      if (user) {
+        console.log(part.user)
+        console.log(user)
+        part.user = user
+      }
+    })
+    return workflowPage
   }
 
   getQueryParamsForWorkflows(): Record<string, unknown> {

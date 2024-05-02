@@ -38,6 +38,13 @@ export class UserService {
     )
   }
 
+  getAllUsers(): Observable<UserPage> {
+    return this.http.get<UserPage>(this.usersUrl).pipe(
+      tap((_rolePage) => this.log('fetched All Users')),
+      catchError(this.handleError('getRoles', undefined)),
+    )
+  }
+
   getUserByUuid(uuid: string): Observable<any> {
     return this.http.get<User>(this.usersUrl + '/search/' + uuid).pipe(
       tap((_userPage) => this.log('fetched User')),

@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs'
 import * as moment from 'moment'
 
 import { AuthService } from '../authentication/auth.service'
+import { UserPage } from '../models/page/user_page'
 import { UserService } from '../services/user.service'
 import { Workflow } from '../models/workflow'
 import { WorkflowQueryParams } from '../models/page/workflow_page'
