@@ -54,13 +54,9 @@ export class WorkflowComponent {
     if (this.workflow.user) {
       this.setUserDetails(this.workflow.user)
     } else {
-      this.userService
-        .getUserByUuid(this.workflow.user_uuid)
-        .subscribe((response) => {
-          if (response.data) {
-            this.setUserDetails(response.data)
-          }
-        })
+      this.first_name = 'Deleted'
+      this.last_name = 'User'
+      this.user_name = 'deleted_user'
     }
 
     if (this.workflow.durations) {
