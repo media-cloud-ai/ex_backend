@@ -187,6 +187,7 @@ export class WorkflowsComponent {
 
   private patchUsernameToWorkflows(workflowPage: WorkflowPage): WorkflowPage {
     const users = this.users.data
+    console.log(users)
     workflowPage.data.forEach(function (part, _index) {
       const user = users.find((element: User) => element.uuid == part.user_uuid)
       if (user) {
