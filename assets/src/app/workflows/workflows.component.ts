@@ -187,12 +187,26 @@ export class WorkflowsComponent {
 
   private patchUsernameToWorkflows(workflowPage: WorkflowPage): WorkflowPage {
     const users = this.users.data
+    const deleted_users_uuids = []
     workflowPage.data.forEach(function (part, _index) {
+      if (part.user_uuid in deleted_users_uuids) {
+        return
+      }
       const user = users.find((element: User) => element.uuid == part.user_uuid)
       if (user) {
         part.user = user
+      } else {
+        this.userService.getUserByUuid(part.user_uuid).subscribe((response) => {
+          if (response.data) {
+            part.user = response.data
+            users.push(response.data)
+          } else {
+            deleted_users_uuids.push(part.user_uuid)
+          }
+        })
       }
     })
+    this.users.data = users
     return workflowPage
   }
 
