@@ -121,6 +121,7 @@ import { WorkflowService } from './services/workflow.service'
 import { GenericModule } from './generic/generic.module'
 import { PipesModule } from './pipes/pipes.module'
 
+import { AuthInterceptor } from './authentication/auth.interceptor'
 import { ErrorInterceptor } from './authentication/error.interceptor'
 
 import 'hammerjs/hammer' // for MatSlideToggleModule
@@ -272,6 +273,11 @@ const EX_BACKEND_DATE_FORMATS = {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
       multi: true,
     },
     AmqpService,
