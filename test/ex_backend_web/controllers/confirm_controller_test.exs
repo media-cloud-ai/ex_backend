@@ -4,17 +4,19 @@ defmodule ExBackendWeb.ConfirmControllerTest do
   import ExBackendWeb.AuthCase
 
   setup %{conn: conn} do
-    add_user("Arthur", "Simmons", "arthur@example.com")
-    {:ok, %{conn: conn}}
+    user = add_user("Arthur", "Simmons", "arthur@example.com")
+    conn = add_token_conn(conn, user)
+    token = get_token(conn)
+    {:ok, %{conn: conn, token: token}}
   end
 
-  test "confirmation succeeds for correct key", %{conn: conn} do
+  test "confirmation succeeds for correct key", %{conn: conn, token: token} do
     conn =
       get(
         conn,
         confirm_path(conn, :index,
           password: "reallyHard2gue$$",
-          key: gen_key("arthur@example.com")
+          key: token
         )
       )
 
@@ -26,21 +28,21 @@ defmodule ExBackendWeb.ConfirmControllerTest do
     assert json_response(conn, 401)["errors"]["detail"]
   end
 
-  test "confirmation fails for incorrect email", %{conn: conn} do
-    conn = get(conn, confirm_path(conn, :index, key: gen_key("gerald@example.com")))
-    assert json_response(conn, 401)["errors"]["detail"]
+  test "confirmation fails for without password", %{conn: conn, token: token} do
+    conn = get(conn, confirm_path(conn, :index, key: token))
+    assert json_response(conn, 422)["errors"]["password"] == ["can't be blank"]
   end
 
-  test "confirmation fails for missing password email", %{conn: conn} do
+  test "confirmation fails for missing password email", %{conn: conn, token: token} do
     conn =
-      get(conn, confirm_path(conn, :index, password: nil, key: gen_key("arthur@example.com")))
+      get(conn, confirm_path(conn, :index, password: nil, key: token))
 
     assert json_response(conn, 422)["errors"]["password"] == ["can't be blank"]
   end
 
-  test "confirmation fails for too short password email", %{conn: conn} do
+  test "confirmation fails for too short password email", %{conn: conn, token: token} do
     conn =
-      get(conn, confirm_path(conn, :index, password: "short", key: gen_key("arthur@example.com")))
+      get(conn, confirm_path(conn, :index, password: "short", key: token))
 
     assert json_response(conn, 422)["errors"]["password"] == ["The password is too short"]
   end

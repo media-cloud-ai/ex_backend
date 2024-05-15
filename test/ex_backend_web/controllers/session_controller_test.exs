@@ -35,17 +35,17 @@ defmodule ExBackendWeb.SessionControllerTest do
 
   test "login fails for user that is not yet confirmed", %{conn: conn} do
     conn = post(conn, session_path(conn, :create), session: @unconfirmed_attrs)
-    assert json_response(conn, 401)["errors"]["detail"] =~ "need to login"
+    assert json_response(conn, 401)["error"]["message"] =~ "Invalid email or password"
   end
 
   test "login fails for user that is already logged in", %{conn: conn, user: user} do
     conn = conn |> add_token_conn(user)
     conn = post(conn, session_path(conn, :create), session: @create_attrs)
-    assert json_response(conn, 401)["errors"]["detail"] =~ "already logged in"
+    assert json_response(conn, 401)["errors"]["detail"] =~ "You are already logged in"
   end
 
   test "login fails for invalid password", %{conn: conn} do
     conn = post(conn, session_path(conn, :create), session: @invalid_attrs)
-    assert json_response(conn, 401)["errors"]["detail"] =~ "need to login"
+    assert json_response(conn, 401)["error"]["message"] =~ "Invalid email or password"
   end
 end

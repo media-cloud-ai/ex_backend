@@ -105,7 +105,7 @@ defmodule ExBackend.AccountsTest do
   end
 
   test "list_users/2 returns only users that match the search term" do
-    user_1 = fixture(:user)
+    _user_1 = fixture(:user)
     user_2 = fixture(:user, @create_new_attrs)
 
     assert Accounts.list_users(%{"search" => @search_query}) == %{

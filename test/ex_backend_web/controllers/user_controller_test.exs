@@ -2,8 +2,8 @@ defmodule ExBackendWeb.UserControllerTest do
   use ExBackendWeb.ConnCase
 
   import ExBackendWeb.AuthCase
-  import ExBackendWeb.Auth.Token
   alias ExBackend.Accounts
+  alias ExBackendWeb.Auth.Token
 
   @create_attrs %{
     first_name: "Bill",
@@ -51,12 +51,14 @@ defmodule ExBackendWeb.UserControllerTest do
     assert user_id == user.id
   end
 
+  @tag login: "reg@example.com"
   test "creates user when data is valid", %{conn: conn} do
     conn = post(conn, user_path(conn, :create), user: @create_attrs)
     assert json_response(conn, 201)["data"]["id"]
     assert Accounts.get_by(%{"email" => "bill@example.com"})
   end
 
+  @tag login: "reg@example.com"
   test "does not create user and renders errors when data is invalid", %{conn: conn} do
     conn = post(conn, user_path(conn, :create), user: @invalid_attrs)
     assert json_response(conn, 422)["errors"] != %{}
@@ -147,7 +149,7 @@ defmodule ExBackendWeb.UserControllerTest do
   @tag login: "reg@example.com", roles: ["administrator"]
   test "check validation link fails if user id does not exist", %{
     conn: conn,
-    user: user
+    user: _user
   } do
     catch_error(post(conn, user_path(conn, :generate_validation_link, id: "2000")))
   end
@@ -160,9 +162,14 @@ defmodule ExBackendWeb.UserControllerTest do
     conn = post(conn, user_path(conn, :generate_validation_link, id: user.id))
     request = json_response(conn, 200)["validation_link"]
 
+    token =
+      request
+      |> String.split("=")
+      |> Enum.at(1)
+
     test =
-      case verify(%{"key" => Enum.at(String.split(request, "="), 1)}) do
-        {:ok, user} ->
+      case Token.verify_token(conn, token) do
+        {:ok, _access_token} ->
           user.email
 
         _ ->
