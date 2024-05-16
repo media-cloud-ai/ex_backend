@@ -43,10 +43,6 @@ defmodule ExBackendWeb.Auth.Token do
     Pow.Plug.sign_token(conn, signing_salt(), token, config)
   end
 
-  def fetch_access_token(%Plug.Conn{req_cookies: %{"token" => token}}) do
-    {:ok, token}
-  end
-
   def fetch_access_token(%{assigns: %{token: token}}) do
     {:ok, token}
   end

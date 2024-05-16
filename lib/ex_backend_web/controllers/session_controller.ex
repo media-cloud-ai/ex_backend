@@ -28,10 +28,7 @@ defmodule ExBackendWeb.SessionController do
     |> Pow.Plug.authenticate_user(user_params)
     |> case do
       {:ok, conn} ->
-        cookie = "token=" <> conn.private.api_access_token <> "; Path=/"
-
         conn
-        |> put_resp_header("set-cookie", cookie)
         |> render("info.json", %{
           info: conn.private.api_access_token,
           # renewal_token: conn.private.api_renewal_token,
@@ -50,10 +47,7 @@ defmodule ExBackendWeb.SessionController do
       {:ok, user} ->
         {:ok, conn, token, _} = APIAuthPlug.create_token(conn, user)
 
-        cookie = "token=" <> token <> "; Path=/"
-
         conn
-        |> put_resp_header("set-cookie", cookie)
         |> render("info.json", %{info: token, user: user})
 
       {:error, message} ->

@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core'
 import { Router } from '@angular/router'
 import { HttpClient } from '@angular/common/http'
-import { CookieService } from 'ngx-cookie-service'
-import { Observable, of, Subject, Subscription } from 'rxjs'
+import { Observable, of, Subject } from 'rxjs'
 import { catchError, tap } from 'rxjs/operators'
 
 import { Confirm, UserRights } from '../models/user'
 import { PasswordReset, PasswordResetError } from '../models/password_reset'
 import { Token } from '../models/token'
-import { UserService } from '../services/user.service'
 
 @Injectable()
 export class AuthService {
@@ -27,22 +25,16 @@ export class AuthService {
 
   userLoggedIn$ = this.userLoggedInSource.asObservable()
   userLoggedOut$ = this.userLoggedOutSource.asObservable()
-  rightPanelSwitch$ = this.rightPanelSwitchSource.asObservable()
 
-  subPanelSwitch: Subscription
-
-  constructor(
-    private cookieService: CookieService,
-    private http: HttpClient,
-    private userService: UserService,
-    public router: Router,
-  ) {
+  constructor(private http: HttpClient, public router: Router) {
     const access_token = this.getToken()
-    const currentUser = this.cookieService.get('currentUser')
+    const currentUser = this.getCurrentUser()
     if (
       access_token !== undefined &&
+      access_token !== null &&
       access_token !== '' &&
       currentUser !== undefined &&
+      currentUser !== null &&
       currentUser !== ''
     ) {
       this.isLoggedIn = true
@@ -54,10 +46,6 @@ export class AuthService {
       this.user_id = parsedUser.user_id
       this.roles = parsedUser.roles
     }
-  }
-
-  switchRightPanel() {
-    this.rightPanelSwitchSource.next('switch')
   }
 
   login(email, password): Observable<Token> {
@@ -77,7 +65,9 @@ export class AuthService {
     return this.http.post<Token>('/api/sessions', query).pipe(
       tap((response) => {
         if (response && response.user) {
-          this.cookieService.set(
+          sessionStorage.setItem('token', response.access_token)
+
+          sessionStorage.setItem(
             'currentUser',
             JSON.stringify({
               email: email,
@@ -91,21 +81,28 @@ export class AuthService {
 
           this.isLoggedIn = true
           this.email = response.user.email
-          ;(this.username = response.user.username),
-            (this.first_name = response.user.first_name),
-            (this.last_name = response.user.last_name),
-            (this.roles = response.user.roles)
+          this.username = response.user.username
+          this.first_name = response.user.first_name
+          this.last_name = response.user.last_name
+          this.roles = response.user.roles
           this.user_id = response.user.id
+
           this.userLoggedInSource.next(email)
         } else {
           this.isLoggedIn = false
+
           this.email = undefined
           this.username = undefined
           this.first_name = undefined
           this.last_name = undefined
           this.roles = undefined
           this.user_id = undefined
+
           this.userLoggedOutSource.next('')
+
+          sessionStorage.removeItem('token')
+          sessionStorage.removeItem('currentUser')
+
           this.rightPanelSwitchSource.next('close')
         }
       }),
@@ -115,21 +112,30 @@ export class AuthService {
 
   logout(_clean_cookies = true): void {
     this.isLoggedIn = false
+
     this.email = undefined
     this.username = undefined
     this.first_name = undefined
     this.last_name = undefined
     this.roles = undefined
     this.user_id = undefined
+
     this.userLoggedOutSource.next('')
-    this.cookieService.delete('token')
-    this.cookieService.delete('currentUser')
+
+    sessionStorage.removeItem('token')
+    sessionStorage.removeItem('currentUser')
+
     this.rightPanelSwitchSource.next('close')
+
     this.router.navigate(['/login'])
   }
 
   getToken(): string {
-    return this.cookieService.get('token')
+    return sessionStorage.getItem('token')
+  }
+
+  private getCurrentUser(): string {
+    return sessionStorage.getItem('currentUser')
   }
 
   getUsername(): string {
