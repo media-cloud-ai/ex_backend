@@ -2,12 +2,11 @@ defmodule ExBackend.Accounts.MessageTest do
   use ExUnit.Case
   use Bamboo.Test
 
-  import ExBackendWeb.AuthCase
   alias ExBackend.Accounts.Message
 
   setup do
     email = "deirdre@example.com"
-    {:ok, %{email: email, key: gen_key(email)}}
+    {:ok, %{email: email, key: "this_is_an_amazing_token"}}
   end
 
   test "sends confirmation request email", %{email: email, key: key} do

@@ -22,8 +22,18 @@ defmodule ExBackendWeb.PasswordResetControllerTest do
     assert json_response(conn, 404)["errors"] != %{}
   end
 
-  test "reset password succeeds for correct key", %{conn: conn} do
-    valid_attrs = Map.put(@update_attrs, :key, gen_key("gladys@example.com"))
+  test "reset password succeeds for correct key", %{conn: conn, user: user} do
+    # generate a token
+    token =
+      conn
+      |> add_token_conn(user)
+      |> get_token()
+
+    valid_attrs = Map.put(@update_attrs, :key, token)
+
+    # reset connection
+    conn = Phoenix.ConnTest.build_conn()
+
     reset_conn = put(conn, password_reset_path(conn, :update), password_reset: valid_attrs)
     assert json_response(reset_conn, 200)["detail"] =~ "password has been reset"
     conn = post(conn, session_path(conn, :create), session: @update_attrs)

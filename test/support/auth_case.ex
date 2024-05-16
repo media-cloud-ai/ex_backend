@@ -4,7 +4,7 @@ defmodule ExBackendWeb.AuthCase do
   import Ecto.Changeset
   import Plug.Conn
 
-  alias ExBackendWeb.Auth.Token
+  alias ExBackendWeb.Auth.APIAuthPlug
   alias ExBackend.{Accounts, Repo}
 
   def add_user(first_name, last_name, email, roles \\ []) do
@@ -30,14 +30,22 @@ defmodule ExBackendWeb.AuthCase do
   end
 
   def add_token_conn(conn, user) do
-    user_token = Token.sign(%{"email" => user.email})
+    {:ok, conn, user_token, _} =
+      %{conn | secret_key_base: ExBackendWeb.Endpoint.config(:secret_key_base)}
+      |> APIAuthPlug.create_token(user, otp_app: :ex_backend)
 
-    conn
+    # Respond to trigger access token caching
+    Plug.Conn.send_resp(conn, 200, "Token created ;)")
+
+    # Create a new connection with access token
+    Phoenix.ConnTest.build_conn()
     |> put_req_header("accept", "application/json")
     |> put_req_header("authorization", user_token)
   end
 
-  def gen_key(email) do
-    Token.sign(%{"email" => email})
+  def get_token(conn) do
+    conn
+    |> get_req_header("authorization")
+    |> List.first()
   end
 end

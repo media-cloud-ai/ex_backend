@@ -36,11 +36,16 @@ defmodule ExBackendWeb.OpenApiSchemas.Passwords do
       properties: %{
         password_reset: %Schema{
           type: :object,
-          properties: %{password: %Schema{type: :string, description: "Users new password"}}
+          properties: %{
+            key: %Schema{type: :string, description: "Users password reset token"},
+            password: %Schema{type: :string, description: "Users new password"}
+          }
         }
       },
       example: %{
         "password_reset" => %{
+          "key" =>
+            "SFMyNTY.NTNlYxxxxxxxxxxxxxxxxxxxxxxxxxxYjJl._sr78o4xxxxxxxxxxxxxxxxxxxxxxxxxxx7w",
           "password" => "xxxxxxxxx"
         }
       }

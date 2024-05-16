@@ -20,13 +20,6 @@ config :ex_backend, ExBackendWeb.Endpoint,
   render_errors: [view: ExBackendWeb.ErrorView, accepts: ~w(html json)],
   pubsub_server: ExBackend.PubSub
 
-# Phauxth authentication configuration
-config :phauxth,
-  endpoint: ExBackendWeb.Endpoint,
-  user_context: ExBackend.Accounts,
-  token_module: ExBackendWeb.Auth.Token,
-  crypto_module: Bcrypt
-
 # Mailer configuration
 config :ex_backend, ExBackend.Mailer, adapter: Bamboo.LocalAdapter
 
@@ -56,6 +49,10 @@ config :step_flow, StepFlow,
     get_live_workers: [:user_check, :right_technician_check]
   ],
   endpoint: ExBackendWeb.Endpoint
+
+config :ex_backend, :pow,
+  user: ExBackend.Accounts.User,
+  repo: ExBackend.Repo
 
 # Configures Elixir's Logger
 config :logger,

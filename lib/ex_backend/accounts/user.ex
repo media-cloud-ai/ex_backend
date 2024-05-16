@@ -2,15 +2,16 @@ defmodule ExBackend.Accounts.User do
   @moduledoc false
 
   use Ecto.Schema
+  use Pow.Ecto.Schema, password_hash_verify: {&Bcrypt.hash_pwd_salt/1, &Bcrypt.verify_pass/2}
+
   import Ecto.Changeset
   alias ExBackend.Accounts.User
   alias ExBackend.Filters
   alias ExBackend.Repo
 
   schema "users" do
-    field(:email, :string)
-    field(:password, :string, virtual: true)
-    field(:password_hash, :string)
+    pow_user_fields()
+
     field(:roles, {:array, :string}, default: [])
     field(:confirmed_at, :utc_datetime_usec)
     field(:reset_sent_at, :utc_datetime_usec)
@@ -25,7 +26,7 @@ defmodule ExBackend.Accounts.User do
     timestamps()
   end
 
-  defp changeset(%User{} = user, attrs, is_root \\ false) do
+  def changeset(%User{} = user, attrs, is_root \\ false) do
     uuid = Ecto.UUID.generate()
 
     attrs =

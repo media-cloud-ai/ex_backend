@@ -3,6 +3,7 @@ defmodule ExBackendWeb.SessionController do
   use OpenApiSpex.ControllerSpecs
 
   import ExBackendWeb.Authorize
+  alias ExBackendWeb.Auth.APIAuthPlug
   alias ExBackendWeb.Auth.Token
   alias ExBackendWeb.OpenApiSchemas
 
@@ -22,22 +23,77 @@ defmodule ExBackendWeb.SessionController do
       forbidden: "Forbidden"
     ]
 
-  def create(conn, %{"session" => params}) do
-    case Token.verify(params) do
+  def create(conn, %{"session" => %{"email" => _, "password" => _} = user_params}) do
+    conn
+    |> Pow.Plug.authenticate_user(user_params)
+    |> case do
+      {:ok, conn} ->
+        conn
+        |> render("info.json", %{
+          info: conn.private.api_access_token,
+          # renewal_token: conn.private.api_renewal_token,
+          user: conn.assigns.current_user
+        })
+
+      {:error, conn} ->
+        conn
+        |> put_status(401)
+        |> json(%{error: %{status: 401, message: "Invalid email or password"}})
+    end
+  end
+
+  def create(conn, %{"session" => %{"access_key_id" => _, "secret_access_key" => _} = user_params}) do
+    case Token.verify(conn, user_params) do
       {:ok, user} ->
-        token = Token.sign(%{"email" => user.email})
-        cookie = "token=" <> token <> "; Path=/"
+        {:ok, conn, token, _} = APIAuthPlug.create_token(conn, user)
 
         conn
-        |> put_resp_header("set-cookie", cookie)
         |> render("info.json", %{info: token, user: user})
 
-      {:error, _message} ->
-        error(conn, :unauthorized, 401)
+      {:error, message} ->
+        conn
+        |> put_status(401)
+        |> json(%{error: %{status: 401, message: message}})
     end
   end
 
   def create(conn, _) do
-    error(conn, :unauthorized, 401)
+    conn
+    |> error(:unauthorized, 401)
+  end
+
+  operation :renew,
+    summary: "Renew session",
+    description: "Renew current user session token"
+
+  def renew(conn, _params) do
+    config = Pow.Plug.fetch_config(conn)
+
+    conn
+    |> APIAuthPlug.renew(config)
+    |> case do
+      {conn, nil} ->
+        conn
+        |> put_status(401)
+        |> json(%{error: %{status: 401, message: "Invalid token"}})
+
+      {conn, _user} ->
+        json(conn, %{
+          data: %{
+            access_token: conn.private.api_access_token,
+            renewal_token: conn.private.api_renewal_token
+          }
+        })
+    end
+  end
+
+  operation :delete,
+    summary: "Delete a session",
+    description: "Log out current user"
+
+  def delete(conn, _params) do
+    conn
+    |> Pow.Plug.delete()
+    |> json(%{data: %{}})
   end
 end

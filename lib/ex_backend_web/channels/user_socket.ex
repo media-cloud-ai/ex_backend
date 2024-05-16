@@ -8,7 +8,7 @@ defmodule ExBackendWeb.UserSocket do
       "//*.media-cloud.ai"
     ]
 
-  alias ExBackendWeb.Auth.Token
+  alias ExBackendWeb.Auth.APIAuthPlug
 
   ## Channels
   channel("browser:*", ExBackendWeb.BrowserChannel)
@@ -24,11 +24,12 @@ defmodule ExBackendWeb.UserSocket do
   #     {:ok, assign(socket, :user_id, verified_user_id)}
   #
   # To deny connection, return `:error`.
-  #
-  # See `Phoenix.Token` documentation for examples in
-  # performing token verification on connect.
   def connect(params, socket) do
     token = Map.get(params, "userToken")
+
+    socket =
+      socket
+      |> assign(:token, token)
 
     socket =
       case Map.get(params, "identifier") do
@@ -36,12 +37,12 @@ defmodule ExBackendWeb.UserSocket do
         identifier -> assign(socket, :identifier, identifier)
       end
 
-    case Token.verify(%{"key" => token}) do
-      {:ok, verified_user} ->
-        {:ok, assign(socket, :user_id, verified_user.id)}
-
-      _ ->
+    case APIAuthPlug.fetch(socket, []) do
+      {_, nil} ->
         :error
+
+      {_, verified_user} ->
+        {:ok, assign(socket, :user_id, verified_user.id)}
     end
   end
 
