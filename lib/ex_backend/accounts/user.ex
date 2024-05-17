@@ -3,6 +3,7 @@ defmodule ExBackend.Accounts.User do
 
   use Ecto.Schema
   use Pow.Ecto.Schema, password_hash_verify: {&Bcrypt.hash_pwd_salt/1, &Bcrypt.verify_pass/2}
+  use PowAssent.Ecto.Schema
 
   import Ecto.Changeset
   alias ExBackend.Accounts.User
@@ -177,5 +178,24 @@ defmodule ExBackend.Accounts.User do
       workflow_filters: filters
     })
     |> Repo.update()
+  end
+
+  # Redefined from Pow Assent in order to implement custom fields from IP response
+  def user_identity_changeset(user_or_changeset, user_identity, attrs, user_id_attrs) do
+    name_split = String.split(attrs["name"], " ")
+    first_name = List.first(name_split)
+    last_name = List.last(name_split)
+
+    attrs =
+      attrs
+      |> Map.put("confirmed_at", DateTime.utc_now())
+      |> Map.put("first_name", first_name)
+      |> Map.put("last_name", last_name)
+      |> Map.delete("username")
+      |> set_username_attribute()
+
+    user_or_changeset
+    |> cast(attrs, [:confirmed_at, :first_name, :last_name, :username])
+    |> pow_assent_user_identity_changeset(user_identity, attrs, user_id_attrs)
   end
 end

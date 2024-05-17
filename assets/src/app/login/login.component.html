@@ -1,41 +1,63 @@
 <div class="content">
   <div class="logo">
-    <span class="version" *ngIf="application">
-      {{ application.version }}
-    </span>
+    <span class="version" *ngIf="application"> {{ application.version }} </span>
   </div>
 
-  <form class="login" (ngSubmit)="login()" #heroForm="ngForm">
+  <div class="login">
     <span class="wrapper" *ngIf="application">
       <img src="{{ application.logo }}" class="app_logo" />
     </span>
-    <div>
-      <mat-form-field class="search-text-input">
-        <input
-          type="text"
-          matInput
-          placeholder="Username"
-          name="username"
-          [(ngModel)]="username"
-        />
-      </mat-form-field>
+    <h1>Sign in</h1>
+    <div class="vspace1em"></div>
+    <div *ngIf="application">
+      <div *ngIf="sso_enabled()">
+        <span class="sso" *ngFor="let provider of application.providers">
+          <button
+            mat-button
+            color="secondary"
+            (click)="sso(provider.id)"
+            *ngIf="provider.enabled"
+          >
+            <img src="{{ provider.layout.logo }}" class="sso_logo" />
+            {{ provider.layout.display_name }}
+          </button>
+        </span>
+        <div>
+          <mat-divider style="width: 12%; display: inline-block"></mat-divider>
+          <span style="padding: 20px; font-weight: 500"> Or </span>
+          <mat-divider style="width: 12%; display: inline-block"></mat-divider>
+          <div class="vspace1em"></div>
+          <div class="vspace1em"></div>
+        </div>
+      </div>
     </div>
-    <div>
-      <app-password #password [check_validity]="false"></app-password>
-    </div>
-    <div>
-      <p class="reset" (click)="openResetPasswordDialog()">
-        Forgot your password ?
-      </p>
-    </div>
-    <div class="button submit">
-      <button mat-button color="primary" type="submit">
-        <mat-icon>chevron_right</mat-icon>
-        Login
-      </button>
-    </div>
-    <div class="message">
-      {{ message }}
-    </div>
-  </form>
+    <form (ngSubmit)="login()" #heroForm="ngForm">
+      <div>
+        <mat-form-field class="search-text-input">
+          <input
+            type="text"
+            matInput
+            placeholder="Username"
+            name="username"
+            [(ngModel)]="username"
+          />
+        </mat-form-field>
+      </div>
+      <div>
+        <app-password #password [check_validity]="false"></app-password>
+      </div>
+      <div>
+        <p class="reset" (click)="openResetPasswordDialog()">
+          Forgot your password ?
+        </p>
+      </div>
+      <div class="button submit">
+        <button mat-button color="primary" type="submit">
+          <mat-icon>chevron_right</mat-icon>
+          Login
+        </button>
+      </div>
+      <div class="message">{{ message }}</div>
+    </form>
+  </div>
 </div>

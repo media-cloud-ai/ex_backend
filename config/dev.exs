@@ -7,7 +7,7 @@ import Config
 # watchers to your application. For example, we use it
 # with brunch.io to recompile .js and .css sources.
 config :ex_backend, ExBackendWeb.Endpoint,
-  http: [port: 4000],
+  url: [scheme: "http", host: "localhost", port: 4000],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
@@ -61,17 +61,19 @@ config :phoenix, :stacktrace_depth, 20
 
 # Configure your database
 config :ex_backend, ExBackend.Repo,
-  hostname: "postgres",
+  hostname: "localhost",
   username: "postgres",
   password: "postgres",
+  port: "5432",
   database: "ex_backend_dev",
   migration_source: "backend_migrations_dev",
   runtime_pool_size: 10
 
 config :step_flow, StepFlow.Repo,
-  hostname: "postgres",
+  hostname: "localhost",
   username: "postgres",
   password: "postgres",
+  port: "5432",
   database: "ex_backend_workflow_dev",
   migration_source: "step_flow_migrations_dev",
   runtime_pool_size: 10
@@ -142,13 +144,38 @@ config :ex_backend,
 
 config :step_flow, StepFlow.Amqp,
   hostname: "localhost",
-  port: "5678",
+  port: "5672",
   username: "mediacloudai",
   password: "mediacloudai",
   virtual_host: "media_cloud_ai_dev",
   delivery_mode: {:system, "AMQP_DELIVERY_MODE"}
 
 config :httpotion, :default_timeout, 60000
+
+config :ex_backend, :pow_assent,
+  providers: [
+    github: [
+      layout: %{
+        logo: "/bundles/images/github.png",
+        display_name: "GitHub"
+      },
+      client_id: System.get_env("CLIENT_ID_GITHUB", ""),
+      client_secret: System.get_env("CLIENT_SECRET_GITHUB", ""),
+      strategy: Assent.Strategy.Github,
+      enabled: String.to_atom(System.get_env("ENABLE_SSO_GITHUB", "false"))
+    ],
+    entraid: [
+      layout: %{
+        logo: "/bundles/images/microsoft.svg",
+        display_name: "Microsoft"
+      },
+      client_id: System.get_env("CLIENT_ID_ENTRAID", ""),
+      client_secret: System.get_env("CLIENT_SECRET_ENTRAID", ""),
+      tenant_id: System.get_env("TENANT_ID_ENTRAID", ""),
+      strategy: Assent.Strategy.AzureAD,
+      enabled: String.to_atom(System.get_env("ENABLE_SSO_ENTRAID", "false"))
+    ]
+  ]
 
 # Finally import the config/dev.secret.exs
 # with the private section for passwords

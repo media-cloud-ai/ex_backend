@@ -55,8 +55,6 @@ export class JobsComponent {
 
     this.is_live = this.workflow.is_live
 
-    console.log(this.workflow.is_live)
-
     this.authService
       .hasAnyRights('workflow::' + this.workflow.identifier, ['retry'])
       .subscribe((response) => {

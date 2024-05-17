@@ -1,3 +1,4 @@
+import { Location } from '@angular/common'
 import { Component, ViewChild } from '@angular/core'
 import { NavigationExtras, Router } from '@angular/router'
 
@@ -26,10 +27,14 @@ export class LoginComponent {
     private applicationService: ApplicationService,
     public authService: AuthService,
     private dialog: MatDialog,
+    private location: Location,
     public router: Router,
   ) {}
 
   ngOnInit() {
+    this.authService.getSession().subscribe((_) => {
+      this.redirect()
+    })
     this.applicationService.get().subscribe((response) => {
       this.application = response
     })
@@ -42,23 +47,43 @@ export class LoginComponent {
       .subscribe((response) => {
         this.message = ''
         if (response && response.user) {
-          const redirect = this.authService.redirectUrl
-            ? this.authService.redirectUrl
-            : '/dashboard'
-
-          const navigationExtras: NavigationExtras = {
-            queryParamsHandling: 'preserve',
-            preserveFragment: true,
-          }
-          this.router.navigate([redirect], navigationExtras)
+          this.redirect()
         } else {
           this.message = 'Bad username and/or password'
         }
       })
   }
 
+  sso(provider: string) {
+    const url = this.location.prepareExternalUrl('auth/' + provider + '/new')
+    window.location.replace(url)
+  }
+
+  sso_enabled(): boolean {
+    let enabled = false
+    for (const provider of this.application.providers) {
+      if (provider.enabled) {
+        enabled = true
+        break
+      }
+    }
+    return enabled
+  }
+
+  redirect() {
+    const redirect = this.authService.redirectUrl
+      ? this.authService.redirectUrl
+      : '/dashboard'
+
+    const navigationExtras: NavigationExtras = {
+      queryParamsHandling: 'preserve',
+      preserveFragment: true,
+    }
+    this.router.navigate([redirect], navigationExtras)
+  }
+
   logout() {
-    this.authService.logout()
+    this.authService.logout().subscribe()
   }
 
   openResetPasswordDialog(): void {

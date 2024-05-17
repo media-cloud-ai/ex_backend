@@ -6,11 +6,13 @@ defmodule ExBackendWeb.SessionController do
   alias ExBackendWeb.Auth.APIAuthPlug
   alias ExBackendWeb.Auth.Token
   alias ExBackendWeb.OpenApiSchemas
+  alias PowPersistentSession.Plug.Cookie
 
   tags ["Session"]
   security [%{"authorization" => %OpenApiSpex.SecurityScheme{type: "http", scheme: "bearer"}}]
 
   plug(:guest_check when action in [:create])
+  plug(:user_check when action in [:renew, :delete])
 
   operation :create,
     summary: "Create a session",
@@ -62,6 +64,29 @@ defmodule ExBackendWeb.SessionController do
     |> error(:unauthorized, 401)
   end
 
+  operation :verify,
+    summary: "Verify session",
+    description: "Verify current user session token"
+
+  def verify(%Plug.Conn{assigns: %{current_user: _user}} = conn, _params) do
+    conn
+    |> Pow.Plug.current_user()
+    |> case do
+      nil ->
+        conn
+        |> json(%{})
+
+      user ->
+        {:ok, conn, token, _} = APIAuthPlug.create_token(conn, user)
+
+        conn
+        |> render("info.json", %{
+          info: token,
+          user: conn.assigns.current_user
+        })
+    end
+  end
+
   operation :renew,
     summary: "Renew session",
     description: "Renew current user session token"
@@ -92,7 +117,11 @@ defmodule ExBackendWeb.SessionController do
     description: "Log out current user"
 
   def delete(conn, _params) do
+    config = Pow.Plug.fetch_config(conn)
+
     conn
+    |> Cookie.delete(config)
+    |> Pow.Plug.Session.delete(config)
     |> Pow.Plug.delete()
     |> json(%{data: %{}})
   end

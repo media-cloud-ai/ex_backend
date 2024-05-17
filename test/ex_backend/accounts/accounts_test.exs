@@ -117,7 +117,7 @@ defmodule ExBackend.AccountsTest do
   end
 
   test "create root account and reset password" do
-    Accounts.create_root("root@mcai.com")
+    Accounts.create_root("root@mcai.com", false)
     account = Accounts.get(1)
     assert !is_nil(account)
     old_pass = account.password_hash
