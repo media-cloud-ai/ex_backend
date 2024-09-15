@@ -66,5 +66,10 @@ defmodule ExBackendWeb.Endpoint do
 
   plug(Pow.Plug.Session, otp_app: :ex_backend)
 
+  plug(PowPersistentSession.Plug.Cookie,
+    persistent_session_cookie_key: "token",
+    persistent_session_ttl: 60
+  )
+
   plug(ExBackendWeb.Router)
 end

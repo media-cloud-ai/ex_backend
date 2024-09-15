@@ -4,7 +4,7 @@ defmodule ExBackend.Mixfile do
   def project do
     [
       app: :ex_backend,
-      version: "1.8.1-rc4",
+      version: "1.9.0-rc0",
       elixir: "~> 1.9",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -79,6 +79,7 @@ defmodule ExBackend.Mixfile do
       # FIXME: bamboo_smtp seems to be a dead project...
       {:bamboo_smtp, "~> 4.2.2"},
       {:blue_bird, "~> 0.4.2"},
+      {:certifi, "~> 2.4"},
       {:comeonin, "~> 5.1"},
       {:cors_plug, "~> 2.0"},
       {:cowboy, "~> 2.12.0"},
@@ -108,12 +109,14 @@ defmodule ExBackend.Mixfile do
       {:phoenix_live_view, "~> 0.20.14"},
       {:phoenix_pubsub, "~> 2.1.3"},
       {:pow, "~> 1.0.38"},
+      {:pow_assent, "~> 0.4.18"},
       {:plug, "~> 1.15.1"},
       {:plug_cowboy, "~> 2.7"},
       {:postgrex, "~> 0.17.0"},
       {:ranch, "~> 1.8.0"},
       {:remote_dockers, "1.4.0"},
       {:sigaws, "~> 0.7.2"},
+      {:ssl_verify_fun, "~> 1.1"},
       {:step_flow, "1.8.1-rc2"},
       {:sobelow, "~> 0.8", only: :dev},
       {:tesla, "~> 1.4.0"},

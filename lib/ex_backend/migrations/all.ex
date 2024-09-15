@@ -157,5 +157,11 @@ defmodule ExBackend.Migration.All do
       20_220_912_170_000,
       ExBackend.Migration.CreateFilters
     )
+
+    Ecto.Migrator.up(
+      ExBackend.Repo,
+      20_240_517_133_000,
+      ExBackend.Migration.CreateUserIdentities
+    )
   end
 end

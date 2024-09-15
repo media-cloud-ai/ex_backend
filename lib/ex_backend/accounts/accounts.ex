@@ -73,15 +73,16 @@ defmodule ExBackend.Accounts do
     |> Repo.insert()
   end
 
-  def create_root(root_email) do
-    attrs = %{
-      id: 1,
-      email: root_email,
-      roles: ["administrator"],
-      first_name: "MCAI",
-      last_name: "Admin",
-      username: "root"
-    }
+  def create_root(root_email, is_first_user) do
+    attrs =
+      %{
+        email: root_email,
+        roles: ["administrator"],
+        first_name: "MCAI",
+        last_name: "Admin",
+        username: "root"
+      }
+      |> add_id(is_first_user)
 
     {:ok, user} = User.create_root_user(attrs)
     root_password = User.generate_root_password()
@@ -90,6 +91,13 @@ defmodule ExBackend.Accounts do
     Logger.warning("Root user created with password: #{root_password}")
     Logger.warning("Please change this password after first connection !")
   end
+
+  # If root is the first user created, do not force the :id in changeset
+  # as it will meddle with the user numbering in base that won't start at 2 but 1
+  # If the root user is created after other users are, force :id in changeset to
+  # ensure user_id 1 is root
+  defp add_id(attrs, is_first_user) when is_first_user == false, do: Map.put(attrs, :id, 1)
+  defp add_id(attrs, _is_first_user), do: attrs
 
   def reset_root_password(account) do
     if Map.get(account, :id) == 1 do

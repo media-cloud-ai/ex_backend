@@ -77,7 +77,6 @@ export class AppComponent {
   }
 
   updateLeftMenu() {
-    // console.log(this.loggedIn);
     if (this.loggedIn) {
       this.left_menu = [
         {
@@ -170,6 +169,6 @@ export class AppComponent {
   }
 
   logout() {
-    this.authService.logout()
+    this.authService.logout().subscribe()
   }
 }

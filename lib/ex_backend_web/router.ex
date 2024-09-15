@@ -1,6 +1,7 @@
 defmodule ExBackendWeb.Router do
   use ExBackendWeb, :router
   use Pow.Phoenix.Router
+  use PowAssent.Phoenix.Router
 
   # @host :ex_backend
   #       |> Application.get_env(ExBackendWeb.Endpoint)
@@ -31,12 +32,23 @@ defmodule ExBackendWeb.Router do
     # Should be added but breaks pipeline
     # Find a workaround : https://nts.strzibny.name/phoenix-csrf-protection-in-html-forms-react-forms-and-apis/
     # plug(:protect_from_forgery)
-
     plug(:put_secure_browser_headers, %{
       "content-security-policy" => @content_security_policy
     })
 
     plug(Pow.Plug.Session, otp_app: :ex_backend)
+
+    plug(PowAssent.Plug.Reauthorization,
+      handler: PowAssent.Phoenix.ReauthorizationPlugHandler
+    )
+
+    plug(:pow_assent_persistent_session)
+  end
+
+  defp pow_assent_persistent_session(conn, _opts) do
+    PowAssent.Plug.put_create_session_callback(conn, fn conn, _provider, _config ->
+      PowPersistentSession.Plug.create(conn, Pow.Plug.current_user(conn))
+    end)
   end
 
   pipeline :api do
@@ -57,6 +69,19 @@ defmodule ExBackendWeb.Router do
     plug(OpenApiSpex.Plug.PutApiSpec, module: ExBackendWeb.ApiSpec)
   end
 
+  pipeline :protected do
+    plug(Pow.Plug.RequireAuthenticated,
+      error_handler: Pow.Phoenix.PlugErrorHandler
+    )
+  end
+
+  pipeline :skip_csrf_protection do
+    plug(:accepts, ["html"])
+    plug(:fetch_session)
+    plug(:fetch_flash)
+    plug(:put_secure_browser_headers)
+  end
+
   get("/app", ExBackendWeb.ApplicationController, :index)
   get("/validate", ExBackendWeb.ConfirmController, :index)
 
@@ -65,7 +90,7 @@ defmodule ExBackendWeb.Router do
 
     # Session APIs
     resources("/sessions", SessionController, singleton: true, only: [:create, :delete])
-    post("/sessions/renew", SessionController, :renew)
+    get("/sessions/verify", SessionController, :verify)
 
     # Passwords APIs
     post("/password_resets", PasswordResetController, :create)
@@ -74,6 +99,9 @@ defmodule ExBackendWeb.Router do
 
   scope "/api", ExBackendWeb do
     pipe_through(:protected_api)
+
+    # Session APIs
+    post("/sessions/renew", SessionController, :renew)
 
     # Users APIs
     resources("/users", UserController, except: [:new, :edit])
@@ -136,6 +164,19 @@ defmodule ExBackendWeb.Router do
     forward("/backend", OpenApiSpex.Plug.SwaggerUI, path: "/api/openapi")
 
     forward("/step_flow", ExBackendWeb.StepFlowSwaggerUI, path: "/api/step_flow/openapi")
+  end
+
+  scope "/" do
+    pipe_through(:skip_csrf_protection)
+
+    pow_assent_authorization_post_callback_routes()
+  end
+
+  scope "/" do
+    pipe_through(:browser)
+
+    pow_routes()
+    pow_assent_routes()
   end
 
   scope "/", ExBackendWeb do

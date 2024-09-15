@@ -3,6 +3,7 @@ import { Router } from '@angular/router'
 import { HttpClient } from '@angular/common/http'
 import { Observable, of, Subject } from 'rxjs'
 import { catchError, tap } from 'rxjs/operators'
+import { CookieService } from 'ngx-cookie-service'
 
 import { Confirm, UserRights } from '../models/user'
 import { PasswordReset, PasswordResetError } from '../models/password_reset'
@@ -26,7 +27,13 @@ export class AuthService {
   userLoggedIn$ = this.userLoggedInSource.asObservable()
   userLoggedOut$ = this.userLoggedOutSource.asObservable()
 
-  constructor(private http: HttpClient, public router: Router) {
+  constructor(
+    private http: HttpClient,
+    public router: Router,
+    public cookies: CookieService,
+  ) {
+    // This should be reworked to have minimal information on client-side
+    // See Issue #605
     const access_token = this.getToken()
     const currentUser = this.getCurrentUser()
     if (
@@ -65,52 +72,68 @@ export class AuthService {
     return this.http.post<Token>('/api/sessions', query).pipe(
       tap((response) => {
         if (response && response.user) {
-          sessionStorage.setItem('token', response.access_token)
-
-          sessionStorage.setItem(
-            'currentUser',
-            JSON.stringify({
-              email: email,
-              username: response.user.username,
-              first_name: response.user.first_name,
-              last_name: response.user.last_name,
-              user_id: response.user.id,
-              roles: response.user.roles,
-            }),
-          )
-
-          this.isLoggedIn = true
-          this.email = response.user.email
-          this.username = response.user.username
-          this.first_name = response.user.first_name
-          this.last_name = response.user.last_name
-          this.roles = response.user.roles
-          this.user_id = response.user.id
-
-          this.userLoggedInSource.next(email)
+          this.setSession(response)
         } else {
-          this.isLoggedIn = false
-
-          this.email = undefined
-          this.username = undefined
-          this.first_name = undefined
-          this.last_name = undefined
-          this.roles = undefined
-          this.user_id = undefined
-
-          this.userLoggedOutSource.next('')
-
-          sessionStorage.removeItem('token')
-          sessionStorage.removeItem('currentUser')
-
-          this.rightPanelSwitchSource.next('close')
+          this.clearSession()
         }
       }),
       catchError(this.handleError('login', undefined)),
     )
   }
 
-  logout(_clean_cookies = true): void {
+  logout(_clean_cookies = true): Observable<[]> {
+    return this.http.delete<[]>('/api/sessions').pipe(
+      tap((_) => {
+        this.clearSession()
+        this.router.navigate(['/login'])
+      }),
+      catchError(this.handleError('login', undefined)),
+    )
+  }
+
+  getToken(): string {
+    return this.cookies.get('token')
+  }
+
+  private getCurrentUser(): string {
+    return this.cookies.get('currentUser')
+  }
+
+  getSession(): Observable<Token> {
+    return this.http.get<Token>('/api/sessions/verify').pipe(
+      tap((response) => {
+        if (response && response.user) {
+          this.setSession(response)
+        }
+      }),
+      catchError(this.handleError('login', undefined)),
+    )
+  }
+
+  private setSession(response: Token): void {
+    this.cookies.set('token', response.access_token)
+    this.cookies.set(
+      'currentUser',
+      JSON.stringify({
+        email: response.user.email,
+        username: response.user.username,
+        first_name: response.user.first_name,
+        last_name: response.user.last_name,
+        user_id: response.user.id,
+        roles: response.user.roles,
+      }),
+    )
+    this.isLoggedIn = true
+    this.email = response.user.email
+    this.username = response.user.username
+    this.first_name = response.user.first_name
+    this.last_name = response.user.last_name
+    this.user_id = response.user.id
+    this.roles = response.user.roles
+    this.userLoggedInSource.next(response.user.email)
+  }
+
+  private clearSession(): void {
     this.isLoggedIn = false
 
     this.email = undefined
@@ -122,20 +145,10 @@ export class AuthService {
 
     this.userLoggedOutSource.next('')
 
-    sessionStorage.removeItem('token')
-    sessionStorage.removeItem('currentUser')
+    this.cookies.delete('token')
+    this.cookies.delete('currentUser')
 
     this.rightPanelSwitchSource.next('close')
-
-    this.router.navigate(['/login'])
-  }
-
-  getToken(): string {
-    return sessionStorage.getItem('token')
-  }
-
-  private getCurrentUser(): string {
-    return sessionStorage.getItem('currentUser')
   }
 
   getUsername(): string {

@@ -50,6 +50,7 @@ defmodule ExBackendWeb.Auth.APIAuthPlug do
       conn
       |> Conn.put_private(:api_access_token, signed_access_token)
       |> Conn.put_private(:api_renewal_token, signed_renewal_token)
+      |> Conn.put_private(:pow_assent_session_info, :write)
       |> Conn.register_before_send(fn conn ->
         # The store caches will use their default `:ttl` setting. To change the
         # `:ttl`, `Keyword.put(store_config, :ttl, :timer.minutes(10))` can be

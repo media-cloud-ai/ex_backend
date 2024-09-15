@@ -83,11 +83,14 @@ defmodule ExBackend.Application do
         System.get_env("MCAI_RESET_ROOT_PASSWORD") ||
           Application.get_env(:ex_backend, :mcai_reset_root_password)
 
-      case {is_nil(account), root_password_reset} do
-        {true, _} ->
-          ExBackend.Accounts.create_root(root_email)
+      case {is_nil(account), root_password_reset, ExBackend.Accounts.list_users().total == 0} do
+        {true, _, true} ->
+          ExBackend.Accounts.create_root(root_email, true)
 
-        {false, true} ->
+        {true, _, false} ->
+          ExBackend.Accounts.create_root(root_email, false)
+
+        {false, true, _} ->
           ExBackend.Accounts.reset_root_password(account)
 
         _ ->

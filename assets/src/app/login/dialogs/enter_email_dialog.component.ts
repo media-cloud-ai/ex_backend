@@ -28,7 +28,6 @@ export class EnterEmailDialogComponent {
       .passwordResetRequest(this.email)
       .subscribe((passwordReset) => {
         if (passwordReset.error != null) {
-          console.log(passwordReset)
           this.message = passwordReset.error
           this.message_color = 'red'
         } else {

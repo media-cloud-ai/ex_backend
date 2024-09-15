@@ -14,7 +14,6 @@ export class DeclaredWorkersComponent {
 
   ngOnInit() {
     this.declaredWorkersService.getWorkers().subscribe((response) => {
-      console.log(response)
       this.workers = response
       this.loading = false
     })

@@ -132,3 +132,28 @@ config :step_flow, StepFlow.Amqp,
   hostname: {:system, "AMQP_HOSTNAME"},
   virtual_host: {:system, "AMQP_VIRTUAL_HOST"},
   delivery_mode: {:system, "AMQP_DELIVERY_MODE"}
+
+config :ex_backend, :pow_assent,
+  providers: [
+    github: [
+      layout: %{
+        logo: "/bundles/images/github.png",
+        display_name: "GitHub"
+      },
+      client_id: System.get_env("CLIENT_ID_GITHUB", ""),
+      client_secret: System.get_env("CLIENT_SECRET_GITHUB", ""),
+      strategy: Assent.Strategy.Github,
+      enabled: String.to_atom(System.get_env("ENABLE_SSO_GITHUB", "false"))
+    ],
+    entraid: [
+      layout: %{
+        logo: "/bundles/images/microsoft.svg",
+        display_name: "Microsoft"
+      },
+      client_id: System.get_env("CLIENT_ID_ENTRAID", ""),
+      client_secret: System.get_env("CLIENT_SECRET_ENTRAID", ""),
+      tenant_id: System.get_env("TENANT_ID_ENTRAID", ""),
+      strategy: Assent.Strategy.AzureAD,
+      enabled: String.to_atom(System.get_env("ENABLE_SSO_ENTRAID", "false"))
+    ]
+  ]
