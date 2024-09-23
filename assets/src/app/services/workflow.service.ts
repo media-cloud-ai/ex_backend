@@ -91,19 +91,11 @@ export class WorkflowService {
     }
     params = params.append(
       'after_date',
-      formatDate(
-        parameters.selectedDateRange.startDate,
-        'yyyy-MM-ddTHH:mm:ss',
-        'fr',
-      ),
+      parameters.selectedDateRange.startDate.toISOString(),
     )
     params = params.append(
       'before_date',
-      formatDate(
-        parameters.selectedDateRange.endDate,
-        'yyyy-MM-ddTHH:mm:ss',
-        'fr',
-      ),
+      parameters.selectedDateRange.endDate.toISOString(),
     )
 
     return this.http

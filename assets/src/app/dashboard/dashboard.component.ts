@@ -107,6 +107,21 @@ export class DashboardComponent {
       processing: [],
     }
 
+    let size: number
+    switch (this.parameters.time_interval) {
+      case 36536000:
+        size = 4
+        break
+      case 604800:
+      case 86400:
+        size = 10
+        break
+      default:
+      case 3600:
+        size = 16
+        break
+    }
+
     const options: Options = {
       chart: {
         type: 'column',
@@ -117,7 +132,13 @@ export class DashboardComponent {
       xAxis: {
         labels: {
           formatter: function () {
-            return String(this.value).slice(0, 16)
+            const date = new Date(this.value)
+            const local_date = new Date(
+              date.getTime() - date.getTimezoneOffset() * 60000,
+            ).toISOString()
+            const stripped_string =
+              local_date.slice(0, 10) + ' ' + local_date.slice(11, 16)
+            return stripped_string.slice(0, size)
           },
         },
       },
@@ -153,7 +174,7 @@ export class DashboardComponent {
 
     if (data != undefined) {
       data.bins.reverse().map((bin) => {
-        x_labels.push(bin['start_date'])
+        x_labels.push(new Date(bin['start_date'] + 'Z'))
         for (const s of this.series) {
           series[s].push(bin[s])
         }
