@@ -29,7 +29,7 @@ export class ErrorInterceptor implements HttpInterceptor {
   private handleError(err_object: HttpErrorResponse): Observable<never> {
     if (err_object.status === 401) {
       console.error(err_object)
-      this.authService.logout()
+      this.authService.logout(false).subscribe()
       return throwError(() => new Error(err_object.status.toString()))
     }
   }
