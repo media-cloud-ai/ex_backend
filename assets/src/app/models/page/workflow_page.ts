@@ -33,8 +33,8 @@ export class WorkflowQueryParams {
   identifiers: string[]
   mode: string[]
   selectedDateRange: {
-    startDate: any
-    endDate: any
+    startDate: Date
+    endDate: Date
   }
   search?: string
   status: string[]

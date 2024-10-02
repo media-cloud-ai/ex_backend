@@ -82,8 +82,8 @@ export class WorkflowSearchBarComponent {
     identifiers: [],
     mode: ['file', 'live'],
     selectedDateRange: {
-      startDate: moment().toISOString(),
-      endDate: moment().toISOString(),
+      startDate: moment().toDate(),
+      endDate: moment().toDate(),
     },
     search: undefined,
     status: ['completed', 'error'],
@@ -270,14 +270,16 @@ export class WorkflowSearchBarComponent {
   }
 
   searchWorkflowsUtc() {
-    this.parameters.selectedDateRange.startDate =
+    // Mandatory as local time is not handled properly by the component
+    // See: https://github.com/fetrarij/ngx-daterangepicker-material/issues/533
+    this.parameters.selectedDateRange.startDate = moment(
       this.parameters.selectedDateRange.startDate
-        .utc()
-        .format('YYYY-MM-DDTHH:mm:ss')
-    this.parameters.selectedDateRange.endDate =
-      this.parameters.selectedDateRange.endDate
-        .utc()
-        .format('YYYY-MM-DDTHH:mm:ss')
+        .toISOString()
+        .substring(0, 23),
+    ).toDate()
+    this.parameters.selectedDateRange.endDate = moment(
+      this.parameters.selectedDateRange.endDate.toISOString().substring(0, 23),
+    ).toDate()
     this.searchWorkflows()
   }
 
