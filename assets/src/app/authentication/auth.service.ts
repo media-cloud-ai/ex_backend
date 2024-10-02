@@ -81,14 +81,20 @@ export class AuthService {
     )
   }
 
-  logout(_clean_cookies = true): Observable<[]> {
-    return this.http.delete<[]>('/api/sessions').pipe(
-      tap((_) => {
-        this.clearSession()
-        this.router.navigate(['/login'])
-      }),
-      catchError(this.handleError('login', undefined)),
-    )
+  logout(authorized = true, _clean_cookies = true): Observable<[]> {
+    if (!authorized) {
+      this.clearSession()
+      this.router.navigate(['/login'])
+      return of([])
+    } else {
+      return this.http.delete<[]>('/api/sessions').pipe(
+        tap((_) => {
+          this.clearSession()
+          this.router.navigate(['/login'])
+        }),
+        catchError(this.handleError('login', undefined)),
+      )
+    }
   }
 
   getToken(): string {
