@@ -117,7 +117,7 @@ defmodule ExBackend.Mixfile do
       {:remote_dockers, "1.4.0"},
       {:sigaws, "~> 0.7.2"},
       {:ssl_verify_fun, "~> 1.1"},
-      {:step_flow, "1.8.1-rc3"},
+      {:step_flow, "1.8.1-rc4"},
       {:sobelow, "~> 0.8", only: :dev},
       {:tesla, "~> 1.4.0"},
       {:timex, "~> 3.6"},

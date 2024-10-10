@@ -131,7 +131,9 @@ config :step_flow, StepFlow.Amqp,
   port: {:system, "AMQP_PORT"},
   hostname: {:system, "AMQP_HOSTNAME"},
   virtual_host: {:system, "AMQP_VIRTUAL_HOST"},
-  delivery_mode: {:system, "AMQP_DELIVERY_MODE"}
+  delivery_mode: {:system, "AMQP_DELIVERY_MODE"},
+  server_configuration: {:system, "AMQP_SERVER_CONFIGURATION", "standalone"},
+  max_retry_to_timeout: {:system, "AMQP_MAX_RETRIES_TO_TIMEOUT"}
 
 config :ex_backend, :pow_assent,
   providers: [
