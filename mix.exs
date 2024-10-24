@@ -4,7 +4,7 @@ defmodule ExBackend.Mixfile do
   def project do
     [
       app: :ex_backend,
-      version: "1.9.0-rc2",
+      version: "1.9.0-rc3",
       elixir: "~> 1.9",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -117,7 +117,7 @@ defmodule ExBackend.Mixfile do
       {:remote_dockers, "1.4.0"},
       {:sigaws, "~> 0.7.2"},
       {:ssl_verify_fun, "~> 1.1"},
-      {:step_flow, "1.8.1-rc6"},
+      {:step_flow, "1.8.1-rc7"},
       {:sobelow, "~> 0.8", only: :dev},
       {:tesla, "~> 1.4.0"},
       {:timex, "~> 3.6"},
