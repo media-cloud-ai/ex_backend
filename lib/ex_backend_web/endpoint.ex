@@ -64,12 +64,16 @@ defmodule ExBackendWeb.Endpoint do
     signing_salt: "ESY1df/P"
   )
 
-  plug(Pow.Plug.Session, otp_app: :ex_backend)
-
-  plug(PowPersistentSession.Plug.Cookie,
-    persistent_session_cookie_key: "token",
-    persistent_session_ttl: 60
+  plug(Pow.Plug.Session,
+    otp_app: :ex_backend,
+    session_ttl_renewal: :timer.minutes(1),
+    credentials_cache_store: {Pow.Store.CredentialsCache, ttl: :timer.minutes(1)}
   )
+
+  # plug(PowPersistentSession.Plug.Cookie,
+  #   persistent_session_cookie_key: "token",
+  #   persistent_session_ttl: 60_000
+  # )
 
   plug(ExBackendWeb.Router)
 end

@@ -117,7 +117,7 @@ export class AuthService {
   }
 
   private setSession(response: Token): void {
-    this.cookies.set('token', response.access_token)
+    this.cookies.set('token', response.access_token, { sameSite: 'None' })
     this.cookies.set(
       'currentUser',
       JSON.stringify({
