@@ -162,10 +162,7 @@ export class UserService {
   }
 
   getAllRoles(): Observable<RolePage> {
-    return this.http.get<RolePage>(this.rolesUrl).pipe(
-      tap((_rolePage) => this.log('fetched All Roles')),
-      catchError(this.handleError('getRoles', undefined)),
-    )
+    return this.getRoles(0, 100)
   }
 
   getRightDefinitions(): Observable<RightDefinitionsPage> {
