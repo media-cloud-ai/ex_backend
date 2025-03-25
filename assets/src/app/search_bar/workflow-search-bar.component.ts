@@ -86,7 +86,7 @@ export class WorkflowSearchBarComponent {
       endDate: moment().toDate(),
     },
     search: undefined,
-    status: ['completed', 'error'],
+    status: [],
     headers: [
       'identifier',
       'reference',
@@ -341,7 +341,7 @@ export class WorkflowSearchBarComponent {
         endDate: date,
       },
       search: undefined,
-      status: ['completed', 'error'],
+      status: [],
       headers: [
         'identifier',
         'reference',
