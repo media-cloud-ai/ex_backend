@@ -36,7 +36,11 @@ defmodule ExBackendWeb.Router do
       "content-security-policy" => @content_security_policy
     })
 
-    plug(Pow.Plug.Session, otp_app: :ex_backend)
+    plug(Pow.Plug.Session,
+      otp_app: :ex_backend,
+      session_ttl_renewal: :timer.minutes(1),
+      credentials_cache_store: {Pow.Store.CredentialsCache, ttl: :timer.minutes(1)}
+    )
 
     plug(PowAssent.Plug.Reauthorization,
       handler: PowAssent.Phoenix.ReauthorizationPlugHandler
