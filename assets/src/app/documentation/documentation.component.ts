@@ -9,6 +9,7 @@ import {
 import { DOCUMENT } from '@angular/common'
 import { SwaggerUIBundle, SwaggerUIStandalonePreset } from 'swagger-ui-dist'
 import 'swagger-ui-dist/swagger-ui.css'
+import { AuthService } from '../authentication/auth.service'
 
 @Component({
   selector: 'documentation-component',
@@ -17,7 +18,14 @@ import 'swagger-ui-dist/swagger-ui.css'
   encapsulation: ViewEncapsulation.None,
 })
 export class DocumentationComponent implements AfterViewInit {
-  constructor(@Inject(DOCUMENT) private document: Document) {}
+  private token: string
+
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+    private authService: AuthService,
+  ) {
+    this.token = authService.getToken()
+  }
 
   @ViewChild('swagger_backend') swaggerDomBackend: ElementRef<HTMLDivElement>
   @ViewChild('swagger_stepflow') swaggerDomStepFlow: ElementRef<HTMLDivElement>
@@ -34,6 +42,14 @@ export class DocumentationComponent implements AfterViewInit {
       deepLinking: true,
       presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
       layout: 'StandaloneLayout',
+      withCredentials: true,
+      requestInterceptor: (request) => {
+        request.headers = {
+          Accept: 'application/json,*/*',
+          Authorization: this.token,
+        }
+        return request
+      },
     })
 
     SwaggerUIBundle({
@@ -47,6 +63,14 @@ export class DocumentationComponent implements AfterViewInit {
       deepLinking: true,
       presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
       layout: 'StandaloneLayout',
+      withCredentials: true,
+      requestInterceptor: (request) => {
+        request.headers = {
+          Accept: 'application/json,*/*',
+          Authorization: this.token,
+        }
+        return request
+      },
     })
   }
 }
