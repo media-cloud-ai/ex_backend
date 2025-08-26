@@ -135,6 +135,10 @@ config :step_flow, StepFlow.Amqp,
   server_configuration: {:system, "AMQP_SERVER_CONFIGURATION", "standalone"},
   max_retry_to_timeout: {:system, "AMQP_MAX_RETRIES_TO_TIMEOUT"}
 
+config :step_flow, StepFlow.WorkflowDefinitions.WorkflowDefinition,
+  workflow_schema_url:
+    "https://raw.githubusercontent.com/media-cloud-ai/media-cloud-ai.github.com/refs/heads/main/standard/1.13/workflow-definition.schema.json"
+
 config :ex_backend, :pow_assent,
   providers: [
     github: [
