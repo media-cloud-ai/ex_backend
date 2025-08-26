@@ -141,3 +141,10 @@ config :step_flow, StepFlow.Amqp,
   hostname: {:system, "AMQP_HOSTNAME"},
   virtual_host: {:system, "AMQP_VIRTUAL_HOST"},
   delivery_mode: {:system, "AMQP_DELIVERY_MODE"}
+
+config :step_flow, StepFlow.WorkflowDefinitions.ExternalLoader,
+  specification_folder: System.get_env("WORKFLOW_SCHEMA_FOLDER", "./")
+
+config :step_flow, StepFlow.WorkflowDefinitions.WorkflowDefinition,
+  workflow_schema_url:
+    System.get_env("WORKFLOW_SCHEMA_FILE", "./standard/1.13/workflow-definition.schema.json")
