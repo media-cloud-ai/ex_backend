@@ -59,6 +59,7 @@ RUN apk update && \
 
 COPY --from=ex_builder /app/_build/prod/rel/ex_backend .
 COPY --from=ex_builder /app/priv/static static/
+COPY ./priv/standard /app/standard/
 
 RUN apk add --no-cache tzdata
 
