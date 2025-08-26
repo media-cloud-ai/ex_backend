@@ -143,7 +143,8 @@ config :step_flow, StepFlow.Amqp,
   delivery_mode: {:system, "AMQP_DELIVERY_MODE"}
 
 config :step_flow, StepFlow.WorkflowDefinitions.ExternalLoader,
-  specification_folder: {:system, "WORKFLOW_SCHEMA_FOLDER"}
+  specification_folder: System.get_env("WORKFLOW_SCHEMA_FOLDER", "./")
 
 config :step_flow, StepFlow.WorkflowDefinitions.WorkflowDefinition,
-  workflow_schema_url: {:system, "WORKFLOW_SCHEMA_FILE"}
+  workflow_schema_url:
+    System.get_env("WORKFLOW_SCHEMA_FILE", "./standard/1.13/workflow-definition.schema.json")
