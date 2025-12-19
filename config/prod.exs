@@ -159,10 +159,10 @@ config :ex_backend, :pow_assent,
         logo: "/bundles/images/microsoft.svg",
         display_name: "Microsoft"
       },
-      client_id: System.get_env("CLIENT_ID_ENTRAID", ""),
-      client_secret: System.get_env("CLIENT_SECRET_ENTRAID", ""),
-      tenant_id: System.get_env("TENANT_ID_ENTRAID", ""),
+      client_id: {:system, "CLIENT_ID_ENTRAID"},
+      client_secret: {:system, "CLIENT_SECRET_ENTRAID"},
+      tenant_id: {:system, "TENANT_ID_ENTRAID"},
       strategy: Assent.Strategy.AzureAD,
-      enabled: String.to_atom(System.get_env("ENABLE_SSO_ENTRAID", "false"))
+      enabled: {:system, "ENABLE_SSO_ENTRAID"}
     ]
   ]
