@@ -51,7 +51,7 @@ defmodule ExBackendWeb.ApplicationController do
     Enum.map(Map.keys(providers), fn key ->
       Map.new(
         Enum.map(Map.keys(Map.new(providers[key])), fn entry ->
-          value_to_map(providers[key][entry], entry)
+          value_to_map(get_value_from_config(providers[key][entry]), entry)
         end)
       )
       |> Map.put(:id, to_string(key))
@@ -60,4 +60,12 @@ defmodule ExBackendWeb.ApplicationController do
 
   defp value_to_map(value, entry) when is_list(value), do: {entry, Map.new(value)}
   defp value_to_map(value, entry), do: {entry, value}
+
+  defp get_value_from_config(expression) do
+    case expression do
+      {:system, var_name, "false"} -> String.to_atom(System.get_env(var_name, "false"))
+      {:system, var_name, default} -> System.get_env(var_name, default)
+      value -> value
+    end
+  end
 end
