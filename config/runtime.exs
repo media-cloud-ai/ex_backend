@@ -20,4 +20,29 @@ if load_from_system_env do
   config :ex_backend, ExBackendWeb.Endpoint,
     http: [protocol, port: port],
     url: [host: hostname, port: port]
+
+  config :ex_backend, :pow_assent,
+    providers: [
+      github: [
+        layout: %{
+          logo: "/bundles/images/github.png",
+          display_name: "GitHub"
+        },
+        client_id: System.get_env("CLIENT_ID_GITHUB", ""),
+        client_secret: System.get_env("CLIENT_SECRET_GITHUB", ""),
+        strategy: Assent.Strategy.Github,
+        enabled: System.get_env("ENABLE_SSO_GITHUB", "false")
+      ],
+      entraid: [
+        layout: %{
+          logo: "/bundles/images/microsoft.svg",
+          display_name: "Microsoft"
+        },
+        client_id: System.get_env("CLIENT_ID_ENTRAID", ""),
+        client_secret: System.get_env("CLIENT_SECRET_ENTRAID", ""),
+        tenant_id: System.get_env("TENANT_ID_ENTRAID", ""),
+        strategy: Assent.Strategy.AzureAD,
+        enabled: System.get_env("ENABLE_SSO_ENTRAID", "false")
+      ]
+    ]
 end

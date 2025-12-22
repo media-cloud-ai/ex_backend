@@ -141,28 +141,3 @@ config :step_flow, StepFlow.WorkflowDefinitions.ExternalLoader,
 config :step_flow, StepFlow.WorkflowDefinitions.WorkflowDefinition,
   workflow_schema_url:
     System.get_env("WORKFLOW_SCHEMA_FILE", "./standard/1.13/workflow-definition.schema.json")
-
-config :ex_backend, :pow_assent,
-  providers: [
-    github: [
-      layout: %{
-        logo: "/bundles/images/github.png",
-        display_name: "GitHub"
-      },
-      client_id: {:system, "CLIENT_ID_GITHUB", ""},
-      client_secret: {:system, "CLIENT_SECRET_GITHUB", ""},
-      strategy: Assent.Strategy.Github,
-      enabled: {:system, "ENABLE_SSO_GITHUB", "false"}
-    ],
-    entraid: [
-      layout: %{
-        logo: "/bundles/images/microsoft.svg",
-        display_name: "Microsoft"
-      },
-      client_id: {:system, "CLIENT_ID_ENTRAID", ""},
-      client_secret: {:system, "CLIENT_SECRET_ENTRAID", ""},
-      tenant_id: {:system, "TENANT_ID_ENTRAID", ""},
-      strategy: Assent.Strategy.AzureAD,
-      enabled: {:system, "ENABLE_SSO_ENTRAID", "false"}
-    ]
-  ]
