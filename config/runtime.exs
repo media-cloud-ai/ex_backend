@@ -31,7 +31,7 @@ if load_from_system_env do
         client_id: System.get_env("CLIENT_ID_GITHUB", ""),
         client_secret: System.get_env("CLIENT_SECRET_GITHUB", ""),
         strategy: Assent.Strategy.Github,
-        enabled: System.get_env("ENABLE_SSO_GITHUB", "false")
+        enabled: String.to_atom(System.get_env("ENABLE_SSO_GITHUB", "false"))
       ],
       entraid: [
         layout: %{
@@ -42,7 +42,7 @@ if load_from_system_env do
         client_secret: System.get_env("CLIENT_SECRET_ENTRAID", ""),
         tenant_id: System.get_env("TENANT_ID_ENTRAID", ""),
         strategy: Assent.Strategy.AzureAD,
-        enabled: System.get_env("ENABLE_SSO_ENTRAID", "false")
+        enabled: String.to_atom(System.get_env("ENABLE_SSO_ENTRAID", "false"))
       ]
     ]
 end
