@@ -24,6 +24,7 @@ default:
 include:
   - project: 'media-cloud-ai/ci/pipelines'
     file: 'elixir/elixir-publish-docker.yml'
+    ref: 'feat/buildah-multiarch'
   - project: 'media-cloud-ai/ci/pipelines'
     file: 'elixir/elixir-base.yml'
   - template: Jobs/SAST.gitlab-ci.yml
