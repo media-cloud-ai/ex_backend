@@ -1,4 +1,4 @@
-FROM elixir:1.15.7-otp-26-alpine AS ex_builder
+FROM docker.io/elixir:1.15.7-otp-26-alpine AS ex_builder
 
 ARG customAppPort=8080
 ARG customAppHost=localhost
@@ -46,7 +46,7 @@ RUN mix deps.get && \
     mix openapi.backend && \
     mix phx.digest
 
-FROM alpine:3.19.1
+FROM docker.io/alpine:3.19.1
 
 WORKDIR /app
 
