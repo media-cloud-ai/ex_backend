@@ -73,7 +73,7 @@ defmodule ExBackend.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:amqp, "~> 3.3.0"},
+      {:amqp, "~> 4.1.0"},
       {:bcrypt_elixir, "~> 2.0"},
       {:bamboo, "~> 2.2.0"},
       # FIXME: bamboo_smtp seems to be a dead project...
@@ -82,7 +82,7 @@ defmodule ExBackend.Mixfile do
       {:certifi, "~> 2.4"},
       {:comeonin, "~> 5.1"},
       {:cors_plug, "~> 2.0"},
-      {:cowboy, "~> 2.12.0"},
+      {:cowboy, "~> 2.14.0"},
       {:credo, "~> 1.7.5", only: [:dev, :test], runtime: false},
       {:ecto, "~> 3.11"},
       {:ecto_sql, "~> 3.11"},
@@ -113,11 +113,11 @@ defmodule ExBackend.Mixfile do
       {:plug, "~> 1.15.1"},
       {:plug_cowboy, "~> 2.7"},
       {:postgrex, "~> 0.17.0"},
-      {:ranch, "~> 1.8.0"},
+      {:ranch, "~> 2.2.0"},
       {:remote_dockers, "1.4.0"},
       {:sigaws, "~> 0.7.2"},
       {:ssl_verify_fun, "~> 1.1"},
-      {:step_flow, "1.9.0-rc1"},
+      {:step_flow, "1.9.0-rc2"},
       {:sobelow, "~> 0.8", only: :dev},
       {:tesla, "~> 1.4.0"},
       {:timex, "~> 3.6"},
