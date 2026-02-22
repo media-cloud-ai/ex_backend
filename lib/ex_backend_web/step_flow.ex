@@ -1,7 +1,13 @@
-defmodule ExBackendWeb.StepFlow.Plug do
+defmodule ExBackendWeb.StepFlow.Plugs.StepFlow do
   @moduledoc false
 
-  use StepFlow.Plug
+  use StepFlow.Plugs.StepFlow
+end
+
+defmodule ExBackendWeb.StepFlow.Plugs.Prometheus do
+  @moduledoc false
+
+  use StepFlow.Plugs.Prometheus
 end
 
 defmodule ExBackendWeb.StepFlowSwaggerUI do

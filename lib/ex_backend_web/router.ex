@@ -99,6 +99,9 @@ defmodule ExBackendWeb.Router do
     # Passwords APIs
     post("/password_resets", PasswordResetController, :create)
     put("/password_resets/update", PasswordResetController, :update)
+
+    # StepFlow Prometheus Metrics APIs
+    forward("/step_flow/metrics", StepFlow.Plugs.Prometheus)
   end
 
   scope "/api", ExBackendWeb do
@@ -124,7 +127,7 @@ defmodule ExBackendWeb.Router do
 
     # StepFlow APIs
     scope "/step_flow", StepFlow do
-      forward("/", Plug)
+      forward("/", Plugs.StepFlow)
     end
 
     # AMQP APIs
